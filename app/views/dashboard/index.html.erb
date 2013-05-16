@@ -6,6 +6,11 @@
     <div id="load_average_1"></div>
     <script>
       initServerMonitorChart('#load_average_1', '1 минута');
+      setInterval(function() {
+        $.getJSON('<%= server_load_average_1_path %>', function(data) {
+          $('#load_average_1').highcharts().series[0].setData([data.load])
+        });
+      }, 1000);
     </script>
   </div>
   <div class="col-span-3">
