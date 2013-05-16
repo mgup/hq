@@ -8,7 +8,7 @@
       initServerMonitorChart('#load_average_1', '1 минута');
       setInterval(function() {
         $.getJSON('<%= server_load_average_1_path %>', function(data) {
-          $('#load_average_1').highcharts().series[0].setData([data.load])
+          $('#load_average_1').highcharts().series[0].setData([parseFloat(data.load)])
         });
       }, 1000);
     </script>
