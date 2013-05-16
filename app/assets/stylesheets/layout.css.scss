@@ -128,6 +128,28 @@ h1, h2, h3, h4, h5 {
   }
 }
 
+#pad-wrapper {
+  padding: 0 25px;
+  margin-top: 55px;
+
+  .section {
+    border-top: 1px solid #edeff1;
+    margin-top: 70px;
+    padding-top: 45px;
+    box-shadow: inset 0 3px 4px -1px #fafafa;
+  }
+
+  h4 {
+    margin: 0 0 0 20px;
+    color: #696d73;
+    font-style: italic;
+
+    &.title {
+      margin-bottom: 35px;
+    }
+  }
+}
+
 .content {
   min-width: 400px;
   min-height: 600px;
