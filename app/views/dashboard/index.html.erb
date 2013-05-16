@@ -1,2 +1,29 @@
 <h1>Dashboard#index</h1>
 <p>Find me in app/views/dashboard/index.html.erb</p>
+
+<div class="row">
+  <div class="col-span-3">
+    <div id="load_average_1"></div>
+    <script>
+      initServerMonitorChart('#load_average_1', '1 минута');
+    </script>
+  </div>
+  <div class="col-span-3">
+    <div id="load_average_5"></div>
+    <script>
+      initServerMonitorChart('#load_average_5', '5 минут');
+    </script>
+  </div>
+  <div class="col-span-3">
+    <div id="load_average_15"></div>
+    <script>
+      initServerMonitorChart('#load_average_15', '15 минут');
+    </script>
+  </div>
+  <div class="col-span-3">
+    <div id="memory"></div>
+    <script>
+      initServerMonitorChart('#memory', 'Оперативная память');
+    </script>
+  </div>
+</div>
