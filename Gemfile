@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0.beta1'
 
 gem 'mysql2'
+gem 'simple-navigation'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -38,6 +39,7 @@ gem 'jbuilder', '~> 1.0.1'
 # gem 'debugger'
 
 group :development do
+  gem 'thin'
   gem 'better_errors'
 
   gem 'capistrano'

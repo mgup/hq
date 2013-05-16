@@ -2,13 +2,20 @@
 <html>
 <head>
   <title>MatrixHq</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= yield %>
+  <div id="sidebar-nav" class="hidden-phone">
+    <%= render_navigation context: :sidebar, renderer: :sidebar %>
+  </div>
 
+  <div class="content">
+    <div class="container">
+      <%= yield %>
+    </div>
+  </div>
 </body>
 </html>
