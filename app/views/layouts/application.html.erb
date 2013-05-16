@@ -7,6 +7,11 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <div class="navbar navbar-inverse">
+    <a class="navbar-brand" href="<%= root_url %>">
+      <strong>Матрица</strong>.HQ
+    </a>
+  </div>
 
   <div id="sidebar-nav" class="hidden-phone">
     <%= render_navigation context: :sidebar, renderer: :sidebar %>

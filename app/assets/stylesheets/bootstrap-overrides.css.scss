@@ -1,0 +1,21 @@
+.navbar-inverse {
+  border-radius: 0;
+  border-bottom: 1px solid #191e23;
+  background: #2c3742;
+  background: linear-gradient(to bottom,  #2c3742 0%,#28303a 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2c3742), color-stop(100%,#28303a));
+  background: -moz-linear-gradient(top,  #2c3742 0%, #28303a 100%);
+  background: -o-linear-gradient(top,  #2c3742 0%,#28303a 100%);
+  background: -ms-linear-gradient(top,  #2c3742 0%,#28303a 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c3742', endColorstr='#28303a',GradientType=0 );
+
+  .navbar-brand {
+    color: #ffffff;
+    font-weight: lighter;
+    padding: 12px 20px 12px;
+
+    strong {
+      font-weight: normal;
+    }
+  }
+}
