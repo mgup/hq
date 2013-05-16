@@ -15,5 +15,8 @@ class ServerController < ApplicationController
   end
 
   def active_memory
+    total = %x(cat /proc/meminfo | grep MemTotal).split(':')[1].to_i
+    active = %x(cat /proc/meminfo | grep Active:).split(':')[1].to_i
+    render json: { total: total, active: active }
   end
 end
