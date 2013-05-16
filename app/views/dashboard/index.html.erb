@@ -41,8 +41,8 @@
       initServerMonitorChart('#active_memory', 'Оперативная память');
       setInterval(function() {
         $.getJSON('<%= server_active_memory_path %>', function(data) {
-          var total = data.total / 1024;
-          var active = data.active / 1024;
+          var total = data.total / (1024 * 1024);
+          var active = data.active / (1024 * 1024);
           var chart = $('#active_memory').highcharts();
           chart.yAxis[0].setExtremes(0, total);
 
