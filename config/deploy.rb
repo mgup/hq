@@ -17,13 +17,24 @@ role :web, 'matrix2.mgup.ru'
 role :app, 'matrix2.mgup.ru'
 role :db,  'matrix2.mgup.ru', :primary => true
 
+set :normalize_asset_timestamps, false
+
 before 'deploy:restart', 'deploy:migrate'
 after 'deploy:restart', 'deploy:cleanup'
 
 namespace :deploy do
-   task :start do ; end
-   task :stop do ; end
-   task :restart, :roles => :app, :except => { :no_release => true } do
-     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-   end
+  namespace :assets do
+    task :precompile, roles: :app, except: { no_release: true } do
+      run <<-CMD.compact
+        cd -- #{latest_release.shellescape} &&
+        #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile
+      CMD
+    end
+  end
+
+  task :start do ; end
+  task :stop do ; end
+  task :restart, roles: :app, except: { no_release: true } do
+    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+  end
 end
