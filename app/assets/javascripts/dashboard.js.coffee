@@ -17,7 +17,7 @@
       tickColor: '#666'
       plotBands: [{from: 0, to: 2, color: '#55BF3B'}, {from: 2, to: 4, color: '#DDDF0D'}, {from: 4, to: 6, color: '#DF5353'}]
     series: [{
-      data: [40]
+      data: [0]
     }]
     tooltip:
       enabled: false
