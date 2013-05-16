@@ -36,4 +36,4 @@ production:
   pool: 5
   username: root
   password: <%= ENV['MATRIX_DB_PASSWORD'] %>
-  socket: /tmp/mysql.sock
+  host: localhost
