@@ -12,7 +12,7 @@ class SidebarRenderer < SimpleNavigation::Renderer::List
           </div>
         }
       end
-      tags << link_to("<span>#{item.name.html_safe}</span>", item.url, options_for(item))
+      tags << link_to(item.name, item.url, options_for(item))
       tags.join
     end
   end

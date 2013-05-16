@@ -18,20 +18,12 @@ role :app, 'matrix2.mgup.ru'
 role :db,  'matrix2.mgup.ru', :primary => true
 
 set :normalize_asset_timestamps, false
+set :asset_env, "#{asset_env} RAILS_RELATIVE_URL_ROOT=/hq"
 
 before 'deploy:restart', 'deploy:migrate'
 after 'deploy:restart', 'deploy:cleanup'
 
 namespace :deploy do
-  namespace :assets do
-    task :precompile, roles: :app, except: { no_release: true } do
-      run <<-CMD.compact
-        cd -- #{latest_release.shellescape} &&
-        #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile
-      CMD
-    end
-  end
-
   task :start do ; end
   task :stop do ; end
   task :restart, roles: :app, except: { no_release: true } do
