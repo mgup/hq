@@ -31,5 +31,5 @@
       enabled: false
 
 @initServerStatsUpdate = (id) ->
-  setInterval ->
-    $.getJSON('<%= server_stats_load %>')
+  #setInterval ->
+    #$.getJSON('<%= server_stats_load %>')

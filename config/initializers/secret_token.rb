@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-MatrixHq::Application.config.secret_key_base = 'a8117e4180421730b4660e7c01d0e83cb914f929376fb5ebacdd5569a5a15e2abf486de631ed0483fccee91bed5e83baa0b8b65902534664de38652f57c81190'
+HQ::Application.config.secret_key_base = 'a8117e4180421730b4660e7c01d0e83cb914f929376fb5ebacdd5569a5a15e2abf486de631ed0483fccee91bed5e83baa0b8b65902534664de38652f57c81190'

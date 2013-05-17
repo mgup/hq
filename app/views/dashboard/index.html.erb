@@ -1,5 +1,5 @@
 <div id="pad-wrapper">
-  <div class="row section">
+  <div class="row">
     <h4 class="title">Мониторинг сервера</h4>
     <div class="col-span-3"><div id="load_average_1"></div></div>
     <div class="col-span-3"><div id="load_average_5"></div></div>
@@ -8,62 +8,83 @@
       <div id="active_memory"></div>
       <script>
         initServerStatsGauge('#active_memory', 'Оперативная память');
-        setInterval(function() {
-          $.getJSON('<%= server_active_memory_path %>', function(data) {
-            var total = parseFloat(data.total) / (1024 * 1024);
-            var active = parseFloat(data.active) / (1024 * 1024);
-            var chart = $('#active_memory').highcharts();
-            chart.yAxis[0].setExtremes(0, total);
-
-            chart.yAxis[0].removePlotBand('green');
-            chart.yAxis[0].removePlotBand('yellow');
-            chart.yAxis[0].removePlotBand('red');
-
-            chart.yAxis[0].addPlotBand({
-              id: 'green',
-              from: 0,
-              to: 0.5 * total,
-              color: '#55BF3B'
-            });
-            chart.yAxis[0].addPlotBand({
-              id: 'yellow',
-              from: 0.5 * total,
-              to: 0.75 * total,
-              color: '#DDDF0D'
-            });
-            chart.yAxis[0].addPlotBand({
-              id: 'red',
-              from: 0.75 * total,
-              to: total,
-              color: '#DF5353'
-            });
-
-            chart.series[0].setData([parseFloat(active.toFixed(2))])
-          });
-        }, 5000);
+//        setInterval(function() {
+//          $.getJSON('<= server_active_memory_path %>', function(data) {
+//            var total = parseFloat(data.total) / (1024 * 1024);
+//            var active = parseFloat(data.active) / (1024 * 1024);
+//            var chart = $('#active_memory').highcharts();
+//            chart.yAxis[0].setExtremes(0, total);
+//
+//            chart.yAxis[0].removePlotBand('green');
+//            chart.yAxis[0].removePlotBand('yellow');
+//            chart.yAxis[0].removePlotBand('red');
+//
+//            chart.yAxis[0].addPlotBand({
+//              id: 'green',
+//              from: 0,
+//              to: 0.5 * total,
+//              color: '#55BF3B'
+//            });
+//            chart.yAxis[0].addPlotBand({
+//              id: 'yellow',
+//              from: 0.5 * total,
+//              to: 0.75 * total,
+//              color: '#DDDF0D'
+//            });
+//            chart.yAxis[0].addPlotBand({
+//              id: 'red',
+//              from: 0.75 * total,
+//              to: total,
+//              color: '#DF5353'
+//            });
+//
+//            chart.series[0].setData([parseFloat(active.toFixed(2))])
+//          });
+//        }, 5000);
       </script>
     </div>
 
     <script>
       initServerStatsGauge('#load_average_1', '1 минута');
-      setInterval(function() {
-        $.getJSON('<%= server_load_average_1_path %>', function(data) {
-          $('#load_average_1').highcharts().series[0].setData([parseFloat(data.load)])
-        });
-      }, 5000);
+//      setInterval(function() {
+//        $.getJSON('<= server_load_average_1_path %>', function(data) {
+//          $('#load_average_1').highcharts().series[0].setData([parseFloat(data.load)])
+//        });
+//      }, 5000);
       initServerStatsGauge('#load_average_5', '5 минут');
-      setInterval(function() {
-        $.getJSON('<%= server_load_average_5_path %>', function(data) {
-          $('#load_average_5').highcharts().series[0].setData([parseFloat(data.load)])
-        });
-      }, 5000);
+//      setInterval(function() {
+//        $.getJSON('<= server_load_average_5_path %>', function(data) {
+//          $('#load_average_5').highcharts().series[0].setData([parseFloat(data.load)])
+//        });
+//      }, 5000);
       initServerStatsGauge('#load_average_15', '15 минут');
-      setInterval(function() {
-        $.getJSON('<%= server_load_average_15_path %>', function(data) {
-          $('#load_average_15').highcharts().series[0].setData([parseFloat(data.load)])
-        });
-      }, 5000);
-      initServerStatsUpdate();
+//      setInterval(function() {
+//        $.getJSON('<= server_load_average_15_path %>', function(data) {
+//          $('#load_average_15').highcharts().series[0].setData([parseFloat(data.load)])
+//        });
+//      }, 5000);
+//      initServerStatsUpdate();
     </script>
+  </div>
+  <div class="row section">
+    <h4 class="title">Анализ кода</h4>
+    <div class="col-span-3 text-center">
+      <img src="https://travis-ci.org/mgup/hq.png?branch=master">
+    </div>
+    <div class="col-span-3 text-center">
+      <a href='https://coveralls.io/r/mgup/hq'>
+        <img src='https://coveralls.io/repos/mgup/hq/badge.png'>
+      </a>
+    </div>
+    <div class="col-span-3 text-center">
+      <a href="https://codeclimate.com/github/mgup/hq">
+        <img src="https://codeclimate.com/github/mgup/hq.png">
+      </a>
+    </div>
+    <div class="col-span-3 text-center">
+      <a href='https://gemnasium.com/mgup/hq'>
+        <img src="https://gemnasium.com/mgup/hq.png">
+      </a>
+    </div>
   </div>
 </div>
