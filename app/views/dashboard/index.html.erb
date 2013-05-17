@@ -1,44 +1,13 @@
 <div id="pad-wrapper">
   <div class="row section">
     <h4 class="title">Мониторинг сервера</h4>
-
-    <div class="col-span-3">
-      <div id="load_average_1"></div>
-      <script>
-        initServerMonitorChart('#load_average_1', '1 минута');
-        setInterval(function() {
-          $.getJSON('<%= server_load_average_1_path %>', function(data) {
-            $('#load_average_1').highcharts().series[0].setData([parseFloat(data.load)])
-          });
-        }, 5000);
-      </script>
-    </div>
-    <div class="col-span-3">
-      <div id="load_average_5"></div>
-      <script>
-        initServerMonitorChart('#load_average_5', '5 минут');
-        setInterval(function() {
-          $.getJSON('<%= server_load_average_5_path %>', function(data) {
-            $('#load_average_5').highcharts().series[0].setData([parseFloat(data.load)])
-          });
-        }, 5000);
-      </script>
-    </div>
-    <div class="col-span-3">
-      <div id="load_average_15"></div>
-      <script>
-        initServerMonitorChart('#load_average_15', '15 минут');
-        setInterval(function() {
-          $.getJSON('<%= server_load_average_15_path %>', function(data) {
-            $('#load_average_15').highcharts().series[0].setData([parseFloat(data.load)])
-          });
-        }, 5000);
-      </script>
-    </div>
+    <div class="col-span-3"><div id="load_average_1"></div></div>
+    <div class="col-span-3"><div id="load_average_5"></div></div>
+    <div class="col-span-3"><div id="load_average_15"></div></div>
     <div class="col-span-3">
       <div id="active_memory"></div>
       <script>
-        initServerMonitorChart('#active_memory', 'Оперативная память');
+        initServerStatsGauge('#active_memory', 'Оперативная память');
         setInterval(function() {
           $.getJSON('<%= server_active_memory_path %>', function(data) {
             var total = parseFloat(data.total) / (1024 * 1024);
@@ -74,5 +43,27 @@
         }, 5000);
       </script>
     </div>
+
+    <script>
+      initServerStatsGauge('#load_average_1', '1 минута');
+      setInterval(function() {
+        $.getJSON('<%= server_load_average_1_path %>', function(data) {
+          $('#load_average_1').highcharts().series[0].setData([parseFloat(data.load)])
+        });
+      }, 5000);
+      initServerStatsGauge('#load_average_5', '5 минут');
+      setInterval(function() {
+        $.getJSON('<%= server_load_average_5_path %>', function(data) {
+          $('#load_average_5').highcharts().series[0].setData([parseFloat(data.load)])
+        });
+      }, 5000);
+      initServerStatsGauge('#load_average_15', '15 минут');
+      setInterval(function() {
+        $.getJSON('<%= server_load_average_15_path %>', function(data) {
+          $('#load_average_15').highcharts().series[0].setData([parseFloat(data.load)])
+        });
+      }, 5000);
+      initServerStatsUpdate();
+    </script>
   </div>
 </div>

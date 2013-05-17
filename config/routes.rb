@@ -1,8 +1,8 @@
 MatrixHq::Application.routes.draw do
-  get "server/load_average_1"
-  get "server/load_average_5"
-  get "server/load_average_15"
-  get "server/active_memory"
+  # Мониторинг состояния сервера.
+  get 'server/stats_load'
+  get 'server/stats_memory'
+
   root to: 'dashboard#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
