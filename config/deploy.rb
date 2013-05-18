@@ -9,7 +9,7 @@ set :deploy_via,  :remote_cache
 set :user, 'root'
 
 set :scm, :git
-set :repository,  'git@github.com:storkvist/Matrix-HQ.git'
+set :repository,  'git@github.com:mgup/hq.git'
 set :ssh_options, { forward_agent: true }
 set :repository_cache, 'git_cache'
 

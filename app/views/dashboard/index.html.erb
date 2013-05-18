@@ -54,20 +54,32 @@
       var updateServerStats = function() {
         $.getJSON('<%= server_stats_path %>', function(data) {
           // Обновление показателей загрузки сервера.
-          $('#load_average_1').highcharts().series[0].setData([parseFloat(data.load1)]);
-          $('#load_average_5').highcharts().series[0].setData([parseFloat(data.load5)]);
-          $('#load_average_15').highcharts().series[0].setData([parseFloat(data.load15)]);
+          $('#load_average_1').highcharts().series[0].setData(
+              [parseFloat(data.one_minute.toFixed(2))]
+          );
+          $('#load_average_5').highcharts().series[0].setData(
+              [parseFloat(data.five_minutes.toFixed(2))]
+          );
+          $('#load_average_15').highcharts().series[0].setData(
+              [parseFloat(data.fifteen_minutes.toFixed(2))]
+          );
 
           // Обновление показателя занятой памяти.
-          var total = parseFloat(data.mem_total) / (1024 * 1024);
-          var active = parseFloat(data.mem_active) / (1024 * 1024);
+          var pagesize = parseInt(data.pagesize);
+          var wired    = parseInt(data.wired);
+          var active   = parseInt(data.active);
+          var inactive = parseInt(data.inactive);
+          var free     = parseInt(data.free);
+
+          var total = pagesize * (wired + active + inactive + free) / (1024 * 1024 * 1024);
+          var active = pagesize * (wired + active) / (1024 * 1024 * 1024);
+
           var chart = $('#active_memory').highcharts();
           chart.yAxis[0].setExtremes(0, total);
 
           chart.yAxis[0].removePlotBand('green');
           chart.yAxis[0].removePlotBand('yellow');
           chart.yAxis[0].removePlotBand('red');
-
           bands = [
             {id: 'green',  from: 0,            to: 0.5 * total,  color: '#55BF3B'},
             {id: 'yellow', from: 0.5 * total,  to: 0.75 * total, color: '#DDDF0D'},

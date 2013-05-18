@@ -18,6 +18,7 @@ gem 'turbolinks'
 
 gem 'jbuilder'
 gem 'simple-navigation'
+gem 'vmstat'
 
 group :development do
   gem 'thin'
