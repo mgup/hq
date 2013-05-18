@@ -29,7 +29,3 @@
       enabled: false
     credits:
       enabled: false
-
-@initServerStatsUpdate = (id) ->
-  #setInterval ->
-    #$.getJSON('<%= server_stats_load %>')

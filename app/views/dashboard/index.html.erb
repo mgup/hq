@@ -45,25 +45,43 @@
     </div>
 
     <script>
+      // Инициализация графиков для статистики.
       initServerStatsGauge('#load_average_1', '1 минута');
-//      setInterval(function() {
-//        $.getJSON('<= server_load_average_1_path %>', function(data) {
-//          $('#load_average_1').highcharts().series[0].setData([parseFloat(data.load)])
-//        });
-//      }, 5000);
       initServerStatsGauge('#load_average_5', '5 минут');
-//      setInterval(function() {
-//        $.getJSON('<= server_load_average_5_path %>', function(data) {
-//          $('#load_average_5').highcharts().series[0].setData([parseFloat(data.load)])
-//        });
-//      }, 5000);
       initServerStatsGauge('#load_average_15', '15 минут');
-//      setInterval(function() {
-//        $.getJSON('<= server_load_average_15_path %>', function(data) {
-//          $('#load_average_15').highcharts().series[0].setData([parseFloat(data.load)])
-//        });
-//      }, 5000);
-//      initServerStatsUpdate();
+
+      // Раз в 5 секунд статистика обновляется с сервера.
+      var updateServerStats = function() {
+        $.getJSON('<%= server_stats_path %>', function(data) {
+          // Обновление показателей загрузки сервера.
+          $('#load_average_1').highcharts().series[0].setData([parseFloat(data.load1)]);
+          $('#load_average_5').highcharts().series[0].setData([parseFloat(data.load5)]);
+          $('#load_average_15').highcharts().series[0].setData([parseFloat(data.load15)]);
+
+          // Обновление показателя занятой памяти.
+          var total = parseFloat(data.mem_total) / (1024 * 1024);
+          var active = parseFloat(data.mem_active) / (1024 * 1024);
+          var chart = $('#active_memory').highcharts();
+          chart.yAxis[0].setExtremes(0, total);
+
+          chart.yAxis[0].removePlotBand('green');
+          chart.yAxis[0].removePlotBand('yellow');
+          chart.yAxis[0].removePlotBand('red');
+
+          bands = [
+            {id: 'green',  from: 0,            to: 0.5 * total,  color: '#55BF3B'},
+            {id: 'yellow', from: 0.5 * total,  to: 0.75 * total, color: '#DDDF0D'},
+            {id: 'red',    from: 0.75 * total, to: total,        color: '#DF5353'}
+          ];
+          for (var i = 0; i < bands.length; i++) {
+            chart.yAxis[0].addPlotBand(bands[i]);
+          }
+
+          chart.series[0].setData([parseFloat(active.toFixed(2))])
+        });
+      };
+      updateServerStats();
+      setInterval(updateServerStats, 5000);
     </script>
   </div>
   <div class="row section">

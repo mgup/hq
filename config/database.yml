@@ -4,7 +4,6 @@ development:
   database: cni
   pool: 5
   username: root
-  password: root
   socket: /tmp/mysql.sock
 
 test:

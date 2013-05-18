@@ -1,7 +1,6 @@
 HQ::Application.routes.draw do
   # Мониторинг состояния сервера.
-  get 'server/stats_load'
-  get 'server/stats_memory'
+  get 'server/stats'
 
   root to: 'dashboard#index'
 
