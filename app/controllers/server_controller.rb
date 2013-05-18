@@ -1,13 +1,8 @@
 class ServerController < ApplicationController
   def stats
-    loads = %x(w | head -n1 | cut -d ":" -f 4)
-  end
+    loads = %x(w | head -n1 | cut -d ":" -f 4).split().map { |e| e.gsub(',', '.').to_f }
 
-  def stats_load
-    load1  = %x(cut -f 1 -d " " /proc/loadavg)
-    load5  = %x(cut -f 2 -d " " /proc/loadavg)
-    load15 = %x(cut -f 3 -d " " /proc/loadavg)
-    render json: { load1: load1, load5: load5, load15: load15 }
+    render json: { load1:  loads[0], load5:  loads[1], load15: loads[2] }
   end
 
   def stats_memory

@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.0.rc1'
 gem 'mysql2'
+gem 'coveralls', require: false
 
 group :assets do
   gem 'sass-rails', '4.0.0.rc1'
@@ -29,5 +30,4 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'coveralls', require: false
 end
