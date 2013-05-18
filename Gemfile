@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'rails'
+gem 'rails', '4.0.0.rc1'
 gem 'mysql2'
 
 group :assets do
-  gem 'sass-rails'
+  gem 'sass-rails', '4.0.0.rc1'
   gem 'coffee-rails'
 
   gem 'therubyracer', platforms: :ruby
