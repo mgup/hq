@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:mgup/ui.git
-  revision: 2df3cc9eaabfb56d640dfd92cba9d4f0fa3bb189
+  revision: 2e881ac4a7507e4a4fede08a1e347ee01f5b6315
   specs:
     ui (0.0.1)
       rails (~> 4.0.0.rc1)
