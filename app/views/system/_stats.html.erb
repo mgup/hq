@@ -1,0 +1,102 @@
+<h4 class="title">Состояние системы</h4>
+<div class="col-span-6">
+  <div class="col-span-12 text-center">
+    <a href="https://travis-ci.org/mgup/hq">
+      <img src="https://travis-ci.org/mgup/hq.png?branch=master" style="height: 18px;">
+    </a>
+    <a href='https://coveralls.io/r/mgup/hq'>
+      <img src='https://coveralls.io/repos/mgup/hq/badge.png'>
+    </a>
+    <a href="https://codeclimate.com/github/mgup/hq">
+      <img src="https://codeclimate.com/github/mgup/hq.png">
+    </a>
+    <a href='https://gemnasium.com/mgup/hq'>
+      <img src="https://gemnasium.com/mgup/hq.png">
+    </a>
+  </div>
+
+  <div class="col-span-4"><div id="load_average_1"></div></div>
+  <div class="col-span-4"><div id="load_average_5"></div></div>
+  <div class="col-span-4"><div id="load_average_15"></div></div>
+</div>
+
+<div class="col-span-3"><div id="active_memory"></div></div>
+<div class="col-span-3"><div id="disk_usage"></div></div>
+<script>
+  // Инициализация графиков для статистики.
+  initServerStatsGauge('#load_average_1',  '1 минута', 170);
+  initServerStatsGauge('#load_average_5',  '5 минут', 170);
+  initServerStatsGauge('#load_average_15', '15 минут', 170);
+  initServerStatsGauge('#active_memory',   'Оперативная память', 200);
+  initServerStatsGauge('#disk_usage',      'Использование диска', 200);
+
+  // Раз в 5 секунд статистика обновляется с сервера.
+  var updateServerStats = function() {
+    $.getJSON('<%= system_stats_path %>', function(data) {
+      // Обновление показателей загрузки сервера.
+      $('#load_average_1').highcharts().series[0].setData(
+          [parseFloat(data.one_minute.toFixed(2))]
+      );
+      $('#load_average_5').highcharts().series[0].setData(
+          [parseFloat(data.five_minutes.toFixed(2))]
+      );
+      $('#load_average_15').highcharts().series[0].setData(
+          [parseFloat(data.fifteen_minutes.toFixed(2))]
+      );
+
+      // Обновление показателя занятой памяти.
+      var pagesize = parseInt(data.pagesize);
+      var wired    = parseInt(data.wired);
+      var active   = parseInt(data.active);
+      var inactive = parseInt(data.inactive);
+      var free     = parseInt(data.free);
+
+      var total = pagesize * (wired + active + inactive + free) / (1024 * 1024 * 1024);
+      var active = pagesize * (wired + active) / (1024 * 1024 * 1024);
+
+      var chart = $('#active_memory').highcharts();
+      chart.yAxis[0].setExtremes(0, total);
+
+      chart.yAxis[0].removePlotBand('green');
+      chart.yAxis[0].removePlotBand('yellow');
+      chart.yAxis[0].removePlotBand('red');
+      bands = [
+        {id: 'green',  from: 0,            to: 0.5 * total,  color: '#55BF3B'},
+        {id: 'yellow', from: 0.5 * total,  to: 0.75 * total, color: '#DDDF0D'},
+        {id: 'red',    from: 0.75 * total, to: total,        color: '#DF5353'}
+      ];
+      for (var i = 0; i < bands.length; i++) {
+        chart.yAxis[0].addPlotBand(bands[i]);
+      }
+
+      chart.series[0].setData([parseFloat(active.toFixed(2))])
+
+      // Обновление показателя использования диска.
+      var block_size   = parseInt(data.block_size);
+      var free_blocks  = parseInt(data.free_blocks);
+      var total_blocks = parseInt(data.total_blocks);
+
+      var total = block_size * total_blocks / (1024 * 1024 * 1024);
+      var used  = block_size * (total_blocks - free_blocks) / (1024 * 1024 * 1024);
+
+      var chart = $('#disk_usage').highcharts();
+      chart.yAxis[0].setExtremes(0, total);
+
+      chart.yAxis[0].removePlotBand('green');
+      chart.yAxis[0].removePlotBand('yellow');
+      chart.yAxis[0].removePlotBand('red');
+      bands = [
+        {id: 'green',  from: 0,            to: 0.5 * total,  color: '#55BF3B'},
+        {id: 'yellow', from: 0.5 * total,  to: 0.75 * total, color: '#DDDF0D'},
+        {id: 'red',    from: 0.75 * total, to: total,        color: '#DF5353'}
+      ];
+      for (var i = 0; i < bands.length; i++) {
+        chart.yAxis[0].addPlotBand(bands[i]);
+      }
+
+      chart.series[0].setData([parseFloat(used.toFixed(2))])
+    });
+  };
+  updateServerStats();
+  setInterval(updateServerStats, 5000);
+</script>

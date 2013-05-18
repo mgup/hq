@@ -1,4 +1,4 @@
-class ServerController < ApplicationController
+class SystemController < ApplicationController
   def stats
     stats = Hash.new
     stats.merge! Vmstat.load_average.to_h

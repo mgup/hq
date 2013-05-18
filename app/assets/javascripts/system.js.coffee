@@ -1,8 +1,8 @@
-@initServerStatsGauge = (id, title) ->
+@initServerStatsGauge = (id, title, height = 200) ->
   $(id).highcharts
     chart:
       type: 'gauge'
-      height: 200
+      height: height
     title:
       text: title
     pane:
