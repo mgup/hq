@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-MatrixHq::Application.load_tasks
+HQ::Application.load_tasks
