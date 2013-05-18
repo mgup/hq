@@ -1,4 +1,8 @@
 class ServerController < ApplicationController
+  def stats
+    loads = %x(w | head -n1 | cut -d ":" -f 4)
+  end
+
   def stats_load
     load1  = %x(cut -f 1 -d " " /proc/loadavg)
     load5  = %x(cut -f 2 -d " " /proc/loadavg)
