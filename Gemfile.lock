@@ -1,3 +1,10 @@
+GIT
+  remote: git@github.com:mgup/ui.git
+  revision: 3f3d68d896b5ac5a6c96997bed45ed03a8708706
+  specs:
+    ui (0.0.1)
+      rails (~> 4.0.0.rc1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -187,4 +194,5 @@ DEPENDENCIES
   thin
   turbolinks
   uglifier
+  ui!
   vmstat

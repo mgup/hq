@@ -20,6 +20,8 @@ gem 'jbuilder'
 gem 'simple-navigation'
 gem 'vmstat'
 
+gem 'ui', git: 'git@github.com:mgup/ui.git'
+
 group :development do
   gem 'thin'
   gem 'debugger'
