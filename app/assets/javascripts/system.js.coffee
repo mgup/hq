@@ -29,3 +29,18 @@
       enabled: false
     credits:
       enabled: false
+
+@updateGaugeExtremes = (name, min, max, value) ->
+  chart = $("##{name}").highcharts()
+  axe = chart.yAxis[0]
+  axe.setExtremes min, max
+  axe.removePlotBand 'green'
+  axe.removePlotBand 'yellow'
+  axe.removePlotBand 'red'
+  bands = [
+    {id: 'green',  from: min,                      to: min + 0.5 * (max - min),  color: '#55BF3B'},
+    {id: 'yellow', from: min + 0.5 * (max - min),  to: min + 0.75 * (max - min), color: '#DDDF0D'},
+    {id: 'red',    from: min + 0.75 * (max - min), to: max,                      color: '#DF5353'}
+  ]
+  axe.addPlotBand(band) for band in bands
+  chart.series[0].setData([parseFloat(value.toFixed(2))])

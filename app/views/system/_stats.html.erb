@@ -20,14 +20,14 @@
   <div class="col-span-4"><div id="load_average_15"></div></div>
 </div>
 
-<div class="col-span-3"><div id="active_memory"></div></div>
+<div class="col-span-3"><div id="memory_usage"></div></div>
 <div class="col-span-3"><div id="disk_usage"></div></div>
 <script>
   // Инициализация графиков для статистики.
-  initServerStatsGauge('#load_average_1',  '1 минута', 170);
-  initServerStatsGauge('#load_average_5',  '5 минут', 170);
-  initServerStatsGauge('#load_average_15', '15 минут', 170);
-  initServerStatsGauge('#active_memory',   'Оперативная память', 200);
+  initServerStatsGauge('#load_average_1',  '1 минута',            170);
+  initServerStatsGauge('#load_average_5',  '5 минут',             170);
+  initServerStatsGauge('#load_average_15', '15 минут',            170);
+  initServerStatsGauge('#memory_usage',    'Оперативная память',  200);
   initServerStatsGauge('#disk_usage',      'Использование диска', 200);
 
   // Раз в 5 секунд статистика обновляется с сервера.
@@ -44,57 +44,31 @@
           [parseFloat(data.fifteen_minutes.toFixed(2))]
       );
 
-      // Обновление показателя занятой памяти.
+      var bInGb = 1024 * 1024 * 1024;
+
+      // Показатели использования оперативной памяти.
       var pagesize = parseInt(data.pagesize);
       var wired    = parseInt(data.wired);
       var active   = parseInt(data.active);
       var inactive = parseInt(data.inactive);
       var free     = parseInt(data.free);
 
-      var total = pagesize * (wired + active + inactive + free) / (1024 * 1024 * 1024);
-      var active = pagesize * (wired + active) / (1024 * 1024 * 1024);
+      updateGaugeExtremes(
+          'memory_usage', 0,
+          pagesize * (wired + active + inactive + free) / bInGb,
+          pagesize * (wired + active) / bInGb
+      );
 
-      var chart = $('#active_memory').highcharts();
-      chart.yAxis[0].setExtremes(0, total);
-
-      chart.yAxis[0].removePlotBand('green');
-      chart.yAxis[0].removePlotBand('yellow');
-      chart.yAxis[0].removePlotBand('red');
-      bands = [
-        {id: 'green',  from: 0,            to: 0.5 * total,  color: '#55BF3B'},
-        {id: 'yellow', from: 0.5 * total,  to: 0.75 * total, color: '#DDDF0D'},
-        {id: 'red',    from: 0.75 * total, to: total,        color: '#DF5353'}
-      ];
-      for (var i = 0; i < bands.length; i++) {
-        chart.yAxis[0].addPlotBand(bands[i]);
-      }
-
-      chart.series[0].setData([parseFloat(active.toFixed(2))])
-
-      // Обновление показателя использования диска.
+      // Показатели использования диска.
       var block_size   = parseInt(data.block_size);
       var free_blocks  = parseInt(data.free_blocks);
       var total_blocks = parseInt(data.total_blocks);
 
-      var total = block_size * total_blocks / (1024 * 1024 * 1024);
-      var used  = block_size * (total_blocks - free_blocks) / (1024 * 1024 * 1024);
-
-      var chart = $('#disk_usage').highcharts();
-      chart.yAxis[0].setExtremes(0, total);
-
-      chart.yAxis[0].removePlotBand('green');
-      chart.yAxis[0].removePlotBand('yellow');
-      chart.yAxis[0].removePlotBand('red');
-      bands = [
-        {id: 'green',  from: 0,            to: 0.5 * total,  color: '#55BF3B'},
-        {id: 'yellow', from: 0.5 * total,  to: 0.75 * total, color: '#DDDF0D'},
-        {id: 'red',    from: 0.75 * total, to: total,        color: '#DF5353'}
-      ];
-      for (var i = 0; i < bands.length; i++) {
-        chart.yAxis[0].addPlotBand(bands[i]);
-      }
-
-      chart.series[0].setData([parseFloat(used.toFixed(2))])
+      updateGaugeExtremes(
+        'disk_usage', 0,
+        block_size * total_blocks / bInGb,
+        block_size * (total_blocks - free_blocks) / bInGb
+      );
     });
   };
   updateServerStats();
