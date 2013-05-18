@@ -6,8 +6,8 @@
     title:
       text: title
     pane:
-      startAngle: -150
-      endAngle  : 150
+      startAngle: if 200 == height then -130 else -110
+      endAngle  : if 200 == height then 130 else 110
       background:
         backgroundColor: '#FFF'
     yAxis:
