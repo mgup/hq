@@ -20,6 +20,7 @@ gem 'jbuilder'
 gem 'simple-navigation'
 gem 'vmstat'
 
+# В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 gem 'ui', github: 'mgup/ui', branch: :master
 
 group :development do
