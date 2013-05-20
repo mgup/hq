@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/mgup/ui.git
-  revision: 6b49354a2300b82e2348d31db65360665b70f0bc
+  revision: 4cc14845cb936ad8f0b9c07886f89eca18e607ba
+  branch: master
   specs:
     ui (0.0.1)
       rails (~> 4.0.0.rc1)
@@ -125,7 +126,7 @@ GEM
     rspec-expectations (2.13.0)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.13.1)
-    rspec-rails (2.13.1)
+    rspec-rails (2.13.2)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)

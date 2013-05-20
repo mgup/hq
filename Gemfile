@@ -20,7 +20,7 @@ gem 'jbuilder'
 gem 'simple-navigation'
 gem 'vmstat'
 
-gem 'ui', github: 'mgup/ui'
+gem 'ui', github: 'mgup/ui', branch: :master
 
 group :development do
   gem 'thin'
