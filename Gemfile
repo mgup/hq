@@ -20,12 +20,13 @@ gem 'jbuilder'
 gem 'simple-navigation'
 gem 'vmstat'
 
-gem 'ui', git: 'git@github.com:mgup/ui.git'
+gem 'ui', github: 'mgup/ui'
 
 group :development do
   gem 'thin'
   gem 'debugger'
   gem 'better_errors'
+  gem 'binding_of_caller'
 
   gem 'capistrano'
   gem 'rvm-capistrano'

@@ -1,1 +1,1 @@
-SimpleNavigation.register_renderer sidebar: SidebarRenderer
+#SimpleNavigation.register_renderer sidebar: SidebarRenderer

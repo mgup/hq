@@ -1,9 +1,10 @@
 GIT
-  remote: git@github.com:mgup/ui.git
-  revision: 32af88f44190be44a2d66f33492eea3974f13a40
+  remote: git://github.com/mgup/ui.git
+  revision: 6b49354a2300b82e2348d31db65360665b70f0bc
   specs:
     ui (0.0.1)
       rails (~> 4.0.0.rc1)
+      simple-navigation
 
 GEM
   remote: https://rubygems.org/
@@ -37,6 +38,8 @@ GEM
     better_errors (0.8.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
+    binding_of_caller (0.7.1)
+      debug_inspector (>= 0.0.1)
     builder (3.1.4)
     capistrano (2.15.4)
       highline
@@ -61,6 +64,7 @@ GEM
       simplecov (>= 0.7)
       thor
     daemons (1.1.9)
+    debug_inspector (0.0.2)
     debugger (1.6.0)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -178,6 +182,7 @@ PLATFORMS
 
 DEPENDENCIES
   better_errors
+  binding_of_caller
   capistrano
   coffee-rails
   coveralls
