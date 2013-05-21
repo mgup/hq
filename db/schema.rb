@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20130521085203) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -1117,25 +1117,37 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "template_reason", ["template_reason_template"], name: "template_reason_template", using: :btree
 
   create_table "user", primary_key: "user_id", force: true do |t|
-    t.boolean "user_active",                     default: true,   null: false
-    t.boolean "user_enabled",                    default: true,   null: false
-    t.string  "user_login",          limit: 200,                  null: false
-    t.string  "user_password",       limit: 200,                  null: false
-    t.date    "user_password_cdate"
-    t.string  "user_email",          limit: 200
-    t.string  "user_name",           limit: 200,                  null: false
-    t.integer "user_fname"
-    t.integer "user_iname"
-    t.integer "user_oname"
-    t.string  "user_role",           limit: 200, default: "user", null: false
-    t.integer "user_department",                                  null: false
-    t.integer "user_faculty"
-    t.string  "user_position",       limit: 200
-    t.string  "user_position_short", limit: 200
-    t.integer "user_subdepartment"
-    t.string  "user_phone",          limit: 200
+    t.boolean  "user_active",                        default: true,   null: false
+    t.boolean  "user_enabled",                       default: true,   null: false
+    t.string   "user_login",             limit: 200,                  null: false
+    t.string   "user_password",          limit: 200,                  null: false
+    t.date     "user_password_cdate"
+    t.string   "user_email",             limit: 200
+    t.string   "user_name",              limit: 200,                  null: false
+    t.integer  "user_fname"
+    t.integer  "user_iname"
+    t.integer  "user_oname"
+    t.string   "user_role",              limit: 200, default: "user", null: false
+    t.integer  "user_department",                                     null: false
+    t.integer  "user_faculty"
+    t.string   "user_position",          limit: 200
+    t.string   "user_position_short",    limit: 200
+    t.integer  "user_subdepartment"
+    t.string   "user_phone",             limit: 200
+    t.string   "encrypted_password",                 default: "",     null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                      default: 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
+  add_index "user", ["reset_password_token"], name: "index_user_on_reset_password_token", unique: true, using: :btree
   add_index "user", ["user_department"], name: "user_department", using: :btree
 
 end

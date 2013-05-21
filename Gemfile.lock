@@ -1,12 +1,23 @@
 GIT
   remote: git://github.com/mgup/ui.git
-  revision: 5f968ea9660c94d7bd55006de7c8fa38b38ff618
+  revision: 46369fad8c0c66308ee8fd186dec18a9465b191e
   branch: master
   specs:
     ui (0.0.1)
       rails (= 4.0.0.rc1)
       sass-rails (= 4.0.0.rc1)
       simple-navigation
+
+GIT
+  remote: git://github.com/plataformatec/devise.git
+  revision: 6b5988d756d780903bf8c9ccb3e2b3b724ccebe8
+  branch: rails4
+  specs:
+    devise (2.2.4)
+      bcrypt-ruby (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      warden (~> 1.2.1)
 
 GEM
   remote: https://rubygems.org/
@@ -37,6 +48,7 @@ GEM
       tzinfo (~> 0.3.37)
     arel (4.0.0)
     atomic (1.1.9)
+    bcrypt-ruby (3.0.1)
     better_errors (0.8.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -102,6 +114,7 @@ GEM
     net-ssh (2.6.7)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    orm_adapter (0.4.0)
     polyglot (0.3.3)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -178,6 +191,8 @@ GEM
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
     vmstat (2.0.0)
+    warden (1.2.1)
+      rack (>= 1.0)
 
 PLATFORMS
   ruby
@@ -189,6 +204,7 @@ DEPENDENCIES
   coffee-rails
   coveralls
   debugger
+  devise!
   jbuilder
   jquery-rails
   mysql2

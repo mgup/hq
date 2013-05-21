@@ -1,4 +1,6 @@
 HQ::Application.routes.draw do
+  devise_for :users
+
   # Мониторинг состояния сервера.
   get 'system/stats'
 
