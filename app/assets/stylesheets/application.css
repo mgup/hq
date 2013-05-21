@@ -10,7 +10,7 @@
  *
  *= require_self
  *
- *= require ui/ui
+ *= require ui/application
  *
  *= require_tree .
  */
