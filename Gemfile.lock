@@ -1,10 +1,11 @@
 GIT
   remote: git://github.com/mgup/ui.git
-  revision: 4cc14845cb936ad8f0b9c07886f89eca18e607ba
+  revision: 23ee329caf43f6361b2de3f43a4fcface83a832b
   branch: master
   specs:
     ui (0.0.1)
-      rails (~> 4.0.0.rc1)
+      rails (= 4.0.0.rc1)
+      sass-rails (= 4.0.0.rc1)
       simple-navigation
 
 GEM
@@ -119,7 +120,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.0.4)
-    ref (1.0.4)
+    ref (1.0.5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rspec-core (2.13.1)

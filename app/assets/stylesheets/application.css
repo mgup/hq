@@ -10,7 +10,7 @@
  *
  *= require_self
  *
- *= require bootstrap
+ *= require ui/ui
  *
  *= require_tree .
  */
