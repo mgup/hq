@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html class="login-bg">
+<head>
+  <title>MatrixHq</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="row auth-wrapper">
+  <h3><%= Rails.application.class.NAME %></h3>
+  <%= yield %>
+</div>
+</body>
+</html>

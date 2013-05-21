@@ -1,12 +1,27 @@
-<h2>Forgot your password?</h2>
+<div class="col-span-4 col-offset-4 box">
+  <div class="content-wrap">
+    <h6>Забыли пароль?</h6>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= devise_error_messages! %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
+      <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя' %>
 
-  <div><%= f.submit "Send me reset password instructions" %></div>
-<% end %>
+      <% if controller_name != 'sessions' %>
+        <%= link_to 'Вспомнили пароль?', new_session_path(resource_name), class: 'action' %><br />
+      <% end %>
 
-<%= render "devise/shared/links" %>
+      <div>
+        <%= f.submit 'Восстановить пароль', class: 'btn-glow primary auth' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="col-span-4 col-offset-4 no-account">
+  <p>
+    — Где я могу получить учётную запись?
+    <br>
+    — Обратитесь в Отдел информационных систем. Главный корпус, кабинет 1320.
+  </p>
+</div>

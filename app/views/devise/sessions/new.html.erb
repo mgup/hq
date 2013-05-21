@@ -1,17 +1,30 @@
-<h2>Sign in</h2>
+<div class="col-span-4 col-offset-4 box">
+  <div class="content-wrap">
+    <h6>Вход в систему</h6>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <div><%= f.label :username %><br />
-  <%= f.text_field :username, :autofocus => true %></div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя' %>
+      <%= f.password_field :password, placeholder: 'Пароль' %>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+      <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
+        <%= link_to 'Забыли пароль?', new_password_path(resource_name), class: 'action' %><br />
+      <% end %>
 
-  <% if devise_mapping.rememberable? -%>
-    <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
-  <% end -%>
+      <% if devise_mapping.rememberable? -%>
+        <div class="remember">
+          <%= f.check_box :remember_me %> <%= f.label :remember_me, 'Запомнить меня' %>
+        </div>
+      <% end -%>
 
-  <div><%= f.submit "Sign in" %></div>
-<% end %>
+      <div><%= f.submit 'Вход', class: 'btn-glow primary auth' %></div>
+    <% end %>
+  </div>
+</div>
 
-<%= render "devise/shared/links" %>
+<div class="col-span-4 col-offset-4 no-account">
+  <p>
+    — Где я могу получить учётную запись?
+    <br>
+    — Обратитесь в Отдел информационных систем. Главный корпус, кабинет 1320.
+  </p>
+</div>

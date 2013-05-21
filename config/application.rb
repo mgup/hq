@@ -12,6 +12,10 @@ Bundler.require(*Rails.groups(assets: %w(development test)))
 
 module HQ
   class Application < Rails::Application
+    def self.NAME
+      'Панель управления'
+    end
+
     #config.assets.paths << Rails.root.join('vendor', 'assets')
 
     # Settings in config/environments/* take precedence over those specified here.
