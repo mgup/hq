@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mgup/ui.git
-  revision: 37acd4be12d9e7bc0e6d403fb525d0c01e5e3c19
+  revision: 7f2538359fa23cb2d8d7ba656301dbe09b0f5551
   branch: master
   specs:
     ui (0.0.1)
