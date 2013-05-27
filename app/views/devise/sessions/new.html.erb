@@ -3,6 +3,12 @@
     <h6>Вход в систему</h6>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <% if flash.key? :alert %>
+        <div class="alert alert-danger">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+
       <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя' %>
       <%= f.password_field :password, placeholder: 'Пароль' %>
 

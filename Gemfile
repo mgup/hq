@@ -20,6 +20,8 @@ gem 'jbuilder'
 gem 'simple-navigation'
 gem 'vmstat'
 gem 'devise', github: 'plataformatec/devise', branch: :rails4
+gem 'devise-i18n'
+
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 gem 'ui', github: 'mgup/ui', branch: :master
