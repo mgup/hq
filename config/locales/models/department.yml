@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+      department: 'подразделение'
+    attributes:
+      department:
+        name: 'название'
+        abbreviation: 'аббревиатура'

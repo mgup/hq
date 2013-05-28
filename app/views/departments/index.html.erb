@@ -1,18 +1,16 @@
-<div id="pad-wrapper">
-  <div class="row">
-    <table class="table table-hover table-departments">
-      <% if defined?(header) and header %>
-        <thead>
-        <tr>
-          <th>#</th>
-          <th><span class="line"></span>Подразделение</th>
-        </tr>
-        </thead>
-      <% end %>
-      <tbody>
-      <%= render partial: 'departments/rows',
-                 locals: { departments: Department.only_main, level: 1 } %>
-      </tbody>
-    </table>
-  </div>
+<div class="row">
+  <table class="table table-hover table-departments">
+    <% if defined?(header) and header %>
+      <thead>
+      <tr>
+        <th>#</th>
+        <th><span class="line"></span>Подразделение</th>
+      </tr>
+      </thead>
+    <% end %>
+    <tbody>
+    <%= render partial: 'rows',
+               locals: { departments: Department.only_main, level: 1 } %>
+    </tbody>
+  </table>
 </div>

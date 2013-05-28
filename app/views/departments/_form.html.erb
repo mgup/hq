@@ -1,0 +1,15 @@
+<%= form_for @department, builder: HorizontalFormBuilder,
+             html: { class: 'form-horizontal' } do |f| %>
+
+  <%= f.inputs do %>
+    <%= f.text_field :name %>
+    <%= f.text_field :abbreviation %>
+    <%= f.select :parent, 'главное подразделение', Department.where('department_id != ?', @department).collect { |d| [d.name, d.id.to_s] }, { include_blank: 'выберите главное подразделение (если есть)' } %>
+  <% end %>
+
+  <%= f.actions do %>
+    <%= f.submit %>
+    или
+    <%= link_to 'назад ко всем подразделениям', departments_path %>
+  <% end %>
+<% end %>
