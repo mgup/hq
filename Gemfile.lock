@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mgup/ui.git
-  revision: 9d606b2efe89c9fbc253716f14d9d0b6f6704d91
+  revision: 6f7d43ca00bc97f2d0dbf3bf59820cde11801c20
   branch: master
   specs:
     ui (0.0.1)
@@ -78,7 +78,7 @@ GEM
       simplecov (>= 0.7)
       thor
     daemons (1.1.9)
-    database_cleaner (0.9.1)
+    database_cleaner (1.0.1)
     debug_inspector (0.0.2)
     debugger (1.6.0)
       columnize (>= 0.3.1)
