@@ -2,16 +2,15 @@ SimpleNavigation::Configuration.run do |navigation|
   navigation.selected_class = 'active'
 
   navigation.items do |primary|
-    primary.dom_id = 'dashboard-menu'
+    primary.dom_class = 'pull-right'
 
     if user_signed_in?
-      primary.item :profile, (current_user.username + ' <span class="caret"></span>'.html_safe), '#', link: { :'data-toggle' => 'dropdown' } do |profile|
+      primary.item :profile, (current_user.username + ' <b class="caret"></b>'.html_safe), '#', link: { :'data-toggle' => 'dropdown' } do |profile|
         profile.item :divider, '', nil, class: 'divider'
-        profile.item :sign_out, 'Выйти', destroy_user_session_path, data: { :'no-turbolink' => true }
+        profile.item :sign_out, 'Выйти', destroy_user_session_path, method: :delete
       end
-      primary.item :sign_out, 'Выйти', destroy_user_session_path, method: :delete
     else
-      primary.item :sign_out, 'Войти', new_user_session_path, data: { :'no-turbolink' => true }
+      primary.item :sign_out, 'Войти', new_user_session_path
     end
   end
 

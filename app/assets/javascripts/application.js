@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require turbolinks
 //
-//= require highcharts
-//= require highcharts-more
+//= require ui/application
 //
 //= require_tree .

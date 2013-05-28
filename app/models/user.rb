@@ -15,13 +15,10 @@ class User < ActiveRecord::Base
   def valid_password?(password)
     if self.password.present?
       if ::Digest::MD5.hexdigest(password) == self.user_password
-        # После окончательного перехода на новую систему следующую строку нужно
-        # удалить, а вторую раскомментировать, чтобы перейти на более сильную
-        # защиту паролей пользователей.
         # self.password = password
-        #self.client_password = nil
+        # self.client_password = nil
+        # self.save!
 
-        self.save!
         true
       else
         false
