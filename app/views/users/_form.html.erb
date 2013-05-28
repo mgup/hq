@@ -1,0 +1,137 @@
+<%= form_for @user, builder: HorizontalFormBuilder,
+             html: { class: 'form-horizontal' } do |f| %>
+
+  <%= f.inputs 'Фамилия, имя, отчество во всех падежах' do %>
+    <%= f.text_field :user_name, disabled: true %>
+
+    <div class="control-group clearfix">
+      <div class="controls input">
+        <div class="row">
+          <div class="col col-span-4 text-center">
+            <label class="control-label" for="user_last_name_ip">Фамилия</label>
+          </div>
+          <div class="col col-span-4 text-center">
+            <label class="control-label" for="user_first_name_ip">Имя</label>
+          </div>
+          <div class="col col-span-4 text-center">
+            <label class="control-label" for="user_patronym_ip">Отчество</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-group clearfix">
+      <label class="control-label" for="user_last_name_ip">Кто? Что?</label>
+      <div class="controls input">
+        <div class="row">
+          <div class="col col-span-4">
+            <%= text_field :user, :last_name_ip %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :first_name_ip %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :patronym_ip %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-group clearfix">
+      <label class="control-label" for="user_last_name_rp">Кого? Чего?</label>
+      <div class="controls input">
+        <div class="row">
+          <div class="col col-span-4">
+            <%= text_field :user, :last_name_rp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :first_name_rp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :patronym_rp %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-group clearfix">
+      <label class="control-label" for="user_last_name_dp">Кому? Чему?</label>
+      <div class="controls input">
+        <div class="row">
+          <div class="col col-span-4">
+            <%= text_field :user, :last_name_dp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :first_name_dp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :patronym_dp %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-group clearfix">
+      <label class="control-label" for="user_last_name_vp">Кого? Что?</label>
+      <div class="controls input">
+        <div class="row">
+          <div class="col col-span-4">
+            <%= text_field :user, :last_name_vp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :first_name_vp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :patronym_vp %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-group clearfix">
+      <label class="control-label" for="user_last_name_tp">Кем? Чем?</label>
+      <div class="controls input">
+        <div class="row">
+          <div class="col col-span-4">
+            <%= text_field :user, :last_name_tp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :first_name_tp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :patronym_tp %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-group clearfix">
+      <label class="control-label" for="user_last_name_pp">О ком? О чём?</label>
+      <div class="controls input">
+        <div class="row">
+          <div class="col col-span-4">
+            <%= text_field :user, :last_name_pp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :first_name_pp %>
+          </div>
+          <div class="col col-span-4">
+            <%= text_field :user, :patronym_pp %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.inputs 'Персональная информация' do %>
+    <%= f.text_field :username %>
+    <%= f.email_field :email %>
+    <%= f.phone_field :phone %>
+  <% end %>
+
+  <%= f.actions do %>
+    <%= f.submit %>
+    или
+    <%= link_to 'назад ко всем пользователям', users_path %>
+  <% end %>
+<% end %>

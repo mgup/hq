@@ -4,7 +4,7 @@
     <tr>
       <th>#</th>
       <th><span class="line"></span>Имя</th>
-      <th><span class="line"></span>Должности</th>
+      <th><span class="line"></span></th>
     </tr>
     </thead>
     <tbody>
@@ -12,7 +12,9 @@
       <tr>
         <td><%= user.id %></td>
         <td><%= user.full_name %></td>
-        <td></td>
+        <td>
+          <%= link_to 'Редактировать', edit_user_path(user) %>
+        </td>
       </tr>
     <% end %>
     </tbody>

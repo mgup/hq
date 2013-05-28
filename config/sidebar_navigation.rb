@@ -7,7 +7,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :dashboard, '<span class="glyphicon glyphicon-home"></span> <span>Обзор</span>'.html_safe, root_path
 
     primary.item :departments, '<span class="glyphicon glyphicon-list"></span> <span>Структура</span>'.html_safe, departments_path, highlights_on: -> { 'departments' == params[:controller] }
-    primary.item :users,       '<span class="glyphicon glyphicon-user"></span> <span>Сотрудники</span>'.html_safe, users_path
+    primary.item :users,       '<span class="glyphicon glyphicon-user"></span> <span>Сотрудники</span>'.html_safe, users_path, highlights_on: -> { 'users' == params[:controller] }
   end
 
   # Specify a custom renderer if needed.

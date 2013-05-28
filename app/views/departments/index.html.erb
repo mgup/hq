@@ -1,13 +1,13 @@
 <div class="row">
   <table class="table table-hover table-departments">
-    <% if defined?(header) and header %>
-      <thead>
-      <tr>
-        <th>#</th>
-        <th><span class="line"></span>Подразделение</th>
-      </tr>
-      </thead>
-    <% end %>
+    <thead>
+    <tr>
+      <th>#</th>
+      <th><span class="line"></span>Подразделение</th>
+      <th><span class="line"></span>Сокращение</th>
+      <th><span class="line"></span></th>
+    </tr>
+    </thead>
     <tbody>
     <%= render partial: 'rows',
                locals: { departments: Department.only_main, level: 1 } %>

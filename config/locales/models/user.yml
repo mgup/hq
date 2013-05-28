@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+      user: 'пользователь'
+    attributes:
+      user:
+        user_name: 'имя (старая версия)'
+        username: 'имя для входа'
+        email: 'электронная почта'
+        phone: 'мобильный телефон'

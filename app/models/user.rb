@@ -5,17 +5,25 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
+         :recoverable, :rememberable, :trackable, # :validatable,
          authentication_keys: [:username]
 
   alias_attribute :username, :user_login
   alias_attribute :password, :user_password
   alias_attribute :email,    :user_email
-  alias_attribute :role,     :user_role
+  alias_attribute :phone,    :user_phone
 
   has_one :fname, class_name: Dictionary, primary_key: :user_fname, foreign_key: :dictionary_id
   has_one :iname, class_name: Dictionary, primary_key: :user_iname, foreign_key: :dictionary_id
   has_one :oname, class_name: Dictionary, primary_key: :user_oname, foreign_key: :dictionary_id
+
+  %w(last_name first_name patronym).each do |name|
+    %w(ip rp dp vp tp pp).each do |part|
+      define_method("#{name}_#{part}") do
+        send(name, part.to_sym)
+      end
+    end
+  end
 
   # Фамилия человека в определённом падеже (ip, rp, dp, vp, tp, pp).
   #
@@ -44,7 +52,12 @@ class User < ActiveRecord::Base
   # Полное имя человека в формате «Иванов Иван Иванович» в определённом падеже
   # (ip, rp, dp, vp, tp, pp).
   def full_name(form = :ip)
-    [last_name(form), first_name(form), patronym(form)].reject(&:nil?).join(' ')
+    if last_name.nil?
+      # TODO Убрать после того, как все имена будут переведены на новую схему.
+      user_name
+    else
+      [last_name(form), first_name(form), patronym(form)].reject(&:nil?).join(' ')
+    end
   end
 
   # Сокращённое имя человека в формате «Иванов И. И.» в определённом падеже
