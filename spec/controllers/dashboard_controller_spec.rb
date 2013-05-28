@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe DashboardController do
+  before do
+    @developer = FactoryGirl.create(:developer)
+    sign_in @developer
+  end
+
   describe 'GET "index"' do
     it 'должен выполняться успешно' do
       get :index

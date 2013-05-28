@@ -4,7 +4,10 @@ SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |primary|
     primary.dom_id = 'dashboard-menu'
 
-    primary.item :dashboard, '<i class="sidebar-home"></i> <span>Обзор</span>'.html_safe, root_path
+    primary.item :dashboard, '<span class="glyphicon glyphicon-home"></span> <span>Обзор</span>'.html_safe, root_path
+
+    primary.item :departments, '<span class="glyphicon glyphicon-list"></span> <span>Структура</span>'.html_safe, departments_path
+    primary.item :users,       '<span class="glyphicon glyphicon-user"></span> <span>Сотрудники</span>'.html_safe, users_path
   end
 
   # Specify a custom renderer if needed.

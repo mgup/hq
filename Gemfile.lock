@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mgup/ui.git
-  revision: b26c0f6b5e7ae796098f91ea882564b6e61ae46c
+  revision: 9d606b2efe89c9fbc253716f14d9d0b6f6704d91
   branch: master
   specs:
     ui (0.0.1)
@@ -78,6 +78,7 @@ GEM
       simplecov (>= 0.7)
       thor
     daemons (1.1.9)
+    database_cleaner (0.9.1)
     debug_inspector (0.0.2)
     debugger (1.6.0)
       columnize (>= 0.3.1)
@@ -94,6 +95,13 @@ GEM
     eventmachine (1.0.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    factory_girl (4.2.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.2.1)
+      factory_girl (~> 4.2.0)
+      railties (>= 3.0.0)
+    faker (1.1.2)
+      i18n (~> 0.5)
     highline (1.6.19)
     hike (1.2.2)
     i18n (0.6.4)
@@ -215,10 +223,13 @@ DEPENDENCIES
   capistrano
   coffee-rails
   coveralls
+  database_cleaner
   debugger
   devise!
   devise-i18n
   dotenv-rails
+  factory_girl_rails
+  faker
   jbuilder
   jquery-rails
   mysql2

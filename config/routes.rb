@@ -4,6 +4,9 @@ HQ::Application.routes.draw do
   # Мониторинг состояния сервера.
   get 'system/stats'
 
+  resources :users
+  resources :departments
+
   root to: 'dashboard#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

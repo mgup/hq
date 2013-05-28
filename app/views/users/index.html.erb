@@ -1,0 +1,22 @@
+<div id="pad-wrapper">
+  <div class="row">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th><span class="line"></span>Имя</th>
+        <th><span class="line"></span>Должности</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.full_name %></td>
+          <td></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<% departments.each do |department| %>
+  <tr>
+    <td><%= department.id %></td>
+    <td style="padding-left: <%= 20 * (level - 1) %>px;">
+      <%= department.name %>
+    </td>
+    <td><%= department.abbreviation %></td>
+  </tr>
+  <% if department.subdepartments.any? %>
+    <%= render partial: 'departments/rows',
+               locals: { departments: department.subdepartments, level: (level + 1) } %>
+  <% end %>
+<% end %>
