@@ -4,6 +4,8 @@
     <tr>
       <th>#</th>
       <th><span class="line"></span>Имя</th>
+      <th><span class="line"></span>Имя для входа</th>
+      <th><span class="line"></span>Телефон</th>
       <th><span class="line"></span></th>
     </tr>
     </thead>
@@ -12,6 +14,8 @@
       <tr>
         <td><%= user.id %></td>
         <td><%= user.full_name %></td>
+        <td><%= user.username %></td>
+        <td><%= user.phone %></td>
         <td>
           <%= link_to 'Редактировать', edit_user_path(user) %>
         </td>

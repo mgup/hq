@@ -15,6 +15,7 @@ end
 
 gem 'jquery-rails'
 gem 'turbolinks'
+gem 'jquery-turbolinks'
 
 gem 'jbuilder'
 gem 'rails-i18n'

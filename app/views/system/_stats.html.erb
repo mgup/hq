@@ -57,5 +57,8 @@
     });
   };
   updateServerStats();
-  setInterval(updateServerStats, 5000);
+  var interval = setInterval(updateServerStats, 5000);
+  $(document).on('page:fetch', function() {
+    clearInterval(interval);
+  });
 </script>

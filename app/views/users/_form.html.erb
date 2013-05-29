@@ -1,5 +1,4 @@
-<%= form_for @user, builder: HorizontalFormBuilder,
-             html: { class: 'form-horizontal' } do |f| %>
+<%= horizontal_form_for @user do |f| %>
 
   <%= f.inputs 'Фамилия, имя, отчество во всех падежах' do %>
     <%= f.text_field :user_name, disabled: true %>
@@ -126,7 +125,9 @@
   <%= f.inputs 'Персональная информация' do %>
     <%= f.text_field :username %>
     <%= f.email_field :email %>
-    <%= f.phone_field :phone %>
+    <%= f.phone_field :phone, pattern: '[\+]\d{1} \d{3} \d{3}[\-]\d{2}[\-]\d{2}' do %>
+      <span class="help-block">Телефонный номер в формате +7 926 123-45-67.</span>
+    <% end %>
   <% end %>
 
   <%= f.actions do %>
