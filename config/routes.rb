@@ -4,6 +4,8 @@ HQ::Application.routes.draw do
   # Мониторинг состояния сервера.
   get 'system/stats'
 
+  get 'utility/morpher'
+
   resources :users
   resources :departments
 

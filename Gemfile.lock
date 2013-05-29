@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/mgup/morpher.git
+  revision: a37bc2f3d63c94e997e2e8ce7786a82047cea6a9
+  branch: master
+  specs:
+    morpher (0.0.1)
+      httparty
+
+GIT
   remote: git://github.com/mgup/ui.git
   revision: 26a7d418aae83cf45705ff45d23f0c2d86d56c96
   branch: master
@@ -104,13 +112,19 @@ GEM
       i18n (~> 0.5)
     highline (1.6.19)
     hike (1.2.2)
+    httparty (0.11.0)
+      multi_json (~> 1.0)
+      multi_xml (>= 0.5.2)
     i18n (0.6.4)
     jbuilder (1.4.1)
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)
-    jquery-rails (2.2.1)
+    jquery-rails (3.0.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-turbolinks (1.0.0)
+      railties (>= 3.1.0)
+      turbolinks
     libv8 (3.11.8.17)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -119,6 +133,7 @@ GEM
     mime-types (1.23)
     minitest (4.7.4)
     multi_json (1.7.4)
+    multi_xml (0.5.3)
     mysql2 (0.3.11)
     net-scp (1.1.1)
       net-ssh (>= 2.6.5)
@@ -236,6 +251,8 @@ DEPENDENCIES
   faker
   jbuilder
   jquery-rails
+  jquery-turbolinks
+  morpher!
   mysql2
   pry-rails
   rack-mini-profiler

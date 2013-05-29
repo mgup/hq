@@ -15,6 +15,7 @@ end
 
 gem 'jquery-rails'
 gem 'turbolinks'
+gem 'jquery-turbolinks'
 
 gem 'jbuilder'
 gem 'rails-i18n'
@@ -26,6 +27,8 @@ gem 'rack-mini-profiler'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 gem 'ui', github: 'mgup/ui', branch: :master
+# В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
+gem 'morpher', github: 'mgup/morpher', branch: :master
 
 group :development do
   gem 'thin'

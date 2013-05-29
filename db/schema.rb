@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130521085203) do
+ActiveRecord::Schema.define(version: 20130529081634) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -169,11 +169,11 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   add_index "checkpoint_bck", ["checkpoint_subject"], name: "checkpoint_subject", using: :btree
 
   create_table "checkpoint_mark", primary_key: "checkpoint_mark_id", force: true do |t|
-    t.integer  "checkpoint_mark_checkpoint",                 null: false
-    t.integer  "checkpoint_mark_student",                    null: false
-    t.integer  "checkpoint_mark_mark",                       null: false
-    t.datetime "checkpoint_mark_submitted",                  null: false
-    t.boolean  "checkpoint_mark_retake",     default: false, null: false
+    t.integer   "checkpoint_mark_checkpoint",                 null: false
+    t.integer   "checkpoint_mark_student",                    null: false
+    t.integer   "checkpoint_mark_mark",                       null: false
+    t.timestamp "checkpoint_mark_submitted",                  null: false
+    t.boolean   "checkpoint_mark_retake",     default: false, null: false
   end
 
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
@@ -193,13 +193,12 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   add_index "department", ["department_prename"], name: "department_prename", using: :btree
 
   create_table "dictionary", primary_key: "dictionary_id", force: true do |t|
-    t.integer "dictionary_oldid",                  null: false
-    t.text    "dictionary_ip",    limit: 16777215, null: false
-    t.text    "dictionary_rp",    limit: 16777215, null: false
-    t.text    "dictionary_dp",    limit: 16777215, null: false
-    t.text    "dictionary_vp",    limit: 16777215, null: false
-    t.text    "dictionary_tp",    limit: 16777215, null: false
-    t.text    "dictionary_pp",    limit: 16777215, null: false
+    t.text "dictionary_ip", limit: 16777215, null: false
+    t.text "dictionary_rp", limit: 16777215, null: false
+    t.text "dictionary_dp", limit: 16777215, null: false
+    t.text "dictionary_vp", limit: 16777215, null: false
+    t.text "dictionary_tp", limit: 16777215, null: false
+    t.text "dictionary_pp", limit: 16777215, null: false
   end
 
   create_table "discount", primary_key: "discount_id", force: true do |t|
@@ -227,12 +226,12 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   end
 
   create_table "document", primary_key: "document_id", force: true do |t|
-    t.integer  "document_type",                                     null: false
-    t.text     "document_number",      limit: 16777215,             null: false
-    t.integer  "document_signed",      limit: 1
-    t.datetime "document_create_date",                              null: false
-    t.date     "document_expire_date",                              null: false
-    t.integer  "document_juridical",   limit: 1,        default: 0, null: false
+    t.integer   "document_type",                                     null: false
+    t.text      "document_number",      limit: 16777215,             null: false
+    t.integer   "document_signed",      limit: 1
+    t.timestamp "document_create_date",                              null: false
+    t.date      "document_expire_date",                              null: false
+    t.integer   "document_juridical",   limit: 1,        default: 0, null: false
   end
 
   create_table "document_meta", primary_key: "document_meta_id", force: true do |t|
@@ -510,13 +509,13 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   end
 
   create_table "finance_payment", primary_key: "finance_payment_id", force: true do |t|
-    t.integer  "finance_payment_type",                                                               null: false
-    t.integer  "finance_payment_student_group",                                                      null: false
-    t.datetime "finance_payment_date",                                                               null: false
-    t.decimal  "finance_payment_sum",                        precision: 9, scale: 2
-    t.boolean  "finance_payment_deleted",                                            default: false, null: false
-    t.integer  "finance_payment_user"
-    t.string   "finance_payment_comment",       limit: 1000
+    t.integer   "finance_payment_type",                                                               null: false
+    t.integer   "finance_payment_student_group",                                                      null: false
+    t.timestamp "finance_payment_date",                                                               null: false
+    t.decimal   "finance_payment_sum",                        precision: 9, scale: 2
+    t.boolean   "finance_payment_deleted",                                            default: false, null: false
+    t.integer   "finance_payment_user"
+    t.string    "finance_payment_comment",       limit: 1000
   end
 
   add_index "finance_payment", ["finance_payment_student_group"], name: "speciality_payment_student_group", using: :btree
@@ -586,11 +585,11 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   end
 
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer  "hostel_payment_type",                null: false
-    t.integer  "hostel_payment_student",             null: false
-    t.datetime "hostel_payment_date",                null: false
-    t.integer  "hostel_payment_sum",     default: 0, null: false
-    t.integer  "hostel_payment_year",                null: false
+    t.integer   "hostel_payment_type",                null: false
+    t.integer   "hostel_payment_student",             null: false
+    t.timestamp "hostel_payment_date",                null: false
+    t.integer   "hostel_payment_sum",     default: 0, null: false
+    t.integer   "hostel_payment_year",                null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -609,12 +608,12 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   add_index "hostel_payment_type", ["hostel_payment_type_tax"], name: "hostel_payment_type_tax", using: :btree
 
   create_table "log", primary_key: "log_id", force: true do |t|
-    t.datetime "log_timestamp",                          null: false
-    t.integer  "log_priority",  limit: 1,                null: false
-    t.integer  "log_user"
-    t.string   "log_message",   limit: 500, default: "", null: false
-    t.integer  "log_type"
-    t.integer  "log_object"
+    t.timestamp "log_timestamp",                          null: false
+    t.integer   "log_priority",  limit: 1,                null: false
+    t.integer   "log_user"
+    t.string    "log_message",   limit: 500, default: "", null: false
+    t.integer   "log_type"
+    t.integer   "log_object"
   end
 
   add_index "log", ["log_user"], name: "log_user", using: :btree
@@ -660,20 +659,20 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   add_index "optional_select", ["optional_select_student"], name: "optional_select_student", using: :btree
 
   create_table "order", primary_key: "order_id", force: true do |t|
-    t.string   "order_number",       limit: 200
-    t.integer  "order_revision",                 default: 1, null: false
-    t.integer  "order_department"
-    t.integer  "order_responsible"
-    t.datetime "order_editing",                              null: false
-    t.datetime "order_signing"
-    t.integer  "order_status",                   default: 1, null: false
-    t.text     "order_xsl_content"
-    t.integer  "order_xsl_template"
-    t.integer  "order_template",                             null: false
-    t.integer  "order_cfaculty",                 default: 1, null: false
-    t.integer  "order_sign"
-    t.integer  "order_introduce"
-    t.string   "order_endorsement",  limit: 300
+    t.string    "order_number",       limit: 200
+    t.integer   "order_revision",                 default: 1, null: false
+    t.integer   "order_department"
+    t.integer   "order_responsible"
+    t.timestamp "order_editing",                              null: false
+    t.datetime  "order_signing"
+    t.integer   "order_status",                   default: 1, null: false
+    t.text      "order_xsl_content"
+    t.integer   "order_xsl_template"
+    t.integer   "order_template",                             null: false
+    t.integer   "order_cfaculty",                 default: 1, null: false
+    t.integer   "order_sign"
+    t.integer   "order_introduce"
+    t.string    "order_endorsement",  limit: 300
   end
 
   add_index "order", ["order_template"], name: "order_template", using: :btree
@@ -708,9 +707,9 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   add_index "order_student", ["order_student_student_group_id"], name: "order_student_student_group_id", using: :btree
 
   create_table "order_xsl", primary_key: "order_xsl_id", force: true do |t|
-    t.integer  "order_xsl_template", null: false
-    t.text     "order_xsl_content",  null: false
-    t.datetime "order_xsl_time",     null: false
+    t.integer   "order_xsl_template", null: false
+    t.text      "order_xsl_content",  null: false
+    t.timestamp "order_xsl_time",     null: false
   end
 
   add_index "order_xsl", ["order_xsl_template"], name: "order_xsl_template", using: :btree
@@ -720,9 +719,9 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   end
 
   create_table "post", primary_key: "post_id", force: true do |t|
-    t.string   "post_title", limit: 100, null: false
-    t.text     "post_text",              null: false
-    t.datetime "post_time",              null: false
+    t.string    "post_title", limit: 100, null: false
+    t.text      "post_text",              null: false
+    t.timestamp "post_time",              null: false
   end
 
   create_table "recalc", primary_key: "recalc_id", force: true do |t|
@@ -858,13 +857,13 @@ ActiveRecord::Schema.define(version: 20130521085203) do
   add_index "speciality", ["speciality_faculty"], name: "specialityFaculty", using: :btree
 
   create_table "speciality_payment", primary_key: "speciality_payment_id", force: true do |t|
-    t.integer  "speciality_payment_type",                                                               null: false
-    t.integer  "speciality_payment_student_group",                                                      null: false
-    t.datetime "speciality_payment_date",                                                               null: false
-    t.decimal  "speciality_payment_sum",                        precision: 9, scale: 2
-    t.boolean  "speciality_payment_deleted",                                            default: false, null: false
-    t.integer  "speciality_payment_user"
-    t.string   "speciality_payment_comment",       limit: 1000
+    t.integer   "speciality_payment_type",                                                               null: false
+    t.integer   "speciality_payment_student_group",                                                      null: false
+    t.timestamp "speciality_payment_date",                                                               null: false
+    t.decimal   "speciality_payment_sum",                        precision: 9, scale: 2
+    t.boolean   "speciality_payment_deleted",                                            default: false, null: false
+    t.integer   "speciality_payment_user"
+    t.string    "speciality_payment_comment",       limit: 1000
   end
 
   add_index "speciality_payment", ["speciality_payment_student_group"], name: "speciality_payment_student_group", using: :btree
@@ -1123,7 +1122,7 @@ ActiveRecord::Schema.define(version: 20130521085203) do
     t.string   "user_password",          limit: 200,                  null: false
     t.date     "user_password_cdate"
     t.string   "user_email",             limit: 200
-    t.string   "user_name",              limit: 200,                  null: false
+    t.string   "user_name",              limit: 200, default: "",     null: false
     t.integer  "user_fname"
     t.integer  "user_iname"
     t.integer  "user_oname"
