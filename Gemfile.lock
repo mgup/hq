@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/mgup/ui.git
-  revision: 26a7d418aae83cf45705ff45d23f0c2d86d56c96
+  revision: 6450f470b99e208e1f66e5934e292fde17aca5b1
   branch: master
   specs:
     ui (0.0.1)
@@ -122,9 +122,6 @@ GEM
     jquery-rails (3.0.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jquery-turbolinks (1.0.0)
-      railties (>= 3.1.0)
-      turbolinks
     libv8 (3.11.8.17)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -251,7 +248,6 @@ DEPENDENCIES
   faker
   jbuilder
   jquery-rails
-  jquery-turbolinks
   morpher!
   mysql2
   pry-rails
