@@ -6,6 +6,7 @@ HQ::Application.routes.draw do
 
   get 'utility/morpher'
 
+  resources :roles
   resources :users
   resources :departments
 

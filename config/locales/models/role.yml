@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+      role: 'роль'
+    attributes:
+      role:
+        name: 'техническое имя'
+        description: 'описание'

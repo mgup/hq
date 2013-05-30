@@ -1,0 +1,22 @@
+<div class="row">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th><span class="line"></span>Описание</th>
+      <th><span class="line"></span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @roles.each do |role| %>
+      <tr>
+        <td><%= role.id %></td>
+        <td><%= role.description %></td>
+        <td>
+          <%= link_to 'Редактировать', edit_role_path(role) %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
