@@ -1,14 +1,12 @@
 <%= inline_form_for Position.new do |f| %>
-  <%= f.fields_for @user do |u| %>
-    <%= u.hidden_field :id %>
-  <% end %>
+  <%= hidden_field_tag 'position[user]', @user.id %>
 
   <%= f.inline do |inline| %>
-    Новая должность сотрудника:
+    Новая должность —
     <%= inline.text_field :title, { placeholder: 'старший преподаватель', style: 'width: 195px;' } %>
     <%= inline.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 180px;' } %>
-    с
-    <%= text_field_tag 'position[appointment]', l(Date.today), class: 'datepicker', style: 'width: 95px;' %>
+    в <%= inline.collection_select :department, Department.all, :id, :abbreviation, { label: false }, { style: 'width: 180px;' } %>
+    с <%= text_field_tag 'position[appointment]', l(Date.today), class: 'datepicker', style: 'width: 95px;' %>
 
     <%= f.submit %>
   <% end %>

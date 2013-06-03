@@ -1,14 +1,19 @@
-<div class="row">
-  <h4><%= @user.full_name %> <small>Назначения</small></h4>
-</div>
-<div class="row table-filters">
+<h4><%= @user.full_name %> <small>Назначения</small></h4>
+
+<div class="table-filters">
   <%= render 'add_position_form' %>
 </div>
-<div class="row">
+
+<% if @user.positions.any? %>
   <table class="table table-hover">
     <thead>
     <tr>
       <th>#</th>
+      <th><span class="line"></span>Должность</th>
+      <th><span class="line"></span>Роль</th>
+      <th><span class="line"></span>Подразделение</th>
+      <th><span class="line"></span>Дата назначения</th>
+      <th><span class="line"></span>Увольнение</th>
       <th></th>
     </tr>
     </thead>
@@ -16,9 +21,22 @@
     <% @user.positions.each do |position| %>
       <tr>
         <td><%= position.id %></td>
+        <td><%= position.title %></td>
+        <td><%= position.role.title %></td>
+        <td><%= position.department.abbreviation %></td>
+        <td>с <%= l position.appointment.to_date %></td>
+        <td>
+          <%= position.dismission.nil? ? 'по настоящее время' : "по #{l position.dismission.to_date}" %>
+        </td>
         <td></td>
       </tr>
     <% end %>
     </tbody>
   </table>
-</div>
+<% else %>
+  <br>
+  <p class="lead">
+    Сотрудник ещё не назначен ни на одну должность. Воспользуйтесь формой
+    выше, чтобы произвести назначение.
+  </p>
+<% end %>

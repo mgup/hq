@@ -115,6 +115,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  def has_role?(role)
+    roles.inject(false) do |has_role, r|
+      has_role = has_role || (r.name.to_sym == role)
+      has_role
+    end
+  end
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if username = conditions.delete(:username)
