@@ -23,6 +23,7 @@ gem 'simple-navigation'
 gem 'vmstat'
 gem 'devise', github: 'plataformatec/devise', branch: :rails4
 gem 'devise-i18n'
+gem 'dalli'
 gem 'rack-mini-profiler'
 gem 'cancan'
 gem 'bootstrap-datepicker-rails'

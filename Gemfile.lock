@@ -102,6 +102,7 @@ GEM
       simplecov (>= 0.7)
       thor
     daemons (1.1.9)
+    dalli (2.6.2)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
     debugger (1.6.0)
@@ -284,6 +285,7 @@ DEPENDENCIES
   capistrano
   coffee-rails
   coveralls
+  dalli
   database_cleaner
   debugger
   devise!

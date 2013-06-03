@@ -1,1 +1,1 @@
-Rack::MiniProfiler.config.storage = Rack::MiniProfiler::MemoryStore
+Rack::MiniProfiler.config.storage = Rack::MiniProfiler::MemcacheStore
