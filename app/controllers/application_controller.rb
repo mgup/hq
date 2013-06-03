@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, :alert => exception.message
   end
 
+  before_filter :enable_profiler unless Rails.env.test?
+
   protected
 
   def configure_permitted_parameters
@@ -24,5 +26,9 @@ class ApplicationController < ActionController::Base
 
   def authorize_developer
     authorize! :manage, :all if user_signed_in?
+  end
+
+  def enable_profiler
+    Rack::MiniProfiler.authorize_request if can?(:manage, :all)
   end
 end
