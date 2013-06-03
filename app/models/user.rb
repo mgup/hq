@@ -115,7 +115,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def has_role?(role)
+  def is?(role)
     roles.inject(false) do |has_role, r|
       has_role = has_role || (r.name.to_sym == role)
       has_role
