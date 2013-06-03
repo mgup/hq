@@ -9,6 +9,7 @@ HQ::Application.routes.draw do
   resources :roles
   resources :users
   resources :departments
+  resources :positions
 
   root to: 'dashboard#index'
 

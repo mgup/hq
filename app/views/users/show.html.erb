@@ -1,6 +1,9 @@
 <div class="row">
   <h4><%= @user.full_name %> <small>Назначения</small></h4>
 </div>
+<div class="row table-filters">
+  <%= render 'add_position_form' %>
+</div>
 <div class="row">
   <table class="table table-hover">
     <thead>

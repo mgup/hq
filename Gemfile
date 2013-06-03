@@ -25,6 +25,7 @@ gem 'devise', github: 'plataformatec/devise', branch: :rails4
 gem 'devise-i18n'
 gem 'rack-mini-profiler'
 gem 'cancan'
+gem 'bootstrap-datepicker-rails'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 gem 'ui', github: 'mgup/ui', branch: :master

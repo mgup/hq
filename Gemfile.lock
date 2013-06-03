@@ -12,6 +12,7 @@ GIT
   branch: master
   specs:
     ui (0.0.1)
+      jquery-ui-rails
       rails (= 4.0.0.rc1)
       sass-rails (= 4.0.0.rc1)
       simple-navigation
@@ -62,6 +63,8 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
+    bootstrap-datepicker-rails (1.0.0.7)
+      railties (>= 3.0)
     brakeman (2.0.0)
       erubis (~> 2.6)
       fastercsv (~> 1.5)
@@ -141,6 +144,9 @@ GEM
     jquery-turbolinks (1.0.0)
       railties (>= 3.1.0)
       turbolinks
+    jquery-ui-rails (4.0.3)
+      jquery-rails
+      railties (>= 3.1.0)
     libv8 (3.11.8.17)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -148,7 +154,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.23)
     minitest (4.7.4)
-    multi_json (1.7.4)
+    multi_json (1.7.5)
     multi_xml (0.5.3)
     mysql2 (0.3.11)
     net-scp (1.1.1)
@@ -256,7 +262,7 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    turbolinks (1.1.1)
+    turbolinks (1.2.0)
       coffee-rails
     tzinfo (0.3.37)
     uglifier (2.1.1)
@@ -272,6 +278,7 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
+  bootstrap-datepicker-rails
   brakeman
   cancan
   capistrano

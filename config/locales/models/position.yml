@@ -1,0 +1,7 @@
+ru:
+  activerecord:
+    models:
+      position: 'назначение'
+    attributes:
+      position:
+        title: 'должность'
