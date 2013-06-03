@@ -12,7 +12,11 @@
     <% @roles.each do |role| %>
       <tr>
         <td><%= role.id %></td>
-        <td><%= role.description %></td>
+        <td>
+          <%= role.title %>
+          <br>
+          <em><%= role.description %></em>
+        </td>
         <td>
           <%= check_box_tag :active, role.active, role.active?, disabled: true %>
         </td>

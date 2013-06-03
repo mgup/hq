@@ -7,12 +7,14 @@
       </span>
     <% end %>
 
-    <%= f.text_field :description do %>
+    <%= f.text_field :title do %>
       <span class="help-block">
         Описательное название роли. Именно оно показывается пользователям,
         отвечающим за назначение сотрудников на должности в системе.
       </span>
     <% end %>
+
+    <%= f.text_area :description %>
   <% end %>
 
   <%= f.actions do %>

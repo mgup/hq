@@ -4,5 +4,6 @@ ru:
       role: 'роль'
     attributes:
       role:
-        name: 'техническое имя'
+        alias: 'техническое имя'
+        title: 'название'
         description: 'описание'

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe DashboardController do
   before do
-    @developer = FactoryGirl.create(:developer)
-    sign_in @developer
+    @user = FactoryGirl.create(:user)
+    sign_in @user
   end
 
   describe 'GET "index"' do
