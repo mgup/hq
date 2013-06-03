@@ -16,6 +16,7 @@
       <th><span class="line"></span>Имя для входа</th>
       <th><span class="line"></span>Телефон</th>
       <th></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -25,6 +26,9 @@
         <td><%= user.full_name %></td>
         <td><%= user.username %></td>
         <td class="nowrap"><%= user.phone %></td>
+        <td>
+          <%= link_to 'Назначения', user %>
+        </td>
         <td>
           <%= link_to 'Редактировать', edit_user_path(user) %>
         </td>

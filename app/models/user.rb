@@ -13,12 +13,13 @@ class User < ActiveRecord::Base
   alias_attribute :email,    :user_email
   alias_attribute :phone,    :user_phone
 
-  #has_one :fname, class_name: Dictionary, primary_key: :user_fname#, foreign_key: :dictionary_id
-  #has_one :iname, class_name: Dictionary, primary_key: :user_iname#, foreign_key: :dictionary_id
-  #has_one :oname, class_name: Dictionary, primary_key: :user_oname#, foreign_key: :dictionary_id
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :user_fname
   belongs_to :iname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :user_iname
   belongs_to :oname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :user_oname
+
+  has_many :positions, foreign_key: :acl_position_user
+  has_many :roles,       through: :positions
+  has_many :departments, through: :positions
 
   %w(last_name first_name patronym).each do |name|
     %w(ip rp dp vp tp pp).each do |form|

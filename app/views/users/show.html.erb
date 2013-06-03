@@ -1,0 +1,21 @@
+<div class="row">
+  <h4><%= @user.full_name %> <small>Назначения</small></h4>
+</div>
+<div class="row">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @user.positions.each do |position| %>
+      <tr>
+        <td><%= position.id %></td>
+        <td></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
