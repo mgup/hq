@@ -9,8 +9,4 @@ class Position < ActiveRecord::Base
   belongs_to :user,       primary_key: :user_id,       foreign_key: :acl_position_user
   belongs_to :role,       primary_key: :acl_role_id,   foreign_key: :acl_position_role
   belongs_to :department, primary_key: :department_id, foreign_key: :acl_position_department
-
-  after_initialize do
-    self.appointment ||= Date.today
-  end
 end

@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     sign_out :user
-    redirect_to root_url, :alert => exception.message
+    redirect_to new_user_session_path, :alert => exception.message
   end
 
   before_filter :enable_profiler unless Rails.env.test?
