@@ -3,6 +3,7 @@
     chart:
       type: 'gauge'
       height: height
+      animation: false
     title:
       text: title
     pane:
