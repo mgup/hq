@@ -4,6 +4,7 @@
     <tr>
       <th>#</th>
       <th><span class="line"></span>Описание</th>
+      <th><span class="line"></span>Активна?</th>
       <th><span class="line"></span></th>
     </tr>
     </thead>
@@ -12,6 +13,9 @@
       <tr>
         <td><%= role.id %></td>
         <td><%= role.description %></td>
+        <td>
+          <%= check_box_tag :active, role.active, role.active?, disabled: true %>
+        </td>
         <td>
           <%= link_to 'Редактировать', edit_role_path(role) %>
         </td>

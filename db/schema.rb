@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130529081634) do
+ActiveRecord::Schema.define(version: 20130530141206) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -23,9 +23,12 @@ ActiveRecord::Schema.define(version: 20130529081634) do
   end
 
   create_table "acl_role", primary_key: "acl_role_id", force: true do |t|
-    t.text    "acl_role_name",        null: false
-    t.text    "acl_role_description", null: false
-    t.integer "acl_role_parent"
+    t.text     "acl_role_name",                       null: false
+    t.text     "acl_role_description",                null: false
+    t.integer  "acl_role_parent"
+    t.boolean  "active",               default: true, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "archive_student", primary_key: "archive_student_id", force: true do |t|

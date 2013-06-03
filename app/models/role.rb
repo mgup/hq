@@ -4,4 +4,8 @@ class Role < ActiveRecord::Base
   alias_attribute :id,          :acl_role_id
   alias_attribute :name,        :acl_role_name
   alias_attribute :description, :acl_role_description
+
+  def active?
+    active
+  end
 end
