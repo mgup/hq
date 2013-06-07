@@ -27,6 +27,7 @@ gem 'dalli'
 gem 'rack-mini-profiler'
 gem 'cancan'
 gem 'bootstrap-datepicker-rails'
+gem 'kaminari'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 gem 'ui', github: 'mgup/ui', branch: :master

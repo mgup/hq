@@ -148,6 +148,9 @@ GEM
     jquery-ui-rails (4.0.3)
       jquery-rails
       railties (>= 3.1.0)
+    kaminari (0.14.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     libv8 (3.11.8.17)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -296,6 +299,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   jquery-turbolinks
+  kaminari
   morpher!
   mysql2
   pry-rails

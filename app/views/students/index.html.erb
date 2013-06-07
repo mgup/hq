@@ -1,0 +1,42 @@
+<h4>Студенты</h4>
+
+<div class="row filter-block">
+  <div class="col-span-2">
+    <input type="text" placeholder="Фамилия">
+  </div>
+  <div class="col-span-2">
+    <input type="text" placeholder="Имя">
+  </div>
+  <div class="col-span-2">
+    <input type="text" placeholder="Отчество">
+  </div>
+  <div class="col-span-2">
+    <input type="submit" class="btn-glow primary">
+  </div>
+  <div class="col-span-2">
+    <input type="reset">
+  </div>
+</div>
+
+<%= paginate @students %>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Фамилия</th>
+    <th>Имя</th>
+    <th>Отчество</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @students.each do |student| %>
+  <tr>
+    <td><%= student.id %></td>
+    <td><%= student.last_name %></td>
+    <td><%= student.first_name %></td>
+    <td><%= student.patronym %></td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

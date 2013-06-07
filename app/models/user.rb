@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
-  self.table_name = 'user'
-
   include Nameable
+
+  self.table_name = 'user'
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, # :validatable,
          authentication_keys: [:username]
 
+  alias_attribute :id,       :user_id
   alias_attribute :username, :user_login
   alias_attribute :password, :user_password
   alias_attribute :email,    :user_email
