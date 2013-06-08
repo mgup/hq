@@ -18,6 +18,6 @@
       <% end -%>
     <% end -%>
     <%= next_page_tag %>
-    <%= last_page_tag if current_page < 486 %>
+    <%= last_page_tag if current_page < total_pages - 4 %>
   </ul>
 <% end -%>
