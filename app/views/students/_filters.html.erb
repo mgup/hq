@@ -1,0 +1,58 @@
+<%= form_tag nil, method: :get, class: 'filter-block' do %>
+  <div class="row">
+    <div class="col col-lg-3 pull-right">
+      <%= submit_tag 'Искать', class: 'btn btn-primary' %>
+
+      <%= link_to students_path, class: 'btn btn-danger pull-right' do %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </div>
+    <div class="col col-lg-3">
+      <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество' %>
+    </div>
+    <div class="col col-lg-3">
+      <%= select_tag 'status',
+                     options_from_collection_for_select(Status.all, :id, :name, params[:status]),
+                     multiple: true, class: 'chzn-select', data: { placeholder: 'все статусы' } %>
+    </div>
+    <div class="col col-lg-3">
+      <select>
+        <option>все квалификации</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-lg-3">
+      <%= select_tag 'faculty',
+                     options_from_collection_for_select(Department.faculties, :id, :abbreviation, params[:faculty]),
+                     multiple: true, class: 'chzn-select', data: { placeholder: 'все факультеты' } %>
+    </div>
+    <div class="col col-lg-3">
+      <select>
+        <option>все формы</option>
+      </select>
+    </div>
+    <div class="col col-lg-3">
+      <select>
+        <option>все основы</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-lg-5">
+      <select>
+        <option>все специальности</option>
+      </select>
+    </div>
+    <div class="col col-lg-2">
+      <select>
+        <option>все курсы</option>
+      </select>
+    </div>
+    <div class="col col-lg-2">
+      <select>
+        <option>все группы</option>
+      </select>
+    </div>
+  </div>
+<% end %>

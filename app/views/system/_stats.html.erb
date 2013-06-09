@@ -1,12 +1,15 @@
 <h4 class="title">Состояние системы</h4>
-<div class="col-span-6">
-  <div class="col-span-4"><div id="load_average_1"></div></div>
-  <div class="col-span-4"><div id="load_average_5"></div></div>
-  <div class="col-span-4"><div id="load_average_15"></div></div>
+
+<div class="row">
+  <div class="col col-lg-6">
+    <div class="col col-lg-4"><div id="load_average_1"></div></div>
+    <div class="col col-lg-4"><div id="load_average_5"></div></div>
+    <div class="col col-lg-4"><div id="load_average_15"></div></div>
+  </div>
+  <div class="col col-lg-3"><div id="memory_usage"></div></div>
+  <div class="col col-lg-3"><div id="disk_usage"></div></div>
 </div>
 
-<div class="col-span-3"><div id="memory_usage"></div></div>
-<div class="col-span-3"><div id="disk_usage"></div></div>
 <script>
   // Инициализация графиков для статистики.
   initServerStatsGauge('#load_average_1',  '1 минута',            170);

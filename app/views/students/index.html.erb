@@ -1,53 +1,8 @@
 <h4>Студенты</h4>
 
-<div class="filter-block">
-  <div class="row">
-    <div class="col col-lg-3 pull-right">
-      <input type="button" class="btn btn-primary" value="Искать">
-      <%= link_to students_path, class: 'btn btn-danger pull-right' do %>
-        <span class="glyphicon glyphicon-remove"></span>
-      <% end %>
-    </div>
-    <div class="col col-lg-3">
-      <input type="text" placeholder="Фамилия, имя, отчество">
-    </div>
-    <div class="col col-lg-3">
-      <select>
-        <option>все статусы</option>
-      </select>
-    </div>
-    <div class="col col-lg-3">
-      <select>
-        <option>все квалификации</option>
-      </select>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col col-lg-3">
-      <%= select_tag 'faculty', options_from_collection_for_select(Department.faculties, :id, :abbreviation), prompt: 'все факультеты' %>
-    </div>
-    <div class="col col-lg-3">
-      <select>
-        <option>все формы</option>
-      </select>
-    </div>
-    <div class="col col-lg-2">
-      <select>
-        <option>все курсы</option>
-      </select>
-    </div>
-    <div class="col col-lg-2">
-      <select>
-        <option>все группы</option>
-      </select>
-    </div>
-    <div class="col col-lg-2">
-      <select>
-        <option>все основы</option>
-      </select>
-    </div>
-  </div>
-</div>
+<%= render 'filters' %>
+
+<%= params.inspect %>
 
 <%= paginate @students %>
 

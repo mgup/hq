@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/mgup/ui.git
-  revision: 88506e87a9a8e8518f7cf28420dcefc9aa8fcd5c
+  revision: 9e3b3972b18e7e455fa3cc89e58821613e930b67
   branch: master
   specs:
     ui (0.0.1)
