@@ -1,0 +1,8 @@
+<form>
+	<h2>Редактирование специальности</h2>
+	<label for='name'>Название</label><input id='name' type='text' placeholder="<%= @speciality.name %>">
+	<label for='code'>Код специальности</label><input id='code' type='text' placeholder="<%= @speciality.code %>">
+	<input type='submit'>
+
+	<p> <%= link_to 'Назад ко всем специальностям', departments_path %> </p>
+</form>

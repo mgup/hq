@@ -1,5 +1,4 @@
-<%= form_for @department, builder: HorizontalFormBuilder,
-             html: { class: 'form-horizontal' } do |f| %>
+<%= horizontal_form_for @department do |f| %>
 
   <%= f.inputs do %>
     <%= f.text_field :name %>
