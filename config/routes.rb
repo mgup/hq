@@ -1,4 +1,7 @@
 HQ::Application.routes.draw do
+  #get "specialities" => "speciality#index"
+  #get "edit/speciality" => "speciality#edit#id"
+
   devise_for :users
 
   # Мониторинг состояния сервера.
@@ -12,6 +15,7 @@ HQ::Application.routes.draw do
   resources :positions
 
   resources :students
+  resources :speciality
 
   root to: 'dashboard#index'
 

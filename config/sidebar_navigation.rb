@@ -11,6 +11,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :users,       '<span class="glyphicon glyphicon-user"></span> <span>Сотрудники</span>'.html_safe, users_path, highlights_on: -> { 'users' == params[:controller] }
 
     primary.item :students,    '<span class="glyphicon glyphicon-user"></span> <span>Студенты</span>'.html_safe, students_path, highlights_on: -> { 'students' == params[:controller] }
+    primary.item :speciality,    '<span class="glyphicon glyphicon-list"></span> <span>Специальности</span>'.html_safe, speciality_index_path, highlights_on: -> { 'speciality' == params[:controller] }
   end
 
   # Specify a custom renderer if needed.
