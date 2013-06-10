@@ -1,0 +1,17 @@
+var form = $('form[data-role="<%= @role.id %>"]');
+
+var input = form.children('input');
+if ('false' === input.val()) {
+  input.val('true');
+} else {
+  input.val('false');
+}
+
+var btn = form.children('button');
+btn.toggleClass('btn-default');
+btn.toggleClass('btn-success');
+btn.toggleClass('active');
+
+var icon = btn.children('span');
+icon.toggleClass('glyphicon-play');
+icon.toggleClass('glyphicon-pause');

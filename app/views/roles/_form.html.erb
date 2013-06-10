@@ -1,25 +1,38 @@
-<%= horizontal_form_for @role do |f| %>
-  <%= f.inputs do %>
-    <%= f.text_field :name do %>
+<%= form_for @role, html: { class: 'form-horizontal' } do |f| %>
+  <div class="row">
+    <%= f.label :name, class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.text_field :name %>
       <span class="help-block">
-        Внутренее имя роли в системе. Изменять с большой осторожностью, потому
-        что оно используется при связке пользователей системы с их правами доступа.
-      </span>
-    <% end %>
+      Внутренее имя роли в системе. Изменять с большой осторожностью, потому
+      что оно используется при связке пользователей системы с их правами доступа.
+    </span>
+    </div>
+  </div>
 
-    <%= f.text_field :title do %>
+  <div class="row">
+    <%= f.label :title, class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.text_field :title %>
       <span class="help-block">
         Описательное название роли. Именно оно показывается пользователям,
         отвечающим за назначение сотрудников на должности в системе.
       </span>
-    <% end %>
+    </div>
+  </div>
 
-    <%= f.text_area :description %>
-  <% end %>
+  <div class="row">
+    <%= f.label :description, class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.text_area :description %>
+    </div>
+  </div>
 
-  <%= f.actions do %>
-    <%= f.submit %>
-    или
-    <%= link_to 'назад ко всем ролям', roles_path %>
-  <% end %>
+  <div class="row">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад ко всем ролям', roles_path %>
+    </div>
+  </div>
 <% end %>

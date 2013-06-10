@@ -1,30 +1,52 @@
-<div class="row">
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th>#</th>
-      <th><span class="line"></span>Описание</th>
-      <th><span class="line"></span>Активна?</th>
-      <th><span class="line"></span></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @roles.each do |role| %>
-      <tr>
-        <td><%= role.id %></td>
-        <td>
-          <%= role.title %>
-          <br>
-          <em><%= role.description %></em>
-        </td>
-        <td>
-          <%= check_box_tag :active, role.active, role.active?, disabled: true %>
-        </td>
-        <td>
-          <%= link_to 'Редактировать', edit_role_path(role) %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+<div class="page-header">
+  <h1>Роли пользователей</h1>
 </div>
+
+<%= link_to 'Добавить новую роль', new_role_path, class: 'btn btn-default' %>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Название</th>
+    <th>Описание</th>
+    <th>Активна?</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @roles.each do |role| %>
+    <tr>
+      <td><%= role.id %></td>
+      <td><%= role.name %></td>
+      <td>
+        <%= role.title %>
+        <br>
+        <em><%= role.description %></em>
+      </td>
+      <td>
+        <%= form_for role, remote: true, data: { role: role.id } do |f| %>
+          <% if role.active? %>
+            <%= f.hidden_field :active, value: false %>
+            <%= button_tag type: :submit, class: 'btn btn-success active' do %>
+              <span class="glyphicon glyphicon-pause"></span>
+            <% end %>
+          <% else %>
+            <%= f.hidden_field :active, value: true %>
+            <%= button_tag type: :submit, class: 'btn btn-default' do %>
+              <span class="glyphicon glyphicon-play"></span>
+            <% end %>
+          <% end %>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to 'Редактировать', edit_role_path(role) if role.active? %>
+      </td>
+      <td>
+        <%= link_to 'Удалить', role, method: :delete, data: { confirm: 'Вы уверены? Удаление роли может иметь серьёзные последствия!' } if role.active? %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
