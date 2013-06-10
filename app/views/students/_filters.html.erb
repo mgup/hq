@@ -28,31 +28,28 @@
                      multiple: true, class: 'chzn-select', data: { placeholder: 'все факультеты' } %>
     </div>
     <div class="col col-lg-3">
-      <select>
-        <option>все формы</option>
-      </select>
+      <%= select_tag 'form', options_for_select([['очная', 101], ['очно-заочная', 102], ['заочная', 103], ['дистанционная', 105]], params[:form]),
+                     multiple: true, class: 'chzn-select', data: { placeholder: 'все формы' } %>
     </div>
     <div class="col col-lg-3">
-      <select>
-        <option>все основы</option>
-      </select>
+      <%= select_tag 'finance', options_for_select([['бюджетная', 1], ['внебюджетная', 2]], params[:finance]),
+                     multiple: true, class: 'chzn-select', data: { placeholder: 'все основы' } %>
     </div>
   </div>
   <div class="row">
     <div class="col col-lg-5">
-      <select>
-        <option>все специальности</option>
-      </select>
+      <%= select_tag 'speciality',
+                     options_from_collection_for_select(Speciality.all, :id, :name, params[:speciality]),
+                     multiple: true, class: 'chzn-select', data: { placeholder: 'все специальности' } %>
     </div>
     <div class="col col-lg-2">
-      <select>
-        <option>все курсы</option>
-      </select>
+      <%= select_tag 'course', options_for_select([1, 2, 3, 4, 5, 6], params[:course]),
+                     multiple: true, class: 'chzn-select', data: { placeholder: 'все курсы' } %>
     </div>
     <div class="col col-lg-2">
-      <select>
-        <option>все группы</option>
-      </select>
+      <%= select_tag 'group',
+                     options_from_collection_for_select(Group.all, :id, :name, params[:group]),
+                     multiple: true, class: 'chzn-select', data: { placeholder: 'все группы' } %>
     </div>
   </div>
 <% end %>

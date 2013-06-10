@@ -1,0 +1,26 @@
+<h4><%= @student.person.full_name %> <small><%= @student.group.name %></small></h4>
+
+<%= form_for @student, html: { class: 'form-horizontal' } do |f| %>
+    <%= f.fields_for @student.person do |p| %>
+      <legend>Персональная информация</legend>
+      <div class="row">
+        <%= p.label :passport_series, 'Паспорт', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+          <div class="row">
+            <%= p.text_field :passport_series,     class: 'col col-lg-1' %>
+            <%= p.text_field :passport_number,     class: 'col col-lg-2 col-offset-1' %>
+            <%= p.text_field :passport_date,       class: 'col col-lg-2 col-offset-1 datepicker' %>
+          </div>
+          <div class="row">
+            <%= p.text_field :passport_department %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+  <div class="section">
+    <h4>Учебная информация</h4>
+  </div>
+
+  <%= f.submit class: 'btn btn-primary'%>
+<% end %>

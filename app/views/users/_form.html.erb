@@ -2,118 +2,118 @@
   <%= f.inputs 'Фамилия, имя, отчество во всех падежах' do %>
     <%= f.text_field :user_name, disabled: true %>
 
-    <div class="control-group clearfix">
-      <div class="controls input">
+    <div class="row">
+      <div class="col col-lg-10 col-offset-2">
         <div class="row">
-          <div class="col col-span-4 text-center">
+          <div class="col col-lg-4 text-center">
             <label class="control-label" for="user_last_name_ip">Фамилия</label>
           </div>
-          <div class="col col-span-4 text-center">
+          <div class="col col-lg-4 text-center">
             <label class="control-label" for="user_first_name_ip">Имя</label>
           </div>
-          <div class="col col-span-4 text-center">
+          <div class="col col-lg-4 text-center">
             <label class="control-label" for="user_patronym_ip">Отчество</label>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="control-group clearfix">
-      <label class="control-label" for="user_last_name_ip">Кто? Что?</label>
-      <div class="controls input">
+    <div class="row">
+      <label class="col col-lg-2 control-label" for="user_last_name_ip">Кто? Что?</label>
+      <div class="col col-lg-10">
         <div class="row">
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :last_name_ip, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :first_name_ip, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :patronym_ip, required: true %>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="control-group clearfix">
-      <label class="control-label" for="user_last_name_rp">Кого? Чего?</label>
-      <div class="controls input">
+    <div class="row">
+      <label class="col col-lg-2 control-label" for="user_last_name_rp">Кого? Чего?</label>
+      <div class="col col-lg-10">
         <div class="row">
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :last_name_rp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :first_name_rp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :patronym_rp, required: true %>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="control-group clearfix">
-      <label class="control-label" for="user_last_name_dp">Кому? Чему?</label>
-      <div class="controls input">
+    <div class="row">
+      <label class="col col-lg-2 control-label" for="user_last_name_dp">Кому? Чему?</label>
+      <div class="col col-lg-10">
         <div class="row">
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :last_name_dp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :first_name_dp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :patronym_dp, required: true %>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="control-group clearfix">
-      <label class="control-label" for="user_last_name_vp">Кого? Что?</label>
-      <div class="controls input">
+    <div class="row">
+      <label class="col col-lg-2 control-label" for="user_last_name_vp">Кого? Что?</label>
+      <div class="col col-lg-10">
         <div class="row">
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :last_name_vp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :first_name_vp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :patronym_vp, required: true %>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="control-group clearfix">
-      <label class="control-label" for="user_last_name_tp">Кем? Чем?</label>
-      <div class="controls input">
+    <div class="row">
+      <label class="col col-lg-2 control-label" for="user_last_name_tp">Кем? Чем?</label>
+      <div class="col col-lg-10">
         <div class="row">
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :last_name_tp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :first_name_tp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :patronym_tp, required: true %>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="control-group clearfix">
-      <label class="control-label" for="user_last_name_pp">О ком? О чём?</label>
-      <div class="controls input">
+    <div class="row">
+      <label class="col col-lg-2 control-label" for="user_last_name_pp">О ком? О чём?</label>
+      <div class="col col-lg-10">
         <div class="row">
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :last_name_pp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :first_name_pp, required: true %>
           </div>
-          <div class="col col-span-4">
+          <div class="col col-lg-4">
             <%= text_field :user, :patronym_pp, required: true %>
           </div>
         </div>

@@ -2,26 +2,30 @@
 
 <%= render 'filters' %>
 
-<%= params.inspect %>
-
 <%= paginate @students %>
 
 <table class="table table-hover">
   <thead>
   <tr>
     <th>#</th>
-    <th>Фамилия</th>
-    <th>Имя</th>
-    <th>Отчество</th>
+    <th><span class="line"></span> Фамилия</th>
+    <th><span class="line"></span> Имя</th>
+    <th><span class="line"></span> Отчество</th>
+    <th><span class="line"></span> Группа</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
   <% @students.each do |student| %>
   <tr>
     <td><%= student.id %></td>
-    <td><%= student.last_name %></td>
-    <td><%= student.first_name %></td>
-    <td><%= student.patronym %></td>
+    <td><%= student.person.last_name %></td>
+    <td><%= student.person.first_name %></td>
+    <td><%= student.person.patronym %></td>
+    <td><%= student.group.name %></td>
+    <td>
+      <%= link_to 'Информация', student %>
+    </td>
   </tr>
   <% end %>
   </tbody>
