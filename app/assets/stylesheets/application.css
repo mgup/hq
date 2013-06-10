@@ -10,9 +10,10 @@
  *
  *= require_self
  *
+ *= require fonts
+ *= require bootstrap
+ *
  *= require bootstrap-datepicker
  *
- *= require ui/application
- *
- * require_tree .
+ *= require_tree .
  */

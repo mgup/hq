@@ -3,20 +3,21 @@ SimpleNavigation::Configuration.run do |navigation|
 
   navigation.items do |primary|
     primary.dom_id = 'dashboard-menu'
+    primary.dom_class = 'nav nav-pills nav-stacked col-lg-2'
 
-    primary.item :dashboard, '<span class="glyphicon glyphicon-home"></span> <span>Обзор</span>'.html_safe, root_path
+    primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
 
-    primary.item :roles,       '<span class="glyphicon glyphicon-tags"></span> <span>Роли</span>'.html_safe, roles_path, highlights_on: -> { 'roles' == params[:controller] }
-    primary.item :departments, '<span class="glyphicon glyphicon-list"></span> <span>Структура</span>'.html_safe, departments_path, highlights_on: -> { 'departments' == params[:controller] }
-    primary.item :users,       '<span class="glyphicon glyphicon-user"></span> <span>Сотрудники</span>'.html_safe, users_path, highlights_on: -> { 'users' == params[:controller] }
+    primary.item :roles,       'Роли'.html_safe, roles_path, icon: 'tags', highlights_on: -> { 'roles' == params[:controller] }
+    primary.item :departments, 'Структура'.html_safe, departments_path, icon: 'list', highlights_on: -> { 'departments' == params[:controller] }
+    primary.item :users,       'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
 
-    primary.item :students,    '<span class="glyphicon glyphicon-user"></span> <span>Студенты</span>'.html_safe, students_path, highlights_on: -> { 'students' == params[:controller] }
+    primary.item :students,    'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
   end
 
   # Specify a custom renderer if needed.
   # The default renderer is SimpleNavigation::Renderer::List which renders HTML lists.
   # The renderer can also be specified as option in the render_navigation call.
-  # navigation.renderer = Your::Custom::Renderer
+  navigation.renderer = SidebarRenderer
 
   # Specify the class that will be applied to active navigation items. Defaults to 'selected'
   # navigation.selected_class = 'your_selected_class'

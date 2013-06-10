@@ -1,36 +1,30 @@
-<div class="col-span-4 col-offset-4 box">
-  <div class="content-wrap">
-    <h6>Вход в систему</h6>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <% if flash.key? :alert %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <% if flash.key? :alert %>
-        <div class="alert alert-danger">
-          <%= flash[:alert] %>
-        </div>
-      <% end %>
+  <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя' %>
+  <br>
+  <%= f.password_field :password, placeholder: 'Пароль' %>
 
-      <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя' %>
-      <%= f.password_field :password, placeholder: 'Пароль' %>
+  <% if devise_mapping.rememberable? -%>
+    <div class="checkbox">
+      <%= f.check_box :remember_me %> <%= f.label :remember_me, 'Запомнить меня' %>
+    </div>
+  <% end -%>
 
-      <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
-        <%= link_to 'Забыли пароль?', new_password_path(resource_name), class: 'action' %><br />
-      <% end %>
+  <%= f.submit 'Вход', class: 'btn btn-primary' %>
 
-      <% if devise_mapping.rememberable? -%>
-        <div class="remember">
-          <%= f.check_box :remember_me %> <%= f.label :remember_me, 'Запомнить меня' %>
-        </div>
-      <% end -%>
+  <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
+    <%= link_to 'Забыли пароль?', new_password_path(resource_name), class: 'action pull-right' %><br />
+  <% end %>
 
-      <div><%= f.submit 'Вход', class: 'btn-glow primary auth' %></div>
-    <% end %>
-  </div>
-</div>
-
-<div class="col-span-4 col-offset-4 no-account">
-  <p>
-    — Где я могу получить учётную запись?
-    <br>
-    — Обратитесь в Отдел информационных систем. Главный корпус, кабинет 1320.
-  </p>
-</div>
+<% end %>
+<br><br>
+<p>
+  — Где я могу получить учётную запись?
+  <br>
+  — Обратитесь в Отдел информационных систем. Главный корпус, кабинет 1320.
+</p>

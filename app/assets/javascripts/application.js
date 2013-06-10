@@ -15,9 +15,12 @@
 //= require turbolinks
 //= require jquery.turbolinks
 //
+//= require bootstrap
+//
 //= require bootstrap-datepicker/core
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.ru.js
 //
-//= require ui/application
+//= require highcharts
+//= require highcharts-more
 //
 //= require_tree .

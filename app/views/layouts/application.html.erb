@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MatrixHq</title>
+  <title>Matrix</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div class="navbar navbar-inverse">
-    <div class="container">
-      <a class="navbar-brand" href="<%= root_url %>">
-        <strong>Матрица</strong>.HQ
-      </a>
-      <%= render_navigation context: :auth, renderer: :navbar, expand_all: true %>
-    </div>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <a class="navbar-brand" href="<%= root_url %>">
+      <strong>Матрица</strong>.HQ
+    </a>
+
+    <%= render_navigation context: :auth, renderer: :navbar, expand_all: true %>
   </div>
 
-  <div id="sidebar-nav" class="hidden-phone">
-    <%= render_navigation context: :sidebar, renderer: :sidebar %>
-  </div>
-
-  <div class="content">
-    <div class="container">
-      <div id="pad-wrapper">
+  <div class="container">
+    <div class="row">
+      <%= render_navigation context: :sidebar %>
+      <div class="col-lg-10">
         <%= yield %>
       </div>
     </div>

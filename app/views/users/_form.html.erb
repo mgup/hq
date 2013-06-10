@@ -1,6 +1,12 @@
-<%= horizontal_form_for @user do |f| %>
-  <%= f.inputs 'Фамилия, имя, отчество во всех падежах' do %>
-    <%= f.text_field :user_name, disabled: true %>
+<%= form_for @user, html: { class: 'form-horizontal' } do |f| %>
+  <fieldset>
+    <legend>Фамилия, имя, отчество во всех падежах</legend>
+    <div class="row">
+      <%= f.label :user_name, class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :user_name, disabled: true %>
+      </div>
+    </div>
 
     <div class="row">
       <div class="col col-lg-10 col-offset-2">
@@ -119,19 +125,36 @@
         </div>
       </div>
     </div>
-  <% end %>
+  </fieldset>
 
-  <%= f.inputs 'Персональная информация' do %>
-    <%= f.text_field :username %>
-    <%= f.email_field :email %>
-    <%= f.phone_field :phone, pattern: '[\+]\d{1} \d{3} \d{3}[\-]\d{2}[\-]\d{2}' do %>
-      <span class="help-block">Телефонный номер в формате +7 926 123-45-67.</span>
-    <% end %>
-  <% end %>
+  <fieldset>
+    <legend>Персональная информация</legend>
+    <div class="row">
+      <%= f.label :username, class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :username %>
+      </div>
+    </div>
+    <div class="row">
+      <%= f.label :email, class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.email_field :email %>
+      </div>
+    </div>
+    <div class="row">
+      <%= f.label :phone, class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.phone_field :phone, pattern: '[\+]\d{1} \d{3} \d{3}[\-]\d{2}[\-]\d{2}'%>
+        <span class="help-block">Телефонный номер в формате +7 926 123-45-67.</span>
+      </div>
+    </div>
+  </fieldset>
 
-  <%= f.actions do %>
-    <%= f.submit %>
-    или
-    <%= link_to 'назад ко всем пользователям', users_path %>
-  <% end %>
+  <div class="row">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад ко всем пользователям', users_path %>
+    </div>
+  </div>
 <% end %>

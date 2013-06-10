@@ -7,16 +7,6 @@ GIT
       httparty
 
 GIT
-  remote: git://github.com/mgup/ui.git
-  revision: 04389508768ab3df79b5f7e7885ac40029410905
-  branch: master
-  specs:
-    ui (0.0.1)
-      rails (= 4.0.0.rc1)
-      sass-rails (= 4.0.0.rc1)
-      simple-navigation
-
-GIT
   remote: git://github.com/plataformatec/devise.git
   revision: 6b5988d756d780903bf8c9ccb3e2b3b724ccebe8
   branch: rails4
@@ -311,5 +301,4 @@ DEPENDENCIES
   thin
   turbolinks
   uglifier
-  ui!
   vmstat
