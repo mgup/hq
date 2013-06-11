@@ -1,0 +1,10 @@
+<% @specialities.each do |speciality| %>
+  <tr>
+    <td><%= speciality.id %></td>
+    <td><%= speciality.name %></td>
+    <td><%= speciality.code %></td>
+    <td>
+      <%= link_to 'Редактировать', edit_speciality_path(speciality) %>
+    </td>
+  </tr>
+<% end %>

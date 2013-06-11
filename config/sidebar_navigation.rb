@@ -12,6 +12,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :users,       'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
 
     primary.item :students,    'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+    primary.item :specialities, 'Специальности'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
   end
 
   # Specify a custom renderer if needed.

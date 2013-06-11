@@ -1,0 +1,12 @@
+<%= form_for @speciality do |f| %>
+
+	<%= f.label :name, "Название специальности" %>
+    <%= f.text_field :name %>
+    <%= f.label :code, "Код специальности" %>
+    <%= f.text_field :code %>
+
+    <%= f.submit "Сохранить" %>
+    или
+    <%= link_to 'Назад ко всем специальностям', specialities_path %>
+ 
+<% end %>
