@@ -1,13 +1,36 @@
-<%= inline_form_for Position.new do |f| %>
+<%= form_for Position.new, html: { class: 'form-horizontal' }  do |f| %>
   <%= hidden_field_tag 'position[user]', @user.id %>
 
-  <%= f.inline do |inline| %>
-    Новая должность —
-    <%= inline.text_field :title, { placeholder: 'старший преподаватель', style: 'width: 195px;' } %>
-    <%= inline.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 180px;' } %>
-    в <%= inline.collection_select :department, Department.all, :id, :abbreviation, { label: false }, { style: 'width: 180px;' } %>
-    с <%= text_field_tag 'position[appointment]', l(Date.today), class: 'datepicker', style: 'width: 95px;' %>
+ 	<div class="row">
+    <%= f.label :title, class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.text_field :title, { placeholder: @user.full_name, style: 'width: 195px;' } %>
+      <span class="help-block">
+     
+    </span>
+    </div>
+    </div>
 
-    <%= f.submit %>
-  <% end %>
+    <div class="row">
+    <%= f.label :role,'Новая роль', class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 180px;' }  %>
+      <%= f.label :department,'в' %>
+      <%= f.collection_select :department, Department.all, :id, :abbreviation %>
+      <%= f.label :date,'с' %>
+      <%= text_field_tag 'position[appointment]', Date.today, class: 'datepicker' %>
+      <span class="help-block">
+     
+    </span>
+    </div>
+    </div>
+
+   <div class="row">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад ко всем сотрудникам', users_path %>
+    </div>
+  </div>
+  
 <% end %>
