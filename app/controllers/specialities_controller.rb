@@ -1,31 +1,43 @@
 class SpecialitiesController < ApplicationController
-  before_filter do
-    params[:speciality] &&= speciality_params
+ load_and_authorize_resource
+
+  def index
+    @specialities = Speciality.unscoped.ordered
   end
 
-  before_action :set_speciality, only: [:edit, :update]
+  def show ; end
 
-  def index 
-    @specialities=Speciality.all
-  end
+  def new ; end
 
   def edit ; end
 
+  def create
+    if @speciality.save
+      redirect_to specialities_path, notice: 'Специальность успешно создана.'
+    else
+      render action: :new
+    end
+  end
+
   def update
-    if @speciality.update(speciality_params)
-      redirect_to specialities_path, notice: 'Изменения сохранены.'
+    if @speciality.update(resource_params)
+      respond_to do |format|
+        format.html { redirect_to specialities_path, notice: 'Изменения сохранены.' }
+      end
+
+
     else
       render action: :edit
     end
   end
 
-  private
+  def destroy
+    @speciality.destroy
 
-  def set_speciality
-    @speciality = Speciality.find params[:id]
+    redirect_to specialities_path
   end
 
-  def speciality_params
-    params.require(:speciality).permit(:name, :code)
+  def resource_params
+    params.fetch(:speciality, {}).permit(:name, :code)
   end
 end

@@ -1,12 +1,29 @@
-<%= form_for @speciality do |f| %>
+<%= form_for @speciality, html: { class: 'form-horizontal' } do |f| %>
+  <div class="row">
+    <%= f.label :name, "Название", class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.text_field :name %>
+      <span class="help-block">
+      Название специальности. Не менять без необходимости!
+    </span>
+    </div>
+  </div>
 
-	<%= f.label :name, "Название специальности" %>
-    <%= f.text_field :name %>
-    <%= f.label :code, "Код специальности" %>
-    <%= f.text_field :code %>
+  <div class="row">
+    <%= f.label :code, "Код", class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.text_field :code %>
+      <span class="help-block">
+        Код специальности. Не менять без необходимости!
+      </span>
+    </div>
+  </div>
 
-    <%= f.submit "Сохранить" %>
-    или
-    <%= link_to 'Назад ко всем специальностям', specialities_path %>
- 
+  <div class="row">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit "Сохранить", class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад ко всем  специальностям', specialities_path %>
+    </div>
+  </div>
 <% end %>

@@ -1,15 +1,33 @@
-<div class="row">
-  <table class="table table-hover table-specialities">
-    <thead>
-    <tr>
-      <th>#</th>
-      <th><span class="line"></span>Название специальности</th>
-      <th><span class="line"></span>Код специальности</th>
-      <th><span class="line"></span></th>
-    </tr>
-    </thead>
-    <tbody>
-    <%= render partial: 'rows'%>
-    </tbody>
-  </table>
+<div class="page-header">
+  <h1>Специальности</h1>
 </div>
+
+<%= link_to 'Добавить новую специальность', new_speciality_path, class: 'btn btn-default' %>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Название</th>
+    <th>Код</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @specialities.each do |speciality| %>
+    <tr>
+      <td><%= speciality.id %></td>
+      <td><%= speciality.name %></td>
+      <td><%= speciality.code %></td>
+      <td>
+        <%= link_to 'Редактировать', edit_speciality_path(speciality) %>
+      </td>
+      <td>
+        <%= link_to 'Удалить', speciality, method: :delete, data: { confirm: 'Вы уверены? Удаление роли может иметь серьёзные последствия!' } %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
