@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130603154205) do
+ActiveRecord::Schema.define(version: 20130613085347) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -947,6 +947,9 @@ ActiveRecord::Schema.define(version: 20130603154205) do
     t.string  "student_father_phone",                  limit: 300
     t.text    "student_commentary",                    limit: 16777215
     t.integer "student_balance_temp"
+    t.string  "last_name_hint"
+    t.string  "first_name_hint"
+    t.string  "patronym_hint"
   end
 
   add_index "student", ["student_fname"], name: "studentFname", using: :btree
@@ -1153,4 +1156,3 @@ ActiveRecord::Schema.define(version: 20130603154205) do
   add_index "user", ["reset_password_token"], name: "index_user_on_reset_password_token", unique: true, using: :btree
   add_index "user", ["user_department"], name: "user_department", using: :btree
 
-end

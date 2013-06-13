@@ -5,8 +5,6 @@ class RolesController < ApplicationController
     @roles = Role.unscoped.ordered
   end
 
-  def show ; end
-
   def new ; end
 
   def edit ; end

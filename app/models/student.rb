@@ -9,10 +9,7 @@ class Student < ActiveRecord::Base
   default_scope do
     select('student_group.*, student.*')
     .joins(:person)
-    .joins('INNER JOIN dictionary fnames ON fnames.dictionary_id = student_fname')
-    .joins('INNER JOIN dictionary inames ON inames.dictionary_id = student_iname')
-    .joins('INNER JOIN dictionary onames ON onames.dictionary_id = student_oname')
-    .order('fnames.dictionary_ip, inames.dictionary_ip, onames.dictionary_ip')
+    .order('last_name_hint, first_name_hint, patronym_hint')
   end
 
   scope :with_group, -> { joins(:group) }
@@ -21,7 +18,7 @@ class Student < ActiveRecord::Base
     cond = all
 
     if filters.key?(:name)
-      fields = %w(fnames.dictionary_ip inames.dictionary_ip onames.dictionary_ip)
+      fields = %w(last_name_hint first_name_hint patronym_hint)
       names = filters[:name].split(' ').map { |n| "%#{n}%" }
 
       cond = cond.where((["CONCAT_WS(' ', #{fields.join(',')}) LIKE ?"] * names.size).join(' AND '), *names)

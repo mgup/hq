@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DashboardController do
+describe RolesController do
   context 'для разработчиков' do
     before do
       @user = FactoryGirl.create(:developer)
@@ -16,6 +16,37 @@ describe DashboardController do
       it 'должен выводить правильное представление' do
         get :index
         response.should render_template(:index)
+      end
+
+      it 'должен инициировать массив с ролями' do
+        developer_role = Role.first
+
+        get :index
+        assigns(:roles).should eq([developer_role])
+      end
+
+      context 'при оторажении ролей' do
+        it 'должны выводиться неактивные роли' do
+          developer_role = Role.first
+          role = FactoryGirl.create(:role, title: '1', active: false)
+
+          get :index
+          assigns(:roles).should eq([role, developer_role])
+        end
+
+        it 'должна быть сортировка по названию роли' do
+          developer_role = Role.first
+          role = FactoryGirl.create(:role, title: '1')
+
+          get :index
+          assigns(:roles).should eq([role, developer_role])
+        end
+      end
+    end
+
+    describe 'GET "new"' do
+      it 'инициализирует пустую роль' do
+
       end
     end
   end
