@@ -2,28 +2,20 @@
   <%= hidden_field_tag 'position[user]', @user.id %>
 
  	<div class="row">
-    <%= f.label :title, class: 'col col-lg-2 control-label' %>
-    <div class="col col-lg-10">
-      <%= f.text_field :title, { placeholder: @user.full_name, style: 'width: 195px;' } %>
-      <span class="help-block">
-     
-    </span>
+    <div class="col col-lg-3">
+      <%= f.text_field :title, { placeholder: 'Старший преподаватель'} %>
     </div>
+    <div class="col col-lg-2">
+      <%= f.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 145px;' }  %>
     </div>
-
-    <div class="row">
-    <%= f.label :role,'Новая роль', class: 'col col-lg-2 control-label' %>
-    <div class="col col-lg-10">
-      <%= f.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 180px;' }  %>
-      <%= f.label :department,'в' %>
-      <%= f.collection_select :department, Department.all, :id, :abbreviation %>
-      <%= f.label :date,'с' %>
+    <div class="col col-lg-2">
+      <%= f.collection_select :department, Department.all, :id, :abbreviation, { label: false }, { style: 'width: 130px;' }  %>
+    </div>
+    <div class="col col-lg-2">
       <%= text_field_tag 'position[appointment]', Date.today, class: 'datepicker' %>
-      <span class="help-block">
-     
-    </span>
     </div>
-    </div>
+  </div>
+
 
    <div class="row">
     <div class="col col-lg-10 col-offset-2">
