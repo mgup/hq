@@ -10,6 +10,8 @@ class Speciality < ActiveRecord::Base
 
   has_many :groups, foreign_key: :group_speciality
 
+   scope :ordered, -> { order(:speciality_name) }
+
   def bachelor?
     1 == type
   end

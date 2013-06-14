@@ -1,15 +1,37 @@
-<%= form_for @department, builder: HorizontalFormBuilder,
-             html: { class: 'form-horizontal' } do |f| %>
+<%= form_for @department, html: { class: 'form-horizontal' } do |f| %>
+  <div class="row">
+    <%= f.label :name, class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.text_field :name %>
+      <span class="help-block">
+     
+    </span>
+    </div>
+  </div>
 
-  <%= f.inputs do %>
-    <%= f.text_field :name %>
-    <%= f.text_field :abbreviation %>
-    <%= f.select :parent, 'главное подразделение', Department.where('department_id != ?', @department).collect { |d| [d.name, d.id.to_s] }, { include_blank: 'главное подразделение отсутствует' } %>
-  <% end %>
+  <div class="row">
+    <%= f.label :abbreviation, class: 'col col-lg-2 control-label' %>
+    <div class="col col-lg-10">
+      <%= f.text_field :abbreviation %>
+      <span class="help-block">
+       
+      </span>
+    </div>
+  </div>
 
-  <%= f.actions do %>
-    <%= f.submit %>
-    или
-    <%= link_to 'назад ко всем подразделениям', departments_path %>
-  <% end %>
+
+  <div class="row">
+     <%= f.label :parent, 'Главное подразделение', class: 'col col-lg-2 control-label' %>
+    <%= f.select :parent, Department.without(id: @department.id).collect { |d| [d.name, d.id.to_s] }, { include_blank: 'главное подразделение отсутствует' } %>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад к структуре', departments_path %>
+    </div>
+  </div>
 <% end %>
