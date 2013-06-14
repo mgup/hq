@@ -1,13 +1,28 @@
-<%= inline_form_for Position.new do |f| %>
+<%= form_for Position.new, html: { class: 'form-horizontal' }  do |f| %>
   <%= hidden_field_tag 'position[user]', @user.id %>
 
-  <%= f.inline do |inline| %>
-    Новая должность —
-    <%= inline.text_field :title, { placeholder: 'старший преподаватель', style: 'width: 195px;' } %>
-    <%= inline.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 180px;' } %>
-    в <%= inline.collection_select :department, Department.all, :id, :abbreviation, { label: false }, { style: 'width: 180px;' } %>
-    с <%= text_field_tag 'position[appointment]', l(Date.today), class: 'datepicker', style: 'width: 95px;' %>
+ 	<div class="row">
+    <div class="col col-lg-3">
+      <%= f.text_field :title, { placeholder: 'Старший преподаватель'} %>
+    </div>
+    <div class="col col-lg-2">
+      <%= f.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 145px;' }  %>
+    </div>
+    <div class="col col-lg-2">
+      <%= f.collection_select :department, Department.all, :id, :abbreviation, { label: false }, { style: 'width: 130px;' }  %>
+    </div>
+    <div class="col col-lg-2">
+      <%= text_field_tag 'position[appointment]', Date.today, class: 'datepicker' %>
+    </div>
+  </div>
 
-    <%= f.submit %>
-  <% end %>
+
+   <div class="row">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад ко всем сотрудникам', users_path %>
+    </div>
+  </div>
+  
 <% end %>

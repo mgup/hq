@@ -9,9 +9,13 @@
     <td>
       <%= link_to 'Редактировать', edit_department_path(department) %>
     </td>
+    <td>
+        <%= link_to 'Удалить', department, method: :delete, data: { confirm: 'Вы уверены? Удаление может иметь серьёзные последствия!' } %>
+      </td>
   </tr>
   <% if department.subdepartments.any? %>
     <%= render partial: 'departments/rows',
                locals: { departments: department.subdepartments, level: (level + 1) } %>
   <% end %>
 <% end %>
+

@@ -18,4 +18,18 @@ class Department < ActiveRecord::Base
   scope :only_main, -> { where(department_parent: nil) }
 
   scope :faculties, -> { where(department_role: :faculty) }
+
+  scope :ordered, -> { order(:department_name) }
+
+  scope :without, -> where {
+    cond = all
+     if where[:id]!=nil
+      cond=cond.where('department_id != ?', where[:id]) 
+    else
+      cond=all
+    end
+    cond
+  }
+  
+    
 end

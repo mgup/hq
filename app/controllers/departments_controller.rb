@@ -1,29 +1,43 @@
 class DepartmentsController < ApplicationController
-  before_filter do
-    params[:department] &&= department_params
+load_and_authorize_resource
+
+  def index
+    @departments = Department.unscoped.ordered
   end
 
-  before_action :set_department, only: [:edit, :update]
+  def show ; end
 
-  def index ; end
+  def new ; end
 
   def edit ; end
 
+  def create
+    if @department.save
+      redirect_to departments_path, notice: 'Департамент успешно создан.'
+    else
+      render action: :new
+    end
+  end
+
   def update
-    if @department.update(department_params)
-      redirect_to departments_path, notice: 'Изменения сохранены.'
+    if @department.update(resource_params)
+      respond_to do |format|
+        format.html { redirect_to departments_path, notice: 'Изменения сохранены.' }
+      end
+
+
     else
       render action: :edit
     end
   end
 
-  private
+  def destroy
+    @department.destroy
 
-  def set_department
-    @department = Department.find params[:id]
+    redirect_to departments_path
   end
 
-  def department_params
-    params.require(:department).permit(:name, :abbreviation, :parent)
+  def resource_params
+    params.fetch(:department, {}).permit(:name, :abbreviation, :parent)
   end
 end

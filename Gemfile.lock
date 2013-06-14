@@ -117,6 +117,10 @@ GEM
     faker (1.1.2)
       i18n (~> 0.5)
     fastercsv (1.5.5)
+    hairtrigger (0.2.3)
+      activerecord (>= 2.3)
+      ruby2ruby (~> 2.0.4)
+      ruby_parser (~> 3.0)
     haml (4.0.3)
       tilt
     highline (1.6.19)
@@ -282,6 +286,7 @@ DEPENDENCIES
   dotenv-rails
   factory_girl_rails
   faker
+  hairtrigger
   jbuilder
   jquery-rails
   jquery-turbolinks
