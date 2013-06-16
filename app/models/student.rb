@@ -6,6 +6,11 @@ class Student < ActiveRecord::Base
   belongs_to :person, class_name: Person, primary_key: :student_id, foreign_key: :student_group_student
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :student_group_group
 
+  has_many :checkpoint_marks, foreign_key: :checkpoint_mark_student
+  has_many :exams, foreign_key: :exam_student_group
+  has_many :exam_students, foreign_key: :exam_student_student
+  has_many :marks, foreign_key: :mark_student_group
+
   default_scope do
     select('student_group.*, student.*')
     .joins(:person)

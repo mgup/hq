@@ -10,7 +10,8 @@ class Subject < ActiveRecord::Base
  
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :subject_group
 
-
+  has_many :checkpoints, foreign_key: :checkpoint_subject
+  has_many :exams, foreign_key: :exam_subject
   has_many :subject_teachers
   has_many :teachers, :through => :subject_teachers
 

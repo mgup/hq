@@ -4,7 +4,6 @@ class ExamStudent < ActiveRecord::Base
   alias_attribute :id,       :exam_student_id
 
   belongs_to :exam, primary_key: :exam_id, foreign_key: :exam_student_exam
-  belongs_to :person, primary_key: :person_id, foreign_key: :exam_student_person
   belongs_to :student, primary_key: :student_id, foreign_key: :exam_student_student
 
 end

@@ -3,8 +3,7 @@ class Teacher < ActiveRecord::Base
 
   alias_attribute :id,  :teacher_id
 
-  belongs_to :user, class_name: User, primary_key: :user_id
-  belongs_to :department, primary_key: :department_id, foreign_key: :teacher_department
+  belongs_to :subdepartment, class_name: Department, primary_key: :department_id, foreign_key: :teacher_subdepartment
 
   has_many :subject_teachers
   has_many :subjects, :through => :subject_teachers
