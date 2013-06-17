@@ -23,6 +23,9 @@ class User < ActiveRecord::Base
   has_many :positions, foreign_key: :acl_position_user
   has_many :roles,       through: :positions
   has_many :departments, through: :positions
+  
+  has_many :subject_teachers
+  has_many :subjects, :through => :subject_teachers
 
   def full_name(form = :ip)
     # TODO Убрать после того, как все имена будут перенесены в словарь.

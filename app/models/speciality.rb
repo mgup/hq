@@ -12,6 +12,16 @@ class Speciality < ActiveRecord::Base
 
    scope :ordered, -> { order(:speciality_name) }
 
+   scope :facult, -> where{
+    cond = all
+     if where[:fac]!=nil
+      cond=cond.where(speciality_faculty: where[:fac]) 
+    else
+      cond=all
+    end
+    cond
+  }
+
   def bachelor?
     1 == type
   end

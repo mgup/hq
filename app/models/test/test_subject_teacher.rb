@@ -1,10 +1,7 @@
 class SubjectTeacher < ActiveRecord::Base
 self.table_name = 'subject_teacher'
 
-alias_attribute :teacher_id,  :teacher_id
-alias_attribute :subject_id,  :subject_id
-
-  belongs_to :teacher
-  belongs_to :subject
+belongs_to :user, primary_key: :user_id, foreign_key: :teacher_id
+belongs_to :subject, primary_key: :subject_id, foreign_key: :subject_id
 
 end

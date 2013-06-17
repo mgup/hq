@@ -37,6 +37,10 @@ class Student < ActiveRecord::Base
       cond = cond.joins(:group).where(group: { group_course: filters[:course] })
     end
 
+    if filters.key?(:group)
+      cond = cond.where(student_group_group: filters[:group])
+    end
+
     cond
   }
 end

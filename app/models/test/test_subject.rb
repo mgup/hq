@@ -13,6 +13,6 @@ class Subject < ActiveRecord::Base
   has_many :checkpoints, foreign_key: :checkpoint_subject
   has_many :exams, foreign_key: :exam_subject
   has_many :subject_teachers
-  has_many :teachers, :through => :subject_teachers
+  has_many :users, :through => :subject_teachers
 
 end
