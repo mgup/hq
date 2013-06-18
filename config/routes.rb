@@ -15,7 +15,10 @@ HQ::Application.routes.draw do
 
   resources :specialities
 
-  resources :marks
+  resources :sessions
+
+  get 'ajax/specialities' => 'ajax#specialities'
+  get 'ajax/groups' => 'ajax#groups'
 
   root to: 'dashboard#index'
 

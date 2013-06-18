@@ -11,6 +11,9 @@ class Group < ActiveRecord::Base
   has_many :exams, foreign_key: :exam_group
   has_many :subjects, foreign_key: :subject_group
 
+  scope :from_speciality, -> speciality { where(group_speciality: speciality) }
+  scope :from_course, -> course { where(group_course: course) }
+
   def name
     n = []
 
@@ -20,4 +23,5 @@ class Group < ActiveRecord::Base
     n << "-#{course}-#{number}"
     n.join
   end
+
 end

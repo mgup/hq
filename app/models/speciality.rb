@@ -10,17 +10,12 @@ class Speciality < ActiveRecord::Base
 
   has_many :groups, foreign_key: :group_speciality
 
-   scope :ordered, -> { order(:speciality_name) }
+  default_scope do
+    order(:speciality_name, :speciality_code)
+  end
 
-   scope :facult, -> where{
-    cond = all
-     if where[:fac]!=nil
-      cond=cond.where(speciality_faculty: where[:fac]) 
-    else
-      cond=all
-    end
-    cond
-  }
+  scope :from_faculty, -> faculty { where(speciality_faculty: faculty) }
+    
 
   def bachelor?
     1 == type

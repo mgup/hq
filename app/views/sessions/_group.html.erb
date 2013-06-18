@@ -1,0 +1,22 @@
+<table class='table'>
+	<tr>
+		<th>#</th>
+		<th>Студент</th>
+		<th>Результат</th>
+	</tr>
+		<% Student.filter( group: 12 ).each do |student| %>
+			<tr>
+			    <td><%= student.id %></td>
+			    <td><%= student.person.last_name %> <%= student.person.first_name %> <%= student.person.patronym %>
+			    </td>
+			    <td>
+			        <select>
+						<option>отлично</option>
+						<option>хорошо</option>
+						<option>удовлетворительно</option>
+						<option>неудовлетворительно</option>
+			        </select>
+			    </td>
+			 </tr>
+		<% end %>
+</table>
