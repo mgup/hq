@@ -15,7 +15,9 @@ HQ::Application.routes.draw do
 
   resources :specialities
 
-  resources :sessions
+  resources :sessions do
+    resources :session_marks
+  end
 
   get 'ajax/specialities' => 'ajax#specialities'
   get 'ajax/groups' => 'ajax#groups'

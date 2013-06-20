@@ -1,4 +1,32 @@
 <div class="page-header">
-  <h1>Сессия</h1>
+  <h1>Все результаты</h1>
 </div>
-<%= render 'form' %>
+
+<%= link_to 'Добавить', new_session_path, class: 'btn btn-default' %>
+
+<div class="row">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Год</th>
+      <th>Семестр</th>
+      <th>Группа</th>
+      <th>Дисциплина</th>
+      <th>Форма отчетности</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @sessions.each do |session| %>
+      <tr>
+        <td><%= session.id %></td>
+        <td><%= session.year %></td>
+        <td><%= session.semester %></td>
+        <td><%= session.group_id %></td>
+        <td><%= session.subject %></td>
+        <td><%= session.type %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+ </div> 

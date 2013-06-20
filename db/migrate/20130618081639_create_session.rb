@@ -2,7 +2,7 @@ class CreateSession < ActiveRecord::Migration
   def change
     create_table  :sessions do |t|
     	t.string        :year
-      	t.string        :semester
+      t.string        :semester
 	  	t.references    :group
 	  	t.string        :subject
 	    t.string        :type

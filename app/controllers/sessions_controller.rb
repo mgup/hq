@@ -1,7 +1,15 @@
 class SessionsController < ApplicationController
 
   def index 
-     @session=Session.new
+     @sessions = Session.all
+  end
+
+  def new 
+    @session=Session.new
+  end
+
+  def show
+    @session = Session.find(params[:id])
   end
 
   def create

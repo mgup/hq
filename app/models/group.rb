@@ -13,6 +13,7 @@ class Group < ActiveRecord::Base
 
   scope :from_speciality, -> speciality { where(group_speciality: speciality) }
   scope :from_course, -> course { where(group_course: course) }
+  scope :from_form, -> form { where(group_form: form) }
 
   def name
     n = []
