@@ -19,8 +19,8 @@ HQ::Application.routes.draw do
     resources :session_marks
   end
 
-  get 'ajax/specialities' => 'ajax#specialities'
-  get 'ajax/groups' => 'ajax#groups'
+  get 'sessions/ajax/specialities' => 'ajax#specialities'
+  get 'sessions/ajax/groups' => 'ajax#groups'
 
   root to: 'dashboard#index'
 

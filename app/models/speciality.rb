@@ -28,4 +28,9 @@ class Speciality < ActiveRecord::Base
   def specialist?
     0 == type
   end
+
+  def full_name
+    full_name = code + " " + name
+  end
+
 end

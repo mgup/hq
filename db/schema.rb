@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130620112629) do
+ActiveRecord::Schema.define(version: 20130621120205) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -861,7 +861,7 @@ ActiveRecord::Schema.define(version: 20130620112629) do
     t.string   "semester"
     t.integer  "group_id"
     t.string   "subject"
-    t.string   "type"
+    t.integer  "kind"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"

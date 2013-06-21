@@ -1,5 +1,4 @@
 <table class='table'>
-  <% type= '0' %>
   <tr>
     <th>#</th>
     <th>Студент</th>
@@ -8,18 +7,18 @@
     <th></th>
   </tr>
 
-  <!-- убрать фильтр! -->
+
 
     <% Student.filter( group: @session.group_id ).each do |student| %>
       <tr>
-        <%= form_for @session.session_mark, html: { class: 'form-horizontal' } do |f| %>
+        <%= form_for @session_mark, url:  { action: "create" }, html: { class: 'form-horizontal' } do |f| %>
           <%= hidden_field_tag 'session_mark[user_id]', current_user %>
           <td><%= student.id %></td>
           <%= hidden_field_tag 'session_mark[student_id]', student.id %>
           <td><%= student.person.last_name %> <%= student.person.first_name %> <%= student.person.patronym %>
           </td>
           <td>
-            <% if type == '1' %>
+            <% if 1 == @kind %>
               <%= f.text_field :mark %>
             <% else %>
               <ul class="nav nav-pills">
@@ -32,11 +31,12 @@
               <%= f.select :retake, options_for_select(['0', '1', '2', '3']), { include_blank: 'нет данных' } %>
           </td>
           <td>
-            <%= f.submit 'Сохранить',  class: 'btn btn-primary' %>
-            <%= link_to 'Назад', session_session_marks_path, class: 'btn btn-default' %>
+           <%= f.submit 'Сохранить', class: 'btn btn-primary' %>
           </td>
           <% end %>
        </tr>
     <% end %>
 </table>
+
+<%= link_to 'Назад', session_session_marks_path(@session), class: 'btn btn-default' %>
 

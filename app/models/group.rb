@@ -11,9 +11,47 @@ class Group < ActiveRecord::Base
   has_many :exams, foreign_key: :exam_group
   has_many :subjects, foreign_key: :subject_group
 
-  scope :from_speciality, -> speciality { where(group_speciality: speciality) }
-  scope :from_course, -> course { where(group_course: course) }
-  scope :from_form, -> form { where(group_form: form) }
+
+
+  scope :from_speciality, -> speciality {
+    cond = all
+     if speciality.to_i!=0
+      cond=cond.where(group_speciality: speciality)
+    else
+      cond=all
+    end
+    cond
+  }
+
+  scope :from_course, -> course {
+    cond = all
+     if (course.to_i >= 1)&&(course.to_i <= 6)
+      cond=cond.where(group_course: course)
+    else
+      cond=all
+    end
+    cond
+  }
+
+  scope :from_form, -> form {
+    cond = all
+     if (form.to_i >= 101)&&(form.to_i <= 105)
+      cond=cond.where(group_form: form)
+    else
+      cond=all
+    end
+    cond
+  }
+
+  scope :from_faculty, -> faculty {
+    cond = all
+    if faculty!=""
+      cond = cond.joins(:speciality).where(speciality: { speciality_faculty: faculty })
+    else
+    cond=all
+    end
+    cond
+  }
 
   def name
     n = []
