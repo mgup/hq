@@ -1,8 +1,28 @@
 class Session < ActiveRecord::Base
-  self.table_name = 'sessions'
+  TYPE_TEST = 0
+  TYPE_EXAM = 1
 
-  belongs_to :group, primary_key: :group_id, foreign_key: :group_id
-  belongs_to :user, primary_key: :user_id, foreign_key: :user_id
+  belongs_to :group
+  belongs_to :user
 
-  has_many :session_marks, foreign_key: :session_id
+  has_many :session_marks
+
+  validates_presence_of :year, :semester, :subject, :kind
+
+  def type
+    case kind
+      when TYPE_TEST
+        'зачёт'
+      when TYPE_EXAM
+        'экзамен'
+    end
+  end
+
+  def test?
+    TYPE_TEST == kind
+  end
+
+  def exam?
+    TYPE_EXAM == kind
+  end
 end

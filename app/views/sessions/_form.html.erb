@@ -2,55 +2,60 @@
   <%= f.hidden_field :user_id, value: current_user.id %>
 
 	<div class='row'>
-		<%= f.label :year, 'Учебный год', class: 'control-label col-lg-2' %>
-		<%= f.hidden_field 'year' %>
-		<ul class="nav nav-pills pill-select" name='pillyear' id='pillyear'>
+		<%= f.label :year, class: 'control-label col-lg-2' %>
+    <div class="col col-lg-10">
+      <%= f.hidden_field 'year' %>
+      <ul class="nav nav-pills pill-select" name='pillyear' id='pillyear'>
         <li><a  data-toggle='pill' data-value="2012" data-input='session_year' href="#">2012-2013</a></li>
-         <li><a  data-toggle='pill' data-value="2011" data-input='session_year' href="#">2011-2012</a></li>
-          <li><a  data-toggle='pill' data-value="2010" data-input='session_year' href="#">2010-2011</a></li>
-    </ul>
-			
+        <li><a  data-toggle='pill' data-value="2011" data-input='session_year' href="#">2011-2012</a></li>
+        <li><a  data-toggle='pill' data-value="2010" data-input='session_year' href="#">2010-2011</a></li>
+      </ul>
+    </div>
   </div>
 		
 	<div class='row'>
-		<%= f.label :semester, 'Семестр', class: 'control-label col-lg-2' %>
-		<%= f.hidden_field :semester %>
-		<ul class="nav nav-pills pill-select" name='pillsemester' id='pillsemester'>
+		<%= f.label :semester, class: 'control-label col-lg-2' %>
+    <div class="col col-lg-10">
+      <%= f.hidden_field :semester %>
+      <ul class="nav nav-pills pill-select" name='pillsemester' id='pillsemester'>
         <li><a  data-toggle='pill' data-value="1" data-input='session_semester' href="#">осенний</a></li>
-         <li><a  data-toggle='pill' data-value="2" data-input='session_semester' href="#">весенний</a></li>
-    </ul>
+        <li><a  data-toggle='pill' data-value="2" data-input='session_semester' href="#">весенний</a></li>
+      </ul>
+    </div>
 	</div>
 
 
 	<div class='row'>
 		<%= label_tag :faculty, 'Факультет', class: 'control-label col-lg-2' %>
-		<%= hidden_field_tag :faculty %>
-		<ul class="nav nav-pills pill-select ajax-faculty" name='pillfaculty' id='pillfaculty'>
-				<% Department.faculties.without(id: 1).without(id: 8).each do |f| %>
-        <li><a  data-toggle='pill' data-value="<%=f.id%>" data-input='faculty' href="#"><%= f.abbreviation %></a></li>
+    <div class="col col-lg-10">
+      <%= hidden_field_tag :faculty %>
+      <ul class="nav nav-pills pill-select ajax-faculty" name='pillfaculty' id='pillfaculty'>
+        <% Department.faculties.each do |faculty| %>
+          <li><a data-toggle='pill' data-value="<%=faculty.id%>" data-input='faculty' href="#"><%= faculty.abbreviation %></a></li>
         <% end %>
-    </ul>
-			
+      </ul>
+    </div>
   </div>             
 
-		<div class='row'>
-			<%= label_tag :course, 'Курс', class: 'control-label col-lg-2' %>
-		<%= hidden_field_tag :course %>
-		<ul class="nav nav-pills ajax-course pill-select" name='pillcourse' id='pillcourse'>
+  <div class='row'>
+    <%= label_tag :course, 'Курс', class: 'control-label col-lg-2' %>
+    <div class="col col-lg-10">
+      <%= hidden_field_tag :course %>
+      <ul class="nav nav-pills ajax-course pill-select" name='pillcourse' id='pillcourse'>
         <li><a  data-toggle='pill' data-value="1" data-input='course' href="#">1</a></li>
         <li><a  data-toggle='pill' data-value="2" data-input='course' href="#">2</a></li>
         <li><a  data-toggle='pill' data-value="3" data-input='course' href="#">3</a></li>
         <li><a  data-toggle='pill' data-value="4" data-input='course' href="#">4</a></li>
         <li><a  data-toggle='pill' data-value="5" data-input='course' href="#">5</a></li>
         <li><a  data-toggle='pill' data-value="6" data-input='course' href="#">6</a></li>
-    </ul>
-			
-		</div>
+      </ul>
+    </div>
+  </div>
 
-		<div class='row'>
-
-			<%= label_tag :form, 'Форма обучения', class: 'control-label col-lg-2' %>
-			<%= hidden_field_tag :form %>
+  <div class='row'>
+    <%= label_tag :form, 'Форма обучения', class: 'control-label col-lg-2' %>
+    <%= hidden_field_tag :form %>
+    <div class="col col-lg-10">
 			<ul class="nav nav-pills ajax-form pill-select" name='pillform' id='pillform'>
 	        <li><a  data-toggle='pill' data-value="101" data-input='form' href="#">очная</a></li>
 	        <li><a  data-toggle='pill' data-value="102" data-input='form' href="#">очно-заочная</a></li>
@@ -58,36 +63,46 @@
 	        <li><a  data-toggle='pill' data-value="105" data-input='form' href="#">дистанционная</a></li>
 	    </ul>
 		</div>
-			
-		<div class='row'>
-			<%= label_tag :speciality, 'Специальность', class: 'control-label col-lg-2' %>
-				<%= select_tag 'speciality',
-                options_from_collection_for_select(Speciality.all, :id, :full_name),
-                prompt: 'все специальности', class: 'ajax-speciality col-lg-10' %>
-		</div>
+  </div>
 
-		<div class='row'>
-			<%= f.label :group_id, 'Группа', class: 'control-label col-lg-2' %>
-			<%= f.select :group_id,
-                options_from_collection_for_select(Group.all, :id, :name), {prompt: 'все группы'}, { class: 'ajax-group_id col-lg-10' } %>
+  <div class='row'>
+    <%= label_tag :speciality, 'Специальность', class: 'control-label col-lg-2' %>
+    <div class="col col-lg-10">
+			<%= select_tag 'speciality',
+                     options_from_collection_for_select(Speciality.all, :id, :full_name),
+                     prompt: 'все специальности', class: 'ajax-speciality' %>
+		</div>
+  </div>
+
+  <div class='row'>
+    <%= f.label :group_id, class: 'control-label col-lg-2' %>
+    <div class="col col-lg-10">
+			<%= f.select :group_id, options_from_collection_for_select(Group.all, :id, :name),
+                   { prompt: 'все группы' }, { class: 'ajax-group_id' } %>
+    </div>
+  </div>
+      
+  <div class='row'>
+    <%= f.label :subject, class: 'control-label col-lg-2' %>
+    <div class="col col-lg-10">
+			<%= f.text_field :subject, placeholder: 'Математика' %>
+		</div>
+  </div>
+
+   <div class='row'>
+     <%= f.label :kind, class: 'control-label col-lg-2' %>
+     <div class="col col-lg-10">
+        <%= f.hidden_field :kind %>
+        <ul class="nav nav-pills pill-select" name='pillkind' id='pillkind'>
+          <li><a data-toggle='pill' data-value="1" data-input='session_kind' href="#">экзамен</a></li>
+          <li><a data-toggle='pill' data-value="2" data-input='session_kind' href="#">зачет</a></li>
+        </ul>
+      </div>
     </div>
 
-      
-    <div class='row'>
-			<%= f.label :subject, 'Дисциплина', class: 'control-label col-lg-2' %>
-			<%= f.text_field :subject, placeholder: 'математика', class: 'col-lg-10' %>
-		</div>
-
-		 <div class='row'>
-				<%= f.label :kind, 'Форма отчетности', class: 'control-label col-lg-2' %>
-				<%= f.hidden_field :kind %>
-				<ul class="nav nav-pills pill-select" name='pillkind' id='pillkind'>
-		        <li><a  data-toggle='pill' data-value="1" data-input='session_kind' href="#">экзамен</a></li>
-		         <li><a  data-toggle='pill' data-value="2" data-input='session_kind' href="#">зачет</a></li>
-		    </ul>
-			</div>
-
-		
-		<%= f.submit 'Заполнить', class: 'btn btn-primary' %>
-
+  <div class="row">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit class: 'btn btn-primary' %>
+    </div>
+  </div>
 <% end %>

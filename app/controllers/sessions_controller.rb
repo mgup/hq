@@ -1,17 +1,11 @@
 class SessionsController < ApplicationController
   load_and_authorize_resource
 
-  def index 
-     @sessions = Session.all
-  end
+  def index ; end
 
-  def new 
-    @session=Session.new
-  end
+  def new ; end
 
-  def show
-    @session = Session.find(params[:id])
-  end
+  def show ; end
 
   def create
     if @session.save
@@ -22,6 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:session, {}).permit(:user_id, :year, :semester, :group_id, :subject, :kind)
+    params.fetch(:session, {}).permit(:user_id, :year, :semester, :group_id,
+                                      :subject, :kind)
   end
 end

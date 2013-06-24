@@ -4,29 +4,27 @@
 
 <%= link_to 'Добавить', new_session_path, class: 'btn btn-default' %>
 
-<div class="row">
-  <table class="table table-hover">
-    <thead>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Год</th>
+    <th>Семестр</th>
+    <th>Группа</th>
+    <th>Дисциплина</th>
+    <th>Форма отчетности</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @sessions.each do |session| %>
     <tr>
-      <th>#</th>
-      <th>Год</th>
-      <th>Семестр</th>
-      <th>Группа</th>
-      <th>Дисциплина</th>
-      <th>Форма отчетности</th>
+      <td><%= session.id %></td>
+      <td><%= "#{session.year}/#{session.year + 1}" %></td>
+      <td><%= session.semester %></td>
+      <td><%= session.group.name %></td>
+      <td><%= session.subject %></td>
+      <td><%= session.type %></td>
     </tr>
-    </thead>
-    <tbody>
-    <% @sessions.each do |session| %>
-      <tr>
-        <td><%= session.id %></td>
-        <td><%= session.year %></td>
-        <td><%= session.semester %></td>
-        <td><%= session.group_id %></td>
-        <td><%= session.subject %></td>
-        <td><%= session.kind %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
- </div> 
+  <% end %>
+  </tbody>
+</table>

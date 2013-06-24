@@ -15,6 +15,10 @@ class Department < ActiveRecord::Base
   belongs_to :main_department, class_name: Department,
              foreign_key: :department_parent
 
+  default_scope do
+    where('department_active = 1')
+  end
+
   scope :only_main, -> { where(department_parent: nil) }
 
   scope :faculties, -> { where(department_role: :faculty) }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130624084625) do
+ActiveRecord::Schema.define(version: 20130624124035) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -855,12 +855,12 @@ ActiveRecord::Schema.define(version: 20130624084625) do
   add_index "session_marks", ["user_id"], name: "index_session_marks_on_user_id", using: :btree
 
   create_table "sessions", force: true do |t|
-    t.integer  "year"
-    t.string   "semester"
-    t.integer  "group_id"
-    t.string   "subject"
-    t.integer  "kind"
-    t.integer  "user_id"
+    t.integer  "year",       null: false
+    t.integer  "semester",   null: false
+    t.integer  "group_id",   null: false
+    t.string   "subject",    null: false
+    t.integer  "kind",       null: false
+    t.integer  "user_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
