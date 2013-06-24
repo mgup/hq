@@ -4,28 +4,36 @@
     <th>Студент</th>
     <th>Результат</th>
     <th>Пересдача</th>
-    <th></th>
+    <th> 
+    </th>
   </tr>
 
 
-
-    <% Student.filter( group: @session.group_id ).each do |student| %>
+    <% time = Time.new((@session.year + 1), 06, 01) %>
+    <% Student.in_group_at_date(@session.group_id, time).each do |student| %>
       <tr>
         <%= form_for @session_mark, url:  { action: "create" }, html: { class: 'form-horizontal' } do |f| %>
-          <%= hidden_field_tag 'session_mark[user_id]', current_user %>
+          <%= f.hidden_field :user_id, value: current_user.id %>
+          <%= f.hidden_field :student_id, value: student.id %>
           <td><%= student.id %></td>
-          <%= hidden_field_tag 'session_mark[student_id]', student.id %>
           <td><%= student.person.last_name %> <%= student.person.first_name %> <%= student.person.patronym %>
           </td>
           <td>
-            <% if 1 == @kind %>
-              <%= f.text_field :mark %>
-            <% else %>
-              <ul class="nav nav-pills">
-                <li class="active"><a href="#">Незачет</a></li>
-                <li><a href="#">Зачет</a></li>
-              </ul>
+            <% SessionMark.all.each do |sm| %>
+            <% if  student.id == sm.student_id %>
+              <%= sm.mark %>
             <% end %>
+            <% end %>
+            <% if !(SessionMark.find_by student_id: student.id) %>
+                <% if 1 == @kind %>
+                  <%= f.text_field :mark, pattern: "[3-5]" %>
+                <% else %>
+                  <ul class="nav nav-pills">
+                    <li class="active"><a href="#">Незачет</a></li>
+                    <li><a href="#">Зачет</a></li>
+                  </ul>
+                <% end %>
+              <% end %>
           </td>
           <td>
               <%= f.select :retake, options_for_select(['0', '1', '2', '3']), { include_blank: 'нет данных' } %>

@@ -6,16 +6,14 @@ class SessionMarksController < ApplicationController
   end
 
   def new
-    @session_mark=SessionMark.new
+    @session_mark=Mark.new
     @session = Session.find(params[:session_id])
     @kind=@session.kind
   end
 
   def create
     @session = Session.find(params[:session_id])
-    @session_mark.session_id = params[:session_id]
     if @session_mark.save
-
       redirect_to new_session_session_mark_path(@session), notice: 'Сохранено'
     else
       render action: :index
