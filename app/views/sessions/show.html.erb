@@ -1,0 +1,54 @@
+<div class="page-header">
+  <h1>Экзамен/зачет</h1>
+</div>
+
+<%= form_for @session, html: { class: 'form-horizontal' } do |f| %>
+  <%= f.fields_for @session do |p| %>
+      <div class="row">
+        <%= p.label :year, 'Год', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+            <%= p.text_field :year %>
+        </div>
+      </div>
+      <div class="row">
+        <%= p.label :semester, 'Семестр', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+            <%= p.text_field :semester %>
+        </div>
+      </div>
+      <div class="row">
+        <%= p.label :group_id, 'Группа', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+            <%= p.text_field :group_id %>
+        </div>
+      </div> 
+      <div class="row">
+        <%= p.label :subject, 'Дисциплина', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+            <%= p.text_field :subject%>
+        </div>
+      </div> 
+      <div class="row">
+        <%= p.label :kind, 'Форма отчетности', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+            <%= p.text_field :kind %>
+        </div>
+      </div>
+    <% end %>
+     <%= f.submit class: 'btn btn-primary'%>
+  <% end %>
+
+  <h2>Оценки<h2>
+
+  <table>
+      <tr>
+        <th>Студент</th>
+        <th>Результат</th>
+      </tr>
+      <% @session.session_marks.each do |session_mark| %>
+      <tr>
+        <td><span> <%= session_mark.student_id %></span></td>
+        <td><%= session_mark.mark %></td>
+        </tr> 
+      <% end %>
+  </table>

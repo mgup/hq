@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130613085347) do
+ActiveRecord::Schema.define(version: 20130624084625) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(version: 20130613085347) do
     t.string  "department_sname",   limit: 200,                      null: false
     t.integer "department_prename"
     t.string  "department_alias",   limit: 45
-    t.string  "department_role",    limit: 200, default: "students"
+    t.string  "department_role",    limit: 200, default: "students", null: false
     t.boolean "department_active",              default: true,       null: false
     t.integer "department_parent"
   end
@@ -841,6 +841,34 @@ ActiveRecord::Schema.define(version: 20130613085347) do
   create_table "schedule_subject", primary_key: "schedule_subject_id", force: true do |t|
     t.string "schedule_subject_name", limit: 200, default: "", null: false
   end
+
+  create_table "session_marks", force: true do |t|
+    t.integer  "session_id"
+    t.integer  "student_id"
+    t.integer  "mark"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "retake"
+  end
+
+  add_index "session_marks", ["session_id"], name: "index_session_marks_on_session_id", using: :btree
+  add_index "session_marks", ["student_id"], name: "index_session_marks_on_student_id", using: :btree
+  add_index "session_marks", ["user_id"], name: "index_session_marks_on_user_id", using: :btree
+
+  create_table "sessions", force: true do |t|
+    t.integer  "year"
+    t.string   "semester"
+    t.integer  "group_id"
+    t.string   "subject"
+    t.integer  "kind"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["group_id"], name: "index_sessions_on_group_id", using: :btree
+  add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", using: :btree
 
   create_table "speciality", primary_key: "speciality_id", force: true do |t|
     t.integer "speciality_oldid"

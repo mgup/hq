@@ -15,6 +15,13 @@ HQ::Application.routes.draw do
 
   resources :specialities
 
+  resources :sessions do
+    resources :session_marks
+  end
+
+  get 'sessions/ajax/specialities' => 'ajax#specialities'
+  get 'sessions/ajax/groups' => 'ajax#groups'
+
   root to: 'dashboard#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
