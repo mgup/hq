@@ -1,4 +1,4 @@
-class Mark < ActiveRecord::Base
+class Test_Mark < ActiveRecord::Base
   self.table_name = 'mark'
 
   alias_attribute :id,        :mark_id

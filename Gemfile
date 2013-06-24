@@ -46,6 +46,7 @@ group :development do
 
   gem 'capistrano'
   gem 'rvm-capistrano'
+  gem 'sextant'
 end
 
 group :test do

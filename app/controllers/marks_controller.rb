@@ -1,27 +1,32 @@
-class SessionMarksController < ApplicationController
+class MarksController < ApplicationController
   load_and_authorize_resource
 
   def index 
-     
+     @marks=Mark.all
   end
 
   def new
-    @session_mark=Mark.new
+    @mark=Mark.new
     @session = Session.find(params[:session_id])
     @kind=@session.kind
   end
 
   def create
     @session = Session.find(params[:session_id])
-    if @session_mark.save
-      redirect_to new_session_session_mark_path(@session), notice: 'Сохранено'
+    @mark.session_id = params[:session_id]
+    if @mark.save
+      redirect_to new_session_mark_path(@session), notice: 'Сохранено'
     else
       render action: :index
     end
   end
 
+  def edit 
+     
+  end
+
   def resource_params
-    params.fetch(:session_mark, {}).permit(:user_id, :student_id, :mark, :retake)
+    params.fetch(:mark, {}).permit(:user_id, :student_id, :mark, :retake)
   end
   
 end

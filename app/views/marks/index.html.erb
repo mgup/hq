@@ -12,16 +12,16 @@
     </tr>
     </thead>
     <tbody>
-    <% @session_marks.each do |session_mark| %>
+    <% @marks.each do |mark| %>
       <tr>
-        <td><%= session_mark.id %></td>
-        <td><%= session_mark.student_id %></td>
-        <td><%= session_mark.mark %></td>
+        <td><%= mark.id %></td>
+        <td><%= mark.student_id %></td>
+        <td><%= mark.mark %></td>
       </tr>
     <% end %>
     </tbody>
   </table>
  </div> 
 
-<%= link_to 'Добавить', new_session_session_mark_path, class: 'btn btn-default' %>
+<%= link_to 'Добавить', new_session_mark_path, class: 'btn btn-default' %>
 

@@ -1,4 +1,4 @@
-class SessionMark < ActiveRecord::Base
+class Mark < ActiveRecord::Base
   self.table_name = 'session_marks'
 
   belongs_to :session, primary_key: :session_id, foreign_key: :session_id
