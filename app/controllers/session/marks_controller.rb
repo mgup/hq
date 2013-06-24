@@ -1,14 +1,14 @@
-class MarksController < ApplicationController
+class Session::MarksController < ApplicationController
   load_and_authorize_resource
 
   def index 
-     @marks=Mark.all
+    @marks = Session::Mark.all
   end
 
   def new
-    @mark=Mark.new
+    @mark = Mark.new
     @session = Session.find(params[:session_id])
-    @kind=@session.kind
+    @kind = @session.kind
   end
 
   def create
