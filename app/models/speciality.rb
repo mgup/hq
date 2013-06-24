@@ -1,10 +1,11 @@
 class Speciality < ActiveRecord::Base
   self.table_name = 'speciality'
 
-  alias_attribute :id, :speciality_id
-  alias_attribute :code, :speciality_code
-  alias_attribute :name, :speciality_name
-  alias_attribute :type, :speciality_ntype
+  alias_attribute :id,      :speciality_id
+  alias_attribute :code,    :speciality_code
+  alias_attribute :name,    :speciality_name
+  alias_attribute :type,    :speciality_ntype
+  alias_attribute :suffix,  :speciality_short_name
 
   belongs_to :faculty, class_name: Department, primary_key: :department_id, foreign_key: :speciality_faculty
 
