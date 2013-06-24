@@ -26,6 +26,7 @@ class Person < ActiveRecord::Base
       WHERE student.student_id = NEW.student_id;
     )
   end
+
   trigger.after(:update) do |t|
     t.where('OLD.student_fname != NEW.student_fname OR OLD.student_iname != NEW.student_iname OR OLD.student_oname != NEW.student_oname') do
       %q(
