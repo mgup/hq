@@ -4,9 +4,9 @@
 	<div class='row'>
 		<%= f.label :year, class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-      <%= f.hidden_field 'year' %>
+      <%= f.hidden_field 'year', value: 2012 %>
       <ul class='nav nav-pills pill-select' name='pillyear' id='pillyear'>
-        <li><a  data-toggle='pill' data-value="2012" data-input='study_subject_year' href='#'>2012-2013</a></li>
+        <li class='active'><a  data-toggle='pill' data-value="2012" data-input='study_subject_year' href='#'>2012-2013</a></li>
         <li><a  data-toggle='pill' data-value="2011" data-input='study_subject_year' href='#'>2011-2012</a></li>
         <li><a  data-toggle='pill' data-value="2010" data-input='study_subject_year' href='#'>2010-2011</a></li>
       </ul>
@@ -16,9 +16,9 @@
 	<div class='row'>
 		<%= f.label :semester, class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-      <%= f.hidden_field :semester %>
+      <%= f.hidden_field :semester, value: 1 %>
       <ul class='nav nav-pills pill-select' name='pillsemester' id='pillsemester'>
-        <li><a  data-toggle='pill' data-value='1' data-input='study_subject_semester' href='#'>осенний</a></li>
+        <li class='active'><a  data-toggle='pill' data-value='1' data-input='study_subject_semester' href='#'>осенний</a></li>
         <li><a  data-toggle='pill' data-value='2' data-input='study_subject_semester' href='#'>весенний</a></li>
       </ul>
     </div>

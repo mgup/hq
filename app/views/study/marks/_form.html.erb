@@ -19,9 +19,9 @@
       <td><%= student.person.full_name %></td>
       <td>
         <% if @subject.exam? %>
-          <%= hidden_field_tag 'marks[][mark]', 2, id: "#{student.id}_mark" %>
+          <%= hidden_field_tag 'marks[][mark]', nil, id: "#{student.id}_mark" %>
           <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
-            <li><a data-toggle='pill' data-value='3' data-input="<%= student.id %>_mark"  href='#'>Удовлетворительно</a></li>
+            <li><a data-toggle='pill' data-value='3' data-input="<%= student.id %>_mark"  href='#'>Удовл.</a></li>
             <li><a data-toggle='pill' data-value='4' data-input="<%= student.id %>_mark"  href='#'>Хорошо</a></li>
             <li><a data-toggle='pill' data-value='5' data-input="<%= student.id %>_mark"  href='#'>Отлично</a></li>
           </ul>
