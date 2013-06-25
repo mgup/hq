@@ -28,7 +28,6 @@ gem 'rack-mini-profiler'
 gem 'cancan'
 gem 'bootstrap-datepicker-rails'
 gem 'kaminari'
-gem 'hairtrigger'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 # gem 'ui', github: 'mgup/ui', branch: :master
@@ -43,6 +42,7 @@ group :development do
   gem 'pry-rails'
   gem 'brakeman', require: false
   gem 'rails-erd'
+  gem 'hairtrigger'
 
   gem 'capistrano'
   gem 'rvm-capistrano'
