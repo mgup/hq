@@ -19,7 +19,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @marks.where(subject_id: @subject.id).each do |mark| %>
+    <% @marks.each do |mark| %>
       <tr>
         <td><%= mark.id %></td>
         <td><%= mark.student.person.full_name %></td>

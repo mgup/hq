@@ -3,7 +3,9 @@ class Study::MarksController < ApplicationController
 
   before_filter :find_subject, only: [:index, :new, :create]
 
-  def index ; end
+  def index
+    @marks = @subject.marks
+  end
 
   def new
     case @subject.semester
