@@ -1,9 +1,9 @@
 ru:
   activerecord:
     models:
-      subject: 'дисциплина'
+      study/subject: 'дисциплина'
     attributes:
-      subject:
+      study/subject:
         year: 'учебный год'
         semester: 'семестр'
         group_id: 'группа'

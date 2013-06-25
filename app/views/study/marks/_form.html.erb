@@ -1,4 +1,4 @@
-<%= form_tag subject_marks_path(@session) do %>
+<%= form_tag study_subject_marks_path(@subject) do %>
   <table class='table'>
     <thead>
     <tr>
@@ -43,5 +43,5 @@
 
   <%= submit_tag 'Сохранить оценки', class: 'btn btn-primary' %>
   или
-  <%= link_to 'назад ко всем предметам', subject_marks_path(@session) %>
+  <%= link_to 'назад ко всем предметам', study_subject_marks_path(@subject) %>
 <% end %>

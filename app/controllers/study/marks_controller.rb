@@ -1,4 +1,4 @@
-class Subject::MarksController < ApplicationController
+class Study::MarksController < ApplicationController
   load_and_authorize_resource
 
   before_filter :find_subject, only: [:index, :new, :create]
@@ -35,6 +35,6 @@ class Subject::MarksController < ApplicationController
   private
 
   def find_subject
-    @subject = Subject.find(params[:subject_id])
+    @subject = Study::Subject.find(params[:subject_id])
   end
 end

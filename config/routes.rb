@@ -15,12 +15,14 @@ HQ::Application.routes.draw do
 
   resources :specialities
 
-  resources :subjects do
-    resources :marks, :controller => 'subject/marks'
+  namespace :study do
+    resources :subjects do
+      resources :marks
+    end
   end
 
-  get 'subjects/ajax/specialities' => 'ajax#specialities'
-  get 'subjects/ajax/groups' => 'ajax#groups'
+  get 'study/subjects/ajax/specialities' => 'ajax#specialities'
+  get 'study/subjects/ajax/groups' => 'ajax#groups'
 
   root to: 'dashboard#index'
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130625085849) do
+ActiveRecord::Schema.define(version: 20130625113821) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -842,32 +842,6 @@ ActiveRecord::Schema.define(version: 20130625085849) do
     t.string "schedule_subject_name", limit: 200, default: "", null: false
   end
 
-  create_table "session_marks", force: true do |t|
-    t.integer  "session_id"
-    t.integer  "student_id", null: false
-    t.integer  "mark",       null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "retake"
-  end
-
-  add_index "session_marks", ["user_id"], name: "index_session_marks_on_user_id", using: :btree
-
-  create_table "sessions", force: true do |t|
-    t.integer  "year",       null: false
-    t.integer  "semester",   null: false
-    t.integer  "group_id",   null: false
-    t.string   "title",      null: false
-    t.integer  "kind",       null: false
-    t.integer  "user_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sessions", ["group_id"], name: "index_sessions_on_group_id", using: :btree
-  add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", using: :btree
-
   create_table "speciality", primary_key: "speciality_id", force: true do |t|
     t.integer "speciality_oldid"
     t.string  "speciality_parent",     limit: 45
@@ -1044,6 +1018,32 @@ ActiveRecord::Schema.define(version: 20130625085849) do
     t.integer "student_quality_term",    null: false
     t.integer "student_quality_quality"
   end
+
+  create_table "study_marks", force: true do |t|
+    t.integer  "subject_id"
+    t.integer  "student_id", null: false
+    t.integer  "mark",       null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "retake"
+  end
+
+  add_index "study_marks", ["user_id"], name: "index_study_marks_on_user_id", using: :btree
+
+  create_table "study_subjects", force: true do |t|
+    t.integer  "year",       null: false
+    t.integer  "semester",   null: false
+    t.integer  "group_id",   null: false
+    t.string   "title",      null: false
+    t.integer  "kind",       null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "study_subjects", ["group_id"], name: "index_study_subjects_on_group_id", using: :btree
+  add_index "study_subjects", ["user_id"], name: "index_study_subjects_on_user_id", using: :btree
 
   create_table "subdepartment", primary_key: "subdepartment_id", force: true do |t|
     t.string  "subdepartment_name",       limit: 400, null: false

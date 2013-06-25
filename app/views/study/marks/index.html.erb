@@ -19,7 +19,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @marks.where(session_id: @subject.id).each do |mark| %>
+    <% @marks.where(subject_id: @subject.id).each do |mark| %>
       <tr>
         <td><%= mark.id %></td>
         <td><%= mark.student.person.full_name %></td>
@@ -30,5 +30,5 @@
   </table>
  </div> 
 
-<%= link_to 'Добавить', new_subject_mark_path, class: 'btn btn-default' %>
+<%= link_to 'Добавить', new_study_subject_mark_path, class: 'btn btn-default' %>
 

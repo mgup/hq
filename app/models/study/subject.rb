@@ -1,7 +1,5 @@
-class Subject < ActiveRecord::Base
-  def self.table_name
-    'sessions'
-  end
+class Study::Subject < ActiveRecord::Base
+  self.table_name = 'study_subjects'
 
   TYPE_TEST = 0
   TYPE_EXAM = 1
@@ -9,7 +7,7 @@ class Subject < ActiveRecord::Base
   belongs_to :group
   belongs_to :user
 
-  has_many :session_marks
+  has_many :marks, class_name: Study::Mark
 
   validates_presence_of :year, :semester, :title, :kind
 

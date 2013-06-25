@@ -12,8 +12,8 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :users,        'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
 
     primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
-    primary.item :specialities, 'Специальности'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
-    primary.item :subjects,     'Результаты'.html_safe, subjects_path, icon: 'list', highlights_on: -> { params[:controller].include?('subject') }
+    primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
+    primary.item :subjects,     'Успеваемость'.html_safe, study_subjects_path, icon: 'list', highlights_on: -> { params[:controller].include?('study') }
   end
 
   # Specify a custom renderer if needed.
