@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h1>
+    Оценки <%= @subject.group.name %>
+    <br>
+    <small>
+      <%= @subject.title %>
+      (<%= "#{@subject.year}/#{@subject.year + 1}, #{@subject.semester}-й семестр" %>)
+    </small>
+  </h1>
+</div>
+
+<div class='row'>
+  <table class='table table-hover'>
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Студент</th>
+      <th>Результат</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @marks.where(session_id: @subject.id).each do |mark| %>
+      <tr>
+        <td><%= mark.id %></td>
+        <td><%= mark.student.person.full_name %></td>
+        <td><%= mark.mark %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+ </div> 
+
+<%= link_to 'Добавить', new_subject_mark_path, class: 'btn btn-default' %>
+

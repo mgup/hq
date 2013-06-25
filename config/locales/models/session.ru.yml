@@ -1,11 +1,11 @@
 ru:
   activerecord:
     models:
-      session: 'сессия'
+      subject: 'дисциплина'
     attributes:
-      session:
+      subject:
         year: 'учебный год'
         semester: 'семестр'
         group_id: 'группа'
-        subject: 'название дисциплины'
+        title: 'название дисциплины'
         kind: 'форма испытания'

@@ -1,0 +1,47 @@
+<%= form_tag subject_marks_path(@session) do %>
+  <table class='table'>
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Студент</th>
+      <th>Результат</th>
+      <th>Пересдача</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @students.each do |student| %>
+    <tr>
+      <td>
+        <%= student.id %>
+        <%= hidden_field_tag 'marks[][student_id]', student.id %>
+      </td>
+      <td><%= student.person.full_name %></td>
+      <td>
+        <% if @subject.exam? %>
+          <%= hidden_field_tag 'marks[][mark]', 2, id: "#{student.id}_mark" %>
+          <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
+            <li><a data-toggle='pill' data-value='3' data-input="<%= student.id %>_mark"  href='#'>Удовлетворительно</a></li>
+            <li><a data-toggle='pill' data-value='4' data-input="<%= student.id %>_mark"  href='#'>Хорошо</a></li>
+            <li><a data-toggle='pill' data-value='5' data-input="<%= student.id %>_mark"  href='#'>Отлично</a></li>
+          </ul>
+        <% else %>
+          <%= hidden_field_tag 'marks[][mark]', 1, id: "#{student.id}_mark" %>
+          <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
+            <li><a data-toggle='pill' data-value='0' data-input="<%= student.id %>_mark"  href='#'>Не зачтено</a></li>
+            <li class='active'><a data-toggle='pill' data-value='1' data-input="<%= student.id %>_mark"  href='#'>Зачтено</a></li>
+          </ul>
+        <% end %>
+      </td>
+      <td>
+        <%= select_tag 'marks[][retake]', options_for_select(%w(1 2 3)), prompt: 'нет' %>
+      </td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= submit_tag 'Сохранить оценки', class: 'btn btn-primary' %>
+  или
+  <%= link_to 'назад ко всем предметам', subject_marks_path(@session) %>
+<% end %>

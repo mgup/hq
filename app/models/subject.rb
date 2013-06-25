@@ -1,4 +1,6 @@
-class Session < ActiveRecord::Base
+class Subject < ActiveRecord::Base
+  self.table_name = 'sessions'
+
   TYPE_TEST = 0
   TYPE_EXAM = 1
 
@@ -7,7 +9,7 @@ class Session < ActiveRecord::Base
 
   has_many :session_marks
 
-  validates_presence_of :year, :semester, :subject, :kind
+  validates_presence_of :year, :semester, :title, :kind
 
   def type
     case kind

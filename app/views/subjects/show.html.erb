@@ -2,8 +2,8 @@
   <h1>Экзамен/зачет</h1>
 </div>
 
-<%= form_for @session, html: { class: 'form-horizontal' } do |f| %>
-  <%= f.fields_for @session do |p| %>
+<%= form_for @subject, html: { class: 'form-horizontal' } do |f| %>
+  <%= f.fields_for @subject do |p| %>
       <div class="row">
         <%= p.label :year, 'Год', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-10">
@@ -23,9 +23,9 @@
         </div>
       </div> 
       <div class="row">
-        <%= p.label :subject, 'Дисциплина', class: 'col col-lg-2 control-label' %>
+        <%= p.label :title, 'Дисциплина', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-10">
-            <%= p.text_field :subject%>
+            <%= p.text_field :title%>
         </div>
       </div> 
       <div class="row">
