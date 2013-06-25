@@ -1,5 +1,7 @@
 class Subject < ActiveRecord::Base
-  self.table_name = 'sessions'
+  def self.table_name
+    'sessions'
+  end
 
   TYPE_TEST = 0
   TYPE_EXAM = 1
