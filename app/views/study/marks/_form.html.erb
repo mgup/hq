@@ -1,5 +1,5 @@
-<%= form_tag study_subject_marks_path(@subject) do %>
-  <table class='table'>
+<%= form_tag study_subject_marks_path(@subject), class: 'val' do %>
+  <table class='table' id='stud-marks'>
     <thead>
     <tr>
       <th>#</th>
@@ -19,7 +19,7 @@
       <td><%= student.person.full_name %></td>
       <td>
         <% if @subject.exam? %>
-          <%= hidden_field_tag 'marks[][mark]', nil, id: "#{student.id}_mark" %>
+          <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'required' %>
           <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
             <li><a data-toggle='pill' data-value='3' data-input="<%= student.id %>_mark"  href='#'>Удовл.</a></li>
             <li><a data-toggle='pill' data-value='4' data-input="<%= student.id %>_mark"  href='#'>Хорошо</a></li>
@@ -41,7 +41,9 @@
     </tbody>
   </table>
 
-  <%= submit_tag 'Сохранить оценки', class: 'btn btn-primary' %>
+  <%= submit_tag 'Сохранить оценки', class: 'btn btn-primary', id: 'submit-req' %>
+
   или
   <%= link_to 'назад ко всем предметам', study_subject_marks_path(@subject) %>
 <% end %>
+

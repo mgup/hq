@@ -1,0 +1,31 @@
+<div class="mage-header">
+  <h1>
+    <%= @mark.student.person.full_name %>
+    <br>
+    <small>
+      <%= @mark.subject.title %>
+      (<%= "#{@mark.subject.year}/#{@mark.subject.year + 1}, #{@mark.subject.semester}-й семестр" %>)
+    </small>
+  </h1>
+</div>
+
+<%= form_tag study_subject_marks_path(@subject), html: { class: 'form-horizontal' } %>
+      <div class="row">
+        <%= label_tag :student, 'Студент', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+            <%= text_field_tag :student, @mark.student.person.full_name %>
+        </div>
+      </div>
+      <div class="row">
+        <%= label_tag :mark, 'Оценка', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+            <%= text_field_tag :mark, @mark.mark %>
+        </div>
+      </div>
+      <div class="row">
+        <%= label_tag :retake, 'Пересдача', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+            <%= text_field_tag :retake, @mark.retake %>
+        </div>
+      </div> 
+     <%= submit_tag 'Сохранить', class: 'btn btn-mrimary'%>

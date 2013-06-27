@@ -39,11 +39,11 @@ class Study::MarksController < ApplicationController
     if ver
       marks.each do |m|
         mark=Study::Mark.new user_id: user, subject_id: params[:subject_id], student_id: m[:student_id], mark: m[:mark], retake: m[:retake]
-        mark.save
+        mark.save!
       end
       redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
     else
-      redirect_to :back, notice: 'Вы внесли не все результаты!'
+      redirect_to new_study_subject_mark_path(@subject), notice: 'Вы внесли не все результаты!'
     end
 
     

@@ -13,6 +13,7 @@
     <th>Группа</th>
     <th>Дисциплина</th>
     <th>Форма отчетности</th>
+    <th>Оценки</th>
   </tr>
   </thead>
   <tbody>
@@ -24,6 +25,7 @@
       <td><%= subject.group.name %></td>
       <td><%= subject.title %></td>
       <td><%= subject.type %></td>
+      <td><%= link_to 'Посмотреть', study_subject_marks_path(subject) %></td>
     </tr>
   <% end %>
   </tbody>

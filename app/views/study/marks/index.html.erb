@@ -16,6 +16,7 @@
       <th>#</th>
       <th>Студент</th>
       <th>Результат</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
         <td><%= mark.id %></td>
         <td><%= mark.student.person.full_name %></td>
         <td><%= mark.mark %></td>
+        <td><%= link_to 'Редактировать', edit_study_subject_mark_path(@subject, mark) %></td>
       </tr>
     <% end %>
     </tbody>
