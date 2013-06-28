@@ -1,4 +1,4 @@
-<%= form_tag study_subject_marks_path(@subject), class: 'val' do %>
+<%= form_tag study_subject_marks_path(@subject), class: 'val', id: 'form-for-mark' do %>
   <table class='table' id='stud-marks'>
     <thead>
     <tr>
@@ -15,6 +15,7 @@
       <td>
         <%= student.id %>
         <%= hidden_field_tag 'marks[][student_id]', student.id %>
+        <%= hidden_field_tag 'marks[][user_id]', current_user.id %>
       </td>
       <td><%= student.person.full_name %></td>
       <td>

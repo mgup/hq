@@ -2,7 +2,7 @@
   <h1>Все результаты</h1>
 </div>
 
-<%= link_to 'Добавить', new_study_subject_path, class: 'btn btn-default' %>
+<%= link_to 'Добавить', new_study_subject_path, class: 'btn btn-primary' %>
 
 <table class="table table-hover">
   <thead>
@@ -18,7 +18,7 @@
   </thead>
   <tbody>
   <% @subjects.each do |subject| %>
-    <tr>
+    <tr class='subj'>
       <td><%= subject.id %></td>
       <td><%= "#{subject.year}/#{subject.year + 1}" %></td>
       <td><%= subject.semester %></td>
@@ -30,3 +30,7 @@
   <% end %>
   </tbody>
 </table>
+
+
+  <%= link_to 'Анализ', analyse_path, class: 'btn btn-default' %>
+

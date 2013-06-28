@@ -9,23 +9,39 @@
   </h1>
 </div>
 
-<%= form_tag study_subject_marks_path(@subject), html: { class: 'form-horizontal' } %>
+<%= form_tag edit_study_subject_mark_path(@subject, @mark), method: :get do %>
+<% @student_mark.each do |m| %>
+  <%= hidden_field_tag 'marks[][id]', m.id %>
+    <div class="row">
+      <%= label_tag 'student', 'Студент', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= hidden_field_tag 'marks[][student_id]', m.student.id %>
+          <%= text_field_tag 'student', m.student.person.full_name, disabled: 'disabled' %>
+      </div>
+    </div>
       <div class="row">
-        <%= label_tag :student, 'Студент', class: 'col col-lg-2 control-label' %>
+        <%= label_tag 'marks[][mark]', 'Оценка', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-10">
-            <%= text_field_tag :student, @mark.student.person.full_name %>
+            <%= text_field_tag 'marks[][mark]', m.mark %>
         </div>
       </div>
       <div class="row">
-        <%= label_tag :mark, 'Оценка', class: 'col col-lg-2 control-label' %>
+        <%= label_tag 'marks[][retake]', 'Пересдача', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-10">
-            <%= text_field_tag :mark, @mark.mark %>
-        </div>
-      </div>
-      <div class="row">
-        <%= label_tag :retake, 'Пересдача', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-            <%= text_field_tag :retake, @mark.retake %>
+            <%= text_field_tag 'marks[][retake]', m.retake %>
         </div>
       </div> 
-     <%= submit_tag 'Сохранить', class: 'btn btn-mrimary'%>
+      <div class="row">
+        <%= label_tag 'user', 'Пользователь', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-10">
+          <%= hidden_field_tag 'marks[][user_id]', m.user.id %>
+            <%= text_field_tag 'user', m.user.id, disabled: 'disabled' %>
+        </div>
+      </div>
+    <% end %>
+  <div class="row">
+    <div class='col col-lg-2'>
+      <%= submit_tag 'Сохранить', class: 'btn btn-primary'%>
+    </div>
+  </div>
+   <% end %>

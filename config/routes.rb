@@ -6,6 +6,8 @@ HQ::Application.routes.draw do
 
   get 'utility/morpher'
 
+  get '/analyse' => 'analyse#index'
+
   resources :roles
   resources :users
   resources :departments

@@ -1,0 +1,26 @@
+<div class="page-header">
+  <h1>Ошибки при вводе</h1>
+</div>
+
+<table class='table table-hover'>
+  <tr>
+    <th>Студент</th>
+    <th>Дисциплина</th>
+    <th></th>
+  </tr>
+  <% @variants.each do |prob|%>
+    <% if prob['marks'].size > 1 %>
+      <tr>
+        <% student = Student.find(prob['student']).person.full_name %>
+        <% subject = Study::Subject.find(prob['subject']).title %>
+        <td><%= student %></td>
+        <td><%= subject %></td>
+        <% mark = Array.new %>
+        <% Study::Mark.where(subject_id: prob['subject']).where(student_id: prob['student']).each do |m| %>
+          <% mark.insert(-1, m.id) %>
+        <% end %>
+        <td><%= link_to 'Редактировать', edit_study_subject_mark_path(prob['subject'], mark[0]) %></td>
+      </tr>
+    <% end %>  
+  <% end %>
+</table>
