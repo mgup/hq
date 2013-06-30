@@ -6,23 +6,31 @@ class Study::MarksController < ApplicationController
   def index
     @marks = @subject.marks
     @m = Array.new
+    @r = Array.new
     case @subject.semester
       when 1
         time = Time.new((@subject.year + 1), 1, 1)
       when 2
         time = Time.new((@subject.year + 1), 6, 1)
     end
-    students = Student.in_group_at_date(@subject.group.id, time)
-    students.each do |s|
+    @students = Student.in_group_at_date(@subject.group.id, time)
+    @students.each do |s|
       student_mark = @subject.marks.where(student_id: s)
       result = Array.new
+      retake = Array.new
       student_mark.each do |sm|
         result.insert(-1, sm.mark) 
+        retake.insert(-1, sm.retake)
       end 
       result.uniq!
-      result.each do |r|
-        mark = student_mark.where(mark: r).first
+      result.each do |res|
+        mark = student_mark.where(mark: res).first
         @m.insert(-1, mark)
+      end
+      retake.uniq!
+      retake.each do |retake|
+        mark = student_mark.where(retake: retake).first
+        @r.insert(-1, mark)
       end
     end
 

@@ -18,18 +18,44 @@
       <th>#</th>
       <th>Студент</th>
       <th>Результат</th>
+      <th>Пересдача</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
-    <% @m.each do |mark| %>
-      <tr>
-        <td><%= mark.id %></td>
-        <td><%= mark.student.person.full_name %></td>
-        <td><%= mark.mark %></td>
-        <td><%= link_to 'Редактировать', edit_study_subject_mark_path(@subject, mark) %></td>
-      </tr>
-    <% end %>
+      <% @students.each  do |student| %>
+        </tr>
+          <td><%= student.id %></td>
+          <td><%= student.person.full_name %></td>
+          <% student_marks = Array.new %>
+          <% @m.each do |m| %>
+            <% if m.student_id == student.id %>
+              <% student_marks.insert(-1,m) %>
+            <% end %>
+          <% end %>
+          <td>
+            <% student_marks.each do |mark| %>
+              <%= mark.mark %>
+            <% end %> 
+          </td>
+          <% student_retakes = Array.new %>
+          <% @r.each do |r| %>
+            <% if r.student_id == student.id %>
+              <% student_retakes.insert(-1,r) %>
+            <% end %>
+          <% end %>
+          <td>
+            <% student_retakes.each do |retake| %>
+              <% if retake.retake == nil %>
+                <%= 'нет' %>
+              <% else %>
+                <%= retake.retake %>
+              <% end %>
+            <% end %> 
+          </td>
+          <td><%= link_to  'Редактировать', edit_study_subject_mark_path(@subject, student_marks[0]) %></td>
+       </tr>
+      <% end %> 
     </tbody>
   </table>
  </div> 
