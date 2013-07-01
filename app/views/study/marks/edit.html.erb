@@ -9,39 +9,66 @@
   </h1>
 </div>
 
+<% if @this_marks.size > 1 %>
+  <% if @this_retakes.size > 1 %>
+    <div class='alert alert-error'>Оценка и пересдача внесены неверно!</div>
+  <% else %>
+    <div class='alert alert-error'>Оценка внесена неверно!</div>
+  <% end %>
+<% else %>
+  <% if @this_retakes.size > 1 %>
+    <div class='alert alert-error'>Пересдача внесена неверно!</div>
+  <% end %>
+<% end %>
+
 <%= form_tag edit_study_subject_mark_path(@subject, @mark), method: :get do %>
-<% @student_mark.each do |m| %>
-  <%= hidden_field_tag 'marks[][id]', m.id %>
-    <div class="row">
-      <%= label_tag 'student', 'Студент', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= hidden_field_tag 'marks[][student_id]', m.student.id %>
-          <%= text_field_tag 'student', m.student.person.full_name, disabled: 'disabled' %>
+  <% @student_mark.each do |m| %>
+    <%= hidden_field_tag 'marks[][id]', m.id %>
+    <%= hidden_field_tag 'marks[][student_id]', m.student.id %>  
+    <div class='row'>
+      <%= label_tag 'user', 'Пользователь', class: 'col col-lg-2 control-label' %>
+      <div class='col col-lg-6'>
+        <%= hidden_field_tag 'marks[][user_id]', m.user.id %>
+        <%= text_field_tag 'user', m.user.id, disabled: 'disabled' %>
       </div>
-    </div>
-      <div class="row">
-        <%= label_tag 'marks[][mark]', 'Оценка', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-            <%= text_field_tag 'marks[][mark]', m.mark %>
-        </div>
+    </div>  
+    <div class='row'>
+      <%= label_tag 'marks[][mark]', 'Оценка', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-4">
+        <% if @mark.subject.exam? %>
+            <%= hidden_field_tag 'marks[][mark]', m.mark, required: 'required', id: "#{m.id}_mark" %>
+            <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
+              <li class="<%= 'active' if 3==m.mark %>"><a data-toggle='pill' data-value='3' data-input="<%= m.id %>_mark"  href='#'>Удовл.</a></li>
+              <li class="<%= 'active' if 4==m.mark %>"><a data-toggle='pill' data-value='4' data-input="<%= m.id %>_mark" href='#'>Хорошо</a></li>
+              <li class="<%= 'active' if 5==m.mark %>"><a data-toggle='pill' data-value='5' data-input="<%= m.id %>_mark"  href='#'>Отлично</a></li>
+            </ul>
+          <% else %>
+            <%= hidden_field_tag 'marks[][mark]', 1, id: "#{m.id}_mark" %>
+            <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
+              <li class="<%= 'active' if 0==m.mark %>"><a data-toggle='pill' data-value='0' data-input="<%= m.id %>_mark"  href='#'>Не зачтено</a></li>
+              <li class="<%= 'active' if 1==m.mark %>"><a data-toggle='pill' data-value='1' data-input="<%= m.id %>_mark" href='#'>Зачтено</a></li>
+            </ul>
+          <% end %>
       </div>
-      <div class="row">
-        <%= label_tag 'marks[][retake]', 'Пересдача', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-            <%= text_field_tag 'marks[][retake]', m.retake %>
-        </div>
-      </div> 
-      <div class="row">
-        <%= label_tag 'user', 'Пользователь', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-          <%= hidden_field_tag 'marks[][user_id]', m.user.id %>
-            <%= text_field_tag 'user', m.user.id, disabled: 'disabled' %>
-        </div>
+    </div>  
+    <div class='row'>
+      <%= label_tag 'marks[][retake]', 'Пересдача', class: 'col col-lg-2 control-label' %>
+      <div class='col col-lg-6'>
+        <select id='marks_retake' name='marks[][retake]'>
+          <option <%= 'selected' if ''==m.retake %> value=''>нет</option>
+          <option <%= 'selected' if 1==m.retake %> value='1'>1</option>
+          <option <%= 'selected' if 2==m.retake %> value='2'>2</option>
+          <option <%= 'selected' if 3==m.retake %> value='3'>3</option>
+        </select>
       </div>
-    <% end %>
-  <div class="row">
+    </div> 
+    <br>
+    <br>
+    <br>
+  <% end %>
+  <div class='row'>
     <div class='col col-lg-2'>
       <%= submit_tag 'Сохранить', class: 'btn btn-primary'%>
     </div>
   </div>
-   <% end %>
+<% end %>

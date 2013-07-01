@@ -23,29 +23,21 @@
     </tr>
     </thead>
     <tbody>
-      <% @students.each  do |student| %>
-        </tr>
-          <td><%= student.id %></td>
-          <td><%= student.person.full_name %></td>
-          <% student_marks = Array.new %>
-          <% @m.each do |m| %>
-            <% if m.student_id == student.id %>
-              <% student_marks.insert(-1,m) %>
-            <% end %>
-          <% end %>
+      <% @discipline_students.each  do |student| %>
+        <tr class="<%= 'danger' if (student['marks'].size > 1 or student['retakes'].size > 1 ) %>">
+          <td><%= student['id'] %></td>
+          <td><%= student['name'] %></td>
           <td>
-            <% student_marks.each do |mark| %>
-              <%= mark.mark %>
+            <% student['marks'].each do |mark| %>
+              <% if mark.subject.exam? %>
+                <%= mark.mark %>
+              <% else %>
+                <%= mark.test %>
+              <% end %>
             <% end %> 
           </td>
-          <% student_retakes = Array.new %>
-          <% @r.each do |r| %>
-            <% if r.student_id == student.id %>
-              <% student_retakes.insert(-1,r) %>
-            <% end %>
-          <% end %>
           <td>
-            <% student_retakes.each do |retake| %>
+            <% student['retakes'].each do |retake| %>
               <% if retake.retake == nil %>
                 <%= 'нет' %>
               <% else %>
@@ -53,7 +45,7 @@
               <% end %>
             <% end %> 
           </td>
-          <td><%= link_to  'Редактировать', edit_study_subject_mark_path(@subject, student_marks[0]) %></td>
+          <td><%= link_to  'Редактировать', edit_study_subject_mark_path(@subject, student['marks'].first) %></td>
        </tr>
       <% end %> 
     </tbody>

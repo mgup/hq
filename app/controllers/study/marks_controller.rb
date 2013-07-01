@@ -4,9 +4,9 @@ class Study::MarksController < ApplicationController
   before_filter :find_subject, only: [:index, :new, :create, :edit]
 
   def index
-    @marks = @subject.marks
-    @m = Array.new
-    @r = Array.new
+    disciplines = Study::Subject.where(year: @subject.year).where(semester: @subject.semester).where(group_id: @subject.group_id).where(title: @subject.title).where(kind: @subject.kind)
+    @marks = Study::Mark.where(subject_id: disciplines)
+    @discipline_students = Array.new
     case @subject.semester
       when 1
         time = Time.new((@subject.year + 1), 1, 1)
@@ -15,7 +15,12 @@ class Study::MarksController < ApplicationController
     end
     @students = Student.in_group_at_date(@subject.group.id, time)
     @students.each do |s|
-      student_mark = @subject.marks.where(student_id: s)
+      m = Array.new
+      r = Array.new
+      student = Hash.new
+      student['id'] = s.id
+      student['name'] = s.person.full_name
+      student_mark = @marks.where(student_id: s)
       result = Array.new
       retake = Array.new
       student_mark.each do |sm|
@@ -25,13 +30,16 @@ class Study::MarksController < ApplicationController
       result.uniq!
       result.each do |res|
         mark = student_mark.where(mark: res).first
-        @m.insert(-1, mark)
+        m.insert(-1, mark)
       end
+      student['marks'] = m
       retake.uniq!
       retake.each do |retake|
         mark = student_mark.where(retake: retake).first
-        @r.insert(-1, mark)
+        r.insert(-1, mark)
       end
+      student['retakes'] = r
+      @discipline_students.insert(-1,student)
     end
 
   end
@@ -48,7 +56,6 @@ class Study::MarksController < ApplicationController
   end
 
   def create
-
     marks = params[:marks]
     ver = true
     marks.each do |ex|
@@ -67,8 +74,20 @@ class Study::MarksController < ApplicationController
 
   end
 
-  def edit 
-    @student_mark =  @subject.marks.where(student_id: @mark.student.id)
+  def edit
+    disciplines = Study::Subject.where(year: @subject.year).where(semester: @subject.semester).where(group_id: @subject.group_id).where(title: @subject.title).where(kind: @subject.kind)
+    descipline_marks = Study::Mark.where(subject_id: disciplines) 
+    @student_mark =  descipline_marks.where(student_id: @mark.student.id)
+    @this_marks = Array.new
+    @student_mark.each do |stud_mark|
+      @this_marks.insert(-1,stud_mark.mark)
+    end
+    @this_marks.uniq!
+    @this_retakes = Array.new
+    @student_mark.each do |stud_retake|
+      @this_retakes.insert(-1,stud_retake.retake)
+    end
+    @this_retakes.uniq!
     if params[:marks]
       marks = params[:marks]
     ver = true
