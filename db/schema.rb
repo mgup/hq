@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(version: 20130625113821) do
     t.string  "department_sname",   limit: 200,                      null: false
     t.integer "department_prename"
     t.string  "department_alias",   limit: 45
-    t.string  "department_role",    limit: 200, default: "students"
+    t.string  "department_role",    limit: 200, default: "students", null: false
     t.boolean "department_active",              default: true,       null: false
     t.integer "department_parent"
   end
@@ -1029,6 +1029,8 @@ ActiveRecord::Schema.define(version: 20130625113821) do
     t.integer  "retake"
   end
 
+  add_index "study_marks", ["student_id"], name: "index_study_marks_on_student_id", using: :btree
+  add_index "study_marks", ["subject_id"], name: "index_study_marks_on_subject_id", using: :btree
   add_index "study_marks", ["user_id"], name: "index_study_marks_on_user_id", using: :btree
 
   create_table "study_subjects", force: true do |t|
