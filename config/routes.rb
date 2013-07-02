@@ -21,6 +21,9 @@ HQ::Application.routes.draw do
     end
   end
 
+  get 'schedule/data/departments' => 'schedule/data#departments'
+  get 'schedule/data/rooms' => 'schedule/data#rooms'
+
   get 'study/subjects/ajax/specialities' => 'ajax#specialities'
   get 'study/subjects/ajax/groups' => 'ajax#groups'
 
