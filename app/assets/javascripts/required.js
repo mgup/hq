@@ -3,7 +3,7 @@ $(function() {
   $('#submit-req').click( function () {
     var $x = $('.required');
     var $key = true;
-    $x.each (function (){
+    $x.each (function () {
       $key *= (this.value != '')
     })
     if (!$key){

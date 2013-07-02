@@ -1,0 +1,55 @@
+<div class="page-header">
+  <h1><%= @mark.student.person.full_name %> <small><%= @mark.subject.group.name %></small>
+    <br>
+    <small>
+      <%= @mark.subject.title %>
+      (<%= "#{@mark.subject.year}/#{@mark.subject.year + 1}, #{@mark.subject.semester}-й семестр" %>)
+    </small>
+  </h1>
+</div>
+
+<%= form_for @mark, html: { class: 'form-horizontal' }, url: study_subject_mark_path(@mark.subject, @mark)  do |f| %>
+  <%= f.hidden_field :user_id %>
+    <div class='row'>
+      <%= f.label :user_id, 'Пользователь', class: 'col col-lg-2 control-label' %>
+      <div class='col col-lg-6'>
+        <%= f.text_field :user_id, disabled: 'disabled' %>
+      </div>
+    </div>  
+    <div class='row'>
+      <%= f.label :mark, 'Оценка', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-4">
+        <% if @mark.subject.exam? %>
+            <%= f.hidden_field :mark, required: 'required', id: 'mark' %>
+            <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
+              <li class="<%= 'active' if 3==@mark.mark %>"><a data-toggle='pill' data-value='3' data-input='mark'  href='#'>Удовл.</a></li>
+              <li class="<%= 'active' if 4==@mark.mark %>"><a data-toggle='pill' data-value='4' data-input='mark' href='#'>Хорошо</a></li>
+              <li class="<%= 'active' if 5==@mark.mark %>"><a data-toggle='pill' data-value='5' data-input='mark'  href='#'>Отлично</a></li>
+            </ul>
+          <% else %>
+            <%= f.hidden_field :mark, id: 'mark' %>
+            <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
+              <li class="<%= 'active' if 0==@mark.mark %>"><a data-toggle='pill' data-value='0' data-input='mark' href='#'>Не зачтено</a></li>
+              <li class="<%= 'active' if 1==@mark.mark %>"><a data-toggle='pill' data-value='1' data-input='mark' href='#'>Зачтено</a></li>
+            </ul>
+          <% end %>
+      </div>
+    </div>  
+    <div class='row'>
+      <%= f.label :retake, 'Пересдача', class: 'col col-lg-2 control-label' %>
+      <div class='col col-lg-6'>
+        <select id='retake' name='study_mark[retake]'>
+          <option <%= 'selected' if ''==@mark.retake %> value=''>нет</option>
+          <option <%= 'selected' if 1==@mark.retake %> value='1'>1</option>
+          <option <%= 'selected' if 2==@mark.retake %> value='2'>2</option>
+          <option <%= 'selected' if 3==@mark.retake %> value='3'>3</option>
+        </select>
+      </div>
+    </div> 
+    <br>
+  <div class='row'>
+    <div class='col col-lg-10 col-offset-2'>
+      <%= submit_tag 'Сохранить', class: 'btn btn-default'%>
+    </div>
+  </div>
+<% end %>

@@ -1,39 +1,51 @@
 <div class="page-header">
-  <h1>Экзамен/зачет</h1>
+  <h1>
+    Оценки <%= @subject.group.name %>
+    <br>
+    <small>
+      <%= @subject.title %>
+      (<%= "#{@subject.year}/#{@subject.year + 1}, #{@subject.semester}-й семестр" %>)
+    </small>
+  </h1>
 </div>
 
-<%= form_for @subject, html: { class: 'form-horizontal' } do |f| %>
-  <%= f.fields_for @subject do |p| %>
-      <div class="row">
-        <%= p.label :year, 'Год', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-            <%= p.text_field :year %>
-        </div>
-      </div>
-      <div class="row">
-        <%= p.label :semester, 'Семестр', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-            <%= p.text_field :semester %>
-        </div>
-      </div>
-      <div class="row">
-        <%= p.label :group_id, 'Группа', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-            <%= p.text_field :group_id %>
-        </div>
-      </div> 
-      <div class="row">
-        <%= p.label :title, 'Дисциплина', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-            <%= p.text_field :title%>
-        </div>
-      </div> 
-      <div class="row">
-        <%= p.label :kind, 'Форма отчетности', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-            <%= p.text_field :kind %>
-        </div>
-      </div>
-    <% end %>
-     <%= f.submit 'Сохранить', class: 'btn btn-primary'%>
-  <% end %>
+<%= link_to  'Все оценки, введенные по данной дисциплине', study_subject_marks_path(@subject) %>
+<br>
+<br>
+
+  <table class='table table-hover'>
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Студент</th>
+      <th>Результат</th>
+      <th>Пересдача</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @subject.marks.each  do |mark| %>
+        <tr>
+          <td><%= mark.student.id %></td>
+          <td><%= mark.student.person.full_name %></td>
+          <td>
+            <% if mark.subject.exam? %>
+              <%= mark.mark %>
+            <% else %>
+              <%= mark.test %>
+            <% end %>
+          </td>
+          <td>
+            <% if mark.retake == nil %>
+              <%= 'нет' %>
+            <% else %>
+              <%= mark.retake %>
+            <% end %> 
+          </td>
+          <td><%= link_to  'Редактировать', study_subject_mark_path(@subject, mark) %></td>
+       </tr>
+      <% end %> 
+    </tbody>
+  </table>
+
+  <%= link_to 'Добавить', new_study_subject_mark_path(@subject), class: 'btn btn-default' %>

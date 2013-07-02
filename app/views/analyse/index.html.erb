@@ -10,35 +10,21 @@
     <th></th>
   </tr>
   <% @variants.each do |prob|%>
-    <% if (prob['marks'].size > 1)&&(prob['retakes'].size > 1)%>
+    <% student = Student.find(prob['student']).person.full_name %>
+    <% subject = Study::Subject.find(prob['subject']).title %>
+    <% if (prob['marks'].size > 1)||(prob['retakes'].size > 1)%>
       <tr>
-        <% student = Student.find(prob['student']).person.full_name %>
-        <% subject = Study::Subject.find(prob['subject']).title %>
         <td><%= student %></td>
         <td><%= subject %></td>
-        <td>Оценка и пересдача</td>
+        <% if (prob['retakes'].size == 1)%>
+          <td>Оценка</td>
+        <% elsif (prob['marks'].size == 1) %>
+          <td>Пересдача</td>
+        <% else %>
+          <td>Оценка и пересдача</td>
+        <% end %> 
         <td><%= link_to 'Редактировать', edit_study_subject_mark_path(prob['subject'], prob['mark']) %></td>
       </tr>
-    <% end %>
-     <% if (prob['marks'].size > 1)&&(prob['retakes'].size == 1)%>
-      <tr>
-        <% student = Student.find(prob['student']).person.full_name %>
-        <% subject = Study::Subject.find(prob['subject']).title %>
-        <td><%= student %></td>
-        <td><%= subject %></td>
-        <td>Оценка</td>
-        <td><%= link_to 'Редактировать', edit_study_subject_mark_path(prob['subject'], prob['mark']) %></td>
-      </tr>
-    <% end %>
-     <% if (prob['marks'].size == 1)&&(prob['retakes'].size > 1)%>
-      <tr>
-        <% student = Student.find(prob['student']).person.full_name %>
-        <% subject = Study::Subject.find(prob['subject']).title %>
-        <td><%= student %></td>
-        <td><%= subject %></td>
-        <td>Пересдача</td>
-        <td><%= link_to 'Редактировать', edit_study_subject_mark_path(prob['subject'], prob['mark']) %></td>
-      </tr>
-    <% end %>      
+    <% end %>     
   <% end %>
 </table>

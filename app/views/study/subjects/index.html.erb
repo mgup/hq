@@ -2,7 +2,14 @@
   <h1>Все результаты</h1>
 </div>
 
-<%= link_to 'Добавить', new_study_subject_path, class: 'btn btn-primary' %>
+<div class='row'>
+  <div class='col col-lg-2'>
+    <%= link_to 'Добавить', new_study_subject_path, class: 'btn btn-primary' %>
+  </div>
+  <div class='col col-lg-2 pull-right'>
+    <%= link_to 'Анализ', analyse_path, class: 'btn btn-info btn-block' %>
+  </div>
+</div>
 
 <table class="table table-hover">
   <thead>
@@ -25,12 +32,8 @@
       <td><%= subject.group.name %></td>
       <td><%= subject.title %></td>
       <td><%= subject.type %></td>
-      <td><%= link_to 'Посмотреть', study_subject_marks_path(subject) %></td>
+      <td><%= link_to 'Посмотреть', study_subject_path(subject) %></td>
     </tr>
   <% end %>
   </tbody>
 </table>
-
-
-  <%= link_to 'Анализ', analyse_path, class: 'btn btn-default' %>
-

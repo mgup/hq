@@ -4,8 +4,8 @@
     <tr>
       <th>#</th>
       <th>Студент</th>
-      <th>Результат</th>
       <th>Пересдача</th>
+      <th style='padding-left: 60px;'>Результат</th>
       <th></th>
     </tr>
     </thead>
@@ -19,30 +19,30 @@
       </td>
       <td><%= student.person.full_name %></td>
       <td>
+        <%= select_tag 'marks[][retake]', options_for_select(%w(1 2 3)), prompt: 'нет' %>
+      </td>
+      <td style='padding-left: 45px;'>
         <% if @subject.exam? %>
           <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'required' %>
-          <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
+          <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
             <li><a data-toggle='pill' data-value='3' data-input="<%= student.id %>_mark"  href='#'>Удовл.</a></li>
             <li><a data-toggle='pill' data-value='4' data-input="<%= student.id %>_mark"  href='#'>Хорошо</a></li>
             <li><a data-toggle='pill' data-value='5' data-input="<%= student.id %>_mark"  href='#'>Отлично</a></li>
           </ul>
         <% else %>
-          <%= hidden_field_tag 'marks[][mark]', 1, id: "#{student.id}_mark" %>
-          <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
+          <%= hidden_field_tag 'marks[][mark]', 1, required: 'required', id: "#{student.id}_mark" %>
+          <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
             <li><a data-toggle='pill' data-value='0' data-input="<%= student.id %>_mark"  href='#'>Не зачтено</a></li>
             <li class='active'><a data-toggle='pill' data-value='1' data-input="<%= student.id %>_mark"  href='#'>Зачтено</a></li>
           </ul>
         <% end %>
-      </td>
-      <td>
-        <%= select_tag 'marks[][retake]', options_for_select(%w(1 2 3)), prompt: 'нет' %>
       </td>
     </tr>
     <% end %>
     </tbody>
   </table>
 
-  <%= submit_tag 'Сохранить оценки', class: 'btn btn-primary', id: 'submit-req' %>
+  <%= submit_tag 'Сохранить оценки', class: 'btn btn-default', id: 'submit-req' %>
 
   или
   <%= link_to 'назад ко всем предметам', study_subject_marks_path(@subject) %>

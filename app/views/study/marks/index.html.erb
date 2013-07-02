@@ -11,6 +11,12 @@
 
 <%= link_to 'Добавить', new_study_subject_mark_path, class: 'btn btn-default' %>
 
+<% if notice %>
+  <br>
+  <br>
+  <div class="alert<%= ' alert-info' if notice=='Сохранено' %>"><%= notice %></div>
+<% end %>
+
 <div class='row'>
   <table class='table table-hover'>
     <thead>

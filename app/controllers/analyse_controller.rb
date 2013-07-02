@@ -1,7 +1,6 @@
 class AnalyseController < ApplicationController
   
   def index 
-    @problems= Array.new
     @variants = Array.new
     key = true
      Study::Subject.all.each do |subj|
@@ -16,7 +15,6 @@ class AnalyseController < ApplicationController
         variant =  subj.marks.where(student_id: student)
         var = Hash.new
         var['subject'] = subj.id
-        var['variant'] = variant.size 
         var['student'] = student.id
         var['mark'] = variant.first
         marks = Array.new
@@ -29,14 +27,8 @@ class AnalyseController < ApplicationController
             retakes.insert(0,v.retake)
           end
         end 
-        if marks.size > 1
-          marks = marks.uniq
-        end
-        if retakes.size > 1
-          retakes = retakes.uniq
-        end
-        var['marks'] = marks
-        var['retakes'] = retakes
+        var['marks'] = marks.uniq
+        var['retakes'] = retakes.uniq
         @variants.insert(-1,var)
       end
     end

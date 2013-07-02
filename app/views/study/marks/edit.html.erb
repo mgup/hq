@@ -43,7 +43,7 @@
               <li class="<%= 'active' if 5==m.mark %>"><a data-toggle='pill' data-value='5' data-input="<%= m.id %>_mark"  href='#'>Отлично</a></li>
             </ul>
           <% else %>
-            <%= hidden_field_tag 'marks[][mark]', 1, id: "#{m.id}_mark" %>
+            <%= hidden_field_tag 'marks[][mark]', m.mark, id: "#{m.id}_mark" %>
             <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
               <li class="<%= 'active' if 0==m.mark %>"><a data-toggle='pill' data-value='0' data-input="<%= m.id %>_mark"  href='#'>Не зачтено</a></li>
               <li class="<%= 'active' if 1==m.mark %>"><a data-toggle='pill' data-value='1' data-input="<%= m.id %>_mark" href='#'>Зачтено</a></li>
@@ -68,7 +68,7 @@
   <% end %>
   <div class='row'>
     <div class='col col-lg-2'>
-      <%= submit_tag 'Сохранить', class: 'btn btn-primary'%>
+      <%= submit_tag 'Сохранить', class: 'btn btn-default'%>
     </div>
   </div>
 <% end %>

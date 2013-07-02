@@ -4,16 +4,9 @@ class Study::MarksController < ApplicationController
   before_filter :find_subject, only: [:index, :new, :create, :edit]
 
   def index
-    disciplines = Study::Subject.where(year: @subject.year).where(semester: @subject.semester).where(group_id: @subject.group_id).where(title: @subject.title).where(kind: @subject.kind)
+    disciplines = Study::Subject.find_disciplines(@subject.id)
     @marks = Study::Mark.where(subject_id: disciplines)
     @discipline_students = Array.new
-    case @subject.semester
-      when 1
-        time = Time.new((@subject.year + 1), 1, 1)
-      when 2
-        time = Time.new((@subject.year + 1), 6, 1)
-    end
-    @students = Student.in_group_at_date(@subject.group.id, time)
     @students.each do |s|
       m = Array.new
       r = Array.new
@@ -44,16 +37,7 @@ class Study::MarksController < ApplicationController
 
   end
 
-  def new
-    case @subject.semester
-      when 1
-        time = Time.new((@subject.year + 1), 1, 1)
-      when 2
-        time = Time.new((@subject.year + 1), 6, 1)
-    end
-
-    @students = Student.in_group_at_date(@subject.group.id, time)
-  end
+  def new ; end
 
   def create
     marks = params[:marks]
@@ -61,13 +45,14 @@ class Study::MarksController < ApplicationController
     marks.each do |ex|
       ver= (ex[:mark] != '') && ver
     end
-
     if ver
       marks.each do |m|
-        mark=Study::Mark.new user_id: m[:user_id], subject_id: params[:subject_id], student_id: m[:student_id], mark: m[:mark], retake: m[:retake]
+        mark=Study::Mark.new user_id: m[:user_id],
+          subject_id: params[:subject_id], student_id: m[:student_id],
+          mark: m[:mark], retake: m[:retake]
         mark.save!
       end
-      redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
+      redirect_to study_subject_path(@subject), notice: 'Сохранено'
     else
       redirect_to new_study_subject_mark_path(@subject), notice: 'Вы внесли не все результаты!'
     end
@@ -75,9 +60,8 @@ class Study::MarksController < ApplicationController
   end
 
   def edit
-    disciplines = Study::Subject.where(year: @subject.year).where(semester: @subject.semester).where(group_id: @subject.group_id).where(title: @subject.title).where(kind: @subject.kind)
-    descipline_marks = Study::Mark.where(subject_id: disciplines) 
-    @student_mark =  descipline_marks.where(student_id: @mark.student.id)
+    disciplines = Study::Subject.find_disciplines(@subject.id) 
+    @student_mark =  Study::Mark.where(subject_id: disciplines).where(student_id: @mark.student.id)
     @this_marks = Array.new
     @student_mark.each do |stud_mark|
       @this_marks.insert(-1,stud_mark.mark)
@@ -96,17 +80,30 @@ class Study::MarksController < ApplicationController
     end
     if ver
       marks.each do |m|
-        mark=Study::Mark.find(m[:id]) 
-        mark.update_attributes(user_id: m[:user_id], subject_id: params[:subject_id], student_id: m[:student_id], mark: m[:mark], retake: m[:retake])
+        m['subject_id'] = params[:subject_id]
+        m['updated_at'] = Time.now
+        mark=Study::Mark.find(m[:id])
+        m['created_at'] = mark.created_at
+        mark.update_attributes(m)
       end
       redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
     else
-      redirect_to new_study_subject_mark_path(@subject), notice: 'Вы внесли не все результаты!'
+      redirect_to study_subject_marks_path(@subject), notice: 'Произошла ошибка'
     end
     end
    end
 
-   def update ; end
+   def update 
+    study_mark = params[:study_mark]
+    if @mark.update_attributes(user_id: study_mark[:user_id], 
+      mark: study_mark[:mark], retake: study_mark[:retake])
+      redirect_to study_subject_path(@mark.subject), notice: 'Сохранено'
+    else
+      redirect_to study_subject_path(@mark.subject), notice: 'Произошла ошибка'
+    end
+  end
+
+   def show ; end
 
   def resource_params
     params.fetch(:mark, {}).permit(:user_id, :student_id, :mark, :retake)
@@ -116,9 +113,13 @@ class Study::MarksController < ApplicationController
 
   def find_subject
     @subject = Study::Subject.find(params[:subject_id])
+    case @subject.semester
+      when 1
+        time = Time.new((@subject.year + 1), 1, 1)
+      when 2
+        time = Time.new((@subject.year + 1), 6, 1)
+    end
+    @students = Student.in_group_at_date(@subject.group.id, time)
   end
 
-  def find_user
-    @user = User.find(params[:current_user.id])
-  end
 end
