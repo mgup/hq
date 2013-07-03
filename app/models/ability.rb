@@ -8,6 +8,16 @@ class Ability
       can :manage, :all
     end
 
+    if user.is?(:typer)
+      can :create, [Study::Subject, Study::Mark], user_id: user.id
+      can :read, Study::Subject, user_id: user.id
+      can [:show, :update], Study::Mark, user_id: user.id 
+    end
+
+    if user.is?(:supertyper)
+      can [:read, :update], [Study::Subject, Study::Mark]
+    end
+
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

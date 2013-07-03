@@ -9,9 +9,11 @@
   </h1>
 </div>
 
-<%= link_to  'Все оценки, введенные по данной дисциплине', study_subject_marks_path(@subject) %>
-<br>
-<br>
+<% if !current_user.is?(:typer) %>
+  <%= link_to  'Все оценки, введенные по данной дисциплине', study_subject_marks_path(@subject) %>
+  <br>
+  <br>
+<% end %>
 
   <table class='table table-hover'>
     <thead>

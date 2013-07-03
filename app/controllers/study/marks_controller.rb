@@ -54,14 +54,16 @@ class Study::MarksController < ApplicationController
       end
       redirect_to study_subject_path(@subject), notice: 'Сохранено'
     else
-      redirect_to new_study_subject_mark_path(@subject), notice: 'Вы внесли не все результаты!'
+      redirect_to new_study_subject_mark_path(@subject), 
+      notice: 'Вы внесли не все результаты!'
     end
 
   end
 
   def edit
     disciplines = Study::Subject.find_disciplines(@subject.id) 
-    @student_mark =  Study::Mark.where(subject_id: disciplines).where(student_id: @mark.student.id)
+    @student_mark =  Study::Mark.where(subject_id: disciplines,
+                                       student_id: @mark.student.id)
     @this_marks = Array.new
     @student_mark.each do |stud_mark|
       @this_marks.insert(-1,stud_mark.mark)
