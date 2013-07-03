@@ -15,7 +15,8 @@ class Study::Subject < ActiveRecord::Base
     cond = all
      if subj.to_i != nil
       subject = Study::Subject.find(subj)
-      cond=cond.where(year: subject.year).where(semester: subject.semester).where(group_id: subject.group_id).where(title: subject.title).where(kind: subject.kind)
+      cond=cond.where(year: subject.year, semester: subject.semester, 
+        group_id: subject.group_id, title: subject.title, kind: subject.kind)
     else
       cond=all
     end

@@ -1,6 +1,8 @@
-<div class="row">
-  <%= render 'system/stats' %>
-</div>
-<div class="row section">
-  <%= render 'system/quality' %>
-</div>
+<% if current_user.is?(:developer) %>
+  <div class="row">
+    <%= render 'system/stats' %>
+  </div>
+  <div class="row section">
+    <%= render 'system/quality' %>
+  </div>
+<% end %>

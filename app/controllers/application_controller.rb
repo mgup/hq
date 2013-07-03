@@ -7,11 +7,10 @@ class ApplicationController < ActionController::Base
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
-  before_filter :authorize_developer
+  # before_filter :authorize_developer
 
   rescue_from CanCan::AccessDenied do |exception|
-    sign_out :user
-    redirect_to new_user_session_path, :alert => exception.message
+    redirect_to root_path, :alert => exception.message
   end
 
   before_filter :enable_profiler unless Rails.env.test?
@@ -24,9 +23,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authorize_developer
-    authorize! :manage, :all if user_signed_in?
-  end
+  # def authorize_developer
+  #   authorize! :manage, :all if user_signed_in?
+  # end
 
   def enable_profiler
     Rack::MiniProfiler.authorize_request if can?(:manage, :all)
