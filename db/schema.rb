@@ -1029,8 +1029,6 @@ ActiveRecord::Schema.define(version: 20130704104945) do
     t.integer  "retake",     default: 0, null: false
   end
 
-  add_index "study_marks", ["student_id"], name: "index_study_marks_on_student_id", using: :btree
-  add_index "study_marks", ["subject_id"], name: "index_study_marks_on_subject_id", using: :btree
   add_index "study_marks", ["user_id"], name: "index_study_marks_on_user_id", using: :btree
 
   create_table "study_subjects", force: true do |t|

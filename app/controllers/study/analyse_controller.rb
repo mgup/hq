@@ -1,4 +1,4 @@
-class AnalyseController < ApplicationController
+class Study::AnalyseController < ApplicationController
   
   def index 
     @collisions = []

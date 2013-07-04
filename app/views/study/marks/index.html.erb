@@ -12,7 +12,7 @@
 <% if !current_user.is?(:supertyper) %>
   <%= link_to 'Добавить', new_study_subject_mark_path, class: 'btn btn-default' %>
 <% else %>
-  <%= link_to 'Анализ', analyse_path, class: 'btn btn-info' %>
+  <%= link_to 'Анализ', study_analyse_path, class: 'btn btn-info' %>
   <br>
   <br>
 <% end %>

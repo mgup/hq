@@ -11,7 +11,7 @@ class Study::SubjectsController < ApplicationController
 
   def create
     if @subject.save
-      redirect_to study_subject_path(@subject), notice: 'Успешно создана.'
+      redirect_to study_subject_marks_path(@subject), notice: 'Успешно создана.'
     else
       redirect_to new_study_subject_path
     end
