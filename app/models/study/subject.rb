@@ -11,17 +11,9 @@ class Study::Subject < ActiveRecord::Base
 
   validates_presence_of :year, :semester, :title, :kind
 
-  scope :find_disciplines, -> subj {
-    cond = all
-     if subj.to_i != nil
-      subject = Study::Subject.find(subj)
-      cond=cond.where(year: subject.year, semester: subject.semester, 
-        group_id: subject.group_id, title: subject.title, kind: subject.kind)
-    else
-      cond=all
-    end
-    cond
-  }
+  scope :find_subjects, -> subject {where(year: subject.year, 
+                      semester: subject.semester, group_id: subject.group_id, 
+                      title: subject.title, kind: subject.kind)}
 
   def type
     case kind

@@ -1,38 +1,25 @@
 class Study::MarksController < ApplicationController
   load_and_authorize_resource
 
-  before_filter :find_subject, only: [:index, :new, :create, :edit]
+  before_filter :find_subject
 
   def index
-    disciplines = Study::Subject.find_disciplines(@subject.id)
-    @marks = @marks.where(subject_id: disciplines)
-    @discipline_students = Array.new
-    @students.each do |s|
-      m = Array.new
-      r = Array.new
-      student = Hash.new
-      student['id'] = s.id
-      student['name'] = s.person.full_name
-      student_mark = @marks.where(student_id: s)
-      result = Array.new
-      retake = Array.new
-      student_mark.each do |sm|
-        result.insert(-1, sm.mark) 
-        retake.insert(-1, sm.retake)
-      end 
-      result.uniq!
-      result.each do |res|
-        mark = student_mark.where(mark: res).first
-        m.insert(-1, mark)
+    @marks = @marks.by_subject(Study::Subject.find_subjects(@subject))
+    @subject_students = []
+    @students.each do |student|
+      student_marks = @marks.by_student(student)
+      result = []
+      retake = []
+      student_marks.each do |sm|
+        result << (@subject.exam? ? sm.mark : sm.test)
+        retake << ((sm.retake == 0) ? 'нет' : sm.retake)
       end
-      student['marks'] = m
-      retake.uniq!
-      retake.each do |retake|
-        mark = student_mark.where(retake: retake).first
-        r.insert(-1, mark)
-      end
-      student['retakes'] = r
-      @discipline_students.insert(-1,student)
+      result = result.uniq
+      retake = retake.uniq
+      error = 'danger' if result.size > 1 || retake.size > 1
+      @subject_students.push({student: student, marks: result.join(', '), 
+                              retakes: retake.join(', '),
+                              mark: student_marks.first, error: error})
     end
 
   end
@@ -47,9 +34,7 @@ class Study::MarksController < ApplicationController
     end
     if ver
       marks.each do |m|
-        mark=Study::Mark.new user_id: m[:user_id],
-          subject_id: params[:subject_id], student_id: m[:student_id],
-          mark: m[:mark], retake: m[:retake]
+        mark=Study::Mark.new(m)
         mark.save!
       end
       redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
@@ -61,42 +46,36 @@ class Study::MarksController < ApplicationController
   end
 
   def edit
-    disciplines = Study::Subject.find_disciplines(@subject.id) 
-    @marks = Study::Mark.where(subject_id: disciplines,
-                                       student_id: @mark.student.id)
-    
-    @this_marks = Array.new
-    @this_retakes = Array.new
-    @marks.each do |stud_mark|
-      @this_marks.insert(-1,stud_mark.mark)
-      @this_retakes.insert(-1,stud_mark.retake)
+    @marks = Study::Mark.by_subject(Study::Subject.find_subjects(@subject))
+                        .by_student(@mark.student)
+    result, retake = [], []
+    @marks.each do |student_mark|
+      result << student_mark.mark
+      retake << student_mark.retake
     end
-    @this_marks.uniq!
-    @this_retakes.uniq!
-    if params[:marks]
-      marks = params[:marks]
-    ver = true
-    marks.each do |ex|
-      ver= (ex[:mark] != '') && ver
-    end
-    if ver
-      marks.each do |m|
-        m['subject_id'] = params[:subject_id]
-        m['updated_at'] = Time.now
-        mark=Study::Mark.find(m[:id])
-        m['created_at'] = mark.created_at
-        mark.update_attributes(m)
-      end
-      redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
-    else
-      redirect_to study_subject_marks_path(@subject), notice: 'Произошла ошибка'
-    end
-    end
+    @results = {marks: result.uniq, retakes: retake.uniq}
    end
 
-   def update ; end
+  def update
+    if params[:marks]
+      marks = params[:marks]
+      ver = true
+      marks.each do |ex|
+        ver= (ex[:mark] != '') && ver
+      end
+      if ver
+        marks.each do |m|
+          mark=Study::Mark.find(m[:id])
+          mark.update_attributes(m)
+        end
+        redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
+      else
+        redirect_to study_subject_marks_path(@subject), notice: 'Произошла ошибка'
+      end
+    end
+  end
 
-   def show ; end
+  def show ; end
 
   def resource_params
     params.fetch(:mark, {}).permit(:user_id, :student_id, :mark, :retake)

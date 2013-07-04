@@ -9,6 +9,7 @@ class Study::Mark < ActiveRecord::Base
   belongs_to :user
 
   scope :by_student, -> student { where(student_id: student) }
+  scope :by_subject, -> subject { where(subject_id: subject) }
 
   def test
     case mark

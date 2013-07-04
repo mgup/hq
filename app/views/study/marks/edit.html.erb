@@ -9,19 +9,19 @@
   </h1>
 </div>
 
-<% if @this_marks.size > 1 %>
-  <% if @this_retakes.size > 1 %>
+<% if @results[:marks].size > 1 %>
+  <% if @results[:retakes].size > 1 %>
     <div class='alert alert-error'>Оценка и пересдача внесены неверно!</div>
   <% else %>
     <div class='alert alert-error'>Оценка внесена неверно!</div>
   <% end %>
 <% else %>
-  <% if @this_retakes.size > 1 %>
+  <% if @results[:retakes].size > 1 %>
     <div class='alert alert-error'>Пересдача внесена неверно!</div>
   <% end %>
 <% end %>
 
-<%= form_tag edit_study_subject_mark_path(@subject, @mark), method: :get do %>
+<%= form_tag study_subject_mark_path(@subject, @mark), method: :put, class: 'val' do  %>
   <% @marks.each do |m| %>
     <%= hidden_field_tag 'marks[][id]', m.id %>
     <%= hidden_field_tag 'marks[][student_id]', m.student.id %>  
@@ -55,7 +55,7 @@
       <%= label_tag 'marks[][retake]', 'Пересдача', class: 'col col-lg-2 control-label' %>
       <div class='col col-lg-6'>
         <select id='marks_retake' name='marks[][retake]'>
-          <option <%= 'selected' if ''==m.retake %> value=''>нет</option>
+          <option <%= 'selected' if 0==m.retake %> value='0'>нет</option>
           <option <%= 'selected' if 1==m.retake %> value='1'>1</option>
           <option <%= 'selected' if 2==m.retake %> value='2'>2</option>
           <option <%= 'selected' if 3==m.retake %> value='3'>3</option>
@@ -68,7 +68,8 @@
   <% end %>
   <div class='row'>
     <div class='col col-lg-2'>
-      <%= submit_tag 'Сохранить', class: 'btn btn-default'%>
+      <%= submit_tag 'Сохранить', class: 'btn btn-default', id: 'submit-req'%>
     </div>
   </div>
+
 <% end %>

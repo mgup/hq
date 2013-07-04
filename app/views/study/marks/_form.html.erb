@@ -16,6 +16,7 @@
         <%= student.id %>
         <%= hidden_field_tag 'marks[][student_id]', student.id %>
         <%= hidden_field_tag 'marks[][user_id]', current_user.id %>
+        <%= hidden_field_tag 'marks[][subject_id]', @subject.id %>
       </td>
       <td><%= student.person.full_name %></td>
       <td>

@@ -35,29 +35,13 @@
     </tr>
     </thead>
     <tbody>
-      <% @discipline_students.each  do |student| %>
-        <tr class="<%= 'danger' if (student['marks'].size > 1 or student['retakes'].size > 1 ) %>">
-          <td><%= student['id'] %></td>
-          <td><%= student['name'] %></td>
-          <td>
-            <% student['marks'].each do |mark| %>
-              <% if mark.subject.exam? %>
-                <%= mark.mark %>
-              <% else %>
-                <%= mark.test %>
-              <% end %>
-            <% end %> 
-          </td>
-          <td>
-            <% student['retakes'].each do |retake| %>
-              <% if retake.retake == nil %>
-                <%= 'нет' %>
-              <% else %>
-                <%= retake.retake %>
-              <% end %>
-            <% end %> 
-          </td>
-          <td><%= link_to  'Редактировать', edit_study_subject_mark_path(@subject, student['marks'].first) %></td>
+      <% @subject_students.each  do |stud| %>
+        <tr class="<%= stud[:error] %>">
+          <td><%= stud[:student].id %></td>
+          <td><%= stud[:student].person.full_name %></td>
+          <td><%= stud[:marks] %></td>
+          <td><%= stud[:retakes] %></td>
+          <td><%= link_to  'Редактировать', edit_study_subject_mark_path(@subject, stud[:mark]) %></td>
        </tr>
       <% end %> 
     </tbody>
