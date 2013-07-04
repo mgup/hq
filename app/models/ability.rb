@@ -9,9 +9,8 @@ class Ability
     end
 
     if user.is?(:typer)
-      can :create, [Study::Subject, Study::Mark], user_id: user.id
-      can :read, Study::Subject, user_id: user.id
-      can [:show, :update], Study::Mark, user_id: user.id 
+      can [:create, :read], [Study::Subject, Study::Mark], user_id: user.id
+      can :update, Study::Mark, user_id: user.id
     end
 
     if user.is?(:supertyper)

@@ -5,7 +5,7 @@ class Study::MarksController < ApplicationController
 
   def index
     disciplines = Study::Subject.find_disciplines(@subject.id)
-    @marks = Study::Mark.where(subject_id: disciplines)
+    @marks = @marks.where(subject_id: disciplines)
     @discipline_students = Array.new
     @students.each do |s|
       m = Array.new
@@ -52,7 +52,7 @@ class Study::MarksController < ApplicationController
           mark: m[:mark], retake: m[:retake]
         mark.save!
       end
-      redirect_to study_subject_path(@subject), notice: 'Сохранено'
+      redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
     else
       redirect_to new_study_subject_mark_path(@subject), 
       notice: 'Вы внесли не все результаты!'
@@ -62,15 +62,15 @@ class Study::MarksController < ApplicationController
 
   def edit
     disciplines = Study::Subject.find_disciplines(@subject.id) 
-    @student_mark =  Study::Mark.where(subject_id: disciplines,
+    @marks =  Study::Mark.where(subject_id: disciplines,
                                        student_id: @mark.student.id)
     @this_marks = Array.new
-    @student_mark.each do |stud_mark|
+    @marks.each do |stud_mark|
       @this_marks.insert(-1,stud_mark.mark)
     end
     @this_marks.uniq!
     @this_retakes = Array.new
-    @student_mark.each do |stud_retake|
+    @marks.each do |stud_retake|
       @this_retakes.insert(-1,stud_retake.retake)
     end
     @this_retakes.uniq!
@@ -95,15 +95,7 @@ class Study::MarksController < ApplicationController
     end
    end
 
-   def update 
-    study_mark = params[:study_mark]
-    if @mark.update_attributes(user_id: study_mark[:user_id], 
-      mark: study_mark[:mark], retake: study_mark[:retake])
-      redirect_to study_subject_path(@mark.subject), notice: 'Сохранено'
-    else
-      redirect_to study_subject_path(@mark.subject), notice: 'Произошла ошибка'
-    end
-  end
+   def update ; end
 
    def show ; end
 
