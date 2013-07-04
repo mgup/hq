@@ -1,21 +1,15 @@
 class AjaxController < ApplicationController
 	def specialities
-    specialities = []
-    Speciality.from_faculty(params[:faculty]).each do |speciality|
+    render({ json: Speciality.from_faculty(params[:faculty]).inject([]) do |specialities, speciality|
       specialities << { id: speciality.id, code: speciality.code, name: speciality.name }
-    end
-
-    render json: specialities
+      specialities
+    end })
   end
 
   def groups
-    groups = []
-
-    Group.filter(params).each do |group|
+    render({ json: Group.filter(params).inject([]) do |groups, group|
       groups << { id: group.id, name: group.name }
-    end
-
-    render json: groups
+      groups
+    end })
   end
-
 end

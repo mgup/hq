@@ -19,25 +19,13 @@ class Group < ActiveRecord::Base
   }
 
   scope :filter, -> filters {
-    cond = all
+    [:speciality, :course, :form, :faculty].inject(all) do |cond, field|
+      if filters.include?(field) && !filters[field].empty?
+        cond = cond.send "from_#{field.to_s}", filters[field]
+      end
 
-    if filters.key?(:speciality) && !filters[:speciality].empty?
-      cond = cond.from_speciality(filters[:speciality])
+      cond
     end
-
-    if filters.key?(:course) && !filters[:course].empty?
-      cond = cond.from_course(filters[:course])
-    end
-
-    if filters.key?(:form) && !filters[:course].empty?
-      cond = cond.from_form(filters[:form])
-    end
-
-    if filters.key?(:faculty) && !filters[:course].empty?
-      cond = cond.from_faculty(filters[:faculty])
-    end
-
-    cond
   }
 
   def name
