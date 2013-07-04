@@ -4,11 +4,7 @@ $(function() {
  
         var updateGroupsList = function(data) {
             $this.empty();
-            $this.append(
-                   $('<option></option>').attr({
-                        'value': null
-                    }).html('все группы')
-                );
+            $this.append($('<option></option>').html('все группы'));
             $.each(data, function() {
                 $this.append(
                     $('<option></option>').attr({
@@ -17,7 +13,7 @@ $(function() {
                 );
             });
             
-            $("select").trigger("liszt:updated");
+            $('select').trigger('liszt:updated');
         };
  
 
@@ -92,7 +88,7 @@ $(function() {
                         $this.empty();
                         $this.append(
                                 $('<option></option>').attr({
-                                    'value': 0
+                                    'value': ''
                                 }).html('все специальности')
                             );
                         $.each(data, function() {
