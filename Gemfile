@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.0.0.rc1'
+gem 'rails'
 gem 'mysql2'
 gem 'coveralls', require: false
 
 group :assets do
-  gem 'sass-rails', '4.0.0.rc1'
+  gem 'sass-rails'
   gem 'coffee-rails'
 
   gem 'therubyracer', platforms: :ruby
@@ -36,7 +36,7 @@ gem 'morpher', github: 'mgup/morpher', branch: :master
 
 group :development do
   gem 'thin'
-  gem 'debugger'
+  #gem 'debugger'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'pry-rails'
