@@ -45,6 +45,8 @@ class Student < ActiveRecord::Base
   }
 
   scope :in_group_at_date, -> group, date {
+    group = group.id if group.is_a?(Group)
+
     find_by_sql([%q(
 SELECT student.*, student_group.*
 FROM (

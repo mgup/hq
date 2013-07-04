@@ -39,4 +39,12 @@ class Study::Subject < ActiveRecord::Base
   def exam?
     TYPE_EXAM == kind
   end
+
+  def in_fall?
+    1 == semester
+  end
+
+  def in_spring?
+    2 == semester
+  end
 end

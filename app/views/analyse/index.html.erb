@@ -3,28 +3,22 @@
 </div>
 
 <table class='table table-hover'>
+  <thead>
   <tr>
     <th>Студент</th>
     <th>Дисциплина</th>
     <th>Ошибка</th>
     <th></th>
   </tr>
-  <% @variants.each do |prob|%>
-    <% student = Student.find(prob['student']).person.full_name %>
-    <% subject = Study::Subject.find(prob['subject']).title %>
-    <% if (prob['marks'].size > 1)||(prob['retakes'].size > 1)%>
+  </thead>
+  <tobdy>
+    <% @collisions.each do |collision|%>
       <tr>
-        <td><%= student %></td>
-        <td><%= subject %></td>
-        <% if (prob['retakes'].size == 1)%>
-          <td>Оценка</td>
-        <% elsif (prob['marks'].size == 1) %>
-          <td>Пересдача</td>
-        <% else %>
-          <td>Оценка и пересдача</td>
-        <% end %> 
-        <td><%= link_to 'Редактировать', edit_study_subject_mark_path(prob['subject'], prob['mark']) %></td>
+        <td><%= collision[:student].person.full_name %></td>
+        <td><%= collision[:subject].title %></td>
+        <td><%= collision[:error_txt] %></td>
+        <td><%= link_to 'Редактировать', edit_study_subject_mark_path(collision[:subject], collision[:mark]) %></td>
       </tr>
-    <% end %>     
-  <% end %>
+    <% end %>
+  </tobdy>
 </table>
