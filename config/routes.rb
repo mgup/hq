@@ -6,8 +6,6 @@ HQ::Application.routes.draw do
 
   get 'utility/morpher'
 
-  get '/analyse' => 'analyse#index'
-
   resources :roles
   resources :users
   resources :departments
@@ -21,6 +19,7 @@ HQ::Application.routes.draw do
     resources :subjects do
       resources :marks
     end
+    get '/analyse' => 'analyse#index'
   end
 
   get 'schedule/data/departments' => 'schedule/data#departments'

@@ -32,6 +32,7 @@ class Study::MarksController < ApplicationController
     marks.each do |ex|
       ver= (ex[:mark] != '') && ver
     end
+
     if ver
       marks.each do |m|
         mark=Study::Mark.new(m)
@@ -57,22 +58,13 @@ class Study::MarksController < ApplicationController
    end
 
   def update
-    if params[:marks]
-      marks = params[:marks]
-      ver = true
-      marks.each do |ex|
-        ver= (ex[:mark] != '') && ver
-      end
-      if ver
-        marks.each do |m|
-          mark=Study::Mark.find(m[:id])
-          mark.update_attributes(m)
-        end
-        redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
-      else
-        redirect_to study_subject_marks_path(@subject), notice: 'Произошла ошибка'
-      end
+    marks = params[:marks]
+    key = []
+    marks.each do |m|
+      mark=Study::Mark.find(m[:id])
+      mark.update_attributes(m)
     end
+    redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
   end
 
   def show ; end
@@ -85,13 +77,8 @@ class Study::MarksController < ApplicationController
 
   def find_subject
     @subject = Study::Subject.find(params[:subject_id])
-    case @subject.semester
-      when 1
-        time = Time.new((@subject.year + 1), 1, 1)
-      when 2
-        time = Time.new((@subject.year + 1), 6, 1)
-    end
-    @students = Student.in_group_at_date(@subject.group.id, time)
+    @students = Student.in_group_at_date( @subject.group.id, 
+      Time.new((@subject.year + 1), (@subject.in_fall? ? 1 : 6), 1))
   end
 
 end
