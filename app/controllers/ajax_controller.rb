@@ -11,7 +11,7 @@ class AjaxController < ApplicationController
   def groups
     groups = []
 
-    Group.from_form(params[:form]).from_course(params[:course]).from_faculty(params[:faculty]).from_speciality(params[:speciality]).each do |group|
+    Group.filter(params).each do |group|
       groups << { id: group.id, name: group.name }
     end
 
