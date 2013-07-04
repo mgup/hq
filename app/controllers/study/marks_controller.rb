@@ -62,17 +62,16 @@ class Study::MarksController < ApplicationController
 
   def edit
     disciplines = Study::Subject.find_disciplines(@subject.id) 
-    @marks =  Study::Mark.where(subject_id: disciplines,
+    @marks = Study::Mark.where(subject_id: disciplines,
                                        student_id: @mark.student.id)
+    
     @this_marks = Array.new
+    @this_retakes = Array.new
     @marks.each do |stud_mark|
       @this_marks.insert(-1,stud_mark.mark)
+      @this_retakes.insert(-1,stud_mark.retake)
     end
     @this_marks.uniq!
-    @this_retakes = Array.new
-    @marks.each do |stud_retake|
-      @this_retakes.insert(-1,stud_retake.retake)
-    end
     @this_retakes.uniq!
     if params[:marks]
       marks = params[:marks]
