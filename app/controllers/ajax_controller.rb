@@ -1,5 +1,5 @@
 class AjaxController < ApplicationController
-	def specialities
+  def specialities
     render({ json: Speciality.from_faculty(params[:faculty]).inject([]) do |specialities, speciality|
       specialities << { id: speciality.id, code: speciality.code, name: speciality.name }
       specialities

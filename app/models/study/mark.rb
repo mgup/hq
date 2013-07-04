@@ -8,6 +8,8 @@ class Study::Mark < ActiveRecord::Base
   belongs_to :student
   belongs_to :user
 
+  scope :by_student, -> student { where(student_id: student) }
+
   def test
     case mark
       when FAIL
@@ -16,5 +18,4 @@ class Study::Mark < ActiveRecord::Base
         'зачёт'
     end
   end
-
 end
