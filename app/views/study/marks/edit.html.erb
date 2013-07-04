@@ -22,7 +22,7 @@
 <% end %>
 
 <%= form_tag edit_study_subject_mark_path(@subject, @mark), method: :get do %>
-  <% @student_mark.each do |m| %>
+  <% @marks.each do |m| %>
     <%= hidden_field_tag 'marks[][id]', m.id %>
     <%= hidden_field_tag 'marks[][student_id]', m.student.id %>  
     <div class='row'>

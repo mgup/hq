@@ -36,13 +36,7 @@
       <td><%= subject.group.name %></td>
       <td><%= subject.title %></td>
       <td><%= subject.type %></td>
-      <td>
-        <% if current_user.is?(:supertyper) %>
-          <%= link_to 'Посмотреть', study_subject_marks_path(subject) %>
-        <% else %>
-          <%= link_to 'Посмотреть', study_subject_path(subject) %>
-        <% end %>
-      </td>
+      <td><%= link_to 'Посмотреть', study_subject_marks_path(subject) %></td>
     </tr>
   <% end %>
   </tbody>
