@@ -3,11 +3,9 @@
 </div>
 
 <div class='row'>
-  <% if !current_user.is?(:supertyper) %>
-    <div class='col col-lg-2'>
-      <%= link_to 'Добавить', new_study_subject_path, class: 'btn btn-primary' %>
-    </div>
-  <% end %>
+  <div class='col col-lg-2'>
+    <%= link_to 'Добавить', new_study_subject_path, class: 'btn btn-primary' %>
+  </div>
   <% if !current_user.is?(:typer) %>
     <div class='col col-lg-2 pull-right'>
       <%= link_to 'Анализ', study_analyse_path, class: 'btn btn-info btn-block' %>
