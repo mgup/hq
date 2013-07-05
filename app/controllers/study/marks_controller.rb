@@ -49,6 +49,7 @@ class Study::MarksController < ApplicationController
   def edit
     @marks = Study::Mark.by_subject(Study::Subject.find_subjects(@subject))
                         .by_student(@mark.student)
+    @marks = @marks.where(user_id: current_user.id) if current_user.is?(:typer)
     result, retake = [], []
     @marks.each do |student_mark|
       result << student_mark.mark
