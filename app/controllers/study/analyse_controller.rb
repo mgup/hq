@@ -1,6 +1,9 @@
 class Study::AnalyseController < ApplicationController
   
-  def index 
+  def index
+    if current_user.is?(:typer) 
+      redirect_to root_path
+    end 
     @collisions = []
 
     Study::Subject.all.each do |subject|

@@ -9,13 +9,7 @@
   </h1>
 </div>
 
-<% if !current_user.is?(:supertyper) %>
-  <%= link_to 'Добавить', new_study_subject_mark_path, class: 'btn btn-default' %>
-<% else %>
-  <%= link_to 'Анализ', study_analyse_path, class: 'btn btn-info' %>
-  <br>
-  <br>
-<% end %>
+<%= link_to 'Добавить', new_study_subject_mark_path, class: 'btn btn-default' %>
 
 <% if notice=='Сохранено' %>
   <br>

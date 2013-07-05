@@ -14,7 +14,7 @@ class Ability
     end
 
     if user.is?(:supertyper)
-      can [:read, :update], [Study::Subject, Study::Mark]
+      can :manage, [Study::Subject, Study::Mark]
     end
 
     # Define abilities for the passed in user here. For example:
