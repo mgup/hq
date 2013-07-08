@@ -3,6 +3,7 @@ class Study::Subject < ActiveRecord::Base
 
   TYPE_TEST = 0
   TYPE_EXAM = 1
+  TYPE_KURS_RAB = 2
 
   belongs_to :group
   belongs_to :user
@@ -21,6 +22,8 @@ class Study::Subject < ActiveRecord::Base
         'зачёт'
       when TYPE_EXAM
         'экзамен'
+      when TYPE_KURS_RAB
+        'курсовая работа'
     end
   end
 
@@ -30,6 +33,10 @@ class Study::Subject < ActiveRecord::Base
 
   def exam?
     TYPE_EXAM == kind
+  end
+
+  def curs_rab?
+    TYPE_KURS_RAB == kind
   end
 
   def in_fall?
