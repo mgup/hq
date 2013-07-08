@@ -20,6 +20,7 @@ HQ::Application.routes.draw do
       resources :marks
     end
     get '/analyse' => 'analyse#index'
+    get '/chase' => 'chase#index'
   end
 
   get 'schedule/data/departments' => 'schedule/data#departments'
