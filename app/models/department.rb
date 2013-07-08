@@ -1,4 +1,11 @@
 class Department < ActiveRecord::Base
+  FITIM  = 2
+  FPT    = 3
+  FRISO  = 4
+  FIDIZH = 5
+  FEIM   = 6
+  FGI    = 7
+
   self.table_name = 'department'
 
   alias_attribute :id,           :department_id
