@@ -34,7 +34,7 @@
       <td><%= subject.id %></td>
       <td><%= "#{subject.year}/#{subject.year + 1}" %></td>
       <td><%= subject.semester %></td>
-      <td><%= subject.group.name %></td>
+      <td class="nowrap"><%= subject.group.name %></td>
       <td><%= subject.title %></td>
       <td><%= subject.type %></td>
       <td><%= link_to 'Посмотреть', study_subject_marks_path(subject) %></td>
