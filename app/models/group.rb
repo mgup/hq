@@ -12,6 +12,10 @@ class Group < ActiveRecord::Base
   has_many :exams, foreign_key: :exam_group
   has_many :subjects, foreign_key: :subject_group
 
+  default_scope do
+    where('group_speciality != 1')
+  end
+
   scope :from_speciality, -> speciality { where(group_speciality: speciality) }
   scope :from_course, -> course { where(group_course: course) }
   scope :from_form, -> form { where(group_form: form) }
@@ -38,6 +42,7 @@ class Group < ActiveRecord::Base
       when 102
         n << 'В'
       when 103
+        n << 'З'
       when 105
         n << 'З'
     end
