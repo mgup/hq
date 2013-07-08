@@ -9,7 +9,8 @@
   </h1>
 </div>
 
-<%= link_to 'Добавить', new_study_subject_mark_path, class: 'btn btn-default' %>
+<%= link_to 'Добавить оценки', new_study_subject_mark_path, class: 'btn btn-default' %>
+<%= link_to 'Добавить дисциплину', new_study_subject_path(subject: @subject), class: 'btn btn-default' %>
 
 <% if notice=='Сохранено' %>
   <br>

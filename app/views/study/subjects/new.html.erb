@@ -2,4 +2,8 @@
   <h1>Сессия</h1>
 </div>
 
+<% if @session %>
+  <div class='alert alert-info'>Введите название дисциплины и форму отчётности</div>
+<% end %>
+
 <%= render 'form' %>
