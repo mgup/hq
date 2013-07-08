@@ -35,7 +35,11 @@
           <td><%= stud[:student].person.full_name %></td>
           <td><%= stud[:marks] %></td>
           <td><%= stud[:retakes] %></td>
-          <td><%= link_to  'Редактировать', edit_study_subject_mark_path(@subject, stud[:mark]) %></td>
+          <td>
+            <% if stud[:mark] != nil %>
+            <%= link_to  'Редактировать', edit_study_subject_mark_path(@subject, stud[:mark]) %>
+            <% end %>
+          </td>
        </tr>
       <% end %> 
     </tbody>
