@@ -3,7 +3,9 @@ class Study::SubjectsController < ApplicationController
 
   def index ; end
 
-  def new ; end
+  def new
+    @session = Study::Subject.find(params[:subject]) if params[:subject]
+  end
 
   def show ; end
 

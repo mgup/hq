@@ -4,7 +4,9 @@ $(function() {
  
         var updateGroupsList = function(data) {
             $this.empty();
-            $this.append($('<option></option>').html('все группы'));
+            $this.append($('<option></option>').attr({
+                        'value': ''
+                    }).html('все группы'));
             $.each(data, function() {
                 $this.append(
                     $('<option></option>').attr({
