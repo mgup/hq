@@ -4,6 +4,7 @@ class Group < ActiveRecord::Base
   alias_attribute :id,     :group_id
   alias_attribute :course, :group_course
   alias_attribute :number, :group_number
+  alias_attribute :form,   :group_form
 
   belongs_to :speciality, primary_key: :speciality_id, foreign_key: :group_speciality
 
@@ -30,6 +31,33 @@ class Group < ActiveRecord::Base
 
   def name
     n = []
+
+    case form
+      when 101
+        n << 'Д'
+      when 102
+        n << 'В'
+      when 103
+      when 105
+        n << 'З'
+    end
+
+    case speciality.faculty.id
+      when Department::FITIM
+        n << 'Ц'
+      when Department::FPT
+        n << 'Т'
+      when Department::FRISO
+        n << 'Р'
+      when Department::FIDIZH
+        n << 'К'
+      when Department::FEIM
+        n << 'Э'
+      when Department::FGI
+        n << 'Г'
+    end
+
+    n << speciality.suffix
 
     n << 'Б' if speciality.bachelor?
     n << 'М' if speciality.master?
