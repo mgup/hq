@@ -35,19 +35,19 @@
     <div class='row'>
       <%= label_tag 'marks[][mark]', 'Оценка', class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-5">
-        <% if @mark.subject.exam? %>
+        <% if @mark.subject.test? %>
+          <%= hidden_field_tag 'marks[][mark]', m.mark, id: "#{m.id}_mark" %>
+            <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
+              <li class="<%= 'active' if 0==m.mark %>"><a data-toggle='pill' data-value='0' data-input="<%= m.id %>_mark"  href='#'>Не зачтено</a></li>
+              <li class="<%= 'active' if 1==m.mark %>"><a data-toggle='pill' data-value='1' data-input="<%= m.id %>_mark" href='#'>Зачтено</a></li>
+            </ul>
+          <% else %>
             <%= hidden_field_tag 'marks[][mark]', m.mark, required: 'required', id: "#{m.id}_mark" %>
             <ul class="nav nav-pills pill-select" name='pillmark' id='pillmark'>
               <li class="<%= 'active' if 2==m.mark %>"><a data-toggle='pill' data-value='2' data-input="<%= m.id %>_mark"  href='#'>Неудовл.</a></li>
               <li class="<%= 'active' if 3==m.mark %>"><a data-toggle='pill' data-value='3' data-input="<%= m.id %>_mark"  href='#'>Удовл.</a></li>
               <li class="<%= 'active' if 4==m.mark %>"><a data-toggle='pill' data-value='4' data-input="<%= m.id %>_mark" href='#'>Хорошо</a></li>
               <li class="<%= 'active' if 5==m.mark %>"><a data-toggle='pill' data-value='5' data-input="<%= m.id %>_mark"  href='#'>Отлично</a></li>
-            </ul>
-          <% else %>
-            <%= hidden_field_tag 'marks[][mark]', m.mark, id: "#{m.id}_mark" %>
-            <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
-              <li class="<%= 'active' if 0==m.mark %>"><a data-toggle='pill' data-value='0' data-input="<%= m.id %>_mark"  href='#'>Не зачтено</a></li>
-              <li class="<%= 'active' if 1==m.mark %>"><a data-toggle='pill' data-value='1' data-input="<%= m.id %>_mark" href='#'>Зачтено</a></li>
             </ul>
           <% end %>
       </div>

@@ -11,7 +11,7 @@ class Study::MarksController < ApplicationController
       result = []
       retake = []
       student_marks.each do |sm|
-        result << (@subject.exam? ? sm.mark : sm.test)
+        result << (@subject.test? ? sm.test : sm.mark)
         retake << ((sm.retake == 0) ? 'нет' : sm.retake)
       end
       result = result.uniq
