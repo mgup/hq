@@ -16,6 +16,9 @@
 	<div class='row'>
 		<%= f.label :semester, class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
+      <div class='col col-lg-2'>
+        <%= text_field_tag 'semester_count'%>
+      </div>
       <%= f.hidden_field :semester, value: @session? @session.semester : 1, required: 'required' %>
       <ul class='nav nav-pills pill-select' name='pillsemester' id='pillsemester'>
         <li class="<%= 'active' if 1==(@session? @session.semester : 1) %>"><a  data-toggle='pill' data-value='1' data-input='study_subject_semester' href='#'>осенний</a></li>
