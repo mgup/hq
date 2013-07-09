@@ -41,16 +41,16 @@
   </div>             
 
   <div class='row'>
-    <%= label_tag :course, 'Курс', class: 'control-label col-lg-2' %>
+    <%= label_tag 'course_study', 'Курс', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-      <%= hidden_field_tag :course, (@session.group.course if @session ) %>
+      <%= hidden_field_tag 'course_study', (@session.group.course if @session ) %>
       <ul class='nav nav-pills ajax-course pill-select' name='pillcourse' id='pillcourse'>
-        <li class="<%= 'active' if 1==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="1" data-input='course' href='#'>1</a></li>
-        <li class="<%= 'active' if 2==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="2" data-input='course' href='#'>2</a></li>
-        <li class="<%= 'active' if 3==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="3" data-input='course' href='#'>3</a></li>
-        <li class="<%= 'active' if 4==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="4" data-input='course' href='#'>4</a></li>
-        <li class="<%= 'active' if 5==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="5" data-input='course' href='#'>5</a></li>
-        <li class="<%= 'active' if 6==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="6" data-input='course' href='#'>6</a></li>
+        <li class="<%= 'active' if 1==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="1" data-input='course_study' href='#'>1</a></li>
+        <li class="<%= 'active' if 2==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="2" data-input='course_study' href='#'>2</a></li>
+        <li class="<%= 'active' if 3==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="3" data-input='course_study' href='#'>3</a></li>
+        <li class="<%= 'active' if 4==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="4" data-input='course_study' href='#'>4</a></li>
+        <li class="<%= 'active' if 5==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="5" data-input='course_study' href='#'>5</a></li>
+        <li class="<%= 'active' if 6==(@session? @session.group.course : 0) %>"><a  data-toggle='pill' data-value="6" data-input='course_study' href='#'>6</a></li>
       </ul>
     </div>
   </div>
