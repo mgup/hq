@@ -1,7 +1,9 @@
 class Study::SubjectsController < ApplicationController
   load_and_authorize_resource
 
-  def index ; end
+  def index 
+    @subjects = @subjects.page(params[:page]).per(20)
+  end
 
   def new
     @session = Study::Subject.find(params[:subject]) if params[:subject]
