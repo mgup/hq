@@ -27,6 +27,11 @@ class Study::AnalyseController < ApplicationController
         student: Student.find(c[4]), mark: Study::Mark.find(c[2]),
                             error_txt: errors.join(' и ') })
     end
+    unless @collisions.kind_of?(Array)
+      @collisions = @collisions.page(params[:page]).per(20)
+    else
+      @collisions = Kaminari.paginate_array(@collisions).page(params[:page])
+      .per(20)
+    end
   end
-
 end
