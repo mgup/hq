@@ -26,7 +26,7 @@ $(function() {
                 {
                     'speciality': $(this).val(),
                     'form'      : $('#form').val(),
-                    'course'    : $('#course').val(),
+                    'course'    : $('#course_study').val(),
                     'faculty'     : $('#faculty').val()
                 },
                 updateGroupsList
@@ -55,7 +55,7 @@ $(function() {
                 {
                     'speciality': $('#speciality').val(),
                     'form'       : $(this).attr('data-value'),
-                    'course'     : $('#course').val(),
+                    'course'     : $('#course_study').val(),
                     'faculty'     : $('#faculty').val()
                 },
                 updateGroupsList
@@ -68,7 +68,7 @@ $(function() {
                 {
                     'speciality' : $('#speciality').val(),
                     'form'       : $('#form').val(),
-                    'course'     : $('#course').attr('data-value'),
+                    'course'     : $('#course_study').val(),
                     'faculty'    : $(this).attr('data-value')
                 },
                 updateGroupsList
@@ -106,7 +106,7 @@ $(function() {
                             {
                                 'speciality': $('#speciality').val(),
                                 'form'      : $('#form').val(),
-                                'course'    : $('#course').val(),
+                                'course'    : $('#course_study').val(),
                                 'faculty'   : $('#faculty').val()
                             },
                             updateGroupsList
