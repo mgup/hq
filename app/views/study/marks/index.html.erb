@@ -9,6 +9,9 @@
   </h1>
 </div>
 
+<div>Всего студентов: <strong><%= @students.count %></strong></div>
+<br>
+
 <%= link_to 'Добавить оценки', new_study_subject_mark_path, class: 'btn btn-default' %>
 <%= link_to 'Добавить дисциплину', new_study_subject_path(subject: @subject), class: 'btn btn-default' %>
 
@@ -17,6 +20,7 @@
   <br>
   <div class='alert alert-info'><%= notice %></div>
 <% end %>
+
 
 <div class='row'>
   <table class='table table-hover'>

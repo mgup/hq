@@ -1,7 +1,7 @@
 $(function() {
     $('.pill-select a[data-toggle="pill"]').on('shown.bs.tab', function() {
         var $this = $(this);
-        $('#' + $this.data('input')).val($this.data('value'));
+        $('#' + $this.data('input')).val($this.data('value')).change();
     });
     $('#semester_count').on('change', function() {
         var $this = $(this);
@@ -34,5 +34,46 @@ $(function() {
                 }
             });
         }
+    });
+    $('#course_study').on('change', function() {
+      var $this = $(this);
+      var $course = (+$this.val())*2
+      var $semester = +$('#study_subject_semester').val()%2;
+      $('#semester_count').val($course-$semester);
+    });
+    $('#study_subject_semester').on('change', function() {
+      var $this = $(this);
+      var $course = (+$('#course_study').val())*2
+      var $semester = +$this.val()%2;
+      $('#semester_count').val($course-$semester);
+    });
+    $('#allmarks').on('change', function(){
+        $mark = $(this).val()
+        $('.all_mark').val($mark).change();
+        var $limarks = $('#pillmark li');
+        $limarks.map(function(){
+            if ($(this).find('a').data('value') == $mark){
+                $(this).addClass('active'); 
+                $(this).find('a').trigger('shown.bs.tab');
+            }
+            else{
+                $(this).removeClass('active');
+            }
+        });
+    });
+    $('.all_mark').map(function () {
+      $(this).attr('oldValue', $(this).val());
+    });
+    $('.all_mark').map( function () {
+      $(this).on('change', function(){
+        $elem = $('#mark' + $(this).val()) 
+        $counter = +$elem.val()+1
+        $elem.val($counter);
+        var oldValue = $(this).attr('oldValue');
+          if (oldValue != ''){
+            $('#mark' + oldValue).val(+$('#mark' + oldValue).val()-1);
+           }
+        $(this).attr('oldValue', $(this).val());
+      });
     });
 });

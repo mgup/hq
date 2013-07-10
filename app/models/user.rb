@@ -24,8 +24,11 @@ class User < ActiveRecord::Base
   has_many :roles,       through: :positions
   has_many :departments, through: :positions
   
-  has_many :subject_teachers
-  has_many :subjects, :through => :subject_teachers
+  # has_many :subject_teachers
+  # has_many :subjects, :through => :subject_teachers
+
+  has_many :marks, class_name: Study::Mark
+  has_many :subjects, class_name: Study::Subject
 
   def full_name(form = :ip)
     # TODO Убрать после того, как все имена будут перенесены в словарь.

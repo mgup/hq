@@ -4,6 +4,9 @@ class Study::Subject < ActiveRecord::Base
   TYPE_TEST = 0
   TYPE_EXAM = 1
   TYPE_KURS_RAB = 2
+  TYPE_KURS_PRJ = 3
+  TYPE_PR = 4
+  TYPE_DIP_PR = 5
 
   belongs_to :group
   belongs_to :user
@@ -24,6 +27,12 @@ class Study::Subject < ActiveRecord::Base
         'экзамен'
       when TYPE_KURS_RAB
         'курсовая работа'
+        when TYPE_KURS_PRJ
+        'курсовой проект'
+        when TYPE_PR
+        'производственная практика'
+        when TYPE_DIP_PR
+        'преддипломная практика'
     end
   end
 
