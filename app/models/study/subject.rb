@@ -7,6 +7,8 @@ class Study::Subject < ActiveRecord::Base
   TYPE_KURS_PRJ = 3
   TYPE_PR = 4
   TYPE_DIP_PR = 5
+  TYPE_GAK = 6
+  TYPE_GRAD_TEST = 9
 
   belongs_to :group
   belongs_to :user
@@ -33,6 +35,10 @@ class Study::Subject < ActiveRecord::Base
         'производственная практика'
         when TYPE_DIP_PR
         'преддипломная практика'
+        when TYPE_GAK
+        'ГАК'
+        when TYPE_GRAD_TEST
+        'дифференцированный зачёт'
     end
   end
 
