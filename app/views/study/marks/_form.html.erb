@@ -1,4 +1,21 @@
 <%= form_tag study_subject_marks_path(@subject), class: 'val', id: 'form-for-mark' do %>
+
+<h4>Поставить всем:</h4>
+<%= hidden_field_tag 'allmarks' %>
+<% if @subject.test? %>
+  <ul class='nav nav-pills pill-select' name='pillmarks' id='pillmarks'>
+    <li><a data-toggle='pill' data-value='0' data-input='allmarks' href='#'>Не зачтено</a></li>
+    <li><a data-toggle='pill' data-value='1' data-input='allmarks' href='#'>Зачтено</a></li>
+  </ul>
+<% else %>
+  <ul class='nav nav-pills pill-select' name='pillmarks' id='pillmarks'>
+    <li><a data-toggle='pill' data-value='2' data-input='allmarks' href='#'>Неудовл.</a></li>
+    <li><a data-toggle='pill' data-value='3' data-input='allmarks' href='#'>Удовл.</a></li>
+    <li><a data-toggle='pill' data-value='4' data-input='allmarks' href='#'>Хорошо</a></li>
+    <li><a data-toggle='pill' data-value='5' data-input='allmarks' href='#'>Отлично</a></li>
+  </ul>
+<% end %>
+<br>
   <table class='table' id='stud-marks'>
     <thead>
     <tr>
@@ -24,13 +41,13 @@
       </td>
       <td style='padding-left: 45px;'>
         <% if @subject.test? %>
-          <%= hidden_field_tag 'marks[][mark]', 1, required: 'required', id: "#{student.id}_mark" %>
+          <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'all_mark required' %>
           <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
             <li><a data-toggle='pill' data-value='0' data-input="<%= student.id %>_mark"  href='#'>Не зачтено</a></li>
-            <li class='active'><a data-toggle='pill' data-value='1' data-input="<%= student.id %>_mark"  href='#'>Зачтено</a></li>
+            <li><a data-toggle='pill' data-value='1' data-input="<%= student.id %>_mark"  href='#'>Зачтено</a></li>
           </ul>
         <% else %>
-          <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'required' %>
+          <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'all_mark required' %>
           <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
             <li><a data-toggle='pill' data-value='2' data-input="<%= student.id %>_mark"  href='#'>Неудовл.</a></li>
             <li><a data-toggle='pill' data-value='3' data-input="<%= student.id %>_mark"  href='#'>Удовл.</a></li>
@@ -43,6 +60,31 @@
     <% end %>
     </tbody>
   </table>
+
+  <h4>Всего:</h4>
+  <div class='row'>
+    <% if @subject.test? %>
+    <div class='col col-lg-2'>
+       Незачет: <input class='counter' id='mark0' type='text' disabled value='0'>
+    </div>
+    <div class='col col-lg-2'>
+       Зачет: <input class='counter' id='mark1' type='text' disabled value='0'>
+     </div>
+     <% else %>
+      <div class='col col-lg-2'>
+        2: <input class='counter' id='mark2' type='text' disabled value='0'>
+      </div>
+      <div class='col col-lg-2'>
+        3: <input class='counter' id='mark3' type='text' disabled value='0'>
+      </div>
+      <div class='col col-lg-2'>
+        4: <input class='counter' id='mark4' type='text' disabled value='0'>
+      </div>
+      <div class='col col-lg-2'>
+        5: <input class='counter' id='mark5' type='text' disabled value='0'>
+      </div>
+     <% end %>
+  </div>
 
   <%= submit_tag 'Сохранить оценки', class: 'btn btn-default', id: 'submit-req' %>
 
