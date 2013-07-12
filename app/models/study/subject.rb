@@ -32,7 +32,7 @@ class Study::Subject < ActiveRecord::Base
         when TYPE_KURS_PRJ
         'курсовой проект'
         when TYPE_PR
-        'производственная практика'
+        'практика'
         when TYPE_DIP_PR
         'преддипломная практика'
         when TYPE_GAK
