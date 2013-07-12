@@ -14,6 +14,7 @@
 
 <%= link_to 'Добавить оценки', new_study_subject_mark_path, class: 'btn btn-default' %>
 <%= link_to 'Добавить дисциплину', new_study_subject_path(subject: @subject), class: 'btn btn-default' %>
+<%= link_to 'Анализ', study_analyse_path, class: 'pull-right btn btn-info' %>
 
 <% if notice=='Сохранено' %>
   <br>

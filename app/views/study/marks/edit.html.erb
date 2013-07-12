@@ -3,8 +3,9 @@
     <%= @mark.student.person.full_name %>  <small><%= @mark.student.group.name %></small>
     <br>
     <small>
-      <%= @mark.subject.title %>
-      (<%= "#{@mark.subject.year}/#{@mark.subject.year + 1}, #{@mark.subject.semester}-й семестр" %>)
+      <%= @mark.subject.title %> (<%= @mark.subject.type %>)
+      <br>
+      <%= "#{@mark.subject.year}/#{@mark.subject.year + 1}, #{@mark.subject.semester}-й семестр" %>
     </small>
   </h1>
 </div>
