@@ -7,6 +7,8 @@
 <table class='table table-hover'>
   <thead>
   <tr>
+    <th></th>
+    <th></th>
     <th>Студент</th>
     <th>Дисциплина</th>
     <th>Ошибка</th>
@@ -16,6 +18,8 @@
   <tobdy>
     <% @collisions.each do |collision|%>
       <tr>
+        <td><%= collision[:student].group.speciality.faculty.abbreviation %></td>
+        <td><%= collision[:student].group.name %></td>
         <td><%= collision[:student].person.full_name %></td>
         <td><%= collision[:subject].title %></td>
         <td><%= collision[:error_txt] %></td>
