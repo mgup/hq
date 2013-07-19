@@ -1,0 +1,11 @@
+<div class="page-header">
+  <h1>
+    <%= @discipline.name %> <small><%= @discipline.group.name %></small>
+  </h1>
+  <h3><%= @checkpoint.date %> <%= @checkpoint.name if @checkpoint.type == 3 %>
+    <%= @checkpoint.lessonname %></h3>
+</div>
+
+<%= render 'form' %>
+
+ 

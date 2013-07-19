@@ -1,0 +1,30 @@
+<div class="page-header">
+  <h1>Результаты за <%= @subject.semester %>-ю сессию <%=  "#{@subject.year}/#{@subject.year + 1}" %>
+   учебного года</h1>
+</div>
+
+<table id='session_results' class='table table-striped'>
+  <thead>
+  <tr>
+    <th>Год</th>
+    <th>Семестр</th>
+    <th>Дисциплина</th>
+    <th></th>
+  </tr>
+  </thead>
+  <% @subjects.each do |subject| %>
+    <tr>
+      <td class='text-muted'><%= subject.id %></td>
+      <td><%= "#{subject.year}/#{subject.year + 1}" %></td>
+      <td><%= subject.term %></td>
+      <td><%= subject.title %></td>
+      <% mark = subject.marks.where(student_id: 17106).first %>
+      <td><%= mark.test%></td>
+      <td>
+        <div style='width: 100px;' class="progress progress-striped">
+          <div class="progress-bar progress-bar-<%= mark.itog %>" style="width: <%= mark.strip %>"></div>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</table>

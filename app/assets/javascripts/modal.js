@@ -1,0 +1,3 @@
+$(function() {
+    $('#myModal').modal('hide');
+})

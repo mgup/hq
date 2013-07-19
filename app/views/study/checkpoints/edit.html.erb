@@ -1,0 +1,67 @@
+<div class="page-header">
+  <h1>
+    <%= @discipline.name %> <small><%= @discipline.group.name %></small>
+  </h1>
+  <h3>Редактирование контрольных точек</h3>
+</div>
+
+<div class="col col-lg-3 col-offset-6 alert alert-<%= @error %>" style='position: fixed;'>
+  <table>
+    <tbody>
+      <tr>
+        <td colspan='2'>&Sigma; максимальных баллов</td>
+      </tr>
+      <tr>
+        <th id='max'><%= @max_b %></th>
+        <td>(из <%= @max %>)</td>
+      </tr>
+      <tr>
+        <td colspan='2'>&Sigma; зачётных минимумов</td>
+      </tr>
+      <tr>
+        <th id='min'><%= @min_b %></th>
+        <td>(из <%= @min %>)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<%= form_tag study_discipline_checkpoint_path(@discipline, @checkpoint), method: :put, class: 'val' do  %>
+  <% @checkpoints.each do |check| %>
+    <fieldset>
+      <legend><%= check.name %> (<%= check.date %>)</legend>
+      <%= hidden_field_tag 'checkpoints[][id]', check.id %>  
+      <div class='row'>
+        <%= label_tag 'checkpoints[][name]', 'Форма контроля', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-5">
+          <%= text_field_tag 'checkpoints[][name]', check.name %>
+        </div>
+      </div>
+      <div class='row'>
+        <%= label_tag 'checkpoints[][details]', 'Описание контрольной точки', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-5">
+          <%= text_area_tag 'checkpoints[][details]', check.details %>
+        </div>
+      </div> 
+      <div class='row'>
+        <%= label_tag 'checkpoints[][max]', 'Максимальный балл', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-5">
+          <%= text_field_tag 'checkpoints[][max]', check.max %>
+        </div>
+      </div> 
+      <div class='row'>
+        <%= label_tag 'checkpoints[][min]', 'Зачётный минимум', class: 'col col-lg-2 control-label' %>
+        <div class="col col-lg-5">
+          <%= text_field_tag 'checkpoints[][min]', check.min %>
+        </div>
+      </div> 
+      <br>
+      <br>
+    <% end %>
+  </fieldset>
+  <div class='row'>
+    <div class='col col-lg-2'>
+      <%= submit_tag 'Сохранить', class: 'btn btn-default', id: 'submit-req'%>
+    </div>
+  </div>
+<% end %>

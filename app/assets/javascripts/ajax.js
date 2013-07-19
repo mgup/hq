@@ -122,5 +122,44 @@ $(function() {
             });
         });
     });
+
+    $('#disciplines').each(function() {
+        $('#formsearchdisciplinebyname').submit(function() {
+            $.getJSON(
+                'ajax/disciplines',
+                {'discipline_name': $('#discipline_name').val()},
+                function(data) {
+                    var $el = $('#disciplines');
+                    $el.empty();
+                    $(data).each(function() {
+                        $el.append($('<tr></tr>').attr({'id': 'tr'+ this.id}));
+                        $row = $('#disciplines #tr'+ this.id);
+                        $row.append(
+                        $('<td></td>').attr('class', 'text-muted')
+                         .text(this.id)
+                         );
+                        $row.append(
+                           "<td><p>" + this.name + " (" + this.term + ")</p><p>" + this.group + ", " + this.teachers + "</p></td>"
+                        );
+                        $href1 = '/study/disciplines/' + this.id + '/checkpoints';
+                        $row.append(
+                          "<td style='width: 50px;'><a class='btn btn-default' href=" + $href1 + " title='Внести данные'><span class='glyphicon glyphicon-list-alt'></span></a></td>"
+                        );
+                        $href2 = '/study/disciplines/' + this.id + '/edit';
+                        $row.append(
+                          "<td><a class='btn btn-default' href=" + $href2 + " title='Редактировать дисциплину'><span class='glyphicon glyphicon-edit'></span></a></td>"
+                        );
+                    });
+                    $count = $(data).size();
+                    $div = $('.disciplines_count')
+                    $div.empty();
+                    $div.append('Всего: ' + $count);
+                    $el.trigger('liszt:updated');
+                    $div.trigger('liszt:updated');
+                }
+            );
+            return false;
+        });
+    });
    
 });

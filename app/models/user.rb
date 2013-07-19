@@ -24,8 +24,8 @@ class User < ActiveRecord::Base
   has_many :roles,       through: :positions
   has_many :departments, through: :positions
   
-  # has_many :subject_teachers
-  # has_many :subjects, :through => :subject_teachers
+  has_many :discipline_teachers, class_name: Study::DisciplineTeacher, primary_key: :user_id, foreign_key: :teacher_id
+  has_many :disciplines, :through => :discipline_teachers, primary_key: :user_id
 
   has_many :marks, class_name: Study::Mark
   has_many :subjects, class_name: Study::Subject
@@ -74,6 +74,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  scope :teachers, ->  {where(user_role: :lecturer)}
+   
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if username = conditions.delete(:username)
@@ -82,4 +85,5 @@ class User < ActiveRecord::Base
       where(conditions).first
     end
   end
+
 end

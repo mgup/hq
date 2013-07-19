@@ -1,0 +1,67 @@
+<div class="page-header">
+  <h1>Дисциплины</h1>
+</div>
+
+<div class='info-small pull-right disciplines_count'>
+  Всего: <%= @disciplines.where(subject_year: 2013).count %>
+</div>
+
+<table class='table table-striped'>
+  <thead>
+  <tr>
+    <th class='text-muted'>#</th>
+    <th>Дисциплина</th>
+    <th colspan='2'>Набранный балл на <%= DateTime.now.strftime("%d.%m.%Y") %> </th>
+    <th colspan='2'>Средняя оценка на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody id='disciplines'>
+  <% @disciplines.where(subject_year: 2013).each do |discipline| %>
+    <tr>
+      <td class='text-muted'><%= discipline.id %></td>
+      <td><%= discipline.name %>
+      </td>
+      <td>100</td>
+      <td>
+        <div style='width: 100px;' class="progress progress-striped">
+          <div class="progress-bar progress-bar-info" style="width: 100%"></div>
+        </div>
+      </td>
+      <td>отлично</td>
+      <td><div style='width: 100px;' class="progress progress-striped">
+        <div class="progress-bar progress-bar-success" style="width: 100%"></div>
+      </div>
+      </td>
+      <td><a class='btn btn-default' href="progress/discipline/<%= discipline.id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class='info-small pull-right disciplines_count'>
+  Всего: <%= @disciplines.where(subject_year: 2013).count %>
+</div>
+
+<div id='button_results'>
+  <a class='btn btn-default' id='open_results'><span class='glyphicon glyphicon-folder-close'></span>  Посмотреть успеваемость за прошлые годы</a>
+</div>
+<br>
+<br>
+<table id='session_results' class='table table-striped' style='display: none;'>
+  <thead>
+  <tr>
+    <th>Год</th>
+    <th>Семестр</th>
+    <th></th>
+  </tr>
+  </thead>
+  <% @sessions.each do |subject| %>
+    <tr>
+      <td><%= "#{subject[:year]}/#{subject[:year] + 1}" %></td>
+      <td><%= subject[:term] %></td>
+      <% session = @subjects.where(year: subject[:year], semester: subject[:semester]).first%>
+      <td><a href="<%=my_path(session.id)%>">Посмотреть результаты сессии</a></td>
+    </tr>
+  <% end %>
+</table>

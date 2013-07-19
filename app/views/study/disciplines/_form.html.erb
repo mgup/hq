@@ -1,0 +1,114 @@
+<%= form_for @discipline, html: { class: 'form-horizontal' } do |f|%>
+  <fieldset>
+    <legend>Выберите группу для создания технологической карты дисциплины</legend>
+    <div class='row'>
+      <%= label_tag 'faculty', 'Факультет', class: 'control-label col-lg-2' %>
+      <div class='col col-lg-10'>
+        <%= hidden_field_tag 'faculty', (@discipline.group.speciality.speciality_faculty if (@discipline.id != nil) ) %>
+        <ul class='nav nav-pills pill-select ajax-faculty' name='pillfaculty' id='pillfaculty'>
+        <% Department.faculties.each do |faculty| %>
+          <li class="<%= 'active' if faculty.id==((@discipline.id != nil) ? @discipline.group.speciality.speciality_faculty : 0) %>"><a data-toggle='pill' data-value="<%=faculty.id%>" data-input='faculty' href='#'><%= faculty.abbreviation %></a></li>
+        <% end %>
+        </ul>
+      </div>
+    </div> 
+    <div class='row'>
+      <%= label_tag 'speciality', 'Специальность', class: 'control-label col-lg-2' %>
+      <div class='col col-lg-8'>
+        <%= select_tag 'speciality',
+          options_from_collection_for_select(Speciality.all, :id, :full_name, (@discipline.group.speciality.id if (@discipline.id != nil))),
+            prompt: 'все специальности', class: 'ajax-speciality' %>
+      </div>
+    </div>
+    <div class='row'>
+      <%= label_tag :group, 'Группа',class: 'control-label col-lg-2' %>
+      <div class='col col-lg-8'>
+        <%= select_tag :group, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.all, :id, :name, (@discipline.group.id if (@discipline.id != nil))), { class: 'ajax-group_id', required: 'required' } %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Описание дисциплины</legend>
+    <div class='row'>
+      <%= f.label :name, class: 'control-label col-lg-2' %>
+      <div class='col col-lg-8'>
+        <%= f.text_field :name, placeholder: 'Математика', required: 'required' %>
+        <span class="help-block">
+        Пожалуйста, используйте полное название дисциплины из учебного плана. Не допускайте сокращений.
+        </span>
+      </div>
+    </div>
+    <div class='row'>
+      <%= f.label :semester, class: 'control-label col-lg-2' %>
+      <div class='col col-lg-8'>
+        <%= f.hidden_field :semester, required: 'required' %>
+        <ul class='nav nav-pills pill-select' name='pillsem' id='pillsem'>
+          <li class="<%= 'active' if 1==(@discipline.id!=nil ? @discipline.semester : 0) %>"><a  data-toggle='pill' data-value='1' data-input='study_discipline_semester' href='#'>осенний</a></li>
+          <li class="<%= 'active' if 2==(@discipline.id!=nil ? @discipline.semester : 0) %>"><a  data-toggle='pill' data-value='2' data-input='study_discipline_semester' href='#'>весенний</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class='row'>
+      <%= f.label :year, class: 'control-label col-lg-2' %>
+      <div class='col col-lg-8'>
+        <%= f.select :year, options_for_select(%w(2013)), required: 'required' %>
+      </div>
+    </div>
+    <div class='row'>
+     <%= label_tag :exam_type, 'Форма испытания',class: 'control-label col-lg-2' %>
+     <div class="col col-lg-8">
+        <%= hidden_field_tag :exam_type, (@discipline.id!=nil ? @discipline.control.type : nil), required: 'required' %>
+        <ul class='nav nav-pills pill-select' name='pillexam_type' id='pillexam_type'>
+          <li class="<%= 'active' if 1==(@discipline.id!=nil ? @discipline.control.type : nil) %>"><a data-toggle='pill' data-value='1' data-input='exam_type' href='#'>экзамен</a></li>
+          <li class="<%= 'active' if 0==(@discipline.id!=nil ? @discipline.control.type : nil) %>"><a data-toggle='pill' data-value='0' data-input='exam_type' href='#'>зачет</a></li>
+          <li class="<%= 'active' if 9==(@discipline.id!=nil ? @discipline.control.type : nil) %>"><a data-toggle='pill' data-value='9' data-input='exam_type' href='#'>дифференцированный зачёт</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class='row'>
+      <%= label_tag :weight, 'Вес экзаменационных баллов',class: 'control-label col-lg-2' %>
+      <div class='col col-lg-2'>
+        <%= text_field_tag :weight, 50 %>
+      </div>
+      <div class='col col-lg-10'>
+        <span class="help-block">
+          Рекомендуемое значение — 50%, можно оставить по-умолчанию.
+        </span>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-offset-2'>
+        <%= hidden_field_tag :exam_term_work %>
+        <label><%= check_box_tag :exam_term_work, 1 , @discipline.has_work? %> Присутствует курсовая работа</label>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-offset-2'>
+        <%= hidden_field_tag :exam_term_project %>
+        <label><%= check_box_tag :exam_term_project, 1, @discipline.has_project? %> Присутствует курсовой проект</label>
+      </div>
+    </div>
+    <div class='row'>
+      <%= label_tag :teacher, 'Ведущий преподаватель',class: 'control-label col-lg-2' %>
+      <div class='col col-lg-8'>
+        <%= select_tag :teacher,
+          options_from_collection_for_select(User.teachers, :id, :full_name, (@discipline.teacher.id if (@discipline.id != nil and @discipline.teacher != nil))), required: 'required'%>
+        <span class="help-block">
+        Под ведущим преподавателем понимается тот, который будет принимать в конце семестра у студентов зачёт/экзамен и, соответственно, расписываться в зачётной/экзаменационной ведомости.
+        </span>
+      </div>
+    </div>
+    <div class='row'>
+      <%= label_tag :teachers, 'Дополнительные преподаватели', class: 'control-label col-lg-2' %>
+      <div class='col col-lg-8'>
+        <%= select_tag :teachers,
+          options_from_collection_for_select(User.teachers, :id, :full_name, @teachers),  multiple: true, class: 'chzn-select', data: { placeholder: 'Дополнительные преподаватели' } %>
+        <span class="help-block">
+        Если дисциплину ведут несколько преподавателей — укажите их здесь. Главного преподавателя второй раз указывать не надо.
+        </span>
+      </div>
+    </div>
+  </fieldset>
+  <%= f.submit class: 'btn btn-default' %>
+<% end %>

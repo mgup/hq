@@ -16,11 +16,24 @@ HQ::Application.routes.draw do
   resources :specialities
 
   namespace :study do
+    resources :disciplines do
+      resources :checkpoints do
+        resources :checkpointmarks
+      end
+    end
     resources :subjects do
       resources :marks
     end
     get '/analyse' => 'analyse#index'
     get '/chase' => 'chase#index'
+    # get '/progress' => 'progress#index'
+    # get '/progress/group/:id' => 'progress#group'
+  end
+
+  namespace :my do
+    get '/progress' => 'progress#index'
+    get '/progress/subject/:id' => 'progress#subject'
+    get '/progress/discipline/:id' => 'progress#discipline'
   end
 
   get 'schedule/data/departments' => 'schedule/data#departments'
@@ -28,6 +41,9 @@ HQ::Application.routes.draw do
 
   get 'study/subjects/ajax/specialities' => 'ajax#specialities'
   get 'study/subjects/ajax/groups' => 'ajax#groups'
+  get 'study/ajax/disciplines' => 'ajax#disciplines'
+  get 'study/disciplines/ajax/groups' => 'ajax#groups'
+  get 'study/disciplines/ajax/specialities' => 'ajax#specialities'
 
   root to: 'dashboard#index'
 

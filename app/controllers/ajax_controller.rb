@@ -12,4 +12,17 @@ class AjaxController < ApplicationController
       groups
     end })
   end
+
+  def disciplines
+    render({ json: Study::Discipline.where(subject_year: 2013).from_name(params[:discipline_name]).inject([]) do |disciplines, discipline|
+      teachers = []
+      discipline.teachers.each do |teacher|
+        teachers << teacher.full_name
+      end
+      disciplines << { id: discipline.id, name: discipline.name, term: discipline.term,
+                       group: discipline.group.name, teachers: teachers.join(', '),
+                        }
+      disciplines
+    end })
+  end
 end
