@@ -20,6 +20,7 @@ class Study::Subject < ActiveRecord::Base
   scope :find_subjects, -> subject {where(year: subject.year, 
                       semester: subject.semester, group_id: subject.group_id, 
                       title: subject.title, kind: subject.kind)}
+  scope :from_student, -> student {where(group_id:  student.group.id )}
 
   def type
     case kind
@@ -39,6 +40,15 @@ class Study::Subject < ActiveRecord::Base
         'ГАК'
         when TYPE_GRAD_TEST
         'дифференцированный зачёт'
+    end
+  end
+
+  def term
+    case semester
+      when 1
+        'осенний семестр'
+      when 2
+        'весенний семестр'
     end
   end
 

@@ -1,0 +1,56 @@
+<div class="page-header">
+  <h1>
+    <%= @discipline.name %> <small><%= @discipline.group.name %></small>
+  </h1>
+</div>
+
+<div class='pull-right'>
+  <a data-toggle="modal" data-path="/study/disciplines/<%=@discipline.id%>/checkpoints" data-target="#myModal" class="btn btn-info"><span class='glyphicon glyphicon-plus'></span> Добавить занятие</a>
+</div>
+<div class='pull-right' style='margin-right: 10px;'>
+  <a class='btn btn-info' href="<%= edit_study_discipline_checkpoint_path(@discipline, @checkpoints.first) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать контрольные точки</a>
+</div>
+<div class='pull-right' style='margin-right: 10px;'>
+  <a class='btn btn-info' href="<%= edit_study_discipline_path(@discipline) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину</a>
+</div>
+
+<div class='row'>
+  <table class='table table-striped'>
+    <thead>
+    <tr>
+      <th class='text-muted'>#</th>
+      <th>Дата</th>
+      <th style='width: 550px;'>Тип</th>
+      <th style='width: 150px;'></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @checkpoints.each  do |checkpoint| %>
+        <tr>
+          <td class='text-muted'><%= checkpoint.id %></td>
+          <td><%= checkpoint.date.strftime("%d.%m.%Y") %></td>
+          <td style='width: 550px;'><span class="glyphicon <%= checkpoint.lesson %>"></span>
+            <%= checkpoint.name if checkpoint.type == 3 %>
+            <%= checkpoint.lessonname %>
+          </td>
+          <td style='width: 150px;'><a class='btn btn-default' href="<%= study_discipline_checkpoint_checkpointmarks_path(@discipline, checkpoint) %>"><span class='glyphicon glyphicon-plus'></span> Внести результаты</a></td>
+          <td><a class='btn btn-default checkpoint-modal' data-toggle="modal" data-value="<%= checkpoint.id %>" data-path="/study/disciplines/<%=@discipline.id%>/checkpoints/<%= checkpoint.id %>" data-target="#myModal" title='Редактировать точку'><span class='glyphicon glyphicon-edit'></span></a></td>
+       </tr>
+      <% end %> 
+    </tbody>
+  </table>
+ </div>
+
+<!-- Modal -->
+<div class="modal fade in" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close btn btn-default" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Создание занятия</h4>
+      </div>
+      <%= render 'form' %>
+    </div>
+  </div>
+</div>
