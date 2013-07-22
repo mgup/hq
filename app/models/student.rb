@@ -47,6 +47,7 @@ class Student < ActiveRecord::Base
   scope :in_group_at_date, -> group, date {
     group = group.id if group.is_a?(Group)
 
+=begin
     find_by_sql([%q(
 SELECT student.*, student_group.*
 FROM (
@@ -95,5 +96,16 @@ GROUP BY student_group_id
 
 ORDER BY last_name_hint ASC, first_name_hint ASC, patronym_hint ASC
     ), { group: group, date: date.strftime('%Y-%m-%d') }])
+=end
+
+    ids = Student.find_by_sql([%q(
+SELECT GROUP_CONCAT(student) AS student_group_id, `group` AS student_group_group
+FROM timeline
+WHERE change_date >= :date and `group` = :group
+GROUP BY `group`;
+                       ), { group: group, date: date.strftime('%Y-%m-%d') }])
+
+
+    find(ids.split(','))
   }
 end
