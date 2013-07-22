@@ -161,5 +161,50 @@ $(function() {
             return false;
         });
     });
+
+    $('#filterforsubjects').submit(function() {
+        $.getJSON(
+            '/study/ajax/subjects',
+            {'subject_name': $('#subject_name').val(),
+             'subject_group': $('#subject_group option:selected').val()},
+            function(somedata) {
+                $element = $('table#subjects tbody');
+                $('.paginator').empty();
+                $element.empty();
+                $(somedata).each(function() {
+                    $element.append($('<tr></tr>').attr({'id': 'tr'+ this.id}));
+                    $str = $('#subjects #tr'+ this.id);
+                    $str.append(
+                        $('<td></td>').attr('class', 'text-muted')
+                            .text(this.id)
+                    );
+                    $next = this.year + 1;
+                    $str.append(
+                        $('<td></td>').text(this.year + '/' + $next )
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.semester)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.group)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.title)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.type)
+                    );
+                    $goto = '/study/subjects/' + this.id + '/marks';
+                    $str.append(
+                        "<td><a  href=" + $goto + ">Посмотреть</a></td>"
+                    );
+                });
+
+                $element.trigger('liszt:updated');
+            }
+        );
+        return false;
+    });
+
    
 });

@@ -2,6 +2,17 @@
   <h1>Все результаты</h1>
 </div>
 
+<div class='col col-lg-12' style='margin-bottom: 20px; padding: 0;'>
+  <form id='filterforsubjects' class='form-inline'>
+    <input type='text' name='subject_name' id='subject_name' class='col-lg-6' placeholder='Поиск по названию дисциплины'>
+    <div class='col col-lg-3'>
+      <%= select_tag :subject_group, options_from_collection_for_select(Group.all.sort_by{|g| [g.name]}, :id, :name),
+                 prompt: 'все группы' %>
+    </div>
+    <input type='submit' value='Найти' class='btn btn-default'>
+  </form>
+</div>
+
 <div class='row'>
   <div class='col col-lg-2'>
     <%= link_to 'Добавить', new_study_subject_path, class: 'btn btn-primary' %>
@@ -16,9 +27,14 @@
   <% end %>
 </div>
 
-<%= paginate @subjects %>
 
-<table class="table table-hover">
+
+<div class='paginator'>
+  <%= paginate @subjects %>
+</div>
+
+
+<table id='subjects' class="table table-hover">
   <thead>
   <tr>
     <th>#</th>

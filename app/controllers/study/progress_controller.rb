@@ -1,4 +1,4 @@
-class ProgressAllController < ApplicationController
+class ProgressController < ApplicationController
   
   def index
     if params[:group]
