@@ -1,8 +1,8 @@
 class My::ProgressController < ApplicationController
 
+  before_filter :find_student
+
   def index
-    @disciplines = Study::Discipline.from_student(Student.find(17106))
-    @subjects = Study::Subject.from_student(Student.find(17106))
     @sessions = []
     @subjects.each do |s|
       @sessions << {year: s.year, semester: s.semester, term: s.term}
@@ -11,13 +11,22 @@ class My::ProgressController < ApplicationController
   end
 
   def discipline
-    @discipline = Study::Discipline.find(params[:id])
+    @discipline = @disciplines.find(params[:id])
     @checkpoints = @discipline.checkpoints
   end
 
   def subject
-    @subject = Study::Subject.find(params[:id])
-    @subjects = Study::Subject.from_student(Student.find(17106)).where(year: @subject.year, semester: @subject.semester)
+    @subject = @subjects.find(params[:id])
+    @subjects = @subjects.where(year: @subject.year, semester: @subject.semester)
+                         .sort_by{ |s| [s[:kind]]}
+  end
+
+  private
+
+  def find_student
+    @student = Student.find(params[:student_id])
+    @disciplines = Study::Discipline.from_student(@student)
+    @subjects = Study::Subject.from_student(@student)
   end
 
 end

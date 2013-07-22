@@ -48,7 +48,7 @@
     </div>
     <div class="col col-lg-2">
       <%= select_tag 'group',
-                     options_from_collection_for_select(Group.all, :id, :name, params[:group]),
+                     options_from_collection_for_select(Group.all, :id, :name, params[:groups]),
                      multiple: true, class: 'chzn-select', data: { placeholder: 'все группы' } %>
     </div>
   </div>
