@@ -1,0 +1,53 @@
+<div class="page-header">
+  <h1>Успеваемость <small><%= @group.name %></small></h1>
+</div>
+
+<%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name),
+                   prompt: 'суммарно по всем дисциплинам' %>
+
+<br>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th class='text-muted'>#</th>
+    <th>Дисциплина</th>
+    <th colspan='2'>Набранный балл на <%= DateTime.now.strftime("%d.%m.%Y") %> </th>
+    <th colspan='2'>Средняя оценка на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @discipline_students.each do |student| %>
+    <tr>
+      <td><%= student[:student].id %></td>
+      <td><%= student[:student].person.full_name %></td>
+      <td><%= student[:ball] %></td>
+      <td>
+        <div style='width: 100px;' class="progress progress-striped">
+          <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
+        </div>
+      </td>
+      <% ball = case student[:progress].round %>
+                    <% when 0..49 then 'неудовлетворительно' %>
+                    <% when 50..64 then 'удовлетворительно' %>
+                    <% when 65..80 then 'хорошо' %>
+                    <% else 'отлично' %>
+                 <% end %>
+      <td><%= ball %></td>
+      <td>
+        <% result = case student[:progress].round %>
+                     <% when 0..49 then 'danger' %>
+                     <% when 50..64 then 'warning' %>
+                     <% when 65..80 then 'info' %>
+                     <% else 'success' %>
+                  <% end %>
+
+        <div style='width: 100px;' class="progress progress-striped">
+          <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

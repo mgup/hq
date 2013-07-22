@@ -3,7 +3,7 @@ class CreateSession < ActiveRecord::Migration
     create_table  :sessions do |t|
     	t.string        :year
       t.string        :semester
-	  	t.references    :group
+	  	t.references    :groups
 	  	t.string        :subject
 	    t.string        :type
 	    t.references    :user
