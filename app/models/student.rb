@@ -98,14 +98,13 @@ ORDER BY last_name_hint ASC, first_name_hint ASC, patronym_hint ASC
     ), { group: group, date: date.strftime('%Y-%m-%d') }])
 =end
 
-    ids = Student.find_by_sql([%q(
+    ids = self.connection.execute(sanitize_sql([%q(
 SELECT GROUP_CONCAT(student) AS student_group_id, `group` AS student_group_group
 FROM timeline
 WHERE change_date >= :date and `group` = :group
-GROUP BY `group`;
-                       ), { group: group, date: date.strftime('%Y-%m-%d') }])
+GROUP BY `group`
+                               ), { group: group, date: date.strftime('%Y-%m-%d') }]))
 
-
-    find(ids.split(','))
+    find(ids.to_a[0][0].split(','))
   }
 end
