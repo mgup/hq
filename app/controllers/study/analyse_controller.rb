@@ -28,9 +28,9 @@ class Study::AnalyseController < ApplicationController
                             error_txt: errors.join(' и ') })
     end
     unless @collisions.kind_of?(Array)
-      @collisions = @collisions.page(params[:page]).per(20)
+      @collisions = @collisions.sort_by{ |col| [col[:student].group.speciality.faculty, col[:student].group, col[:subject], col[:student].person.full_name]}.page(params[:page]).per(20)
     else
-      @collisions = Kaminari.paginate_array(@collisions).page(params[:page])
+      @collisions = Kaminari.paginate_array(@collisions.sort_by{ |col| [col[:student].group.speciality.faculty, col[:student].group, col[:subject], col[:student].person.full_name]}).page(params[:page])
       .per(20)
     end
   end
