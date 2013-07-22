@@ -91,6 +91,8 @@ LEFT JOIN archive_student_group AS a16 ON student_group.student_group_id = a16.s
 LEFT JOIN `order` AS o16 ON o16.order_id = a16.archive_student_group_order AND o16.order_template = 16
 WHERE o16.order_signing < :date
 
+GROUP BY student_group_id
+
 ORDER BY last_name_hint ASC, first_name_hint ASC, patronym_hint ASC
     ), { group: group, date: date.strftime('%Y-%m-%d') }])
   }
