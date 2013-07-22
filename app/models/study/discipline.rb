@@ -21,6 +21,7 @@ class Study::Discipline < ActiveRecord::Base
 
   scope :from_name, -> name { where("subject_name LIKE :prefix", prefix: "#{name}%")}
   scope :from_student, -> student {where(group:  student.group )}
+  scope :from_group, -> group {where(group: group )}
 
   def teacher
     teachers.first

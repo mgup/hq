@@ -23,7 +23,7 @@ class Study::DisciplinesController < ApplicationController
 
   def update
     study_discipline = params[:study_discipline]
-    study_discipline[:group] = Group.find(params[:group])
+    study_discipline[:groups] = Group.find(params[:groups])
     discipline = Study::Discipline.find(params[:id])
 
     #Преподаватели
@@ -79,7 +79,7 @@ class Study::DisciplinesController < ApplicationController
       end
     end
 
-    if discipline.update_attributes(group: study_discipline[:group],
+    if discipline.update_attributes(groups: study_discipline[:groups],
     semester: study_discipline[:semester], name: study_discipline[:name],
     year: study_discipline[:year])
 
@@ -93,7 +93,7 @@ class Study::DisciplinesController < ApplicationController
   def create
     discipline = params[:study_discipline]
     @discipline = Study::Discipline.new year: discipline[:year], 
-    semester: discipline[:semester], group: Group.find(params[:group]),
+    semester: discipline[:semester], groups: Group.find(params[:groups]),
         name: discipline[:name]
     if @discipline.save
 
@@ -132,7 +132,7 @@ class Study::DisciplinesController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:study_discipline, {}).permit( :year, :semester, :group,
+    params.fetch(:study_discipline, {}).permit( :year, :semester, :groups,
                                             :name, :subject_teacher)
   end
 end

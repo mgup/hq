@@ -61,7 +61,7 @@
       <td><%= "#{subject[:year]}/#{subject[:year] + 1}" %></td>
       <td><%= subject[:term] %></td>
       <% session = @subjects.where(year: subject[:year], semester: subject[:semester]).first%>
-      <td><a href="<%=my_path(session.id)%>">Посмотреть результаты сессии</a></td>
+      <td><a href="progress/subject/<%= session.id %>">Посмотреть результаты сессии</a></td>
     </tr>
   <% end %>
 </table>

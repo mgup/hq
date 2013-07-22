@@ -21,9 +21,9 @@
       </div>
     </div>
     <div class='row'>
-      <%= label_tag :group, 'Группа',class: 'control-label col-lg-2' %>
+      <%= label_tag :groups, 'Группа',class: 'control-label col-lg-2' %>
       <div class='col col-lg-8'>
-        <%= select_tag :group, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.all, :id, :name, (@discipline.group.id if (@discipline.id != nil))), { class: 'ajax-group_id', required: 'required' } %>
+        <%= select_tag :groups, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.all, :id, :name, (@discipline.group.id if (@discipline.id != nil))), { class: 'ajax-group_id', required: 'required' } %>
       </div>
     </div>
   </fieldset>
