@@ -40,6 +40,10 @@ HQ::Application.routes.draw do
     end
   end
 
+  namespace :office do
+    resources :orders
+  end
+
   get 'schedule/data/departments' => 'schedule/data#departments'
   get 'schedule/data/rooms' => 'schedule/data#rooms'
 
