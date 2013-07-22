@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+      study/discipline: 'дисциплина'
+    attributes:
+      study/discipline:
+        year: 'учебный год'
+        semester: 'семестр'
+        group: 'группа'
+        name: 'название дисциплины'

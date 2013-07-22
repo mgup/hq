@@ -1,0 +1,59 @@
+<div class="modal-body">
+<%= form_for @checkpoint, url: url_for(controller: 'checkpoints', action: 'create'), html: { class: 'form-horizontal', id: 'modal_form'} do |f|%>
+  <%= f.hidden_field :id %>
+  <%= f.hidden_field :checkpoint_subject, value: @discipline %>
+   <div class='row'>
+      <%= f.label :type, class: 'control-label col-lg-2' %>
+     <div class="col col-lg-8">
+       <%= f.hidden_field :type %>
+       <ul class='nav nav-pills pill-select' name='pillcheckpoint_type' id='pillcheckpoint_type'>
+         <li class="<%= 'active' if 2==(@checkpoint ? @checkpoint.type : nil) %>"><a data-toggle='pill' data-value='2' data-input='study_checkpoint_type' href='#'>Практическое (лабораторное) занятие</a></li>
+         <li class="<%= 'active' if 1==(@checkpoint ? @checkpoint.type : nil) %>"><a data-toggle='pill' data-value='1' data-input='study_checkpoint_type' href='#'>Лекция</a></li>
+         <li class="<%= 'active' if 3==(@checkpoint ? @checkpoint.type : nil) %>"><a data-toggle='pill' data-value='3' data-input='study_checkpoint_type' href='#'>Контрольная точка</a></li>
+       </ul>
+     </div>
+    </div>
+    <div class='row'>
+      <%= f.label :date, class: 'control-label col-lg-2' %>
+      <div class='col col-lg-4'>
+        <%= f.text_field :date, value: DateTime.now.strftime("%d.%m.%Y"), pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]', class: 'datepicker' %>
+      </div>
+    </div>
+
+    <div id='control_point', style='display: none;'>
+      <div class='row'>
+        <%= f.label :name, class: 'control-label col-lg-2' %>
+        <div class='col col-lg-8'>
+          <%= f.text_field :name, placeholder: 'Защита лабораторной работы №1' %>
+        </div>
+      </div>
+      <div class='row'>
+        <%= f.label :details, class: 'control-label col-lg-2' %>
+        <div class='col col-lg-8'>
+          <%= f.text_area :details, rows: 4 %>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal-footer">
+  <!--<a href="#" class="btn btn-primary">Save changes</a>-->
+  <%= f.submit 'Добавить', class: 'btn btn-primary' %>
+  <a href="#" class="btn btn-default" data-dismiss="modal">Закрыть</a>
+  <% end %>
+</div>
+
+<script>
+  $('.pill-select a[data-toggle="pill"]').on('shown.bs.tab', function() {
+    var $this = $(this);
+    $('#' + $this.data('input')).val($this.data('value')).change();
+  });
+  $('#study_checkpoint_type').on('change', function() {
+    if ($('#study_checkpoint_type').val() == '3' ){
+      $('#control_point').css({ 'display': 'block' });
+    }
+    else{
+      $('#control_point').css({ 'display': 'none' });
+    }
+  })
+</script>
+

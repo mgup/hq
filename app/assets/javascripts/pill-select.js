@@ -76,4 +76,16 @@ $(function() {
         $(this).attr('oldValue', $(this).val());
       });
     });
+    // $('#study_discipline_semester').on('change', function() {
+    //   var $this = $(this);
+    //   var $li = $('#pillsem li');
+    //   $li.map(function(){
+    //             if ($(this).find('a').data('value') == $this.val()){
+    //                 $(this).addClass('active'); 
+    //                 $(this).find('a').trigger('shown.bs.tab');
+    //             }
+    //             else{
+    //                 $(this).removeClass('active');
+    //             }
+    // });
 });

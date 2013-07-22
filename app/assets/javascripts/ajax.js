@@ -122,5 +122,89 @@ $(function() {
             });
         });
     });
+
+    $('#disciplines').each(function() {
+        $('#formsearchdisciplinebyname').submit(function() {
+            $.getJSON(
+                'ajax/disciplines',
+                {'discipline_name': $('#discipline_name').val()},
+                function(data) {
+                    var $el = $('#disciplines');
+                    $el.empty();
+                    $(data).each(function() {
+                        $el.append($('<tr></tr>').attr({'id': 'tr'+ this.id}));
+                        $row = $('#disciplines #tr'+ this.id);
+                        $row.append(
+                        $('<td></td>').attr('class', 'text-muted')
+                         .text(this.id)
+                         );
+                        $row.append(
+                           "<td><p>" + this.name + " (" + this.term + ")</p><p>" + this.group + ", " + this.teachers + "</p></td>"
+                        );
+                        $href1 = '/study/disciplines/' + this.id + '/checkpoints';
+                        $row.append(
+                          "<td style='width: 50px;'><a class='btn btn-default' href=" + $href1 + " title='Внести данные'><span class='glyphicon glyphicon-list-alt'></span></a></td>"
+                        );
+                        $href2 = '/study/disciplines/' + this.id + '/edit';
+                        $row.append(
+                          "<td><a class='btn btn-default' href=" + $href2 + " title='Редактировать дисциплину'><span class='glyphicon glyphicon-edit'></span></a></td>"
+                        );
+                    });
+                    $count = $(data).size();
+                    $div = $('.disciplines_count')
+                    $div.empty();
+                    $div.append('Всего: ' + $count);
+                    $el.trigger('liszt:updated');
+                    $div.trigger('liszt:updated');
+                }
+            );
+            return false;
+        });
+    });
+
+    $('#filterforsubjects').submit(function() {
+        $.getJSON(
+            '/study/ajax/subjects',
+            {'subject_name': $('#subject_name').val(),
+             'subject_group': $('#subject_group option:selected').val()},
+            function(somedata) {
+                $element = $('table#subjects tbody');
+                $('.paginator').empty();
+                $element.empty();
+                $(somedata).each(function() {
+                    $element.append($('<tr></tr>').attr({'id': 'tr'+ this.id}));
+                    $str = $('#subjects #tr'+ this.id);
+                    $str.append(
+                        $('<td></td>').attr('class', 'text-muted')
+                            .text(this.id)
+                    );
+                    $next = this.year + 1;
+                    $str.append(
+                        $('<td></td>').text(this.year + '/' + $next )
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.semester)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.group)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.title)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.type)
+                    );
+                    $goto = '/study/subjects/' + this.id + '/marks';
+                    $str.append(
+                        "<td><a  href=" + $goto + ">Посмотреть</a></td>"
+                    );
+                });
+
+                $element.trigger('liszt:updated');
+            }
+        );
+        return false;
+    });
+
    
 });

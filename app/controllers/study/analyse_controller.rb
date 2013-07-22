@@ -27,11 +27,17 @@ class Study::AnalyseController < ApplicationController
         student: Student.find(c[4]), mark: Study::Mark.find(c[2]),
                             error_txt: errors.join(' и ') })
     end
+
+    if params[:subject_group] && params[:subject_group] != ''
+      @collisions = @collisions.select{|col| col[:student].group.id == params[:subject_group].to_i}
+    end
+
     unless @collisions.kind_of?(Array)
       @collisions = @collisions.sort_by{ |col| [col[:student].group.speciality.faculty, col[:student].group, col[:subject], col[:student].person.full_name]}.page(params[:page]).per(20)
     else
       @collisions = Kaminari.paginate_array(@collisions.sort_by{ |col| [col[:student].group.speciality.faculty, col[:student].group, col[:subject], col[:student].person.full_name]}).page(params[:page])
       .per(20)
     end
+
   end
 end

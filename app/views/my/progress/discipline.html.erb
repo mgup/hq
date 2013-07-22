@@ -1,0 +1,40 @@
+<div class="page-header">
+  <h1><%= @discipline.name %></h1>
+</div>
+
+<a  class="btn btn-default" href="<%= my_student_progress_path(@student) %>"><span class='glyphicon glyphicon-backward'></span> Назад ко всем дисциплинам</a>
+<br>
+<br>
+
+ <table class='table table-striped'>
+   <thead>
+   <tr>
+     <th>Дата</th>
+     <th style='width: 550px;'>Тип</th>
+     <th></th>
+   </tr>
+   </thead>
+   <tbody>
+   <% @checkpoints.each  do |checkpoint| %>
+    <tr>
+       <td><%= checkpoint.date.strftime("%d.%m.%Y") %></td>
+       <td style='width: 550px;'><span class="glyphicon <%= checkpoint.lesson %>"></span>
+         <%= checkpoint.name if checkpoint.type == 3 %>
+         <%= checkpoint.lessonname %>
+         <span class="help-block"><%= checkpoint.details %></span>
+       </td>
+      <td>
+        <% mark = checkpoint.checkpointmarks.by_student(Student.find(17106)).first %>
+        <% if checkpoint.check? %>
+          <div class='col col-lg-7'>
+            <span class="label label-<%= mark.mark>=checkpoint.min ? 'success' : 'danger'%>"><%= mark.mark %> из <%= checkpoint.max.round %></span>
+          </div>
+        <% else %>
+          <div class='col col-lg-10'>
+            <span class="label label-<%= mark.result_color %>"><%= mark.result %></span>
+          </div>
+        <% end %>
+     </tr>
+   <% end %>
+  </tbody>
+ </table>

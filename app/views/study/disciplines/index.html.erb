@@ -1,0 +1,50 @@
+<div class="page-header">
+  <h1>Дисциплины</h1>
+</div>
+
+<form id='formsearchdisciplinebyname' class='form-inline'>
+  <input type='text' name='discipline_name' id='discipline_name' class='col-lg-6' placeholder='Поиск по названию дисциплины'>
+<div class='pull-right'>
+  <a class='btn btn-default' href="<%= new_study_discipline_path %>"><span class='glyphicon glyphicon-plus'></span>Добавить дисциплину</a>
+</div>
+</form>
+<br>
+<br>
+<br>
+<div class='info-small pull-right disciplines_count'>
+  Всего: <%= @disciplines.count %>
+</div>
+
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th class='text-muted'>#</th>
+      <th>Дисциплина</th>
+      <th style='width: 50px;'></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id='disciplines'>
+    <% @disciplines.each do |discipline| %>
+      <tr>
+        <td class='text-muted'><%= discipline.id %></td>
+        <td>
+          <p><%= discipline.name %> (<%= discipline.term %>)</p>
+          <p><%= discipline.group.name %>, 
+            <% teachers = [] %>
+            <% discipline.teachers.each do |teacher|%>
+            <% teachers << teacher.full_name %>
+            <% end %>
+            <%= teachers.join(', ') %>
+          </p>
+        </td>
+        <td style='width: 50px;'><a class='btn btn-default' href="<%= study_discipline_checkpoints_path(discipline) %>" title='Внести данные'><span class='glyphicon glyphicon-list-alt'></span></a></td>
+        <td><a class='btn btn-default' href="<%= edit_study_discipline_path(discipline) %>" title='Редактировать дисциплину'><span class='glyphicon glyphicon-edit'></span></a></td>
+      </tr>
+    <% end %>
+  </tbody> 
+</table>
+
+<div class='info-small pull-right disciplines_count'>
+  Всего: <%= @disciplines.count %>
+</div>

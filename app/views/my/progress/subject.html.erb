@@ -1,0 +1,33 @@
+<div class="page-header">
+  <h1>Результаты за <%= @subject.semester %>-ю сессию <%=  "#{@subject.year}/#{@subject.year + 1}" %>
+   учебного года</h1>
+</div>
+
+<table id='session_results' class='table table-striped'>
+  <thead>
+  <tr>
+    <th class='text-muted'>#</th>
+    <th>Дисциплина</th>
+    <th>Форма контроля</th>
+    <th colspan='2' >Оценка</th>
+    <th>Пересдача</th>
+  </tr>
+  </thead>
+  <% i = 0 %>
+  <% @subjects.each do |subject| %>
+    <tr>
+      <% i+=1 %>
+      <td class='text-muted'><%= i %></td>
+      <td><%= subject.title %></td>
+      <td><%= subject.type %></td>
+      <% mark = subject.marks.by_student(@student).first %>
+      <td><%= mark.test %></td>
+      <td>
+        <div style='width: 100px;' class="progress progress-striped">
+          <div class="progress-bar progress-bar-<%= mark.itog %>" style="width: <%= mark.strip %>"></div>
+        </div>
+      </td>
+      <td><%= mark.retake == 0 ? 'нет' : mark.retake  %></td>
+    </tr>
+  <% end %>
+</table>
