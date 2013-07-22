@@ -20,9 +20,18 @@ class AjaxController < ApplicationController
         teachers << teacher.full_name
       end
       disciplines << { id: discipline.id, name: discipline.name, term: discipline.term,
-                       group: discipline.group.name, teachers: teachers.join(', '),
+                       groups: discipline.group.name, teachers: teachers.join(', '),
                         }
       disciplines
+    end })
+  end
+
+  def subjects
+    render({ json: Study::Subject.from_name(params[:subject_name]).from_group(params[:subject_group]).inject([]) do |subjects, subject|
+      subjects << { id: subject.id, title: subject.title, year: subject.year,
+                       semester: subject.semester, type: subject.type,
+                       group: subject.group.name }
+      subjects
     end })
   end
 end
