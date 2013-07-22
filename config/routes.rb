@@ -23,6 +23,10 @@ HQ::Application.routes.draw do
     get '/chase' => 'chase#index'
   end
 
+  namespace :office do
+    resources :orders
+  end
+
   get 'schedule/data/departments' => 'schedule/data#departments'
   get 'schedule/data/rooms' => 'schedule/data#rooms'
 
