@@ -46,6 +46,9 @@ $(function() {
       var $course = (+$('#course_study').val())*2
       var $semester = +$this.val()%2;
       $('#semester_count').val($course-$semester);
+       if ($('input#course_study').val() == ''){
+           $('#semester_count').val(null);
+       }
     });
     $('#allmarks').on('change', function(){
         $mark = $(this).val()
@@ -76,16 +79,73 @@ $(function() {
         $(this).attr('oldValue', $(this).val());
       });
     });
-    // $('#study_discipline_semester').on('change', function() {
-    //   var $this = $(this);
-    //   var $li = $('#pillsem li');
-    //   $li.map(function(){
-    //             if ($(this).find('a').data('value') == $this.val()){
-    //                 $(this).addClass('active'); 
-    //                 $(this).find('a').trigger('shown.bs.tab');
-    //             }
-    //             else{
-    //                 $(this).removeClass('active');
-    //             }
-    // });
+    if ($('input#course_study').val() != null){
+        var $li = $('#pillcourse li');
+        $course = $('input#course_study').val();
+        $li.map(function(){
+            if ($(this).find('a').data('value') == $course){
+                $(this).addClass('active');
+                $(this).find('a').trigger('shown.bs.tab');
+            }
+            else{
+                $(this).removeClass('active');
+            }
+        });
+    }
+    if ($('input#study_subject_semester').val() != null){
+        var $li = $('#pillsemester li');
+        $semester = $('input#study_subject_semester').val();
+        $li.map(function(){
+            if ($(this).find('a').data('value') == $semester){
+                $(this).addClass('active');
+                $(this).find('a').trigger('shown.bs.tab');
+            }
+            else{
+                $(this).removeClass('active');
+            }
+        });
+        if ($('input#course_study').val() == ''){
+            $('#semester_count').val(null);
+        }
+    }
+    if ($('input#form').val() != null){
+        var $li = $('#pillform li');
+        $form = $('input#form').val();
+        $li.map(function(){
+            if ($(this).find('a').data('value') == $form){
+                $(this).addClass('active');
+                $(this).find('a').trigger('shown.bs.tab');
+            }
+            else{
+                $(this).removeClass('active');
+            }
+        });
+    }
+    if ($('input#study_subject_year').val() != null){
+        var $li = $('#pillyear li');
+        $year = $('input#study_subject_year').val();
+        $li.map(function(){
+            if ($(this).find('a').data('value') == $year){
+                $(this).addClass('active');
+                $(this).find('a').trigger('shown.bs.tab');
+            }
+            else{
+                $(this).removeClass('active');
+            }
+        });
+    }
+    if ($('input#faculty').val() != null){
+        var $li = $('#pillfaculty li');
+        $faculty = $('input#faculty').val();
+        $li.map(function(){
+            if ($(this).find('a').data('value') == $faculty){
+                $(this).addClass('active');
+                $(this).find('a').trigger('shown.bs.tab');
+            }
+            else{
+                $(this).removeClass('active');
+            }
+        });
+    }
+
 });
