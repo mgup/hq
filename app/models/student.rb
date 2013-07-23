@@ -47,25 +47,63 @@ class Student < ActiveRecord::Base
   scope :in_group_at_date, -> group, date {
     group = group.id if group.is_a?(Group)
 
+=begin
     find_by_sql([%q(
-      SELECT last_name_hint, first_name_hint, patronym_hint, t.*
-      FROM timeline AS t
-      JOIN timeline AS t2 ON t.student = t2.student AND t2.change_date >= :date
-      JOIN student_group ON student_group_id = t.student
-      JOIN student ON student_id = student_group_student
-      WHERE t.`group` = :group
-      GROUP BY t.student
-      HAVING t.change_date = MIN(t2.change_date)
-      ORDER BY last_name_hint, first_name_hint, patronym_hint
-    ), { group: group, date: date.strftime('%Y-%m-%d') }])
+SELECT student.*, student_group.*
+FROM (
+	SELECT
+		`student_group`.`student_group_id`
+	FROM `student_group`
+	LEFT JOIN (
+		SELECT *
+		FROM `archive_student_group`
+		JOIN `order`
+			ON
+				`order`.`order_id` = `archive_student_group`.`archive_student_group_order`
+				AND order_signing >= :date
+		ORDER BY order.order_signing DESC, order.order_id DESC
+		LIMIT 1
+	) AS `archive`
+		ON `archive`.`student_group_id` = `student_group`.`student_group_id`
+	WHERE
+		`student_group`.`student_group_status` IN (101, 107)
+		AND `student_group`.`student_group_group` = :group
+	GROUP BY `student_group`.`student_group_id`
+	HAVING
+		AVG(COALESCE(archive.student_group_group, :group)) = :group
+		AND COUNT(DISTINCT `archive`.`student_group_group`) <= 1
+	UNION
+	SELECT
+		`student_group`.`student_group_id`
+	FROM `student_group`
+	JOIN `archive_student_group`
+		ON `archive_student_group`.`student_group_id` = `student_group`.`student_group_id`
+	JOIN `order`
+		ON `order`.`order_id` = `archive_student_group`.`archive_student_group_order`
+	WHERE
+		`archive_student_group`.`student_group_status` IN (101, 107)
+		AND `archive_student_group`.`student_group_group` = :group
+		AND `order`.`order_signing` > :date
+) AS `studentss`
+JOIN student_group ON studentss.student_group_id = student_group.student_group_id
+JOIN student ON student_group.student_group_student = student_id
 
-#    ids = self.connection.execute(sanitize_sql([%q(
-#SELECT GROUP_CONCAT(student) AS student_group_id, `group` AS student_group_group
-#FROM timeline
-#WHERE change_date >= :date and `group` = :group
-#GROUP BY `group`
-#                               ), { group: group, date: date.strftime('%Y-%m-%d') }]))
-#
-#    find(ids.to_a[0][0].split(','))
-  }
+LEFT JOIN archive_student_group AS a16 ON student_group.student_group_id = a16.student_group_id
+LEFT JOIN `order` AS o16 ON o16.order_id = a16.archive_student_group_order AND o16.order_template = 16
+WHERE o16.order_signing < :date
+
+GROUP BY student_group_id
+
+ORDER BY last_name_hint ASC, first_name_hint ASC, patronym_hint ASC
+    ), { group: group, date: date.strftime('%Y-%m-%d') }])
+=end
+
+    ids = self.connection.execute(sanitize_sql([%q(
+SELECT GROUP_CONCAT(student) AS student_group_id, `group` AS student_group_group
+FROM timeline
+WHERE change_date >= :date and `group` = :group
+GROUP BY `group`
+                               ), { group: group, date: date.strftime('%Y-%m-%d') }]))
+
+    find(ids.to_a[0][0].split(','))  }
 end
