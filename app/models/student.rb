@@ -10,6 +10,8 @@ class Student < ActiveRecord::Base
   has_many :exam_students, foreign_key: :exam_student_student
   has_many :exams, :through => :exam_students
   has_many :marks, foreign_key: :mark_student_group
+  has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_id, foreign_key: :student_id
+  has_many :docs, class_name: Document::Doc, :through => :document_students
 
   default_scope do
     select('student_group.*, student.*')
@@ -18,6 +20,10 @@ class Student < ActiveRecord::Base
   end
 
   scope :with_group, -> { joins(:group) }
+
+  scope :paid, -> { where(student_group_tax: 2) }
+  scope :abit, ->  {where(student_group_status: 100)}
+
 
   scope :filter, -> filters {
     cond = all

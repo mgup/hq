@@ -1,0 +1,3 @@
+module Finance
+
+end

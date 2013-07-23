@@ -10,7 +10,8 @@ $(function() {
             $.each(data, function() {
                 $this.append(
                     $('<option></option>').attr({
-                        'value': this.id
+                        'value': this.id,
+                        'selected': ($('#subject_group').val() == this.id ? true : false)
                     }).html(this.name)
                 );
             });
