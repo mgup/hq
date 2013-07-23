@@ -1,0 +1,39 @@
+<div class="page-header">
+  <h1>Информация о платном приёме</h1>
+</div>
+
+
+
+
+<table class='table table-hover'>
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Факультет</th>
+    <th>Студент</th>
+    <th style='width: 280px;'>Информация об оплате</th>
+    <th>Номер приказа</th>
+    <th>Плательщик</th>
+  </tr>
+  </thead>
+  <tobdy>
+    <% @students.each do |student|%>
+      <tr>
+        <td><%= student[:student].id %></td>
+        <td><%=  student[:student].group.speciality.faculty.abbreviation %></td>
+        <td><%=  student[:student].person.full_name %></td>
+        <td style='width: 280px;'>
+          <% i = 1 %>
+          <% even_indexes, odd_indexes = (0..(student[:cost].size - 1)).partition  {|x| x % 2 == 0} %>
+          <% student[:cost].values_at(*even_indexes).each do |price| %>
+            За <%= i %>-й год обучения: <%=  price  %> руб.
+            <% i+=1 %>
+            <br>
+          <% end %>
+        </td>
+        <td><%= student[:document] %></td>
+        <td><%= student[:payer] %></td>
+      </tr>
+    <% end %>
+  </tobdy>
+</table>
