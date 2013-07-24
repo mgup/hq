@@ -17,6 +17,11 @@ class Ability
       can :manage, [Study::Subject, Study::Mark]
     end
 
+    if user.is?(:chief_accountant)
+      cannot :manage, :all
+      can :contract, :students
+    end
+
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
