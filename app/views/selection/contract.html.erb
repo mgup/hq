@@ -51,7 +51,7 @@
           <table>
             <% student.payments.each do |payment| %>
               <tr>
-                <td><%= l(payment.date, format: :short) %></td>
+                <td class="nowrap"><%= l(payment.date, format: :short) %></td>
                 <td><%= number_to_currency(payment.sum) %></td>
               </tr>
             <% end %>
