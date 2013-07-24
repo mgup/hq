@@ -11,7 +11,7 @@ class Student < ActiveRecord::Base
   has_many :exams, :through => :exam_students
   has_many :marks, foreign_key: :mark_student_group
 
-  has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_id, foreign_key: :student_id
+  has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
 
   default_scope do
@@ -111,5 +111,21 @@ WHERE change_date >= :date and `group` = :group
 GROUP BY `group`
                                ), { group: group, date: date.strftime('%Y-%m-%d') }]))
 
-    find(ids.to_a[0][0].split(','))  }
+    find(ids.to_a[0][0].split(','))
+  }
+
+  scope :with_contract, -> { joins(:documents).where({ document: { document_type: Document::Doc::TYPE_CONTRACT }}) }
+
+  def faculty
+    group.speciality.faculty
+  end
+
+  # Получение информации о договоре на платное обучение.
+  def contract
+    documents.where(document_type: Document::Doc::TYPE_CONTRACT).first
+  end
+
+  def has_contract?
+    nil != contract
+  end
 end
