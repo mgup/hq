@@ -32,12 +32,12 @@
           <br>
           <em><%= student.contract.payer %></em>
         </td>
-        <td class="text-right nowrap">
+        <td>
           <table>
             <% student.tuition_fee[:by_year].each do |year, sum| %>
               <tr>
                 <td><%= year %> :</td>
-                <td class="text-right"><%= number_to_currency(sum) %></td>
+                <td class="text-right nowrap"><%= number_to_currency(sum) %></td>
               </tr>
             <% end %>
             <tr>
@@ -47,7 +47,21 @@
             </tr>
           </table>
         </td>
-        <td></td>
+        <td>
+          <table>
+            <% student.payments.each do |payment| %>
+              <tr>
+                <td><%= l(payment.date, format: :short) %></td>
+                <td><%= number_to_currency(payment.sum) %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td class="text-right" colspan="2">
+                <strong><%= number_to_currency(student.total_payments) %></strong>
+              </td>
+            </tr>
+          </table>
+        </td>
       </tr>
     <% end %>
   </tobdy>
