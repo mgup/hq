@@ -5,7 +5,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.dom_id = 'dashboard-menu'
     primary.dom_class = 'nav nav-pills nav-stacked col-lg-2'
 
-    if !current_user.is?(:chief_accountant)
+    if current_user.is?(:developer)
       primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
 
       primary.item :roles,        'Роли'.html_safe, roles_path, icon: 'tags', highlights_on: -> { 'roles' == params[:controller] }
@@ -13,8 +13,9 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :users,        'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
       primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
       primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
-      primary.item :study,     'Успеваемость'.html_safe, study_subjects_path, icon: 'list', highlights_on: -> { params[:controller].include?('study') }
+      primary.item :study,        'Успеваемость'.html_safe, study_subjects_path, icon: 'list', highlights_on: -> { params[:controller].include?('study') }
     end
+
     primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
   end
 
