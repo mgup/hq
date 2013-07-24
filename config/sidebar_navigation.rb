@@ -11,20 +11,11 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :roles,        'Роли'.html_safe, roles_path, icon: 'tags', highlights_on: -> { 'roles' == params[:controller] }
       primary.item :departments,  'Структура'.html_safe, departments_path, icon: 'list', highlights_on: -> { 'departments' == params[:controller] }
       primary.item :users,        'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
-
-<<<<<<< HEAD
       primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
       primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
       primary.item :study,     'Успеваемость'.html_safe, study_subjects_path, icon: 'list', highlights_on: -> { params[:controller].include?('study') }
     end
     primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
-=======
-    primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
-    primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
-    primary.item :subjects,     'Успеваемость'.html_safe, study_subjects_path, icon: 'list', highlights_on: -> { params[:controller].include?('study') }
-
-    primary.item :documents,    'Платный приём'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
->>>>>>> 49e0601bceb97616ae0776f404b2075cb4307611
   end
 
   # Specify a custom renderer if needed.
