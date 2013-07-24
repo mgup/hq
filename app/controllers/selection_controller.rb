@@ -1,10 +1,6 @@
 class SelectionController < ApplicationController
-  def index
-
-  end
-
   def contract
-    authorize! :contract, :students
+    authorize! :index, :selection_contracts
 
     @students = Student.off_budget.entrants.with_contract
   end
