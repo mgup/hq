@@ -36,7 +36,7 @@
           <table>
             <% student.tuition_fee[:by_year].each do |year, sum| %>
               <tr>
-                <td><%= year %> :</td>
+                <td><%= year %></td>
                 <td class="text-right nowrap"><%= number_to_currency(sum) %></td>
               </tr>
             <% end %>
