@@ -19,6 +19,8 @@ class Student < ActiveRecord::Base
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
 
+  has_many :payments, class_name: Finance::Payment, primary_key: :student_group_id, foreign_key: :finance_payment_student_group
+
   default_scope do
     select('student_group.*, student.*')
     .joins(:person)
@@ -169,5 +171,9 @@ GROUP BY `group`
         end,
         total: total_sum
     }
+  end
+
+  def total_payments
+    payments.inject(0) { |result, payment| result += payment.sum; result }
   end
 end
