@@ -38,11 +38,12 @@
                 <td class="text-right"><%= number_to_currency(sum) %></td>
               </tr>
             <% end %>
+            <tr>
+              <td class="text-right" colspan="2">
+                <strong><%= number_to_currency(student.tuition_fee[:total]) %></strong>
+              </td>
+            </tr>
           </table>
-
-          <div class="text-right" style="border-top: 1px solid gray;">
-            <strong><%= number_to_currency(student.tuition_fee[:total]) %></strong>
-          </div>
         </td>
         <td></td>
       </tr>
