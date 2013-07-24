@@ -41,7 +41,7 @@
               </tr>
             <% end %>
             <tr>
-              <td class="text-right" colspan="2">
+              <td class="text-right nowrap" colspan="2">
                 <strong><%= number_to_currency(student.tuition_fee[:total]) %></strong>
               </td>
             </tr>
@@ -52,11 +52,11 @@
             <% student.payments.each do |payment| %>
               <tr>
                 <td class="nowrap"><%= l(payment.date, format: :short) %></td>
-                <td><%= number_to_currency(payment.sum) %></td>
+                <td class="text-right nowrap"><%= number_to_currency(payment.sum) %></td>
               </tr>
             <% end %>
             <tr>
-              <td class="text-right" colspan="2">
+              <td class="text-right nowrap" colspan="2">
                 <strong><%= number_to_currency(student.total_payments) %></strong>
               </td>
             </tr>
