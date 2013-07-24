@@ -37,8 +37,8 @@
     <tbody>
       <% @subject_students.each  do |stud| %>
         <tr class="<%= stud[:error] %>">
-          <td><%= stud[:student].id %></td>
-          <td><%= stud[:student].person.full_name %></td>
+          <td><%= stud[:students].id %></td>
+          <td><%= stud[:students].person.full_name %></td>
           <td><%= stud[:marks] %></td>
           <td><%= stud[:retakes] %></td>
           <td>

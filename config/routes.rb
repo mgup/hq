@@ -57,6 +57,9 @@ HQ::Application.routes.draw do
   get 'study/disciplines/ajax/specialities' => 'ajax#specialities'
   get 'study/ajax/groups' => 'ajax#groups'
   get 'study/ajax/specialities' => 'ajax#specialities'
+  get 'my/ajax/groups' => 'ajax#groups'
+  get 'my/ajax/specialities' => 'ajax#specialities'
+  get 'my/ajax/students' => 'ajax#students'
 
   root to: 'dashboard#index'
 
