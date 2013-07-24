@@ -1,9 +1,7 @@
 class Study::ChaseController < ApplicationController
   
   def index
-    if current_user.is?(:typer) 
-      redirect_to root_path
-    end
+    authorize! :index, :typers
     @activity = []
     User.all.each do |user|
       if user.is?(:typer) or user.is?(:supertyper)

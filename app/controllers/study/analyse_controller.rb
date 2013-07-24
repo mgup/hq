@@ -1,9 +1,7 @@
 class Study::AnalyseController < ApplicationController
   
   def index
-    if current_user.is?(:typer) 
-      redirect_to root_path
-    end 
+    authorize! :index, :analyse
     collision = ActiveRecord::Base.connection.execute("
     SELECT 
     GROUP_CONCAT(study_marks.mark SEPARATOR '-') AS mmmarks, 

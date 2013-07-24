@@ -4,6 +4,8 @@ class SelectionController < ApplicationController
   end
 
   def contract
+    authorize! :contract, :students
+
     @students = Student.off_budget.entrants.with_contract
   end
 end

@@ -3,6 +3,7 @@ class My::ProgressController < ApplicationController
   before_filter :find_student
 
   def index
+    authorize! :index, :myprogress
     @sessions = []
     @subjects.each do |s|
       @sessions << {year: s.year, semester: s.semester, term: s.term}
@@ -11,11 +12,13 @@ class My::ProgressController < ApplicationController
   end
 
   def discipline
+    authorize! :show, :myprogress
     @discipline = @disciplines.find(params[:id])
     @checkpoints = @discipline.checkpoints
   end
 
   def subject
+    authorize! :show, :progress
     @subject = @subjects.find(params[:id])
     @subjects = @subjects.where(year: @subject.year, semester: @subject.semester)
                          .sort_by{ |s| [s[:kind]]}
