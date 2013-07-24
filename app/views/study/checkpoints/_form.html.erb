@@ -6,11 +6,9 @@
       <%= f.label :type, class: 'control-label col-lg-2' %>
      <div class="col col-lg-8">
        <%= f.hidden_field :type %>
-       <ul class='nav nav-pills pill-select' name='pillcheckpoint_type' id='pillcheckpoint_type'>
-         <li class="<%= 'active' if 2==(@checkpoint ? @checkpoint.type : nil) %>"><a data-toggle='pill' data-value='2' data-input='study_checkpoint_type' href='#'>Практическое (лабораторное) занятие</a></li>
-         <li class="<%= 'active' if 1==(@checkpoint ? @checkpoint.type : nil) %>"><a data-toggle='pill' data-value='1' data-input='study_checkpoint_type' href='#'>Лекция</a></li>
-         <li class="<%= 'active' if 3==(@checkpoint ? @checkpoint.type : nil) %>"><a data-toggle='pill' data-value='3' data-input='study_checkpoint_type' href='#'>Контрольная точка</a></li>
-       </ul>
+       <%= pill_tabs('checkpoint_type', [['2', 'Практическое (лабораторное) занятие'],
+                     ['1', 'Лекция'], ['3', 'Контрольная точка']],
+                     'study_checkpoint_type') %>
      </div>
     </div>
     <div class='row'>
@@ -41,19 +39,4 @@
   <a href="#" class="btn btn-default" data-dismiss="modal">Закрыть</a>
   <% end %>
 </div>
-
-<script>
-  $('.pill-select a[data-toggle="pill"]').on('shown.bs.tab', function() {
-    var $this = $(this);
-    $('#' + $this.data('input')).val($this.data('value')).change();
-  });
-  $('#study_checkpoint_type').on('change', function() {
-    if ($('#study_checkpoint_type').val() == '3' ){
-      $('#control_point').css({ 'display': 'block' });
-    }
-    else{
-      $('#control_point').css({ 'display': 'none' });
-    }
-  })
-</script>
 

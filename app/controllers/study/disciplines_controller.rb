@@ -2,7 +2,7 @@ class Study::DisciplinesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @disciplines = @disciplines.where(subject_year: 2013)
+    @disciplines = @disciplines.where(subject_year: 2012)
   end
 
   def new
