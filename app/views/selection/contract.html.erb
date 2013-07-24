@@ -2,6 +2,8 @@
   <h1>Информация о платном приёме</h1>
 </div>
 
+<%= paginate @students %>
+
 <table class="table table-hover">
   <thead>
   <tr>
@@ -12,7 +14,7 @@
       Плательщик
     </th>
     <th>Общая сумма</th>
-    <th>Поступило</th>
+    <th>Платежи</th>
   </tr>
   </thead>
   <tobdy>
@@ -28,18 +30,41 @@
           <br>
           <%=  student.person.full_name %>
           <br>
-          <%= student.contract.payer %>
+          <em><%= student.contract.payer %></em>
         </td>
-        <td class="text-right">
-          <% student.tuition_fee[:by_year].each do |year, sum| %>
-            <%= "#{year}: #{number_to_currency(sum)}" %><br>
-          <% end %>
-          <div style="border-top: 1px solid gray;">
-            <strong><%= number_to_currency(student.tuition_fee[:total]) %></strong>
-          </div>
+        <td>
+          <table>
+            <% student.tuition_fee[:by_year].each do |year, sum| %>
+              <tr>
+                <td><%= year %></td>
+                <td class="text-right nowrap"><%= number_to_currency(sum) %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td class="text-right nowrap" colspan="2">
+                <strong><%= number_to_currency(student.tuition_fee[:total]) %></strong>
+              </td>
+            </tr>
+          </table>
         </td>
-        <td></td>
+        <td>
+          <table>
+            <% student.payments.each do |payment| %>
+              <tr>
+                <td class="nowrap"><%= l(payment.date, format: :short) %></td>
+                <td class="text-right nowrap"><%= number_to_currency(payment.sum) %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td class="text-right nowrap" colspan="2">
+                <strong><%= number_to_currency(student.total_payments) %></strong>
+              </td>
+            </tr>
+          </table>
+        </td>
       </tr>
     <% end %>
   </tobdy>
 </table>
+
+<%= paginate @students %>
