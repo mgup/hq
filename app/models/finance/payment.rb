@@ -6,7 +6,7 @@ class Finance::Payment < ActiveRecord::Base
   alias_attribute :sum,        :finance_payment_sum
 
  belongs_to :payment_type, class_name: Finance::PaymentType, primary_key: :finance_payment_type_id,
-           foreign_key: finance_payment_type
+           foreign_key: :finance_payment_type
  belongs_to :student, primary_key: :student_id, foreign_key: finance_payment_student_group
 
 end
