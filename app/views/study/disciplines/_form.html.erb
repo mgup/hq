@@ -5,11 +5,7 @@
       <%= label_tag 'faculty', 'Факультет', class: 'control-label col-lg-2' %>
       <div class='col col-lg-10'>
         <%= hidden_field_tag 'faculty', (@discipline.group.speciality.speciality_faculty if (@discipline.id != nil) ) %>
-        <ul class='nav nav-pills pill-select ajax-faculty' name='pillfaculty' id='pillfaculty'>
-        <% Department.faculties.each do |faculty| %>
-          <li class="<%= 'active' if faculty.id==((@discipline.id != nil) ? @discipline.group.speciality.speciality_faculty : 0) %>"><a data-toggle='pill' data-value="<%=faculty.id%>" data-input='faculty' href='#'><%= faculty.abbreviation %></a></li>
-        <% end %>
-        </ul>
+        <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty', class: 'ajax-faculty') %>
       </div>
     </div> 
     <div class='row'>
