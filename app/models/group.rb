@@ -1,4 +1,9 @@
 class Group < ActiveRecord::Base
+  FORM_FULLTIME = 101
+  FORM_SEMITIME = 102
+  FORM_POSTAL   = 103
+  FORM_DISTANCE = 105
+
   self.table_name = 'group'
 
   alias_attribute :id,     :group_id
@@ -72,4 +77,7 @@ class Group < ActiveRecord::Base
     n.join
   end
 
+  def is_distance?
+    FORM_DISTANCE == form
+  end
 end

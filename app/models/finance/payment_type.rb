@@ -10,7 +10,6 @@ class Finance::PaymentType < ActiveRecord::Base
            foreign_key: :finance_price_payment_type
 
 
-  scope :from_student, -> student {where(finance_payment_type_form: student.student_group_form,
-                                         finance_payment_type_speciality: student.student_group_speciality )}
-
+  #scope :from_student, -> student {where(finance_payment_type_form: student.student_group_form,
+  #                                       finance_payment_type_speciality: student.student_group_speciality )}
 end

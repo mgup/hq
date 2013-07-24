@@ -4,8 +4,9 @@ class Student < ActiveRecord::Base
 
   self.table_name = 'student_group'
 
-  alias_attribute :id,      :student_group_id
-  alias_attribute :payment, :student_group_tax
+  alias_attribute :id,              :student_group_id
+  alias_attribute :payment,         :student_group_tax
+  alias_attribute :admission_year,  :student_group_yearin
 
   belongs_to :person, class_name: Person, primary_key: :student_id, foreign_key: :student_group_student
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :student_group_group
@@ -118,7 +119,11 @@ GROUP BY `group`
     find(ids.to_a[0][0].split(','))
   }
 
-  scope :with_contract, -> { joins(:documents).where({ document: { document_type: Document::Doc::TYPE_CONTRACT }}) }
+  scope :with_contract, -> {
+    joins(:documents)
+    .where({ document: { document_type: Document::Doc::TYPE_CONTRACT }})
+    .order('document.document_create_date DESC')
+  }
 
   # Факультет, на котором обучается студент.
   def faculty
@@ -145,10 +150,20 @@ GROUP BY `group`
     nil != contract
   end
 
-  # Стоимость обучения.
+  # Информация по стоимости обучения студента.
   def tuition_fee
     return 0 if budget?
 
-
+    student_form = group.is_distance? ? Group::FORM_POSTAL : group.form
+    {
+        by_year: Finance::PaymentType.where(
+            finance_payment_type_year: admission_year,
+            finance_payment_type_form: student_form,
+            finance_payment_type_speciality: group.speciality.id
+        ).first.prices.inject(Hash.new(0)) do |by_year, price|
+          by_year[price.year.to_s] += price.sum
+          by_year
+        end
+    }
   end
 end
