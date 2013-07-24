@@ -160,6 +160,19 @@ $(function() {
             }
         });
     }
+    if ($('input.editmark').val() != null){
+        var $li = $('#pillmark li');
+        $type = $('input#study_checkpoint_type').val();
+        $li.map(function(){
+            if ($(this).find('a').data('value') == $type){
+                $(this).addClass('active');
+                $(this).find('a').trigger('shown.bs.tab');
+            }
+            else{
+                $(this).removeClass('active');
+            }
+        });
+    }
     $('#study_checkpoint_type').on('change', function() {
         if ($('#study_checkpoint_type').val() == '3' ){
             $('#control_point').css({ 'display': 'block' });
