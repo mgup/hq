@@ -34,4 +34,10 @@ class AjaxController < ApplicationController
       subjects
     end })
   end
+  def students
+    render({ json: Student.filter(group: params[:group]).inject([]) do |students, student|
+      students << { id: student.id, name: student.person.full_name }
+      students
+    end })
+  end
 end

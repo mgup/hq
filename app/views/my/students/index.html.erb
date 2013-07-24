@@ -1,0 +1,26 @@
+<form class='form-horizontal' action='' method='post'>
+
+  <div class='row'>
+    <div class='col col-lg-2'>
+      <%= select_tag :faculty, options_from_collection_for_select(Department.faculties, :id, :abbreviation),
+                     prompt: 'Факультет', class: 'ajax-faculty' %>
+    </div>
+    <div class='col col-lg-5'>
+      <%= select_tag 'speciality', options_from_collection_for_select(Speciality.all, :id, :full_name),
+                       prompt: 'выберите специальность', class: 'ajax-speciality' %>
+     </div>
+    <div class='col col-lg-2'>
+      <%= select_tag :form, options_for_select([['очная', 101], ['очно-заочная', 102], ['заочная', 103],
+                                          ['дистанционная', 105]]), { class: 'ajax-form'} %>
+    </div>
+    <div class='col col-lg-3'>
+      <%= select_tag :choose_group_id, content_tag(:option,'выберите группу', value: '') + options_from_collection_for_select(Group.all, :id, :name), { class: 'ajax-group_id', required: 'required'} %>
+    </div>
+  </div>
+</form>
+
+  <span class='help-block'>Выберите свою специальность, форму обучения и группу. Затем найдите себя в списке студентов.</span>
+
+  <table id='students' class='table table-hover'>
+
+  </table>

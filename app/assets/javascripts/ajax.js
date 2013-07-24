@@ -206,6 +206,33 @@ $(function() {
         );
         return false;
     });
+    $('select#choose_group_id').change(function() {
+        $.getJSON(
+            '/my/ajax/students',
+            {'group': $('#choose_group_id').val()},
+            function(somedata) {
+                $element = $('table#students');
+                $element.empty();
+                $(somedata).each(function() {
+                    $element.append($('<tr></tr>').attr({'id': 'tr'+ this.id}));
+                    $str = $('#students #tr'+ this.id);
+                    $str.append(
+                        $('<td></td>').attr('class', 'text-muted')
+                            .text(this.id)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.name)
+                    );
+                    $goto = '/my/student/' + this.id + '/progress';
+                    $str.append(
+                        "<td><a class='btn btn-info'  href=" + $goto + ">Выбрать</a></td>"
+                    );
+                });
+
+                $element.trigger('liszt:updated');
+            }
+        );
+    });
 
    
 });

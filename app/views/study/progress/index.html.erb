@@ -20,8 +20,8 @@
   <tbody>
   <% @discipline_students.each do |student| %>
     <tr>
-      <td><%= student[:student].id %></td>
-      <td><%= student[:student].person.full_name %></td>
+      <td><%= student[:students].id %></td>
+      <td><%= student[:students].person.full_name %></td>
       <td><%= student[:ball] %></td>
       <td>
         <div style='width: 100px;' class="progress progress-striped">

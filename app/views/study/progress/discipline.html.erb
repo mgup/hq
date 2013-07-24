@@ -21,8 +21,8 @@
   <tbody>
   <% @discipline_students.each do |student| %>
     <tr>
-      <td><%= student[:student].id %></td>
-      <td><%= student[:student].person.full_name %></td>
+      <td><%= student[:students].id %></td>
+      <td><%= student[:students].person.full_name %></td>
       <td><%= student[:ball] %></td>
       <td>
         <div style='width: 100px;' class="progress progress-striped">
@@ -48,7 +48,7 @@
           <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
         </div>
       </td>
-      <td><a class='btn btn-default' href="/my/student/<%= student[:student].id %>/progress" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+      <td><a class='btn btn-default' href="/my/student/<%= student[:students].id %>/progress" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
     </tr>
   <% end %>
   </tbody>

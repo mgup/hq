@@ -14,7 +14,7 @@ class Study::ProgressController < ApplicationController
         end
       end
       marks << ball
-      @discipline_students << {ball: ball, student: student}
+      @discipline_students << {ball: ball, students: student}
     end
       @max = marks.max
     @discipline_students.each do |ds|
@@ -30,10 +30,10 @@ class Study::ProgressController < ApplicationController
     @group.students.each do |student|
       ball = 0
       @discipline.checkpoints.each do |c|
-        ball += c.checkpointmarks.where(student: student).first.mark if  c.checkpointmarks.where(student: student).first != nil
+        ball += c.checkpointmarks.where(students: student).first.mark if  c.checkpointmarks.where(students: student).first != nil
       end
       marks << ball
-      @discipline_students << {ball: ball, student: student}
+      @discipline_students << {ball: ball, students: student}
     end
     @max = marks.max
     @discipline_students.each do |ds|
