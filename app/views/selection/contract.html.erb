@@ -16,7 +16,7 @@
     <% @students.each do |student|%>
       <tr>
         <td>
-          <%= student[:date] %>
+          <%= l student[:student].contract.date.to_date %>
           <br>
           <%=  student[:student].faculty.abbreviation %>
         </td>

@@ -1,7 +1,11 @@
 class Student < ActiveRecord::Base
+  PAYMENT_BUDGET = 1
+  PAYMENT_OFF_BUDGET = 2
+
   self.table_name = 'student_group'
 
-  alias_attribute :id,  :student_group_id
+  alias_attribute :id,      :student_group_id
+  alias_attribute :payment, :student_group_tax
 
   belongs_to :person, class_name: Person, primary_key: :student_id, foreign_key: :student_group_student
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :student_group_group
@@ -22,7 +26,7 @@ class Student < ActiveRecord::Base
 
   scope :with_group, -> { joins(:group) }
 
-  scope :paid, -> { where(student_group_tax: 2) }
+  scope :off_budget, -> { where(student_group_tax: PAYMENT_OFF_BUDGET) }
   scope :entrants, -> { where(student_group_status: 100) }
 
   scope :filter, -> filters {
@@ -116,8 +120,19 @@ GROUP BY `group`
 
   scope :with_contract, -> { joins(:documents).where({ document: { document_type: Document::Doc::TYPE_CONTRACT }}) }
 
+  # Факультет, на котором обучается студент.
   def faculty
     group.speciality.faculty
+  end
+
+  # Обучается ли студент на бюджетной основе?
+  def budget?
+    PAYMENT_BUDGET == payment
+  end
+
+  # Обучается ли студент на внебюджетной основе?
+  def off_budget?
+    !budget?
   end
 
   # Получение информации о договоре на платное обучение.
@@ -125,7 +140,15 @@ GROUP BY `group`
     documents.where(document_type: Document::Doc::TYPE_CONTRACT).first
   end
 
+  # Заключён ли со студентом контракт на платное обучение?
   def has_contract?
     nil != contract
+  end
+
+  # Стоимость обучения.
+  def tuition_fee
+    return 0 if budget?
+
+
   end
 end
