@@ -44,7 +44,7 @@ HQ::Application.routes.draw do
     resources :orders
   end
 
-  get 'selection/contract' => 'selection#contract'
+  get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
 
   get 'schedule/data/departments' => 'schedule/data#departments'
   get 'schedule/data/rooms' => 'schedule/data#rooms'

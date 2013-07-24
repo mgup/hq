@@ -2,6 +2,8 @@
   <h1>Информация о платном приёме</h1>
 </div>
 
+<%= paginate @students %>
+
 <table class="table table-hover">
   <thead>
   <tr>
@@ -12,7 +14,7 @@
       Плательщик
     </th>
     <th>Общая сумма</th>
-    <th>Поступило</th>
+    <th>Платежи</th>
   </tr>
   </thead>
   <tobdy>
