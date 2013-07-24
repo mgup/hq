@@ -8,31 +8,39 @@
 <table class='table table-hover'>
   <thead>
   <tr>
-    <th>#</th>
+    <th class='text-muted'>#</th>
     <th>Факультет</th>
-    <th>Студент</th>
-    <th style='width: 280px;'>Информация об оплате</th>
-    <th>Номер приказа</th>
-    <th>Плательщик</th>
+    <th style='width: 210px;'>Студент</th>
+    <th style='width: 290px;'>Информация об оплате</th>
+    <th style='width: 120px;'></th>
+    <th>Заказчик</th>
   </tr>
   </thead>
   <tobdy>
     <% @students.each do |student|%>
       <tr>
-        <td><%= student[:student].id %></td>
-        <td><%=  student[:student].group.speciality.faculty.abbreviation %></td>
-        <td><%=  student[:student].person.full_name %></td>
-        <td style='width: 280px;'>
+        <td class='text-muted' rowspan='2'><%= student[:student].id %></td>
+        <td rowspan='2'><%=  student[:student].group.speciality.faculty.abbreviation %></td>
+        <td rowspan='2' style='width: 210px;'><%=  student[:student].person.full_name %></td>
+        <td rowspan='2' class='text-center' style='width: 290px;'>
           <% i = 1 %>
+          <% sum = 0 %>
           <% even_indexes, odd_indexes = (0..(student[:cost].size - 1)).partition  {|x| x % 2 == 0} %>
           <% student[:cost].values_at(*even_indexes).each do |price| %>
-            За <%= i %>-й год обучения: <%=  price  %> руб.
+            За обучение на <%= i %>-м курсе: <%=  price  %> руб.
             <% i+=1 %>
+            <% sum+=price %>
             <br>
           <% end %>
+          <% if sum != 0 %>
+            <span class='label' style='font-size: 1em;'><span class='glyphicon glyphicon-exclamation-sign'></span> Итого за <strong><%= i-1 %></strong> <%= i < 6 ? 'года' : 'лет' %> обучения: <strong><%= sum %> руб.</strong></span>
+          <% end %>
         </td>
-        <td><%= student[:document] %></td>
-        <td><%= student[:payer] %></td>
+        <td style='width: 120px;'><strong><%= student[:date] %></strong></td>
+        <td rowspan='2'><%= student[:payer] %></td>
+      </tr>
+      <tr>
+        <td style='width: 120px;'><%= '#' + student[:document] if student[:document] %></td>
       </tr>
     <% end %>
   </tobdy>

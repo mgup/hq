@@ -4,11 +4,7 @@
     <%= label_tag :faculty, 'Факультет', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
       <%= hidden_field_tag :faculty %>
-      <ul class='nav nav-pills pill-select ajax-faculty' name='pillfaculty' id='pillfaculty'>
-        <% Department.faculties.each do |faculty| %>
-          <li><a data-toggle='pill' data-value="<%=faculty.id%>" data-input='faculty' href='#'><%= faculty.abbreviation %></a></li>
-        <% end %>
-      </ul>
+      <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty', class: 'ajax-faculty') %>
     </div>
   </div>
 
@@ -16,23 +12,16 @@
     <%= label_tag :course, 'Курс', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
       <%= hidden_field_tag 'course_study' %>
-      <ul class='nav nav-pills ajax-course pill-select' name='pillcourse' id='pillcourse'>
-        <% [1,2,3,4,5,6].each do |i| %>
-          <li><a  data-toggle='pill' data-value="<%= i %>" data-input='course_study' href='#'><%= i %></a></li>
-        <% end %>
-      </ul>
+      <%= pill_tabs('course', [1,2,3,4,5,6], 'course_study', class: 'ajax-course') %>
     </div>
   </div>
 
   <div class='row'>
     <%= label_tag :form, 'Форма обучения', class: 'control-label col-lg-2' %>
-    <%= hidden_field_tag :form %>
     <div class='col col-lg-10'>
-      <ul class='nav nav-pills ajax-form pill-select' name='pillform' id='pillform'>
-        <% [{v: '101', n: 'очная'}, {v: '102', n: 'очно-заочная'}, {v: '103', n: 'заочная'}, {v: '105', n: 'дистанционная'}].each do |x| %>
-        <li><a  data-toggle='pill' data-value="<%= x[:v] %>" data-input='form' href='#'><%= x[:n] %></a></li>
-        <% end %>
-      </ul>
+      <%= hidden_field_tag :form %>
+      <%= pill_tabs('form', [['101', 'очная'], ['102', 'очно-заочная'], ['103', 'заочная'],
+                             ['105', 'дистанционная']], 'form', class: 'ajax-form') %>
     </div>
   </div>
 
