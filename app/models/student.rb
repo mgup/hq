@@ -155,6 +155,8 @@ GROUP BY `group`
     return 0 if budget?
 
     student_form = group.is_distance? ? Group::FORM_POSTAL : group.form
+
+    total_sum = 0
     {
         by_year: Finance::PaymentType.where(
             finance_payment_type_year: admission_year,
@@ -162,8 +164,10 @@ GROUP BY `group`
             finance_payment_type_speciality: group.speciality.id
         ).first.prices.inject(Hash.new(0)) do |by_year, price|
           by_year[price.year.to_s] += price.sum
+          total_sum += price.sum
           by_year
-        end
+        end,
+        total: total_sum
     }
   end
 end
