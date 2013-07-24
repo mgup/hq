@@ -5,9 +5,12 @@
 <table class="table table-hover">
   <thead>
   <tr>
-    <th>Факультет</th>
-    <th>Студент (Плательщик)</th>
-    <th>Договор</th>
+    <th></th>
+    <th>
+      Студент
+      <br>
+      Плательщик
+    </th>
     <th>Общая сумма</th>
     <th>Поступило</th>
   </tr>
@@ -16,28 +19,20 @@
     <% @students.each do |student|%>
       <tr>
         <td>
-          <%= l student[:student].contract.date.to_date %>
+          <%= l student.contract.date.to_date %>
           <br>
-          <%=  student[:student].faculty.abbreviation %>
+          <%=  student.faculty.abbreviation %>
         </td>
         <td>
-          <%=  student[:student].person.full_name %>
+          <%= '№ ' + student.contract.number %>
           <br>
-          (<%= student[:student].contract.payer %>)
+          <%=  student.person.full_name %>
+          <br>
+          <%= student.contract.payer %>
         </td>
-        <td class="nowrap"><%= '№ ' + student[:student].contract.number %></td>
         <td>
-          <% i = 1 %>
-          <% sum = 0 %>
-          <% even_indexes, odd_indexes = (0..(student[:cost].size - 1)).partition  {|x| x % 2 == 0} %>
-          <% student[:cost].values_at(*even_indexes).each do |price| %>
-            <%= i %>-й год: <%= number_to_currency(price, precision: 0)  %>
-            <% i+=1 %>
-            <% sum+=price %>
-            <br>
-          <% end %>
-          <% if sum != 0 %>
-            <span class='label' style='font-size: 1em;'><span class='glyphicon glyphicon-exclamation-sign'></span> Итого за <strong><%= i-1 %></strong> <%= i < 6 ? 'года' : 'лет' %> обучения: <strong><%= number_to_currency(sum, precision: 0) %> руб.</strong></span>
+          <% student.tuition_fee[:by_year].each do |year, sum| %>
+            <%= "#{year}: #{number_to_currency(sum)}" %><br>
           <% end %>
         </td>
         <td></td>
