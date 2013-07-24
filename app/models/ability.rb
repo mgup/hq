@@ -4,10 +4,6 @@ class Ability
   def initialize(user)
     user ||= User.new
 
-    if user.is?(:developer)
-      can :manage, :all
-    end
-
     if user.is?(:typer)
       can [:create, :read], [Study::Subject, Study::Mark], user_id: user.id
       can :update, Study::Mark, user_id: user.id
@@ -18,8 +14,11 @@ class Ability
     end
 
     if user.is?(:chief_accountant)
-      cannot :manage, :all
-      can :contract, :students
+      can :index, :selection_contracts
+    end
+
+    if user.is?(:developer)
+      can :manage, :all
     end
 
     # Define abilities for the passed in user here. For example:
