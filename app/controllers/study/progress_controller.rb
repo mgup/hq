@@ -3,6 +3,7 @@ class Study::ProgressController < ApplicationController
   before_filter :find_group
   
   def index
+    authorize! :index, :progress
     @discipline_students = []
     marks = []
     @group.students.each do |student|
@@ -22,6 +23,7 @@ class Study::ProgressController < ApplicationController
   end
 
   def discipline
+    authorize! :show, :progress
     @discipline =  Study::Discipline.find(params[:id])
     @discipline_students = []
     marks = []

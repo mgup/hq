@@ -5,6 +5,7 @@ class SelectionController < ApplicationController
   end
 
   def contract
+    authorize! :contract, :students
     @students = []
     Student.off_budget.entrants.with_contract.each do |student|
       p = Finance::PaymentType.from_student(student).where(finance_payment_type_year: 2013).first
