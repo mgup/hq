@@ -3,17 +3,9 @@
 <h4>Поставить всем:</h4>
 <%= hidden_field_tag 'allmarks' %>
 <% if @subject.test? %>
-  <ul class='nav nav-pills pill-select' name='pillmarks' id='pillmarks'>
-    <li><a data-toggle='pill' data-value='0' data-input='allmarks' href='#'>Не зачтено</a></li>
-    <li><a data-toggle='pill' data-value='1' data-input='allmarks' href='#'>Зачтено</a></li>
-  </ul>
+   <%= pill_tabs('marks', [[0, 'Не зачтено'], [1, 'Зачтено']], 'allmarks') %>
 <% else %>
-  <ul class='nav nav-pills pill-select' name='pillmarks' id='pillmarks'>
-    <li><a data-toggle='pill' data-value='2' data-input='allmarks' href='#'>Неудовл.</a></li>
-    <li><a data-toggle='pill' data-value='3' data-input='allmarks' href='#'>Удовл.</a></li>
-    <li><a data-toggle='pill' data-value='4' data-input='allmarks' href='#'>Хорошо</a></li>
-    <li><a data-toggle='pill' data-value='5' data-input='allmarks' href='#'>Отлично</a></li>
-  </ul>
+   <%= pill_tabs('marks', [[2, 'Неудовл.'], [3, 'Удовл.'], [4, 'Хорошо'], [5, 'Отлично']], 'allmarks') %>
 <% end %>
 <br>
   <table class='table' id='stud-marks'>
@@ -42,18 +34,10 @@
       <td style='padding-left: 45px;'>
         <% if @subject.test? %>
           <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'all_mark required' %>
-          <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
-            <li><a data-toggle='pill' data-value='0' data-input="<%= student.id %>_mark"  href='#'>Не зачтено</a></li>
-            <li><a data-toggle='pill' data-value='1' data-input="<%= student.id %>_mark"  href='#'>Зачтено</a></li>
-          </ul>
+          <%= pill_tabs('mark', [[0, 'Не зачтено'], [1, 'Зачтено']], "#{student.id}_mark") %>
         <% else %>
           <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'all_mark required' %>
-          <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
-            <li><a data-toggle='pill' data-value='2' data-input="<%= student.id %>_mark"  href='#'>Неудовл.</a></li>
-            <li><a data-toggle='pill' data-value='3' data-input="<%= student.id %>_mark"  href='#'>Удовл.</a></li>
-            <li><a data-toggle='pill' data-value='4' data-input="<%= student.id %>_mark"  href='#'>Хорошо</a></li>
-            <li><a data-toggle='pill' data-value='5' data-input="<%= student.id %>_mark"  href='#'>Отлично</a></li>
-          </ul>
+          <%= pill_tabs('mark', [[2, 'Неудовл.'], [3, 'Удовл.'], [4, 'Хорошо'], [5, 'Отлично']], "#{student.id}_mark") %>
         <% end %>
       </td>
     </tr>
