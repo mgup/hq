@@ -223,7 +223,7 @@ $(function() {
                     $str.append(
                         $('<td></td>').text(this.name)
                     );
-                    $goto = '/my/student/' + this.id + '/progress';
+                    $goto = '/my/student/' + this.id;
                     $str.append(
                         "<td><a class='btn btn-info'  href=" + $goto + ">Выбрать</a></td>"
                     );

@@ -2,7 +2,7 @@ class Study::DisciplinesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @disciplines = @disciplines.where(subject_year: 2012)
+    @disciplines = @disciplines.now
   end
 
   def new
@@ -54,32 +54,23 @@ class Study::DisciplinesController < ApplicationController
     exam.update_attributes(exam_type: params[:exam_type])
 
     #Курсовая работа и проект
-    if !discipline.has_work?
-      if params[:exam_term_work] != ''
-        work =  Study::Exam.new discipline: discipline,
-                                exam_type: 2, exam_closed: false
-        work.save
-      end
-    else
-      if params[:exam_term_work] == ''
-        y =  discipline.exams.where(exam_type: 2).first
-        Study::Exam.delete(y)
-      end
-    end
-    if !discipline.has_project?
-      if params[:exam_term_project] != ''
-        work =  Study::Exam.new discipline: discipline,
-                                exam_type: 3, exam_closed: false
-        work.save
-      end
-    else
-      if params[:exam_term_project] == ''
-        y =  discipline.exams.where(exam_type: 3).first
-        Study::Exam.delete(y)
+    [{type: 'work', num: 2}, {type: 'project', num: 3}].each do |x|
+      if !"discipline.has_#{x[:type]}?"
+        if "params[:exam_term_#{x[:type]}]" != ''
+          w =  Study::Exam.new discipline: discipline,
+                                  exam_type: "#{x[:num]}", exam_closed: false
+          w.save
+        end
+      else
+        if "params[:exam_term_#{x[:type]}]" == ''
+          y =  discipline.exams.where(exam_type: "#{x[:num]}").first
+          Study::Exam.delete(y)
+        end
       end
     end
 
-    if discipline.update_attributes(groups: study_discipline[:groups],
+
+    if discipline.update_attributes(group: study_discipline[:groups],
     semester: study_discipline[:semester], name: study_discipline[:name],
     year: study_discipline[:year])
 
@@ -93,7 +84,7 @@ class Study::DisciplinesController < ApplicationController
   def create
     discipline = params[:study_discipline]
     @discipline = Study::Discipline.new year: discipline[:year], 
-    semester: discipline[:semester], groups: Group.find(params[:groups]),
+    semester: discipline[:semester], group: Group.find(params[:groups]),
         name: discipline[:name]
     if @discipline.save
 

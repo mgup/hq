@@ -14,7 +14,7 @@ class Student < ActiveRecord::Base
   has_many :checkpointmarks, class_name: Study::Checkpointmark, foreign_key: :checkpoint_mark_student
   has_many :exam_students, foreign_key: :exam_student_student
   has_many :exams, :through => :exam_students
-  has_many :marks, foreign_key: :mark_student_group
+  has_many :marks, class_name: Study::Mark, foreign_key: :student_id
 
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
@@ -176,4 +176,30 @@ GROUP BY `group`
   def total_payments
     payments.inject(0) { |result, payment| result += payment.sum; result }
   end
+
+  def subjects
+    Study::Subject.where(id: marks.collect{|mark| mark.subject_id})
+  end
+
+  def ball(discipline)
+    l, p, l1, p1, n1 = 0.0, 0.0, 0.0, 0.0, 0.0
+    discipline.checkpoints.each do |c|
+      if c.lecture?
+        l+=1
+      elsif c.seminar?
+        p+=1
+      end
+    end
+    discipline.checkpoints.each do |c|
+      mark = checkpointmarks.by_checkpoint(c).last
+      return 0 if mark == nil
+      l1 += (5/l) if (c.lecture? && mark.mark == 1002)
+      p1 += (15/p) if (c.seminar? && mark.mark == 2002)
+      p1 += (10/p) if (c.seminar? && mark.mark == 2003)
+      p1 += (5/p) if (c.seminar? && mark.mark == 2004)
+      n1 += mark.mark if c.check?
+    end
+    (l1+p1+n1).round 2
+  end
+
 end
