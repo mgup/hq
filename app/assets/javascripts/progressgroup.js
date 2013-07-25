@@ -8,6 +8,6 @@ $(function(){
     $('#disciplines_for_group').change(function() {
         $group = $('#progress_group').val();
         $discipline = $('#disciplines_for_group option:selected').val();
-        $(location).attr('href', ($discipline != '' ?  $discipline : '/study/group/' + $group + '/progress'));
+        $(location).attr('href', ($discipline != '' ?  ('/study/group/' + $group + '/progress/discipline/' + $discipline) : ('/study/group/' + $group + '/progress')));
     });
 })

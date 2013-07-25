@@ -3,7 +3,13 @@ class My::StudentsController < ApplicationController
 
   def index ; end
 
-  def show ; end
+  def show
+    @sessions = []
+    @student.subjects.each do |s|
+      @sessions << {year: s.year, semester: s.semester, term: s.term}
+    end
+    @sessions = @sessions.uniq()
+  end
 
   def update ; end
 

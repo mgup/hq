@@ -60,7 +60,7 @@ class Study::Mark < ActiveRecord::Base
       when FAIR
         'warning'
       when GOOD
-        'success'
+        'info'
       when EX
         'success'
     end

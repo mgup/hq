@@ -20,7 +20,6 @@ class Study::Subject < ActiveRecord::Base
   scope :find_subjects, -> subject {where(year: subject.year, 
                       semester: subject.semester, group_id: subject.group_id, 
                       title: subject.title, kind: subject.kind)}
-  scope :from_student, -> student {where(group_id:  student.group.id )}
   scope :from_group, -> group {group == '' ? all : where(group_id:  group)}
   scope :from_name, -> name { where("title LIKE :prefix", prefix: "#{name}%")}
 
