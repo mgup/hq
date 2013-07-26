@@ -27,10 +27,26 @@ class Study::CheckpointsController < ApplicationController
   end
 
   def show
-    redirect_to study_discipline_checkpoints_path(@discipline)
+    if params[:study_checkpoint]
+      study_checkpoint = params[:study_checkpoint]
+      checkpoint = Study::Checkpoint.find(study_checkpoint[:id])
+      checkpoint.update_attributes(checkpoint_type: study_checkpoint[:type],
+                                   date: study_checkpoint[:date],
+                                   name: study_checkpoint[:name], details: study_checkpoint[:details],)
+      redirect_to study_discipline_checkpoints_path(@discipline)
+    end
   end
 
-  def update ; end
+  def update
+    if params[:checkpoints]
+      checkpoints = params[:checkpoints]
+      checkpoints.each do |check|
+        checkpoint=Study::Checkpoint.find(check[:id])
+        checkpoint.update_attributes(check)
+      end
+      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Сохранено'
+    end
+  end
 
   def create
     checkpoint = params[:study_checkpoint]

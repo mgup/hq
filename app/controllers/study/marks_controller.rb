@@ -60,7 +60,6 @@ class Study::MarksController < ApplicationController
 
   def update
     marks = params[:marks]
-    key = []
     marks.each do |m|
       mark=Study::Mark.find(m[:id])
       mark.update_attributes(m)

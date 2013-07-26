@@ -40,4 +40,11 @@ class AjaxController < ApplicationController
       students
     end })
   end
+
+  def checkpoint
+    x = Study::Checkpoint.find(params[:checkpoint_id])
+    checkpoint = {type: x.checkpoint_type, date: x.date.strftime("%d.%m.%Y"), name: x.name,
+                  details: x.details, day: x.date}
+    render({ json: checkpoint })
+  end
 end

@@ -26,7 +26,7 @@
       <td><%= student[:ball] %></td>
       <td>
         <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
+          <div class="progress-bar progress-bar-stripped" style="width: <%= student[:ball]%>%"></div>
         </div>
       </td>
       <% ball = case student[:ball].round %>
@@ -45,7 +45,7 @@
         <% end %>
 
         <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
+          <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:ball]%>%"></div>
         </div>
       </td>
       <td><a class='btn btn-default' href="/my/student/<%= student[:student].id %>/progress" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>

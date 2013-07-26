@@ -30,10 +30,11 @@
         <td class='text-muted'><%= discipline.id %></td>
         <td>
           <p><%= discipline.name %> (<%= discipline.term %>)</p>
-          <p><%= discipline.group.name %>, 
+          <p><%= discipline.group.name %>, <strong><%= discipline.teacher.full_name %></strong>
+            <br>
             <% teachers = [] %>
             <% discipline.teachers.each do |teacher|%>
-            <% teachers << teacher.full_name %>
+            <% teachers << teacher.full_name if teacher != discipline.teacher %>
             <% end %>
             <%= teachers.join(', ') %>
           </p>

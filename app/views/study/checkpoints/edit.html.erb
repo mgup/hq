@@ -5,7 +5,7 @@
   <h3>Редактирование контрольных точек</h3>
 </div>
 
-<div class="col col-lg-3 col-offset-6 alert alert-<%= @error %>" style='position: fixed;'>
+<div id='minmax_info' class="col col-lg-3 col-offset-6 alert alert-<%= @error %>" style='position: fixed;'>
   <table>
     <tbody>
       <tr>
@@ -32,7 +32,7 @@
       <legend><%= check.name %> (<%= check.date %>)</legend>
       <%= hidden_field_tag 'checkpoints[][id]', check.id %>  
       <div class='row'>
-        <%= label_tag 'checkpoints[][name]', 'Форма контроля', class: 'col col-lg-2 control-label' %>
+        <%= label_tag 'checkpoints[][checkpoint_name]', 'Форма контроля', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-5">
           <%= text_field_tag 'checkpoints[][name]', check.name %>
         </div>
@@ -46,13 +46,13 @@
       <div class='row'>
         <%= label_tag 'checkpoints[][max]', 'Максимальный балл', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-5">
-          <%= text_field_tag 'checkpoints[][max]', check.max %>
+          <%= text_field_tag 'checkpoints[][max]', check.max, class: 'control_max' %>
         </div>
       </div> 
       <div class='row'>
         <%= label_tag 'checkpoints[][min]', 'Зачётный минимум', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-5">
-          <%= text_field_tag 'checkpoints[][min]', check.min %>
+          <%= text_field_tag 'checkpoints[][min]', check.min, class: 'control_min' %>
         </div>
       </div> 
       <br>

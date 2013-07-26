@@ -32,7 +32,9 @@
           </div>
         <% else %>
           <div class='col col-lg-10'>
-            <span class="label label-<%= mark.result_color %>"><%= mark.result %></span>
+            <% if mark != nil %>
+              <span class="label label-<%= mark.result_color %>"><%= mark.result %></span>
+            <% end %>
           </div>
         <% end %>
      </tr>

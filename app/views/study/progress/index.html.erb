@@ -29,7 +29,7 @@
         </div>
       </td>
       <% ball = case student[:progress].round %>
-                    <% when 0..49 then 'недостаточно данных' %>
+                    <% when 0..49 then 'неудовлетворительно' %>
                     <% when 50..64 then 'удовлетворительно' %>
                     <% when 65..80 then 'хорошо' %>
                     <% else 'отлично' %>

@@ -2,6 +2,14 @@ class Student < ActiveRecord::Base
   PAYMENT_BUDGET = 1
   PAYMENT_OFF_BUDGET = 2
 
+  MARK_LECTURE_NOT_ATTEND   = 1001
+  MARK_LECTURE_ATTEND       = 1002
+
+  MARK_PRACTICAL_BAD        = 2001
+  MARK_PRACTICAL_FAIR       = 2004
+  MARK_PRACTICAL_GOOD       = 2002
+  MARK_PRACTICAL_PERFECT    = 2003
+
   self.table_name = 'student_group'
 
   alias_attribute :id,              :student_group_id
@@ -182,22 +190,28 @@ GROUP BY `group`
   end
 
   def ball(discipline)
-    l, p, l1, p1, n1 = 0.0, 0.0, 0.0, 0.0, 0.0
-    discipline.checkpoints.each do |c|
-      if c.lecture?
-        l+=1
-      elsif c.seminar?
-        p+=1
-      end
-    end
+    l1, p1, n1 = 0.0, 0.0, 0.0
+    l = discipline.checkpoints.lectures.count
+    p = discipline.checkpoints.practicals.count
     discipline.checkpoints.each do |c|
       mark = checkpointmarks.by_checkpoint(c).last
-      return 0 if mark == nil
-      l1 += (5/l) if (c.lecture? && mark.mark == 1002)
-      p1 += (15/p) if (c.seminar? && mark.mark == 2002)
-      p1 += (10/p) if (c.seminar? && mark.mark == 2003)
-      p1 += (5/p) if (c.seminar? && mark.mark == 2004)
-      n1 += mark.mark if c.check?
+      if mark != nil
+        result = case mark.mark
+          when MARK_LECTURE_ATTEND
+            (5/l)
+          when MARK_PRACTICAL_FAIR
+            (5/p)
+          when MARK_PRACTICAL_GOOD
+            (10/p)
+          when MARK_PRACTICAL_PERFECT
+            (15/p)
+          else
+             0
+        end
+        l1 += result if c.lecture?
+        p1 += result if c.seminar?
+        n1 += mark.mark if c.check?
+      end
     end
     (l1+p1+n1).round 2
   end

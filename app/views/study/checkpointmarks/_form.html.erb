@@ -42,9 +42,9 @@
             <%= hidden_field_tag 'checkpointmarks[][mark]',  mark == nil ? nil : mark.mark, id: "#{student.id}_mark" %>
             <ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>
               <li><a data-toggle='pill' data-value='2001' data-input="<%= student.id %>_mark"  href='#'>Неудовл.</a></li>
-              <li><a data-toggle='pill' data-value='2002' data-input="<%= student.id %>_mark"  href='#'>Удовл.</a></li>
-              <li><a data-toggle='pill' data-value='2003' data-input="<%= student.id %>_mark"  href='#'>Хорошо</a></li>
-              <li><a data-toggle='pill' data-value='2004' data-input="<%= student.id %>_mark"  href='#'>Отлично</a></li>
+              <li><a data-toggle='pill' data-value='2004' data-input="<%= student.id %>_mark"  href='#'>Удовл.</a></li>
+              <li><a data-toggle='pill' data-value='2002' data-input="<%= student.id %>_mark"  href='#'>Хорошо</a></li>
+              <li><a data-toggle='pill' data-value='2003' data-input="<%= student.id %>_mark"  href='#'>Отлично</a></li>
             </ul>
           <% else %>
             <div class='col col-lg-7'>
