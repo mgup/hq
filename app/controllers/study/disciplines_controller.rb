@@ -13,9 +13,8 @@ class Study::DisciplinesController < ApplicationController
     @teachers = []
       if @discipline.teachers.count != 0
         @discipline.teachers.each do |teacher|
-          @teachers << teacher.id
+          @teachers << teacher.id if teacher != @discipline.teacher
          end
-         @teachers.shift
       end
   end
 
@@ -41,38 +40,47 @@ class Study::DisciplinesController < ApplicationController
       x = discipline.teachers
       discipline.teachers.delete(x)
     end
-    if params[:teacher]
-      teacher = User.find(params[:teacher])
-      if Study::DisciplineTeacher.where(subject_id: discipline.id, teacher_id: teacher.id) == []
-        main = Study::DisciplineTeacher.new teacher: teacher.id, discipline: discipline.id
-        main.save
-      end
+    teacher = User.find(params[:teacher])
+    if Study::DisciplineTeacher.where(subject_id: discipline.id, teacher_id: teacher.id) == []
+      main = Study::DisciplineTeacher.new teacher: teacher.id, discipline: discipline.id
+      main.save
     end
+
 
     # Экзамен/зачёт
     exam = discipline.control
     exam.update_attributes(exam_type: params[:exam_type])
 
     #Курсовая работа и проект
-    [{type: 'work', num: 2}, {type: 'project', num: 3}].each do |x|
-      if !"discipline.has_#{x[:type]}?"
-        if "params[:exam_term_#{x[:type]}]" != ''
-          w =  Study::Exam.new discipline: discipline,
-                                  exam_type: "#{x[:num]}", exam_closed: false
-          w.save
-        end
-      else
-        if "params[:exam_term_#{x[:type]}]" == ''
-          y =  discipline.exams.where(exam_type: "#{x[:num]}").first
-          Study::Exam.delete(y)
-        end
+    if !discipline.has_work?
+      if params[:exam_term_work] != ''
+        work =  Study::Exam.new discipline: discipline,
+                exam_type: 2, exam_closed: false
+        work.save
+      end
+    else
+      if params[:exam_term_work] == ''
+        y =  discipline.exams.where(exam_type: 2).first
+         Study::Exam.delete(y)
+      end
+    end
+    if !discipline.has_project?
+      if params[:exam_term_project] != ''
+         work =  Study::Exam.new discipline: discipline,
+                 exam_type: 3, exam_closed: false
+         work.save
+      end
+    else
+      if params[:exam_term_project] == ''
+        y =  discipline.exams.where(exam_type: 3).first
+        Study::Exam.delete(y)
       end
     end
 
 
     if discipline.update_attributes(group: study_discipline[:groups],
     semester: study_discipline[:semester], name: study_discipline[:name],
-    year: study_discipline[:year])
+    year: study_discipline[:year], subject_teacher: params[:teacher])
 
       redirect_to study_disciplines_path, notice: 'Сохранено'
     else
@@ -85,7 +93,7 @@ class Study::DisciplinesController < ApplicationController
     discipline = params[:study_discipline]
     @discipline = Study::Discipline.new year: discipline[:year], 
     semester: discipline[:semester], group: Group.find(params[:groups]),
-        name: discipline[:name]
+        name: discipline[:name], subject_teacher: params[:teacher]
     if @discipline.save
 
       #Преподаватели

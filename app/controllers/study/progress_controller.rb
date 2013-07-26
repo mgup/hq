@@ -19,7 +19,7 @@ class Study::ProgressController < ApplicationController
 
   def discipline
     authorize! :show, :progress
-    @discipline =   @disciplines.find(params[:id])
+    @discipline = @disciplines.find(params[:id])
     @discipline_students = []
     @group.students.each do |student|
       ball = student.ball(@discipline)

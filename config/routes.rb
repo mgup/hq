@@ -60,6 +60,7 @@ HQ::Application.routes.draw do
   get 'my/ajax/groups' => 'ajax#groups'
   get 'my/ajax/specialities' => 'ajax#specialities'
   get 'my/ajax/students' => 'ajax#students'
+  get '/ajax/checkpoint' => 'ajax#checkpoint'
 
   root to: 'dashboard#index'
 

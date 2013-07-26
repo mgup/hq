@@ -18,15 +18,15 @@ class Study::CheckpointmarksController < ApplicationController
   def create
     marks = params[:checkpointmarks]
     marks.each do |m|
-      m[:students] = Student.find(m[:students])
+      m[:student] = Student.find(m[:student])
       m[:checkpoint] = @checkpoint
       if m[:mark] != ''
-        if @checkpoint.checkpointmarks.where(student: m[:students]) == []
-          mark=Study::Checkpointmark.new students: m[:students], checkpoint: m[:checkpoint],
+        if @checkpoint.checkpointmarks.by_student(m[:student]) == []
+          mark=Study::Checkpointmark.new student: m[:student], checkpoint: m[:checkpoint],
                                          mark: m[:mark]
           mark.save!
-        elsif @checkpoint.checkpointmarks.where(student: m[:students]).first.mark != m[:mark]
-          mark = @checkpoint.checkpointmarks.where(student: m[:students]).first
+        elsif @checkpoint.checkpointmarks.by_student(m[:student]).first.mark != m[:mark]
+          mark = @checkpoint.checkpointmarks.by_student(m[:student]).first
           mark.update_attributes(mark: m[:mark])
           end
       end

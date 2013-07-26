@@ -7,7 +7,6 @@ class Study::Discipline < ActiveRecord::Base
   alias_attribute :semester, :subject_semester
   alias_attribute :year,     :subject_year
   alias_attribute :brs,      :subject_brs
-  alias_attribute :teacher,  :subject_teacher
 
  
   belongs_to :group, foreign_key: :subject_group
@@ -26,7 +25,7 @@ class Study::Discipline < ActiveRecord::Base
   scope :now, -> {where(subject_year: YEAR)}
 
   def teacher
-    teachers.first
+    User.find(subject_teacher)
   end
 
   def has_work?
