@@ -18,51 +18,18 @@ class Study::Mark < ActiveRecord::Base
   def test
     case mark
       when FAIL
-        'незачёт'
+        {mark: 'незачёт', strip: '20%', itog: 'danger'}
       when PASS
-        'зачёт'
+        {mark: 'зачёт', strip: '100%', itog: 'success'}
       when BAD
-        'неудовлетворительно'
+        {mark: 'неудовлетворительно', strip: '20%', itog: 'danger'}
       when FAIR
-        'удовлетворительно'
+        {mark: 'удовлетворительно', strip: '50%', itog: 'warning'}
       when GOOD
-        'хорошо'
+        {mark: 'хорошо', strip: '80%', itog: 'info'}
       when EX
-        'отлично'
+        {mark: 'отлично', strip: '100%', itog: 'success'}
     end
   end
 
-  def strip
-    case mark
-      when FAIL
-        '20%'
-      when PASS
-        '100%'
-      when BAD
-        '20%'
-      when FAIR
-        '50%'
-      when GOOD
-        '80%'
-      when EX
-        '100%'
-    end
-  end
-
-  def itog
-    case mark
-      when FAIL
-        'danger'
-      when PASS
-        'success'
-      when BAD
-        'danger'
-      when FAIR
-        'warning'
-      when GOOD
-        'info'
-      when EX
-        'success'
-    end
-  end
 end

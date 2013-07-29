@@ -8,6 +8,7 @@ HQ::Application.routes.draw do
 
   resources :roles
   resources :users
+  get '/users/:id/profile' => 'users#profile'
   resources :departments
   resources :positions
 

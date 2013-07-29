@@ -17,39 +17,25 @@ class Study::Checkpointmark < ActiveRecord::Base
   belongs_to :checkpoint, class_name: Study::Checkpoint, primary_key: :checkpoint_id, foreign_key: :checkpoint_mark_checkpoint
 
   scope :by_checkpoint, -> checkpoint { where(checkpoint: checkpoint) }
+  scope :by_discipline, -> discipline {
+    joins(:checkpoint).where(checkpoint: { checkpoint_subject: discipline })
+  }
   scope :by_student, -> student { where(student: student) }
 
   def result
     case mark
       when MARK_LECTURE_NOT_ATTEND
-        'не посетил'
+        {mark: 'не посетил', color: 'danger'}
       when MARK_LECTURE_ATTEND
-        'посетил'
+        {mark: 'посетил', color: 'success'}
       when MARK_PRACTICAL_BAD
-        'неудовлетворительно'
+        {mark: 'неудовлетворительно', color: 'danger'}
       when MARK_PRACTICAL_FAIR
-        'удовлетворительно'
-      when MARK_PRACTICAL_GOOD 
-        'хорошо'
+        {mark: 'удовлетворительно', color: 'warning'}
+      when MARK_PRACTICAL_GOOD
+        {mark: 'хорошо', color: 'info'}
       when MARK_PRACTICAL_PERFECT
-        'отлично'
-    end
-  end
-
-  def result_color
-    case mark
-      when MARK_LECTURE_NOT_ATTEND
-        'danger'
-      when MARK_LECTURE_ATTEND
-        'success'
-      when MARK_PRACTICAL_BAD
-        'danger'
-      when MARK_PRACTICAL_FAIR
-        'warning'
-      when MARK_PRACTICAL_GOOD 
-        'info'
-      when MARK_PRACTICAL_PERFECT
-        'success'
+        {mark: 'отлично', color: 'success'}
     end
   end
 

@@ -30,11 +30,12 @@ class Study::AnalyseController < ApplicationController
       @collisions = @collisions.select{|col| col[:students].group.id == params[:subject_group].to_i}
     end
 
+    @collisions = @collisions.sort_by{ |col| [col[:students].group.speciality.faculty, col[:students].group, col[:subject], col[:students].person.full_name]}
+
     unless @collisions.kind_of?(Array)
-      @collisions = @collisions.sort_by{ |col| [col[:students].group.speciality.faculty, col[:students].group, col[:subject], col[:students].person.full_name]}.page(params[:page]).per(20)
+      @collisions = @collisions.page(params[:page]).per(20)
     else
-      @collisions = Kaminari.paginate_array(@collisions.sort_by{ |col| [col[:students].group.speciality.faculty, col[:students].group, col[:subject], col[:students].person.full_name]}).page(params[:page])
-      .per(20)
+      @collisions = Kaminari.paginate_array(@collisions).page(params[:page]).per(20)
     end
 
   end

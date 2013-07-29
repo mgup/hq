@@ -1,8 +1,16 @@
+<ul class="breadcrumb">
+  <li><a href="#">Успеваемость</a></li>
+  <li><a href="/study/disciplines">Дисциплины</a></li>
+  <li class="active">Карта дисциплины</li>
+</ul>
+
 <div class="page-header">
   <h1>
     <%= @discipline.name %> <small><%= @discipline.group.name %></small>
   </h1>
 </div>
+
+<a href='#' class='btn btn-info'><span class='glyphicon glyphicon-print'></span> Список группы</a>
 
 <div class='pull-right'>
   <a data-toggle="modal" data-path="/study/disciplines/<%=@discipline.id%>/checkpoints" data-target="#myModal" class="btn btn-info"><span class='glyphicon glyphicon-plus'></span> Добавить занятие</a>
@@ -14,6 +22,7 @@
   <a class='btn btn-info' href="<%= edit_study_discipline_path(@discipline) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину</a>
 </div>
 
+<br>
 <div class='row'>
   <table class='table table-striped'>
     <thead>
@@ -34,7 +43,7 @@
             <%= checkpoint.name if checkpoint.type == 3 %>
             <%= checkpoint.lessonname %>
           </td>
-          <td style='width: 150px;'><a class='btn btn-default' href="<%= study_discipline_checkpoint_checkpointmarks_path(@discipline, checkpoint) %>"><span class='glyphicon glyphicon-plus'></span> Внести результаты</a></td>
+          <td style='width: 150px;'><a class='btn btn-default' href="<%= study_discipline_checkpoint_checkpointmarks_path(@discipline, checkpoint) %>"><span class='glyphicon glyphicon-pencil'></span> Внести результаты</a></td>
           <td><a class='btn btn-default checkpoint-modal' data-toggle="modal" data-value="<%= checkpoint.id %>" data-path="/study/disciplines/<%=@discipline.id%>/checkpoints/<%= checkpoint.id %>" data-target="#myModal" title='Редактировать точку'><span class='glyphicon glyphicon-edit'></span></a></td>
        </tr>
       <% end %> 

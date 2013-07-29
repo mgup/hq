@@ -193,25 +193,23 @@ GROUP BY `group`
     l1, p1, n1 = 0.0, 0.0, 0.0
     l = discipline.checkpoints.lectures.count
     p = discipline.checkpoints.practicals.count
-    discipline.checkpoints.each do |c|
-      mark = checkpointmarks.by_checkpoint(c).last
-      if mark != nil
-        result = case mark.mark
-          when MARK_LECTURE_ATTEND
-            (5/l)
-          when MARK_PRACTICAL_FAIR
-            (5/p)
-          when MARK_PRACTICAL_GOOD
-            (10/p)
-          when MARK_PRACTICAL_PERFECT
-            (15/p)
-          else
-             0
-        end
-        l1 += result if c.lecture?
-        p1 += result if c.seminar?
-        n1 += mark.mark if c.check?
-      end
+    checkpointmarks.by_discipline(discipline).each do |mark|
+      c = mark.checkpoint
+      result = case mark.mark
+                 when MARK_LECTURE_ATTEND
+                   (5/l)
+                 when MARK_PRACTICAL_FAIR
+                   (5/p)
+                 when MARK_PRACTICAL_GOOD
+                   (10/p)
+                 when MARK_PRACTICAL_PERFECT
+                   (15/p)
+                 else
+                   0
+               end
+      l1 += result if c.lecture?
+      p1 += result if c.seminar?
+      n1 += mark.mark if c.check?
     end
     (l1+p1+n1).round 2
   end

@@ -1,3 +1,8 @@
+<ul class="breadcrumb">
+  <li><a href="<%= my_student_path(@student) %>">Кабинет студента</a></li>
+  <li class="active">Успеваемость</li>
+</ul>
+
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
   <h2>Дисциплины</h2>
@@ -55,4 +60,6 @@
 <div class='info-small pull-right disciplines_count'>
   Всего: <%= @disciplines.count %>
 </div>
+
+<a  class="btn btn-default" href="<%= my_student_path(@student) %>"><span class='glyphicon glyphicon-backward'></span> Вернуться в кабинет студента</a>
 
