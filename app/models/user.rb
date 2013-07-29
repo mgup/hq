@@ -75,6 +75,16 @@ class User < ActiveRecord::Base
   end
 
   scope :teachers, ->  {where(user_role: :lecturer)}
+
+  scope :without, -> id {
+    cond = all
+    if id!=nil
+      cond=cond.where('user_id != ?', id)
+    else
+      cond=all
+    end
+    cond
+  }
    
 
   def self.find_first_by_auth_conditions(warden_conditions)

@@ -1,3 +1,7 @@
+<ul class="breadcrumb">
+  <li><a href="<%= my_student_path(@student) %>">Кабинет студента</a></li>
+  <li class="active">Результаты сессии</li>
+</ul>
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
   <h2><%=  "#{@subject.year}/#{@subject.year + 1}" %> (<%= @subject.term %>)</h2>
@@ -30,3 +34,5 @@
     </tr>
   <% end %>
 </table>
+
+<a  class="btn btn-default" href="<%= my_student_path(@student) %>"><span class='glyphicon glyphicon-backward'></span> Вернуться в кабинет студента</a>

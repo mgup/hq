@@ -19,8 +19,8 @@ class My::ProgressController < ApplicationController
     @subjects.where(year: @subject.year, semester: @subject.semester)
               .sort_by{ |s| [s[:kind]]}.each do |s|
       mark = @student.marks.by_subject(s).first
-      @subj << {title: s.title, type: s.type, test: mark.test,
-                itog: mark.itog, strip: mark.strip, retake: mark.retake}
+      @subj << {title: s.title, type: s.type, test: mark.test[:mark],
+                itog: mark.test[:itog], strip: mark.test[:strip], retake: mark.retake}
     end
     @subj = @subj.uniq()
   end

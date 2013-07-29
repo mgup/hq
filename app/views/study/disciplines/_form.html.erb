@@ -76,13 +76,13 @@
     <div class='row'>
       <div class='col-offset-2'>
         <%= hidden_field_tag :exam_term_work %>
-        <label><%= check_box_tag :exam_term_work, 1 , @discipline.has_work? %> Присутствует курсовая работа</label>
+        <label><%= check_box_tag :exam_term_work, 1 , @discipline.has?('work') %> Присутствует курсовая работа</label>
       </div>
     </div>
     <div class='row'>
       <div class='col-offset-2'>
         <%= hidden_field_tag :exam_term_project %>
-        <label><%= check_box_tag :exam_term_project, 1, @discipline.has_project? %> Присутствует курсовой проект</label>
+        <label><%= check_box_tag :exam_term_project, 1, @discipline.has?('project') %> Присутствует курсовой проект</label>
       </div>
     </div>
     <div class='row'>

@@ -28,12 +28,9 @@ class Study::Discipline < ActiveRecord::Base
     User.find(subject_teacher)
   end
 
-  def has_work?
-    exams.where(exam_type: 2) != []
-  end
-
-  def has_project?
-    exams.where(exam_type: 3) != []
+  def has?(type)
+    work = (type == 'work' ? 2 : 3)
+    exams.where(exam_type: work) != []
   end
 
   def control

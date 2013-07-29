@@ -1,3 +1,9 @@
+<ul class="breadcrumb">
+  <li><a href="#">Успеваемость</a></li>
+  <li><a href="<%= study_group_progress_path(@group) %>">Группа</a></li>
+  <li class="active"><%= @discipline.name %></li>
+</ul>
+
 <div class="page-header">
   <h1>Успеваемость <small><%= @group.name %></small></h1>
 </div>
