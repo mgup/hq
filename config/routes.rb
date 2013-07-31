@@ -30,6 +30,8 @@ HQ::Application.routes.draw do
     resources :groups, path:  '/group' do
       get '/progress' => 'progress#index'
       get '/progress/discipline/:id' => 'progress#discipline'
+      resources :students, path:  '/student'
+      get '/student/:id/discipline/:discipline' => 'students#discipline'
     end
   end
 

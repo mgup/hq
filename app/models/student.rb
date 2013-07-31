@@ -189,6 +189,14 @@ GROUP BY `group`
     Study::Subject.where(id: marks.collect{|mark| mark.subject_id})
   end
 
+  def disciplines
+    Study::Discipline.now.where(subject_group: group)
+  end
+
+  def checkpoints
+    Study::Checkpoint.where(checkpoint_subject: disciplines.collect{|d| d.id})
+  end
+
   def ball(discipline)
     l1, p1, n1 = 0.0, 0.0, 0.0
     l = discipline.checkpoints.lectures.count

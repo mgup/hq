@@ -13,7 +13,7 @@
 		<%= f.label :semester, class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
       <div class='col col-lg-2'>
-        <%= text_field_tag 'semester_count'%>
+        <%= text_field_tag 'semester_count', nil, class: 'form-control'%>
       </div>
       <%= f.hidden_field :semester, value: @session? @session.semester : 1, required: 'required' %>
       <%= pill_tabs('semester', [[1, 'осенний'], [2, 'весенний']], 'study_subject_semester') %>
@@ -51,7 +51,7 @@
     <div class='col col-lg-10'>
 			<%= select_tag 'speciality',
                      options_from_collection_for_select(Speciality.all, :id, :full_name, (@session.group.speciality.id if @session)),
-                     prompt: 'все специальности', class: 'ajax-speciality' %>
+                     prompt: 'все специальности', class: 'ajax-speciality form-control' %>
 		</div>
   </div>
 
@@ -61,14 +61,14 @@
       <%= hidden_field_tag 'subject_group', (@session.group.id if @session)  %>
 			<%= f.select :group_id, options_from_collection_for_select(Group.all, :id, :name, (@session.group.id if @session)),
                    {include_blank: 'все группы'},
-                   { class: 'ajax-group_id', required: 'required' } %>
+                   { class: 'ajax-group_id form-control', required: 'required' } %>
     </div>
   </div>
       
   <div class='row'>
     <%= f.label :title, class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-			<%= f.text_field :title, placeholder: 'Математика', required: 'required' %>
+			<%= f.text_field :title, placeholder: 'Математика', required: 'required', class: 'form-control' %>
 		</div>
   </div>
 

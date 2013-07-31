@@ -14,7 +14,7 @@
     <div class='row'>
       <%= f.label :date, class: 'control-label col-lg-2' %>
       <div class='col col-lg-4'>
-        <%= f.text_field :date, value: DateTime.now.strftime("%d.%m.%Y"), pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]', class: 'datepicker' %>
+        <%= f.text_field :date, value: DateTime.now.strftime("%d.%m.%Y"), pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]', class: 'datepicker form-control' %>
       </div>
     </div>
 
@@ -22,13 +22,13 @@
       <div class='row'>
         <%= f.label :name, class: 'control-label col-lg-2' %>
         <div class='col col-lg-8'>
-          <%= f.text_field :name, placeholder: 'Защита лабораторной работы №1' %>
+          <%= f.text_field :name, placeholder: 'Защита лабораторной работы №1', class: 'form-control' %>
         </div>
       </div>
       <div class='row'>
         <%= f.label :details, class: 'control-label col-lg-2' %>
         <div class='col col-lg-8'>
-          <%= f.text_area :details, rows: 4 %>
+          <%= f.text_area :details, rows: 4, class: 'form-control' %>
         </div>
       </div>
     </div>

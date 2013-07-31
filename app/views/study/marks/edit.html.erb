@@ -30,7 +30,7 @@
       <%= label_tag 'user', 'Пользователь', class: 'col col-lg-2 control-label' %>
       <div class='col col-lg-6'>
         <%= hidden_field_tag 'marks[][user_id]', m.user.id %>
-        <%= text_field_tag 'user', m.user.id, disabled: 'disabled' %>
+        <%= text_field_tag 'user', m.user.id, disabled: 'disabled', class: 'form-control' %>
       </div>
     </div>  
     <div class='row'>
@@ -56,7 +56,7 @@
     <div class='row'>
       <%= label_tag 'marks[][retake]', 'Пересдача', class: 'col col-lg-2 control-label' %>
       <div class='col col-lg-6'>
-        <select id='marks_retake' name='marks[][retake]'>
+        <select class='form-control' id='marks_retake' name='marks[][retake]'>
           <option <%= 'selected' if 0==m.retake %> value='0'>нет</option>
           <option <%= 'selected' if 1==m.retake %> value='1'>1</option>
           <option <%= 'selected' if 2==m.retake %> value='2'>2</option>

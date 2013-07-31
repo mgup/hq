@@ -13,7 +13,7 @@ class Study::GroupsController < ApplicationController
 
   private
 
-  def student_params
+  def group_params
     params.require(:groups)
   end
 end
