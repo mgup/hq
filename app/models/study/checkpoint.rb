@@ -19,6 +19,7 @@ class Study::Checkpoint < ActiveRecord::Base
   has_many :checkpointmarks, class_name: Study::Checkpointmark, foreign_key: :checkpoint_mark_checkpoint
 
   scope :by_discipline, -> discipline { where(checkpoint_subject: discipline) }
+  scope :by_date, -> date {where(checkpoint_date: date)}
   scope :control, -> {where(checkpoint_type: TYPE_CHECKPOINT )}
   scope :lectures, -> {where(checkpoint_type: TYPE_LECTURE )}
   scope :practicals, -> {where(checkpoint_type: TYPE_PRACTICAL)}

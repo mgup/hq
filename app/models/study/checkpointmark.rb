@@ -20,23 +20,28 @@ class Study::Checkpointmark < ActiveRecord::Base
   scope :by_discipline, -> discipline {
     joins(:checkpoint).where(checkpoint: { checkpoint_subject: discipline })
   }
+  scope :by_date, -> date {
+    joins(:checkpoint).where(checkpoint: { checkpoint_date: date })
+  }
   scope :by_student, -> student { where(student: student) }
 
   def result
     case mark
       when MARK_LECTURE_NOT_ATTEND
-        {mark: 'не посетил', color: 'danger'}
+        {mark: 'не посетил', color: 'danger', circle: 10, hue: '#ee5f5b'}
       when MARK_LECTURE_ATTEND
-        {mark: 'посетил', color: 'success'}
+        {mark: 'посетил', color: 'success', circle: 10, hue: '#62c462'}
       when MARK_PRACTICAL_BAD
-        {mark: 'неудовлетворительно', color: 'danger'}
+        {mark: 'неудовлетворительно', color: 'danger', circle: 20, hue: '#ee5f5b'}
       when MARK_PRACTICAL_FAIR
-        {mark: 'удовлетворительно', color: 'warning'}
+        {mark: 'удовлетворительно', color: 'warning', circle: 20, hue: '#fbb450'}
       when MARK_PRACTICAL_GOOD
-        {mark: 'хорошо', color: 'info'}
+        {mark: 'хорошо', color: 'info', circle: 20, hue: '#5bc0de'}
       when MARK_PRACTICAL_PERFECT
-        {mark: 'отлично', color: 'success'}
+        {mark: 'отлично', color: 'success', circle: 20, hue: '#62c462'}
     end
   end
+
+
 
 end

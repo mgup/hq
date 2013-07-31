@@ -48,7 +48,7 @@
             </ul>
           <% else %>
             <div class='col col-lg-7'>
-              <%= text_field_tag 'checkpointmarks[][mark]',  mark == nil ? nil : mark.mark, id: "#{student.id}_mark" %>
+              <%= text_field_tag 'checkpointmarks[][mark]',  mark == nil ? nil : mark.mark, id: "#{student.id}_mark", class: 'form-control' %>
             </div>
           <% end %>
         </div>

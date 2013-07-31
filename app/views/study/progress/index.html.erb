@@ -8,7 +8,7 @@
 </div>
 <%= hidden_field_tag :progress_group, @group.id %>
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name),
-                   prompt: 'суммарно по всем дисциплинам' %>
+                   prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
 
 <br>
 
@@ -16,7 +16,7 @@
   <thead>
   <tr>
     <th class='text-muted'>#</th>
-    <th>Дисциплина</th>
+    <th>Студент</th>
     <th colspan='2'>Набранный балл на <%= DateTime.now.strftime("%d.%m.%Y") %> </th>
     <th colspan='2'>Средняя оценка на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
     <th></th>
@@ -52,6 +52,7 @@
           <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
         </div>
       </td>
+      <td><a class='btn btn-default' href="/study/group/<%= @group.id %>/student/<%= student[:students].id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
     </tr>
   <% end %>
   </tbody>

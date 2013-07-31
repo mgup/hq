@@ -10,7 +10,7 @@
 <%= hidden_field_tag :progress_group, @group.id %>
 
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name, @discipline.id),
-               prompt: 'суммарно по всем дисциплинам' %>
+               prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
 
 <br>
 
@@ -54,7 +54,7 @@
           <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:ball]%>%"></div>
         </div>
       </td>
-      <td><a class='btn btn-default' href="/my/student/<%= student[:student].id %>/progress" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+      <td><a class='btn btn-default' href="/study/group/<%= @group.id %>/student/<%= student[:student].id %>/discipline/<%= @discipline.id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
     </tr>
   <% end %>
   </tbody>

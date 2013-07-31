@@ -3,16 +3,16 @@
 
  	<div class="row">
     <div class="col col-lg-3">
-      <%= f.text_field :title, { placeholder: 'Старший преподаватель'} %>
+      <%= f.text_field :title, { placeholder: 'Старший преподаватель', class: 'form-control'} %>
     </div>
     <div class="col col-lg-2">
-      <%= f.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 145px;' }  %>
+      <%= f.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 145px;', class: 'form-control' }  %>
     </div>
     <div class="col col-lg-2">
-      <%= f.collection_select :department, Department.all, :id, :abbreviation, { label: false }, { style: 'width: 130px;' }  %>
+      <%= f.collection_select :department, Department.all, :id, :abbreviation, { label: false }, { style: 'width: 130px;' , class: 'form-control'}  %>
     </div>
     <div class="col col-lg-2">
-      <%= text_field_tag 'position[appointment]', Date.today, class: 'datepicker' %>
+      <%= text_field_tag 'position[appointment]', Date.today, class: 'datepicker form-control' %>
     </div>
   </div>
 
