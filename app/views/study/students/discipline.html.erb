@@ -1,5 +1,5 @@
 <ul class="breadcrumb">
-  <li><a href="#">Успеваемость</a></li>
+  <li><a href='/study/group'>Успеваемость</a></li>
   <li><a href="<%= study_group_progress_path(params[:group_id]) %>">Группа</a></li>
   <li><a href="/study/group/<%= params[:group_id] %>/student/<%= @student.id %>">Студент</a></li>
   <li class="active"><%= @discipline.name %></li>
@@ -30,7 +30,9 @@
         <% mark = checkpoint.checkpointmarks.by_student(@student).last %>
         <% if checkpoint.check? %>
           <div class='col col-lg-7'>
-            <span class="label label-<%= mark.mark>=checkpoint.min ? 'success' : 'danger'%>"><%= mark.mark %> из <%= checkpoint.max.round %> баллов</span>
+            <% if mark != nil %>
+              <span class="label label-<%= mark.mark>=checkpoint.min ? 'success' : 'danger'%>"><%= mark.mark %> из <%= checkpoint.max.round %> баллов</span>
+            <% end %>
           </div>
         <% else %>
           <div class='col col-lg-10'>
