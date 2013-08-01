@@ -5,9 +5,9 @@
     </div>
   <% end %>
 
-  <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя' %>
+  <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя', class: 'form-control' %>
   <br>
-  <%= f.password_field :password, placeholder: 'Пароль' %>
+  <%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>
 
   <% if devise_mapping.rememberable? -%>
     <div class="checkbox">

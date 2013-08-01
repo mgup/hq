@@ -6,6 +6,8 @@ HQ::Application.routes.draw do
 
   get 'utility/morpher'
 
+  get '/password' => 'password#index'
+
   resources :roles
   resources :users
   get '/users/:id/profile' => 'users#profile'
@@ -40,6 +42,7 @@ HQ::Application.routes.draw do
       get '/progress' => 'progress#index'
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'
+      resources :supports
     end
   end
 

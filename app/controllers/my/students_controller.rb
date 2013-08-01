@@ -11,8 +11,6 @@ class My::StudentsController < ApplicationController
     @sessions = @sessions.uniq()
   end
 
-  def update ; end
-
   private
 
   def student_params
