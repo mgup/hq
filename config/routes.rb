@@ -43,6 +43,7 @@ HQ::Application.routes.draw do
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'
       resources :supports
+      resources :selects
     end
   end
 

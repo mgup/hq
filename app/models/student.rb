@@ -29,6 +29,10 @@ class Student < ActiveRecord::Base
 
   has_many :payments, class_name: Finance::Payment, primary_key: :student_group_id, foreign_key: :finance_payment_student_group
 
+  has_many :selections,  class_name: My::Select, primary_key: :student_group_id,
+           foreign_key: :optional_select_student
+  has_many :choices, class_name: My::Choice, :through => :selections
+
   default_scope do
     select('student_group.*, student.*')
     .joins(:person)
