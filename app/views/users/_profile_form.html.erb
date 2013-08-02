@@ -15,7 +15,7 @@
         <%= label_tag :email, 'Электронная почта' %>
       </div>
       <div class='col-lg-8'>
-        <%= text_field_tag :email, @user.email %>
+        <%= text_field_tag :email, @user.email, class: 'form-control' %>
       </div>
     </div>
     <div class='row'>
@@ -23,7 +23,7 @@
         <%= label_tag :phone, 'Мобильный телефон' %>
       </div>
       <div class='col-lg-8'>
-        <%= text_field_tag :phone, @user.phone %>
+        <%= text_field_tag :phone, @user.phone, class: 'form-control' %>
       </div>
       <div class='col-lg-8'>
         <span class='help-block'>Номер телефона нужен для того, чтобы иметь возможность оперативно связаться с сотрудником. Он не доступен никому, кроме руководства.</span>
@@ -37,7 +37,7 @@
         <%= label_tag :login, 'Логин' %>
       </div>
       <div class='col-lg-8'>
-        <%= text_field_tag :login, @user.username %>
+        <%= text_field_tag :login, @user.username, class: 'form-control' %>
       </div>
       <div class='col-lg-8'>
         <span class='help-block'>Обратите внимание на рекомендуемый формат, «iiivanov» — первая буква имени, первая буква отчества и фамилия полностью.</span>
@@ -48,13 +48,14 @@
         <%= label_tag :password, 'Пароль' %>
       </div>
       <div class='col-lg-8'>
-        <%= text_field_tag :password %>
+        <%= text_field_tag :password, nil, class: 'form-control' %>
       </div>
       <div class='col-lg-8'>
         <span class='help-block'>Указывается только в случае смены текущего пароля на новый.</span>
       </div>
     </div>
   </fieldset>
+  <%= submit_tag 'Сохранить изменения', class: 'btn btn-primary' %>
 
   <!-- Modal -->
   <div class="modal fade in" id="nameModal">
@@ -85,13 +86,13 @@
           <div class="col col-lg-10">
             <div class="row">
               <div class="col col-lg-4">
-                <%= text_field :user, :last_name_ip, required: true %>
+                <%= text_field :user, :last_name_ip, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :first_name_ip, required: true %>
+                <%= text_field :user, :first_name_ip, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :patronym_ip, required: true %>
+                <%= text_field :user, :patronym_ip, required: true, class: 'form-control' %>
               </div>
             </div>
           </div>
@@ -102,13 +103,13 @@
           <div class="col col-lg-10">
             <div class="row">
               <div class="col col-lg-4">
-                <%= text_field :user, :last_name_rp, required: true %>
+                <%= text_field :user, :last_name_rp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :first_name_rp, required: true %>
+                <%= text_field :user, :first_name_rp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :patronym_rp, required: true %>
+                <%= text_field :user, :patronym_rp, required: true, class: 'form-control' %>
               </div>
             </div>
           </div>
@@ -119,13 +120,13 @@
           <div class="col col-lg-10">
             <div class="row">
               <div class="col col-lg-4">
-                <%= text_field :user, :last_name_dp, required: true %>
+                <%= text_field :user, :last_name_dp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :first_name_dp, required: true %>
+                <%= text_field :user, :first_name_dp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :patronym_dp, required: true %>
+                <%= text_field :user, :patronym_dp, required: true, class: 'form-control' %>
               </div>
             </div>
           </div>
@@ -136,13 +137,13 @@
           <div class="col col-lg-10">
             <div class="row">
               <div class="col col-lg-4">
-                <%= text_field :user, :last_name_vp, required: true %>
+                <%= text_field :user, :last_name_vp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :first_name_vp, required: true %>
+                <%= text_field :user, :first_name_vp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :patronym_vp, required: true %>
+                <%= text_field :user, :patronym_vp, required: true, class: 'form-control' %>
               </div>
             </div>
           </div>
@@ -153,13 +154,13 @@
           <div class="col col-lg-10">
             <div class="row">
               <div class="col col-lg-4">
-                <%= text_field :user, :last_name_tp, required: true %>
+                <%= text_field :user, :last_name_tp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :first_name_tp, required: true %>
+                <%= text_field :user, :first_name_tp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :patronym_tp, required: true %>
+                <%= text_field :user, :patronym_tp, required: true, class: 'form-control' %>
               </div>
             </div>
           </div>
@@ -170,13 +171,13 @@
           <div class="col col-lg-10">
             <div class="row">
               <div class="col col-lg-4">
-                <%= text_field :user, :last_name_pp, required: true %>
+                <%= text_field :user, :last_name_pp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :first_name_pp, required: true %>
+                <%= text_field :user, :first_name_pp, required: true, class: 'form-control' %>
               </div>
               <div class="col col-lg-4">
-                <%= text_field :user, :patronym_pp, required: true %>
+                <%= text_field :user, :patronym_pp, required: true, class: 'form-control' %>
               </div>
             </div>
           </div>
