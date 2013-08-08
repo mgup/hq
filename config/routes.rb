@@ -6,8 +6,11 @@ HQ::Application.routes.draw do
 
   get 'utility/morpher'
 
+  get '/password' => 'password#index'
+
   resources :roles
   resources :users
+  get '/users/:id/profile' => 'users#profile'
   resources :departments
   resources :positions
 
@@ -29,6 +32,8 @@ HQ::Application.routes.draw do
     resources :groups, path:  '/group' do
       get '/progress' => 'progress#index'
       get '/progress/discipline/:id' => 'progress#discipline'
+      resources :students, path:  '/student'
+      get '/student/:id/discipline/:discipline' => 'students#discipline'
     end
   end
 
@@ -37,6 +42,8 @@ HQ::Application.routes.draw do
       get '/progress' => 'progress#index'
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'
+      resources :supports
+      resources :selects
     end
   end
 
@@ -57,6 +64,10 @@ HQ::Application.routes.draw do
   get 'study/disciplines/ajax/specialities' => 'ajax#specialities'
   get 'study/ajax/groups' => 'ajax#groups'
   get 'study/ajax/specialities' => 'ajax#specialities'
+  get 'my/ajax/groups' => 'ajax#groups'
+  get 'my/ajax/specialities' => 'ajax#specialities'
+  get 'my/ajax/students' => 'ajax#students'
+  get '/ajax/checkpoint' => 'ajax#checkpoint'
 
   root to: 'dashboard#index'
 

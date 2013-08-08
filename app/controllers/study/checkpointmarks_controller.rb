@@ -21,12 +21,12 @@ class Study::CheckpointmarksController < ApplicationController
       m[:student] = Student.find(m[:student])
       m[:checkpoint] = @checkpoint
       if m[:mark] != ''
-        if @checkpoint.checkpointmarks.where(student: m[:student]) == []
+        if @checkpoint.checkpointmarks.by_student(m[:student]) == []
           mark=Study::Checkpointmark.new student: m[:student], checkpoint: m[:checkpoint],
                                          mark: m[:mark]
           mark.save!
-        elsif @checkpoint.checkpointmarks.where(student: m[:student]).first.mark != m[:mark]
-          mark = @checkpoint.checkpointmarks.where(student: m[:student]).first
+        elsif @checkpoint.checkpointmarks.by_student(m[:student]).first.mark != m[:mark]
+          mark = @checkpoint.checkpointmarks.by_student(m[:student]).first
           mark.update_attributes(mark: m[:mark])
           end
       end
@@ -36,7 +36,7 @@ class Study::CheckpointmarksController < ApplicationController
 
 
   def resource_params
-     params.fetch(:checkpointmark, {}).permit( :student, :mark, :checkpoint)
+     params.fetch(:checkpointmark, {}).permit( :students, :mark, :checkpoint)
   end
   private
 

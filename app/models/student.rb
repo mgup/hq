@@ -2,6 +2,14 @@ class Student < ActiveRecord::Base
   PAYMENT_BUDGET = 1
   PAYMENT_OFF_BUDGET = 2
 
+  MARK_LECTURE_NOT_ATTEND   = 1001
+  MARK_LECTURE_ATTEND       = 1002
+
+  MARK_PRACTICAL_BAD        = 2001
+  MARK_PRACTICAL_FAIR       = 2004
+  MARK_PRACTICAL_GOOD       = 2002
+  MARK_PRACTICAL_PERFECT    = 2003
+
   self.table_name = 'student_group'
 
   alias_attribute :id,              :student_group_id
@@ -14,12 +22,16 @@ class Student < ActiveRecord::Base
   has_many :checkpointmarks, class_name: Study::Checkpointmark, foreign_key: :checkpoint_mark_student
   has_many :exam_students, foreign_key: :exam_student_student
   has_many :exams, :through => :exam_students
-  has_many :marks, foreign_key: :mark_student_group
+  has_many :marks, class_name: Study::Mark, foreign_key: :student_id
 
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
 
   has_many :payments, class_name: Finance::Payment, primary_key: :student_group_id, foreign_key: :finance_payment_student_group
+
+  has_many :selections,  class_name: My::Select, primary_key: :student_group_id,
+           foreign_key: :optional_select_student
+  has_many :choices, class_name: My::Choice, :through => :selections
 
   default_scope do
     select('student_group.*, student.*')
@@ -176,4 +188,42 @@ GROUP BY `group`
   def total_payments
     payments.inject(0) { |result, payment| result += payment.sum; result }
   end
+
+  def subjects
+    Study::Subject.where(id: marks.collect{|mark| mark.subject_id})
+  end
+
+  def disciplines
+    Study::Discipline.now.where(subject_group: group)
+  end
+
+  def checkpoints
+    Study::Checkpoint.where(checkpoint_subject: disciplines.collect{|d| d.id})
+  end
+
+  def ball(discipline)
+    l1, p1, n1 = 0.0, 0.0, 0.0
+    l = discipline.checkpoints.lectures.count
+    p = discipline.checkpoints.practicals.count
+    checkpointmarks.by_discipline(discipline).each do |mark|
+      c = mark.checkpoint
+      result = case mark.mark
+                 when MARK_LECTURE_ATTEND
+                   (5/l)
+                 when MARK_PRACTICAL_FAIR
+                   (5/p)
+                 when MARK_PRACTICAL_GOOD
+                   (10/p)
+                 when MARK_PRACTICAL_PERFECT
+                   (15/p)
+                 else
+                   0
+               end
+      l1 += result if c.lecture?
+      p1 += result if c.seminar?
+      n1 += mark.mark if c.check?
+    end
+    (l1+p1+n1).round 2
+  end
+
 end

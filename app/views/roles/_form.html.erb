@@ -2,7 +2,7 @@
   <div class="row">
     <%= f.label :name, class: 'col col-lg-2 control-label' %>
     <div class="col col-lg-10">
-      <%= f.text_field :name %>
+      <%= f.text_field :name, class: 'form-control' %>
       <span class="help-block">
       Внутренее имя роли в системе. Изменять с большой осторожностью, потому
       что оно используется при связке пользователей системы с их правами доступа.
@@ -13,7 +13,7 @@
   <div class="row">
     <%= f.label :title, class: 'col col-lg-2 control-label' %>
     <div class="col col-lg-10">
-      <%= f.text_field :title %>
+      <%= f.text_field :title, class: 'form-control' %>
       <span class="help-block">
         Описательное название роли. Именно оно показывается пользователям,
         отвечающим за назначение сотрудников на должности в системе.
@@ -24,7 +24,7 @@
   <div class="row">
     <%= f.label :description, class: 'col col-lg-2 control-label' %>
     <div class="col col-lg-10">
-      <%= f.text_area :description %>
+      <%= f.text_area :description, class: 'form-control' %>
     </div>
   </div>
 

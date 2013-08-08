@@ -1,0 +1,53 @@
+<ul class="breadcrumb">
+  <li class="active">Кабинет студента</li>
+</ul>
+<div class='page-header'>
+  <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
+</div>
+
+<div class='row'>
+  <div class="thumbnail col-lg-5">
+    <div class="caption">
+      <h3>Успеваемость</h3>
+      <p>Чтобы узнать текущую успеваемость по всем дисциплинам, пройдите по ссылке</p>
+      <p><a class="btn btn-primary" href="<%= my_student_progress_path(@student)%>">Узнать</a></p>
+    </div>
+  </div>
+  <div class="thumbnail col-lg-5 col-offset-1">
+    <div class="caption">
+      <h3>Результаты сессий</h3>
+      <p>Чтобы узнать результаты полугодовых сессий,
+        пройдите по одной из ссылок</p>
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style='margin-bottom: 0.75em'>
+          Узнать <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <% @sessions.each do |subject| %>
+          <% session = @student.subjects.where(year: subject[:year], semester: subject[:semester]).first%>
+          <li><a href="<%= @student.id %>/progress/subject/<%= session.id %>"><%= "#{subject[:year]}/#{subject[:year] + 1}" %> год
+            (<%= subject[:term] %>)</a></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class='row'>
+  <div class="thumbnail col-lg-5">
+    <div class="caption">
+      <h3>Материальная помощь</h3>
+      <p>Перед оформлением заявления ознакомьтесь с <a href="<%= root_url %>/documents/Polozhenie_o_materialnoy_pomoschi.doc">«Положением об оказании материальной помощи студентам»</a> МГУП имени Ивана Федорова.</p>
+      <p><a class="btn btn-primary" href="/my/student/<%= @student.id %>/supports/new">Оформить</a></p>
+    </div>
+  </div>
+  <div class="thumbnail col-lg-5 col-offset-1">
+    <div class="caption">
+      <h3>Дисциплины по выбору</h3>
+      <p>Перед оформлением заявки на курсы по выбору обязательно ознакомьтесь с их программами. Это ваш выбор – делайте его осознанно.</p>
+      <p><a class="btn btn-primary" href="/my/student/<%= @student.id %>/selects/new">Выбрать</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.dropdown-toggle').dropdown();
+</script>

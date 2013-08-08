@@ -1,3 +1,10 @@
+<ul class="breadcrumb">
+  <li><a href="#">Успеваемость</a></li>
+  <li><a href="/study/disciplines">Дисциплины</a></li>
+  <li><a href="<%= study_discipline_checkpoints_path(@discipline) %>"><%= @discipline.name %></a></li>
+  <li class="active">Контрольные точки дисциплины</li>
+</ul>
+
 <div class="page-header">
   <h1>
     <%= @discipline.name %> <small><%= @discipline.group.name %></small>
@@ -5,7 +12,7 @@
   <h3>Редактирование контрольных точек</h3>
 </div>
 
-<div class="col col-lg-3 col-offset-6 alert alert-<%= @error %>" style='position: fixed;'>
+<div id='minmax_info' class="col col-lg-3 col-offset-6 alert alert-<%= @error %>" style='position: fixed;'>
   <table>
     <tbody>
       <tr>
@@ -32,27 +39,27 @@
       <legend><%= check.name %> (<%= check.date %>)</legend>
       <%= hidden_field_tag 'checkpoints[][id]', check.id %>  
       <div class='row'>
-        <%= label_tag 'checkpoints[][name]', 'Форма контроля', class: 'col col-lg-2 control-label' %>
+        <%= label_tag 'checkpoints[][checkpoint_name]', 'Форма контроля', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-5">
-          <%= text_field_tag 'checkpoints[][name]', check.name %>
+          <%= text_field_tag 'checkpoints[][name]', check.name, class: 'form-control' %>
         </div>
       </div>
       <div class='row'>
         <%= label_tag 'checkpoints[][details]', 'Описание контрольной точки', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-5">
-          <%= text_area_tag 'checkpoints[][details]', check.details %>
+          <%= text_area_tag 'checkpoints[][details]', check.details, class: 'form-control' %>
         </div>
       </div> 
       <div class='row'>
         <%= label_tag 'checkpoints[][max]', 'Максимальный балл', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-5">
-          <%= text_field_tag 'checkpoints[][max]', check.max %>
+          <%= text_field_tag 'checkpoints[][max]', check.max, class: 'control_max form-control' %>
         </div>
       </div> 
       <div class='row'>
         <%= label_tag 'checkpoints[][min]', 'Зачётный минимум', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-5">
-          <%= text_field_tag 'checkpoints[][min]', check.min %>
+          <%= text_field_tag 'checkpoints[][min]', check.min, class: 'control_min form-control' %>
         </div>
       </div> 
       <br>

@@ -1,11 +1,18 @@
+<ul class="breadcrumb">
+  <li><a href="#">Успеваемость</a></li>
+  <li class="active">Дисциплины</li>
+</ul>
+
 <div class="page-header">
   <h1>Дисциплины</h1>
 </div>
 
 <form id='formsearchdisciplinebyname' class='form-inline'>
-  <input type='text' name='discipline_name' id='discipline_name' class='col-lg-6' placeholder='Поиск по названию дисциплины'>
-<div class='pull-right'>
-  <a class='btn btn-default' href="<%= new_study_discipline_path %>"><span class='glyphicon glyphicon-plus'></span>Добавить дисциплину</a>
+  <div class='col-lg-6'>
+    <input type='text' name='discipline_name' id='discipline_name' class='form-control' placeholder='Поиск по названию дисциплины'>
+  </div>
+  <div class='pull-right'>
+  <a class='btn btn-default' href="<%= new_study_discipline_path %>"><span class='glyphicon glyphicon-plus'></span> Добавить дисциплину</a>
 </div>
 </form>
 <br>
@@ -30,10 +37,11 @@
         <td class='text-muted'><%= discipline.id %></td>
         <td>
           <p><%= discipline.name %> (<%= discipline.term %>)</p>
-          <p><%= discipline.group.name %>, 
+          <p><%= discipline.group.name %>, <strong><%= discipline.teacher.full_name %></strong>
+            <br>
             <% teachers = [] %>
             <% discipline.teachers.each do |teacher|%>
-            <% teachers << teacher.full_name %>
+            <% teachers << teacher.full_name if teacher != discipline.teacher %>
             <% end %>
             <%= teachers.join(', ') %>
           </p>

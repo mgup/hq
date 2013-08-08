@@ -1,3 +1,8 @@
+<ul class="breadcrumb">
+  <li><a href="<%= students_path %>">Студенты</a></li>
+  <li class="active">Информация о студенте</li>
+</ul>
+
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
 </div>
@@ -9,9 +14,9 @@
         <%= p.label :passport_series, 'Паспорт', class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-10">
           <div class="row">
-            <%= p.text_field :passport_series,     class: 'col col-lg-1' %>
-            <%= p.text_field :passport_number,     class: 'col col-lg-2 col-offset-1' %>
-            <%= p.text_field :passport_date,       class: 'col col-lg-2 col-offset-1 datepicker' %>
+            <%= p.text_field :passport_series,     class: 'col col-lg-1 form-control' %>
+            <%= p.text_field :passport_number,     class: 'col col-lg-2 col-offset-1 form-control' %>
+            <%= p.text_field :passport_date,       class: 'col col-lg-2 col-offset-1 datepicker form-control' %>
           </div>
           <div class="row">
             <%= p.text_field :passport_department %>
