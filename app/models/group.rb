@@ -39,6 +39,19 @@ class Group < ActiveRecord::Base
     end
   }
 
+  def support
+    case form
+      when 101
+        'очной'
+      when 102
+        'очно-заочной'
+      when 103
+        'заочной'
+      when 105
+        'дистанционной'
+    end
+  end  
+
   def name
     n = []
 

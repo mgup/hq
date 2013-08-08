@@ -1,4 +1,4 @@
-<%=  form_tag my_student_supports_path(@student) do %>
+<%=  form_tag my_student_supports_path(@student), id: 'support_form' do %>
  <%= hidden_field_tag :student, @student.id %>
  <%= hidden_field_tag :year, DateTime.now.strftime("%Y") %>
  <%= hidden_field_tag :month, DateTime.now.strftime("%m") %>

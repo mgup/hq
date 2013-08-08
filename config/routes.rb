@@ -42,7 +42,8 @@ HQ::Application.routes.draw do
       get '/progress' => 'progress#index'
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'
-      resources :supports
+      resources :supports 
+      match 'download_pdf', to: 'supports#download_pdf', via: [:get, :post] 
       resources :selects
     end
   end
