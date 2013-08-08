@@ -12,7 +12,7 @@ class My::Support < ActiveRecord::Base
   alias_attribute :address,    :support_paddress
   alias_attribute :phone,      :support_pphone
 
-  belongs_to :student, class_name: Student, primary_key: :student_id,
+  belongs_to :student, class_name: Student, primary_key: :student_group_id,
              foreign_key: :support_student
   has_many :options,  class_name: My::SupportOptions, primary_key: :support_id,
            foreign_key: :support_options_support
