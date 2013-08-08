@@ -2,6 +2,8 @@
   <h1>Информация о платном приёме</h1>
 </div>
 
+<%= render 'stats' %>
+
 <%= paginate @students %>
 
 <table class="table table-hover">
@@ -27,10 +29,10 @@
         </td>
         <td>
           <%= '№ ' + student.contract.number %>
-          <br>
-          <%=  student.person.full_name %>
-          <br>
-          <em><%= student.contract.payer %></em>
+          <br><br>
+          Студент: <%=  student.person.full_name %>
+          <br><br>
+          Плательщик: <em><%= student.contract.payer %></em>
         </td>
         <td>
           <table>
