@@ -13,6 +13,10 @@ class Ability
       can :manage, [Study::Subject, Study::Mark]
     end
 
+    if user.is?(:zamestitel_otvetstvennogo_sekretarja)
+      can :index, :selection_contracts
+    end
+
     if user.is?(:chief_accountant)
       can :index, :selection_contracts
     end
