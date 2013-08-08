@@ -5,7 +5,8 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.dom_class = 'pull-right'
 
     if user_signed_in?
-      primary.item :profile, (current_user.username + ' <b class="caret"></b>'.html_safe), '#', link: { :'data-toggle' => 'dropdown' } do |profile|
+      primary.item :profile, ("<span class='glyphicon glyphicon-user'></span> " + current_user.username + ' <b class="caret"></b>'.html_safe), '#', link: { :'data-toggle' => 'dropdown' } do |profile|
+        profile.item :user, 'Профиль', "/users/#{current_user.id}/profile"
         profile.item :divider, '', nil, class: 'divider'
         profile.item :sign_out, 'Выйти', destroy_user_session_path, method: :delete
       end

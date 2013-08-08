@@ -3,13 +3,17 @@ class My::StudentsController < ApplicationController
 
   def index ; end
 
-  def show ; end
-
-  def update ; end
+  def show
+    @sessions = []
+    @student.subjects.each do |s|
+      @sessions << {year: s.year, semester: s.semester, term: s.term}
+    end
+    @sessions = @sessions.uniq()
+  end
 
   private
 
   def student_params
-    params.require(:student)
+    params.require(:students)
   end
 end

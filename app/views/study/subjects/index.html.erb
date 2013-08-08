@@ -1,13 +1,20 @@
+<ul class="breadcrumb">
+  <li><a href="#">Успеваемость</a></li>
+  <li class="active">Результаты сессий</li>
+</ul>
+
 <div class="page-header">
   <h1>Все результаты</h1>
 </div>
 
 <div class='col col-lg-12' style='margin-bottom: 20px; padding: 0;'>
   <form id='filterforsubjects' class='form-inline'>
-    <input type='text' name='subject_name' id='subject_name' class='col-lg-6' placeholder='Поиск по названию дисциплины'>
+    <div class='col col-lg-6'>
+      <input type='text' name='subject_name' id='subject_name' class='form-control' placeholder='Поиск по названию дисциплины'>
+    </div>
     <div class='col col-lg-3'>
       <%= select_tag :subject_group, options_from_collection_for_select(Group.all.sort_by{|g| [g.name]}, :id, :name),
-                 prompt: 'все группы' %>
+                 prompt: 'все группы', class: 'form-control' %>
     </div>
     <input type='submit' value='Найти' class='btn btn-default'>
   </form>

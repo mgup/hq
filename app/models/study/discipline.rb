@@ -1,4 +1,5 @@
 class Study::Discipline < ActiveRecord::Base
+  YEAR = DateTime.now.strftime("%Y")
   self.table_name = 'subject'
 
   alias_attribute :id,       :subject_id
@@ -6,7 +7,6 @@ class Study::Discipline < ActiveRecord::Base
   alias_attribute :semester, :subject_semester
   alias_attribute :year,     :subject_year
   alias_attribute :brs,      :subject_brs
-  alias_attribute :teacher,  :subject_teacher
 
  
   belongs_to :group, foreign_key: :subject_group
@@ -21,18 +21,16 @@ class Study::Discipline < ActiveRecord::Base
 
   scope :from_name, -> name { where("subject_name LIKE :prefix", prefix: "#{name}%")}
   scope :from_student, -> student {where(group:  student.group )}
-  scope :from_group, -> group {where(group: group )}
+  scope :from_group, -> group {where(group: group)}
+  scope :now, -> {where(subject_year: YEAR)}
 
   def teacher
-    teachers.first
+    User.find(subject_teacher)
   end
 
-  def has_work?
-    exams.where(exam_type: 2) != []
-  end
-
-  def has_project?
-    exams.where(exam_type: 3) != []
+  def has?(type)
+    work = (type == 'work' ? 2 : 3)
+    exams.where(exam_type: work) != []
   end
 
   def control

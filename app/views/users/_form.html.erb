@@ -4,7 +4,7 @@
     <div class="row">
       <%= f.label :user_name, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
-        <%= f.text_field :user_name, disabled: true %>
+        <%= f.text_field :user_name, disabled: true, class: 'form-control' %>
       </div>
     </div>
 
@@ -29,13 +29,13 @@
       <div class="col col-lg-10">
         <div class="row">
           <div class="col col-lg-4">
-            <%= text_field :user, :last_name_ip, required: true %>
+            <%= text_field :user, :last_name_ip, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :first_name_ip, required: true %>
+            <%= text_field :user, :first_name_ip, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :patronym_ip, required: true %>
+            <%= text_field :user, :patronym_ip, required: true, class: 'form-control' %>
           </div>
         </div>
       </div>
@@ -46,13 +46,13 @@
       <div class="col col-lg-10">
         <div class="row">
           <div class="col col-lg-4">
-            <%= text_field :user, :last_name_rp, required: true %>
+            <%= text_field :user, :last_name_rp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :first_name_rp, required: true %>
+            <%= text_field :user, :first_name_rp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :patronym_rp, required: true %>
+            <%= text_field :user, :patronym_rp, required: true, class: 'form-control' %>
           </div>
         </div>
       </div>
@@ -63,13 +63,13 @@
       <div class="col col-lg-10">
         <div class="row">
           <div class="col col-lg-4">
-            <%= text_field :user, :last_name_dp, required: true %>
+            <%= text_field :user, :last_name_dp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :first_name_dp, required: true %>
+            <%= text_field :user, :first_name_dp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :patronym_dp, required: true %>
+            <%= text_field :user, :patronym_dp, required: true, class: 'form-control' %>
           </div>
         </div>
       </div>
@@ -80,13 +80,13 @@
       <div class="col col-lg-10">
         <div class="row">
           <div class="col col-lg-4">
-            <%= text_field :user, :last_name_vp, required: true %>
+            <%= text_field :user, :last_name_vp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :first_name_vp, required: true %>
+            <%= text_field :user, :first_name_vp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :patronym_vp, required: true %>
+            <%= text_field :user, :patronym_vp, required: true, class: 'form-control' %>
           </div>
         </div>
       </div>
@@ -97,13 +97,13 @@
       <div class="col col-lg-10">
         <div class="row">
           <div class="col col-lg-4">
-            <%= text_field :user, :last_name_tp, required: true %>
+            <%= text_field :user, :last_name_tp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :first_name_tp, required: true %>
+            <%= text_field :user, :first_name_tp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :patronym_tp, required: true %>
+            <%= text_field :user, :patronym_tp, required: true, class: 'form-control' %>
           </div>
         </div>
       </div>
@@ -114,13 +114,13 @@
       <div class="col col-lg-10">
         <div class="row">
           <div class="col col-lg-4">
-            <%= text_field :user, :last_name_pp, required: true %>
+            <%= text_field :user, :last_name_pp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :first_name_pp, required: true %>
+            <%= text_field :user, :first_name_pp, required: true, class: 'form-control' %>
           </div>
           <div class="col col-lg-4">
-            <%= text_field :user, :patronym_pp, required: true %>
+            <%= text_field :user, :patronym_pp, required: true, class: 'form-control' %>
           </div>
         </div>
       </div>
@@ -132,19 +132,19 @@
     <div class="row">
       <%= f.label :username, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
-        <%= f.text_field :username %>
+        <%= f.text_field :username, class: 'form-control' %>
       </div>
     </div>
     <div class="row">
       <%= f.label :email, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
-        <%= f.email_field :email %>
+        <%= f.email_field :email, class: 'form-control' %>
       </div>
     </div>
     <div class="row">
       <%= f.label :phone, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
-        <%= f.phone_field :phone, pattern: '[\+]\d{1} \d{3} \d{3}[\-]\d{2}[\-]\d{2}'%>
+        <%= f.phone_field :phone, pattern: '[\+]\d{1} \d{3} \d{3}[\-]\d{2}[\-]\d{2}', class: 'form-control'%>
         <span class="help-block">Телефонный номер в формате +7 926 123-45-67.</span>
       </div>
     </div>

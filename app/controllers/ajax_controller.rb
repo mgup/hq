@@ -34,4 +34,18 @@ class AjaxController < ApplicationController
       subjects
     end })
   end
+
+  def students
+    render({ json: Student.filter(group: params[:group]).inject([]) do |students, student|
+      students << { id: student.id, name: student.person.full_name }
+      students
+    end })
+  end
+
+  def checkpoint
+    x = Study::Checkpoint.find(params[:checkpoint_id])
+    checkpoint = {type: x.checkpoint_type, date: x.date.strftime("%d.%m.%Y"), name: x.name,
+                  details: x.details, day: x.date}
+    render({ json: checkpoint })
+  end
 end

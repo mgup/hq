@@ -5,39 +5,25 @@ class Study::ProgressController < ApplicationController
   def index
     authorize! :index, :progress
     @discipline_students = []
-    marks = []
     @group.students.each do |student|
       ball = 0
       @disciplines.each do |d|
-        d.checkpoints.each do |c|
-          ball += c.checkpointmarks.where(student: student).first.mark if  c.checkpointmarks.where(student: student).first != nil
-        end
+        ball+=student.ball(d)
       end
-      marks << ball
-      @discipline_students << {ball: ball, student: student}
+      @discipline_students << {ball: ball.round(2), students: student}
     end
-      @max = marks.max
     @discipline_students.each do |ds|
-      ds[:progress] = (ds[:ball]*100)/@max
+      ds[:progress] = @disciplines.count != 0 ? (ds[:ball]/@disciplines.count) : 0
     end
   end
 
   def discipline
     authorize! :show, :progress
-    @discipline =  Study::Discipline.find(params[:id])
+    @discipline = @disciplines.find(params[:id])
     @discipline_students = []
-    marks = []
     @group.students.each do |student|
-      ball = 0
-      @discipline.checkpoints.each do |c|
-        ball += c.checkpointmarks.where(student: student).first.mark if  c.checkpointmarks.where(student: student).first != nil
-      end
-      marks << ball
+      ball = student.ball(@discipline)
       @discipline_students << {ball: ball, student: student}
-    end
-    @max = marks.max
-    @discipline_students.each do |ds|
-      ds[:progress] = (ds[:ball]*100)/@max
     end
   end
 
@@ -45,7 +31,7 @@ class Study::ProgressController < ApplicationController
 
   def find_group
     @group = Group.find(params[:group_id])
-    @disciplines = Study::Discipline.from_group(@group)
+    @disciplines = Study::Discipline.now.from_group(@group)
   end
 
 end

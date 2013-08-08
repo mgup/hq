@@ -1,10 +1,16 @@
+<ul class="breadcrumb">
+  <li><a href='/study/group'>Успеваемость</a></li>
+  <li><a href="<%= study_group_progress_path(@group) %>">Группа</a></li>
+  <li class="active"><%= @discipline.name %></li>
+</ul>
+
 <div class="page-header">
   <h1>Успеваемость <small><%= @group.name %></small></h1>
 </div>
-<%= hidden_field_tag :progress_group, value: @group.id %>
+<%= hidden_field_tag :progress_group, @group.id %>
 
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name, @discipline.id),
-               prompt: 'суммарно по всем дисциплинам' %>
+               prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
 
 <br>
 
@@ -26,10 +32,10 @@
       <td><%= student[:ball] %></td>
       <td>
         <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
+          <div class="progress-bar progress-bar-stripped" style="width: <%= student[:ball]%>%"></div>
         </div>
       </td>
-      <% ball = case student[:progress].round %>
+      <% ball = case student[:ball].round %>
       <% when 0..49 then 'неудовлетворительно' %>
       <% when 50..64 then 'удовлетворительно' %>
       <% when 65..80 then 'хорошо' %>
@@ -37,7 +43,7 @@
       <% end %>
       <td><%= ball %></td>
       <td>
-        <% result = case student[:progress].round %>
+        <% result = case student[:ball].round %>
         <% when 0..49 then 'danger' %>
         <% when 50..64 then 'warning' %>
         <% when 65..80 then 'info' %>
@@ -45,10 +51,10 @@
         <% end %>
 
         <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
+          <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:ball]%>%"></div>
         </div>
       </td>
-      <td><a class='btn btn-default' href="/my/student/<%= student[:student].id %>/progress" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+      <td><a class='btn btn-default' href="/study/group/<%= @group.id %>/student/<%= student[:student].id %>/discipline/<%= @discipline.id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
     </tr>
   <% end %>
   </tbody>

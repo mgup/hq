@@ -17,7 +17,7 @@ class Study::MarksController < ApplicationController
       result = result.uniq
       retake = retake.uniq
       error = 'danger' if result.size > 1 || retake.size > 1
-      @subject_students.push({student: student, marks: result.join(', '), 
+      @subject_students.push({students: student, marks: result.join(', '),
                               retakes: retake.join(', '),
                               mark: student_marks.first, error: error})
     end
@@ -60,7 +60,6 @@ class Study::MarksController < ApplicationController
 
   def update
     marks = params[:marks]
-    key = []
     marks.each do |m|
       mark=Study::Mark.find(m[:id])
       mark.update_attributes(m)

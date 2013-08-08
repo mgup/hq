@@ -22,19 +22,20 @@ class Study::AnalyseController < ApplicationController
       errors << 'оценка'    if marks.uniq.size > 1
       errors << 'пересдача' if retakes.uniq.size > 1
       @collisions.push({ subject: Study::Subject.find(c[10]), 
-        student: Student.find(c[4]), mark: Study::Mark.find(c[2]),
+        students: Student.find(c[4]), mark: Study::Mark.find(c[2]),
                             error_txt: errors.join(' и ') })
     end
 
     if params[:subject_group] && params[:subject_group] != ''
-      @collisions = @collisions.select{|col| col[:student].group.id == params[:subject_group].to_i}
+      @collisions = @collisions.select{|col| col[:students].group.id == params[:subject_group].to_i}
     end
 
+    @collisions = @collisions.sort_by{ |col| [col[:students].group.speciality.faculty, col[:students].group, col[:subject], col[:students].person.full_name]}
+
     unless @collisions.kind_of?(Array)
-      @collisions = @collisions.sort_by{ |col| [col[:student].group.speciality.faculty, col[:student].group, col[:subject], col[:student].person.full_name]}.page(params[:page]).per(20)
+      @collisions = @collisions.page(params[:page]).per(20)
     else
-      @collisions = Kaminari.paginate_array(@collisions.sort_by{ |col| [col[:student].group.speciality.faculty, col[:student].group, col[:subject], col[:student].person.full_name]}).page(params[:page])
-      .per(20)
+      @collisions = Kaminari.paginate_array(@collisions).page(params[:page]).per(20)
     end
 
   end
