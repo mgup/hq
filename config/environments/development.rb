@@ -24,4 +24,11 @@ HQ::Application.configure do
 
   # Debug mode disables concatenation and preprocessing of assets.
   config.assets.debug = true
+
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = false
+    Bullet.console = true
+    Bullet.rails_logger = true
+  end
 end

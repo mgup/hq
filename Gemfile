@@ -47,6 +47,10 @@ group :development do
   gem 'capistrano'
   gem 'rvm-capistrano'
   gem 'sextant'
+  gem 'quiet_assets'
+  gem 'letter_opener'
+  gem 'bullet'
+  gem 'meta_request'
 end
 
 group :test do

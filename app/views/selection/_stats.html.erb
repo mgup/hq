@@ -1,0 +1,14 @@
+<p class="lead">На <%= l Time.now %>:</p>
+<ul class="lead">
+  <li>всего заключено договоров — <%= @students.total_count %>;</li>
+  <li>
+    общая сумма заключённых договоров —
+    <%= number_to_currency calculate_contract_stats[:total] %>;
+  </li>
+  <li>
+    поступило оплаты по договорам —
+    <%= number_to_currency calculate_contract_stats[:received] %>
+    из <%= number_to_currency calculate_contract_stats[:expected] %>
+  </li>
+</ul>
+
