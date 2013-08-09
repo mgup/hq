@@ -1,4 +1,6 @@
 class Person < ActiveRecord::Base
+  MALE = 0
+  FEMALE = 1
   include Nameable
 
   self.table_name = 'student'
@@ -13,6 +15,14 @@ class Person < ActiveRecord::Base
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname
   belongs_to :iname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_iname
   belongs_to :oname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_oname
+
+  def male?
+    MALE == student_gender
+  end
+
+  def female?
+    FEMALE == student_gender
+  end
 
   # trigger.after(:insert) do
   #   %q(
