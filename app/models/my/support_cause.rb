@@ -8,5 +8,8 @@ class My::SupportCause < ActiveRecord::Base
 
   has_many :options,  class_name: My::SupportOptions, primary_key: :support_cause_id,
            foreign_key: :support_options_cause
+  has_many :causereasons,  class_name: My::SupportCauseReason, primary_key: :support_cause_id,
+           foreign_key: :support_cause_reason_cause
+  has_many :reasons, through: :causereasons
 
 end
