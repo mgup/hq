@@ -20,7 +20,7 @@ class My::SupportsController < ApplicationController
         option = My::SupportOptions.new support: @support, cause: My::SupportCause.find(cause)
         option.save
       end
-      redirect_to "/my/student/#{@student.id}/support/download_pdf", notice: 'Успешно создано'
+      redirect_to "/my/student/#{@student.id}/download_support", notice: 'Успешно создано'
     else
        redirect_to new_my_student_support_path(@student), notice: 'Произошла ошибка'
     end
