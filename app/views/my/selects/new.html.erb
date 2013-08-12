@@ -52,7 +52,7 @@
       </fieldset>
     <% end %>
     <p class='help-block'>Если вы хотите изменить выбор предметов – <span class='label label-danger'>срочно обратитесь в деканат</span>.</p>
-    <%= submit_tag 'Зарегистрировать и распечатать заявление', class: 'btn btn-primary' %>
+    <a class='btn btn-primary' href="/my/student/<%=@student.id%>/select/download_pdf"> Зарегистрировать и распечатать заявление</a>
   <% else %>
     <%= form_tag my_student_selects_path(@student) do %>
       <!--Важно! Где-то держать информацию о текущем учебном годе-->

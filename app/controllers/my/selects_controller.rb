@@ -1,4 +1,5 @@
 class My::SelectsController < ApplicationController
+  YEAR = 2013
   load_and_authorize_resource
 
   before_filter :find_student
@@ -35,8 +36,51 @@ class My::SelectsController < ApplicationController
     redirect_to new_my_student_select_path(@student)
   end
 
+  def download_pdf
+      @student = Student.find(params[:student_id])
+      @pdf = generate_pdf(@student.choices)
+      send_data(@pdf, filename: 'select.pdf', type: 'application/pdf')
+  end
 
-  private
+  private 
+  def generate_pdf(selects)
+    student = Student.find(params[:student_id])
+    Prawn::Document.new do
+        font_families.update(
+          'Verdana'=> {
+            bold: '/home/anna/Загрузки/tmp_fonts/verdanab.ttf',
+            italic: '/home/anna/Загрузки/tmp_fonts/verdanai.ttf',
+            normal:  '/home/anna/Загрузки/tmp_fonts/verdana.ttf' })
+        font 'Verdana', size: 9
+        move_down 10
+        indent 350 do 
+          text "Декану #{student.group.speciality.faculty.abbreviation}"
+          text 'имя декана'
+          text "от студента #{student.group.course} группы #{student.group.name}"
+          text "#{student.person.iname.rp} #{student.person.oname.rp} #{student.person.fname.rp}"
+        end
+        move_down 70
+        text 'ЗАЯВЛЕНИЕ', align: :center
+        move_down 50
+        text "Прошу вас допустить меня к изучению нижеперечисленных дисциплин по выбору, предусмотренных учебным планом в #{YEAR}/#{YEAR+1} учебном году по направлению #{student.group.speciality.code} «#{student.group.speciality.name}».", indent_paragraphs: 10   
+        move_down 25
+        selected_choices = []
+        terms = selects.collect {|c| c.term}.uniq
+        terms.each do |term|
+          selected_choices << selects.where(optional_term: term)
+        end
+        selected_choices.each do |term|
+          text 'В' + (term.first.term == 1 ? '' : 'о') + " #{term.first.term} семестре:", indent_paragraphs: 10
+          term.each do |select|
+            move_down 10
+            text "— #{select.title}" + ((select == term.last && term == selected_choices.last) ? '.' : ';')
+          end
+        end
+        move_down 50
+        text "#{DateTime.now.strftime("%d.%m.%Y")}                                                                                           _________________/#{student.person.iname.ip[0]}. #{student.person.oname.ip[0]}. #{student.person.fname.ip}"
+    
+    end.render 
+  end 
 
   def find_student
     @student = Student.find(params[:student_id])
