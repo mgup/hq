@@ -5,7 +5,11 @@
     </div>
   <% end %>
 
-  <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя', class: 'form-control' %>
+  <% if resource.is_a?(Student) %>
+    <%= f.text_field :id, autofocus: true, placeholder: 'Личный номер студента', class: 'form-control' %>
+  <% else %>
+    <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя', class: 'form-control' %>
+  <% end %>
   <br>
   <%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>
 

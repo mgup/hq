@@ -19,9 +19,10 @@ gem 'jquery-turbolinks'
 
 gem 'jbuilder'
 gem 'rails-i18n'
+gem 'russian'
 gem 'simple-navigation'
 gem 'vmstat'
-gem 'devise', github: 'plataformatec/devise', branch: :rails4
+gem 'devise'
 gem 'devise-i18n'
 gem 'dalli'
 gem 'rack-mini-profiler'
