@@ -1,7 +1,7 @@
 class Study::ProgressController < ApplicationController
 
   before_filter :find_group
-  
+  skip_before_filter :authenticate_user! , :only => [:index]
   def index
     authorize! :index, :progress
     @discipline_students = []
