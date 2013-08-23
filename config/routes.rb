@@ -21,6 +21,7 @@ HQ::Application.routes.draw do
 
   namespace :study do
     resources :disciplines do
+      match 'download_group', to: 'checkpoints#download_pdf', via: [:get, :post]
       resources :checkpoints do
         resources :checkpointmarks
       end

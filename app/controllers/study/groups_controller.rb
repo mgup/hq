@@ -1,7 +1,10 @@
 class Study::GroupsController < ApplicationController
-  load_and_authorize_resource
+  skip_before_filter :authenticate_user! , :only => [:index]
+  load_resource
 
-  def index ; end
+  def index
+    authorize! :index, :progress_group
+  end
 
   def create
     if params[:id]

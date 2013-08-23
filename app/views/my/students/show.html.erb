@@ -24,7 +24,7 @@
       <ul class="dropdown-menu">
         <% @sessions.each do |subject| %>
           <% session = @student.subjects.where(year: subject[:year], semester: subject[:semester]).first%>
-          <li><a href="<%= @student.id %>/progress/subject/<%= session.id %>"><%= "#{subject[:year]}/#{subject[:year] + 1}" %> год
+          <li><a href="/my/student/<%= @student.id %>/progress/subject/<%= session.id %>"><%= "#{subject[:year]}/#{subject[:year] + 1}" %> год
             (<%= subject[:term] %>)</a></li>
         <% end %>
       </ul>
@@ -44,6 +44,15 @@
       <h3>Дисциплины по выбору</h3>
       <p>Перед оформлением заявки на курсы по выбору обязательно ознакомьтесь с их программами. Это ваш выбор – делайте его осознанно.</p>
       <p><a class="btn btn-primary" href="/my/student/<%= @student.id %>/selects/new">Выбрать</a></p>
+    </div>
+  </div>
+</div>
+<div class='row'>
+  <div class="thumbnail col-lg-5">
+    <div class="caption">
+      <h3>Социальная стипендия</h3>
+      <p>Перед оформлением заявления ознакомьтесь с <a href="<%= root_url %>/documents/Polozhenie_o_soc_stipendii.doc">«Положением о государственной социальной стипендии»</a> МГУП имени Ивана Федорова.</p>
+      <p><a class="btn btn-primary" href="/my/student/<%= @student.id %>/">Оформить</a></p>
     </div>
   </div>
 </div>
