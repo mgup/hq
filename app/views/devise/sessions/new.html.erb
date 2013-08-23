@@ -1,64 +1,64 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-4">
-      <h2>Вход для студентов</h2>
-      <%= image_tag 'keep-calm-and-wait.png', class: 'img-responsive' %>
-    </div>
-    <!--<div class="col-md-4 panel panel-default student-sign-in">-->
-      <!--<div class="panel-body">-->
-        <!--<h2>Вход для студентов</h2>-->
-        <!--<%= form_for Student.new, as: :student, url: session_path(:student), html: { role: 'form' } do |f| %>-->
-          <!--<div class="form-group">-->
-            <!--<%= f.text_field :id, autofocus: true, placeholder: 'Личный номер студента', class: 'form-control' %>-->
-          <!--</div>-->
-          <!--<div class="form-group">-->
-            <!--<%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>-->
-            <!--<p class="help-block">-->
-              <!--— Как я могу получить пароль?-->
-              <!--<br>-->
-              <!--— Немного потерпите. Очень скоро вы его получите. ;-)-->
-              <!--&lt;!&ndash;— Обратитесь в дирекцию своего института.&ndash;&gt;-->
-            <!--</p>-->
-          <!--</div>-->
+<div class="row">
+  <div class="col-md-4">
+    <h2>Вход для сотрудников</h2>
+    <%= form_for User.new, as: :user, url: session_path(:user), html: { role: 'form' } do |f| %>
+      <div class="form-group">
+        <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя', class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>
+        <p class="help-block">
+          — Где я могу получить учётную запись?
+          <br>
+          — Обратитесь в Отдел информационных систем. Главный корпус, кабинет 1320.
+        </p>
+      </div>
 
-          <!--<% if devise_mapping.rememberable? %>-->
-            <!--<div class="checkbox">-->
-              <!--<label>-->
-                <!--<%= f.check_box :remember_me %> Запомнить меня на этом компьютере-->
-              <!--</label>-->
-            <!--</div>-->
-          <!--<% end %>-->
-
-          <!--<%= f.submit 'Вход', class: 'btn btn-default' %>-->
-        <!--<% end %>-->
-      <!--</div>-->
-    <!--</div>-->
-
-    <div class="col-md-4">
-      <h1>Успеваемость</h1>
-      <p class="text-justify">
-        В МГУП им. Ивана Федорова постепенно вводится балльно-рейтинговая
-        система оценки знаний студентов. Любой желающий может ознакомиться
-        с&nbsp;успеваемостью студентов, участвующих во&nbsp;внедрении
-        балльно-рейтинговой системы.
-      </p>
-      <%= link_to study_groups_path, class: 'btn btn-success btn-large' do %>
-        <span class="glyphicon glyphicon-search"></span> Успеваемость студентов МГУП
+      <% if devise_mapping.rememberable? %>
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :remember_me %> Запомнить меня на этом компьютере
+          </label>
+        </div>
       <% end %>
-    </div>
 
-    <div class="col-md-4">
-      <h2>Вход для сотрудников</h2>
-      <%= form_for User.new, as: :user, url: session_path(:user), html: { role: 'form' } do |f| %>
+      <%= f.submit 'Вход', class: 'btn btn-default' %>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <h1>Успеваемость</h1>
+    <p class="lead text-justify">
+      В МГУП им. Ивана Федорова внедряется балльно-рейтинговая
+      система оценки знаний студентов. Каждый может ознакомиться
+      с&nbsp;успеваемостью студентов, группы которых уже&nbsp;участвуют
+      во&nbsp;внедрении балльно-рейтинговой системы.
+    </p>
+    <%= link_to study_groups_path, class: 'btn btn-success btn-lg' do %>
+      <span class="glyphicon glyphicon-search"></span> Посмотреть успеваемость
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <h2>Вход для студентов</h2>
+    <%= image_tag 'keep-calm-and-wait.png', class: 'img-responsive' %>
+  </div>
+</div>
+
+<div class="row student-sign-in-row">
+  <div class="col-md-4 col-md-offset-8 panel panel-default student-sign-in">
+    <div class="panel-body">
+      <h2>Вход для студентов</h2>
+      <%= form_for Student.new, as: :student, url: session_path(:student), html: { role: 'form' } do |f| %>
         <div class="form-group">
-          <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя', class: 'form-control' %>
+          <%= f.text_field :id, autofocus: true, placeholder: 'Личный номер студента', class: 'form-control' %>
         </div>
         <div class="form-group">
           <%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>
           <p class="help-block">
-            — Где я могу получить учётную запись?
+            — Как я могу получить пароль?
             <br>
-            — Обратитесь в Отдел информационных систем. Главный корпус, кабинет 1320.
+            — Обратитесь в дирекцию своего института.
           </p>
         </div>
 
