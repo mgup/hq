@@ -19,7 +19,7 @@
     </div>
   <% end -%>
 
-  <%= f.submit 'Вход', class: 'btn btn-primary' %>
+  <%= f.submit 'Вход', class: 'btn btn-default' %>
 
   <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
     <%= link_to 'Забыли пароль?', new_password_path(resource_name), class: 'action pull-right' %><br />
@@ -27,6 +27,7 @@
 
 <% end %>
 <br><br>
+
 <p>
   — Где я могу получить учётную запись?
   <br>

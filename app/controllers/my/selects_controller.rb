@@ -47,16 +47,16 @@ class My::SelectsController < ApplicationController
     student = Student.find(params[:student_id])
     Prawn::Document.new do
         font_families.update(
-          'Verdana'=> {
-            bold: '/home/anna/Загрузки/tmp_fonts/verdanab.ttf',
-            italic: '/home/anna/Загрузки/tmp_fonts/verdanai.ttf',
-            normal:  '/home/anna/Загрузки/tmp_fonts/verdana.ttf' })
-        font 'Verdana', size: 9
+            'PT'=> {
+            bold:  "#{Rails.root.join('app', 'assets', 'fonts', 'PTF75F.ttf')}",
+            italic: "#{Rails.root.join('app', 'assets', 'fonts', 'PTF56F.ttf')}",
+            normal:  "#{Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf') }"})
+        font 'PT', size: 9
         move_down 10
         indent 350 do 
           text "Декану #{student.group.speciality.faculty.abbreviation}"
           text 'имя декана'
-          text "от студента #{student.group.course} группы #{student.group.name}"
+          text "от студента группы #{student.group.name}"
           text "#{student.person.iname.rp} #{student.person.oname.rp} #{student.person.fname.rp}"
         end
         move_down 70
@@ -77,8 +77,7 @@ class My::SelectsController < ApplicationController
           end
         end
         move_down 50
-        text "#{DateTime.now.strftime("%d.%m.%Y")}                                                                                           _________________/#{student.person.iname.ip[0]}. #{student.person.oname.ip[0]}. #{student.person.fname.ip}"
-    
+        text "#{DateTime.now.strftime("%d.%m.%Y")}                                                                                                                                                             ___________________ / #{student.person.iname.ip[0]}. #{student.person.oname.ip[0]}. #{student.person.fname.ip}"
     end.render 
   end 
 

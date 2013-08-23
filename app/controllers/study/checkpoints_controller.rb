@@ -67,7 +67,46 @@ class Study::CheckpointsController < ApplicationController
     params.fetch(:study_checkpoint, {}).permit( :name, :checkpoint_type, :date,
                                             :details, :min, :max)
   end
+
+  def download_pdf
+    @discipline = Study::Discipline.find(params[:discipline_id])
+    @pdf = generate_pdf(@discipline)
+    send_data(@pdf, filename: "#{@discipline.group.name}.pdf", type: 'application/pdf')
+  end
+
   private
+  def generate_pdf(discipline)
+    Prawn::Document.new do
+      font_families.update(
+          'PT'=> {
+              bold:  "#{Rails.root.join('app', 'assets', 'fonts', 'PTF75F.ttf')}",
+              italic: "#{Rails.root.join('app', 'assets', 'fonts', 'PTF56F.ttf')}",
+              normal:  "#{Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf') }"})
+      font 'PT', size: 9
+      text 'Федеральное государственное бюджетное образовательное учреждение высшего профессионального образования', size: 9, align: :center
+      text '<u>«МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА»</u>', size: 11, align: :center, inline_format: true
+      text 'СОСТАВ УЧЕБНОЙ ГРУППЫ', size: 11, align: :center
+      bounding_box [0, bounds.top - 45], width: bounds.width do
+        draw_text "Группа: #{discipline.group.name}", at: [0, (bounds.top - 3)]
+        draw_text " #{discipline.semester} семестр #{discipline.year}/#{discipline.year+1} г.", at: [445, (bounds.top - 3)]
+      end
+      move_down 8
+      text "Дисциплина: #{discipline.name}"
+      text "Преподаватель: #{discipline.teacher.full_name}"
+      move_down 5
+      i = 0
+      students = []
+      students << ['№', 'Фамилия, имя, отчество', 'Номер', '', '', '', '', '']
+      Student.filter(group: discipline.group).each do |student|
+        students << [i+1, student.person.full_name, student.id, '', '', '', '', '']
+        i+=1
+      end
+      table students, header: true, column_widths: {0 => 20, 1 => 240, 2 => 40, 3 => 40, 4 => 40, 5 => 40, 6 => 40, 7 => 80}, cell_style: {padding: [1, 5, 1, 5]}
+      move_down 10
+      text 'Преподаватель __________________________'
+    end.render
+  end
+
 
   def find_discipline
     @discipline = Study::Discipline.find(params[:discipline_id])

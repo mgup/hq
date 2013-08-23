@@ -7,11 +7,26 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="row auth-wrapper">
-  <div class="col-lg-4 col-offset-4">
-    <h3>МГУП.Матрица</h3>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <a class="navbar-brand" href="<%= root_url %>">
+    <strong>Матрица</strong>.HQ
+  </a>
+</div>
+
+<div class='row auth-wrapper pull-right' style='margin-right: 10px'>
+  <div class="col-lg-7 col-offset-4">
+    <h4>Вход в систему</h4>
     <%= yield %>
   </div>
 </div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>Успеваемость</h1>
+    <p>Для того, чтобы узнать текущую успеваемость группы или отдельного студента <strong>МГУП имени Ивана Фёдорова</strong>, пройдите по ссылке</p>
+    <p><a href='/study/group' class="btn btn-primary btn-large">Выбрать группу</a></p>
+  </div>
+</div>
+
 </body>
 </html>
