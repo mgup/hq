@@ -1,6 +1,6 @@
 class Person < ActiveRecord::Base
-  MALE = 0
-  FEMALE = 1
+  MALE = true
+  FEMALE = false
   include Nameable
 
   self.table_name = 'student'

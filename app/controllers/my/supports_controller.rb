@@ -43,8 +43,8 @@ def download_pdf
             normal:  "#{Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf') }"})
         font 'PT', size: 9
         move_down 10
-        indent 350 do 
-          text 'Ректору федерального государственного' 
+        indent 350 do
+          text 'Ректору федерального государственного'
           text 'бюджетного учреждения высшего'
           text 'профессионального образования'
           text '«Московский государственный университет'
@@ -67,7 +67,7 @@ def download_pdf
           cause << ', '
         end
         cause = cause[0..-3]
-        text "Прошу Вас предоставить мне материальную помощь в связи с тем, что #{cause}.", indent_paragraphs: 10   
+        text "Прошу Вас предоставить мне материальную помощь в связи с тем, что #{cause}.", indent_paragraphs: 10
         move_down 25
         text 'Приложение:', indent_paragraphs: 10
         move_down 10
@@ -80,13 +80,13 @@ def download_pdf
         end
         move_down 30
         text "#{DateTime.now.strftime("%d.%m.%Y")}                                                                                                                                                             ___________________ / #{student.person.iname.ip[0]}. #{student.person.oname.ip[0]}. #{student.person.fname.ip}"
-        move_down 40 
+        move_down 40
         text 'Резолюция старосты группы:'
         move_down 15
         text '__________________________________________________________________________________________________________________________________________________'
         move_down 15
         text '«__» _______________ 2013г.                                                                                                                                  ___________________ / __________________'
-        move_down 40 
+        move_down 40
         text 'Резолюция деканата:'
         move_down 15
         text '__________________________________________________________________________________________________________________________________________________'
@@ -104,8 +104,8 @@ def download_pdf
           move_down 15
           text '__________________ / __________________', align: :right
         end
-    end.render 
-  end 
+    end.render
+  end
 
   def find_student
     @student = Student.find(params[:student_id])
