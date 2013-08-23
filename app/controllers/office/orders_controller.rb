@@ -1,7 +1,9 @@
 class Office::OrdersController < ApplicationController
   load_and_authorize_resource
 
-  def index ; end
+  def index
+    @orders = @orders.page(params[:page])
+  end
 
   def new ; end
 

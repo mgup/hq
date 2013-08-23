@@ -12,7 +12,35 @@ class Student < ActiveRecord::Base
 
   self.table_name = 'student_group'
 
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable,
+         authentication_keys: [:id]
+  def valid_password?(password)
+    if self.password.present?
+      if ::Digest::MD5.hexdigest(password) == self.encrypted_password
+        # self.password = password
+        # self.client_password = nil
+        # self.save!
+        true
+      else
+        false
+      end
+    else
+      super
+    end
+  end
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if id = conditions.delete(:id)
+      where(conditions).where(['lower(student_group_id) = :id', { id: id.downcase }]).first
+    else
+      where(conditions).first
+    end
+  end
+
+
   alias_attribute :id,              :student_group_id
+  alias_attribute :password,        :encrypted_password
   alias_attribute :payment,         :student_group_tax
   alias_attribute :admission_year,  :student_group_yearin
 

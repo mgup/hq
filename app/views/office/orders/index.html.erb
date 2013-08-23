@@ -1,0 +1,30 @@
+<div class="page-header">
+  <h1>Приказы по контингенту</h1>
+</div>
+
+<%= paginate @orders %>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Номер</th>
+    <th>Дата</th>
+    <th>Тип</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @orders.each do |order| %>
+    <tr>
+      <td><%= order.id %></td>
+      <td><%= order.number if order.signed? %></td>
+      <td>
+        <%= l (order.signed? ? order.signing_date : order.editing_date) %>
+      </td>
+      <td><%= order.template.name %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @orders %>
