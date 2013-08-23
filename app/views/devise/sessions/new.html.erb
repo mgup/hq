@@ -1,35 +1,77 @@
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <% if flash.key? :alert %>
-    <div class="alert alert-danger">
-      <%= flash[:alert] %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h2>Вход для студентов</h2>
+      <%= image_tag 'keep-calm-and-wait.png', class: 'img-responsive' %>
     </div>
-  <% end %>
+    <!--<div class="col-md-4 panel panel-default student-sign-in">-->
+      <!--<div class="panel-body">-->
+        <!--<h2>Вход для студентов</h2>-->
+        <!--<%= form_for Student.new, as: :student, url: session_path(:student), html: { role: 'form' } do |f| %>-->
+          <!--<div class="form-group">-->
+            <!--<%= f.text_field :id, autofocus: true, placeholder: 'Личный номер студента', class: 'form-control' %>-->
+          <!--</div>-->
+          <!--<div class="form-group">-->
+            <!--<%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>-->
+            <!--<p class="help-block">-->
+              <!--— Как я могу получить пароль?-->
+              <!--<br>-->
+              <!--— Немного потерпите. Очень скоро вы его получите. ;-)-->
+              <!--&lt;!&ndash;— Обратитесь в дирекцию своего института.&ndash;&gt;-->
+            <!--</p>-->
+          <!--</div>-->
 
-  <% if resource.is_a?(Student) %>
-    <%= f.text_field :id, autofocus: true, placeholder: 'Личный номер студента', class: 'form-control' %>
-  <% else %>
-    <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя', class: 'form-control' %>
-  <% end %>
-  <br>
-  <%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>
+          <!--<% if devise_mapping.rememberable? %>-->
+            <!--<div class="checkbox">-->
+              <!--<label>-->
+                <!--<%= f.check_box :remember_me %> Запомнить меня на этом компьютере-->
+              <!--</label>-->
+            <!--</div>-->
+          <!--<% end %>-->
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="checkbox">
-      <%= f.check_box :remember_me %> <%= f.label :remember_me, 'Запомнить меня' %>
+          <!--<%= f.submit 'Вход', class: 'btn btn-default' %>-->
+        <!--<% end %>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <div class="col-md-4">
+      <h1>Успеваемость</h1>
+      <p class="text-justify">
+        В МГУП им. Ивана Федорова постепенно вводится балльно-рейтинговая
+        система оценки знаний студентов. Любой желающий может ознакомиться
+        с&nbsp;успеваемостью студентов, участвующих во&nbsp;внедрении
+        балльно-рейтинговой системы.
+      </p>
+      <%= link_to study_groups_path, class: 'btn btn-success btn-large' do %>
+        <span class="glyphicon glyphicon-search"></span> Успеваемость студентов МГУП
+      <% end %>
     </div>
-  <% end -%>
 
-  <%= f.submit 'Вход', class: 'btn btn-default' %>
+    <div class="col-md-4">
+      <h2>Вход для сотрудников</h2>
+      <%= form_for User.new, as: :user, url: session_path(:user), html: { role: 'form' } do |f| %>
+        <div class="form-group">
+          <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя', class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>
+          <p class="help-block">
+            — Где я могу получить учётную запись?
+            <br>
+            — Обратитесь в Отдел информационных систем. Главный корпус, кабинет 1320.
+          </p>
+        </div>
 
-  <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
-    <%= link_to 'Забыли пароль?', new_password_path(resource_name), class: 'action pull-right' %><br />
-  <% end %>
+        <% if devise_mapping.rememberable? %>
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :remember_me %> Запомнить меня на этом компьютере
+            </label>
+          </div>
+        <% end %>
 
-<% end %>
-<br><br>
-
-<p>
-  — Где я могу получить учётную запись?
-  <br>
-  — Обратитесь в Отдел информационных систем. Главный корпус, кабинет 1320.
-</p>
+        <%= f.submit 'Вход', class: 'btn btn-default' %>
+      <% end %>
+    </div>
+  </div>
+</div>
