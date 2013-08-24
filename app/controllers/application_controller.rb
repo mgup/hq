@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def current_ability
+    @current_ability ||= Ability.new(current_user || current_student)
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_in) do |u|
       u.permit(:username, :user_login, :password, :remember_me)

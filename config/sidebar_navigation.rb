@@ -3,9 +3,9 @@ SimpleNavigation::Configuration.run do |navigation|
 
   navigation.items do |primary|
     primary.dom_id = 'dashboard-menu'
-    primary.dom_class = 'nav nav-pills nav-stacked col-lg-2'
+    primary.dom_class = 'nav nav-pills nav-stacked'
 
-    if current_user != nil
+    if user_signed_in?
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
 
@@ -25,6 +25,10 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
+    end
+
+    if student_signed_in?
+      primary.item :my_student, 'Информация', my_student_path, icon: 'user'
     end
   end
 

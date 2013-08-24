@@ -8,21 +8,23 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div class="navbar navbar-inverse navbar-fixed-top">
-    <a class="navbar-brand" href="<%= root_url %>">
-      <strong>Матрица</strong>.HQ
-    </a>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <a class="navbar-brand" href="<%= root_url %>">
+    <strong>Матрица</strong>
+  </a>
 
-    <%= render_navigation context: :auth, renderer: :navbar, expand_all: true %>
-  </div>
+  <%= render_navigation context: :auth, renderer: :navbar, expand_all: true %>
+</div>
 
-  <div class="container">
-    <div class="row">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
       <%= render_navigation context: :sidebar, expand_all: true %>
-      <div class="col-lg-10">
-        <%= yield %>
-      </div>
+    </div>
+    <div class="col-sm-9">
+      <%= yield %>
     </div>
   </div>
+</div>
 </body>
 </html>

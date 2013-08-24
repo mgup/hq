@@ -11,7 +11,7 @@ SimpleNavigation::Configuration.run do |navigation|
         profile.item :sign_out, 'Выйти', destroy_user_session_path, method: :delete
       end
     elsif student_signed_in?
-      primary.item :profile, ("<span class='glyphicon glyphicon-user'></span> " + current_student.id.to_s + ' <b class="caret"></b>'.html_safe), '#', link: { :'data-toggle' => 'dropdown' } do |profile|
+      primary.item :profile, raw(%Q(<span class="glyphicon glyphicon-user"></span> #{current_student.person.full_name} <b class="caret"></b>)), '#', link: { :'data-toggle' => 'dropdown' } do |profile|
         profile.item :divider, '', nil, class: 'divider'
         profile.item :sign_out, 'Выйти', destroy_student_session_path, method: :delete
       end

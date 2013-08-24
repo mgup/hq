@@ -1,16 +1,17 @@
-<ul class="breadcrumb">
-  <li class="active">Кабинет студента</li>
-</ul>
-<div class='page-header'>
-  <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
+<div class="page-header">
+  <h1>
+    <%= @student.person.full_name %> <small><%= @student.group.name %></small>
+  </h1>
 </div>
 
-<div class='row'>
+<%= render 'students/form' %>
+
+<div class="row">
   <div class="thumbnail col-lg-5">
     <div class="caption">
       <h3>Успеваемость</h3>
       <p>Чтобы узнать текущую успеваемость по всем дисциплинам, пройдите по ссылке</p>
-      <p><a class="btn btn-primary" href="<%= my_student_progress_path(@student)%>">Узнать</a></p>
+      <p><a class="btn btn-primary" href="<%= progress_my_student_path(@student)%>">Узнать</a></p>
     </div>
   </div>
   <div class="thumbnail col-lg-5 col-offset-1">
