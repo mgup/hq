@@ -40,7 +40,7 @@ HQ::Application.routes.draw do
   end
 
   namespace :my do
-    resources :students, path:  '/student' do
+    resource :student, path:  '/student' do
       get '/progress' => 'progress#index'
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'

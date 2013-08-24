@@ -4,29 +4,35 @@ class Ability
   def initialize(user)
     user ||= User.new
 
-    if user.is?(:typer)
-      can [:create, :read], [Study::Subject, Study::Mark], user_id: user.id
-      can :update, Study::Mark, user_id: user.id
-    end
+    if user.is_a?(Student)
+      # Набор разрешений для студентов.
+      can :show, Student, student_group_id: user.id
+    else
+      if user.is?(:typer)
+        can [:create, :read], [Study::Subject, Study::Mark], user_id: user.id
+        can :update, Study::Mark, user_id: user.id
+      end
 
-    if user.is?(:supertyper)
-      can :manage, [Study::Subject, Study::Mark]
-    end
+      if user.is?(:supertyper)
+        can :manage, [Study::Subject, Study::Mark]
+      end
 
-    if user.is?(:zamestitel_otvetstvennogo_sekretarja)
-      can :index, :selection_contracts
-    end
+      if user.is?(:zamestitel_otvetstvennogo_sekretarja)
+        can :index, :selection_contracts
+      end
 
-    if user.is?(:chief_accountant)
-      can :index, :selection_contracts
-    end
+      if user.is?(:chief_accountant)
+        can :index, :selection_contracts
+      end
 
-    if user.is?(:developer)
-      can :manage, :all
+      if user.is?(:developer)
+        can :manage, :all
+      end
     end
 
     can [:index, :show], :progress
     can :manage, :progress_group
+
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

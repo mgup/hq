@@ -1,0 +1,55 @@
+<%= form_for @student, html: { class: 'form-horizontal', role: 'form' } do |f| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Персональная информация</h2>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Пол</label>
+        <div class="col-sm-9">
+          <p class="form-control-static"><%= @student.person.male? ? 'мужской' : 'женский' %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Дата рождения</label>
+        <div class="col-sm-9">
+          <p class="form-control-static"><%= l @student.person.birthday %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Место рождения</label>
+        <div class="col-sm-9">
+          <p class="form-control-static"><%= @student.person.birthplace %></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Паспорт</label>
+        <div class="col-sm-9">
+          <p class="form-control-static"><%= "#{@student.person.passport_series} #{@student.person.passport_number}" %></p>
+        </div>
+        <div class=" col-sm-offset-3 col-sm-9">
+          <p class="form-control-static">
+            выдан
+            <%= l @student.person.passport_date unless @student.person.passport_date.nil? %>
+            <%= @student.person.passport_department %> (<%= @student.person.passport_department_code %>)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Учебная информация</h2>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <%= f.label :id, class: 'col-sm-3 control-label' %>
+        <div class="col-sm-9">
+          <p class="form-control-static"><%= @student.id %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+

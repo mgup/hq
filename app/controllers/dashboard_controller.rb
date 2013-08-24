@@ -4,7 +4,7 @@ class DashboardController < ApplicationController
   def index
     # Если авторизовался студент — перенаправляем в личный кабинет студента.
     if student_signed_in?
-      redirect_to study_groups_path and return
+      redirect_to my_student_path and return
     end
 
     redirect_to new_user_session_path and return unless user_signed_in?

@@ -6,11 +6,14 @@ class Person < ActiveRecord::Base
   self.table_name = 'student'
 
   alias_attribute :id, :student_id
+  alias_attribute :birthday, :student_birthday
+  alias_attribute :birthplace, :student_birthplace
 
   alias_attribute :passport_series,     :student_pseries
   alias_attribute :passport_number,     :student_pnumber
   alias_attribute :passport_date,       :student_pdate
   alias_attribute :passport_department, :student_pdepartment
+  alias_attribute :passport_department_code, :student_pcode
 
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname
   belongs_to :iname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_iname

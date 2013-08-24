@@ -1,0 +1,7 @@
+ru:
+  activerecord:
+    models:
+      student: 'студент'
+    attributes:
+      student:
+        id: 'личный номер'
