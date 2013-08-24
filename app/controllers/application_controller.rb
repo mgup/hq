@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  #before_filter :authenticate_student
+
   before_filter :authenticate_user!
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
@@ -22,6 +24,11 @@ class ApplicationController < ActionController::Base
       u.permit(:username, :user_login, :password, :remember_me)
     end
   end
+
+  #def authenticate_student
+  #  #raise authenticate_user!.inspect
+  #  #redirect_to study_groups_path if student_signed_in?
+  #end
 
   # def authorize_developer
   #   authorize! :manage, :all if user_signed_in?
