@@ -28,7 +28,7 @@ class Department < ActiveRecord::Base
 
   scope :only_main, -> { where(department_parent: nil) }
 
-  scope :faculties, -> { where(department_role: :faculty) }
+  scope :faculties, -> { where(department_role: 'faculty') }
 
   scope :ordered, -> { order(:department_name) }
 

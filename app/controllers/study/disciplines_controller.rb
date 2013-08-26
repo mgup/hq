@@ -4,9 +4,7 @@ class Study::DisciplinesController < ApplicationController
 
   def index ; end
 
-  def new
-    @teachers = nil
-  end
+  def new ; end
 
   def edit
     @teachers = []
@@ -61,6 +59,7 @@ class Study::DisciplinesController < ApplicationController
   end
 
   def create
+    raise params.inspect
     discipline = params[:study_discipline]
     @discipline = Study::Discipline.new year: discipline[:year], 
     semester: discipline[:semester], group: Group.find(params[:groups]),

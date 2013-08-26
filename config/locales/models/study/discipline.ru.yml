@@ -5,6 +5,6 @@ ru:
     attributes:
       study/discipline:
         year: 'учебный год'
-        semester: 'семестр'
+        term: 'семестр'
         group: 'группа'
         name: 'название дисциплины'

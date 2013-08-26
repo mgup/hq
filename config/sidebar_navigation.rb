@@ -20,11 +20,7 @@ SimpleNavigation::Configuration.run do |navigation|
           #study.item :subjects, 'Результаты сессий', study_subjects_path
         end
 
-<<<<<<< HEAD
-        primary.item :my,           'Кабинет студента'.html_safe, my_student_path, icon: 'user', highlights_on: -> { params[:controller].include?('my') }
-=======
-        #primary.item :my,           'Кабинет студента'.html_safe, my_students_path, icon: 'user', highlights_on: -> { params[:controller].include?('my') }
->>>>>>> 8f710183141029fd765a23f02e55ab0d4cc85dcc
+        #primary.item :my,           'Кабинет студента'.html_safe, my_student_path, icon: 'user', highlights_on: -> { params[:controller].include?('my') }
       end
 
       if can? :index, :selection_contracts
@@ -33,7 +29,7 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     if can? :manage, Study::Discipline
-      primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase'
+      primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') }
     end
 
     if student_signed_in?
