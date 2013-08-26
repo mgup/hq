@@ -40,6 +40,13 @@
             <% end %>
           </td>
           <td>
+            <% if d.checkpoints.empty? %>
+              <%= link_to d, method: :delete, confirm: 'Вы уверены?', class: 'btn btn-danger' do %>
+                <span class="glyphicon glyphicon-remove"></span> Удалить
+              <% end %>
+              <br><br>
+            <% end %>
+
             <%= link_to edit_study_discipline_path(d), class: 'btn btn-default' do %>
               <span class="glyphicon glyphicon-edit"></span> Редактировать
             <% end %>

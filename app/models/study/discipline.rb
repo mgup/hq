@@ -19,7 +19,7 @@ class Study::Discipline < ActiveRecord::Base
   accepts_nested_attributes_for :exams
 
   has_many :discipline_teachers, class_name: Study::DisciplineTeacher,
-           primary_key: :subject_id, foreign_key: :subject_id, dependent: :destroy
+           primary_key: :subject_id, foreign_key: :subject_id, dependent: :delete_all
   accepts_nested_attributes_for :discipline_teachers, reject_if: proc { |attrs| attrs[:teacher_id].blank? }
 
   has_many :assistant_teachers, through: :discipline_teachers
