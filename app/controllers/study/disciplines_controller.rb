@@ -65,8 +65,20 @@ class Study::DisciplinesController < ApplicationController
     authorize! :create, Study::Discipline
     @discipline = Study::Discipline.new(resource_params)
     if @discipline.save
+      # При необходимости, создаём записи о курсовой работе и курсовом проекте.
+      #@discipline.add_semester_work    unless params[:discipline][:has_semester_work].zero?
+      #@discipline.add_semester_project unless params[:discipline][:has_semester_project].zero?
+
       redirect_to study_disciplines_path, notice: 'Дисциплина успешно добавлена.'
     else
+      # В случае ошибки необходимо вручную инициализировать поля для выбора
+      # группы в том случае, если пользователь уже сделал свой выбор и ошибка
+      # в каких-то других полях формы.
+      if @discipline && @discipline.group
+        @faculty = @discipline.group.speciality.faculty
+        @speciality = @discipline.group.speciality
+      end
+
       render action: :new
     end
     #discipline = params[:study_discipline]
