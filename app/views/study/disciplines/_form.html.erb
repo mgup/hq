@@ -12,14 +12,14 @@
       <%= label_tag 'speciality', 'Специальность', class: 'control-label col-lg-2' %>
       <div class='col col-lg-8'>
         <%= select_tag 'speciality',
-          options_from_collection_for_select(Speciality.all, :id, :full_name, (@discipline.group.speciality.id if (@discipline.id != nil))),
+          options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name, (@discipline.group.speciality.id if (@discipline.id != nil))),
             prompt: 'все специальности', class: 'ajax-speciality form-control' %>
       </div>
     </div>
     <div class='row'>
       <%= label_tag :groups, 'Группа',class: 'control-label col-lg-2' %>
       <div class='col col-lg-8'>
-        <%= select_tag :groups, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.all, :id, :name, (@discipline.group.id if (@discipline.id != nil))), { class: 'ajax-group_id form-control', required: 'required' } %>
+        <%= select_tag :groups, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.includes(:speciality), :id, :name, (@discipline.group.id if (@discipline.id != nil))), { class: 'ajax-group_id form-control', required: 'required' } %>
       </div>
     </div>
   </fieldset>
@@ -89,7 +89,7 @@
       <%= label_tag :teacher, 'Ведущий преподаватель',class: 'control-label col-lg-2' %>
       <div class='col col-lg-8'>
         <%= select_tag :teacher,
-          options_from_collection_for_select(User.teachers, :id, :full_name, (@discipline.subject_teacher if (@discipline.id != nil and @discipline.teacher != nil))), required: 'required', class: 'form-control' %>
+          options_from_collection_for_select(User.teachers.includes(:fname, :iname, :oname), :id, :full_name, (@discipline.subject_teacher if (@discipline.id != nil and @discipline.teacher != nil))), required: 'required', class: 'form-control' %>
         <span class="help-block">
         Под ведущим преподавателем понимается тот, который будет принимать в конце семестра у студентов зачёт/экзамен и, соответственно, расписываться в зачётной/экзаменационной ведомости.
         </span>
@@ -99,7 +99,7 @@
       <%= label_tag :teachers, 'Дополнительные преподаватели', class: 'control-label col-lg-2' %>
       <div class='col col-lg-8'>
         <%= select_tag :teachers,
-          options_from_collection_for_select(User.teachers, :id, :full_name, @teachers),  multiple: true, class: 'chzn-select form-control', data: { placeholder: 'Дополнительные преподаватели' } %>
+          options_from_collection_for_select(User.teachers.includes(:fname, :iname, :oname), :id, :full_name, @teachers),  multiple: true, class: 'chzn-select form-control', data: { placeholder: 'Дополнительные преподаватели' } %>
         <span class="help-block">
         Если дисциплину ведут несколько преподавателей — укажите их здесь. Главного преподавателя второй раз указывать не надо.
         </span>

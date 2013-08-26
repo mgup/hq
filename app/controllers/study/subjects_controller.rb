@@ -2,7 +2,7 @@ class Study::SubjectsController < ApplicationController
   load_and_authorize_resource
 
   def index 
-    @subjects = @subjects.page(params[:page]).per(20)
+    @subjects = @subjects.includes(:group).page(params[:page]).per(20)
   end
 
   def new

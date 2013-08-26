@@ -8,14 +8,14 @@ class Ability
       # Набор разрешений для студентов.
       can :show, Student, student_group_id: user.id
     else
-      if user.is?(:typer)
-        can [:create, :read], [Study::Subject, Study::Mark], user_id: user.id
-        can :update, Study::Mark, user_id: user.id
-      end
-
-      if user.is?(:supertyper)
-        can :manage, [Study::Subject, Study::Mark]
-      end
+      #if user.is?(:typer)
+      #  can [:create, :read], [Study::Subject, Study::Mark], user_id: user.id
+      #  can :update, Study::Mark, user_id: user.id
+      #end
+      #
+      #if user.is?(:supertyper)
+      #  can :manage, [Study::Subject, Study::Mark]
+      #end
 
       if user.is?(:zamestitel_otvetstvennogo_sekretarja)
         can :index, :selection_contracts
