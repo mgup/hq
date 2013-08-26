@@ -28,7 +28,7 @@ $(function() {
                     'speciality': $(this).val(),
                     'form'      : $('#form').val(),
                     'course'    : $('#course_study').val(),
-                    'faculty'     : $('#faculty').val()
+                    'faculty'   : $('#faculty').val()
                 },
                 updateGroupsList
                 );
@@ -55,9 +55,9 @@ $(function() {
                 'ajax/groups',
                 {
                     'speciality': $('#speciality').val(),
-                    'form'       : $(this).attr('data-value'),
-                    'course'     : $('#course_study').val(),
-                    'faculty'     : $('#faculty').val()
+                    'form'      : $(this).attr('data-value'),
+                    'course'    : $('#course_study').val(),
+                    'faculty'   : $('#faculty').val()
                 },
                 updateGroupsList
             );
@@ -116,9 +116,6 @@ $(function() {
                 );
             };
             $('.ajax-faculty a').on('shown.bs.tab', function(e) {
-                updateSpecialities(e);
-            });
-            $('.ajax-faculty').on('change', function(e) {
                 updateSpecialities(e);
             });
         });
@@ -234,5 +231,51 @@ $(function() {
         );
     });
 
+    $('#filterforusers').submit(function() {
+        $.getJSON(
+            '/ajax/users',
+            {'name'      : $('#name').val(),
+             'department': $('#department option:selected').val(),
+             'position'  : $('#position').val()},
+            function(somedata) {
+                $element = $('table#users tbody');
+                $element.empty();
+                $(somedata).each(function() {
+                    $element.append($('<tr></tr>').attr({'id': 'tr'+ this.id}));
+                    $str = $('#users #tr'+ this.id);
+                    $str.append(
+                        $('<td></td>').attr('class', 'text-muted')
+                            .text(this.id)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.name )
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.departments )
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.positions)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.username)
+                    );
+                    $str.append(
+                        $('<td></td>').text(this.phone)
+                    );
+                    $look = '/users/' + this.id;
+                    $str.append(
+                        "<td><a  href=" + $look + ">Назначения</a></td>"
+                    );
+                    $edit = '/users/' + this.id + '/edit';
+                    $str.append(
+                        "<td><a  href=" + $edit + ">Редактировать</a></td>"
+                    );
+                });
+
+                $element.trigger('liszt:updated');
+            }
+        );
+        return false;
+    });
    
 });

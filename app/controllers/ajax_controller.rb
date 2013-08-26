@@ -49,4 +49,13 @@ class AjaxController < ApplicationController
                   details: x.details, day: x.date}
     render({ json: checkpoint })
   end
+
+  def users
+    render({ json: User.filter(params).inject([]) do |users, user|
+      users << { id: user.id, name: user.full_name, positions: user.positions.collect{|position| position.title}.join(', '),
+                    username: user.username, phone: (user.phone == nil ? '' : user.phone),
+                   departments: user.departments.collect{|department| department.name}.join(', ')}
+      users
+    end })
+  end
 end

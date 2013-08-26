@@ -86,6 +86,20 @@ class User < ActiveRecord::Base
     cond
   }
 
+  scope :from_name, -> name { where("user_name LIKE :prefix", prefix: "%#{name}%")}
+  scope :from_department, -> department { joins(:positions).where("acl_position.acl_position_department = #{department}")  }
+  scope :from_position, -> position { joins(:positions).where("acl_position.acl_position_title LIKE :posprefix", posprefix: "%#{position}%") }
+
+
+  scope :filter, -> filters {
+    [:name, :department, :position].inject(all) do |cond, field|
+      if filters.include?(field) && !filters[field].empty?
+        cond = cond.send "from_#{field.to_s}", filters[field]
+      end
+      cond
+    end
+  }
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if username = conditions.delete(:username)

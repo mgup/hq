@@ -1,0 +1,22 @@
+<%= form_tag nil, method: :get, class: 'filter-block', id: 'filterforusers' do %>
+  <div class="row">
+    <div class="col col-lg-3 pull-right">
+      <%= submit_tag 'Искать', class: 'btn btn-primary' %>
+
+      <%= link_to users_path, class: 'btn btn-danger pull-right' do %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </div>
+    <div class="col col-lg-3">
+      <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control' %>
+    </div>
+    <div class="col col-lg-3">
+      <%= text_field_tag 'position', params[:position], placeholder: 'Должность / учёная степень', class: 'form-control' %>
+    </div>
+    <div class="col col-lg-3">
+      <%= select_tag 'department',
+                     options_from_collection_for_select(Department.all, :id, :abbreviation, params[:department]),
+                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все департаменты' } %>
+    </div>
+  </div>
+<% end %>

@@ -26,11 +26,11 @@ HQ::Application.routes.draw do
         resources :checkpointmarks
       end
     end
-    resources :subjects do
-      resources :marks
-    end
-    get '/analyse' => 'analyse#index'
-    get '/chase' => 'chase#index'
+    #resources :subjects do
+    #  resources :marks
+    #end
+    #get '/analyse' => 'analyse#index'
+    #get '/chase' => 'chase#index'
     resources :groups, path:  '/group' do
       get '/progress' => 'progress#index'
       get '/progress/discipline/:id' => 'progress#discipline'
@@ -72,6 +72,7 @@ HQ::Application.routes.draw do
   get 'my/ajax/specialities' => 'ajax#specialities'
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
+  get '/ajax/users' => 'ajax#users'
 
   root to: 'dashboard#index'
 

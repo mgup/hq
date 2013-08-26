@@ -7,13 +7,17 @@
 </div>
 
 <%= link_to 'Добавить нового пользователя', new_user_path, class: 'btn btn-default' %>
+<br><br><br>
+<%= render 'filter' %>
 
 <div class="row">
-  <table class="table table-hover">
+  <table id="users" class="table table-hover">
     <thead>
     <tr>
       <th>#</th>
       <th>Имя</th>
+      <th>Должность / учёная степень</th>
+      <th>Департамент</th>
       <th>Имя для входа</th>
       <th>Телефон</th>
       <th></th>
@@ -25,6 +29,10 @@
       <tr>
         <td><%= user.id %></td>
         <td><%= user.full_name %></td>
+        <td>
+          <%= user.positions.collect{|position| position.title}.join(', ') %>
+        </td>
+        <td><%= user.departments.collect{|department| department.abbreviation}.join(', ') %></td>
         <td><%= user.username %></td>
         <td class="nowrap"><%= user.phone %></td>
         <td>

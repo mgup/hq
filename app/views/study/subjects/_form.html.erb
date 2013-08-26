@@ -50,7 +50,7 @@
     <%= label_tag :speciality, 'Специальность', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
 			<%= select_tag 'speciality',
-                     options_from_collection_for_select(Speciality.all, :id, :full_name, (@session.group.speciality.id if @session)),
+                     options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name, (@session.group.speciality.id if @session)),
                      prompt: 'все специальности', class: 'ajax-speciality form-control' %>
 		</div>
   </div>
@@ -59,7 +59,7 @@
     <%= f.label :group_id, class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
       <%= hidden_field_tag 'subject_group', (@session.group.id if @session)  %>
-			<%= f.select :group_id, options_from_collection_for_select(Group.all, :id, :name, (@session.group.id if @session)),
+			<%= f.select :group_id, options_from_collection_for_select(Group.includes(:speciality), :id, :name, (@session.group.id if @session)),
                    {include_blank: 'все группы'},
                    { class: 'ajax-group_id form-control', required: 'required' } %>
     </div>

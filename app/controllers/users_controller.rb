@@ -3,9 +3,6 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-    if current_user.is?(:typer) or current_user.is?(:supertyper)
-      redirect_to root_path
-    end
   end
 
   def new
