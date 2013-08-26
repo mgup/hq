@@ -25,6 +25,13 @@ class Ability
         can :index, :selection_contracts
       end
 
+      if user.is?(:lecturer)
+        can :manage, Study::Discipline
+        # Загрузка ресурсов, принадлежащих только текущему пользователю,
+        # производится в Study::DisciplinesController.
+        #can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }
+      end
+
       if user.is?(:developer)
         can :manage, :all
       end
