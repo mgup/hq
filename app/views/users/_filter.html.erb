@@ -16,7 +16,7 @@
     <div class="col col-lg-3">
       <%= select_tag 'department',
                      options_from_collection_for_select(Department.all, :id, :abbreviation, params[:department]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все департаменты' } %>
+                     multiple: true, class: 'form-control chzn-select', data: { placeholder: 'все департаменты' } %>
     </div>
   </div>
 <% end %>
