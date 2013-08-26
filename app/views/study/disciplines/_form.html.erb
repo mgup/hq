@@ -1,84 +1,74 @@
 <%= form_for @discipline, html: { class: 'form-horizontal', role: 'form' } do |f|%>
   <% if @discipline.errors.any? %>
+    <%= params.inspect %>
     <%= @discipline.errors.inspect %>
   <% end %>
 
-  <div class="form-group">
-    <%= label_tag 'faculty', 'Факультет', class: 'control-label col-sm-3' %>
-    <div class="col-sm-9">
-      <%= hidden_field_tag 'faculty', (@discipline.group.speciality.speciality_faculty if (@discipline.id != nil) ) %>
-      <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty', class: 'ajax-faculty') %>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <%= label_tag 'speciality', 'Специальность', class: 'control-label col-sm-3' %>
-    <div class="col-sm-9">
-      <%= select_tag 'speciality',
-        options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name, (@discipline.group.speciality.id if (@discipline.id != nil))),
-          prompt: 'все специальности', class: 'ajax-speciality form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <%= label_tag :groups, 'Группа',class: 'control-label col-sm-3' %>
-    <div class='col-sm-9'>
-      <%= select_tag :groups, content_tag(:option,'все группы', value: '') + options_from_collection_for_select(Group.includes(:speciality), :id, :name, (@discipline.group.id if (@discipline.id != nil))), { class: 'ajax-group_id form-control', required: 'required' } %>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :name, class: 'control-label col-sm-3' %>
-    <div class="col-sm-9">
-      <%= f.text_field :name, placeholder: 'Математика', required: 'required', class: 'form-control' %>
-      <p class="help-block">
-        Пожалуйста, используйте полное название дисциплины из учебного плана.
-        Не допускайте сокращений.
-      </p>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :term, class: 'control-label col-sm-3' %>
-    <div class="col-sm-9">
-      <%= f.hidden_field :term, required: 'required' %>
-      <ul class="nav nav-pills pill-select" name="pillsem" id="pillsem">
-        <li class="<%= 'active' if 1==(@discipline.id!=nil ? @discipline.semester : 0) %>"><a  data-toggle="pill" data-value="1" data-input="study_discipline_semester" href="#">осенний</a></li>
-        <li class="<%= 'active' if 2==(@discipline.id!=nil ? @discipline.semester : 0) %>"><a  data-toggle="pill" data-value="2" data-input="study_discipline_semester" href="#">весенний</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="form-group">
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:year) %>">
     <%= f.label :year, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.select :year, options_for_select(%w(2013), 2013), {}, {required: 'required', class: 'form-control'} %>
+      <%= f.select :year, options_for_select(%w(2013), 2013), {}, { class: 'form-control' } %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:semester) %>">
+    <%= f.label :semester, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= f.select :semester, [['осенний', 1], ['весенний', 2]], {}, { class: 'form-control' } %>
     </div>
   </div>
 
   <div class="form-group">
-   <%= label_tag :exam_type, 'Форма испытания',class: 'control-label col-sm-3' %>
-   <div class="col-sm-9">
-      <%= hidden_field_tag :exam_type, (@discipline.id!=nil ? @discipline.control.type : nil), required: 'required' %>
-      <ul class="nav nav-pills pill-select" name="pillexam_type" id="pillexam_type">
-        <li class="<%= 'active' if 1==(@discipline.id!=nil ? @discipline.control.type : nil) %>"><a data-toggle='pill' data-value='1' data-input='exam_type' href='#'>экзамен</a></li>
-        <li class="<%= 'active' if 0==(@discipline.id!=nil ? @discipline.control.type : nil) %>"><a data-toggle='pill' data-value='0' data-input='exam_type' href='#'>зачет</a></li>
-        <li class="<%= 'active' if 9==(@discipline.id!=nil ? @discipline.control.type : nil) %>"><a data-toggle='pill' data-value='9' data-input='exam_type' href='#'>дифференцированный зачёт</a></li>
-      </ul>
+    <%= label_tag 'faculty', 'Институт', class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= select_tag 'faculty',
+                     options_from_collection_for_select(Department.faculties,
+                                                        :id, :abbreviation),
+                     class: 'form-control ajax-faculty' %>
     </div>
   </div>
 
   <div class="form-group">
-    <%= label_tag :weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
-    <div class="col-sm-3">
-      <%= number_field_tag :weight, 50, class: 'form-control' %>
-    </div>
-    <div class="col-sm-offset-3 col-sm-9">
-      <p class="help-block">
-        Рекомендуемое значение — 50%, можно оставить по-умолчанию.
-      </p>
+    <%= label_tag 'speciality', 'Направление', class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= select_tag 'speciality', nil, class: 'form-control ajax-speciality' %>
     </div>
   </div>
+
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:group) %>">
+    <%= f.label :subject_group, 'Группа', class: 'control-label col-sm-3' %>
+    <div class='col-sm-9'>
+      <%= f.select :subject_group, [], {}, { class: 'form-control ajax-group' } %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:name) %>">
+    <%= f.label :name, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= f.text_field :name, placeholder: 'например, "Компьютерная обработка изображений"', class: 'form-control' %>
+      <span class="help-block">
+        Пожалуйста, используйте полное название дисциплины из учебного плана.
+        Не допускайте сокращений.
+      </span>
+    </div>
+  </div>
+
+  <%= f.fields_for :exams do |builder| %>
+    <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.type') %>">
+      <%= builder.label :type, 'Форма испытания',class: 'control-label col-sm-3' %>
+      <div class="col-sm-9">
+        <%= builder.select :type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]]), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= builder.label :weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
+      <div class="col-sm-9">
+        <%= builder.number_field :weight, class: 'form-control' %>
+        <span class="help-block">Рекомендуемое значение — 50%.</span>
+      </div>
+    </div>
+  <% end %>
 
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
@@ -102,16 +92,16 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <%= label_tag :teacher, 'Ведущий преподаватель',class: 'control-label col-sm-3' %>
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:lead_teacher) %>">
+    <%= label_tag :lead_teacher, 'Ведущий преподаватель',class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= select_tag :teacher,
-        options_from_collection_for_select(User.teachers.includes(:fname, :iname, :oname), :id, :full_name, (@discipline.subject_teacher if (@discipline.id != nil and @discipline.teacher != nil))), required: 'required', class: 'form-control' %>
-      <p class="help-block">
+      <%= select_tag :lead_teacher,
+        options_from_collection_for_select(User.teachers.includes(:fname, :iname, :oname), :id, :full_name, (@discipline.subject_teacher if (@discipline.id != nil and @discipline.teacher != nil))), class: 'form-control' %>
+      <span class="help-block">
         Под ведущим преподавателем понимается тот, который будет принимать
         в конце семестра у студентов зачёт/экзамен и, соответственно,
         расписываться в зачётной/экзаменационной ведомости.
-      </p>
+      </span>
     </div>
   </div>
 
@@ -120,10 +110,10 @@
     <div class="col-sm-9">
       <%= select_tag :teachers,
         options_from_collection_for_select(User.teachers.includes(:fname, :iname, :oname), :id, :full_name, @teachers),  multiple: true, class: 'chzn-select form-control', data: { placeholder: 'Дополнительные преподаватели' } %>
-      <p class="help-block">
+      <span class="help-block">
         Если дисциплину ведут несколько преподавателей — укажите их здесь.
         Главного преподавателя второй раз указывать не надо.
-      </p>
+      </span>
     </div>
   </div>
 

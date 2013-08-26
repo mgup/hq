@@ -1,10 +1,13 @@
 class Study::DisciplinesController < ApplicationController
   before_filter :load_user_disciplines, only: :index
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:create]
 
   def index ; end
 
-  def new ; end
+  def new
+    # Создаём для дисциплины заготовку для экзамена.
+    @discipline.exams.build
+  end
 
   def edit
     @teachers = []
@@ -59,40 +62,46 @@ class Study::DisciplinesController < ApplicationController
   end
 
   def create
-    raise params.inspect
-    discipline = params[:study_discipline]
-    @discipline = Study::Discipline.new year: discipline[:year], 
-    semester: discipline[:semester], group: Group.find(params[:groups]),
-        name: discipline[:name], subject_teacher: params[:teacher]
-
+    authorize! :create, Study::Discipline
+    @discipline = Study::Discipline.new(resource_params)
     if @discipline.save
-
-      #Преподаватели
-      if params[:teachers]
-        params[:teachers].push(params[:teacher]).each do |t|
-          teacher = Study::DisciplineTeacher.new teacher: t, discipline: @discipline.id
-          teacher.save
-        end
-      end
-
-      #Экзамен/зачёт
-      control = Study::Exam.new discipline: @discipline, exam_type: params[:exam_type],
-                              weight: params[:weight], exam_closed: false
-      control.save
-
-      #Курсовая работа и проект
-      extra_exam(@discipline, 'work')
-      extra_exam(@discipline, 'project')
-
-      redirect_to study_disciplines_path, notice: 'Успешно создана.'
+      redirect_to study_disciplines_path, notice: 'Дисциплина успешно добавлена.'
     else
-      redirect_to new_study_discipline_path, notice: 'Произошла ошибка.'
+      render action: :new
     end
+    #discipline = params[:study_discipline]
+    #@discipline = Study::Discipline.new year: discipline[:year],
+    #semester: discipline[:semester], group: Group.find(params[:groups]),
+    #    name: discipline[:name], subject_teacher: params[:teacher]
+    #
+    #if @discipline.save
+    #
+    #  #Преподаватели
+    #  if params[:teachers]
+    #    params[:teachers].push(params[:teacher]).each do |t|
+    #      teacher = Study::DisciplineTeacher.new teacher: t, discipline: @discipline.id
+    #      teacher.save
+    #    end
+    #  end
+    #
+    #  #Экзамен/зачёт
+    #  control = Study::Exam.new discipline: @discipline, exam_type: params[:exam_type],
+    #                          weight: params[:weight], exam_closed: false
+    #  control.save
+    #
+    #  #Курсовая работа и проект
+    #  extra_exam(@discipline, 'work')
+    #  extra_exam(@discipline, 'project')
+    #
+    #  redirect_to study_disciplines_path, notice: 'Успешно создана.'
+    #else
+    #  redirect_to new_study_discipline_path, notice: 'Произошла ошибка.'
+    #end
   end
 
   def resource_params
-    params.fetch(:study_discipline, {}).permit( :year, :semester, :groups,
-                                            :name, :subject_teacher)
+    params.fetch(:study_discipline, {}).permit(:year, :semester, :group, :subject_group,
+                                               :name, :lead_teacher, exams_attributes: [:type, :weight])
   end
 
   private

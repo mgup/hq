@@ -3,8 +3,8 @@ module Study::DisciplineHelper
     "#{first_year}/#{first_year + 1}"
   end
 
-  def study_term(term)
-    case term
+  def study_semester(semester)
+    case semester
       when 1
         'осенний семестр'
       when 2
