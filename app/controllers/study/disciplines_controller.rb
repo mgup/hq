@@ -2,7 +2,7 @@ class Study::DisciplinesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @disciplines = @disciplines.now
+    #@disciplines = @disciplines.now
   end
 
   def new

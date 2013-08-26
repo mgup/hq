@@ -16,15 +16,20 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         primary.item( :study, 'Успеваемость<b class="caret"></b>'.html_safe, '#', icon: 'list', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' }) do |study|
           study.dom_class = 'dropdown-menu'
-          study.item :disciplines, 'Дисциплины', study_disciplines_path
           study.item :progress, 'Текущая успеваемость', study_groups_path
           study.item :subjects, 'Результаты сессий', study_subjects_path
         end
 
-        primary.item :my,           'Кабинет студента'.html_safe, my_students_path, icon: 'user', highlights_on: -> { params[:controller].include?('my') }
+        #primary.item :my,           'Кабинет студента'.html_safe, my_students_path, icon: 'user', highlights_on: -> { params[:controller].include?('my') }
       end
 
-      primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
+      if can? :index, :selection_contracts
+        primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
+      end
+    end
+
+    if can? :manage, Study::Discipline
+      primary.item :disciplines, 'БРС', study_disciplines_path, icon: 'briefcase'
     end
 
     if student_signed_in?

@@ -25,6 +25,13 @@ class Ability
         can :index, :selection_contracts
       end
 
+      if user.is?(:lecturer)
+        #raise user.id.inspect
+        can :manage, [Study::Discipline], subject_teacher: user.id #do |d|
+          #d.teachers.include?(current_user)
+        #end
+      end
+
       if user.is?(:developer)
         can :manage, :all
       end
