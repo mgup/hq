@@ -1,9 +1,8 @@
 class Study::DisciplinesController < ApplicationController
+  before_filter :load_user_disciplines, only: :index
   load_and_authorize_resource
 
-  def index
-    #@disciplines = @disciplines.now
-  end
+  def index ; end
 
   def new
     @teachers = nil
@@ -98,6 +97,14 @@ class Study::DisciplinesController < ApplicationController
   end
 
   private
+
+  def load_user_disciplines
+    #if current_user.is?(:developer)
+    #  @disciplines = Study::Discipline.all
+    #else
+      @disciplines = Study::Discipline.include_teacher(current_user)
+    #end
+  end
 
   def extra_exam(discipline, type)
     if discipline.has?(type)

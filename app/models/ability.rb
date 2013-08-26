@@ -26,10 +26,10 @@ class Ability
       end
 
       if user.is?(:lecturer)
-        #raise user.id.inspect
-        can :manage, [Study::Discipline], subject_teacher: user.id #do |d|
-          #d.teachers.include?(current_user)
-        #end
+        can :manage, Study::Discipline
+        # Загрузка ресурсов, принадлежащих только текущему пользователю,
+        # производится в Study::DisciplinesController.
+        #can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }
       end
 
       if user.is?(:developer)
