@@ -28,4 +28,4 @@ $ ->
   $('.ajax-speciality').change ->
     updateGroups($(this).val())
 
-  $('.ajax-faculty').change()
+  $('.ajax-faculty').change() if 0 == $('.ajax-speciality')[0].options.length

@@ -23,7 +23,7 @@
     <div class="col-sm-9">
       <%= select_tag 'faculty',
                      options_from_collection_for_select(Department.faculties,
-                                                        :id, :abbreviation),
+                                                        :id, :abbreviation, (@faculty.id if @faculty)),
                      class: 'form-control ajax-faculty' %>
     </div>
   </div>
@@ -31,14 +31,22 @@
   <div class="form-group">
     <%= label_tag 'speciality', 'Направление', class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= select_tag 'speciality', nil, class: 'form-control ajax-speciality' %>
+      <% if @faculty %>
+        <%= select_tag 'speciality', options_for_select(@faculty.specialities.map { |s| ["#{s.code} #{s.name}", s.id] }, @speciality.id), class: 'form-control ajax-speciality' %>
+      <% else %>
+        <%= select_tag 'speciality', nil, class: 'form-control ajax-speciality' %>
+      <% end %>
     </div>
   </div>
 
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:group) %>">
     <%= f.label :subject_group, 'Группа', class: 'control-label col-sm-3' %>
     <div class='col-sm-9'>
-      <%= f.select :subject_group, [], {}, { class: 'form-control ajax-group' } %>
+      <% if @speciality %>
+        <%= f.select :subject_group, options_from_collection_for_select(@speciality.groups, :id, :name, @discipline.group.id), {}, { class: 'form-control ajax-group' } %>
+      <% else %>
+        <%= f.select :subject_group, [], {}, { class: 'form-control ajax-group' } %>
+      <% end %>
     </div>
   </div>
 
@@ -74,8 +82,8 @@
     <div class="col-sm-offset-3 col-sm-9">
       <div class="checkbox">
         <label>
-          <%= hidden_field_tag :exam_term_work %>
-          <%= check_box_tag :exam_term_work, 1 , @discipline.has?('work') %> Присутствует курсовая работа
+          <%= hidden_field_tag :has_semester_work %>
+          <%= check_box_tag :has_semester_work, 1 , @discipline.has?('work') %> Присутствует курсовая работа
         </label>
       </div>
     </div>
@@ -85,8 +93,8 @@
     <div class="col-sm-offset-3 col-sm-9">
       <div class="checkbox">
         <label>
-          <%= hidden_field_tag :exam_term_project %>
-          <%= check_box_tag :exam_term_project, 1, @discipline.has?('project') %> Присутствует курсовой проект
+          <%= hidden_field_tag :has_semester_project %>
+          <%= check_box_tag :has_semester_project, 1, @discipline.has?('project') %> Присутствует курсовой проект
         </label>
       </div>
     </div>
