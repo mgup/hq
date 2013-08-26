@@ -1,5 +1,6 @@
 class Study::Discipline < ActiveRecord::Base
-  YEAR = DateTime.now.strftime("%Y")
+  CURRENT_STUDY_YEAR = 2013
+
   self.table_name = 'subject'
 
   alias_attribute :id,       :subject_id
@@ -8,9 +9,8 @@ class Study::Discipline < ActiveRecord::Base
   alias_attribute :year,     :subject_year
   alias_attribute :brs,      :subject_brs
 
- 
   belongs_to :group, foreign_key: :subject_group
-
+  belongs_to :lead_teacher, class_name: User, foreign_key: :subject_teacher
 
   has_many :discipline_teacher, class_name: Study::DisciplineTeacher, primary_key: :subject_id,
            foreign_key: :subject_id, dependent: :destroy
@@ -19,13 +19,21 @@ class Study::Discipline < ActiveRecord::Base
   has_many :teachers, :through => :discipline_teacher, primary_key: :subject_id
 
 
+  default_scope do
+    order(subject_year: :desc, subject_semester: :desc)
+  end
+
   scope :from_name, -> name { where("subject_name LIKE :prefix", prefix: "#{name}%")}
   scope :from_student, -> student {where(group:  student.group )}
   scope :from_group, -> group {where(group: group)}
-  scope :now, -> {where(subject_year: YEAR)}
+  scope :now, -> {where(subject_year: CURRENT_STUDY_YEAR)}
 
   def teacher
-    User.find(subject_teacher)
+    if subject_teacher
+      User.find(subject_teacher)
+    else
+      User.none
+    end
   end
 
   def has?(type)
