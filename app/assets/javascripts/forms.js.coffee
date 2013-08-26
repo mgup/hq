@@ -1,7 +1,7 @@
-$ ->
-  $('.datepicker').datepicker(
-    language: 'ru',
-    format: 'dd.mm.yyyy'
-  )
-
-  $('.chzn-select').chosen()
+#$ ->
+#  $('.datepicker').datepicker
+#    language: 'ru',
+#    format: 'dd.mm.yyyy'
+#
+#
+#  $('.chzn-select').chosen()

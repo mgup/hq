@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130823131557) do
+ActiveRecord::Schema.define(version: 20130826192631) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -90,6 +90,18 @@ ActiveRecord::Schema.define(version: 20130823131557) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
+    t.string  "region",                                limit: 200
+    t.string  "okrug",                                 limit: 200
+    t.string  "city",                                  limit: 200
+    t.string  "settlement",                            limit: 200
+    t.string  "street",                                limit: 200
+    t.string  "house",                                 limit: 10
+    t.string  "building",                              limit: 100
+    t.integer "flat"
+    t.string  "birth_region",                          limit: 200
+    t.string  "birth_okrug",                           limit: 200
+    t.string  "birth_city",                            limit: 200
+    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
@@ -307,6 +319,18 @@ ActiveRecord::Schema.define(version: 20130823131557) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
+    t.string  "region",                                limit: 200
+    t.string  "okrug",                                 limit: 200
+    t.string  "city",                                  limit: 200
+    t.string  "settlement",                            limit: 200
+    t.string  "street",                                limit: 200
+    t.string  "house",                                 limit: 10
+    t.string  "building",                              limit: 100
+    t.integer "flat"
+    t.string  "birth_region",                          limit: 200
+    t.string  "birth_okrug",                           limit: 200
+    t.string  "birth_city",                            limit: 200
+    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
@@ -389,7 +413,7 @@ ActiveRecord::Schema.define(version: 20130823131557) do
   create_table "exam", primary_key: "exam_id", force: true do |t|
     t.integer "exam_subject",                       null: false
     t.integer "exam_type",                          null: false
-    t.integer "exam_weight",        default: 20
+    t.integer "exam_weight",        default: 50
     t.date    "exam_date"
     t.integer "exam_parent"
     t.integer "exam_student"
@@ -612,6 +636,7 @@ ActiveRecord::Schema.define(version: 20130823131557) do
     t.integer "hostel_payment_type_sum",                 null: false
     t.integer "hostel_payment_type_yearsum",             null: false
     t.integer "hostel_payment_type_active",  limit: 1,   null: false
+    t.date    "hostel_payment_type_date",                null: false
   end
 
   add_index "hostel_payment_type", ["hostel_payment_type_status"], name: "hostel_payment_type_status", using: :btree
@@ -956,6 +981,18 @@ ActiveRecord::Schema.define(version: 20130823131557) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
+    t.string  "region",                                limit: 200
+    t.string  "okrug",                                 limit: 200
+    t.string  "city",                                  limit: 200
+    t.string  "settlement",                            limit: 200
+    t.string  "street",                                limit: 200
+    t.string  "house",                                 limit: 10
+    t.string  "building",                              limit: 100
+    t.integer "flat"
+    t.string  "birth_region",                          limit: 200
+    t.string  "birth_okrug",                           limit: 200
+    t.string  "birth_city",                            limit: 200
+    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "student", ["student_fname"], name: "studentFname", using: :btree

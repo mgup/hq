@@ -6,7 +6,7 @@ class Study::Discipline < ActiveRecord::Base
 
   alias_attribute :id,       :subject_id
   alias_attribute :name,     :subject_name
-  alias_attribute :term,     :subject_semester
+  alias_attribute :semester,     :subject_semester
   alias_attribute :year,     :subject_year
   alias_attribute :brs,      :subject_brs
 
@@ -14,12 +14,19 @@ class Study::Discipline < ActiveRecord::Base
   belongs_to :lead_teacher, class_name: User, foreign_key: :subject_teacher
 
   has_many :checkpoints, foreign_key: :checkpoint_subject
-  has_many :exams, foreign_key: :exam_subject
+
+  has_many :exams, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
+  accepts_nested_attributes_for :exams
 
   has_many :discipline_teacher, class_name: Study::DisciplineTeacher,
            foreign_key: :subject_id, dependent: :destroy
   has_many :assistant_teachers, through: :discipline_teacher
 
+  validates :name, presence: true
+  validates :year, presence: true, numericality: { greater_than: 2012, less_than: 2020 }
+  validates :semester, presence: true, inclusion: { in: [1,2] }
+  validates :lead_teacher, presence: true
+  validates :group, presence: true
 
   default_scope do
     order(subject_year: :desc, subject_semester: :desc)
@@ -46,7 +53,7 @@ class Study::Discipline < ActiveRecord::Base
   def is_active?
     case CURRENT_STUDY_TERM
       when 1
-        year == CURRENT_STUDY_YEAR || (year == CURRENT_STUDY_YEAR - 1 && term == 2)
+        year == CURRENT_STUDY_YEAR || (year == CURRENT_STUDY_YEAR - 1 && semester == 2)
       when 2
         year == CURRENT_STUDY_YEAR
     end
