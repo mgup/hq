@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  scope :teachers, ->  {where(user_role: :lecturer)}
+  scope :teachers, ->  {where(user_role: 'lecturer')}
 
   scope :without, -> id {
     cond = all
