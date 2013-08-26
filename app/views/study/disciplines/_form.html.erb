@@ -61,18 +61,18 @@
     </div>
   </div>
 
-  <%= f.fields_for :exams do |builder| %>
+  <%= f.fields_for :exams do |sub_f| %>
     <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.type') %>">
-      <%= builder.label :exam_type, 'Форма испытания',class: 'control-label col-sm-3' %>
+      <%= sub_f.label :exam_type, 'Форма испытания',class: 'control-label col-sm-3' %>
       <div class="col-sm-9">
-        <%= builder.select :exam_type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]]), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
+        <%= sub_f.select :exam_type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]]), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
       </div>
     </div>
 
     <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.weight') %>">
-      <%= builder.label :exam_weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
+      <%= sub_f.label :exam_weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
       <div class="col-sm-9">
-        <%= builder.number_field :exam_weight, class: 'form-control' %>
+        <%= sub_f.number_field :exam_weight, class: 'form-control' %>
         <span class="help-block">Рекомендуемое значение — 50%.</span>
       </div>
     </div>
@@ -104,7 +104,7 @@
     <%= f.label :subject_teacher, 'Ведущий преподаватель',class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
       <%= f.select :subject_teacher,
-        options_from_collection_for_select(@teachers, :id, :full_name, (@discipline.lead_teacher.id || current_user.id)), {}, { class: 'form-control' } %>
+        options_from_collection_for_select(@teachers, :id, :full_name, @lead_teacher.id), {}, { class: 'form-control' } %>
       <span class="help-block">
         Под ведущим преподавателем понимается тот, который будет принимать
         в конце семестра у студентов зачёт/экзамен и, соответственно,
@@ -113,15 +113,20 @@
     </div>
   </div>
 
+  <%= f.fields_for :discipline_teachers, @discipline.discipline_teachers do |sub_f| %>
+    <div class="form-group">
+      <%= sub_f.label :teacher_id, 'Доп. преподаватель', class: 'control-label col-sm-3' %>
+      <div class="col-sm-9">
+        <%= sub_f.select :teacher_id, options_from_collection_for_select(@teachers.delete_if { |t| t == @lead_teacher }, :id, :full_name, @discipline.discipline_teachers[sub_f.index].teacher_id), { include_blank: 'если необходимо — укажите дополнительного преподавателя' }, { class: 'form-control' } %>
+      </div>
+    </div>
+  <% end %>
   <div class="form-group">
-    <%= label_tag :teachers, 'Дополнительные преподаватели', class: 'control-label col-sm-3' %>
-    <div class="col-sm-9">
-      <%= select_tag :teachers,
-        options_from_collection_for_select(User.teachers.includes(:fname, :iname, :oname), :id, :full_name, @teachers),  multiple: true, class: 'chzn-select form-control', data: { placeholder: 'Дополнительные преподаватели' } %>
-      <span class="help-block">
-        Если дисциплину ведут несколько преподавателей — укажите их здесь.
-        Главного преподавателя второй раз указывать не надо.
-      </span>
+    <div class="col-sm-offset-3 col-sm-9">
+        <span class="help-block">
+          Если дисциплину ведут несколько преподавателей — укажите их здесь.
+          Главного преподавателя второй раз указывать не надо.
+        </span>
     </div>
   </div>
 

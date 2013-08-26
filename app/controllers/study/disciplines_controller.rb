@@ -5,10 +5,15 @@ class Study::DisciplinesController < ApplicationController
   def index ; end
 
   def new
-    # Создаём для дисциплины заготовку для экзамена.
+    # Создаём для дисциплины заготовку для итогового испытания
+    # и 3-х дополнительных преподавателей.
     @discipline.exams.build
+    3.times { @discipline.discipline_teachers.build }
 
     # Подгружаем коллег пользователя со всех кафедр, на которых он работает.
+    # Их пользователь сможет выбрать в качестве ведущего преподавателя.
+    # (Хотя может лучше сделать по-другому!?)
+    detect_lead_teacher
     load_user_colleagues
   end
 
@@ -84,6 +89,7 @@ class Study::DisciplinesController < ApplicationController
       if @discipline && @discipline.group
         @faculty = @discipline.group.speciality.faculty
         @speciality = @discipline.group.speciality
+        detect_lead_teacher
         load_user_colleagues
       end
 
@@ -122,7 +128,8 @@ class Study::DisciplinesController < ApplicationController
   def resource_params
     params.fetch(:study_discipline, {}).permit(
         :year, :semester, :group, :subject_group, :name, :subject_teacher,
-        exams_attributes: [:exam_type, :exam_weight]
+        exams_attributes: [:exam_type, :exam_weight],
+        discipline_teachers_attributes: [:teacher_id]
     )
   end
 
@@ -132,27 +139,34 @@ class Study::DisciplinesController < ApplicationController
     @disciplines = Study::Discipline.include_teacher(current_user)
   end
 
+  def detect_lead_teacher
+    @lead_teacher = current_user unless @discipline
+    if @discipline.lead_teacher
+      @lead_teacher = @discipline.lead_teacher
+    else
+      @lead_teacher = current_user
+    end
+  end
+
   def load_user_colleagues
     @teachers = []
     current_user.departments.academic.each do |d|
       @teachers = @teachers.concat(d.users.to_a)
     end
-    @teachers
   end
 
-  def extra_exam(discipline, type)
-    if discipline.has?(type)
-      if params["exam_term_#{type}"] == ''
-        y = discipline.exams.where(exam_type: (type=='work' ? 2 : 3)).first
-        Study::Exam.delete(y)
-      end
-    else
-      if params["exam_term_#{type}"] != ''
-        work =  Study::Exam.new discipline: discipline,
-                                exam_type: (type=='work' ? 2 : 3), exam_closed: false
-        work.save
-      end
-    end
-  end
-
+  #def extra_exam(discipline, type)
+  #  if discipline.has?(type)
+  #    if params["exam_term_#{type}"] == ''
+  #      y = discipline.exams.where(exam_type: (type=='work' ? 2 : 3)).first
+  #      Study::Exam.delete(y)
+  #    end
+  #  else
+  #    if params["exam_term_#{type}"] != ''
+  #      work =  Study::Exam.new discipline: discipline,
+  #                              exam_type: (type=='work' ? 2 : 3), exam_closed: false
+  #      work.save
+  #    end
+  #  end
+  #end
 end

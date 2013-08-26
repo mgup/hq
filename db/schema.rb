@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130826192631) do
+ActiveRecord::Schema.define(version: 20130826221036) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -421,7 +421,7 @@ ActiveRecord::Schema.define(version: 20130826192631) do
     t.integer "exam_group"
     t.integer "exam_repeat"
     t.boolean "exam_filled",        default: false
-    t.boolean "exam_closed",                        null: false
+    t.integer "exam_closed",        default: 0,     null: false
   end
 
   add_index "exam", ["exam_subject"], name: "exam_subject", using: :btree
