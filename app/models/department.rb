@@ -24,6 +24,9 @@ class Department < ActiveRecord::Base
   belongs_to :main_department, class_name: Department,
              foreign_key: :department_parent
 
+  has_many :positions, foreign_key: :acl_position_department
+  has_many :users, through: :positions
+
   default_scope do
     where('department_active = 1')
   end
@@ -31,6 +34,7 @@ class Department < ActiveRecord::Base
   scope :only_main, -> { where(department_parent: nil) }
 
   scope :faculties, -> { where(department_role: 'faculty') }
+  scope :academic, -> { where(department_role: 'subdepartment') }
 
   scope :ordered, -> { order(:department_name) }
 

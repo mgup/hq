@@ -7,6 +7,9 @@ class Study::DisciplinesController < ApplicationController
   def new
     # Создаём для дисциплины заготовку для экзамена.
     @discipline.exams.build
+
+    # Подгружаем коллег пользователя со всех кафедр, на которых он работает.
+    load_user_colleagues
   end
 
   def edit
@@ -63,7 +66,9 @@ class Study::DisciplinesController < ApplicationController
 
   def create
     authorize! :create, Study::Discipline
+    #raise resource_params.inspect
     @discipline = Study::Discipline.new(resource_params)
+    #raise @discipline.inspect
     if @discipline.save
       # При необходимости, создаём записи о курсовой работе и курсовом проекте.
       #@discipline.add_semester_work    unless params[:discipline][:has_semester_work].zero?
@@ -74,9 +79,12 @@ class Study::DisciplinesController < ApplicationController
       # В случае ошибки необходимо вручную инициализировать поля для выбора
       # группы в том случае, если пользователь уже сделал свой выбор и ошибка
       # в каких-то других полях формы.
+      #
+      # Кроме того, нужно инициализировать массив с коллегами пользователя.
       if @discipline && @discipline.group
         @faculty = @discipline.group.speciality.faculty
         @speciality = @discipline.group.speciality
+        load_user_colleagues
       end
 
       render action: :new
@@ -112,18 +120,24 @@ class Study::DisciplinesController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:study_discipline, {}).permit(:year, :semester, :group, :subject_group,
-                                               :name, :lead_teacher, exams_attributes: [:type, :weight])
+    params.fetch(:study_discipline, {}).permit(
+        :year, :semester, :group, :subject_group, :name, :subject_teacher,
+        exams_attributes: [:exam_type, :exam_weight]
+    )
   end
 
   private
 
   def load_user_disciplines
-    #if current_user.is?(:developer)
-    #  @disciplines = Study::Discipline.all
-    #else
-      @disciplines = Study::Discipline.include_teacher(current_user)
-    #end
+    @disciplines = Study::Discipline.include_teacher(current_user)
+  end
+
+  def load_user_colleagues
+    @teachers = []
+    current_user.departments.academic.each do |d|
+      @teachers = @teachers.concat(d.users.to_a)
+    end
+    @teachers
   end
 
   def extra_exam(discipline, type)
