@@ -235,7 +235,7 @@ $(function() {
         $.getJSON(
             '/ajax/users',
             {'name'      : $('#name').val(),
-             'department': $('#department option:selected').val(),
+             'department': $('.chzn-select').val(),
              'position'  : $('#position').val()},
             function(somedata) {
                 $element = $('table#users tbody');
@@ -251,10 +251,10 @@ $(function() {
                         $('<td></td>').text(this.name )
                     );
                     $str.append(
-                        $('<td></td>').text(this.departments )
+                        $('<td></td>').text(this.positions )
                     );
                     $str.append(
-                        $('<td></td>').text(this.positions)
+                        $('<td></td>').text(this.departments)
                     );
                     $str.append(
                         $('<td></td>').text(this.username)
