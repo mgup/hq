@@ -32,6 +32,7 @@ gem 'kaminari'
 gem 'prawn'
 gem 'rqrcode'
 gem 'prawn-qrcode'
+gem 'squeel'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 # gem 'ui', github: 'mgup/ui', branch: :master

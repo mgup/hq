@@ -29,7 +29,7 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     if can? :manage, Study::Discipline
-      primary.item :disciplines, 'БРС', study_disciplines_path, icon: 'briefcase'
+      primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase'
     end
 
     if student_signed_in?
