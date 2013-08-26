@@ -63,16 +63,16 @@
 
   <%= f.fields_for :exams do |builder| %>
     <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.type') %>">
-      <%= builder.label :type, 'Форма испытания',class: 'control-label col-sm-3' %>
+      <%= builder.label :exam_type, 'Форма испытания',class: 'control-label col-sm-3' %>
       <div class="col-sm-9">
-        <%= builder.select :type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]]), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
+        <%= builder.select :exam_type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]]), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
       </div>
     </div>
 
-    <div class="form-group">
-      <%= builder.label :weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
+    <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.weight') %>">
+      <%= builder.label :exam_weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
       <div class="col-sm-9">
-        <%= builder.number_field :weight, class: 'form-control' %>
+        <%= builder.number_field :exam_weight, class: 'form-control' %>
         <span class="help-block">Рекомендуемое значение — 50%.</span>
       </div>
     </div>
@@ -101,10 +101,10 @@
   </div>
 
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:lead_teacher) %>">
-    <%= label_tag :lead_teacher, 'Ведущий преподаватель',class: 'control-label col-sm-3' %>
+    <%= f.label :subject_teacher, 'Ведущий преподаватель',class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= select_tag :lead_teacher,
-        options_from_collection_for_select(User.teachers.includes(:fname, :iname, :oname), :id, :full_name, (@discipline.subject_teacher if (@discipline.id != nil and @discipline.teacher != nil))), class: 'form-control' %>
+      <%= f.select :subject_teacher,
+        options_from_collection_for_select(@teachers, :id, :full_name, (@discipline.lead_teacher.id || current_user.id)), {}, { class: 'form-control' } %>
       <span class="help-block">
         Под ведущим преподавателем понимается тот, который будет принимать
         в конце семестра у студентов зачёт/экзамен и, соответственно,
