@@ -18,9 +18,11 @@ class Study::Discipline < ActiveRecord::Base
   has_many :exams, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
   accepts_nested_attributes_for :exams
 
-  has_many :discipline_teacher, class_name: Study::DisciplineTeacher,
-           foreign_key: :subject_id, dependent: :destroy
-  has_many :assistant_teachers, through: :discipline_teacher
+  has_many :discipline_teachers, class_name: Study::DisciplineTeacher,
+           primary_key: :subject_id, foreign_key: :subject_id, dependent: :destroy
+  accepts_nested_attributes_for :discipline_teachers, reject_if: proc { |attrs| attrs[:teacher_id].blank? }
+
+  has_many :assistant_teachers, through: :discipline_teachers
 
   validates :name, presence: true
   validates :year, presence: true, numericality: { greater_than: 2012, less_than: 2020 }
