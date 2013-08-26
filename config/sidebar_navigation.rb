@@ -19,12 +19,8 @@ SimpleNavigation::Configuration.run do |navigation|
           study.item :progress, 'Текущая успеваемость', study_groups_path
           #study.item :subjects, 'Результаты сессий', study_subjects_path
         end
-
-<<<<<<< HEAD
-        primary.item :my,           'Кабинет студента'.html_safe, my_student_path, icon: 'user', highlights_on: -> { params[:controller].include?('my') }
-=======
         #primary.item :my,           'Кабинет студента'.html_safe, my_students_path, icon: 'user', highlights_on: -> { params[:controller].include?('my') }
->>>>>>> 8f710183141029fd765a23f02e55ab0d4cc85dcc
+
       end
 
       if can? :index, :selection_contracts
