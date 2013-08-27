@@ -30,6 +30,13 @@ class UsersController < ApplicationController
 
   def show ; end
 
+  def positions
+    @user = User.find @current_user
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def profile
     @user = User.find @current_user
   end

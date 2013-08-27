@@ -2,7 +2,7 @@
   <%= hidden_field_tag 'position[user]', @user.id %>
 
  	<div class="row">
-    <div class="col col-lg-3">
+    <div class="col col-lg-3" style="margin-left: 30px">
       <%= f.text_field :title, { placeholder: 'Старший преподаватель', class: 'form-control'} %>
     </div>
     <div class="col col-lg-2">
@@ -17,12 +17,6 @@
   </div>
 
 
-   <div class="row">
-    <div class="col col-lg-10 col-offset-2">
-      <%= f.submit class: 'btn btn-primary' %>
-      или
-      <%= link_to 'назад ко всем сотрудникам', users_path %>
-    </div>
-  </div>
+
   
 <% end %>
