@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
   has_many :marks, class_name: Study::Mark
   has_many :subjects, class_name: Study::Subject
 
+  scope :with_name, -> { includes(:iname, :fname, :oname) }
+
   def full_name(form = :ip)
     # TODO Убрать после того, как все имена будут перенесены в словарь.
     if last_name.nil? then user_name else super(form) end
@@ -86,7 +88,7 @@ class User < ActiveRecord::Base
     cond
   }
 
-  scope :from_name, -> name { where("user_name LIKE :prefix", prefix: "%#{name}%")}
+  scope :from_name, -> name { with_name.where('dictionary.dictionary_ip LIKE :prefix OR user.user_name LIKE :prefix', prefix: "%#{name}%")}
   scope :from_department, -> department { where("#{department.collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
                                                                       " OR #{department.collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
   scope :from_position, -> position { where('acl_position.acl_position_title LIKE :posprefix OR user.user_position LIKE :posprefix', posprefix: "%#{position}%")

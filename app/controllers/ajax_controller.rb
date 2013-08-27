@@ -52,13 +52,10 @@ class AjaxController < ApplicationController
 
   def users
     render({ json: User.filter(params).inject([]) do |users, user|
-      users << { id: user.id, name: user.full_name, positions: user.positions.collect{|position| position.title}.join(', ') +
-                                  (user.positions == [] ? '' : ', ') +
-                                  (user.user_position == nil ? '' : user.user_position),
+      users << { id: user.id, name: user.full_name, positions: user.positions.collect{|position| position.title}.push(user.user_position == nil ? [] : user.user_position.split(', ')).flatten.uniq.join(', '),
                 username: user.username, phone: (user.phone == nil ? '' : user.phone),
-                departments: user.departments.collect{|department| department.abbreviation}.join(', ') +
-                                  (user.departments == [] ? '' : ', ') +
-                                  (Department.exists?(user.user_department) ? Department.find(user.user_department).abbreviation : '')}
+                departments: (user.departments.collect{|department| department.abbreviation} << (Department.find(user.user_department).abbreviation if Department.exists?(user.user_department))).uniq.join(', ')
+                                  }
       users
     end })
   end

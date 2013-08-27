@@ -1,0 +1,210 @@
+<%= form_for @user, html: { class: 'form-horizontal' } do |f| %>
+  <fieldset>
+    <legend>Фамилия, имя, отчество во всех падежах</legend>
+    <div class="form-group">
+      <%= f.label :user_name, class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :user_name, disabled: true, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-lg-10 col-lg-offset-2">
+        <div class="form-group">
+          <div class="col col-lg-4 text-center">
+            <label class="control-label" for="user_last_name_ip">Фамилия</label>
+          </div>
+          <div class="col col-lg-4 text-center">
+            <label class="control-label" for="user_first_name_ip">Имя</label>
+          </div>
+          <div class="col col-lg-4 text-center">
+            <label class="control-label" for="user_patronym_ip">Отчество</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col col-lg-2 control-label" for="user_last_name_ip">Кто? Что?</label>
+      <div class="col col-lg-10">
+        <div class="form-group">
+          <div class="col col-lg-4">
+            <%= text_field :user, :last_name_ip, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :first_name_ip, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :patronym_ip, required: true, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col col-lg-2 control-label" for="user_last_name_rp">Кого? Чего?</label>
+      <div class="col col-lg-10">
+        <div class="form-group">
+          <div class="col col-lg-4">
+            <%= text_field :user, :last_name_rp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :first_name_rp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :patronym_rp, required: true, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col col-lg-2 control-label" for="user_last_name_dp">Кому? Чему?</label>
+      <div class="col col-lg-10">
+        <div class="form-group">
+          <div class="col col-lg-4">
+            <%= text_field :user, :last_name_dp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :first_name_dp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :patronym_dp, required: true, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col col-lg-2 control-label" for="user_last_name_vp">Кого? Что?</label>
+      <div class="col col-lg-10">
+        <div class="form-group">
+          <div class="col col-lg-4">
+            <%= text_field :user, :last_name_vp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :first_name_vp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :patronym_vp, required: true, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col col-lg-2 control-label" for="user_last_name_tp">Кем? Чем?</label>
+      <div class="col col-lg-10">
+        <div class="form-group">
+          <div class="col col-lg-4">
+            <%= text_field :user, :last_name_tp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :first_name_tp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :patronym_tp, required: true, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col col-lg-2 control-label" for="user_last_name_pp">О ком? О чём?</label>
+      <div class="col col-lg-10">
+        <div class="form-group">
+          <div class="col col-lg-4">
+            <%= text_field :user, :last_name_pp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :first_name_pp, required: true, class: 'form-control' %>
+          </div>
+          <div class="col col-lg-4">
+            <%= text_field :user, :patronym_pp, required: true, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Персональная информация</legend>
+    <div class="form-group">
+      <%= f.label :username, class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :username, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :email, class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.email_field :email, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :phone, class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.phone_field :phone, pattern: '[\+]\d{1} \d{3} \d{3}[\-]\d{2}[\-]\d{2}', class: 'form-control'%>
+        <span class="help-block">Телефонный номер в формате +7 926 123-45-67.</span>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Назначения</legend>
+    <% if @user.positions.any? %>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th><span class="line"></span>Должность</th>
+          <th><span class="line"></span>Роль</th>
+          <th><span class="line"></span>Подразделение</th>
+          <th><span class="line"></span>Дата назначения</th>
+          <th><span class="line"></span>Увольнение</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @user.positions.each do |position| %>
+          <tr>
+            <td><%= position.id %></td>
+            <td><%= position.title %></td>
+            <td><%= position.role.title %></td>
+            <td><%= position.department.abbreviation %></td>
+            <td>с <%= l position.appointment.to_date %></td>
+            <td>
+              <%= position.dismission.nil? ? 'по настоящее время' : "по #{l position.dismission.to_date}" %>
+            </td>
+            <td></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <br>
+      <p class="lead">
+        Сотрудник ещё не назначен ни на одну должность.
+      </p>
+    <% end %>
+    <%= f.fields_for :positions do |sub_f| %>
+      <div class="form-group">
+        <div id='positions-div'></div>
+      </div>
+      <div class="form-group">
+        <div class="col col-lg-3 col-lg-offset-3">
+          <%= link_to 'Назначить сотрудника на новую должность', "/users/#{@user.id}/positions", class: 'btn btn-default', remote: true %>
+        </div>
+      </div>
+    <% end %>
+  </fieldset>
+
+
+  <div class="form-group">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад ко всем пользователям', users_path %>
+    </div>
+  </div>
+<% end %>
