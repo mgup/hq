@@ -47,6 +47,6 @@ class Department < ActiveRecord::Base
     end
     cond
   }
-  
-    
+
+
 end

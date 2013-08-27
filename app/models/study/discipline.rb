@@ -6,7 +6,7 @@ class Study::Discipline < ActiveRecord::Base
 
   alias_attribute :id,       :subject_id
   alias_attribute :name,     :subject_name
-  alias_attribute :semester,     :subject_semester
+  alias_attribute :semester, :subject_semester
   alias_attribute :year,     :subject_year
   alias_attribute :brs,      :subject_brs
 
@@ -35,8 +35,8 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   scope :from_name, -> name { where('subject_name LIKE :prefix', prefix: "#{name}%")}
-  scope :from_student, -> student {where(group:  student.group )}
-  scope :from_group, -> group {where(group: group)}
+  scope :from_student, -> student {where(subject_group:  student.group )}
+  scope :from_group, -> group {where(subject_group: group)}
   scope :now, -> {where(subject_year: CURRENT_STUDY_YEAR, subject_semester: CURRENT_STUDY_TERM)}
   scope :include_teacher, -> user {
     includes(:assistant_teachers)
