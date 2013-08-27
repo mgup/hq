@@ -87,8 +87,10 @@ class User < ActiveRecord::Base
   }
 
   scope :from_name, -> name { where("user_name LIKE :prefix", prefix: "%#{name}%")}
-  scope :from_department, -> department { joins(:positions).where("#{department.collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}")  }
-  scope :from_position, -> position { joins(:positions).where("acl_position.acl_position_title LIKE :posprefix", posprefix: "%#{position}%") }
+  scope :from_department, -> department { where("#{department.collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
+                                                                      " OR #{department.collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
+  scope :from_position, -> position { where('acl_position.acl_position_title LIKE :posprefix OR user.user_position LIKE :posprefix', posprefix: "%#{position}%")
+                                      .includes(:positions) }
 
 
   scope :filter, -> filters {

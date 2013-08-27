@@ -239,6 +239,7 @@ $(function() {
              'position'  : $('#position').val()},
             function(somedata) {
                 $element = $('table#users tbody');
+                $('#user-paginator').empty();
                 $element.empty();
                 $(somedata).each(function() {
                     $element.append($('<tr></tr>').attr({'id': 'tr'+ this.id}));

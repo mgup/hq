@@ -6,9 +6,15 @@
   <h1>Пользователи системы</h1>
 </div>
 
-<%= link_to 'Добавить нового пользователя', new_user_path, class: 'btn btn-default' %>
+<%= link_to new_user_path, class: 'btn btn-primary' do%>
+  <span class='glyphicon glyphicon-plus'></span> Добавить нового пользователя
+<% end %>
 <br><br><br>
 <%= render 'filter' %>
+
+<div id='user-paginator'>
+  <%= paginate @users %>
+</div>
 
 <div class="row">
   <table id="users" class="table table-hover table-condensed">
@@ -25,14 +31,17 @@
     </tr>
     </thead>
     <tbody>
-    <% @users.each do |user| %>
+    <% @users.includes(:positions, :departments).each do |user| %>
       <tr>
         <td><%= user.id %></td>
         <td><%= user.full_name %></td>
         <td>
-          <%= user.positions.collect{|position| position.title}.join(', ') %>
+          <%= user.positions.collect{|position| position.title}.join(', ') +
+                    (user.positions == [] ? '' : ', ') +
+                    (user.user_position == nil ? '' : user.user_position) %>
         </td>
-        <td><%= user.departments.collect{|department| department.abbreviation}.join(', ') %></td>
+        <% department = (Department.exists?(user.user_department) ? Department.find(user.user_department).abbreviation : '') %>
+        <td><%= user.departments.collect{|department| department.abbreviation}.join(', ') + department %></td>
         <td><%= user.username %></td>
         <td class="nowrap"><%= user.phone %></td>
         <td>
