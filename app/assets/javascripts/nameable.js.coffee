@@ -10,6 +10,6 @@ updateInflections = (field) ->
       $("#{field}_pp").val(response[5]);
 
 $ ->
-  updateInflections('#user_last_name')
-  updateInflections('#user_first_name')
-  updateInflections('#user_patronym')
+  updateInflections('#user_fname_attributes')
+  updateInflections('#user_iname_attributes')
+  updateInflections('#user_oname_attributes')

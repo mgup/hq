@@ -17,10 +17,14 @@ class User < ActiveRecord::Base
   alias_attribute :phone,    :user_phone
 
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :user_fname
+  accepts_nested_attributes_for :fname
   belongs_to :iname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :user_iname
+  accepts_nested_attributes_for :iname
   belongs_to :oname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :user_oname
+  accepts_nested_attributes_for :oname
 
-  has_many :positions, foreign_key: :acl_position_user
+  has_many :positions, foreign_key: :acl_position_user, dependent: :delete_all
+  accepts_nested_attributes_for :positions
   has_many :roles,       through: :positions
   has_many :departments, through: :positions
   
@@ -103,6 +107,14 @@ class User < ActiveRecord::Base
       cond
     end
   }
+
+  #before_save :get_positions
+  #
+  #def get_positions
+  #  self.positions = self.positions.collect do |position|
+  #    Position.find_or_create_by_position_id(position.id)
+  #  end
+  #end
 
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup

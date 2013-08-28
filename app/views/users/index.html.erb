@@ -36,10 +36,10 @@
         <td><%= user.id %></td>
         <td><%= user.full_name %></td>
         <td>
-          <%= user.positions.collect{|position| position.title}.push(user.user_position == nil ? [] : user.user_position.split(', ')).flatten.uniq.join(', ')%>
+          <%= user.positions.collect{|position| position.title}.push(user.user_position == nil ? [] : user.user_position.split(', ')).flatten.compact.uniq.join(', ')%>
         </td>
         <% department = (Department.exists?(user.user_department) ? Department.find(user.user_department).abbreviation : '') %>
-        <td><%= (user.departments.collect{|department| department.abbreviation} << (department if department != '')).uniq.join(', ') %></td>
+        <td><%= (user.departments.collect{|department| department.abbreviation} << (department if department != '')).uniq.compact.join(', ') %></td>
         <td><%= user.username %></td>
         <td class="nowrap"><%= user.phone %></td>
         <td>

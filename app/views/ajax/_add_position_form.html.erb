@@ -1,0 +1,17 @@
+<%= form.fields_for :positions do |p| %>
+  <div class="row">
+    <%= p.hidden_field :id %>
+    <div class="col col-lg-3" style="margin-left: 30px">
+      <%= p.text_field :title, {placeholder: 'Старший преподаватель', class: 'form-control'} %>
+    </div>
+    <div class="col col-lg-2">
+      <%= p.select :acl_position_role, Role.all.collect{|r|[ r.title, r.id]}, {}, { style: 'width: 145px;', class: 'form-control' }  %>
+    </div>
+    <div class="col col-lg-2">
+      <%= p.select :acl_position_department, Department.all.collect{|r|[ r.abbreviation, r.id]}, {}, { style: 'width: 130px;' , class: 'form-control'}  %>
+    </div>
+    <div class="col col-lg-2 input-append date">
+      <%= p.text_field :appointment, {class: 'form-control datepicker'} %>
+    </div>
+  </div>
+<% end %>

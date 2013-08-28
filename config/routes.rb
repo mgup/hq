@@ -1,5 +1,5 @@
 HQ::Application.routes.draw do
-  devise_for :users
+  devise_for :users, skip: :registrations
   devise_for :students
 
   # Мониторинг состояния сервера.
@@ -12,7 +12,7 @@ HQ::Application.routes.draw do
   resources :roles
   resources :users
   get '/users/:id/profile' => 'users#profile'
-  get '/users/:id/positions' => 'users#positions'
+  get '/ajax/positions' => 'ajax#positions'
   resources :departments
   resources :positions
 
