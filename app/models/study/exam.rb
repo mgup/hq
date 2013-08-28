@@ -1,4 +1,7 @@
 class Study::Exam < ActiveRecord::Base
+  TYPE_SEMESTER_WORK    = 2
+  TYPE_SEMESTER_PROJECT = 3
+
   self.table_name = 'exam'
 
   alias_attribute :id,       :exam_id
@@ -15,7 +18,11 @@ class Study::Exam < ActiveRecord::Base
   #has_many :students, :through => :exam_students
   #has_many :exammarks, class_name: Study::Exammark, foreign_key: :mark_exam
 
-  validates :type, presence: true, inclusion: { in: [0,1,9] }
+  validates :type, presence: true, inclusion: { in: [0,
+                                                     1,
+                                                     self::TYPE_SEMESTER_WORK,
+                                                     self::TYPE_SEMESTER_PROJECT,
+                                                     9] }
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
                                                      less_than_or_equal_to: 80 }
 end
