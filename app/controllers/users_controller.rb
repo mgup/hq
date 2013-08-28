@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :show]
+  load_and_authorize_resource except: [:create]
 
   def index
     @users = User.all.page(params[:page])
@@ -7,12 +8,18 @@ class UsersController < ApplicationController
 
   def new
      @user = User.new
+     @user.build_fname
+     @user.build_iname
+     @user.build_oname
+     #@user.positions.build
   end
 
   def create
-    @user = User.new user_params
-    if @user.save && @user.update_name(user_name_params)
-      redirect_to users_path
+    authorize! :create, User
+    #raise resource_params.inspect
+    @user = User.new(resource_params)
+    if @user.save
+      redirect_to users_path, notice: 'Сотрудник успешно добавлен.'
     else
       render action: :new
     end
@@ -21,7 +28,7 @@ class UsersController < ApplicationController
   def edit ; end
 
   def update
-    if @user.update(user_params) && @user.update_name(user_name_params)
+    if @user.update(resource_params)
       redirect_to users_path, notice: 'Изменения сохранены.'
     else
       render action: :edit
@@ -30,15 +37,19 @@ class UsersController < ApplicationController
 
   def show ; end
 
-  def positions
-    @user = User.find @current_user
-    respond_to do |format|
-      format.js
-    end
-  end
 
   def profile
     @user = User.find @current_user
+  end
+
+  def resource_params
+    params.fetch(:user, {}).permit(
+        :username, :email, :phone, :password,
+        fname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
+        iname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
+        oname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
+        positions_attributes: [:id, :title, :acl_position_role, :acl_position_department, :appointment]
+    )
   end
 
   private
@@ -47,16 +58,4 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
   end
 
-  def user_params
-    params.require(:user).permit(:username, :email, :phone)
-  end
-
-  def user_name_params
-    params.require(:user).permit(:last_name_ip, :first_name_ip, :patronym_ip,
-                                 :last_name_rp, :first_name_rp, :patronym_rp,
-                                 :last_name_dp, :first_name_dp, :patronym_dp,
-                                 :last_name_vp, :first_name_vp, :patronym_vp,
-                                 :last_name_tp, :first_name_tp, :patronym_tp,
-                                 :last_name_pp, :first_name_pp, :patronym_pp)
-  end
 end

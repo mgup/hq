@@ -1,22 +1,15 @@
-<%= form_for Position.new, html: { class: 'form-horizontal' }  do |f| %>
-  <%= hidden_field_tag 'position[user]', @user.id %>
-
- 	<div class="row">
+	<div class="row">
+    <%= text_field_tag 'user_positions_attributes_0_user_id', @user.id, {name: 'user[positions_attributes][0][user_id]', class: 'form-control'} %>
     <div class="col col-lg-3" style="margin-left: 30px">
-      <%= f.text_field :title, { placeholder: 'Старший преподаватель', class: 'form-control'} %>
+      <%= text_field_tag 'user_positions_attributes_0_title', nil, {name: 'user[positions_attributes][0][title]', placeholder: 'Старший преподаватель', class: 'form-control'} %>
     </div>
     <div class="col col-lg-2">
-      <%= f.collection_select :role, Role.all, :id, :title, { label: false }, { style: 'width: 145px;', class: 'form-control' }  %>
+      <%= select_tag 'user_positions_attributes_0_role', options_from_collection_for_select(Role.all, :id, :title), { name: 'user[positions_attributes][0][role]', style: 'width: 145px;', class: 'form-control' }  %>
     </div>
     <div class="col col-lg-2">
-      <%= f.collection_select :department, Department.all, :id, :abbreviation, { label: false }, { style: 'width: 130px;' , class: 'form-control'}  %>
+      <%= select_tag 'user_positions_attributes_0_department', options_from_collection_for_select(Department.all, :id, :abbreviation), { name: 'user[positions_attributes][0][department]', style: 'width: 130px;' , class: 'form-control'}  %>
     </div>
     <div class="col col-lg-2">
-      <%= text_field_tag 'position[appointment]', Date.today, class: 'datepicker form-control' %>
+      <%= text_field_tag 'user_positions_attributes_0_appointment', Date.today, {name: 'user[positions_attributes][0][appointment]', class: 'datepicker form-control'} %>
     </div>
   </div>
-
-
-
-  
-<% end %>

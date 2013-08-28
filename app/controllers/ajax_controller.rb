@@ -59,4 +59,10 @@ class AjaxController < ApplicationController
       users
     end })
   end
+
+  def positions
+    respond_to do |format|
+      format.js
+    end
+  end
 end

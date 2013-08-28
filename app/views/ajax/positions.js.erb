@@ -1,0 +1,5 @@
+$(function() {
+  var div = $('#positions-div');
+  div.append($('<div></div>').html("<%=j User.find(params[:id]).positions.build %>"));
+  $('.datepicker').datepicker();
+})
