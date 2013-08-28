@@ -77,8 +77,8 @@ class Study::DisciplinesController < ApplicationController
     #raise @discipline.inspect
     if @discipline.save
       # При необходимости, создаём записи о курсовой работе и курсовом проекте.
-      #@discipline.add_semester_work    unless params[:discipline][:has_semester_work].zero?
-      #@discipline.add_semester_project unless params[:discipline][:has_semester_project].zero?
+      @discipline.add_semester_work    if '1' == params[:has_semester_work]
+      @discipline.add_semester_project if '1' == params[:has_semester_project]
 
       redirect_to study_disciplines_path, notice: 'Дисциплина успешно добавлена.'
     else
@@ -90,9 +90,10 @@ class Study::DisciplinesController < ApplicationController
       if @discipline && @discipline.group
         @faculty = @discipline.group.speciality.faculty
         @speciality = @discipline.group.speciality
-        detect_lead_teacher
-        load_user_colleagues
       end
+
+      detect_lead_teacher
+      load_user_colleagues
 
       render action: :new
     end

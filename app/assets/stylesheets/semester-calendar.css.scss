@@ -1,0 +1,26 @@
+.semester-calendar {
+  td {
+    text-align: center;
+    padding: 6px !important;
+
+    &.month {
+      text-align: right;
+    }
+  }
+
+  .border-none {
+    border: none;
+  }
+  .border-top {
+    border-top: 1px solid #dddddd;
+  }
+  .border-right {
+    border-right: 1px solid #dddddd;
+  }
+  .border-bottom {
+    border-bottom: 1px solid #dddddd;
+  }
+  .border-left {
+    border-left: 1px solid #dddddd;
+  }
+}

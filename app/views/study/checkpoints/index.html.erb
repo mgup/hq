@@ -1,28 +1,23 @@
-<ul class="breadcrumb">
-  <li><a href="#">Успеваемость</a></li>
-  <li><a href="/study/disciplines">Дисциплины</a></li>
-  <li class="active">Карта дисциплины</li>
-</ul>
-
 <div class="page-header">
   <h1>
     <%= @discipline.name %> <small><%= @discipline.group.name %></small>
   </h1>
 </div>
 
-<a href="/study/disciplines/<%=@discipline.id%>/download_group" class='btn btn-info'><span class='glyphicon glyphicon-print'></span> Список группы</a>
+<div class="row">
+  <a href="/study/disciplines/<%=@discipline.id%>/download_group" class='btn btn-info'><span class='glyphicon glyphicon-print'></span> Список группы</a>
 
-<div class='pull-right'>
-  <a data-toggle="modal" data-path="/study/disciplines/<%=@discipline.id%>/checkpoints" data-target="#myModal" class="btn btn-info"><span class='glyphicon glyphicon-plus'></span> Добавить занятие</a>
-</div>
-<div class='pull-right' style='margin-right: 10px;'>
-  <a class='btn btn-info' href="<%= edit_study_discipline_checkpoint_path(@discipline, @checkpoints.first) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать контрольные точки</a>
-</div>
-<div class='pull-right' style='margin-right: 10px;'>
-  <a class='btn btn-info' href="<%= edit_study_discipline_path(@discipline) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину</a>
+  <div class='pull-right'>
+    <a data-toggle="modal" data-path="/study/disciplines/<%=@discipline.id%>/checkpoints" data-target="#myModal" class="btn btn-info"><span class='glyphicon glyphicon-plus'></span> Добавить занятие</a>
+  </div>
+  <div class='pull-right' style='margin-right: 10px;'>
+    <a class='btn btn-info' href="<%= edit_study_discipline_checkpoint_path(@discipline, @checkpoints.first) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать контрольные точки</a>
+  </div>
+  <div class='pull-right' style='margin-right: 10px;'>
+    <a class='btn btn-info' href="<%= edit_study_discipline_path(@discipline) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину</a>
+  </div>
 </div>
 
-<br>
 <div class='row'>
   <table class='table table-striped'>
     <thead>

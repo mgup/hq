@@ -1,14 +1,21 @@
 class Study::CheckpointsController < ApplicationController
-  load_and_authorize_resource
-   before_filter :find_discipline, :set_result
+  before_filter :load_discipline
+  load_and_authorize_resource :discipline
+  load_and_authorize_resource through: :discipline
+  #before_filter do
+  #  raise '123'
+  #end
+
+   #before_filter :set_result
 
   def index
-    @checkpoints = @checkpoints.by_discipline(@discipline).order(:checkpoint_date)
-    if params[:id]
-      @checkpoint = Study::Checkpoint.find(params[:id])
-    else
-      @checkpoint = Study::Checkpoint.new
-    end
+    render :new if @checkpoints.empty?
+    #@checkpoints = @checkpoints.by_discipline(@discipline).order(:checkpoint_date)
+    #if params[:id]
+    #  @checkpoint = Study::Checkpoint.find(params[:id])
+    #else
+    #  @checkpoint = Study::Checkpoint.new
+    #end
   end
 
   def new
@@ -108,9 +115,12 @@ class Study::CheckpointsController < ApplicationController
   end
 
 
-  def find_discipline
-    @discipline = Study::Discipline.find(params[:discipline_id])
+  private
+
+  def load_discipline
+    @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
   end
+
   def set_result
     @max = 80
     @min = 44
