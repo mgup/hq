@@ -21,7 +21,7 @@
       <% mark = @checkpointmarks.by_student(student).last %>
       <td>
         <% if mark != nil %>
-          <% if @checkpoint.check? %>
+          <% if @checkpoint.is_checkpoint? %>
             <div class='col col-lg-7'>
               <p class='text-center'><%= mark.mark %></p>
             </div>

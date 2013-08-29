@@ -58,7 +58,7 @@ class Study::Checkpoint < ActiveRecord::Base
     TYPE_SEMINAR == type
   end
 
-  def check?
+  def is_checkpoint?
     TYPE_CHECKPOINT == type
   end
 

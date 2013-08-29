@@ -28,7 +28,7 @@
       </td>
       <td>
         <% mark = checkpoint.checkpointmarks.by_student(@student).last %>
-        <% if checkpoint.check? %>
+        <% if checkpoint.is_checkpoint? %>
           <div class='col col-lg-7'>
             <% if mark != nil %>
               <span class="label label-<%= mark.mark>=checkpoint.min ? 'success' : 'danger'%>"><%= mark.mark %> из <%= checkpoint.max.round %> баллов</span>

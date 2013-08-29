@@ -1,6 +1,8 @@
 <div class="seminar_fields">
   <%= f.hidden_field :id %>
-  <%= f.hidden_field :checkpoint_date %>
+  <%= f.hidden_field :checkpoint_date,
+                     value: f.object.date ? l(f.object.date) : nil,
+                     class: 'date' %>
   <%= f.link_to_remove 'Удалить практическое или лабораторное занятие',
-                       style: 'display: none;', class: 'date' %>
+                       style: 'display: none;' %>
 </div>

@@ -1,4 +1,5 @@
 $ ->
+  # Лекции
   $('.lecture_fields .date').each (index, el) ->
     $('.lectures .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
 
@@ -23,9 +24,32 @@ $ ->
 
 
 
+  # Практические и лабораторные занятия
+  $('.seminar_fields .date').each (index, el) ->
+    $('.seminars .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
+
+  $(document).on 'nested:fieldAdded:seminars', (event) ->
+    date_field = event.field.find('.date')
+    date_field.val($(event.link).attr('data-date')).attr('data-date', $(event.link).attr('data-date'))
+
+  $('.seminars .day').click ->
+    $this = $(this)
+    if $this.hasClass('success')
+      date = $this.attr('data-date')
+      if ($('.seminars input[data-date="' + date + '"]').length > 0)
+        $field = $($('.seminars input[data-date="' + date + '"]'))
+      else
+        $field = $($('.seminars input[value="' + date + '"]'))
+      $field.parents('.seminar_fields').children('.remove_nested_fields').click()
+    else
+      $link = $($('a[data-blueprint-id="seminars_fields_blueprint"]')[0])
+      $link.attr('data-date', $this.attr('data-date'))
+      $link.click()
+    $this.toggleClass('success')
 
 
 
+  # Контрольные точки
   $('.checkpoint_fields .date').each (index, el) ->
     $('.checkpoints .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
 
