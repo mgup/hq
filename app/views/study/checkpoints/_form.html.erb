@@ -1,41 +1,91 @@
-<div class="modal-body">
-<%= form_for @checkpoint, url: url_for(controller: 'checkpoints', action: 'create'), html: { class: 'form-horizontal', id: 'modal_form'} do |f|%>
-  <%= f.hidden_field :id %>
-  <%= f.hidden_field :discipline, value: @discipline %>
-   <div class='row'>
-      <%= f.label :type, class: 'control-label col-lg-2' %>
-     <div class="col col-lg-8">
-       <%= f.hidden_field :type %>
-       <%= pill_tabs('checkpoint_type', [['2', 'Практическое (лабораторное) занятие'],
-                     ['1', 'Лекция'], ['3', 'Контрольная точка']],
-                     'study_checkpoint_type') %>
-     </div>
-    </div>
-    <div class='row'>
-      <%= f.label :date, class: 'control-label col-lg-2' %>
-      <div class='col col-lg-4'>
-        <%= f.text_field :date, value: DateTime.now.strftime("%d.%m.%Y"), pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]', class: 'datepicker form-control' %>
-      </div>
-    </div>
+<script>
+  $(function() {
+    var sidebar = $('.container > .row > .col-sm-3')[0];
+    $(sidebar).removeClass('col-sm-3').addClass('col-sm-2');
 
-    <div id='control_point' style='display: none;'>
-      <div class='row'>
-        <%= f.label :name, class: 'control-label col-lg-2' %>
-        <div class='col col-lg-8'>
-          <%= f.text_field :name, placeholder: 'Защита лабораторной работы №1', class: 'form-control' %>
-        </div>
-      </div>
-      <div class='row'>
-        <%= f.label :details, class: 'control-label col-lg-2' %>
-        <div class='col col-lg-8'>
-          <%= f.text_area :details, rows: 4, class: 'form-control' %>
-        </div>
-      </div>
+    var content = $('.container > .row > .col-sm-9')[0]
+    $(content).removeClass('col-sm-9').addClass('col-sm-10');
+  });
+</script>
+
+<%= form_for @discipline, html: { class: 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :group, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @discipline.group.name %></p>
     </div>
-</div>
-<div class="modal-footer">
-  <%= f.submit 'Добавить', class: 'btn btn-primary', id: 'modalEdit' %>
-  <a href="#" class="btn btn-default" data-dismiss="modal">Закрыть</a>
-  <% end %>
-</div>
+  </div>
+  <div class="form-group">
+    <%= f.label :name, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @discipline.name %></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Лекции</h3>
+      <%= render_checkpoints_calendar @discipline %>
+    </div>
+    <div class="col-md-4">
+      <h3>
+        <abbr title="Практические и лабораторные занятия">
+          Практ. и&nbsp;лаб.
+        </abbr>
+      </h3>
+      <%= render_checkpoints_calendar @discipline %>
+    </div>
+    <div class="col-md-4">
+      <h3>Контрольные точки</h3>
+      <%= render_checkpoints_calendar @discipline %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <%= f.submit 'Сохранить информацию о контрольных точках', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+<!--<div class="modal-body">-->
+<!--<%#= form_for @checkpoint, url: url_for(controller: 'checkpoints', action: 'create'), html: { class: 'form-horizontal', id: 'modal_form'} do |f|%>-->
+  <!--<%#= f.hidden_field :id %>-->
+  <!--<%#= f.hidden_field :discipline, value: @discipline %>-->
+   <!--<div class='row'>-->
+      <!--<%#= f.label :type, class: 'control-label col-lg-2' %>-->
+     <!--<div class="col col-lg-8">-->
+       <!--<%#= f.hidden_field :type %>-->
+       <!--<%#= pill_tabs('checkpoint_type', [['2', 'Практическое (лабораторное) занятие'],-->
+                     <!--['1', 'Лекция'], ['3', 'Контрольная точка']],-->
+                     <!--'study_checkpoint_type') %>-->
+     <!--</div>-->
+    <!--</div>-->
+    <!--<div class='row'>-->
+      <!--<%#= f.label :date, class: 'control-label col-lg-2' %>-->
+      <!--<div class='col col-lg-4'>-->
+        <!--<%#= f.text_field :date, value: DateTime.now.strftime("%d.%m.%Y"), pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]', class: 'datepicker form-control' %>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<div id='control_point' style='display: none;'>-->
+      <!--<div class='row'>-->
+        <!--<%#= f.label :name, class: 'control-label col-lg-2' %>-->
+        <!--<div class='col col-lg-8'>-->
+          <!--<%#= f.text_field :name, placeholder: 'Защита лабораторной работы №1', class: 'form-control' %>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class='row'>-->
+        <!--<%#= f.label :details, class: 'control-label col-lg-2' %>-->
+        <!--<div class='col col-lg-8'>-->
+          <!--<%#= f.text_area :details, rows: 4, class: 'form-control' %>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+  <!--<%#= f.submit 'Добавить', class: 'btn btn-primary', id: 'modalEdit' %>-->
+  <!--<a href="#" class="btn btn-default" data-dismiss="modal">Закрыть</a>-->
+  <!--<%# end %>-->
+<!--</div>-->
 

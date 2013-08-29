@@ -1,6 +1,8 @@
 class Study::Discipline < ActiveRecord::Base
-  CURRENT_STUDY_YEAR = 2013
-  CURRENT_STUDY_TERM = 1
+  STUDY_START = { 2013 => { 1 => Date.new(2013,  9,  4) } }
+  STUDY_END   = { 2013 => { 1 => Date.new(2013, 12, 30) } }
+  CURRENT_STUDY_YEAR  = 2013
+  CURRENT_STUDY_TERM  = 1
 
   self.table_name = 'subject'
 
@@ -59,5 +61,13 @@ class Study::Discipline < ActiveRecord::Base
       when 2
         year == CURRENT_STUDY_YEAR
     end
+  end
+
+  def add_semester_work
+    exams.create(exam_type: Study::Exam::TYPE_SEMESTER_WORK)
+    save!
+  end
+  def add_semester_project
+    exams.create(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)
   end
 end

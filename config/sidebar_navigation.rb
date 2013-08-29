@@ -27,7 +27,7 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     if can? :manage, Study::Discipline
-      primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') }
+      primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') }
     end
 
     if student_signed_in?
