@@ -1,4 +1,4 @@
-<%= form_for @user, html: { class: 'form-horizontal', autocomplete: 'off' } do |f| %>
+<%= nested_form_for @user, html: { class: 'form-horizontal', autocomplete: 'off' } do |f| %>
   <fieldset>
     <legend>Фамилия, имя, отчество во всех падежах</legend>
     <div class="form-group">
@@ -196,21 +196,14 @@
 
   <fieldset>
     <legend>Назначения</legend>
-    <% if @user.positions.any? && @user.positions.first.id != nil%>
-       <%= render partial: 'ajax/add_position_form', locals: {form: f} %>
-    <% else %>
-      <br>
-      <p class="lead">
-        Сотрудник ещё не назначен ни на одну должность.
-      </p>
-    <% end %>
+    <div id="positions">
+      <%= render partial: 'positions_fields', locals: {f: f} %>
+    </div>
     <div class="form-group">
       <div id='positions-div'></div>
     </div>
     <div class="form-group">
-      <div class="col col-lg-3 col-lg-offset-3">
-        <%= link_to 'Назначить сотрудника на новую должность', {controller: 'ajax', action: 'positions', id: @user.id }, class: 'btn btn-default', id: 'positions-counter', remote: true %>
-      </div>
+        <%= f.link_to_add 'Назначить сотрудника на новую должность', :positions, class: 'btn btn-default', data: { target: '#positions' } %>
     </div>
 
   </fieldset>

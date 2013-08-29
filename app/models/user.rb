@@ -23,8 +23,8 @@ class User < ActiveRecord::Base
   belongs_to :oname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :user_oname
   accepts_nested_attributes_for :oname
 
-  has_many :positions, foreign_key: :acl_position_user, dependent: :delete_all
-  accepts_nested_attributes_for :positions
+  has_many :positions, foreign_key: :acl_position_user, dependent: :destroy
+  accepts_nested_attributes_for :positions, allow_destroy: true , reject_if: proc { |attrs| attrs[:title].blank? }
   has_many :roles,       through: :positions
   has_many :departments, through: :positions
   
@@ -78,6 +78,16 @@ class User < ActiveRecord::Base
       has_role = has_role || (r.name.to_sym == role)
       has_role
     end
+  end
+
+  def add_object_link(name, form, object, partial, where)
+    options = {:parent => true}.merge(options)
+    html = render(:partial => partial, :locals => { :form => form}, :object => object)
+    link_to_function name, %{
+    var new_object_id = new Date().getTime() ;
+    var html = jQuery(#{js html}.replace(/index_to_replace_with_js/g, new_object_id)).hide();
+    html.appendTo(jQuery("#{where}")).slideDown('slow');
+  }
   end
 
   scope :teachers, ->  {where(user_role: 'lecturer')}

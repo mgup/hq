@@ -6,6 +6,12 @@ GIT
     morpher (0.0.1)
       httparty
 
+GIT
+  remote: git://github.com/ryanb/nested_form.git
+  revision: 42028bc06e72a848d297edc1467a969a7c9def57
+  specs:
+    nested_form (0.3.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -326,6 +332,7 @@ DEPENDENCIES
   meta_request
   morpher!
   mysql2
+  nested_form!
   prawn
   prawn-qrcode
   pry-rails
