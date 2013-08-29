@@ -79,7 +79,7 @@ class Study::DisciplinesController < ApplicationController
   def resource_params
     params.fetch(:study_discipline, {}).permit(
         :year, :semester, :group, :subject_group, :name, :subject_teacher,
-        exams_attributes: [:exam_type, :exam_weight],
+        final_exams_attributes: [:id, :exam_type, :exam_weight],
         discipline_teachers_attributes: [:teacher_id],
         lectures_attributes: [:id, :checkpoint_date, :'_destroy'],
         seminars_attributes: [:id, :checkpoint_date, :'_destroy'],

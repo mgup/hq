@@ -1,4 +1,8 @@
 class Study::Exam < ActiveRecord::Base
+  TYPE_TEST             = 0
+  TYPE_GRADED_TEST      = 9
+  TYPE_EXAMINATION      = 1
+
   TYPE_SEMESTER_WORK    = 2
   TYPE_SEMESTER_PROJECT = 3
 

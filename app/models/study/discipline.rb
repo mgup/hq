@@ -39,6 +39,9 @@ class Study::Discipline < ActiveRecord::Base
   has_many :exams, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
   accepts_nested_attributes_for :exams
 
+  has_many :final_exams, -> { where(exam_type: [Study::Exam::TYPE_TEST, Study::Exam::TYPE_GRADED_TEST, Study::Exam::TYPE_EXAMINATION]) }, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
+  accepts_nested_attributes_for :final_exams
+
   validates :name, presence: true
   validates :year, presence: true, numericality: { greater_than: 2012, less_than: 2020 }
   validates :semester, presence: true, inclusion: { in: [1,2] }
