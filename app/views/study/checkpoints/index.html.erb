@@ -4,19 +4,19 @@
   </h1>
 </div>
 
-<div class="row">
-  <%= link_to new_study_discipline_checkpoint_path(@discipline),
-              class: 'btn btn-default' do %>
-    <span class="glyphicon glyphicon-calendar"></span>
-    Редактировать расписание занятий и контрольные точки
-  <% end %>
+<%= link_to new_study_discipline_checkpoint_path(@discipline),
+            class: 'btn btn-default' do %>
+  <span class="glyphicon glyphicon-calendar"></span>
+  Редактировать расписание
+<% end %>
 
-  <%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-default' do %>
-    <span class="glyphicon glyphicon-edit"></span> Редактировать дисциплину
-  <% end %>
+<%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-default' do %>
+  <span class="glyphicon glyphicon-edit"></span> Редактировать дисциплину
+<% end %>
 
-  <a href="/study/disciplines/<%=@discipline.id%>/download_group" class='btn btn-info'><span class='glyphicon glyphicon-print'></span> Список группы</a>
-</div>
+<%= link_to study_discipline_print_group_path(@discipline), class: 'btn btn-default' do %>
+  <span class='glyphicon glyphicon-print'></span> Студенты
+<% end %>
 
 <div class="row">
   <table class="table table-striped">
