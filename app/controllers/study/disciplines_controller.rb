@@ -18,16 +18,7 @@ class Study::DisciplinesController < ApplicationController
     load_user_colleagues
   end
 
-  def edit
-    @teachers = []
-      if @discipline.teachers.count != 0
-        @discipline.teachers.each do |teacher|
-          @teachers << teacher.id if teacher != @discipline.teacher
-         end
-      end
-  end
-
-  def show ; end
+  #def show ; end
 
   def create
     authorize! :create, Study::Discipline
@@ -56,6 +47,11 @@ class Study::DisciplinesController < ApplicationController
     end
   end
 
+  def edit
+    detect_lead_teacher
+    load_user_colleagues
+  end
+
   def update
     authorize! :update, Study::Discipline
     if @discipline.update(resource_params)
@@ -66,8 +62,10 @@ class Study::DisciplinesController < ApplicationController
         render template: 'study/checkpoints/new'
         return
       else
-        #raise '123'
-        #render action: :edit
+        detect_lead_teacher
+        load_user_colleagues
+
+        render action: :edit
       end
     end
   end
