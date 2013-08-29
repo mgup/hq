@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130826221036) do
+ActiveRecord::Schema.define(version: 20130829120252) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -90,6 +90,18 @@ ActiveRecord::Schema.define(version: 20130826221036) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
+    t.string  "region",                                limit: 200
+    t.string  "okrug",                                 limit: 200
+    t.string  "city",                                  limit: 200
+    t.string  "settlement",                            limit: 200
+    t.string  "street",                                limit: 200
+    t.string  "house",                                 limit: 10
+    t.string  "building",                              limit: 100
+    t.integer "flat"
+    t.string  "birth_region",                          limit: 200
+    t.string  "birth_okrug",                           limit: 200
+    t.string  "birth_city",                            limit: 200
+    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
@@ -150,14 +162,14 @@ ActiveRecord::Schema.define(version: 20130826221036) do
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
 
   create_table "checkpoint", primary_key: "checkpoint_id", force: true do |t|
-    t.integer "checkpoint_subject",                                                    null: false
-    t.integer "checkpoint_type",                                          default: 1,  null: false
-    t.string  "checkpoint_name",    limit: 200,                           default: ""
+    t.integer "checkpoint_subject",                           null: false
+    t.integer "checkpoint_type",                 default: 1,  null: false
+    t.string  "checkpoint_name",    limit: 200,  default: ""
     t.string  "checkpoint_details", limit: 1000
-    t.date    "checkpoint_date",                                                       null: false
-    t.decimal "checkpoint_min",                  precision: 11, scale: 6
-    t.decimal "checkpoint_max",                  precision: 11, scale: 6
-    t.integer "checkpoint_closed",                                        default: 0,  null: false
+    t.date    "checkpoint_date",                              null: false
+    t.integer "checkpoint_min",                  default: 0
+    t.integer "checkpoint_max",                  default: 0
+    t.integer "checkpoint_closed",               default: 0,  null: false
   end
 
   add_index "checkpoint", ["checkpoint_subject"], name: "checkpoint_subject", using: :btree
@@ -307,6 +319,18 @@ ActiveRecord::Schema.define(version: 20130826221036) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
+    t.string  "region",                                limit: 200
+    t.string  "okrug",                                 limit: 200
+    t.string  "city",                                  limit: 200
+    t.string  "settlement",                            limit: 200
+    t.string  "street",                                limit: 200
+    t.string  "house",                                 limit: 10
+    t.string  "building",                              limit: 100
+    t.integer "flat"
+    t.string  "birth_region",                          limit: 200
+    t.string  "birth_okrug",                           limit: 200
+    t.string  "birth_city",                            limit: 200
+    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
@@ -612,6 +636,7 @@ ActiveRecord::Schema.define(version: 20130826221036) do
     t.integer "hostel_payment_type_sum",                 null: false
     t.integer "hostel_payment_type_yearsum",             null: false
     t.integer "hostel_payment_type_active",  limit: 1,   null: false
+    t.date    "hostel_payment_type_date",                null: false
   end
 
   add_index "hostel_payment_type", ["hostel_payment_type_status"], name: "hostel_payment_type_status", using: :btree
@@ -956,6 +981,18 @@ ActiveRecord::Schema.define(version: 20130826221036) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
+    t.string  "region",                                limit: 200
+    t.string  "okrug",                                 limit: 200
+    t.string  "city",                                  limit: 200
+    t.string  "settlement",                            limit: 200
+    t.string  "street",                                limit: 200
+    t.string  "house",                                 limit: 10
+    t.string  "building",                              limit: 100
+    t.integer "flat"
+    t.string  "birth_region",                          limit: 200
+    t.string  "birth_okrug",                           limit: 200
+    t.string  "birth_city",                            limit: 200
+    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "student", ["student_fname"], name: "studentFname", using: :btree

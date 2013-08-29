@@ -1,26 +1,15 @@
 class Study::CheckpointsController < ApplicationController
   before_filter :load_discipline
   load_and_authorize_resource :discipline
-  load_and_authorize_resource through: :discipline
-  #before_filter do
-  #  raise '123'
-  #end
+  load_and_authorize_resource through: :discipline, except: [:new, :create, :update]
 
-   #before_filter :set_result
+  #before_filter :set_result
 
   def index
-    render :new if @checkpoints.empty?
-    #@checkpoints = @checkpoints.by_discipline(@discipline).order(:checkpoint_date)
-    #if params[:id]
-    #  @checkpoint = Study::Checkpoint.find(params[:id])
-    #else
-    #  @checkpoint = Study::Checkpoint.new
-    #end
+    redirect_to new_study_discipline_checkpoint_path(@discipline) if @checkpoints.empty?
   end
 
-  def new
-
-  end
+  def new ; end
 
   def edit
     @checkpoints = @discipline.checkpoints.control
@@ -45,34 +34,47 @@ class Study::CheckpointsController < ApplicationController
   end
 
   def update
-    if params[:checkpoints]
-      checkpoints = params[:checkpoints]
-      checkpoints.each do |check|
-        checkpoint=Study::Checkpoint.find(check[:id])
-        checkpoint.update_attributes(check)
-      end
-      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Сохранено'
+    if @discipline.update(resource_params)
+      redirect_to study_discipline_checkpoints_path(@discipline)
+    else
+      render action: :new
     end
+    #if params[:checkpoints]
+    #  checkpoints = params[:checkpoints]
+    #  checkpoints.each do |check|
+    #    checkpoint=Study::Checkpoint.find(check[:id])
+    #    checkpoint.update_attributes(check)
+    #  end
+    #  redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Сохранено'
+    #end
   end
 
   def create
-    checkpoint = params[:study_checkpoint]
-    min = checkpoint[:type]=='3' ? 11 : nil
-    max = checkpoint[:type]=='3' ? 20 : nil
-    @checkpoint = Study::Checkpoint.new checkpoint_type: checkpoint[:type],
-                          date: checkpoint[:date], discipline: @discipline,
-                          name: checkpoint[:name], details: checkpoint[:details],
-                          min: min, max: max
-    if @checkpoint.save
-      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Успешно создано'
+    if @discipline.update(resource_params)
+      redirect_to study_discipline_checkpoints_path(@discipline)
     else
-      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Произошла ошибка'
+      render action: :new
     end
+    #checkpoint = params[:study_checkpoint]
+    #min = checkpoint[:type]=='3' ? 11 : nil
+    #max = checkpoint[:type]=='3' ? 20 : nil
+    #@checkpoint = Study::Checkpoint.new checkpoint_type: checkpoint[:type],
+    #                      date: checkpoint[:date], discipline: @discipline,
+    #                      name: checkpoint[:name], details: checkpoint[:details],
+    #                      min: min, max: max
+    #if @checkpoint.save
+    #  redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Успешно создано'
+    #else
+    #  redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Произошла ошибка'
+    #end
   end
 
   def resource_params
-    params.fetch(:study_checkpoint, {}).permit( :name, :checkpoint_type, :date,
-                                            :details, :min, :max)
+    params.fetch(:study_discipline, {}).permit(
+        checkpoints_attributes: [:id, :checkpoint_date,
+                                 :checkpoint_name, :checkpoint_details,
+                                 :checkpoint_max, :checkpoint_min, :'_destroy']
+    )
   end
 
   def download_pdf
@@ -114,8 +116,6 @@ class Study::CheckpointsController < ApplicationController
     end.render
   end
 
-
-  private
 
   def load_discipline
     @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])

@@ -6,6 +6,9 @@
     &.month {
       text-align: right;
     }
+    &.day {
+      cursor: pointer;
+    }
   }
 
   .border-none {

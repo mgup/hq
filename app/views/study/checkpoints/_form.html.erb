@@ -8,7 +8,15 @@
   });
 </script>
 
-<%= form_for @discipline, html: { class: 'form-horizontal' } do |f| %>
+<%= nested_form_for @discipline, url: study_discipline_path(@discipline), method: :patch, html: { class: 'form-horizontal', role: 'form' } do |f| %>
+  <%# if @discipline.errors.any? %>
+    <%= params.inspect %>
+    <hr>
+    <%= @discipline.checkpoints.inspect %>
+    <hr>
+    <%= @discipline.errors.inspect %>
+  <%# end %>
+
   <div class="form-group">
     <%= f.label :group, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
@@ -23,23 +31,30 @@
   </div>
 
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 lectures">
       <h3>Лекции</h3>
       <%= render_checkpoints_calendar @discipline %>
+      <%= f.fields_for :lectures %>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 seminars">
       <h3>
         <abbr title="Практические и лабораторные занятия">
           Практ. и&nbsp;лаб.
         </abbr>
       </h3>
       <%= render_checkpoints_calendar @discipline %>
+      <%= f.fields_for :seminars %>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 checkpoints">
       <h3>Контрольные точки</h3>
-      <%= render_checkpoints_calendar @discipline %>
+      <%= render_checkpoints_calendar @discipline  %>
     </div>
   </div>
+
+  <%= f.fields_for :checkpoints do |checkpoints_form| %>
+    <%= render 'study/checkpoints/checkpoint_fields', f: checkpoints_form %>
+  <% end %>
+  <%= f.link_to_add 'Добавить контрольную точку', :checkpoints, style: 'display: none;' %>
 
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
