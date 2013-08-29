@@ -24,5 +24,6 @@
 //= require highcharts-more
 //
 //= require chosen.jquery
+//= require jquery_nested_form
 //
 //= require_tree .

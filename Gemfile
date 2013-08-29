@@ -33,6 +33,7 @@ gem 'prawn'
 gem 'rqrcode'
 gem 'prawn-qrcode'
 gem 'squeel'
+gem 'nested_form', github: 'ryanb/nested_form'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 # gem 'ui', github: 'mgup/ui', branch: :master
