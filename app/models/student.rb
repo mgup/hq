@@ -251,7 +251,7 @@ GROUP BY `group`
                end
       l1 += result if checkpoint.lecture?
       p1 += result if checkpoint.seminar?
-      n1 += mark if checkpoint.check?
+      n1 += mark if checkpoint.is_checkpoint?
     end
     (l1+p1+n1).round 2
   end
