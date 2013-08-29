@@ -83,6 +83,8 @@ class Study::DisciplinesController < ApplicationController
         :year, :semester, :group, :subject_group, :name, :subject_teacher,
         exams_attributes: [:exam_type, :exam_weight],
         discipline_teachers_attributes: [:teacher_id],
+        lectures_attributes: [:id, :checkpoint_date, :'_destroy'],
+        seminars_attributes: [:id, :checkpoint_date, :'_destroy'],
         checkpoints_attributes: [:id, :checkpoint_date,
                                  :checkpoint_name, :checkpoint_details,
                                  :checkpoint_max, :checkpoint_min, :'_destroy']

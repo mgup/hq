@@ -5,41 +5,44 @@
 </div>
 
 <div class="row">
-  <a href="/study/disciplines/<%=@discipline.id%>/download_group" class='btn btn-info'><span class='glyphicon glyphicon-print'></span> Список группы</a>
-
   <%= link_to new_study_discipline_checkpoint_path(@discipline),
               class: 'btn btn-default' do %>
-    <span class='glyphicon glyphicon-edit'></span>
+    <span class="glyphicon glyphicon-calendar"></span>
     Редактировать расписание занятий и контрольные точки
   <% end %>
 
-  <div class='pull-right' style='margin-right: 10px;'>
-    <a class='btn btn-info' href="<%= edit_study_discipline_path(@discipline) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину</a>
-  </div>
+  <%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-edit"></span> Редактировать дисциплину
+  <% end %>
+
+  <a href="/study/disciplines/<%=@discipline.id%>/download_group" class='btn btn-info'><span class='glyphicon glyphicon-print'></span> Список группы</a>
 </div>
 
-<div class='row'>
-  <table class='table table-striped'>
+<div class="row">
+  <table class="table table-striped">
     <thead>
     <tr>
-      <th class='text-muted'>#</th>
+      <th class="text-muted">#</th>
       <th>Дата</th>
-      <th style='width: 550px;'>Тип</th>
-      <th style='width: 150px;'></th>
+      <th>Тип занятия</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
-      <% @checkpoints.each  do |checkpoint| %>
+      <% @discipline.classes.each  do |checkpoint| %>
         <tr>
-          <td class='text-muted'><%= checkpoint.id %></td>
-          <td><%= checkpoint.date.strftime("%d.%m.%Y") %></td>
-          <td style='width: 550px;'><span class="glyphicon <%= checkpoint.lesson %>"></span>
+          <td class="text-muted"><%= checkpoint.id %></td>
+          <td><%= l checkpoint.date %></td>
+          <td class="full-width">
+            <span class="glyphicon <%= checkpoint.lesson %>"></span>
             <%= checkpoint.name if checkpoint.type == 3 %>
             <%= checkpoint.lessonname %>
           </td>
-          <td style='width: 150px;'><a class='btn btn-default' href="<%= study_discipline_checkpoint_checkpointmarks_path(@discipline, checkpoint) %>"><span class='glyphicon glyphicon-pencil'></span> Внести результаты</a></td>
-          <td><a class='btn btn-default checkpoint-modal' data-toggle="modal" data-value="<%= checkpoint.id %>" data-path="/study/disciplines/<%=@discipline.id%>/checkpoints/<%= checkpoint.id %>" data-target="#myModal" title='Редактировать точку'><span class='glyphicon glyphicon-edit'></span></a></td>
+          <td>
+            <%= link_to study_discipline_checkpoint_checkpointmarks_path(@discipline, checkpoint), class: 'btn btn-default' do %>
+              <span class="glyphicon glyphicon-pencil"></span> Внести результаты
+            <% end %>
+          </td>
        </tr>
       <% end %> 
     </tbody>
