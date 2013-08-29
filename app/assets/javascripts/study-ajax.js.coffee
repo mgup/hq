@@ -28,5 +28,5 @@ $ ->
   $('.ajax-speciality').change ->
     updateGroups($(this).val())
 
-  unless $('.ajax-speciality').empty?
+  if $('.ajax-speciality').length > 0 and 0 == $('.ajax-speciality')[0].options.length
     $('.ajax-faculty').change() if 0 == $('.ajax-speciality')[0].options.length
