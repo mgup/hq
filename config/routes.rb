@@ -21,7 +21,8 @@ HQ::Application.routes.draw do
 
   namespace :study do
     resources :disciplines do
-      match 'download_group', to: 'checkpoints#download_pdf', via: [:get, :post]
+      get 'print_group.pdf', to: 'disciplines#print_group', defaults: { format: 'pdf' }, as: :print_group
+      match 'download_group',  to: 'checkpoints#download_pdf', via: [:get, :post]
       resources :checkpoints do
         resources :checkpointmarks
       end

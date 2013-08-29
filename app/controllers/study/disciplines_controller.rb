@@ -1,6 +1,6 @@
 class Study::DisciplinesController < ApplicationController
   before_filter :load_user_disciplines, only: :index
-  before_filter :load_user_discipline,  only: [:show, :destroy]
+  before_filter :load_user_discipline,  only: [:edit, :destroy]
   load_and_authorize_resource except: [:create]
 
   def index ; end
@@ -75,6 +75,12 @@ class Study::DisciplinesController < ApplicationController
 
     redirect_to study_disciplines_path
   end
+
+  def print_group
+    authorize! :manage, Study::Discipline
+    @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
+  end
+
 
   def resource_params
     params.fetch(:study_discipline, {}).permit(
