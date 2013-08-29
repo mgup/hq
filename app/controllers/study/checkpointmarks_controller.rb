@@ -16,19 +16,20 @@ class Study::CheckpointmarksController < ApplicationController
   def update ; end
 
   def create
+    #raise params.inspect
     marks = params[:checkpointmarks]
     marks.each do |m|
       m[:student] = Student.find(m[:student])
       m[:checkpoint] = @checkpoint
       if m[:mark] != ''
-        if @checkpoint.checkpointmarks.by_student(m[:student]) == []
-          mark=Study::Checkpointmark.new student: m[:student], checkpoint: m[:checkpoint],
+        #if @checkpoint.checkpointmarks.by_student(m[:student]) == []
+        mark=Study::Checkpointmark.new student: m[:student], checkpoint: m[:checkpoint],
                                          mark: m[:mark]
-          mark.save!
-        elsif @checkpoint.checkpointmarks.by_student(m[:student]).first.mark != m[:mark]
-          mark = @checkpoint.checkpointmarks.by_student(m[:student]).first
-          mark.update_attributes(mark: m[:mark])
-          end
+        mark.save!
+        #elsif @checkpoint.checkpointmarks.by_student(m[:student]).first.mark != m[:mark]
+        #  mark = @checkpoint.checkpointmarks.by_student(m[:student]).first
+        #  mark.update_attributes(mark: m[:mark])
+        #  end
       end
     end
     redirect_to study_discipline_checkpoint_checkpointmarks_path(@discipline, @checkpoint), notice: 'Сохранено'
@@ -43,6 +44,6 @@ class Study::CheckpointmarksController < ApplicationController
   def find_chekpoint
     @checkpoint = Study::Checkpoint.find(params[:checkpoint_id])
     @discipline = Study::Discipline.find(params[:discipline_id])
-    @students = Student.where(group: @checkpoint.discipline.group)
+    @students = Student.where(student_group_group: @checkpoint.discipline.group)
   end
 end

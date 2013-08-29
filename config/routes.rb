@@ -12,7 +12,6 @@ HQ::Application.routes.draw do
   resources :roles
   resources :users
   get '/users/:id/profile' => 'users#profile'
-  get '/ajax/positions' => 'ajax#positions'
   resources :departments
   resources :positions
 
