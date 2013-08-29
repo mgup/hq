@@ -16,14 +16,14 @@ class Study::Checkpointmark < ActiveRecord::Base
   belongs_to :student, primary_key: :id, foreign_key: :checkpoint_mark_student
   belongs_to :checkpoint, class_name: Study::Checkpoint, primary_key: :checkpoint_id, foreign_key: :checkpoint_mark_checkpoint
 
-  scope :by_checkpoint, -> checkpoint { where(checkpoint: checkpoint) }
+  scope :by_checkpoint, -> checkpoint { where(checkpoint_mark_checkpoint: checkpoint) }
   scope :by_discipline, -> discipline {
     joins(:checkpoint).where(checkpoint: { checkpoint_subject: discipline })
   }
   scope :by_date, -> date {
     joins(:checkpoint).where(checkpoint: { checkpoint_date: date })
   }
-  scope :by_student, -> student { where(student: student) }
+  scope :by_student, -> student { where(checkpoint_mark_student: student) }
 
   def result
     case mark

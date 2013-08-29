@@ -18,7 +18,7 @@
         <%= hidden_field_tag 'checkpointmarks[][checkpoint]', @checkpoint.id %>
       </td>
       <td><%= student.person.full_name %></td>
-      <% mark = @checkpointmarks.by_student(student).first %>
+      <% mark = @checkpointmarks.by_student(student).last %>
       <td>
         <% if mark != nil %>
           <% if @checkpoint.check? %>
@@ -27,7 +27,7 @@
             </div>
           <% else %>
             <div class='col col-lg-10'>
-              <span class="label label-<%= mark.result_color %>"><%= mark.result %></span>
+              <span class="label label-<%= mark.result[:color] %>"><%= mark.result[:mark] %></span>
             </div>
           <% end %>
         <% end %>

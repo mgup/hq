@@ -89,7 +89,7 @@ class Student < ActiveRecord::Base
     end
 
     if filters.key?(:course)
-      cond = cond.joins(:group).where(group: { group_course: filters[:course] })
+      cond = cond.joins(:group).where(student_group_group: { group_course: filters[:course] })
     end
 
     if filters.key?(:group)
@@ -235,9 +235,9 @@ GROUP BY `group`
     l1, p1, n1 = 0.0, 0.0, 0.0
     l = discipline.checkpoints.lectures.count
     p = discipline.checkpoints.practicals.count
-    checkpointmarks.by_discipline(discipline).each do |mark|
-      c = mark.checkpoint
-      result = case mark.mark
+    discipline.checkpoints.collect do |checkpoint|
+      mark = checkpoint.checkpointmarks.by_student(id) == [] ? 0 : checkpoint.checkpointmarks.by_student(self).last.mark
+      result = case mark
                  when MARK_LECTURE_ATTEND
                    (5/l)
                  when MARK_PRACTICAL_FAIR
@@ -249,9 +249,9 @@ GROUP BY `group`
                  else
                    0
                end
-      l1 += result if c.lecture?
-      p1 += result if c.seminar?
-      n1 += mark.mark if c.check?
+      l1 += result if checkpoint.lecture?
+      p1 += result if checkpoint.seminar?
+      n1 += mark if checkpoint.check?
     end
     (l1+p1+n1).round 2
   end
