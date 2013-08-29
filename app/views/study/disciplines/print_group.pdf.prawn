@@ -14,5 +14,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     data << [index + 1, s.person.full_name, s.id, '', '', '', '']
   end
 
-  pdf.table data, header: true, width: 510.24062992108657, column_widths: [23, 220, 41]
+  pdf.font_size 10 do
+    pdf.table data, header: true, width: 510.24062992108657,
+              column_widths: [23, 220, 41], cell_style: { padding: 2 }
+  end
 end
