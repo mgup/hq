@@ -1,22 +1,14 @@
 <script>
   $(function() {
     var sidebar = $('.container > .row > .col-sm-3')[0];
-    $(sidebar).removeClass('col-sm-3').addClass('col-sm-2');
+    $(sidebar).removeClass('col-sm-3').addClass('col-sm-12');
 
     var content = $('.container > .row > .col-sm-9')[0]
-    $(content).removeClass('col-sm-9').addClass('col-sm-10');
+    $(content).removeClass('col-sm-9').addClass('col-sm-12');
   });
 </script>
 
 <%= nested_form_for @discipline, url: study_discipline_path(@discipline), method: :patch, html: { class: 'form-horizontal', role: 'form' } do |f| %>
-  <%# if @discipline.errors.any? %>
-    <%= params.inspect %>
-    <hr>
-    <%= @discipline.checkpoints.inspect %>
-    <hr>
-    <%= @discipline.errors.inspect %>
-  <%# end %>
-
   <div class="form-group">
     <%= f.label :group, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
