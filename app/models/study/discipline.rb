@@ -13,12 +13,8 @@ class Study::Discipline < ActiveRecord::Base
   alias_attribute :brs,      :subject_brs
 
   belongs_to :group, foreign_key: :subject_group
+
   belongs_to :lead_teacher, class_name: User, foreign_key: :subject_teacher
-
-  has_many :checkpoints, foreign_key: :checkpoint_subject
-
-  has_many :exams, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
-  accepts_nested_attributes_for :exams
 
   has_many :discipline_teachers, class_name: Study::DisciplineTeacher,
            primary_key: :subject_id, foreign_key: :subject_id, dependent: :delete_all
@@ -26,11 +22,28 @@ class Study::Discipline < ActiveRecord::Base
 
   has_many :assistant_teachers, through: :discipline_teachers
 
+  has_many :lectures, -> { where(checkpoint_type: Study::Checkpoint::TYPE_LECTURE).order(:checkpoint_date) },
+           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject
+  accepts_nested_attributes_for :lectures
+
+  has_many :seminars, -> { where(checkpoint_type: Study::Checkpoint::TYPE_SEMINAR).order(:checkpoint_date) },
+           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject
+  accepts_nested_attributes_for :seminars
+
+  has_many :checkpoints, -> { where(checkpoint_type: Study::Checkpoint::TYPE_CHECKPOINT).order(:checkpoint_date) },
+           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
+  accepts_nested_attributes_for :checkpoints, allow_destroy: true
+
+  has_many :exams, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
+  accepts_nested_attributes_for :exams
+
   validates :name, presence: true
   validates :year, presence: true, numericality: { greater_than: 2012, less_than: 2020 }
   validates :semester, presence: true, inclusion: { in: [1,2] }
   validates :lead_teacher, presence: true
   validates :group, presence: true
+  validate  :sum_of_checkpoints_max_values_should_be_80
+  validate  :sum_of_checkpoints_min_values_should_be_44
 
   default_scope do
     order(subject_year: :desc, subject_semester: :desc)
@@ -69,5 +82,29 @@ class Study::Discipline < ActiveRecord::Base
   end
   def add_semester_project
     exams.create(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)
+  end
+
+  private
+
+  def sum_of_checkpoints_max_values_should_be_80
+    max_sum = 0
+    checkpoints.each do |c|
+      max_sum += c.max unless c.marked_for_destruction?
+    end
+    if 80 != max_sum
+      errors.add(:'checkpoints.max',
+                 "Сумма максимальных баллов должна равняться 80. У вас — #{max_sum}.")
+    end
+  end
+
+  def sum_of_checkpoints_min_values_should_be_44
+    min_sum = 0
+    checkpoints.each do |c|
+      min_sum += c.min unless c.marked_for_destruction?
+    end
+    if 44 != min_sum
+      errors.add(:'checkpoints.min',
+                 "Сумма минимальных зачётных баллов должна равняться 44. У вас — #{min_sum}.")
+    end
   end
 end

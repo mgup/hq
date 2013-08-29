@@ -29,52 +29,9 @@ class Study::DisciplinesController < ApplicationController
 
   def show ; end
 
-  def update
-    study_discipline = params[:study_discipline]
-    study_discipline[:groups] = Group.find(params[:groups])
-    discipline = Study::Discipline.find(params[:id])
-
-    #Преподаватели
-    if params[:teachers] != nil
-      teachers = User.find(params[:teacher],params[:teachers])
-      teachers.each do |t|
-        if Study::DisciplineTeacher.where(subject_id: discipline.id, teacher_id: t.id) == []
-          teacher = Study::DisciplineTeacher.new teacher: t.id, discipline: discipline.id
-          teacher.save
-        end
-      end
-      study_teachers = User.find(params[:teachers])
-      discipline.teachers = study_teachers
-    else
-      x = discipline.teachers.without(discipline.subject_teacher)
-      discipline.teachers.delete(x)
-    end
-
-    # Экзамен/зачёт
-    exam = discipline.control
-    exam.update_attributes(exam_type: params[:exam_type])
-
-    #Курсовая работа и проект
-    extra_exam(discipline, 'work')
-    extra_exam(discipline, 'project')
-
-
-    if discipline.update_attributes(group: study_discipline[:groups],
-            semester: study_discipline[:semester], name: study_discipline[:name],
-            year: study_discipline[:year], subject_teacher: params[:teacher])
-
-      redirect_to study_disciplines_path, notice: 'Сохранено'
-    else
-      redirect_to edit_study_discipline_path(discipline), notice: 'Произошла ошибка'
-    end
-    
-  end
-
   def create
     authorize! :create, Study::Discipline
-    #raise resource_params.inspect
     @discipline = Study::Discipline.new(resource_params)
-    #raise @discipline.inspect
     if @discipline.save
       # При необходимости, создаём записи о курсовой работе и курсовом проекте.
       @discipline.add_semester_work    if '1' == params[:has_semester_work]
@@ -97,34 +54,22 @@ class Study::DisciplinesController < ApplicationController
 
       render action: :new
     end
-    #discipline = params[:study_discipline]
-    #@discipline = Study::Discipline.new year: discipline[:year],
-    #semester: discipline[:semester], group: Group.find(params[:groups]),
-    #    name: discipline[:name], subject_teacher: params[:teacher]
-    #
-    #if @discipline.save
-    #
-    #  #Преподаватели
-    #  if params[:teachers]
-    #    params[:teachers].push(params[:teacher]).each do |t|
-    #      teacher = Study::DisciplineTeacher.new teacher: t, discipline: @discipline.id
-    #      teacher.save
-    #    end
-    #  end
-    #
-    #  #Экзамен/зачёт
-    #  control = Study::Exam.new discipline: @discipline, exam_type: params[:exam_type],
-    #                          weight: params[:weight], exam_closed: false
-    #  control.save
-    #
-    #  #Курсовая работа и проект
-    #  extra_exam(@discipline, 'work')
-    #  extra_exam(@discipline, 'project')
-    #
-    #  redirect_to study_disciplines_path, notice: 'Успешно создана.'
-    #else
-    #  redirect_to new_study_discipline_path, notice: 'Произошла ошибка.'
-    #end
+  end
+
+  def update
+    authorize! :update, Study::Discipline
+    if @discipline.update(resource_params)
+      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+    else
+      if resource_params.include?(:checkpoints_attributes)
+        # Идёт редактирование контрольных точек — возвращаем туда.
+        render template: 'study/checkpoints/new'
+        return
+      else
+        #raise '123'
+        #render action: :edit
+      end
+    end
   end
 
   def destroy
@@ -137,7 +82,10 @@ class Study::DisciplinesController < ApplicationController
     params.fetch(:study_discipline, {}).permit(
         :year, :semester, :group, :subject_group, :name, :subject_teacher,
         exams_attributes: [:exam_type, :exam_weight],
-        discipline_teachers_attributes: [:teacher_id]
+        discipline_teachers_attributes: [:teacher_id],
+        checkpoints_attributes: [:id, :checkpoint_date,
+                                 :checkpoint_name, :checkpoint_details,
+                                 :checkpoint_max, :checkpoint_min, :'_destroy']
     )
   end
 
@@ -166,19 +114,4 @@ class Study::DisciplinesController < ApplicationController
       @teachers = @teachers.concat(d.users.to_a)
     end
   end
-
-  #def extra_exam(discipline, type)
-  #  if discipline.has?(type)
-  #    if params["exam_term_#{type}"] == ''
-  #      y = discipline.exams.where(exam_type: (type=='work' ? 2 : 3)).first
-  #      Study::Exam.delete(y)
-  #    end
-  #  else
-  #    if params["exam_term_#{type}"] != ''
-  #      work =  Study::Exam.new discipline: discipline,
-  #                              exam_type: (type=='work' ? 2 : 3), exam_closed: false
-  #      work.save
-  #    end
-  #  end
-  #end
 end

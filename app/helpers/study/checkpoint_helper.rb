@@ -6,7 +6,7 @@ module Study::CheckpointHelper
 
         tags << '<tr><td class="border-none"></td>'.html_safe
         (Date.today.beginning_of_week..Date.today.end_of_week).each do |d|
-          tags << %Q(<td class="border-none">#{l(d, format: '%a')}</td>).html_safe
+          tags << %Q(<th class="border-none">#{l(d, format: '%a')}</th>).html_safe
         end
         tags << '</tr>'.html_safe
 
@@ -45,7 +45,7 @@ module Study::CheckpointHelper
   private
 
   def render_day(date, first_study_date = nil, last_study_date = nil)
-    classes = %w(border-none)
+    classes = %w(day border-none)
     classes << 'border-right' if date == date.end_of_month || date.sunday?
     classes << 'border-left'  if date == date.beginning_of_month && !date.monday?
 
@@ -57,7 +57,7 @@ module Study::CheckpointHelper
 
     classes << 'border-top' if date.cweek == first_study_date.cweek
 
-    content_tag :td, class: classes.join(' ') do
+    content_tag :td, class: classes.join(' '), data: { date: l(date) } do
       date.day.to_s
     end
   end

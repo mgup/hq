@@ -7,12 +7,12 @@
 <div class="row">
   <a href="/study/disciplines/<%=@discipline.id%>/download_group" class='btn btn-info'><span class='glyphicon glyphicon-print'></span> Список группы</a>
 
-  <div class='pull-right'>
-    <a data-toggle="modal" data-path="/study/disciplines/<%=@discipline.id%>/checkpoints" data-target="#myModal" class="btn btn-info"><span class='glyphicon glyphicon-plus'></span> Добавить занятие</a>
-  </div>
-  <div class='pull-right' style='margin-right: 10px;'>
-    <a class='btn btn-info' href="<%= edit_study_discipline_checkpoint_path(@discipline, @checkpoints.first) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать контрольные точки</a>
-  </div>
+  <%= link_to new_study_discipline_checkpoint_path(@discipline),
+              class: 'btn btn-default' do %>
+    <span class='glyphicon glyphicon-edit'></span>
+    Редактировать расписание занятий и контрольные точки
+  <% end %>
+
   <div class='pull-right' style='margin-right: 10px;'>
     <a class='btn btn-info' href="<%= edit_study_discipline_path(@discipline) %>"><span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину</a>
   </div>
@@ -45,16 +45,3 @@
     </tbody>
   </table>
  </div>
-
-<!-- Modal -->
-<div class="modal fade in" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close btn btn-default" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Создание занятия</h4>
-      </div>
-      <%= render 'form' %>
-    </div>
-  </div>
-</div>

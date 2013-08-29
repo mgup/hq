@@ -1,0 +1,58 @@
+<div class="checkpoint_fields">
+  <div class="form-group">
+    <h4 class="col-sm-offset-3 col-sm-9">
+      Контрольная точка
+    </h4>
+  </div>
+
+  <%= f.hidden_field :id %>
+
+  <div class="form-group">
+    <%= f.label :checkpoint_date, 'Дата', class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= f.text_field :checkpoint_date, value: f.object.date ? l(f.object.date) : nil, class: 'form-control date', readonly: true %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'checkpoints.name') %>">
+    <%= f.label :checkpoint_name, 'Название', class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= f.text_field :checkpoint_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :checkpoint_details, 'Описание', class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= f.text_area :checkpoint_details, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'checkpoints.max') %>">
+    <%= f.label :checkpoint_max, 'Максимальный балл', class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= f.number_field :checkpoint_max, class: 'form-control' %>
+
+      <% if @discipline.errors.include?(:'checkpoints.max') %>
+        <span class="help-block"><%= @discipline.errors[:'checkpoints.max'].join(' ') %></span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'checkpoints.min') %>">
+    <%= f.label :checkpoint_min, 'Зачётный минимум', class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= f.number_field :checkpoint_min, class: 'form-control' %>
+
+      <% if @discipline.errors.include?(:'checkpoints.minmax') %>
+        <span class="help-block"><%= @discipline.errors[:'checkpoints.minmax'].join(' ') %></span>
+      <% end %>
+
+      <% if @discipline.errors.include?(:'checkpoints.min') %>
+        <span class="help-block"><%= @discipline.errors[:'checkpoints.min'].join(' ') %></span>
+      <% end %>
+    </div>
+  </div>
+
+  <%= f.link_to_remove 'Удалить контрольную точку', style: 'display: none;' %>
+</div>
