@@ -23,16 +23,18 @@ class Study::Discipline < ActiveRecord::Base
   has_many :assistant_teachers, through: :discipline_teachers
 
   has_many :lectures, -> { where(checkpoint_type: Study::Checkpoint::TYPE_LECTURE).order(:checkpoint_date) },
-           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject
-  accepts_nested_attributes_for :lectures
+           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
+  accepts_nested_attributes_for :lectures, allow_destroy: true
 
   has_many :seminars, -> { where(checkpoint_type: Study::Checkpoint::TYPE_SEMINAR).order(:checkpoint_date) },
-           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject
-  accepts_nested_attributes_for :seminars
+           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
+  accepts_nested_attributes_for :seminars, allow_destroy: true
 
   has_many :checkpoints, -> { where(checkpoint_type: Study::Checkpoint::TYPE_CHECKPOINT).order(:checkpoint_date) },
            class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
   accepts_nested_attributes_for :checkpoints, allow_destroy: true
+
+  has_many :classes, -> { order(:checkpoint_date) }, class_name: Study::Checkpoint, foreign_key: :checkpoint_subject
 
   has_many :exams, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
   accepts_nested_attributes_for :exams

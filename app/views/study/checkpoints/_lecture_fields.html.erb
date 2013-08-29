@@ -1,0 +1,5 @@
+<div class="lecture_fields">
+  <%= f.hidden_field :id %>
+  <%= f.hidden_field :checkpoint_date, value: f.object.date ? l(f.object.date) : nil, class: 'date' %>
+  <%= f.link_to_remove 'Удалить лекцию', style: 'display: none;' %>
+</div>
