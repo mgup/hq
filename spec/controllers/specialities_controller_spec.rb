@@ -21,11 +21,11 @@ describe SpecialitiesController do
   end
 
   context 'для пользователей, не являющихся разработчиками,' do
-    it 'должен быть переход на страницу авторизации' do
+    it 'должен быть переход на главную страницу' do
       sign_in FactoryGirl.create(:user)
 
       get :index
-      response.should redirect_to(new_user_session_path)
+      response.should redirect_to(root_path)
     end
   end
 
