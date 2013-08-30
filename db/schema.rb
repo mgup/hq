@@ -1317,73 +1317,73 @@ ActiveRecord::Schema.define(version: 20130829120252) do
   add_index "user", ["reset_password_token"], name: "index_user_on_reset_password_token", unique: true, using: :btree
   add_index "user", ["user_department"], name: "user_department", using: :btree
 
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
-FOR EACH ROW
-BEGIN
-	SELECT subject_year, subject_semester INTO @year, @term
-	FROM `subject`
-	JOIN exam ON exam_subject = subject_id
-	WHERE exam_id = OLD.mark_final_exam;
+#  # no candidate create_trigger statement could be found, creating an adapter-specific one
+#  execute(<<-TRIGGERSQL)
+#CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
+#FOR EACH ROW
+#BEGIN
+#	SELECT subject_year, subject_semester INTO @year, @term
+#	FROM `subject`
+#	JOIN exam ON exam_subject = subject_id
+#	WHERE exam_id = OLD.mark_final_exam;
+#
+#	CALL calculate_student_quality(OLD.mark_final_student, @year, @term);
+#END
+#  TRIGGERSQL
 
-	CALL calculate_student_quality(OLD.mark_final_student, @year, @term);
-END
-  TRIGGERSQL
+#  # no candidate create_trigger statement could be found, creating an adapter-specific one
+#  execute(<<-TRIGGERSQL)
+#CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
+#FOR EACH ROW
+#BEGIN
+#	SELECT subject_year, subject_semester INTO @year, @term
+#	FROM `subject`
+#	JOIN exam ON exam_subject = subject_id
+#	WHERE exam_id = NEW.mark_final_exam;
+#
+#	CALL calculate_student_quality(NEW.mark_final_student, @year, @term);
+#END
+#  TRIGGERSQL
 
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
-FOR EACH ROW
-BEGIN
-	SELECT subject_year, subject_semester INTO @year, @term
-	FROM `subject`
-	JOIN exam ON exam_subject = subject_id
-	WHERE exam_id = NEW.mark_final_exam;
+#  # no candidate create_trigger statement could be found, creating an adapter-specific one
+#  execute(<<-TRIGGERSQL)
+#CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
+#FOR EACH ROW
+#BEGIN
+#	SELECT subject_year, subject_semester INTO @year, @term
+#	FROM `subject`
+#	JOIN exam ON exam_subject = subject_id
+#	WHERE exam_id = NEW.mark_final_exam;
+#
+#	CALL calculate_student_quality(NEW.mark_final_student, @year, @term);
+#END
+#  TRIGGERSQL
 
-	CALL calculate_student_quality(NEW.mark_final_student, @year, @term);
-END
-  TRIGGERSQL
+#  # no candidate create_trigger statement could be found, creating an adapter-specific one
+#  execute(<<-TRIGGERSQL)
+#CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
+#FOR EACH ROW
+#BEGIN
+#	CALL calculate_students_mark(OLD.mark_student_group, OLD.mark_exam);
+#END
+#  TRIGGERSQL
 
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
-FOR EACH ROW
-BEGIN
-	SELECT subject_year, subject_semester INTO @year, @term
-	FROM `subject`
-	JOIN exam ON exam_subject = subject_id
-	WHERE exam_id = NEW.mark_final_exam;
+#  # no candidate create_trigger statement could be found, creating an adapter-specific one
+#  execute(<<-TRIGGERSQL)
+#CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
+#FOR EACH ROW
+#BEGIN
+#	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
+#END
+#  TRIGGERSQL
 
-	CALL calculate_student_quality(NEW.mark_final_student, @year, @term);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
-FOR EACH ROW
-BEGIN
-	CALL calculate_students_mark(OLD.mark_student_group, OLD.mark_exam);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
-FOR EACH ROW
-BEGIN
-	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
-FOR EACH ROW
-BEGIN
-	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
-END
-  TRIGGERSQL
+#  # no candidate create_trigger statement could be found, creating an adapter-specific one
+#  execute(<<-TRIGGERSQL)
+#CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
+#FOR EACH ROW
+#BEGIN
+#	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
+#END
+#  TRIGGERSQL
 
 end
