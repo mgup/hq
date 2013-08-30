@@ -7,9 +7,7 @@ class Study::DisciplinesController < ApplicationController
 
   def new
     # Создаём для дисциплины заготовку для итогового испытания
-    # и 3-х дополнительных преподавателей.
-    @discipline.exams.build
-    3.times { @discipline.discipline_teachers.build }
+    @discipline.final_exams.build
 
     # Подгружаем коллег пользователя со всех кафедр, на которых он работает.
     # Их пользователь сможет выбрать в качестве ведущего преподавателя.
@@ -86,7 +84,7 @@ class Study::DisciplinesController < ApplicationController
     params.fetch(:study_discipline, {}).permit(
         :year, :semester, :group, :subject_group, :name, :subject_teacher,
         final_exams_attributes: [:id, :exam_type, :exam_weight],
-        discipline_teachers_attributes: [:teacher_id],
+        discipline_teachers_attributes: [:id, :teacher_id, :'_destroy'],
         lectures_attributes: [:id, :checkpoint_date, :'_destroy'],
         seminars_attributes: [:id, :checkpoint_date, :'_destroy'],
         checkpoints_attributes: [:id, :checkpoint_date,

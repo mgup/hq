@@ -11,7 +11,6 @@ class UsersController < ApplicationController
      @user.build_fname
      @user.build_iname
      @user.build_oname
-     #@user.positions.build
   end
 
   def create
@@ -25,7 +24,13 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit ; end
+  def edit
+    if @user.fname == nil
+      @user.build_fname
+      @user.build_iname
+      @user.build_oname
+    end
+  end
 
   def update
     @user = User.all.includes(:positions).find(params[:id])

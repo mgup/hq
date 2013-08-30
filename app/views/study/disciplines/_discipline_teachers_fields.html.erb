@@ -1,0 +1,13 @@
+<%= f.fields_for :discipline_teachers do |sub_f| %>
+  <%= sub_f.hidden_field :id %>
+    <div class="form-group" id="discipline_teachers">
+      <%= sub_f.label :teacher_id, 'Доп. преподаватель', class: 'control-label col-sm-3' %>
+        <div class="col-sm-7">
+            <%= sub_f.select :teacher_id, options_from_collection_for_select(@teachers.delete_if { |t| t == @lead_teacher }, :id, :full_name, sub_f.object.teacher_id),
+                 { include_blank: 'если необходимо — укажите дополнительного преподавателя' }, { class: 'form-control' } %>
+        </div>
+      <div class="col-sm-2">
+        <%= sub_f.link_to_remove 'Удалить', class: 'btn btn-default' %>
+      </div>
+    </div>
+<% end %>

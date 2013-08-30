@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DashboardController do
+describe SpecialitiesController do
   context 'для разработчиков' do
     before do
       @user = FactoryGirl.create(:developer)

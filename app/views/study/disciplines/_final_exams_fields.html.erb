@@ -1,0 +1,18 @@
+<%= f.fields_for :final_exams do |exam| %>
+  <%= exam.hidden_field :id %>
+
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.type') %>">
+    <%= exam.label :exam_type, 'Форма испытания',class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= exam.select :exam_type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]], exam.object.exam_type), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.weight') %>">
+    <%= exam.label :exam_weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= exam.number_field :exam_weight, class: 'form-control' %>
+      <span class="help-block">Рекомендуемое значение — 50%.</span>
+    </div>
+  </div>
+<% end %>
