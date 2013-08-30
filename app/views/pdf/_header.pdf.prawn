@@ -12,7 +12,7 @@ pdf.font 'PT', size: 11, style: :bold, align: :center do
   pdf.text '«МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА»', align: :center
 end
 
-pdf.line_width = 3
+pdf.line_width = 2
 pdf.stroke do
   pdf.move_down 3
   pdf.horizontal_rule
@@ -20,7 +20,7 @@ end
 
 pdf.line_width = 0.5
 pdf.stroke do
-  pdf.move_down 3
+  pdf.move_down 2
   pdf.horizontal_rule
 end
 pdf.move_down 13

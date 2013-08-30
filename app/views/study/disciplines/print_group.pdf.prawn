@@ -16,6 +16,6 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   pdf.font_size 10 do
     pdf.table data, header: true, width: 510.24062992108657,
-              column_widths: [23, 220, 41], cell_style: { padding: 2 }
+              column_widths: [15, 200, 32], cell_style: { padding: 2 }
   end
 end

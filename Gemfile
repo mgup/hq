@@ -35,6 +35,7 @@ gem 'rqrcode'
 gem 'prawn-qrcode'
 gem 'squeel'
 gem 'nested_form', github: 'ryanb/nested_form'
+gem 'hairtrigger'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 # gem 'ui', github: 'mgup/ui', branch: :master
@@ -49,7 +50,6 @@ group :development do
   gem 'pry-rails'
   gem 'brakeman', require: false
   gem 'rails-erd'
-  gem 'hairtrigger'
 
   gem 'capistrano'
   gem 'rvm-capistrano'
