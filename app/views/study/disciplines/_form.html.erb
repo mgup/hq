@@ -1,4 +1,4 @@
-<%= form_for @discipline, html: { class: 'form-horizontal', role: 'form' } do |f|%>
+<%= nested_form_for @discipline, html: { class: 'form-horizontal', role: 'form' } do |f|%>
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:year) %>">
     <%= f.label :year, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
@@ -56,24 +56,7 @@
     </div>
   </div>
 
-  <%= f.fields_for :final_exams do |sub_f| %>
-    <%= sub_f.hidden_field :id %>
-
-    <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.type') %>">
-      <%= sub_f.label :exam_type, 'Форма испытания',class: 'control-label col-sm-3' %>
-      <div class="col-sm-9">
-        <%= sub_f.select :exam_type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]]), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
-      </div>
-    </div>
-
-    <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.weight') %>">
-      <%= sub_f.label :exam_weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
-      <div class="col-sm-9">
-        <%= sub_f.number_field :exam_weight, class: 'form-control' %>
-        <span class="help-block">Рекомендуемое значение — 50%.</span>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: 'final_exams_fields', locals: {f: f} %>
 
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
@@ -110,21 +93,10 @@
     </div>
   </div>
 
-  <%= f.fields_for :discipline_teachers, @discipline.discipline_teachers do |sub_f| %>
-    <div class="form-group">
-      <%= sub_f.label :teacher_id, 'Доп. преподаватель', class: 'control-label col-sm-3' %>
-      <div class="col-sm-9">
-        <%= sub_f.select :teacher_id, options_from_collection_for_select(@teachers.delete_if { |t| t == @lead_teacher }, :id, :full_name, @discipline.discipline_teachers[sub_f.index].teacher_id), { include_blank: 'если необходимо — укажите дополнительного преподавателя' }, { class: 'form-control' } %>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: 'discipline_teachers_fields', locals: {f: f} %>
   <div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
-        <span class="help-block">
-          Если дисциплину ведут несколько преподавателей — укажите их здесь.
-          Главного преподавателя второй раз указывать не надо.
-        </span>
-    </div>
+    <%= f.link_to_add 'Указать дополнительного преподавателя', :discipline_teachers,
+                                          class: 'btn btn-default col-lg-offset-4' %>
   </div>
 
   <div class="form-group">

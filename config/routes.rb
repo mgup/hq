@@ -66,6 +66,8 @@ HQ::Application.routes.draw do
   get 'study/ajax/subjects' => 'ajax#subjects'
   get 'study/ajax/disciplines' => 'ajax#disciplines'
   get 'study/disciplines/ajax/groups' => 'ajax#groups'
+  get 'study/disciplines/:id/ajax/specialities' => 'ajax#specialities'
+  get 'study/disciplines/:id/ajax/groups' => 'ajax#groups'
   get 'study/disciplines/ajax/specialities' => 'ajax#specialities'
   get 'study/ajax/groups' => 'ajax#groups'
   get 'study/ajax/specialities' => 'ajax#specialities'

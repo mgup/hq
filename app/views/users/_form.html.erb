@@ -24,143 +24,23 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label class="col col-lg-2 control-label" for="user_last_name_ip">Кто? Что?</label>
-      <div class="col col-lg-10">
-        <div class="form-group">
-          <div class="col col-lg-4">
-            <%= f.fields_for :fname do |sub_f| %>
-              <%= sub_f.text_field :ip, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :iname do |sub_f| %>
-              <%= sub_f.text_field :ip, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :oname do |sub_f| %>
-              <%= sub_f.text_field :ip, required: true, class: 'form-control' %>
+    <% [[:ip, 'Кто? Что?'], [:rp, 'Кого? Чего?'], [:dp, 'Кому? Чему?'],
+        [:vp, 'Кого? Что?'], [:tp, 'Кем? Чем?'], [:pp, 'О ком? О чём?']].each do |p| %>
+      <div class="form-group">
+        <label class="col col-lg-2 control-label" for="user_last_name_<%= p[0] %>"><%= p[1] %></label>
+        <div class="col col-lg-10">
+          <div class="form-group">
+            <% [:fname, :iname, :oname].each do |name| %>
+              <div class="col col-lg-4 <%= 'has-error' if @user.errors.include?(name) %>">
+                <%= f.fields_for name do |sub_f| %>
+                  <%= sub_f.text_field p[0], required: true, class: 'form-control' %>
+                <% end %>
+              </div>
             <% end %>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col col-lg-2 control-label" for="user_last_name_rp">Кого? Чего?</label>
-      <div class="col col-lg-10">
-        <div class="form-group">
-          <div class="col col-lg-4">
-            <%= f.fields_for :fname do |sub_f| %>
-              <%= sub_f.text_field :rp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :iname do |sub_f| %>
-              <%= sub_f.text_field :rp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :oname do |sub_f| %>
-              <%= sub_f.text_field :rp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col col-lg-2 control-label" for="user_last_name_dp">Кому? Чему?</label>
-      <div class="col col-lg-10">
-        <div class="form-group">
-          <div class="col col-lg-4">
-            <%= f.fields_for :fname do |sub_f| %>
-              <%= sub_f.text_field :dp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :iname do |sub_f| %>
-              <%= sub_f.text_field :dp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :oname do |sub_f| %>
-              <%= sub_f.text_field :dp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col col-lg-2 control-label" for="user_last_name_vp">Кого? Что?</label>
-      <div class="col col-lg-10">
-        <div class="form-group">
-          <div class="col col-lg-4">
-            <%= f.fields_for :fname do |sub_f| %>
-              <%= sub_f.text_field :vp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :iname do |sub_f| %>
-              <%= sub_f.text_field :vp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :oname do |sub_f| %>
-              <%= sub_f.text_field :vp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col col-lg-2 control-label" for="user_last_name_tp">Кем? Чем?</label>
-      <div class="col col-lg-10">
-        <div class="form-group">
-          <div class="col col-lg-4">
-            <%= f.fields_for :fname do |sub_f| %>
-              <%= sub_f.text_field :tp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :iname do |sub_f| %>
-              <%= sub_f.text_field :tp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :oname do |sub_f| %>
-              <%= sub_f.text_field :tp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="col col-lg-2 control-label" for="user_last_name_pp">О ком? О чём?</label>
-      <div class="col col-lg-10">
-        <div class="form-group">
-          <div class="col col-lg-4">
-            <%= f.fields_for :fname do |sub_f| %>
-              <%= sub_f.text_field :pp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :iname do |sub_f| %>
-              <%= sub_f.text_field :pp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-          <div class="col col-lg-4">
-            <%= f.fields_for :oname do |sub_f| %>
-              <%= sub_f.text_field :pp, required: true, class: 'form-control' %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
+    <% end %>
   </fieldset>
 
   <fieldset>
@@ -168,7 +48,7 @@
     <div class="form-group">
       <%= f.label :username, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
-        <%= f.text_field :username, class: 'form-control' %>
+        <%= f.text_field :username, class: "form-control #{'has-error' if @user.errors.include?(:username)}" %>
       </div>
     </div>
     <div class="form-group">
@@ -181,7 +61,7 @@
       <div class="form-group">
         <%= f.label :password, class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-10">
-          <%= f.password_field :password, class: 'form-control'%>
+          <%= f.password_field :password, class: "form-control #{'has-error' if @user.errors.include?(:password)}"%>
         </div>
       </div>
     <% end %>
@@ -198,9 +78,6 @@
     <legend>Назначения</legend>
     <div id="positions">
       <%= render partial: 'positions_fields', locals: {f: f} %>
-    </div>
-    <div class="form-group">
-      <div id='positions-div'></div>
     </div>
     <div class="form-group">
         <%= f.link_to_add 'Назначить сотрудника на новую должность', :positions, class: 'btn btn-default col-lg-offset-4', data: { target: '#positions' } %>

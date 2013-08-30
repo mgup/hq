@@ -17,8 +17,8 @@ class Study::Discipline < ActiveRecord::Base
   belongs_to :lead_teacher, class_name: User, foreign_key: :subject_teacher
 
   has_many :discipline_teachers, class_name: Study::DisciplineTeacher,
-           primary_key: :subject_id, foreign_key: :subject_id, dependent: :delete_all
-  accepts_nested_attributes_for :discipline_teachers, reject_if: proc { |attrs| attrs[:teacher_id].blank? }
+           primary_key: :subject_id, foreign_key: :subject_id, dependent: :destroy
+  accepts_nested_attributes_for :discipline_teachers, allow_destroy: true, reject_if: proc { |attrs| attrs[:teacher_id].blank? }
 
   has_many :assistant_teachers, through: :discipline_teachers
 
@@ -47,6 +47,7 @@ class Study::Discipline < ActiveRecord::Base
   validates :semester, presence: true, inclusion: { in: [1,2] }
   validates :lead_teacher, presence: true
   validates :group, presence: true
+  validates :final_exams, presence: true
   validate  :sum_of_checkpoints_max_values_should_be_80
   validate  :sum_of_checkpoints_min_values_should_be_44
 
@@ -92,6 +93,7 @@ class Study::Discipline < ActiveRecord::Base
   private
 
   def sum_of_checkpoints_max_values_should_be_80
+    return true if checkpoints.length == 0
     max_sum = 0
     checkpoints.each do |c|
       max_sum += c.max unless c.marked_for_destruction?
@@ -103,6 +105,7 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   def sum_of_checkpoints_min_values_should_be_44
+    return true if checkpoints.length == 0
     min_sum = 0
     checkpoints.each do |c|
       min_sum += c.min unless c.marked_for_destruction?

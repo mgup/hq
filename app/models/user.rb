@@ -36,6 +36,12 @@ class User < ActiveRecord::Base
 
   scope :with_name, -> { includes(:iname, :fname, :oname) }
 
+  validates :username, presence: true
+  validates :password, presence: true
+  validates_associated :fname
+  validates_associated :iname
+  validates_associated :oname
+
   def full_name(form = :ip)
     # TODO Убрать после того, как все имена будут перенесены в словарь.
     if last_name.nil? then user_name else super(form) end
