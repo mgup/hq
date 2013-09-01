@@ -5,7 +5,7 @@ FactoryGirl.define do
     name        { Faker::Lorem.sentence }
     semester 	{ 1 }
     year		{ Date.today.strftime("%Y") }
-    group		{ Group.first }
-    subject_teacher	{ User.first }
+    group		{ FactoryGirl.create :group }
+    subject_teacher	{ FactoryGirl.create :user }
   end
 end
