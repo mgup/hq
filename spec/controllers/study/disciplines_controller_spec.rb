@@ -85,7 +85,7 @@ describe Study::DisciplinesController do
         it 'должен перенаправить на создание' do
           Study::Discipline.any_instance.should_receive(:save).and_return(false)
           post :create, discipline: {}
-          response.should render_action :new
+          response.should render_template :new
         end
       end
     end
@@ -115,7 +115,7 @@ describe Study::DisciplinesController do
         it 'должен перенаправлять на редактирование' do
           Study::Discipline.any_instance.should_receive(:update_attributes).and_return(false)
           put :update, id: @discipline, subject: {}
-          response.should render_action :edit
+          response.should render_template :edit
         end
       end
     end
