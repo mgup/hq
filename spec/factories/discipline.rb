@@ -7,6 +7,5 @@ FactoryGirl.define do
     year		{ Date.today.strftime("%Y") }
     group		{ Group.first }
     subject_teacher	{ User.first }
-    final_exams { FactoryGirl.create(:final_exam) }
   end
 end

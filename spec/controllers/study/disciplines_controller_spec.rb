@@ -69,7 +69,7 @@ describe Study::DisciplinesController do
       context 'в случае успешного создания' do
         before :each do
           Study::Discipline.any_instance.should_receive(:save).and_return(true)
-          post :create, discipline: valid_attributes
+          post :create, discipline: {}
         end
 
         it 'должен создавать новую дисциплину' do 
@@ -101,7 +101,7 @@ describe Study::DisciplinesController do
         end
 
         it 'должен находить правильную дисциплину' do
-          put :update, id: @discipline, subject: valid_attributes
+          put :update, id: @discipline, subject: {}
           assigns(:discipline).should eq(@discipline)
         end
 
