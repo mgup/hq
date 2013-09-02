@@ -1,11 +1,15 @@
-# require 'faker'
+require 'faker'
 
-# FactoryGirl.define do
-#   factory :speciality, class: Speciality do
-#   	name { Faker::Lorem.sentence }
-#   	сode { rand(12300) }
-#   	type { rand(2) }
-#   	suffix { Faker::Lorem.word }
-#     speciality_faculty	{ FactoryGirl.create :department }
-#   end
-# end
+FactoryGirl.define do
+   factory :speciality, class: Speciality do
+   	name { Faker::Lorem.sentence }
+    speciality_code { '111111' }
+   	type { rand(2) }
+   	suffix { 'xxx' }
+    speciality_shortname { 'xx' }
+    speciality_olength { 0 }
+    speciality_zlength { 0 }
+    speciality_ozlength { 0 }
+    speciality_faculty	{ FactoryGirl.create(:department).id }
+   end
+end
