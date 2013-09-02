@@ -26,7 +26,8 @@ class Study::CheckpointsController < ApplicationController
       checkpoint = Study::Checkpoint.find(study_checkpoint[:id])
       checkpoint.update_attributes(checkpoint_type: study_checkpoint[:type],
                                    date: study_checkpoint[:date],
-                                   name: study_checkpoint[:name], details: study_checkpoint[:details],)
+                                   name: study_checkpoint[:name], details: study_checkpoint[:details],
+                                   max: study_checkpoint[:max], min: study_checkpoint[:min])
       redirect_to study_discipline_checkpoints_path(@discipline)
     end
   end

@@ -94,44 +94,42 @@ describe Study::DisciplinesController do
 
      describe 'PUT #update' do
        before :each do
-         @discipline = FactoryGirl.create(:discipline, subject_teacher: @user.id,
+         @discipline = FactoryGirl.create(:discipline_with_controls, subject_teacher: @user.id,
                                           group: FactoryGirl.create(:group))
        end
-
        context 'в случае успешного изменения' do
          before :each do
            Study::Discipline.any_instance.should_receive(:update).and_return(true)
          end
 
          it 'должен находить правильную дисциплину' do
-           put :update, id: @discipline, discipline: {}
+           put :update, id: @discipline
            assigns(:discipline).should eq(@discipline)
          end
 
          it 'должен переходить на представление с занятиями' do
-           put :update, id: @discipline, discipline: {}
+           put :update, id: @discipline
            response.should redirect_to study_discipline_checkpoints_path(@discipline)
          end
        end
 
-       #context 'в случае неудачи' do
-       #  before :each do
-       #    Study::Discipline.any_instance.should_receive(:update).and_return(false)
-       #  end
-       #   context 'если идёт редактирование контрольных точек' do
-       #      it 'должен перенаправлять на редактирование контрольных точек' do
-       #        put :update, id: @discipline, discipline: {}
-       #        ? Идёт редактирование контрольных точек?
-       #        response.should render_template: 'study/checkpoints/new'
-       #      end
-       #    end
-       #   context 'если не идёт редактирование контрольных точек' do
-       #      it 'должен перенаправлять на редактирование дисциплины' do
-       #        put :update, id: @discipline, discipline: {}
-       #        response.should assert_template :edit
-       #      end
-       #    end
-       #end
+     #  context 'в случае неудачи' do
+     #    before :each do
+     #       Study::Discipline.any_instance.should_receive(:update).and_return(false)
+     #    end
+     #     context ', если идёт редактирование контрольных точек, ' do
+     #        it 'должен перенаправлять на редактирование контрольных точек' do
+     #          put :update, id: @discipline, params: {'name'=>nil, 'checkpoints_attributes'=>nil}
+     #          response.should render_template: 'study/checkpoints/new'
+     #        end
+     #      end
+     #     context ', если не идёт редактирование контрольных точек, ' do
+     #        it 'должен перенаправлять на редактирование дисциплины' do
+     #          put :update, id: @discipline, discipline: { name: nil }
+     #          response.should assert_template :edit
+     #        end
+     #      end
+     #  end
      end
 
      describe 'DELETE #destroy' do

@@ -14,8 +14,9 @@ class Study::Checkpoint < ActiveRecord::Base
   alias_attribute :max,      :checkpoint_max
   alias_attribute :closed,   :checkpoint_closed
 
-  belongs_to :discipline, -> { where(checkpoint_type: Study::Checkpoint::TYPE_CHECKPOINT).order(:checkpoint_date) },
-             class_name: Study::Discipline, foreign_key: :checkpoint_subject, inverse_of: :checkpoints
+  #belongs_to :discipline, -> { where(checkpoint_type: Study::Checkpoint::TYPE_CHECKPOINT).order(:checkpoint_date) },
+  #           class_name: Study::Discipline, foreign_key: :checkpoint_subject, inverse_of: :checkpoints
+  belongs_to :discipline, class_name: Study::Discipline, foreign_key: :checkpoint_subject, inverse_of: :checkpoints
 
   has_many :checkpointmarks, class_name: Study::Checkpointmark, foreign_key: :checkpoint_mark_checkpoint
 
