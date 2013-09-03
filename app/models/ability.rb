@@ -39,6 +39,7 @@ class Ability
     end
 
     can [:index, :show], :progress
+    can :show, [:student_progress, :student_discipline_progress]
     can :manage, :progress_group
 
     # Define abilities for the passed in user here. For example:

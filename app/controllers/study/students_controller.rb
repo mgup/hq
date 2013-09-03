@@ -1,7 +1,8 @@
 class Study::StudentsController < ApplicationController
-  load_and_authorize_resource
-
+  load_resource
+  skip_before_filter :authenticate_user! , :only => [:show, :discipline]
   def show
+    authorize! :show, :student_progress
     dates = []
     @rows = []
     @student.checkpoints.each do |checkpoint|
@@ -26,6 +27,7 @@ class Study::StudentsController < ApplicationController
   end
 
   def discipline
+    authorize! :show, :student_discipline_progress
     @student = Student. find params[:id]
     @discipline = Study::Discipline.find params[:discipline]
     @checkpoints = @discipline.checkpoints.order(:checkpoint_date)
