@@ -61,7 +61,7 @@ class Study::Discipline < ActiveRecord::Base
   scope :now, -> {where(subject_year: CURRENT_STUDY_YEAR, subject_semester: CURRENT_STUDY_TERM)}
   scope :include_teacher, -> user {
     includes(:assistant_teachers)
-    .where('subject_teacher = ? OR subject_teacher.teacher_id = ?', user.id, user.id)
+    .where('subject_teacher = ? OR subject_teacher.teacher_id = ?', user.id, user.id).references(:subject_teacher)
   }
 
   def has?(type)

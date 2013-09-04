@@ -68,8 +68,7 @@ class Student < ActiveRecord::Base
   has_many :choices, class_name: My::Choice, :through => :selections
 
   default_scope do
-    select('student_group.*, student.*')
-    .includes(:person)
+    joins(:person)
     .order('last_name_hint, first_name_hint, patronym_hint')
   end
 
