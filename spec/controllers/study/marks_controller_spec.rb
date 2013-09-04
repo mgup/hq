@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Study::CheckpointmarksController do
+describe Study::MarksController do
   context 'для разработчиков' do
     before do
       @user = FactoryGirl.create(:developer)
@@ -15,7 +15,7 @@ describe Study::CheckpointmarksController do
 
     describe 'GET "index"' do
       before :each do
-        @checkpointmark = FactoryGirl.create(:practical_mark,  student: @student,
+        @mark = FactoryGirl.create(:practical_mark,  student: @student,
                                          checkpoint: @checkpoint)
         get :index, discipline_id: @discipline, checkpoint_id: @checkpoint
       end
@@ -29,7 +29,7 @@ describe Study::CheckpointmarksController do
       end
 
       it 'в выводе должна присутствовать тестовая оценка' do
-        assigns(:checkpointmarks).should include(@checkpointmark)
+        assigns(:marks).should include(@mark)
       end
     end
 
@@ -37,29 +37,29 @@ describe Study::CheckpointmarksController do
       context 'если переданы параметры,' do
         before :each do
           post :create, discipline_id: @discipline, checkpoint_id: @checkpoint,
-               checkpointmarks: [{mark: 2001, student: @other_student.id}, {mark: 2004, student: @student.id}]
+               marks: [{mark: 2001, student: @other_student.id}, {mark: 2004, student: @student.id}]
         end
 
         it 'оценки должны сохраняться' do
-          @checkpoint.checkpointmarks.should_not be_blank
+          @checkpoint.marks.should_not be_blank
         end
 
         it 'должно происходить перенаправление на оценки' do
-          response.should redirect_to study_discipline_checkpoint_checkpointmarks_path(@discipline, @checkpoint)
+          response.should redirect_to study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
         end
       end
       context 'если переданы параметры,' do
         before :each do
           post :create, discipline_id: @discipline, checkpoint_id: @checkpoint,
-               checkpointmarks: []
+               marks: []
         end
 
         it 'не должен сохранять оценки' do
-          @checkpoint.checkpointmarks.should be_blank
+          @checkpoint.marks.should be_blank
         end
 
         it 'должно происходить перенаправление на оценки' do
-          response.should redirect_to study_discipline_checkpoint_checkpointmarks_path(@discipline, @checkpoint)
+          response.should redirect_to study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
         end
       end
     end
