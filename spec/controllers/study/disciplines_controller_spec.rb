@@ -139,9 +139,10 @@ describe Study::DisciplinesController do
        end
 
        it 'должен находить правильную дисциплину' do
-           assigns(:discipline).should eq(@discipline)
+          assigns(:discipline).should eq(@discipline)
+          @discipline.id == nil
        end
-       it 'должен перенаправлять на на список дисциплин' do
+       it 'должен перенаправлять на список дисциплин' do
          response.should redirect_to study_disciplines_path
        end
      end
