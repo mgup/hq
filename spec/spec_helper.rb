@@ -42,4 +42,8 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
+
+  # Убирает необходимость писать "FactoryGirl.build()".
+  # Теперь можно писать просто "build()".
+  config.include FactoryGirl::Syntax::Methods
 end
