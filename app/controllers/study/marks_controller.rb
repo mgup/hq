@@ -38,7 +38,7 @@ class Study::MarksController < ApplicationController
         #  end
       end
     end
-    redirect_to study_discipline_checkpoint_checkpointmarks_path(@discipline, @checkpoint), notice: 'Сохранено'
+    redirect_to study_discipline_checkpoint_marks_path(@discipline, @checkpoint), notice: 'Сохранено'
   end
 
 
