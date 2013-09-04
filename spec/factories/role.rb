@@ -6,8 +6,12 @@ FactoryGirl.define do
     title       { Faker::Lorem.word }
     description { Faker::Lorem.sentence }
 
-    factory :role_developer do
+    trait :developer do
       name 'developer'
+    end
+
+    trait :lecturer do
+      name 'lecturer'
     end
   end
 end
