@@ -47,8 +47,7 @@ class Study::Discipline < ActiveRecord::Base
   validates :semester, presence: true, inclusion: { in: [1,2] }
   validates :lead_teacher, presence: true
   validates :group, presence: true
-  #  Пока
-  # validates :final_exams, presence: true
+  validates :final_exams, presence: true
   validate  :sum_of_checkpoints_max_values_should_be_80
   validate  :sum_of_checkpoints_min_values_should_be_44
 

@@ -113,23 +113,21 @@ describe Study::DisciplinesController do
          end
        end
 
-     #  context 'в случае неудачи' do
-     #    before :each do
-     #       Study::Discipline.any_instance.should_receive(:update).and_return(false)
-     #    end
-     #     context ', если идёт редактирование контрольных точек, ' do
-     #        it 'должен перенаправлять на редактирование контрольных точек' do
-     #          put :update, id: @discipline, params: {'name'=>nil, 'checkpoints_attributes'=>nil}
-     #          response.should render_template: 'study/checkpoints/new'
-     #        end
-     #      end
-     #     context ', если не идёт редактирование контрольных точек, ' do
-     #        it 'должен перенаправлять на редактирование дисциплины' do
-     #          put :update, id: @discipline, discipline: { name: nil }
-     #          response.should assert_template :edit
-     #        end
-     #      end
-     #  end
+       #context 'в случае неудачи' do
+       #   context ', если идёт редактирование контрольных точек, ' do
+       #      it 'должен перенаправлять на редактирование контрольных точек' do
+       #        put :update, id: @discipline, checkpoints_attributes: 5
+       #        response.should render_template 'study/checkpoints/new'
+       #      end
+       #    end
+       #   context ', если не идёт редактирование контрольных точек, ' do
+       #      it 'должен перенаправлять на редактирование дисциплины' do
+       #        put :update, id: @discipline, name: nil
+       #        response.should render_template :edit
+       #        response.body.should == ''
+       #      end
+       #    end
+       #end
      end
 
      describe 'DELETE #destroy' do
