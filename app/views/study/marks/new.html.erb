@@ -1,16 +1,5 @@
-<div class='page-header'>
-  <h1>
-    Добавить оценки <%= @subject.group.name %>
-    <br>
-    <small>
-      <%= @subject.title %>
-      (<%= "#{@subject.year}/#{@subject.year + 1}, #{@subject.semester}-й семестр" %>)
-    </small>
-  </h1>
+<div class="page-header">
+  <h1>Результаты работы студентов</h1>
 </div>
-
-
-<div class='alert alert-error' id='notice'>Вы внесли не все результаты!</div>
-
 
 <%= render 'form' %>

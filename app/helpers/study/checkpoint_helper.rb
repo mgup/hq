@@ -1,4 +1,15 @@
 module Study::CheckpointHelper
+  def checkpoint_type(checkpoint)
+    case checkpoint.type
+      when Study::Checkpoint::TYPE_LECTURE
+        'Лекция'
+      when Study::Checkpoint::TYPE_SEMINAR
+        'Практическое или лабораторное занятие'
+      when Study::Checkpoint::TYPE_CHECKPOINT
+        "Контрольная точка «#{checkpoint.name}»"
+    end
+  end
+
   def render_checkpoints_calendar(discipline, options = {})
     content_tag :div do
       content_tag :table, class: 'table semester-calendar' do

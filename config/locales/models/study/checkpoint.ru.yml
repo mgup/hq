@@ -4,6 +4,8 @@ ru:
       study/checkpoint: 'занятие'
     attributes:
       study/checkpoint:
+        group: 'группа'
+        discipline: 'дисциплина'
         type: 'тип занятия'
         date: 'дата занятия'
         name: 'форма контроля'
