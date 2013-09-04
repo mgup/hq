@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Study::ProgressController do
   before  do
-    @group = FactoryGirl.create(:group)
+    @group = FactoryGirl.create(:group,  speciality:	FactoryGirl.create(:speciality, id: 2 + rand(7)))
   end
 
   describe 'GET #index' do
