@@ -30,7 +30,7 @@ class Study::MarksController < ApplicationController
       if m[:mark] != ''
         #if @checkpoint.checkpointmarks.by_student(m[:student]) == []
         mark=Study::Mark.new student: m[:student], checkpoint: m[:checkpoint],
-                                         mark: m[:mark]
+                                         mark: m[:mark], checkpoint_mark_submitted: DateTime.now
         mark.save!
         #elsif @checkpoint.checkpointmarks.by_student(m[:student]).first.mark != m[:mark]
         #  mark = @checkpoint.checkpointmarks.by_student(m[:student]).first

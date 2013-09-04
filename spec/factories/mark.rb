@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :mark, class: Study::Mark do
     checkpoint
     student
-    checkpoint_mark_submitted { Date.today }
+    checkpoint_mark_submitted { DateTime.now }
 
     factory :lecture_mark do
       mark { 1001 + rand(1) }
