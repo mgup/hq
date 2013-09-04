@@ -1,6 +1,6 @@
 $ ->
   updateSpecialities = (faculty_id) ->
-    $.getJSON 'ajax/specialities', {
+    $.getJSON '/study/disciplines/ajax/specialities', {
       'faculty': faculty_id
     }, (specialities) ->
       select = $('.ajax-speciality')[0]
@@ -12,7 +12,7 @@ $ ->
         $(select).val(specialities[0].id).change()
 
   updateGroups = (speciality_id) ->
-    $.getJSON 'ajax/groups', {
+    $.getJSON '/study/disciplines/ajax/groups', {
       'speciality': speciality_id
     }, (groups) ->
       select = $('.ajax-group')[0]

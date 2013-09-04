@@ -10,6 +10,9 @@ class Student < ActiveRecord::Base
   MARK_PRACTICAL_GOOD       = 2002
   MARK_PRACTICAL_PERFECT    = 2003
 
+  STATUS_STUDENT            = 101
+  STATUS_DEBTOR             = 107
+
   self.table_name = 'student_group'
 
   devise :database_authenticatable, :registerable,
@@ -47,10 +50,11 @@ class Student < ActiveRecord::Base
   belongs_to :person, class_name: Person, primary_key: :student_id, foreign_key: :student_group_student
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :student_group_group
 
-  has_many :checkpointmarks, class_name: Study::Checkpointmark, foreign_key: :checkpoint_mark_student
+  has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_student
   has_many :exam_students, foreign_key: :exam_student_student
   has_many :exams, :through => :exam_students
-  has_many :marks, class_name: Study::Mark, foreign_key: :student_id
+
+  #has_many :marks, class_name: Study::Mark, foreign_key: :student_id
 
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
@@ -68,6 +72,8 @@ class Student < ActiveRecord::Base
     .includes(:person)
     .order('last_name_hint, first_name_hint, patronym_hint')
   end
+
+  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_DEBTOR]) }
 
   scope :with_group, -> { joins(:group) }
 

@@ -28,6 +28,7 @@ class Ability
       if user.is?(:lecturer)
         can :manage, Study::Discipline
         can :manage, Study::Checkpoint
+        can :manage, Study::Mark
         # Загрузка ресурсов, принадлежащих только текущему пользователю,
         # производится в Study::DisciplinesController.
         #can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }

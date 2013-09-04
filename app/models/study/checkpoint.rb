@@ -18,7 +18,7 @@ class Study::Checkpoint < ActiveRecord::Base
   #           class_name: Study::Discipline, foreign_key: :checkpoint_subject, inverse_of: :checkpoints
   belongs_to :discipline, class_name: Study::Discipline, foreign_key: :checkpoint_subject, inverse_of: :checkpoints
 
-  has_many :checkpointmarks, class_name: Study::Checkpointmark, foreign_key: :checkpoint_mark_checkpoint
+  has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_checkpoint
 
   validates :name, presence: true, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
   validates :max,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }

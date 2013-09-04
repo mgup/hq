@@ -1,84 +1,61 @@
 class Study::MarksController < ApplicationController
-  load_and_authorize_resource
+  before_filter :load_discipline
+  load_and_authorize_resource :discipline
+  load_and_authorize_resource :checkpoint, class: Study::Checkpoint
+  load_and_authorize_resource through: :checkpoint
 
-  before_filter :find_subject
+   #before_filter :find_chekpoint
 
   def index
-    @marks = @marks.by_subject(Study::Subject.find_subjects(@subject))
-    @subject_students = []
-    @students.each do |student|
-      student_marks = @marks.by_student(student)
-      result = []
-      retake = []
-      student_marks.each do |sm|
-        result << (@subject.test? ? sm.test : sm.mark)
-        retake << ((sm.retake == 0) ? 'нет' : sm.retake)
-      end
-      result = result.uniq
-      retake = retake.uniq
-      error = 'danger' if result.size > 1 || retake.size > 1
-      @subject_students.push({students: student, marks: result.join(', '),
-                              retakes: retake.join(', '),
-                              mark: student_marks.first, error: error})
+    if @marks.empty?
+      redirect_to new_study_discipline_checkpoint_mark_path(@discipline,
+                                                            @checkpoint)
     end
-
   end
 
   def new ; end
 
-  def create
-    marks = params[:marks]
-    ver = true
-    marks.each do |ex|
-      ver= (ex[:mark] != '') && ver
-    end
-
-    if ver
-      marks.each do |m|
-        mark=Study::Mark.new(m)
-        mark.save!
-      end
-      redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
-    else
-      redirect_to new_study_subject_mark_path(@subject), 
-      notice: 'Вы внесли не все результаты!'
-    end
-
-  end
-
-  def edit
-    @marks = Study::Mark.by_subject(Study::Subject.find_subjects(@subject))
-                        .by_student(@mark.student)
-    @marks = @marks.where(user_id: current_user.id) if current_user.is?(:typer)
-    result, retake = [], []
-    @marks.each do |student_mark|
-      result << student_mark.mark
-      retake << student_mark.retake
-    end
-    @results = {marks: result.uniq, retakes: retake.uniq}
-   end
-
-  def update
-    marks = params[:marks]
-    marks.each do |m|
-      mark=Study::Mark.find(m[:id])
-      mark.update_attributes(m)
-    end
-    redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
-  end
+  def edit ; end
 
   def show ; end
 
+  def update ; end
+
+  def create
+    #raise params.inspect
+    marks = params[:marks]
+    marks.each do |m|
+      m[:student] = Student.find(m[:student])
+      m[:checkpoint] = @checkpoint
+      if m[:mark] != ''
+        #if @checkpoint.checkpointmarks.by_student(m[:student]) == []
+        mark=Study::Checkpointmark.new student: m[:student], checkpoint: m[:checkpoint],
+                                         mark: m[:mark]
+        mark.save!
+        #elsif @checkpoint.checkpointmarks.by_student(m[:student]).first.mark != m[:mark]
+        #  mark = @checkpoint.checkpointmarks.by_student(m[:student]).first
+        #  mark.update_attributes(mark: m[:mark])
+        #  end
+      end
+    end
+    redirect_to study_discipline_checkpoint_checkpointmarks_path(@discipline, @checkpoint), notice: 'Сохранено'
+  end
+
+
   def resource_params
-    params.fetch(:mark, {}).permit(:user_id, :student_id, :mark, :retake)
+     params.fetch(:checkpointmark, {}).permit( :students, :mark, :checkpoint)
   end
 
   private
 
-  def find_subject
-    @subject = Study::Subject.find(params[:subject_id])
-    @students = Student.in_group_at_date( @subject.group.id, 
-      Time.new((@subject.year + 1), (@subject.in_fall? ? 1 : 6), 1))
+  def load_discipline
+    @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
+    @students = @discipline.group.students.valid_for_today
   end
 
+  #def find_chekpoint
+  #  @checkpoint = Study::Checkpoint.find(params[:checkpoint_id])
+  #  @discipline = Study::Discipline.find(params[:discipline_id])
+  #  @students = Student.where(student_group_group: @checkpoint.discipline.group)
+  #end
 end

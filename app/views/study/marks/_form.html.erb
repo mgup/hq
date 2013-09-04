@@ -1,78 +1,120 @@
-<%= form_tag study_subject_marks_path(@subject), class: 'val', id: 'form-for-mark' do %>
+<%= nested_form_for @checkpoint, url: study_discipline_checkpoint_path(@discipline, @checkpoint),
+                    method: :patch, html: { class: 'form-horizontal', role: 'form' } do |f| %>
 
-<h4>Поставить всем:</h4>
-<%= hidden_field_tag 'allmarks' %>
-<% if @subject.test? %>
-   <%= pill_tabs('marks', [[0, 'Не зачтено'], [1, 'Зачтено']], 'allmarks') %>
-<% else %>
-   <%= pill_tabs('marks', [[2, 'Неудовл.'], [3, 'Удовл.'], [4, 'Хорошо'], [5, 'Отлично']], 'allmarks') %>
-<% end %>
-<br>
-  <table class='table' id='stud-marks'>
-    <thead>
-    <tr>
-      <th>#</th>
-      <th>Студент</th>
-      <th>Пересдача</th>
-      <th style='padding-left: 60px;'>Результат</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @students.each do |student| %>
-    <tr>
-      <td>
-        <%= student.id %>
-        <%= hidden_field_tag 'marks[][student_id]', student.id %>
-        <%= hidden_field_tag 'marks[][user_id]', current_user.id %>
-        <%= hidden_field_tag 'marks[][subject_id]', @subject.id %>
-      </td>
-      <td><%= student.person.full_name %></td>
-      <td>
-        <%= select_tag 'marks[][retake]', options_for_select(%w(1 2 3)), prompt: 'нет' %>
-      </td>
-      <td style='padding-left: 45px;'>
-        <% if @subject.test? %>
-          <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'all_mark required' %>
-          <%= pill_tabs('mark', [[0, 'Не зачтено'], [1, 'Зачтено']], "#{student.id}_mark") %>
-        <% else %>
-          <%= hidden_field_tag 'marks[][mark]', nil, required: 'required', id: "#{student.id}_mark", class: 'all_mark required' %>
-          <%= pill_tabs('mark', [[2, 'Неудовл.'], [3, 'Удовл.'], [4, 'Хорошо'], [5, 'Отлично']], "#{student.id}_mark") %>
-        <% end %>
-      </td>
-    </tr>
-    <% end %>
-    </tbody>
-  </table>
-
-  <h4>Всего:</h4>
-  <div class='row'>
-    <% if @subject.test? %>
-    <div class='col col-lg-2'>
-       Незачет: <input class='counter form-control' id='mark0' type='text' disabled value='0'>
+  <div class="form-group">
+    <%= f.label :group, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @discipline.group.name %></p>
     </div>
-    <div class='col col-lg-2'>
-       Зачет: <input class='counter form-control' id='mark1' type='text' disabled value='0'>
-     </div>
-     <% else %>
-      <div class='col col-lg-2'>
-        2: <input class='counter form-control' id='mark2' type='text' disabled value='0'>
-      </div>
-      <div class='col col-lg-2'>
-        3: <input class='counter form-control' id='mark3' type='text' disabled value='0'>
-      </div>
-      <div class='col col-lg-2'>
-        4: <input class='counter form-control' id='mark4' type='text' disabled value='0'>
-      </div>
-      <div class='col col-lg-2'>
-        5: <input class='counter form-control' id='mark5' type='text' disabled value='0'>
-      </div>
-     <% end %>
   </div>
 
-  <%= submit_tag 'Сохранить оценки', class: 'btn btn-default', id: 'submit-req' %>
+  <div class="form-group">
+    <%= f.label :discipline, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @discipline.name %></p>
+    </div>
+  </div>
 
-  или
-  <%= link_to 'назад ко всем предметам', study_subject_marks_path(@subject) %>
+  <div class="form-group">
+    <%= f.label :date, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= l @checkpoint.date, format: :long %></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :type, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= checkpoint_type(@checkpoint) %></p>
+    </div>
+  </div>
+
+  <table class="table">
+    <% @students.each do |student| %>
+      <tr>
+        <td class="text-muted"><%= student.id %></td>
+        <td><%= student.person.full_name %></td>
+        <td>
+          <%= f.fields_for :marks do |marks_form| %>
+            <%= render "study/marks/mark#{@checkpoint.type}_fields",
+                      f: marks_form, student: student %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
 <% end %>
 
+
+<%#=#= form_tag study_discipline_checkpoint_marks_path(@discipline, @checkpoint), class: 'val', id: 'form-for-checkpointmark' do %>
+
+  <!--<table class='table table-striped'>-->
+    <!--<thead>-->
+    <!--<tr>-->
+      <!--<th class='text-muted'>#</th>-->
+      <!--<th>Студент</th>-->
+      <!--<th>Результаты контроля</th>-->
+      <!--<th></th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <%#=# @discipline.group.students.each do |student| %>
+    <!--<tr>-->
+      <!--<td class='text-muted'>-->
+        <%#=#= student.id %>
+        <%#=#= hidden_field_tag 'checkpointmarks[][student]', student.id %>
+        <%#=#= hidden_field_tag 'checkpointmarks[][checkpoint]', @checkpoint.id %>
+      <!--</td>-->
+      <!--<td><%#=#= student.person.full_name %></td>-->
+      <%#=# mark = @checkpointmarks.by_student(student).last %>
+      <!--<td>-->
+        <%#=# if mark != nil %>
+          <%#=# if @checkpoint.is_checkpoint? %>
+            <!--<div class='col col-lg-7'>-->
+              <!--<p class='text-center'><%#== mark.mark %></p>-->
+            <!--</div>-->
+          <%#=# else %>
+            <!--<div class='col col-lg-10'>-->
+              <!--<span class="label label-<%#== mark.result[:color] %>"><%#== mark.result[:mark] %></span>-->
+            <!--</div>-->
+          <%#=# end %>
+        <%#=# end %>
+        <!--<div id="check_result_<%#== student.id %>" style="display: <%#== mark!=nil ? 'none' : 'block' %>;">-->
+          <%#=# if @checkpoint.lecture? %>
+            <%#=#= hidden_field_tag 'checkpointmarks[][mark]', mark == nil ? nil : mark.mark,  id: "#{student.id}_mark" %>
+            <!--<ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>-->
+              <!--<li><a data-toggle='pill' data-value='1001' data-input="<%#== student.id %>_mark"  href='#'>Не посетил</a></li>-->
+              <!--<li><a data-toggle='pill' data-value='1002' data-input="<%#== student.id %>_mark"  href='#'>Посетил</a></li>-->
+            <!--</ul>-->
+          <%#=# elsif @checkpoint.seminar? %>
+            <%#=#= hidden_field_tag 'checkpointmarks[][mark]',  mark == nil ? nil : mark.mark, id: "#{student.id}_mark" %>
+            <!--<ul class='nav nav-pills pill-select' name='pillmark' id='pillmark'>-->
+              <!--<li><a data-toggle='pill' data-value='2001' data-input="<%#== student.id %>_mark"  href='#'>Неудовл.</a></li>-->
+              <!--<li><a data-toggle='pill' data-value='2004' data-input="<%#== student.id %>_mark"  href='#'>Удовл.</a></li>-->
+              <!--<li><a data-toggle='pill' data-value='2002' data-input="<%#== student.id %>_mark"  href='#'>Хорошо</a></li>-->
+              <!--<li><a data-toggle='pill' data-value='2003' data-input="<%#== student.id %>_mark"  href='#'>Отлично</a></li>-->
+            <!--</ul>-->
+          <%#=# else %>
+            <!--<div class='col col-lg-7'>-->
+              <%#== text_field_tag 'checkpointmarks[][mark]',  mark == nil ? nil : mark.mark, id: "#{student.id}_mark", class: 'form-control' %>
+            <!--</div>-->
+          <%#=# end %>
+        <!--</div>-->
+      <!--</td>-->
+      <!--<td>-->
+        <%#=# if mark != nil %>
+          <!--<a class='mark-editor btn btn-default' data-value="<%#=#= student.id %>" title='Редактировать'><span class='glyphicon glyphicon-edit'></span></a>-->
+        <%#=# end %>
+      <!--</td>-->
+    <!--</tr>-->
+    <%#=# end %>
+    <!--</tbody>-->
+  <!--</table>-->
+
+
+  <%#=#= submit_tag 'Сохранить оценки', class: 'btn btn-default', id: 'submit-req' %>
+
+  <!--или-->
+  <%#=#= link_to 'назад', study_discipline_checkpoints_path(@discipline) %>
+<%#=# end %>

@@ -43,8 +43,10 @@
             <%= '</strong>'.html_safe if checkpoint.is_checkpoint? %>
           </td>
           <td>
-            <%= link_to study_discipline_checkpoint_checkpointmarks_path(@discipline, checkpoint), class: 'btn btn-default' do %>
-              <span class="glyphicon glyphicon-pencil"></span> Внести результаты
+            <% unless checkpoint.date.future? %>
+              <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default' do %>
+                <span class="glyphicon glyphicon-pencil"></span> Внести результаты
+              <% end %>
             <% end %>
           </td>
        </tr>
