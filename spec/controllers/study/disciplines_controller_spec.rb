@@ -24,7 +24,7 @@ describe Study::DisciplinesController do
         should respond_with(:success)
       end
 
-      it 'должен видеть список дисциплин' do
+      it 'должен видеть страницу со списком дисциплин' do
         should render_template(:index)
       end
 
@@ -48,62 +48,96 @@ describe Study::DisciplinesController do
         end
       end
     end
+
+    describe 'при создании дисциплины' do
+      before :each do
+        get :new
+      end
+
+      it 'должен получить ответ' do
+        should respond_with(:success)
+      end
+
+      it 'должен видеть страницу создания дисциплины' do
+        should render_template(:new)
+      end
+
+      it 'должен получить заготовку для дисциплины' do
+        assigns(:discipline).should be_a_new(Study::Discipline)
+      end
+    end
+
+    describe 'при сохранении новой дисциплины' do
+      context 'при отсутствии ошибок в данных дисциплины' do
+        before :each do
+          @discipline_attrs = build(:discipline,
+                                    subject_teacher: @user.id,
+                                    subject_group: create(:group).id).attributes
+          @discipline_attrs[:final_exam_attributes] = build(:exam, :final).attributes
+        end
+
+        it 'должен вызывать создание дисциплины' do
+          expect {
+            post :create, study_discipline: @discipline_attrs
+          }.to change { Study::Discipline.count }.by(1)
+        end
+
+        it 'должен переходить на страницу редактирования занятий' do
+          post :create, study_discipline: @discipline_attrs
+          response.should redirect_to(study_disciplines_path)
+        end
+      end
+
+      context 'при наличии ошибок в данных дисциплины' do
+        it 'не должен вызывать создание дисциплины' do
+          expect {
+            post :create, study_discipline: attributes_for(:discipline)
+          }.to_not change { Study::Discipline.count }.by(1)
+        end
+        it 'должен видеть форму создания дисциплины' do
+          post :create, study_discipline: attributes_for(:discipline)
+          should render_template(:new)
+        end
+      end
+    end
+
+    describe 'при редактировании своей дисциплины' do
+      before :each do
+        @discipline = create(:discipline, lead_teacher: @user)
+        get :edit, id: @discipline.id
+      end
+
+      it 'должен получить ответ' do
+        should respond_with(:success)
+      end
+
+      it 'должен видеть страницу редактировании дисциплины' do
+        should render_template(:edit)
+      end
+
+      it 'должен получать нужную запись' do
+        assigns(:discipline).should eql(@discipline)
+      end
+    end
+
+    describe 'при редактировании чужой дисциплины' do
+      it 'должен получать ошибку ActiveRecord::RecordNotFound' do
+        discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        expect {
+          get :edit, id: discipline.id
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe 'при сохранении изменений в существующую дисциплину' do
+
   end
 
    #context 'для разработчиков' do
    #  before :each do
    #    @user = FactoryGirl.create(:developer)
    #    sign_in @user
-   #  end
-   #
-   #  describe 'GET #index' do
-   #    before :each do
-   #      @discipline = FactoryGirl.create(:discipline, lead_teacher: @user)
-   #      get :index
-   #    end
-   #
-   #    it 'в выводе должна присутствовать тестовая дисциплина' do
-   #      assigns(:disciplines).should include(@discipline)
-   #    end
-   #  end
-   #
-   #
-   #  describe 'GET #new' do
-   #    before :each do
-   #      get :new
-   #    end
-   #
-   #    it 'должен выполняться успешно' do
-   #      response.should be_success
-   #    end
-   #
-   #    it 'должен выводить правильное представление' do
-   #      response.should render_template(:new)
-   #    end
-   #
-   #    it 'должен содержать новую запись' do
-   #      assigns(:discipline).new_record?.should be_true
-   #    end
-   #  end
-   #
-   #  describe 'GET #edit' do
-   #    before :each do
-   #      @discipline = FactoryGirl.create(:discipline,  subject_teacher: @user.id,
-   #                                       group: FactoryGirl.create(:group))
-   #      get :edit, id: @discipline.id
-   #    end
-   #
-   #    it 'должен выполняться успешно' do
-   #      response.should be_success
-   #    end
-   #
-   #    it 'должен выводить правильное представление' do
-   #      response.should render_template(:edit)
-   #    end
-   #
-   #    it 'должен находить правильную запись' do
-   #      assigns(:discipline).should == @discipline
-   #    end
    #  end
    #
    #  describe 'POST #create' do
