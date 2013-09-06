@@ -27,7 +27,7 @@
         <span class="help-block"><%= checkpoint.details %></span>
       </td>
       <td>
-        <% mark = checkpoint.checkpointmarks.by_student(@student).last %>
+        <% mark = checkpoint.marks.by_student(@student).last %>
         <% if checkpoint.is_checkpoint? %>
           <div class='col col-lg-7'>
             <% if mark != nil %>
@@ -46,4 +46,7 @@
   </tbody>
 </table>
 
-<a  class="btn btn-default" href="/study/group/<%= params[:group_id] %>/student/<%= @student.id %>"><span class='glyphicon glyphicon-backward'></span> Назад ко всем дисциплинам</a>
+<a  class="btn btn-default" href="/study/group/<%= params[:group_id] %>/student/<%= @student.id %>"><span class="glyphicon glyphicon-list-alt"></span> Назад ко всем дисциплинам</a>
+<%= link_to "/study/group/#{params[:group_id]}/progress", class: 'btn btn-default' do %>
+  <span class="glyphicon glyphicon-backward"></span> Назад к группе
+<% end %>

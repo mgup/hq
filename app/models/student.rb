@@ -190,7 +190,7 @@ GROUP BY `group`
     l = discipline.checkpoints.lectures.count
     p = discipline.checkpoints.practicals.count
     discipline.checkpoints.collect do |checkpoint|
-      mark = checkpoint.checkpointmarks.by_student(id) == [] ? 0 : checkpoint.checkpointmarks.by_student(self).last.mark
+      mark = checkpoint.marks.by_student(id) == [] ? 0 : checkpoint.marks.by_student(self).last.mark
       result = case mark
                  when MARK_LECTURE_ATTEND
                    (5/l)
