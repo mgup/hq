@@ -16,7 +16,7 @@ class Study::StudentsController < ApplicationController
         marks = []
         marks << discipline
         Study::Checkpoint.by_discipline(discipline).by_date(date).each do |checkpoint|
-          marks << {mark: checkpoint.checkpointmarks.by_student(@student).last,
+          marks << {mark: checkpoint.marks.by_student(@student).last,
                     checkpoint: checkpoint}
         end
         row << marks
