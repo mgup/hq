@@ -1,0 +1,18 @@
+<%# Поля для отметок о результатах работы на семинаре. %>
+
+<%= f.hidden_field :id %>
+<%= f.hidden_field "mark_#{student.id}" %>
+<div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-default">
+    <input type="radio" name="options" id="option1" data-value="2001" data-input="study_checkpoint_marks_mark_<%= student.id %>"> Неудовл.
+  </label>
+  <label class="btn btn-default">
+    <input type="radio" name="options" id="option2" data-value="2004" data-input="study_checkpoint_marks_mark_<%= student.id %>"> Удовл.
+  </label>
+  <label class="btn btn-default">
+    <input type="radio" name="options" id="option3" data-value="2002" data-input="study_checkpoint_marks_mark_<%= student.id %>"> Хорошо
+  </label>
+  <label class="btn btn-default">
+    <input type="radio" name="options" id="option4" data-value="2003" data-input="study_checkpoint_marks_mark_<%= student.id %>"> Отлично
+  </label>
+</div>
