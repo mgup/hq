@@ -1,15 +1,15 @@
 <%= nested_form_for @discipline, html: { class: 'form-horizontal', role: 'form' } do |f|%>
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:year) %>">
-    <%= f.label :year, class: 'control-label col-sm-3' %>
+    <%= f.label :subject_year, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.select :year, options_for_select(%w(2013), 2013), {}, { class: 'form-control' } %>
+      <%= f.select :subject_year, options_for_select(%w(2013), 2013), {}, { class: 'form-control' } %>
     </div>
   </div>
 
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:semester) %>">
-    <%= f.label :semester, class: 'control-label col-sm-3' %>
+    <%= f.label :subject_semester, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.select :semester, [['осенний', 1], ['весенний', 2]], {}, { class: 'form-control' } %>
+      <%= f.select :subject_semester, [['осенний', 1], ['весенний', 2]], {}, { class: 'form-control' } %>
     </div>
   </div>
 
@@ -46,9 +46,9 @@
   </div>
 
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:name) %>">
-    <%= f.label :name, class: 'control-label col-sm-3' %>
+    <%= f.label :subject_name, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.text_field :name, placeholder: 'например, "Компьютерная обработка изображений"', class: 'form-control' %>
+      <%= f.text_field :subject_name, placeholder: 'например, "Компьютерная обработка изображений"', class: 'form-control' %>
       <span class="help-block">
         Пожалуйста, используйте полное название дисциплины из учебного плана.
         Не допускайте сокращений.
@@ -56,7 +56,7 @@
     </div>
   </div>
 
-  <%= render partial: 'final_exams_fields', locals: {f: f} %>
+  <%= render partial: 'final_exam_fields', locals: {f: f} %>
 
   <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">

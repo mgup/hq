@@ -1,4 +1,4 @@
-<%= f.fields_for :final_exams do |exam| %>
+<%= f.fields_for :final_exam do |exam| %>
   <%= exam.hidden_field :id %>
 
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'exams.type') %>">
