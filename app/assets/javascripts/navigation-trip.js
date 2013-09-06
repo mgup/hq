@@ -1,11 +1,21 @@
 $(function () {
     var array = [];
+    var key = 1;
     $('.navigation_trip').each(function(){
        var $this = $(this);
-        array.push({
-            'sel': $($this.data('input')),
-            'content':  $this.data('content')
+       var e = {
+           'sel': $($this.data('input')),
+           'content':  $this.data('content'),
+           'position': $this.data('position') || 'n'
+       };
+
+        $(array).each(function(){
+            var x = (this.content != e.content ? 1 : 0);
+            key = key * x;
         });
+
+        if (key == 1) array.push(e);
+        key = 1;
     });
 
     var navigation_trip = new Trip($(array),{

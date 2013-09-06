@@ -6,19 +6,22 @@
 
 <%= link_to new_study_discipline_checkpoint_path(@discipline),
             class: 'btn btn-default navigation_trip', id: 'edit_checkpoints_button',
-            data: { input: '#edit_checkpoints_button', content: 'Вы можете отредактировать расписание, пройдя по данной ссылке.' } do %>
+            data: { input: '#edit_checkpoints_button', content: 'Вы можете отредактировать расписание, пройдя по данной ссылке.',
+                    position: 's'} do %>
   <span class="glyphicon glyphicon-calendar"></span>
   Редактировать расписание
 <% end %>
 
 <%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-default navigation_trip',
             id: 'edit_discipline_button',
-            data: { input: '#edit_discipline_button', content: 'Вы можете редактировать карту дисциплины. Для этого пройдите по данной ссылке.' } do %>
+            data: { input: '#edit_discipline_button', content: 'Вы можете редактировать карту дисциплины. Для этого пройдите по данной ссылке.',
+                    position: 's'} do %>
   <span class="glyphicon glyphicon-edit"></span> Редактировать дисциплину
 <% end %>
 
 <%= link_to study_discipline_print_group_path(@discipline), class: 'btn btn-default navigation_trip',
-            id: 'print_students_list', data: { input: '#print_students_list', content: 'Чтобы распечатать список студентов группы, нажмите на эту кнопку.' } do %>
+            id: 'print_students_list', data: { input: '#print_students_list', content: 'Чтобы распечатать список студентов группы, нажмите на эту кнопку.',
+                                               position: 's'} do %>
   <span class='glyphicon glyphicon-print'></span> Студенты
 <% end %>
 
@@ -48,7 +51,9 @@
           </td>
           <td>
             <% unless checkpoint.date.future? %>
-              <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default add_marks_buttons' do %>
+              <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default add_marks_buttons navigation_trip',
+                          data: { input: '.add_marks_buttons:first-child', content: 'Вы можете внести результаты по проведённому занятию.',
+                                  position: 'w'} do %>
                 <span class="glyphicon glyphicon-pencil"></span> Внести результаты
               <% end %>
             <% end %>
