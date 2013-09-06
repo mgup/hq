@@ -2,13 +2,12 @@ require 'faker'
 
 FactoryGirl.define do
   factory :discipline, class: Study::Discipline do
-    year		        { Date.today.year }
-    semester 	      { 1 + rand(1) }
-    name            { Faker::Lorem.sentence }
+    subject_year		  { Date.today.year }
+    subject_semester  { 1 + rand(1) }
+    subject_name      { Faker::Lorem.sentence }
 
     group
-    association :lead_teacher, factory: :user
-    #association :assistant_teachers, factory: :user
+    association :lead_teacher, factory: :user, strategy: :build
     association :final_exam,   factory: [:exam, :final], strategy: :build
 
     #after(:build) do |discipline|
