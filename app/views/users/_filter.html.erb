@@ -10,15 +10,20 @@
       <% end %>
     </div>
     <div class="col col-lg-3">
-      <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control' %>
+      <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control navigation_trip',
+                         data: { input: '#name', content: 'Вы можете найти нужного сотрудника по имени,',
+                                 position: 's'}%>
     </div>
     <div class="col col-lg-4">
-      <%= text_field_tag 'position', params[:position], placeholder: 'Должность / учёная степень', class: 'form-control' %>
+      <%= text_field_tag 'position', params[:position], placeholder: 'Должность / учёная степень', class: 'form-control navigation_trip',
+                         data: { input: '#position', content: 'по должности',
+                                 position: 's'}%>
     </div>
     <div class="col col-lg-3">
       <%= select_tag 'department',
                      options_from_collection_for_select(Department.all, :id, :abbreviation, params[:department]),
-                     multiple: true, class: 'form-control chzn-select', data: { placeholder: 'все департаменты' } %>
+                     multiple: true, class: 'form-control chzn-select navigation_trip', data: { placeholder: 'все департаменты',
+                         input: '#department', content: 'или департаменту'} %>
     </div>
   </div>
 <% end %>

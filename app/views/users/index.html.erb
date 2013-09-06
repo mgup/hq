@@ -6,7 +6,9 @@
   <h1>Пользователи системы</h1>
 </div>
 
-<%= link_to new_user_path, class: 'btn btn-primary' do%>
+<%= link_to new_user_path, class: 'btn btn-primary navigation_trip', id: 'add_user',
+            data: { input: '#add_user', content: 'Вы можете добавить нового пользователя.',
+                    position: 'e'} do%>
   <span class='glyphicon glyphicon-plus'></span> Добавить нового пользователя
 <% end %>
 <br><br><br>
@@ -46,7 +48,10 @@
           <%= link_to 'Назначения', user %>
         </td>
         <td>
-          <%= link_to 'Редактировать', edit_user_path(user) %>
+          <%= link_to edit_user_path(user), class: 'edit_user navigation_trip',
+                      data: { input: '.edit_user:first-child', content: 'Вы можете редактировать информацию о сотрудниках или их назначениях.'} do %>
+            Редактировать
+          <% end %>
         </td>
       </tr>
     <% end %>
