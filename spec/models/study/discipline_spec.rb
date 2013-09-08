@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Study::Discipline do
   it 'должен обладать валидной фабрикой' do
-    FactoryGirl.build(:discipline).should be_valid
+    build(:discipline).should be_valid
   end
 
   describe 'обладает связями с другими моделями:' do

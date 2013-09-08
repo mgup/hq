@@ -27,6 +27,9 @@ class Department < ActiveRecord::Base
   has_many :positions, foreign_key: :acl_position_department
   has_many :users, through: :positions
 
+  validates :name, presence: true
+  validates :abbreviation, presence: true
+
   default_scope do
     where('department_active = 1')
   end

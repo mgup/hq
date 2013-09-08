@@ -120,6 +120,26 @@ describe Study::DisciplinesController do
       end
     end
 
+    describe 'при редактировании дисциплины, в которой он дополнительный преподаватель' do
+      before :each do
+        @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        @discipline.assistant_teachers << @user
+        get :edit, id: @discipline.id
+      end
+
+      it 'должен получить ответ' do
+        should respond_with(:success)
+      end
+
+      it 'должен видеть страницу редактировании дисциплины' do
+        should render_template(:edit)
+      end
+
+      it 'должен получать нужную запись' do
+        assigns(:discipline).should eql(@discipline)
+      end
+    end
+
     describe 'при редактировании чужой дисциплины' do
       it 'должен получать ошибку ActiveRecord::RecordNotFound' do
         discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
@@ -128,43 +148,100 @@ describe Study::DisciplinesController do
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-  end
 
-  describe 'при сохранении изменений в существующую дисциплину' do
+    describe 'при сохранении изменений в дисциплину' do
+      pending
+    end
 
+    describe 'при сохранении изменений в чужую дисциплину' do
+      it 'должен получать ошибку ActiveRecord::RecordNotFound' do
+        pending
+        #discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        #attrs = discipline.attributes
+        #attrs[:subject_name] = 'Новое название'
+        #expect {
+        #  put :update, id: discipline.id, study_discipline: attrs
+        #}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    describe 'при удалении своей дисциплины' do
+      before :each do
+        @discipline = create(:discipline, lead_teacher: @user)
+      end
+
+      context 'при отсутствии у неё контрольных точек' do
+        it 'должен удалить дисциплину' do
+          expect {
+            delete :destroy, id: @discipline
+          }.to change { Study::Discipline.count }.by(-1)
+        end
+
+        it 'должен перейти на страницу со списком дисциплин' do
+          delete :destroy, id: @discipline
+          response.should redirect_to(study_disciplines_path)
+        end
+      end
+
+      context 'при наличии у неё контрольных точек' do
+        before :each do
+          pending
+        end
+
+        it 'не должен удалить дисциплину' do
+          pending
+        end
+
+        it 'должен перейти на страницу со списокм дисциплин' do
+          delete :destroy, id: @discipline
+          response.should redirect_to(study_disciplines_path)
+        end
+      end
+    end
+
+    describe 'при удалении дисциплины, в которой он дополнительный преподаватель' do
+      before :each do
+        @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        @discipline.assistant_teachers << @user
+      end
+
+      context 'при отсутствии у неё контрольных точек' do
+        it 'должен удалить дисциплину' do
+          expect {
+            delete :destroy, id: @discipline
+          }.to change { Study::Discipline.count }.by(-1)
+        end
+
+        it 'должен перейти на страницу со списком дисциплин' do
+          delete :destroy, id: @discipline
+          response.should redirect_to(study_disciplines_path)
+        end
+      end
+
+      context 'при наличии у неё контрольных точек' do
+        before :each do
+          pending
+        end
+
+        it 'не должен удалить дисциплину' do
+          pending
+        end
+
+        it 'должен перейти на страницу со списокм дисциплин' do
+          delete :destroy, id: @discipline
+          response.should redirect_to(study_disciplines_path)
+        end
+      end
+    end
+
+    describe 'при удалении чужой дисциплины' do
+      it 'должен получить ошибку ActiveRecord::RecordNotFound' do
+        pending
+      end
+    end
   end
 
    #context 'для разработчиков' do
-   #  before :each do
-   #    @user = FactoryGirl.create(:developer)
-   #    sign_in @user
-   #  end
-   #
-   #  describe 'POST #create' do
-   #    context 'в случае успешного создания' do
-   #      before :each do
-   #        Study::Discipline.any_instance.should_receive(:save).and_return(true)
-   #        post :create, discipline: {}
-   #      end
-   #
-   #      it 'должен создавать новую дисциплину' do
-   #        flash[:notice].should_not be_nil
-   #      end
-   #
-   #      it 'должно происходить перенаправление на список дисциплин' do
-   #        response.should redirect_to study_disciplines_path
-   #      end
-   #    end
-   #
-   #    context 'в случае ошибки' do
-   #      it 'должен перенаправить на создание' do
-   #        Study::Discipline.any_instance.should_receive(:save).and_return(false)
-   #        post :create, discipline: {}
-   #        response.should render_template :new
-   #      end
-   #    end
-   #  end
-   #
    #  describe 'PUT #update' do
    #    before :each do
    #      @discipline = FactoryGirl.create(:discipline_with_controls, subject_teacher: @user.id,
@@ -203,20 +280,4 @@ describe Study::DisciplinesController do
    #    #end
    #  end
    #
-   #  describe 'DELETE #destroy' do
-   #    before :each do
-   #      @discipline = FactoryGirl.create(:discipline, subject_teacher: @user.id,
-   #                                       group: FactoryGirl.create(:group))
-   #      Study::Discipline.any_instance.should_receive(:destroy).and_return(true)
-   #      delete :destroy, id: @discipline
-   #    end
-   #
-   #    it 'должен находить правильную дисциплину' do
-   #       assigns(:discipline).should eq(@discipline)
-   #       @discipline.id == nil
-   #    end
-   #    it 'должен перенаправлять на список дисциплин' do
-   #      response.should redirect_to study_disciplines_path
-   #    end
-   #  end
 end
