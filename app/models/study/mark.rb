@@ -27,10 +27,6 @@ class Study::Mark < ActiveRecord::Base
   scope :by_student, -> student { where(checkpoint_mark_student: student) }
 
   before_create :record_date
-  protected
-  def record_date
-    self.checkpoint_mark_submitted = read_attribute(:checkpoint_mark_submitted) || Time.now
-  end
 
   def result
     case mark
@@ -49,6 +45,9 @@ class Study::Mark < ActiveRecord::Base
     end
   end
 
-
+  protected
+  def record_date
+    self.checkpoint_mark_submitted = read_attribute(:checkpoint_mark_submitted) || Time.now
+  end
 
 end

@@ -8,7 +8,8 @@
 </div>
 <%= hidden_field_tag :progress_group, @group.id %>
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name),
-                   prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
+               prompt: 'суммарно по всем дисциплинам', class: 'form-control navigation_trip',
+               data: { input: '#disciplines_for_group', content: 'Вы можете посмотреть успеваемость по отдельной дисциплине.'}%>
 
 <br>
 
@@ -52,7 +53,13 @@
           <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
         </div>
       </td>
-      <td><a class='btn btn-default' href="/study/group/<%= @group.id %>/student/<%= student[:students].id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+      <td>
+        <%= link_to "/study/group/#{@group.id}/student/#{student[:students].id}", class: 'btn btn-default student_progress navigation_trip', title: 'Подробнее',
+                    data: { input: '.student_progress:first-child', content: 'Пройдите по ссылке, чтобы узнать успеваемость отдельного студента.',
+                            position: 'w'} do %>
+          <span class='glyphicon glyphicon-search'></span></a>
+        <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>
