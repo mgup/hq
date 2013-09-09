@@ -16,4 +16,5 @@ class My::Support < ActiveRecord::Base
              foreign_key: :support_student
   has_many :options,  class_name: My::SupportOptions, primary_key: :support_id,
            foreign_key: :support_options_support
+  accepts_nested_attributes_for :options, allow_destroy: true , reject_if: proc { |attrs| attrs[:causes].blank? }
 end
