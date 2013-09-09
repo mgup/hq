@@ -5,9 +5,21 @@ $(function(){
         $(location).attr('href', $url);
        return false;
     });
-    $('#disciplines_for_group').change(function() {
+
+    $(document).ready(function(){
         $group = $('#progress_group').val();
-        $discipline = $('#disciplines_for_group option:selected').val();
-        $(location).attr('href', ($discipline != '' ?  ('/study/group/' + $group + '/progress/discipline/' + $discipline) : ('/study/group/' + $group + '/progress')));
+        $discipline = $('#disciplines_for_group').children(":selected").val();
+        $.ajax({
+            url: "/study/group/" + $group + "/progress/change_discipline"
+        })
+     });
+    $('#disciplines_for_group').change(function(){
+        $discipline = $(this).children(":selected").val();
+        $group = $('#progress_group').val();
+        var params = ($discipline != '' ? 'discipline=' + $discipline : '');
+        $.ajax({
+            url: "/study/group/" + $group + "/progress/change_discipline",
+            data: params
+        });
     });
 })
