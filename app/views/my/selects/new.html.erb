@@ -11,11 +11,10 @@
     <% if @choices == [] %>
       <p class='alert alert-info'>В этом году у вас нет дисциплин по выбору</p>
     <% else %>
-      <!--Важно! Где-то держать информацию о текущем учебном годе-->
       <p class='help-block'>Перед оформлением заявки на курсы по выбору обязательно ознакомьтесь с их программами. Это ваш выбор – делайте его осознанно.</p>
       <p class='help-block'>После выбора курсов – распечатайте выданный бланк заявления, <span class='label label-danger'>подпишите его и сдайте в деканат</span>.</p>
       <br>
-      <legend>Предметы по выбору для изучения в 2013/2014 учебном году</legend>
+      <legend>Предметы по выбору для изучения в <%= Study::Discipline::CURRENT_STUDY_YEAR %>/<%= Study::Discipline::CURRENT_STUDY_YEAR + 1 %> учебном году</legend>
       <% i = 1 %>
       <% @choices.each do |choice| %>
         <fieldset>
@@ -36,7 +35,7 @@
 <% end %>
 <% else %>
   <% if @student.choices.count == @all_choices %>
-    <legend>Выбранные предметы для изучения в 2013/2014 учебном году</legend>
+    <legend>Выбранные предметы для изучения в <%= Study::Discipline::CURRENT_STUDY_YEAR %>/<%= Study::Discipline::CURRENT_STUDY_YEAR + 1 %> учебном году</legend>
     <% @selected_choices.each do |selected_choice| %>
       <fieldset>
         <div class='row'>
@@ -61,7 +60,7 @@
       <p class='help-block'>Перед оформлением заявки на курсы по выбору обязательно ознакомьтесь с их программами. Это ваш выбор – делайте его осознанно.</p>
       <p class='help-block'>После выбора курсов – распечатайте выданный бланк заявления, <span class='label label-danger'>подпишите его и сдайте в деканат</span>.</p>
       <br>
-      <legend>Предметы по выбору для изучения в 2013/2014 учебном году</legend>
+      <legend>Предметы по выбору для изучения в <%= Study::Discipline::CURRENT_STUDY_YEAR %>/<%= Study::Discipline::CURRENT_STUDY_YEAR + 1 %> учебном году</legend>
       <% i = 1 %>
       <% @choices.each do |choice| %>
         <fieldset>
@@ -80,7 +79,7 @@
       <%= submit_tag 'Сохранить выбор', class: 'btn btn-primary' %>
     <% end %>
   <br>
-    <legend>Выбранные предметы для изучения в 2013/2014 учебном году</legend>
+    <legend>Выбранные предметы для изучения в <%= Study::Discipline::CURRENT_STUDY_YEAR %>/<%= Study::Discipline::CURRENT_STUDY_YEAR + 1 %> учебном году</legend>
     <% @selected_choices.each do |selected_choice| %>
       <fieldset>
         <div class='row'>

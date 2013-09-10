@@ -8,23 +8,10 @@
         <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
       </div>
     </td>
-    <% ball = case student[:progress].round %>
-    <% when 0..49 then 'неудовлетворительно' %>
-    <% when 50..64 then 'удовлетворительно' %>
-    <% when 65..80 then 'хорошо' %>
-    <% else 'отлично' %>
-    <% end %>
-    <td><%= student[:student].marks == [] ? 'недостаточно данных' : ball %></td>
+    <td><%= student[:student].marks == [] ? 'недостаточно данных' : student[:student].result(discipline)[:mark] %></td>
     <td>
-      <% result = case student[:progress].round %>
-      <% when 0..49 then 'danger' %>
-      <% when 50..64 then 'warning' %>
-      <% when 65..80 then 'info' %>
-      <% else 'success' %>
-      <% end %>
-
       <div style='width: 100px;' class="progress progress-striped">
-        <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
+        <div class="progress-bar progress-bar-<%= student[:student].result(discipline)[:color] %>" style="width: <%= student[:progress]%>%"></div>
       </div>
     </td>
     <td><a class='btn btn-default' href="/study/group/<%= group.id %>/student/<%= student[:student].id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
