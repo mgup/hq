@@ -21,8 +21,11 @@ class Study::Checkpoint < ActiveRecord::Base
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_checkpoint
 
   validates :name, presence: true, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
-  validates :max,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
-  validates :min,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
+  [:max, :min].each do |m|
+    validates m,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
+  end
+  #validates :max,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
+  #validates :min,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
   validate  :min_should_be_less_than_max, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
 
   scope :by_discipline, -> discipline { where(checkpoint_subject: discipline) }

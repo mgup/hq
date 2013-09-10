@@ -37,7 +37,7 @@
                  class='pull-left control'><strong><%= mark[:mark].mark if mark[:mark] != nil %></strong></div>
            <% else %>
              <% if mark[:mark] == nil %>
-              <div data-toggle='tooltip' title data-original-title="<%= mark[:checkpoint].checkpoint_type == 1 ? 'Лекция' : 'Практическое (лабораторное) занятие' %> / нет данных"
+              <div data-toggle='tooltip' title data-original-title="<%= mark[:checkpoint].lessonname %> / нет данных"
                   style="border-radius: 50%;
                   background-color: #fff;
                   width: <%= mark[:checkpoint].checkpoint_type == 1 ? '10' : '20' %>px; height: <%= mark[:checkpoint].checkpoint_type == 1 ? '10' : '20' %>px;
@@ -46,7 +46,7 @@
                   margin-top: 5px;"
                    class='pull-left lesson'></div>
              <% else %>
-             <div data-toggle='tooltip' title data-original-title="<%= mark[:checkpoint].checkpoint_type == 1 ? 'Лекция' : 'Практическое (лабораторное) занятие' %> / <%= mark[:mark].result[:mark] %>"
+             <div data-toggle='tooltip' title data-original-title="<%= mark[:checkpoint].lessonname %> / <%= mark[:mark].result[:mark] %>"
                   style="border-radius: 50%;
              background-color: <%= mark[:mark].result[:hue] %>;
              width: <%= mark[:mark].result[:circle] %>px; height: <%= mark[:mark].result[:circle] %>px;
