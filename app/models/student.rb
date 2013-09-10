@@ -187,9 +187,9 @@ GROUP BY `group`
 
   def ball(discipline)
     l1, p1, n1 = 0.0, 0.0, 0.0
-    l = discipline.checkpoints.lectures.count
-    p = discipline.checkpoints.practicals.count
-    discipline.checkpoints.collect do |checkpoint|
+    l = discipline.lectures.count
+    p = discipline.seminars.count
+    discipline.classes.collect do |checkpoint|
       mark = checkpoint.marks.by_student(id) == [] ? 0 : checkpoint.marks.by_student(self).last.mark
       result = case mark
                  when MARK_LECTURE_ATTEND
