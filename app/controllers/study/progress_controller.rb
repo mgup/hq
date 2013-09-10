@@ -1,31 +1,26 @@
 class Study::ProgressController < ApplicationController
 
   before_filter :find_group
-  skip_before_filter :authenticate_user! , :only => [:index, :discipline]
+  skip_before_filter :authenticate_user!
   def index
     authorize! :index, :progress
   end
 
   def change_discipline
-    authorize! :show, :progress
+    authorize! :index, :progress
     find_group
     @discipline_students = []
     if params[:discipline]
       @discipline = Study::Discipline.find(params[:discipline])
       @group.students.each do |student|
-        ball = student.ball(@discipline)
-        @discipline_students << {ball: ball, student: student, progress: ball}
+        @discipline_students << {ball: student.ball(@discipline), student: student,
+                                          progress: student.progress(@discipline)}
       end
     else
+      @discipline = nil
       @group.students.each do |student|
-        ball = 0
-        @disciplines.each do |d|
-          ball+=student.ball(d)
-        end
-        @discipline_students << {ball: ball.round(2), student: student}
-      end
-      @discipline_students.each do |ds|
-        ds[:progress] = @disciplines.count != 0 ? (ds[:ball]/@disciplines.count) : 0
+        @discipline_students << {ball: student.ball(@discipline), student: student,
+                                          progress: student.progress(@discipline)}
       end
     end
     respond_to do |format|

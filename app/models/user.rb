@@ -47,23 +47,6 @@ class User < ActiveRecord::Base
     if last_name.nil? then user_name else super(form) end
   end
 
-  def update_name(parts)
-    fname_params = { ip: parts['last_name_ip'], rp: parts[:last_name_rp],
-                     dp: parts[:last_name_dp], vp: parts[:last_name_vp],
-                     tp: parts[:last_name_tp], pp: parts[:last_name_pp] }
-    iname_params = { ip: parts[:first_name_ip], rp: parts[:first_name_rp],
-                     dp: parts[:first_name_dp], vp: parts[:first_name_vp],
-                     tp: parts[:first_name_tp], pp: parts[:first_name_pp] }
-    oname_params = { ip: parts[:patronym_ip], rp: parts[:patronym_rp],
-                     dp: parts[:patronym_dp], vp: parts[:patronym_vp],
-                     tp: parts[:patronym_tp], pp: parts[:patronym_pp] }
-
-    self.fname = Dictionary.create(fname_params)
-    self.iname = Dictionary.create(iname_params)
-    self.oname = Dictionary.create(oname_params)
-    self.save
-  end
-
   def valid_password?(password)
     if self.password.present?
       if ::Digest::MD5.hexdigest(password) == self.user_password

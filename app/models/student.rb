@@ -186,28 +186,70 @@ GROUP BY `group`
   end
 
   def ball(discipline)
-    l1, p1, n1 = 0.0, 0.0, 0.0
-    l = discipline.lectures.count
-    p = discipline.seminars.count
-    discipline.classes.collect do |checkpoint|
-      mark = checkpoint.marks.by_student(id) == [] ? 0 : checkpoint.marks.by_student(self).last.mark
-      result = case mark
-                 when MARK_LECTURE_ATTEND
-                   (5/l)
-                 when MARK_PRACTICAL_FAIR
-                   (5/p)
-                 when MARK_PRACTICAL_GOOD
-                   (10/p)
-                 when MARK_PRACTICAL_PERFECT
-                   (15/p)
-                 else
-                   0
-               end
-      l1 += result if checkpoint.lecture?
-      p1 += result if checkpoint.seminar?
-      n1 += mark if checkpoint.is_checkpoint?
+    if discipline
+      l1, p1, n1 = 0.0, 0.0, 0.0
+      l = discipline.lectures.count
+      p = discipline.seminars.count
+      discipline.classes.collect do |checkpoint|
+        mark = checkpoint.marks.by_student(id) == [] ? 0 : checkpoint.marks.by_student(self).last.mark
+        result = case mark
+                   when MARK_LECTURE_ATTEND
+                     (5/l)
+                   when MARK_PRACTICAL_FAIR
+                     (5/p)
+                   when MARK_PRACTICAL_GOOD
+                     (10/p)
+                   when MARK_PRACTICAL_PERFECT
+                     (15/p)
+                   else
+                     0
+                 end
+        l1 += result if checkpoint.lecture?
+        p1 += result if checkpoint.seminar?
+        n1 += mark if checkpoint.is_checkpoint?
+      end
+      (l1+p1+n1).round 2
+    else
+      ball = 0
+      disciplines.each do |d|
+        ball+=ball(d)
+      end
+      ball
     end
-    (l1+p1+n1).round 2
+  end
+
+  def progress(discipline)
+    if discipline
+      ball(discipline)
+    else
+      (disciplines.count != 0 ? (ball(nil)/disciplines.count) : 0)
+    end
+  end
+
+  def result(discipline)
+    if discipline
+      case progress(discipline).round
+        when 0..49
+          {mark: 'неудовлетворительно', color: 'danger'}
+        when  50..64
+          {mark: 'удовлетворительно', color: 'warning'}
+        when 65..80
+          {mark: 'хорошо', color: 'info'}
+        else
+          {mark: 'отлично', color: 'success'}
+      end
+    else
+      case progress(nil).round
+        when 0..49
+          {mark: 'неудовлетворительно', color: 'danger'}
+        when  50..64
+          {mark: 'удовлетворительно', color: 'warning'}
+        when 65..80
+          {mark: 'хорошо', color: 'info'}
+        else
+          {mark: 'отлично', color: 'success'}
+      end
+    end
   end
 
 end
