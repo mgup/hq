@@ -35,9 +35,9 @@ class Student < ActiveRecord::Base
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if id = conditions.delete(:id)
-      where(conditions).where(['lower(student_group_id) = :id', { id: id.downcase }]).first
+      unscoped.where(conditions).where(['lower(student_group_id) = :id', { id: id.downcase }]).first
     else
-      where(conditions).first
+      unscoped.where(conditions).first
     end
   end
 

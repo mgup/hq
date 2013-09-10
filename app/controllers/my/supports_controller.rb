@@ -1,4 +1,3 @@
-#encoding utf-8
 class My::SupportsController < ApplicationController
   load_and_authorize_resource
 
@@ -6,7 +5,7 @@ class My::SupportsController < ApplicationController
 
   def index ; end
 
-  def new 
+  def new
   end
 
   def create
@@ -32,7 +31,7 @@ def download_pdf
       send_data(@pdf, filename: 'support.pdf', type: 'application/pdf')
   end
 
-  private 
+  private
   def generate_pdf(support)
     student = Student.find(support.support_student)
     Prawn::Document.new do
