@@ -22,17 +22,12 @@ class Study::Discipline < ActiveRecord::Base
 
   has_many :assistant_teachers, through: :discipline_teachers
 
-  has_many :lectures, -> { where(checkpoint_type: Study::Checkpoint::TYPE_LECTURE).order(:checkpoint_date) },
-           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
-  accepts_nested_attributes_for :lectures, allow_destroy: true
-
-  has_many :seminars, -> { where(checkpoint_type: Study::Checkpoint::TYPE_SEMINAR).order(:checkpoint_date) },
-           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
-  accepts_nested_attributes_for :seminars, allow_destroy: true
-
-  has_many :checkpoints, -> { where(checkpoint_type: Study::Checkpoint::TYPE_CHECKPOINT).order(:checkpoint_date) },
-           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
-  accepts_nested_attributes_for :checkpoints, allow_destroy: true
+  [[:lectures, Study::Checkpoint::TYPE_LECTURE], [:seminars, Study::Checkpoint::TYPE_SEMINAR],
+   [:checkpoints, Study::Checkpoint::TYPE_CHECKPOINT]].each do |lessons|
+    has_many lessons[0], -> { where(checkpoint_type: lessons[1]).order(:checkpoint_date) },
+             class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
+    accepts_nested_attributes_for lessons[0], allow_destroy: true
+  end
 
   has_many :classes, -> { order(:checkpoint_date) }, class_name: Study::Checkpoint, foreign_key: :checkpoint_subject
 
