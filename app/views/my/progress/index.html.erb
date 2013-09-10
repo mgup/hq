@@ -46,7 +46,7 @@
               <% when 65..80 then 'хорошо' %>
               <% else 'отлично' %>
             <% end %>
-      <td><%= @student.checkpointmarks == [] ? 'нет данных' : itog %></td>
+      <td><%= @student.marks == [] ? 'нет данных' : itog %></td>
       <td><div style='width: 100px;' class="progress progress-striped">
         <div class="progress-bar progress-bar-<%= result %>" style="width: <%= @student.ball(discipline) %>%;"></div>
       </div>

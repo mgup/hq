@@ -54,7 +54,7 @@ class Student < ActiveRecord::Base
   has_many :exam_students, foreign_key: :exam_student_student
   has_many :exams, :through => :exam_students
 
-  #has_many :marks, class_name: Study::Mark, foreign_key: :student_id
+  has_many :xmarks, class_name: Study::Xmark, foreign_key: :student_id
 
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
@@ -174,7 +174,7 @@ GROUP BY `group`
   end
 
   def subjects
-    Study::Subject.where(id: marks.collect{|mark| mark.subject_id})
+    Study::Subject.where(id: xmarks.collect{|mark| mark.subject_id})
   end
 
   def disciplines

@@ -2,7 +2,12 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
                page_size: 'A4', page_layout: :portrait do |pdf|
  support = @student.supports.last
-
+   pdf.font_families.update(
+     'PT'=> {
+        bold:  "#{Rails.root.join('app', 'assets', 'fonts', 'PTF75F.ttf')}",
+        italic: "#{Rails.root.join('app', 'assets', 'fonts', 'PTF56F.ttf')}",
+        normal:  "#{Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf') }"})
+     pdf.font 'PT', size: 9
    pdf.indent 350 do
     pdf.text 'Ректору федерального государственного'
     pdf.text 'бюджетного учреждения высшего'
@@ -39,25 +44,25 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     end
   end
   pdf.move_down 30
-  pdf.text "#{DateTime.now.strftime("%d.%m.%Y")}                                                                                                                                                             ___________________ / #{@student.person.iname.ip[0]}. #{@student.person.oname.ip[0]}. #{@student.person.fname.ip}"
-  pdf.move_down 40
+  pdf.text "#{DateTime.now.strftime("%d.%m.%Y")}                                                                                                                                                 ___________________ / #{@student.person.iname.ip[0]}. #{@student.person.oname.ip[0]}. #{@student.person.fname.ip}"
+  pdf.move_down 30
   pdf.text 'Резолюция старосты группы:'
-  pdf.move_down 15
-  pdf.text '__________________________________________________________________________________________________________________________________________________'
-  pdf.move_down 15
-  pdf.text "«__» _______________ #{Study::Discipline::CURRENT_STUDY_YEAR}г.                                                                                                                                  ___________________ / __________________"
-  pdf.move_down 40
+  pdf.move_down 10
+  pdf.text '_________________________________________________________________________________________________________________________________________'
+  pdf.move_down 10
+  pdf.text "«__» _______________ #{Study::Discipline::CURRENT_STUDY_YEAR}г.                                                                                                                       ___________________ / __________________"
+  pdf.move_down 30
   pdf.text 'Резолюция деканата:'
-  pdf.move_down 15
-  pdf.text '__________________________________________________________________________________________________________________________________________________'
-  pdf.move_down 15
-  pdf.text "«__» _______________ #{Study::Discipline::CURRENT_STUDY_YEAR}г.                                                                                                                                  ___________________ / __________________"
+  pdf.move_down 10
+  pdf.text '_________________________________________________________________________________________________________________________________________'
+  pdf.move_down 10
+  pdf.text "«__» _______________ #{Study::Discipline::CURRENT_STUDY_YEAR}г.                                                                                                                       ___________________ / __________________"
 
-  pdf.bounding_box [-50, bounds.bottom + 60], width: bounds.width + 200 do
+  pdf.bounding_box [-50, pdf.bounds.bottom + 60], width: pdf.bounds.width + 200 do
      pdf.text '— — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —'
   end
-  pdf.bounding_box [bounds.left, bounds.bottom + 50], width: bounds.width + 15 do
-    pdf.move_down 5
+  pdf.bounding_box [pdf.bounds.left, pdf.bounds.bottom + 50], width: pdf.bounds.width + 15 do
+    pdf.move_down 10
     pdf.text "Заявление на мат. помощь от #{@student.person.iname.rp[0]}. #{@student.person.oname.rp[0]}. #{@student.person.fname.rp}, #{@student.group.name} принято «___» ________________ 2013 г."
     pdf.move_down 15
     pdf.text '__________________ / __________________', align: :right

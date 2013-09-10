@@ -1,12 +1,17 @@
 class My::SelectsController < ApplicationController
   YEAR = 2013
-  load_and_authorize_resource
+  load_resource
 
   before_filter :find_student
+  skip_before_filter :authenticate_user!
+  before_filter :authenticate_student!
 
-  def index ; end
+  def index
+    authorize! :manage, :student
+  end
 
   def new
+    authorize! :manage, :student
     choices = My::Choice.from_group(@student.group)
     @selected_choices = []
     selected_choices = @student.choices
@@ -83,7 +88,7 @@ class My::SelectsController < ApplicationController
   #end
 
   def find_student
-    @student = Student.find(params[:student_id])
+    @student = current_student
   end
 
   def resource_params

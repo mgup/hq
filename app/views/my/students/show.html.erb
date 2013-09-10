@@ -11,7 +11,7 @@
     <div class="caption">
       <h3>Успеваемость</h3>
       <p>Чтобы узнать текущую успеваемость по всем дисциплинам, пройдите по ссылке</p>
-      <p><a class="btn btn-primary" href="<%= progress_my_student_path(@student)%>">Узнать</a></p>
+      <p><a class="btn btn-primary" href="<%= progress_my_student_path%>">Узнать</a></p>
     </div>
   </div>
   <div class="thumbnail col-lg-5 col-offset-1">
@@ -25,7 +25,7 @@
       <ul class="dropdown-menu">
         <% @sessions.each do |subject| %>
           <% session = @student.subjects.where(year: subject[:year], semester: subject[:semester]).first%>
-          <li><a href="/my/student/<%= @student.id %>/progress/subject/<%= session.id %>"><%= "#{subject[:year]}/#{subject[:year] + 1}" %> год
+          <li><a href="/my/student/progress/subject/<%= session.id %>"><%= "#{subject[:year]}/#{subject[:year] + 1}" %> год
             (<%= subject[:term] %>)</a></li>
         <% end %>
       </ul>
@@ -37,14 +37,14 @@
     <div class="caption">
       <h3>Материальная помощь</h3>
       <p>Перед оформлением заявления ознакомьтесь с <a href="<%= root_url %>/documents/Polozhenie_o_materialnoy_pomoschi.doc">«Положением об оказании материальной помощи студентам»</a> МГУП имени Ивана Федорова.</p>
-      <p><a class="btn btn-primary" href="/my/student/<%= @student.id %>/supports/new">Оформить</a></p>
+      <p><a class="btn btn-primary" href="/my/student/supports/new">Оформить</a></p>
     </div>
   </div>
   <div class="thumbnail col-lg-5 col-offset-1">
     <div class="caption">
       <h3>Дисциплины по выбору</h3>
       <p>Перед оформлением заявки на курсы по выбору обязательно ознакомьтесь с их программами. Это ваш выбор – делайте его осознанно.</p>
-      <p><a class="btn btn-primary" href="/my/student/<%= @student.id %>/selects/new">Выбрать</a></p>
+      <p><a class="btn btn-primary" href="/my/student/selects/new">Выбрать</a></p>
     </div>
   </div>
 </div>
@@ -53,7 +53,7 @@
     <div class="caption">
       <h3>Социальная стипендия</h3>
       <p>Перед оформлением заявления ознакомьтесь с <a href="<%= root_url %>/documents/Polozhenie_o_soc_stipendii.doc">«Положением о государственной социальной стипендии»</a> МГУП имени Ивана Федорова.</p>
-      <p><a class="btn btn-primary" href="/my/student/<%= @student.id %>/">Оформить</a></p>
+      <p><a class="btn btn-primary" href="/my/student/">Оформить</a></p>
     </div>
   </div>
 </div>

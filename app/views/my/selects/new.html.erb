@@ -51,7 +51,7 @@
       </fieldset>
     <% end %>
     <p class='help-block'>Если вы хотите изменить выбор предметов – <span class='label label-danger'>срочно обратитесь в деканат</span>.</p>
-    <%= link_to my_student_selects_path(@student), class: 'btn btn-primary' do %>
+    <%= link_to student_selects_my_student_path, class: 'btn btn-primary' do %>
       Зарегистрировать и распечатать заявление
     <% end %>
   <% else %>
