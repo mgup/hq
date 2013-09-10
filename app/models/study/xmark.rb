@@ -1,4 +1,4 @@
-class Study::Mark < ActiveRecord::Base
+class Study::Xmark < ActiveRecord::Base
   self.table_name = 'study_marks'
 
   FAIL = 0
