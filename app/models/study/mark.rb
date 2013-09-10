@@ -27,10 +27,6 @@ class Study::Mark < ActiveRecord::Base
   scope :by_student, -> student { where(checkpoint_mark_student: student) }
 
   before_create :record_date
-  protected
-  def record_date
-    self.checkpoint_mark_submitted = read_attribute(:checkpoint_mark_submitted) || Time.now
-  end
 
   def result
     case mark
@@ -47,6 +43,11 @@ class Study::Mark < ActiveRecord::Base
       when MARK_PRACTICAL_PERFECT
         {mark: 'отлично', color: 'success', circle: 20, hue: '#62c462'}
     end
+  end
+
+  protected
+  def record_date
+    self.checkpoint_mark_submitted = read_attribute(:checkpoint_mark_submitted) || Time.now
   end
 
 

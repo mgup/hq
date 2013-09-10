@@ -25,13 +25,15 @@ class My::SupportsController < ApplicationController
     end
   end
 
-def download_pdf
-      @student = Student.find(params[:student_id])
-      @pdf = generate_pdf(@student.supports.last)
-      send_data(@pdf, filename: 'support.pdf', type: 'application/pdf')
+  def download_pdf
+    find_student
+      #@student = Student.find(params[:student_id])
+      #@pdf = generate_pdf(@student.supports.last)
+      #send_data(@pdf, filename: 'support.pdf', type: 'application/pdf')
   end
 
   private
+
   def generate_pdf(support)
     student = Student.find(support.support_student)
     Prawn::Document.new do

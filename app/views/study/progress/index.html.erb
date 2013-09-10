@@ -22,38 +22,6 @@
     <th></th>
   </tr>
   </thead>
-  <tbody>
-  <% @discipline_students.each do |student| %>
-    <tr>
-      <td><%= student[:students].id %></td>
-      <td><%= student[:students].person.full_name %></td>
-      <td><%= student[:ball] %></td>
-      <td>
-        <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
-        </div>
-      </td>
-      <% ball = case student[:progress].round %>
-                    <% when 0..49 then 'неудовлетворительно' %>
-                    <% when 50..64 then 'удовлетворительно' %>
-                    <% when 65..80 then 'хорошо' %>
-                    <% else 'отлично' %>
-                 <% end %>
-      <td><%= student[:students].marks == [] ? 'недостаточно данных' : ball %></td>
-      <td>
-        <% result = case student[:progress].round %>
-                     <% when 0..49 then 'danger' %>
-                     <% when 50..64 then 'warning' %>
-                     <% when 65..80 then 'info' %>
-                     <% else 'success' %>
-                  <% end %>
-
-        <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
-        </div>
-      </td>
-      <td><a class='btn btn-default' href="/study/group/<%= @group.id %>/student/<%= student[:students].id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
-    </tr>
-  <% end %>
+  <tbody id="for_student_progress">
   </tbody>
 </table>

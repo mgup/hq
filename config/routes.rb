@@ -36,7 +36,7 @@ HQ::Application.routes.draw do
 
     resources :groups, path:  '/group' do
       get '/progress' => 'progress#index'
-      get '/progress/discipline/:id' => 'progress#discipline'
+      get '/progress/change_discipline' => 'progress#change_discipline'
       resources :students, path:  '/student'
       get '/student/:id/discipline/:discipline' => 'students#discipline'
     end
@@ -47,10 +47,10 @@ HQ::Application.routes.draw do
       get '/progress' => 'progress#index'
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'
-      resources :supports 
-      match 'download_support', to: 'supports#download_pdf', via: [:get, :post] 
+      resources :supports
+      get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
       resources :selects
-      match 'download_select', to: 'selects#download_pdf', via: [:get, :post]
+      get 'download_pdf.pdf', to: 'selects#download_pdf', defaults: { format: 'pdf' }, as: :student_selects
     end
   end
 
