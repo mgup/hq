@@ -6,13 +6,11 @@ $(function(){
        return false;
     });
 
-    $(document).ready(function(){
-        $group = $('#progress_group').val();
-        $discipline = $('#disciplines_for_group').children(":selected").val();
-        $.ajax({
-            url: "/study/group/" + $group + "/progress/change_discipline"
-        })
-     });
+    $group_now = $('#progress_group').val();
+    $.ajax({
+        url: "/study/group/" + $group_now  + "/progress/change_discipline"
+    });
+
     $('#disciplines_for_group').change(function(){
         $discipline = $(this).children(":selected").val();
         $group = $('#progress_group').val();
