@@ -67,9 +67,15 @@ class Student < ActiveRecord::Base
            foreign_key: :optional_select_student
   has_many :choices, class_name: My::Choice, :through => :selections
 
+
   default_scope do
     joins(:person)
     .order('last_name_hint, first_name_hint, patronym_hint')
+  end
+
+  # ! В одном месте для таких случаев предложили наглый выход !
+  def readonly?
+    false
   end
 
   scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_DEBTOR]) }
@@ -227,29 +233,17 @@ GROUP BY `group`
   end
 
   def result(discipline)
-    if discipline
-      case progress(discipline).round
-        when 0..49
-          {mark: 'неудовлетворительно', color: 'danger'}
-        when  50..64
-          {mark: 'удовлетворительно', color: 'warning'}
-        when 65..80
-          {mark: 'хорошо', color: 'info'}
-        else
-          {mark: 'отлично', color: 'success'}
-      end
-    else
-      case progress(nil).round
-        when 0..49
-          {mark: 'неудовлетворительно', color: 'danger'}
-        when  50..64
-          {mark: 'удовлетворительно', color: 'warning'}
-        when 65..80
-          {mark: 'хорошо', color: 'info'}
-        else
-          {mark: 'отлично', color: 'success'}
-      end
+    case progress(discipline).round
+      when 0..49
+        {mark: 'неудовлетворительно', color: 'danger'}
+      when  50..64
+        {mark: 'удовлетворительно', color: 'warning'}
+      when 65..80
+        {mark: 'хорошо', color: 'info'}
+      else
+        {mark: 'отлично', color: 'success'}
     end
   end
+
 
 end

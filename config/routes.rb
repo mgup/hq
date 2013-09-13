@@ -51,7 +51,14 @@ HQ::Application.routes.draw do
       get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
       resources :selects
       get 'download_pdf.pdf', to: 'selects#download_pdf', defaults: { format: 'pdf' }, as: :student_selects
+      #get '/social/download_pdf.pdf', to: 'socials#download_pdf', defaults: { format: 'pdf' }, as: :student_social
+      #get '/social' => 'socials#new'
     end
+  end
+
+  namespace :social do
+    resources :supports
+    get '/support/claims' => 'supports#claims'
   end
 
   namespace :office do
