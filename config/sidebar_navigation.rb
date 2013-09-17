@@ -23,6 +23,9 @@ SimpleNavigation::Configuration.run do |navigation|
       if can? :index, :selection_contracts
         primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
       end
+      if can? :index, :payment_types
+        primary.item :prices,    'Стоимость обучения'.html_safe, finance_payment_types_path, icon: 'credit-card', highlights_on: -> { params[:controller].include?('payment_types') }
+      end
     end
     primary.item :study, 'Успеваемость'.html_safe, study_groups_path, icon: 'list', highlights_on: -> { params[:controller].include?('progress') }
 

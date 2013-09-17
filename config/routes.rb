@@ -65,6 +65,11 @@ HQ::Application.routes.draw do
     resources :orders
   end
 
+  namespace :finance do
+    resources :payment_types, path:  '/price'
+    get '/prices_filter' => 'payment_types#prices_filter'
+  end
+
   get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
 
   get 'schedule/data/departments' => 'schedule/data#departments'
