@@ -6,7 +6,7 @@ class Finance::Price < ActiveRecord::Base
   alias_attribute :semester,    :finance_price_semester
   alias_attribute :sum,         :finance_price_price
 
-  belongs_to :payment_type, class_name: Finance::PaymentType, primary_key: :finance_payment_type_id,
+  belongs_to :type, class_name: Finance::PaymentType, primary_key: :finance_payment_type_id,
              foreign_key: :finance_price_payment_type
 
 end

@@ -51,5 +51,4 @@ class Department < ActiveRecord::Base
     cond
   }
 
-
 end

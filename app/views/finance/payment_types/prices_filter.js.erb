@@ -1,0 +1,3 @@
+$('#for_payment_types').empty();
+$('#for_payment_types').html("<%= escape_javascript (render(partial: 'after_filter',
+locals: { payment_types: @payment_types })).html_safe %>")
