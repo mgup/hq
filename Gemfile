@@ -36,6 +36,8 @@ gem 'prawn-qrcode'
 gem 'squeel'
 gem 'nested_form', github: 'ryanb/nested_form'
 gem 'hairtrigger'
+gem 'axlsx_rails'
+gem 'acts_as_xlsx'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 # gem 'ui', github: 'mgup/ui', branch: :master
