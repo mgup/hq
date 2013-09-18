@@ -1,5 +1,5 @@
-Axlsx::Package.new do |p|
-  p.workbook.add_worksheet(:name => "Pie Chart") do |sheet|
-  end
+wb = xlsx_package.workbook
+wb.add_worksheet name: 'Стоимость обучения' do |sheet|
+
 end
 
