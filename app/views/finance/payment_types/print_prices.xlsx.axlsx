@@ -1,0 +1,5 @@
+Axlsx::Package.new do |p|
+  p.workbook.add_worksheet(:name => "Pie Chart") do |sheet|
+  end
+end
+

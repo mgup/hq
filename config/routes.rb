@@ -68,6 +68,7 @@ HQ::Application.routes.draw do
   namespace :finance do
     resources :payment_types, path:  '/price'
     get '/prices_filter' => 'payment_types#prices_filter'
+    get 'print_prices.xlsx', to: 'payment_types#print_prices', defaults: { format: 'xlsx' }, as: :print_prices
   end
 
   get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract

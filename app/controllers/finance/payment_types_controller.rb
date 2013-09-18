@@ -15,4 +15,15 @@ class Finance::PaymentTypesController < ApplicationController
       format.js
     end
   end
+
+  def print_prices
+    authorize! :index,:payment_types
+    respond_to do |format|
+      format.xlsx
+
+    end
+
+  end
+
+
 end

@@ -2,6 +2,11 @@
   <h1>Стоимость обучения в МГУП имени Ивана Федорова</h1>
 </div>
 
+<%= link_to finance_print_prices_path, class: 'btn btn-default' do %>
+  <span class='glyphicon glyphicon-print'></span> Распечатать
+<% end %>
+<br>
+
 <%= render 'filter' %>
 
 <table class="table table-hover">

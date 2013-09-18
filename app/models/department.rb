@@ -51,4 +51,22 @@ class Department < ActiveRecord::Base
     cond
   }
 
+  def payment_types
+    types = []
+    payments = Finance::PaymentType.from_faculty(self)
+
+    specialities.each do |s|
+      years = []
+      payments.from_speciality(s).collect{ |type| type.year}.uniq.each do |year|
+        years << {year: year, full_time: payments.from_speciality(s).from_year(year).from_form(101).last.sum,
+        part_time: payments.from_speciality(s).from_year(year).from_form(102).last.sum, abcsentia: payments.from_speciality(s).from_year(year).from_form(103).last.sum,
+        distance: payments.from_speciality(s).from_year(year).from_form(105).last.sum}  if  payments.from_speciality(s).from_year(year) != []
+      end
+      types << { name: s.name, prices: years}
+    end
+
+    types.compact.uniq
+  end
+
+
 end

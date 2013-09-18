@@ -15,6 +15,8 @@ class Finance::PaymentType < ActiveRecord::Base
   scope :from_year, -> year {where(finance_payment_type_year: year)}
   scope :from_form, -> form {where(finance_payment_type_form: form)}
 
+  acts_as_xlsx
+
   default_scope do
    includes(:speciality, :prices)
     .order(:finance_payment_type_speciality, :finance_payment_type_year)
@@ -28,6 +30,10 @@ class Finance::PaymentType < ActiveRecord::Base
       cond
     end
   }
+
+  def faculty
+    speciality.faculty.abbreviation
+  end
 
   def sum
     total_sum = 0
