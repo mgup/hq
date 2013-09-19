@@ -20,9 +20,7 @@ class Finance::PaymentTypesController < ApplicationController
     authorize! :index,:payment_types
     respond_to do |format|
       format.xlsx
-
     end
-
   end
 
 
