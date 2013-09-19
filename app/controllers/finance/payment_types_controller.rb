@@ -2,7 +2,7 @@ class Finance::PaymentTypesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @payment_types = @payment_types
+    @years = @payment_types.collect{|pt| pt.year if (pt.year > 2005 && pt.year <= Study::Discipline::CURRENT_STUDY_YEAR)}.uniq.compact.sort!
   end
 
   def prices_filter
@@ -20,7 +20,7 @@ class Finance::PaymentTypesController < ApplicationController
 
   def print_prices
     authorize! :index, :payment_types
-
+    @year = params[:year]
     respond_to do |format|
       format.xlsx
     end
