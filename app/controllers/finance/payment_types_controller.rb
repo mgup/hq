@@ -1,11 +1,13 @@
 class Finance::PaymentTypesController < ApplicationController
   load_and_authorize_resource
+
   def index
     @payment_types = @payment_types
   end
 
   def prices_filter
     authorize! :index, :payment_types
+
     if params
       @payment_types = Finance::PaymentType.filter(params)
     else
@@ -17,11 +19,10 @@ class Finance::PaymentTypesController < ApplicationController
   end
 
   def print_prices
-    authorize! :index,:payment_types
+    authorize! :index, :payment_types
+
     respond_to do |format|
       format.xlsx
     end
   end
-
-
 end
