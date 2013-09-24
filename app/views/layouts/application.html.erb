@@ -22,6 +22,7 @@
       <%= render_navigation context: :sidebar, expand_all: true %>
     </div>
     <div class="col-sm-9">
+      <%= render_navigation renderer: :breadcrumbs, context: :sidebar %>
       <%= yield %>
     </div>
   </div>

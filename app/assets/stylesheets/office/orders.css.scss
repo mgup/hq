@@ -1,0 +1,7 @@
+.order-row {
+  padding: 15px 0;
+
+  &:nth-child(odd) {
+    background-color: #dddddd;
+  }
+}
