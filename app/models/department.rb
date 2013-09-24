@@ -51,30 +51,30 @@ class Department < ActiveRecord::Base
     cond
   }
 
-  def payment_types(year)
+  def payment_types(year = nil)
     types = []
-    if year == nil
+    if year
+      specialities.includes(:payment_types).each do |s|
+        years=[]
+        payments = s.payment_types.from_year(year)
+        years << {year: year, full_time: payments.from_form(101).last,
+                  part_time: payments.from_form(102).last, abcsentia: payments.from_form(103).last,
+                  distance: payments.from_form(105).last}  if payments != []
+        types << { name: s.name + "\n" + s.code, prices: years}
+      end
+      types.compact.uniq
+    else
       specialities.includes(:payment_types).each do |s|
         years = []
         s.payment_types.collect{ |type| type.year}.uniq.each do |year|
           payments = s.payment_types.from_year(year)
           years << {year: year, full_time: payments.from_form(101).last,
-          part_time: payments.from_form(102).last, abcsentia: payments.from_form(103).last,
-          distance: payments.from_form(105).last}  if payments != []
-        end
-        types << { name: s.name + "\n" + s.code, prices: years}
-      end
-
-      types.compact.uniq
-    else
-      specialities.includes(:payment_types).each do |s|
-        years=[]
-        payments = s.payment_types.from_year(year)
-        years << {year: year, full_time: payments.from_form(101).last,
                     part_time: payments.from_form(102).last, abcsentia: payments.from_form(103).last,
                     distance: payments.from_form(105).last}  if payments != []
-        types << { name: s.name + "\n" + s.code, prices: years}
+        end
+        types << { name: s.name + "\n" + s.code, prices: years} if years != []
       end
+
       types.compact.uniq
     end
   end
