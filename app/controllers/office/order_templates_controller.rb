@@ -14,6 +14,9 @@ class Office::OrderTemplatesController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:office_order_template, {}).permit(:template_name)
+    params.fetch(:office_order_template, {}).permit(
+        :template_name,
+        xsl_attributes: [:order_xsl_template, :order_xsl_content]
+    )
   end
 end
