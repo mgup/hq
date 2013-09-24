@@ -63,7 +63,14 @@ HQ::Application.routes.draw do
   end
 
   namespace :office do
-    resources :orders
+    resources :orders do
+      get 'drafts', to: 'orders#drafts', on: :collection
+      get 'underways', to: 'orders#underways', on: :collection
+    end
+
+    resources :order_templates do
+      resources :order_blanks
+    end
   end
 
   namespace :finance do

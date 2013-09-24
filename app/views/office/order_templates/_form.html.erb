@@ -1,0 +1,35 @@
+<%= nested_form_for @order_template, html: { class: 'form-horizontal', role: 'form' } do |f| %>
+  <div class="form-group <%= 'has-error' if @order_template.errors.include?(:template_name) %>">
+    <%= f.label :template_name, class:'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <%= f.text_field :template_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <%= f.fields_for :xsl do |xsl| %>
+    <%= xsl.hidden_field :id %>
+
+    <div class="form-group">
+      <%= xsl.label :created_at, 'Последнее изменение', class: 'control-label col-sm-3' %>
+      <div class="col-sm-9">
+        <p class="form-control-static"><%= l @order_template.xsl.created_at %></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= xsl.label :order_xsl_content, 'XSL-преобразование', class: 'control-label col-sm-3' %>
+      <%= xsl.hidden_field :order_xsl_content %>
+      <div class="clearfix"></div>
+      <div class="ace-editor-wrap">
+        <div id="editor" data-field="office_order_template_xsl_attributes_order_xsl_content"
+             class="ace-editor"><%= @order_template.xsl.stylesheet %></div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <%= f.submit 'Сохранить шаблон', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

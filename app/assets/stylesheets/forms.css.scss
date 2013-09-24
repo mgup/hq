@@ -3,3 +3,13 @@ form {
     text-transform: uppercase;
   }
 }
+
+.ace-editor-wrap {
+  width: 100%;
+  height: 510px;
+}
+.ace-editor {
+  position: absolute;
+  width: 100%;
+  height: 510px;
+}
