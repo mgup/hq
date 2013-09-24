@@ -6,12 +6,20 @@ class Office::Order < ActiveRecord::Base
   STATUS_SIGNED   = 3
 
   alias_attribute :id,      :order_id
+  alias_attribute :version, :order_revision
   alias_attribute :number,  :order_number
   alias_attribute :status,  :order_status
   alias_attribute :editing_date, :order_editing
   alias_attribute :signing_date, :order_signing
 
-  belongs_to :template, class_name: 'Office::OrderTemplate', foreign_key: :order_template, primary_key: :template_id
+  belongs_to :template, class_name: Office::OrderTemplate,
+                        foreign_key: :order_template
+
+  has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_order
+  has_many :students, class_name: Student, through: :students_in_order
+
+  scope :drafts, -> { where(order_status: STATUS_DRAFT) }
+  scope :underways, -> { where(order_status: STATUS_UNDERWAY) }
 
   def draft?
     STATUS_DRAFT == status
@@ -23,5 +31,13 @@ class Office::Order < ActiveRecord::Base
 
   def signed?
     STATUS_SIGNED == status
+  end
+
+  def full_id
+    "#{id}–#{version}"
+  end
+
+  def name
+    template.name
   end
 end
