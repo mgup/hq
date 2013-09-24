@@ -18,11 +18,11 @@
 
     <div class="form-group">
       <%= xsl.label :order_xsl_content, 'XSL-преобразование', class: 'control-label col-sm-3' %>
+      <%= xsl.hidden_field :order_xsl_content %>
       <div class="clearfix"></div>
       <div class="ace-editor-wrap">
-        <div id="editor" class="ace-editor">
-          <%= @order_template.xsl.stylesheet %>
-        </div>
+        <div id="editor" data-field="office_order_template_xsl_attributes_order_xsl_content"
+             class="ace-editor"><%= @order_template.xsl.stylesheet %></div>
       </div>
     </div>
   <% end %>
