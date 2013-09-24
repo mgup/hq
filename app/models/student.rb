@@ -191,7 +191,7 @@ GROUP BY `group`
     Study::Checkpoint.where(checkpoint_subject: disciplines.collect{|d| d.id})
   end
 
-  def ball(discipline)
+  def ball(discipline = nil)
     if discipline
       l1, p1, n1 = 0.0, 0.0, 0.0
       l = discipline.lectures.count
@@ -224,7 +224,7 @@ GROUP BY `group`
     end
   end
 
-  def progress(discipline)
+  def progress(discipline = nil)
     if discipline
       ball(discipline)
     else

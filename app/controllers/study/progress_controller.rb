@@ -12,15 +12,14 @@ class Study::ProgressController < ApplicationController
     @discipline_students = []
     if params[:discipline]
       @discipline = Study::Discipline.find(params[:discipline])
-      @group.students.each do |student|
+      @group.students.includes(:marks).each do |student|
         @discipline_students << {ball: student.ball(@discipline), student: student,
                                           progress: student.progress(@discipline)}
       end
     else
-      @discipline = nil
-      @group.students.each do |student|
-        @discipline_students << {ball: student.ball(@discipline), student: student,
-                                          progress: student.progress(@discipline)}
+      @group.students.includes(:marks).each do |student|
+        @discipline_students << {ball: student.ball(), student: student,
+                                          progress: student.progress()}
       end
     end
     respond_to do |format|

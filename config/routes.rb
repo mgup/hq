@@ -8,6 +8,7 @@ HQ::Application.routes.draw do
   get 'utility/morpher'
 
   get '/password' => 'password#index'
+  get 'orders/print' => 'orders#print'
 
   resources :roles
   resources :users
