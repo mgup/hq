@@ -16,6 +16,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     Ascii85 (1.0.2)
+    ace-rails-ap (2.0.0)
     actionmailer (4.0.0)
       actionpack (= 4.0.0)
       mail (~> 2.5.3)
@@ -345,6 +346,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ace-rails-ap
   acts_as_xlsx
   axlsx_rails
   better_errors

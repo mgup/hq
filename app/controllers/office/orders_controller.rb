@@ -5,6 +5,14 @@ class Office::OrdersController < ApplicationController
     @orders = @orders.page(params[:page])
   end
 
+  def drafts
+    @drafts = Office::Order.drafts
+  end
+
+  def underways
+    @underways = Office::Order.underways
+  end
+
   def new ; end
 
   def edit ; end

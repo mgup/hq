@@ -19,6 +19,14 @@ SimpleNavigation::Configuration.run do |navigation|
         #  study.item :progress, 'Текущая успеваемость', study_groups_path
         #  #study.item :subjects, 'Результаты сессий', study_subjects_path
         #end
+
+        primary.item :office_orders, raw('Работа с приказами <span class="caret"></span>'), office_orders_path, icon: 'file', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' } do |orders|
+          orders.dom_class = 'dropdown-menu'
+          orders.item :orders_drafts, 'Черновики приказов', drafts_office_orders_path, icon: 'paperclip'
+          orders.item :orders_underways, 'Приказы на подписи', underways_office_orders_path, icon: 'time'
+
+          orders.item :order_templates, 'Шаблоны', office_order_templates_path, icon: 'list'
+        end
       end
       if can? :index, :selection_contracts
         primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }

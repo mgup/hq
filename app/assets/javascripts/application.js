@@ -26,4 +26,6 @@
 //= require chosen.jquery
 //= require jquery_nested_form
 //
+//= require ace/ace
+//
 //= require_tree .

@@ -1,0 +1,7 @@
+ru:
+  activerecord:
+    models:
+      office/order_template: 'шаблон'
+    attributes:
+      office/order_template:
+        template_name: 'название'
