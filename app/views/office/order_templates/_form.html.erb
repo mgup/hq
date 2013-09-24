@@ -7,12 +7,12 @@
   </div>
 
   <%= f.fields_for :xsl do |xsl| %>
-    <%= xsl.hidden_field :id %>
+    <%= xsl.hidden_field :order_xsl_template %>
 
     <div class="form-group">
-      <%= xsl.label :created_at, 'Последнее изменение', class: 'control-label col-sm-3' %>
+      <label class="control-label col-sm-3">Последнее изменение</label>
       <div class="col-sm-9">
-        <p class="form-control-static"><%= l @order_template.xsl.created_at %></p>
+        <p class="form-control-static"><%= l @order_template.xsl.first.last_edit %></p>
       </div>
     </div>
 
@@ -21,8 +21,8 @@
       <%= xsl.hidden_field :order_xsl_content %>
       <div class="clearfix"></div>
       <div class="ace-editor-wrap">
-        <div id="editor" data-field="office_order_template_xsl_attributes_order_xsl_content"
-             class="ace-editor"><%= @order_template.xsl.stylesheet %></div>
+        <div id="editor" data-field="office_order_template_xsl_attributes_0_order_xsl_content"
+             class="ace-editor"><%= @order_template.xsl.first.stylesheet %></div>
       </div>
     </div>
   <% end %>
