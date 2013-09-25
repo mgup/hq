@@ -1,0 +1,8 @@
+<!ENTITY nbsp   "&#160;">
+<!ENTITY ndash  "&#8211;">
+<!ENTITY mdash  "&#8212;">
+<!ENTITY laquo  "&#171;">
+<!ENTITY raquo  "&#187;">
+<!ENTITY gt  	"&#62;">
+<!ENTITY brvbar "&#166;">
+<!ENTITY lowast "&#8727;">
