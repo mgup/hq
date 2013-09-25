@@ -43,17 +43,17 @@ class Office::Order < ActiveRecord::Base
   end
 
   def to_nokogiri
-    doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+    doc = Nokogiri::XML::Builder.new { |xml|
       xml.order {
         xml.id_         id
         xml.version     version
         xml.responsible responsible
         xml.status      status
         xml << template.to_nokogiri.root.to_xml
-        xml.text_
         xml.students {
           students.each { |student| xml << student.to_nokogiri.root.to_xml }
         }
+        xml.text_
       }
     }.doc
 
@@ -62,5 +62,10 @@ class Office::Order < ActiveRecord::Base
 
   def to_xml
     to_nokogiri.to_xml
+  end
+
+  def to_html
+    xslt = Nokogiri::XSLT(File.read('lib/xsl/order_view.xsl'))
+    xslt.transform(to_nokogiri).root.to_html.html_safe
   end
 end

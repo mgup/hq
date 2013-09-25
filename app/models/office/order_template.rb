@@ -8,6 +8,8 @@ class Office::OrderTemplate < ActiveRecord::Base
 
   has_one :current_xsl, -> { order('order_xsl_time DESC').limit(1) }, class_name: Office::OrderXsl, foreign_key: :order_xsl_template
 
+  has_one :used_xsl, -> { order('order_xsl_time DESC').limit(1) }, class_name: Office::OrderXsl, foreign_key: :order_xsl_template
+
   has_many :xsl, -> { order('order_xsl_time DESC').limit(1) }, class_name: Office::OrderXsl, foreign_key: :order_xsl_template
   accepts_nested_attributes_for :xsl, update_only: false
 
