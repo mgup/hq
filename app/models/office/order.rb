@@ -43,7 +43,7 @@ class Office::Order < ActiveRecord::Base
   end
 
   def to_nokogiri
-    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+    doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.order {
         xml.id_         id
         xml.version     version
@@ -56,6 +56,8 @@ class Office::Order < ActiveRecord::Base
         }
       }
     }.doc
+
+    Nokogiri::XSLT(template.current_xsl.stylesheet).transform(doc)
   end
 
   def to_xml
