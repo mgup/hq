@@ -35,4 +35,17 @@ class Speciality < ActiveRecord::Base
     full_name = code + " " + name
   end
 
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.speciality {
+        xml.id_   id
+        xml.code  code
+        xml.name  name
+      }
+    }.doc
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
 end

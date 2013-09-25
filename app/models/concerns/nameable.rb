@@ -9,9 +9,7 @@ module Nameable
     # Создаём методы для фамилии, имени и отчества во всех падежах.
     %w(last_name first_name patronym).each do |name|
       %w(ip rp dp vp tp pp).each do |form|
-        define_method("#{name}_#{form}") do
-          send(name, form.to_sym)
-        end
+        define_method("#{name}_#{form}") { send(name, form.to_sym) }
       end
     end
   end

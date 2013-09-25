@@ -12,4 +12,17 @@ class Office::OrderTemplate < ActiveRecord::Base
   default_scope do
     where(template_active: 1).order(:template_name)
   end
+
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.order_template {
+        xml.id_   id
+        xml.name  name
+      }
+    }.doc
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
 end
