@@ -13,9 +13,13 @@ class Office::OrdersController < ApplicationController
     @underways = Office::Order.underways
   end
 
-  def new ; end
+  def show
+    respond_to do |format|
+      format.xml { render xml: @order.to_xml }
+    end
+  end
 
-  def edit ; end
+  def new ; end
 
   def create
     if @order.save
@@ -24,6 +28,8 @@ class Office::OrdersController < ApplicationController
       render action: :new
     end
   end
+
+  def edit ; end
 
   def update
     if @order.update(resource_params)

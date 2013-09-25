@@ -40,4 +40,23 @@ class Office::Order < ActiveRecord::Base
   def name
     template.name
   end
+
+  def to_xml
+    #xml = ::Builder::XmlMarkup.new
+    #xml.instruct! :xml, version: '1.0', encoding: 'UTF-8'
+    #xml.order do |order|
+    #
+    #end
+    #
+    #xml
+    Nokogiri::XML::Builder.new { |xml|
+      xml.order {
+        xml.id_     id
+        xml.version version
+        xml.department {
+          
+        }
+      }
+    }.to_xml
+  end
 end
