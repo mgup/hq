@@ -129,6 +129,10 @@ GROUP BY `group`
     .order('document.document_create_date DESC')
   }
 
+  def speciality
+    group.speciality
+  end
+
   # Факультет, на котором обучается студент.
   def faculty
     group.speciality.faculty
@@ -245,5 +249,18 @@ GROUP BY `group`
     end
   end
 
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.student {
+        xml.id_   id
+        xml << person.to_nokogiri.root.to_xml
+        xml << group.to_nokogiri.root.to_xml
+        xml << speciality.to_nokogiri.root.to_xml
+      }
+    }.doc
+  end
 
+  def to_xml
+    to_nokogiri.to_xml
+  end
 end

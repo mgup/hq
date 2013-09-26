@@ -11,6 +11,7 @@ class Office::Order < ActiveRecord::Base
   alias_attribute :status,  :order_status
   alias_attribute :editing_date, :order_editing
   alias_attribute :signing_date, :order_signing
+  alias_attribute :responsible,  :order_responsible
 
   belongs_to :template, class_name: Office::OrderTemplate,
                         foreign_key: :order_template
@@ -41,22 +42,30 @@ class Office::Order < ActiveRecord::Base
     template.name
   end
 
-  def to_xml
-    #xml = ::Builder::XmlMarkup.new
-    #xml.instruct! :xml, version: '1.0', encoding: 'UTF-8'
-    #xml.order do |order|
-    #
-    #end
-    #
-    #xml
-    Nokogiri::XML::Builder.new { |xml|
+  def to_nokogiri
+    doc = Nokogiri::XML::Builder.new { |xml|
       xml.order {
-        xml.id_     id
-        xml.version version
-        xml.department {
-          
+        xml.id_         id
+        xml.version     version
+        xml.responsible responsible
+        xml.status      status
+        xml << template.to_nokogiri.root.to_xml
+        xml.students {
+          students.each { |student| xml << student.to_nokogiri.root.to_xml }
         }
+        xml.text_
       }
-    }.to_xml
+    }.doc
+
+    Nokogiri::XSLT(template.current_xsl.stylesheet).transform(doc)
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
+
+  def to_html
+    xslt = Nokogiri::XSLT(File.read('lib/xsl/order_view.xsl'))
+    xslt.transform(to_nokogiri).root.to_html.html_safe
   end
 end

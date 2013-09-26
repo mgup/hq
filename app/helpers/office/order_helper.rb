@@ -22,4 +22,12 @@ module Office::OrderHelper
       end
     end
   end
+
+  def order_number(order)
+    if order.signed?
+      "№#{order.number} от #{l(order.signing_date)} (\##{order.id})"
+    else
+      "\##{order.id}"
+    end
+  end
 end

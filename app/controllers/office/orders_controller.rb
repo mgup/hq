@@ -15,6 +15,8 @@ class Office::OrdersController < ApplicationController
 
   def show
     respond_to do |format|
+      format.html
+      format.pdf
       format.xml { render xml: @order.to_xml }
     end
   end
