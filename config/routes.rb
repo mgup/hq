@@ -11,8 +11,11 @@ HQ::Application.routes.draw do
   get 'orders/print' => 'orders#print'
 
   resources :roles
-  resources :users
-  get '/users/:id/profile' => 'users#profile'
+  resources :users do
+    get 'profile' => 'users#profile'
+  end
+  get 'users_filter' => 'users#filter'
+
   resources :departments
   resources :positions
 
@@ -84,18 +87,10 @@ HQ::Application.routes.draw do
   get 'schedule/data/departments' => 'schedule/data#departments'
   get 'schedule/data/rooms' => 'schedule/data#rooms'
 
-  get 'study/subjects/ajax/specialities' => 'ajax#specialities'
-  get 'study/subjects/ajax/groups' => 'ajax#groups'
   get 'study/ajax/subjects' => 'ajax#subjects'
   get 'study/ajax/disciplines' => 'ajax#disciplines'
-  get 'study/disciplines/ajax/groups' => 'ajax#groups'
-  get 'study/disciplines/:id/ajax/specialities' => 'ajax#specialities'
-  get 'study/disciplines/:id/ajax/groups' => 'ajax#groups'
-  get 'study/disciplines/ajax/specialities' => 'ajax#specialities'
-  get 'study/ajax/groups' => 'ajax#groups'
-  get 'study/ajax/specialities' => 'ajax#specialities'
-  get 'my/ajax/groups' => 'ajax#groups'
-  get 'my/ajax/specialities' => 'ajax#specialities'
+  get '/study/disciplines/ajax/groups' => 'ajax#groups'
+  get '/study/disciplines/ajax/specialities' => 'ajax#specialities'
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'

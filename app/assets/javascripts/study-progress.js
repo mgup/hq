@@ -1,9 +1,13 @@
 $(function(){
-    $('#formmychoiceselectgroup').submit(function() {
-        $id = $('#progress_group_id').val();
-        $url = '/study/group/' + $id + '/progress';
-        $(location).attr('href', $url);
-       return false;
+    $('.view-group-progress').click(function(event) {
+        event.preventDefault();
+
+        var group = $('#progress_group_id').val();
+        if ('' == group || null == group) {
+            alert('Сначала необходимо выбрать группу.');
+        } else {
+            document.location = document.location + '/' + group + '/progress';
+        }
     });
 
     if ( $('#progress_group').val() != null) {

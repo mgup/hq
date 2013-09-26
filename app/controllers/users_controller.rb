@@ -58,6 +58,17 @@ class UsersController < ApplicationController
     )
   end
 
+  def filter
+    if params
+      @users = User.filter(params)
+    else
+      @users = User.all
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
 
   def set_user

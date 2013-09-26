@@ -11,22 +11,41 @@ $ ->
         ) for speciality in specialities
         $(select).val(specialities[0].id).change()
 
-  updateGroups = (speciality_id) ->
-    $.getJSON '/study/disciplines/ajax/groups', {
-      'speciality': speciality_id
-    }, (groups) ->
+  updateGroups = (groups) ->
       select = $('.ajax-group')[0]
       if select
         select.options.length = 0
         select.options.add(
           new Option(group.name, group.id)
         ) for group in groups
-        $(select).val(groups[0].id).change()
+        $(select).val(groups[0].id).change() if groups[0]
 
   $('.ajax-faculty').change ->
     updateSpecialities($(this).val())
   $('.ajax-speciality').change ->
-    updateGroups($(this).val())
+    $.getJSON '/study/disciplines/ajax/groups', {
+      'speciality':  $(this).val(),
+      'form' : $('.ajax-form').val(),
+      'course' : $('.ajax-course').val()
+    }, (groups) ->
+      updateGroups(groups)
+
+  $('.ajax-form').change ->
+    $.getJSON '/study/disciplines/ajax/groups', {
+      'speciality':  $('.ajax-speciality').val(),
+      'form' : $(this).val(),
+      'course' : $('.ajax-course').val()
+    }, (groups) ->
+      updateGroups(groups)
+
+  $('.ajax-course').change ->
+    $.getJSON '/study/disciplines/ajax/groups', {
+      'speciality':  $('.ajax-speciality').val(),
+      'form' : $('.ajax-form').val(),
+      'course' : $(this).val()
+    }, (groups) ->
+      updateGroups(groups)
 
   if $('.ajax-speciality').length > 0 and 0 == $('.ajax-speciality')[0].options.length
     $('.ajax-faculty').change() if 0 == $('.ajax-speciality')[0].options.length
+    $('.ajax-speciality').change() if 0 == $('.ajax-group')[0].options.length

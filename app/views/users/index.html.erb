@@ -30,7 +30,7 @@
       <th></th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="for_users">
     <% @users.includes(:positions, :departments).each do |user| %>
       <tr>
         <td><%= user.id %></td>
