@@ -1,0 +1,47 @@
+<div class="page-header">
+  <h1>Создание проекта приказа</h1>
+</div>
+
+<p>Для создания проекта приказа выберите сначала шаблон приказа, который Вы собираетесь создать. После этого выберите студентов, на которых создается данный приказ.</p>
+
+<%= select_tag 'order_template',
+      options_from_collection_for_select(Office::OrderTemplate.all, :id, :name),
+      class: 'form-control' %>
+
+<%= render 'students/filters' %>
+
+<div id="create_order" style="display: none;">
+</div>
+
+<%= paginate @students %>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Фамилия</th>
+    <th>Имя</th>
+    <th>Отчество</th>
+    <th>Институт</th>
+    <th>Группа</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @students.each do |student| %>
+  <tr>
+    <td><%= student.id %></td>
+    <td><%= student.person.last_name %></td>
+    <td><%= student.person.first_name %></td>
+    <td><%= student.person.patronym %></td>
+    <td><%= student.group.faculty.abbreviation %></td>
+    <td><%= student.group.name %></td>
+    <td>
+      <%= link_to '#', class: 'btn btn-default orderadd', data: {value: student.id} do %>
+        <span class='glyphicon glyphicon-up-arrow'></span> 
+      <% end %>
+    </td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

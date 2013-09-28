@@ -21,7 +21,9 @@ class Office::OrdersController < ApplicationController
     end
   end
 
-  def new ; end
+  def new
+    @students = Student.filter(params).page(params[:page])
+  end
 
   def create
     if @order.save
