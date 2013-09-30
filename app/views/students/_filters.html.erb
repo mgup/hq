@@ -1,9 +1,9 @@
-<%= form_tag nil, method: :get, class: 'filter-block' do %>
+<%= form_tag nil, method: :get, class: 'filter-block', id: 'formstudentsearch' do %>
   <div class="row">
     <div class="col col-lg-3 pull-right">
       <%= submit_tag 'Искать', class: 'btn btn-primary' %>
 
-      <%= link_to students_path, class: 'btn btn-danger pull-right' do %>
+      <%= link_to students_path, class: 'form_reset btn btn-danger pull-right' do %>
         <span class="glyphicon glyphicon-remove"></span>
       <% end %>
     </div>
@@ -13,9 +13,9 @@
     <div class="col col-lg-3">
       <%= select_tag 'status',
                      options_from_collection_for_select(Status.all, :id, :name, params[:status]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все статусы' } %>
+                     multiple: true, class: 'chzn-select form-control', name: 'status', data: { placeholder: 'все статусы' } %>
     </div>
-    <div class="col col-lg-3">
+    <div class="col col-lg-3 form-control">
       <select>
         <option>все квалификации</option>
       </select>

@@ -70,6 +70,7 @@ HQ::Application.routes.draw do
       get 'drafts', to: 'orders#drafts', on: :collection
       get 'underways', to: 'orders#underways', on: :collection
     end
+    get 'orders/new(/:page)', to: 'orders#new', defaults: { page: 1 }
 
     resources :order_templates do
       resources :order_blanks
@@ -94,6 +95,7 @@ HQ::Application.routes.draw do
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'
+  get '/ajax/orderstudent' => 'ajax#orderstudent'
 
   root to: 'dashboard#index'
 

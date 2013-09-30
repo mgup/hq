@@ -43,6 +43,14 @@ class AjaxController < ApplicationController
     end })
   end
 
+  def orderstudent
+    student = Student.find(params[:id])
+    render({ json: {id: student.id, fname: student.person.last_name, iname:  student.person.first_name,
+                    oname:  student.person.patronym, faculty: student.group.speciality.faculty.abbreviation,
+                    group: student.group.name}
+       })
+  end
+
   def checkpoint
     x = Study::Checkpoint.find(params[:checkpoint_id])
     checkpoint = {type: x.checkpoint_type, date: x.date.strftime("%d.%m.%Y"), name: x.name,
