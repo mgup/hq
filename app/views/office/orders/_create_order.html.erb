@@ -11,18 +11,8 @@
     </tr>
   </thead>
   <tbody>
-    <% students.each do |student| %>
-  <tr>
-    <td><%= student.id %></td>
-    <td><%= student.person.last_name %></td>
-    <td><%= student.person.first_name %></td>
-    <td><%= student.person.patronym %></td>
-    <td><%= student.group.faculty.abbreviation %></td>
-    <td><%= student.group.name %></td>
-    <td>
-      <%= link_to 'Add', '#' %>
-    </td>
-  </tr>
-  <% end %>
   </tbody>
 </table>
+<%= link_to '#', class: 'btn btn-success pull-right margin-bottom' do %>
+  Создать приказ
+<% end %>
