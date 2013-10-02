@@ -39,7 +39,7 @@
       <td><%= student.group.speciality.faculty.abbreviation %></td>
       <td><%= student.group.name %></td>
       <td>
-        <%= link_to '#', class: 'btn btn-default orderadd', data: {value: student.id} do %>
+        <%= link_to '#', class: 'btn btn-default orderadd', id: 'process', data: {value: student.id} do %>
           <span class='glyphicon glyphicon-arrow-up'></span>
         <% end %>
       </td>

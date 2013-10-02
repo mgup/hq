@@ -3,11 +3,6 @@ $(function(){
         var orderDiv = $('div#create_order');
         var orderTable = $('div#create_order table tbody');
         var ajaxTable = $('div#ajax_content table tbody');
-        var spinner = '<div id="spinner">' +
-            '<img id="loading" src="/img/spinner128.gif">' +
-            '</div>';
-        var loading = false;
-        $(spinner).hide();
         orderDiv.hide();
 
         /**
@@ -65,7 +60,7 @@ $(function(){
                                 + '<td>' + data.faculty + '</td>'
                                 + '<td>' + data.group + '</td>'
                                 + '<td class="image">'
-                                + '<a class="orderremove btn btn-default" href="#">'
+                                + '<a class="btn btn-default orderremove" href="#">'
                                 + '<span class="glyphicon glyphicon-arrow-down"></span>'
                                 + '</a></td></tr>'
                             orderTable.append(row);
@@ -96,18 +91,21 @@ $(function(){
                 var img = tr.find('span');
                 img.removeClass('glyphicon-arrow-up');
                 img.addClass('glyphicon-arrow-down');
-                $(this).attr('class', 'orderremove btn btn-default');
+                $(this).removeClass('orderadd');
+                $(this).addClass('orderremove');
                 orderTable.append(tr);
                 processData();
                 e.preventDefault();
                 checkCount();
             });
-            $('a.orderremove').click(function(e) {
-                var tr = $(this).closest('tr');
-                tr.remove();
-                renderContent();
-                e.preventDefault();
-                checkCount();
+            $('a').click(function() {
+                $('a.orderremove').click(function(e) {
+                    e.preventDefault();
+                    var tr = $(this).closest('tr');
+                    tr.remove();
+                    location.href = processData();
+                    checkCount();
+                });
             });
         }
 
@@ -119,6 +117,11 @@ $(function(){
             /**
              * Добавляем в дату массив исключений (если мы создаем приказ).
              */
+            var template = '';
+            if ($('#order_template')[0]){
+                template = "template=" + $('#order_template option:selected').val();
+            }
+
             var exceptions = "";
             $('div#create_order table>tbody>tr>td:nth-child(1)').each( function(){
                 exceptions = exceptions + "&exception[]=" + $(this).text();
@@ -126,7 +129,7 @@ $(function(){
 
             var totalData;
             if (null == url) {
-                totalData = href + currentPage + '/?&' + data + exceptions;
+                totalData = href + currentPage + '/?&' + template + data + exceptions;
                 history.pushState(
                     null,
                     null,
@@ -140,42 +143,10 @@ $(function(){
         }
 
         /**
-         * Загрузка нужного контента.
-         */
-        function renderContent(url) {
-            var data = processData(url);
-            switchSpinner();
-            $('#ajax_content').html('');
-            $(spinner).appendTo('#ajax_content');
-            updateContent(data, url);
-        }
-
-        /**
-         * Функция обновляющая див с контентом.
-         */
-        function updateContent(data, url) {
-            var hr;
-            if (null == url) {
-                hr = href + currentPage;
-            } else {
-                hr = url;
-            }
-            $.get(
-                hr,
-                data,
-                function(data) {
-                    $('#ajax_content').replaceWith(data);
-                    switchSpinner();
-                }
-            );
-        }
-
-        /**
          * Кнопка "Следующая".
          */
         function next() {
             currentPage++;
-            renderContent();
         }
 
         /**
@@ -185,55 +156,39 @@ $(function(){
             if (currentPage > 1) {
                 currentPage--;
             }
-            renderContent();
-        }
-
-        /**
-         * Включение/выключение спиннера.
-         */
-        function switchSpinner() {
-            if (!loading) {
-                $(spinner).show();
-                loading = true;
-            } else {
-                $(spinner).hide();
-                loading = false;
-            }
         }
 
         function setListeners() {
-            $('a.print').click(function(e) {
+            $('a.print').click(function() {
                 var data = $('#formstudentsearch').serialize();
                 location.href = href + 'print/?' + data + '&print=1';
-                e.preventDefault();
             });
 
             $('button[type=submit],input[type=submit]').click(function(e) {
-                    renderContent();
-                    e.preventDefault();
-                });
+                e.preventDefault();
+                location.href = processData();
+            });
 
             $('ul.pagination li.page').click(function(e) {
-                currentPage = $(this).closest('a').text();
-                renderContent();
-                $('html, body').animate({scrollTop: '0px'}, 300);
                 e.preventDefault();
+                currentPage = $(this).find('a').text();
+                location.href = processData();
             });
 
             $('ul.pagination li.next').click(function(e) {
                 if (!$(this).hasClass('disabled')) {
+                    e.preventDefault();
                     next();
+                    location.href = processData();
                 }
-                $('html, body').animate({scrollTop: '0px'}, 300);
-                e.preventDefault();
             });
 
             $('ul.pagination li.prev').click(function(e) {
                 if (!$(this).hasClass('disabled')) {
+                    e.preventDefault();
                     prev();
+                    location.href = processData();
                 }
-                $('html, body').animate({scrollTop: '0px'}, 300);
-                e.preventDefault();
             });
 
             /**
@@ -242,6 +197,18 @@ $(function(){
             $('.form_reset').click(function(e) {
                 e.preventDefault();
                 location.href = href;
+            });
+
+//            $('#process').click(function(e){
+//                var href = location.href;
+//                var data = href.split('?');
+//                location.href = '/orders/create/?' + data[1];
+//                e.preventDefault();
+//            });
+
+            $('#order_template').change(function() {
+                alert('xcn');
+                location.href = processData();
             });
 
         }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130913065854) do
+ActiveRecord::Schema.define(version: 20131002102101) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -92,18 +92,6 @@ ActiveRecord::Schema.define(version: 20130913065854) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
-    t.string  "region",                                limit: 200
-    t.string  "okrug",                                 limit: 200
-    t.string  "city",                                  limit: 200
-    t.string  "settlement",                            limit: 200
-    t.string  "street",                                limit: 200
-    t.string  "house",                                 limit: 10
-    t.string  "building",                              limit: 100
-    t.integer "flat"
-    t.string  "birth_region",                          limit: 200
-    t.string  "birth_okrug",                           limit: 200
-    t.string  "birth_city",                            limit: 200
-    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
@@ -333,18 +321,6 @@ ActiveRecord::Schema.define(version: 20130913065854) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
-    t.string  "region",                                limit: 200
-    t.string  "okrug",                                 limit: 200
-    t.string  "city",                                  limit: 200
-    t.string  "settlement",                            limit: 200
-    t.string  "street",                                limit: 200
-    t.string  "house",                                 limit: 10
-    t.string  "building",                              limit: 100
-    t.integer "flat"
-    t.string  "birth_region",                          limit: 200
-    t.string  "birth_okrug",                           limit: 200
-    t.string  "birth_city",                            limit: 200
-    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
@@ -662,7 +638,6 @@ ActiveRecord::Schema.define(version: 20130913065854) do
     t.integer "hostel_payment_type_sum",                 null: false
     t.integer "hostel_payment_type_yearsum",             null: false
     t.integer "hostel_payment_type_active",  limit: 1,   null: false
-    t.date    "hostel_payment_type_date",                null: false
   end
 
   add_index "hostel_payment_type", ["hostel_payment_type_status"], name: "hostel_payment_type_status", using: :btree
@@ -1015,18 +990,6 @@ ActiveRecord::Schema.define(version: 20130913065854) do
     t.string   "last_name_hint"
     t.string   "first_name_hint"
     t.string   "patronym_hint"
-    t.string   "region",                                limit: 200
-    t.string   "okrug",                                 limit: 200
-    t.string   "city",                                  limit: 200
-    t.string   "settlement",                            limit: 200
-    t.string   "street",                                limit: 200
-    t.string   "house",                                 limit: 10
-    t.string   "building",                              limit: 100
-    t.integer  "flat"
-    t.string   "birth_region",                          limit: 200
-    t.string   "birth_okrug",                           limit: 200
-    t.string   "birth_city",                            limit: 200
-    t.string   "birth_settlement",                      limit: 200
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1096,6 +1059,8 @@ ActiveRecord::Schema.define(version: 20130913065854) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "ciot_login"
+    t.string   "ciot_password"
   end
 
   add_index "student_group", ["student_group_group"], name: "studentGroupGroup", using: :btree
@@ -1160,7 +1125,7 @@ ActiveRecord::Schema.define(version: 20130913065854) do
 
   add_index "subject", ["subject_group"], name: "subject_group", using: :btree
 
-  create_table "subject_teacher", primary_key: "subject_teacher_id", force: true do |t|
+  create_table "subject_teacher", force: true do |t|
     t.integer  "subject_id", null: false
     t.integer  "teacher_id", null: false
     t.datetime "created_at"
