@@ -1,0 +1,31 @@
+<div class="modal fade" id="changeCiot_<%=student.id%>" tabindex="-1" role="dialog" aria-labelledby="changeCiotLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%= student.person.full_name %> <small><%= student.group.name %></small> </h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for student, remote: true do |f| %>
+          <div class="row">
+            <label class="col-lg-3 control-label">Логин</label>
+            <div class="col col-lg-4">
+              <%= f.text_field :ciot_login, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-lg-3 control-label">Пароль</label>
+            <div class="col col-lg-4">
+              <%= f.text_field :ciot_password, class: 'form-control' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <%= hidden_field_tag :id, student.id %>
+        <button type="button" class="save_ciot btn btn-primary">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,11 +14,17 @@ class StudentsController < ApplicationController
   end
 
   def update
-    if @student.update(student_params)
+    if params[:student][:ciot_password]
+      @student.ciot_password =  params[:student][:ciot_password]
+      @student.ciot_login =  params[:student][:ciot_login]
+      @student.save
       redirect_to @student
-    else
-      render action: :show
     end
+    #if @student.update_attributes(student_params)
+    #  redirect_to @student
+    #else
+    #  render action: :show
+    #end
   end
 
   private

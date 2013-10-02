@@ -22,7 +22,7 @@ class Office::OrdersController < ApplicationController
   end
 
   def new
-    @students = Student.filter(params).page(params[:page])
+    @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception]).filter(params).page(params[:page])
   end
 
   def create

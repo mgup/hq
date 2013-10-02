@@ -100,11 +100,26 @@ class Student < ActiveRecord::Base
     end
 
     if filters.key?(:course)
-      cond = cond.joins(:group).where(student_group_group: { group_course: filters[:course] })
+      cond = cond.where(student_group_group: Group.from_course(filters[:course]))
     end
 
     if filters.key?(:group)
       cond = cond.where(student_group_group: filters[:group])
+    end
+
+    if filters.key?(:speciality)
+      cond = cond.where(student_group_group: Group.includes(:speciality).from_speciality(filters[:speciality]))
+    end
+    if filters.key?(:faculty)
+      cond = cond.where(student_group_group: Group.from_faculty(filters[:faculty]))
+    end
+
+    if filters.key?(:form)
+      cond = cond.where(student_group_group: Group.from_form(filters[:form]))
+    end
+
+    if filters.key?(:finance)
+      cond = cond.where(student_group_tax: filters[:finance])
     end
 
     cond
@@ -136,6 +151,10 @@ GROUP BY `group`
   # Факультет, на котором обучается студент.
   def faculty
     group.speciality.faculty
+  end
+
+  def course
+    group.course
   end
 
   # Обучается ли студент на бюджетной основе?
