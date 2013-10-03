@@ -12,5 +12,7 @@ class DashboardController < ApplicationController
     redirect_to selection_contract_path if current_user.is?(:zamestitel_otvetstvennogo_sekretarja)
 
     redirect_to selection_contract_path if current_user.is?(:chief_accountant)
+
+    redirect_to '/ciot' if current_user.is?(:ciot)
   end
 end

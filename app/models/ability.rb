@@ -39,6 +39,10 @@ class Ability
       if user.is?(:developer)
         can :manage, :all
       end
+
+      if user.is?(:ciot)
+        can :manage, :ciot
+      end
     end
 
     can [:index, :show], :progress
