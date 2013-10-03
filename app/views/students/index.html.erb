@@ -8,31 +8,34 @@
 
 <%= render 'filters' %>
 
-<%= paginate @students %>
+<div id="ajax_content" data-href="/students/list/">
 
-<table class="table table-hover">
-  <thead>
-  <tr>
-    <th>#</th>
-    <th>Фамилия</th>
-    <th>Имя</th>
-    <th>Отчество</th>
-    <th>Группа</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @students.each do |student| %>
-  <tr>
-    <td><%= student.id %></td>
-    <td><%= student.person.last_name %></td>
-    <td><%= student.person.first_name %></td>
-    <td><%= student.person.patronym %></td>
-    <td><%= student.group.name %></td>
-    <td>
-      <%= link_to 'Информация', student %>
-    </td>
-  </tr>
-  <% end %>
-  </tbody>
-</table>
+  <%= paginate @students %>
+
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Фамилия</th>
+      <th>Имя</th>
+      <th>Отчество</th>
+      <th>Группа</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @students.each do |student| %>
+    <tr>
+      <td><%= student.id %></td>
+      <td><%= student.person.last_name %></td>
+      <td><%= student.person.first_name %></td>
+      <td><%= student.person.patronym %></td>
+      <td><%= student.group.name %></td>
+      <td>
+        <%= link_to 'Информация', student %>
+      </td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

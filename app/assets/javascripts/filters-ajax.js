@@ -2,7 +2,7 @@ $(function() {
 
     $('#filterforusers').submit(function() {
         $name = $('#name').val();
-        $department = $('.chzn-select').val();
+        $department = $('.chzn-select').val() == null ? '' : $('.chzn-select').val();
         $position = $('#position').val();
         var params = 'name=' + $name +'&department=' +
             $department + '&position=' + $position;

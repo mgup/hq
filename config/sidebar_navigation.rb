@@ -41,6 +41,10 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') }
     end
 
+    if can? :manage, :ciot
+      primary.item :ciot, 'Логины и пароли', '/ciot', icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
+    end
+
     if student_signed_in?
       primary.item :my_student, 'Информация', my_student_path, icon: 'user'
     end
