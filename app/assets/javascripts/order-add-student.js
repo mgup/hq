@@ -212,9 +212,10 @@ $(function(){
             });
 
         }
-
-        setListeners();
-        setCreateOrder();
-        getData();
+        if ($('#formstudentsearch')[0]){
+            setListeners();
+            setCreateOrder();
+            getData();
+        }
     });
 })

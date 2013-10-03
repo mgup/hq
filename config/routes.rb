@@ -21,6 +21,7 @@ HQ::Application.routes.draw do
   resources :positions
 
   resources :students
+  get '/students/list(/:page)', to: 'students#index'
 
   resources :specialities
 
