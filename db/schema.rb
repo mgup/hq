@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131002102101) do
+ActiveRecord::Schema.define(version: 20131008060019) do
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -992,6 +992,7 @@ ActiveRecord::Schema.define(version: 20131002102101) do
     t.string   "patronym_hint"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "track_recursive_triggers",                               default: 1,     null: false
   end
 
   add_index "student", ["student_fname"], name: "studentFname", using: :btree
@@ -1400,6 +1401,29 @@ CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_update AFTER UPDAT
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
+END
+  TRIGGERSQL
+
+  # WARNING: generating adapter-specific definition for student_before_insert_row_tr due to a mismatch.
+  # either there's a bug in hairtrigger or you've messed up your migrations and/or db :-/
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@localhost TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
+FOR EACH ROW
+BEGIN
+    
+             SET
+                NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN student ON NEW.student_fname = dictionary.dictionary_id
+                                      LIMIT 1),
+                NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN student ON NEW.student_iname = dictionary.dictionary_id
+                                      LIMIT 1),
+                NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN student ON NEW.student_oname = dictionary.dictionary_id
+                                      LIMIT 1);
 END
   TRIGGERSQL
 

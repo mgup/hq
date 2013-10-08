@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
 
   scope :filter, -> filters {
     [:name, :department, :position].inject(all) do |cond, field|
-      if filters.include?(field) && !filters[field].empty?
+      if filters.include?(field) && !filters[field].empty? && filters[field]
         cond = cond.send "from_#{field.to_s}", filters[field]
       end
       cond

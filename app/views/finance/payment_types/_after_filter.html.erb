@@ -1,21 +1,25 @@
-<% payment_types.each do |price| %>
-  <tr>
-    <td><%= price.speciality.faculty.abbreviation %></td>
-    <td><%= price.speciality.name %><br><%= price.speciality.code %></td>
-    <td><%= price.year %></td>
-    <td><%= price.form_of_study %></td>
-    <% i = 1 %>
-    <td>
-      <% price.sum[:by_year].each do %>
-        <%= i %><br><br>
-        <% i += 1 %>
-      <% end %>
-    </td>
-    <td>
-      <% price.sum[:by_year].each do |year, sum| %>
-        <%= number_to_currency(sum) %><br>
-      <% end %>
-    </td>
-    <td><strong><%= number_to_currency(price.sum[:total]) %></strong></td>
-  </tr>
+<% if payment_types == [] %>
+  <tr><td colspan="9" class="text-center lead">Попробуйте изменить параметры запроса</td></tr>
+<% else %>
+  <% payment_types.each do |price| %>
+    <tr>
+      <td><%= price.speciality.faculty.abbreviation %></td>
+      <td><%= price.speciality.name %><br><%= price.speciality.code %></td>
+      <td><%= price.year %></td>
+      <td><%= price.form_of_study %></td>
+      <% i = 1 %>
+      <td>
+        <% price.sum[:by_year].each do %>
+          <%= i %><br><br>
+          <% i += 1 %>
+        <% end %>
+      </td>
+      <td>
+        <% price.sum[:by_year].each do |year, sum| %>
+          <%= number_to_currency(sum) %><br>
+        <% end %>
+      </td>
+      <td><strong><%= number_to_currency(price.sum[:total]) %></strong></td>
+    </tr>
+  <% end %>
 <% end %>

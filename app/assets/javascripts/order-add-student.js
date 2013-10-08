@@ -2,7 +2,6 @@ $(function(){
     $(function() {
         var orderDiv = $('div#create_order');
         var orderTable = $('div#create_order table tbody');
-        var ajaxTable = $('div#ajax_content table tbody');
         orderDiv.hide();
 
         /**
