@@ -1,19 +1,23 @@
-<% users.includes(:positions, :departments).each do |user| %>
-  <tr>
-    <td><%= user.id %></td>
-    <td><%= user.full_name %></td>
-    <td>
-      <%= user.positions.collect{|position| position.title}.push(user.user_position == nil ? [] : user.user_position.split(', ')).flatten.compact.uniq.join(', ')%>
-    </td>
-    <% department = (Department.exists?(user.user_department) ? Department.find(user.user_department).abbreviation : '') %>
-    <td><%= (user.departments.collect{|department| department.abbreviation} << (department if department != '')).uniq.compact.join(', ') %></td>
-    <td><%= user.username %></td>
-    <td class="nowrap"><%= user.phone %></td>
-    <td>
-      <%= link_to 'Назначения', user %>
-    </td>
-    <td>
-      <%= link_to 'Редактировать', edit_user_path(user) %>
-    </td>
-  </tr>
+<% if users == [] %>
+  <tr><td colspan="9" class="text-center lead">Пользователи не найдены</td></tr>
+<% else %>
+  <% users.includes(:positions, :departments).each do |user| %>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= user.full_name %></td>
+      <td>
+        <%= user.positions.collect{|position| position.title}.push(user.user_position == nil ? [] : user.user_position.split(', ')).flatten.compact.uniq.join(', ')%>
+      </td>
+      <% department = (Department.exists?(user.user_department) ? Department.find(user.user_department).abbreviation : '') %>
+      <td><%= (user.departments.collect{|department| department.abbreviation} << (department if department != '')).uniq.compact.join(', ') %></td>
+      <td><%= user.username %></td>
+      <td class="nowrap"><%= user.phone %></td>
+      <td>
+        <%= link_to 'Назначения', user %>
+      </td>
+      <td>
+        <%= link_to 'Редактировать', edit_user_path(user) %>
+      </td>
+    </tr>
+  <% end %>
 <% end %>

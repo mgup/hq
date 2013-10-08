@@ -13,6 +13,10 @@ class StudentsController < ApplicationController
 
   end
 
+  def new
+
+  end
+
   def update
     if params[:student][:ciot_password]
       @student.ciot_password =  params[:student][:ciot_password]
@@ -31,5 +35,6 @@ class StudentsController < ApplicationController
 
   def student_params
     params.require(:students)
+
   end
 end
