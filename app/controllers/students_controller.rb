@@ -2,7 +2,7 @@ class StudentsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @students = @students.filter(params).page(params[:page])
+    @students = @students.includes([:person, :group]).filter(params).page(params[:page])
 
     #@students = Student.in_group_at_date 35, '2013-02-24'
     #@students = Student.in_group_at_date 547, '2011-02-24'
