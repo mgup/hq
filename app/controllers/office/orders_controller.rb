@@ -16,7 +16,30 @@ class Office::OrdersController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.pdf
+      format.pdf {
+        filename = "Приказ №#{@order.id}"
+        Dir.chdir(Rails.root)
+        url = "#{Dir.getwd}/lib/xsl"
+        xml = Tempfile.new(['order', '.xml'])
+        File.open(xml.path, 'w') do |file|
+          file.write @order.to_xml
+        end
+        command = "java -cp #{Dir.getwd}/vendor/fop/build/fop.jar"
+        Dir.foreach('vendor/fop/lib') do |file|
+          command << ":#{Dir.getwd}/vendor/fop/lib/#{file}" if (file.match(/.jar/))
+        end
+        command << ' org.apache.fop.cli.Main '
+        command << " -c #{url}/configuration.xml"
+        command << " -xml #{xml.path}"
+        command << " -xsl #{url}/order_print.xsl"
+        command << ' -pdf -'
+        document = `#{command}`
+
+        send_data( document, type: 'application/pdf', filename: "#{filename}.pdf")
+
+        xml.close
+        xml.unlink
+      }
       format.xml { render xml: @order.to_xml }
     end
   end
