@@ -9,7 +9,6 @@ HQ::Application.routes.draw do
 
   get '/password' => 'password#index'
   get '/ciot(/:page)', to: 'ciot#index'
-  get 'orders/print' => 'orders#print'
 
   resources :roles
   resources :users do

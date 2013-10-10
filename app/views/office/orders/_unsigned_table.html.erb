@@ -4,7 +4,7 @@
     <th>#</th>
     <th>Редактировался</th>
     <th>Тип приказа</th>
-    <th></th>
+    <th colspan="2"></th>
   </tr>
   </thead>
   <tbody>
@@ -18,7 +18,11 @@
       <td>
         <%= link_for_order(order) %>
       </td>
-      <td></td>
+      <td>
+        <%= link_to "#{office_order_path(order)}.pdf" do %>
+          <span class='glyphicon glyphicon-print'></span> Распечатать приказ
+        <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>
