@@ -92,6 +92,18 @@ ActiveRecord::Schema.define(version: 20131008060019) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
+    t.string  "region",                                limit: 200
+    t.string  "okrug",                                 limit: 200
+    t.string  "city",                                  limit: 200
+    t.string  "settlement",                            limit: 200
+    t.string  "street",                                limit: 200
+    t.string  "house",                                 limit: 10
+    t.string  "building",                              limit: 100
+    t.integer "flat"
+    t.string  "birth_region",                          limit: 200
+    t.string  "birth_okrug",                           limit: 200
+    t.string  "birth_city",                            limit: 200
+    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
@@ -321,6 +333,18 @@ ActiveRecord::Schema.define(version: 20131008060019) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
+    t.string  "region",                                limit: 200
+    t.string  "okrug",                                 limit: 200
+    t.string  "city",                                  limit: 200
+    t.string  "settlement",                            limit: 200
+    t.string  "street",                                limit: 200
+    t.string  "house",                                 limit: 10
+    t.string  "building",                              limit: 100
+    t.integer "flat"
+    t.string  "birth_region",                          limit: 200
+    t.string  "birth_okrug",                           limit: 200
+    t.string  "birth_city",                            limit: 200
+    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
@@ -638,6 +662,7 @@ ActiveRecord::Schema.define(version: 20131008060019) do
     t.integer "hostel_payment_type_sum",                 null: false
     t.integer "hostel_payment_type_yearsum",             null: false
     t.integer "hostel_payment_type_active",  limit: 1,   null: false
+    t.date    "hostel_payment_type_date",                null: false
   end
 
   add_index "hostel_payment_type", ["hostel_payment_type_status"], name: "hostel_payment_type_status", using: :btree
@@ -990,9 +1015,20 @@ ActiveRecord::Schema.define(version: 20131008060019) do
     t.string   "last_name_hint"
     t.string   "first_name_hint"
     t.string   "patronym_hint"
+    t.string   "region",                                limit: 200
+    t.string   "okrug",                                 limit: 200
+    t.string   "city",                                  limit: 200
+    t.string   "settlement",                            limit: 200
+    t.string   "street",                                limit: 200
+    t.string   "house",                                 limit: 10
+    t.string   "building",                              limit: 100
+    t.integer  "flat"
+    t.string   "birth_region",                          limit: 200
+    t.string   "birth_okrug",                           limit: 200
+    t.string   "birth_city",                            limit: 200
+    t.string   "birth_settlement",                      limit: 200
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "track_recursive_triggers",                               default: 1,     null: false
   end
 
   add_index "student", ["student_fname"], name: "studentFname", using: :btree
@@ -1126,7 +1162,7 @@ ActiveRecord::Schema.define(version: 20131008060019) do
 
   add_index "subject", ["subject_group"], name: "subject_group", using: :btree
 
-  create_table "subject_teacher", force: true do |t|
+  create_table "subject_teacher", primary_key: "subject_teacher_id", force: true do |t|
     t.integer  "subject_id", null: false
     t.integer  "teacher_id", null: false
     t.datetime "created_at"
@@ -1335,6 +1371,27 @@ ActiveRecord::Schema.define(version: 20131008060019) do
   add_index "user", ["reset_password_token"], name: "index_user_on_reset_password_token", unique: true, using: :btree
   add_index "user", ["user_department"], name: "user_department", using: :btree
 
+  create_trigger("student_before_insert_row_tr", :generated => true, :compatibility => 1).
+      on("student").
+      before(:insert) do
+    <<-SQL_ACTIONS
+
+         SET
+            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_fname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_iname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_oname = dictionary.dictionary_id
+                                  LIMIT 1);
+    SQL_ACTIONS
+  end
+
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
 CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
@@ -1401,29 +1458,6 @@ CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_update AFTER UPDAT
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
-END
-  TRIGGERSQL
-
-  # WARNING: generating adapter-specific definition for student_before_insert_row_tr due to a mismatch.
-  # either there's a bug in hairtrigger or you've messed up your migrations and/or db :-/
-  execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
-FOR EACH ROW
-BEGIN
-    
-             SET
-                NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN student ON NEW.student_fname = dictionary.dictionary_id
-                                      LIMIT 1),
-                NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN student ON NEW.student_iname = dictionary.dictionary_id
-                                      LIMIT 1),
-                NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN student ON NEW.student_oname = dictionary.dictionary_id
-                                      LIMIT 1);
 END
   TRIGGERSQL
 
