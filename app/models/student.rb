@@ -67,6 +67,9 @@ class Student < ActiveRecord::Base
            foreign_key: :optional_select_student
   has_many :choices, class_name: My::Choice, :through => :selections
 
+  has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_student
+  has_many :orders, class_name: Office::Order, through: :students_in_order
+
 
   default_scope do
     joins(:person)
@@ -202,6 +205,10 @@ GROUP BY `group`
     payments.inject(0) { |result, payment| result += payment.sum; result }
   end
 
+  def sex
+    person.male? ? 'он' : 'она'
+  end
+
   def subjects
     Study::Subject.where(id: xmarks.collect{|mark| mark.subject_id})
   end
@@ -277,6 +284,17 @@ GROUP BY `group`
         xml << speciality.to_nokogiri.root.to_xml
       }
     }.doc
+  end
+
+  def study_time
+    case group.form
+      when 101
+        group.speciality.speciality_olength
+      when 102
+        group.speciality.speciality_ozlength
+      else
+        group.speciality.speciality_zlength
+    end
   end
 
   def to_xml
