@@ -128,6 +128,7 @@ $(function(){
 
             var totalData;
             if (null == url) {
+                if (currentPage == '') {currentPage = 1};
                 totalData = href + currentPage + '/?&' + template + data + exceptions;
                 history.pushState(
                     null,

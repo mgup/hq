@@ -21,6 +21,7 @@ HQ::Application.routes.draw do
 
   resources :students
   get '/students/list(/:page)', to: 'students#index'
+  get '/students/:id/reference.pdf', to: 'students#reference', defaults: { format: 'pdf' }, as: :reference
 
   resources :specialities
 

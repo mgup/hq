@@ -9,7 +9,7 @@ module Nameable
     # Создаём методы для фамилии, имени и отчества во всех падежах.
     %w(last_name first_name patronym).each do |name|
       %w(ip rp dp vp tp pp).each do |form|
-        define_method("#{name}_#{form}") { form == 'ip' && send("#{name}_hint") ? send("#{name}_hint") : send(name, form.to_sym) }
+        define_method("#{name}_#{form}") { send(name, form.to_sym) }
       end
     end
   end
@@ -19,8 +19,8 @@ module Nameable
   # Если у человека не известна или не заполнена фамилия в указанном падеже —
   # возвращаем именительный падеж.
   def last_name(form = :ip)
-    if form == :ip && send(:last_name_hint)
-      send(:last_name_hint)
+    if form == :ip
+      send(:last_name_hint) rescue fname.send(form)
     else
       fname.send(form) unless fname.nil?
     end
@@ -31,8 +31,8 @@ module Nameable
   # Если у человека не известно или не заполнено имя в указанном падеже —
   # возвращаем именительный падеж.
   def first_name(form = :ip)
-    if form == :ip && send(:first_name_hint)
-      send(:first_name_hint)
+    if form == :ip
+      send(:first_name_hint) rescue  iname.send(form)
     else
       iname.send(form) unless iname.nil?
     end
@@ -43,8 +43,8 @@ module Nameable
   # Если у человека не известно или не заполнено отчество в указанном падеже —
   # возвращаем именительный падеж.
   def patronym(form = :ip)
-    if form == :ip && send(:patronym_hint)
-      send(:patronym_hint)
+    if form == :ip
+      send(:patronym_hint) rescue oname.send(form)
     else
       oname.send(form) unless oname.nil?
     end

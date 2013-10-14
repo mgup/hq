@@ -31,10 +31,19 @@ class StudentsController < ApplicationController
     #end
   end
 
+  def reference
+    authorize! :manage, :student
+    find_student
+  end
+
   private
 
   def student_params
     params.require(:students)
 
+  end
+
+  def find_student
+    @student = Student.find(params[:id])
   end
 end
