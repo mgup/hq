@@ -207,7 +207,6 @@ $(function(){
 //            });
 
             $('#order_template').change(function() {
-                alert('xcn');
                 location.href = processData();
             });
 
