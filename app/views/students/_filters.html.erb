@@ -1,55 +1,57 @@
 <%= form_tag nil, method: :get, class: 'filter-block', id: 'formstudentsearch' do %>
   <div class="row">
-    <div class="col col-lg-3 pull-right">
+    <div class="col col-lg-2 pull-right">
       <%= submit_tag 'Искать', class: 'btn btn-primary' %>
 
       <%= link_to students_path, class: 'form_reset btn btn-danger pull-right' do %>
         <span class="glyphicon glyphicon-remove"></span>
       <% end %>
     </div>
-    <div class="col col-lg-3">
-      <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control' %>
+    <div class="col col-lg-4">
+      <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control', style: 'width: 298px' %>
     </div>
-    <div class="col col-lg-3">
+    <div class="col col-lg-4 col-lg-offset-1">
       <%= select_tag 'status',
                      options_from_collection_for_select(Status.all, :id, :name, params[:status]),
-                     multiple: true, class: 'chzn-select form-control', name: 'status', data: { placeholder: 'все статусы' } %>
+                     multiple: true, class: 'multiselect form-control', name: 'status', data: { placeholder: 'все статусы' } %>
     </div>
-    <div class="col col-lg-3 form-control">
-      <select>
-        <option>все квалификации</option>
-      </select>
-    </div>
+    <!--<div class="col col-lg-3 form-control">-->
+      <!--<select>-->
+        <!--<option>все квалификации</option>-->
+      <!--</select>-->
+    <!--</div>-->
   </div>
   <div class="row">
-    <div class="col col-lg-3">
+    <div class="col col-lg-4">
       <%= select_tag 'faculty',
                      options_from_collection_for_select(Department.faculties, :id, :abbreviation, params[:faculty]),
-                     multiple: true, class: 'form-control', data: { placeholder: 'все факультеты' } %>
+                     multiple: true, class: 'multiselect form-control', data: { placeholder: 'все факультеты' } %>
     </div>
-    <div class="col col-lg-3">
+    <div class="col col-lg-4 col-lg-offset-1">
       <%= select_tag 'form', options_for_select([['очная', 101], ['очно-заочная', 102], ['заочная', 103], ['дистанционная', 105]], params[:form]),
-                     multiple: true, class: 'form-control', data: { placeholder: 'все формы' } %>
-    </div>
-    <div class="col col-lg-3">
-      <%= select_tag 'finance', options_for_select([['бюджетная', 1], ['внебюджетная', 2]], params[:finance]),
-                     multiple: true, class: 'form-control', data: { placeholder: 'все основы' } %>
+                     multiple: true, class: 'multiselect form-control', data: { placeholder: 'все формы' } %>
     </div>
   </div>
   <div class="row">
-    <div class="col col-lg-5">
+    <div class="col col-lg-4">
+      <%= select_tag 'finance', options_for_select([['бюджетная', 1], ['внебюджетная', 2]], params[:finance]),
+                     multiple: true, class: 'multiselect form-control', data: { placeholder: 'все основы' } %>
+    </div>
+    <div class="col col-lg-4 col-lg-offset-1">
       <%= select_tag 'speciality',
                      options_from_collection_for_select(Speciality.all, :id, :name, params[:speciality]),
-                     multiple: true, class: 'form-control', data: { placeholder: 'все специальности' } %>
+                     multiple: true, class: 'multiselect form-control', data: { placeholder: 'все специальности' } %>
     </div>
-    <div class="col col-lg-2">
+  </div>
+  <div class="row">
+    <div class="col col-lg-4">
       <%= select_tag 'course', options_for_select([1, 2, 3, 4, 5, 6], params[:course]),
-                     multiple: true, class: 'form-control', data: { placeholder: 'все курсы' } %>
+                     multiple: true, class: 'multiselect form-control', data: { placeholder: 'все курсы' } %>
     </div>
-    <div class="col col-lg-2">
+    <div class="col col-lg-4 col-lg-offset-1">
       <%= select_tag 'group',
                      options_from_collection_for_select(Group.all, :id, :name, params[:groups]),
-                     multiple: true, class: 'form-control', data: { placeholder: 'все группы' } %>
+                     multiple: true, class: 'multiselect form-control', data: { placeholder: 'все группы' } %>
     </div>
   </div>
 <% end %>
