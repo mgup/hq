@@ -24,7 +24,7 @@
 //= require highcharts-more
 //
 //= require chosen.jquery
-//= require nested_form/jquery_nested_form
+//= require jquery_nested_form
 //
 //= require ace/ace
 //

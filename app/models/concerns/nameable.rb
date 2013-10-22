@@ -20,7 +20,7 @@ module Nameable
   # возвращаем именительный падеж.
   def last_name(form = :ip)
     if form == :ip
-      send(:last_name_hint) rescue fname.send(form)
+      send(:last_name_hint) rescue (fname.send(form) unless fname.nil?)
     else
       fname.send(form) unless fname.nil?
     end
@@ -32,7 +32,7 @@ module Nameable
   # возвращаем именительный падеж.
   def first_name(form = :ip)
     if form == :ip
-      send(:first_name_hint) rescue  iname.send(form)
+      send(:first_name_hint) rescue  (iname.send(form) unless iname.nil?)
     else
       iname.send(form) unless iname.nil?
     end
@@ -44,7 +44,7 @@ module Nameable
   # возвращаем именительный падеж.
   def patronym(form = :ip)
     if form == :ip
-      send(:patronym_hint) rescue oname.send(form)
+      send(:patronym_hint) rescue (oname.send(form) unless oname.nil?)
     else
       oname.send(form) unless oname.nil?
     end
