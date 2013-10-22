@@ -11,7 +11,7 @@
       <%= p.select :acl_position_department, Department.all.collect{|r|[ r.abbreviation, r.id]}, {}, { class: 'form-control'}  %>
     </div>
     <div class="col col-lg-2 input-append date">
-      <%= p.text_field :appointment, {class: 'form-control datepicker'} %>
+      <%= p.text_field :appointment, {class: 'form-control'} %>
     </div>
     <div><%= p.link_to_remove 'Удалить' %></div>
   </div>

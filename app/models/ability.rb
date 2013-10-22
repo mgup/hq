@@ -4,8 +4,8 @@ class Ability
   def initialize(user)
     user ||= User.new
 
-    can :manage, Student
-    can :manage, :student
+    #can :manage, Student
+    #can :manage, :student
     if user.is_a?(Student)
       # Набор разрешений для студентов.
       #can :show, Student, student_group_id: user.id
@@ -42,6 +42,10 @@ class Ability
 
       if user.is?(:ciot)
         can :manage, :ciot
+      end
+
+      if user.is?(:student_hr)
+        can :manage, Student
       end
     end
 
