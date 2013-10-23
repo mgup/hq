@@ -50,7 +50,20 @@ class Group < ActiveRecord::Base
       when 105
         'дистанционной'
     end
-  end  
+  end
+
+  def this_form
+    case form
+      when 101
+        'очная'
+      when 102
+        'очно-заочная'
+      when 103
+        'заочная'
+      when 105
+        'дистанционная'
+    end
+  end
 
   def name
     n = []

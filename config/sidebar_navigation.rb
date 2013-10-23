@@ -45,6 +45,10 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
     end
 
+    if can? :index, :groups
+      primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
+    end
+
     if can? :manage, :ciot
       primary.item :ciot, 'Логины и пароли', '/ciot', icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
     end

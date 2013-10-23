@@ -42,6 +42,12 @@ class User < ActiveRecord::Base
   validates_associated :iname
   validates_associated :oname
 
+  before_create :hash_password
+
+  def hash_password
+    self.password = Digest::MD5.hexdigest(self.password)
+  end
+
   def full_name(form = :ip)
     # TODO Убрать после того, как все имена будут перенесены в словарь.
     if last_name.nil? then user_name else super(form) end
