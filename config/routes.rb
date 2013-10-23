@@ -19,6 +19,9 @@ HQ::Application.routes.draw do
   resources :departments
   resources :positions
 
+  resources :groups do
+    get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
+  end
   resources :students
   get '/students/list(/:page)', to: 'students#index'
   get '/students/:id/reference.pdf', to: 'students#reference', defaults: { format: 'pdf' }, as: :reference
@@ -97,6 +100,7 @@ HQ::Application.routes.draw do
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'
+  get '/ajax/group_students' => 'ajax#group_students'
   get '/ajax/orderstudent' => 'ajax#orderstudent'
 
   root to: 'dashboard#index'

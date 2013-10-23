@@ -43,6 +43,17 @@ class AjaxController < ApplicationController
     end })
   end
 
+  def group_students
+    render({ json: Group.filter(params).inject([]) do |groups, group|
+      students = []
+      group.students.each_with_index do |student, index|
+        students << { id: student.id, index: index+1, fullname: student.person.full_name, budget: (student.budget? ? 1 : 0) }
+      end
+      groups << { id: group.id, name: group.name, students: students }
+      groups
+    end })
+  end
+
   def orderstudent
     student = Student.find(params[:id])
     render({ json: {id: student.id, fname: student.person.last_name, iname:  student.person.first_name,
