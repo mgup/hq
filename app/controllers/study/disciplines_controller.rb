@@ -93,6 +93,21 @@ class Study::DisciplinesController < ApplicationController
     )
   end
 
+  def print_disciplines
+    authorize! :index, :disciplines
+    @disciplines = ActiveRecord::Base.connection.execute("
+    SELECT subdepartment_short_name AS `Кафедра`, CONCAT_WS('-', group_name, group_course, group_number) AS `Группа`, subject_name
+    AS `Дисциплина`, user_name AS `Преподаватель`, COUNT(checkpoint_id) AS `Занятий` FROM subject JOIN user ON user_id = subject_teacher JOIN
+    subdepartment ON subdepartment_id = user_subdepartment JOIN `group` ON group_id = subject_group JOIN checkpoint ON checkpoint_subject =
+    subject_id WHERE subject_year = 2012 AND subject_semester = 2 GROUP BY
+    subject_id ORDER BY subdepartment_short_name ASC, group_course
+    ASC, group_name ASC, group_number ASC, subject_name ASC;
+")
+    respond_to do |format|
+      format.xlsx
+    end
+  end
+
   private
 
   def load_user_discipline

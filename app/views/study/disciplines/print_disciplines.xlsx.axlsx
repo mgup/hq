@@ -1,0 +1,9 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
+  wb.add_worksheet(name: 'Дисциплины') do |sheet|
+    sheet.add_row ['Кафедра', 'Группа', 'Дисциплина', 'Преподаватель', 'Занятий']
+
+    @disciplines.each do |d|
+      sheet.add_row ["#{d[0]}", "#{d[1]}", "#{d[2]}", "#{d[3]}", "#{d[4]}"]
+    end
+end
