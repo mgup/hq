@@ -4,7 +4,7 @@
 
 <%= render 'students/filters' %>
 
-<div id="ajax_content" data-href="/ciot/">
+<div id="ajax_content" data-href="<%=root_url %>ciot/">
   <%= paginate @students %>
 
   <table class="table table-hover">
