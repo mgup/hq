@@ -1,7 +1,8 @@
 $(function(){
+      var root = $('#matrixHQ').attr('href');
       $('#formpullgroupstudents').change(function() {
         $.getJSON(
-            '/ajax/group_students',
+            root+'ajax/group_students',
             {'faculty': $('#faculty').val(),
              'form' : $('#form option:selected').val(),
              'course' : $('#course option:selected').val(),
@@ -27,7 +28,7 @@ $(function(){
 
                 $element.trigger('liszt:updated');
                 $(document).find('.print-students-from-group').click(function(){
-                    var $href = '/groups/'+ $(this).closest('td').attr('id') + '/print_group.pdf';
+                    var $href = root + 'groups/'+ $(this).closest('td').attr('id') + '/print_group.pdf';
                     window.location = $href;
                 })
 

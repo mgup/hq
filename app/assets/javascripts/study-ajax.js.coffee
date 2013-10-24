@@ -1,6 +1,7 @@
 $ ->
+  root = $('#matrixHQ').attr('href')
   updateSpecialities = (faculty_id) ->
-    $.getJSON '/study/disciplines/ajax/specialities', {
+    $.getJSON root+'study/disciplines/ajax/specialities', {
       'faculty': faculty_id
     }, (specialities) ->
       select = $('.ajax-speciality')[0]
@@ -23,7 +24,7 @@ $ ->
   $('.ajax-faculty').change ->
     updateSpecialities($(this).val())
   $('.ajax-speciality').change ->
-    $.getJSON '/study/disciplines/ajax/groups', {
+    $.getJSON root+'study/disciplines/ajax/groups', {
       'speciality':  $(this).val(),
       'form' : $('.ajax-form').val(),
       'course' : $('.ajax-course').val()
@@ -31,7 +32,7 @@ $ ->
       updateGroups(groups)
 
   $('.ajax-form').change ->
-    $.getJSON '/study/disciplines/ajax/groups', {
+    $.getJSON root+'study/disciplines/ajax/groups', {
       'speciality':  $('.ajax-speciality').val(),
       'form' : $(this).val(),
       'course' : $('.ajax-course').val()
@@ -39,7 +40,7 @@ $ ->
       updateGroups(groups)
 
   $('.ajax-course').change ->
-    $.getJSON '/study/disciplines/ajax/groups', {
+    $.getJSON root+'study/disciplines/ajax/groups', {
       'speciality':  $('.ajax-speciality').val(),
       'form' : $('.ajax-form').val(),
       'course' : $(this).val()
