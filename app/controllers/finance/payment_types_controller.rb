@@ -22,7 +22,9 @@ class Finance::PaymentTypesController < ApplicationController
     authorize! :index, :payment_types
     @year = params[:year]
     respond_to do |format|
-      format.xlsx
+      format.xlsx{
+        response.headers['Content-Disposition'] = 'attachment; filename="' + "Стоимость обучения#{@year ? ' на ' + @year + ' год' : ''}.xlsx" + '"'
+      }
     end
   end
 end

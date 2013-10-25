@@ -27,6 +27,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
           orders.item :order_templates, 'Шаблоны', office_order_templates_path, icon: 'list'
         end
+
       end
       if can? :index, :selection_contracts
         primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
@@ -51,6 +52,10 @@ SimpleNavigation::Configuration.run do |navigation|
 
     if can? :manage, :ciot
       primary.item :ciot, 'Логины и пароли', '/ciot', icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
+    end
+
+    if current_user.is?(:developer)
+      primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
     end
 
     if student_signed_in?
