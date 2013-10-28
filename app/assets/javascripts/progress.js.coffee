@@ -1,4 +1,5 @@
 $ ->
+  root = $('#matrixHQ').attr('href')
   $('.view-group-progress').click (event) ->
     event.preventDefault()
     group = $('#progress_group_id').val()
@@ -7,7 +8,7 @@ $ ->
 
   if $('#progress_group').val()
     group_now = $('#progress_group').val()
-    $.ajax '/study/group/' + group_now + '/progress/change_discipline'
+    $.ajax root + 'study/group/' + group_now + '/progress/change_discipline'
 
 
 
@@ -15,4 +16,4 @@ $ ->
     discipline = $(this).children(":selected").val()
     group = $('#progress_group').val()
     params = if discipline != '' then 'discipline=' + discipline else ''
-    $.ajax '/study/group/' + group + '/progress/change_discipline?' + params
+    $.ajax root + 'study/group/' + group + '/progress/change_discipline?' + params

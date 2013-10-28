@@ -1,4 +1,7 @@
 <div class="row">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, class: 'alert alert-info' %>
+  <% end %>
   <div class="col-md-4">
     <h2>Вход для сотрудников</h2>
     <%= form_for User.new, as: :user, url: session_path(:user), html: { role: 'form' } do |f| %>

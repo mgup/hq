@@ -46,6 +46,8 @@ class Ability
 
       if user.is?(:student_hr)
         can :manage, Student
+        can :manage, :student
+        can :index, :groups
       end
     end
 

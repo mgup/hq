@@ -4,7 +4,7 @@
 
 <%= render 'filters' %>
 
-<div id="ajax_content" data-href="/students/list/">
+<div id="ajax_content" data-href="<%= students_path %>/list/">
 
   <%= paginate @students %>
 
