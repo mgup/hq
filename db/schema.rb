@@ -1371,6 +1371,29 @@ ActiveRecord::Schema.define(version: 20131008060019) do
   add_index "user", ["reset_password_token"], name: "index_user_on_reset_password_token", unique: true, using: :btree
   add_index "user", ["user_department"], name: "user_department", using: :btree
 
+  create_trigger("student_before_update_row_tr", :generated => true, :compatibility => 1).
+      on("student").
+      before(:update) do |t|
+    t.where("NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR\n             NEW.student_oname <> OLD.student_oname") do
+      <<-SQL_ACTIONS
+
+         SET
+            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_fname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_iname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_oname = dictionary.dictionary_id
+                                  LIMIT 1);
+      SQL_ACTIONS
+    end
+  end
+
   create_trigger("student_before_insert_row_tr", :generated => true, :compatibility => 1).
       on("student").
       before(:insert) do
