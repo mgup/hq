@@ -101,16 +101,16 @@ class Study::DisciplinesController < ApplicationController
   def print_disciplines
     authorize! :index, :disciplines
     @disciplines = ActiveRecord::Base.connection.execute("
-    SELECT subdepartment_short_name AS `Кафедра`, CONCAT_WS('-', group_name, group_course, group_number) AS `Группа`,
+    SELECT department_sname AS `Кафедра`, CONCAT_WS('-', group_name, group_course, group_number) AS `Группа`,
        subject_name AS `Дисциплина`, CASE WHEN user_name IS NULL or user_name = '' THEN CONCAT_WS(' ',
                         (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_fname = dictionary.dictionary_id LIMIT 1),
                         (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_iname = dictionary.dictionary_id LIMIT 1),
                         (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_oname = dictionary.dictionary_id LIMIT 1))
                         ELSE user_name END AS `Преподаватель`, COUNT(checkpoint_id) AS `Занятий`
     FROM subject JOIN user ON user_id = subject_teacher JOIN
-    subdepartment ON subdepartment_id = user_subdepartment JOIN `group` ON group_id = subject_group JOIN checkpoint ON checkpoint_subject =
+    department ON department_id = user.user_department JOIN `group` ON group_id = subject_group JOIN checkpoint ON checkpoint_subject =
     subject_id WHERE subject_year = #{Study::Discipline::CURRENT_STUDY_YEAR} AND subject_semester = #{Study::Discipline::CURRENT_STUDY_TERM} GROUP BY
-    subject_id ORDER BY subdepartment_short_name ASC, group_course ASC, group_name ASC, group_number ASC, subject_name ASC;
+    subject_id ORDER BY department_sname ASC, group_course ASC, group_name ASC, group_number ASC, subject_name ASC;
 ")
     respond_to do |format|
       format.xlsx {
