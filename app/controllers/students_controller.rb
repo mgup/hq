@@ -34,6 +34,11 @@ class StudentsController < ApplicationController
   def reference
     authorize! :manage, :student
     find_student
+    respond_to do |format|
+      format.pdf {
+        response.headers['Content-Disposition'] = 'attachment; filename="' + "Справка для #{@student.person.full_name(:rp)}.pdf" + '"'
+      }
+    end
   end
 
   private

@@ -19,6 +19,9 @@ HQ::Application.routes.draw do
   resources :departments
   resources :positions
 
+  resources :groups do
+    get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
+  end
   resources :students
   get '/students/list(/:page)', to: 'students#index'
   get '/students/:id/reference.pdf', to: 'students#reference', defaults: { format: 'pdf' }, as: :reference
@@ -28,6 +31,7 @@ HQ::Application.routes.draw do
   namespace :study do
     resources :disciplines do
       get 'print_group.pdf', to: 'disciplines#print_group', defaults: { format: 'pdf' }, as: :print_group
+      get 'print_disciplines.xlsx', to: 'disciplines#print_disciplines', on: :collection, defaults: { format: 'xlsx' }, as: :print_disciplines
       match 'download_group',  to: 'checkpoints#download_pdf', via: [:get, :post]
       resources :checkpoints do
         resources :marks
@@ -97,6 +101,7 @@ HQ::Application.routes.draw do
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'
+  get '/ajax/group_students' => 'ajax#group_students'
   get '/ajax/orderstudent' => 'ajax#orderstudent'
 
   root to: 'dashboard#index'

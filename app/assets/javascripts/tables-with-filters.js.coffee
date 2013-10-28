@@ -1,5 +1,6 @@
 $ ->
   $ ->
+    root = $('#matrixHQ').attr('href')
     orderDiv = $('div#create_order')
     orderTable = $('div#create_order table tbody')
     orderDiv.hide()
@@ -25,7 +26,7 @@ $ ->
 #      табличку с созданием приказа.
 
         if pair[0] == 'exception[]'
-          $.get '/ajax/orderstudent',
+          $.get root+'ajax/orderstudent',
             id: pair[1]
             (data) ->
               row = '<tr><td class="id">' + data.id + '</td>' + '<td>' + data.fname + '</td>' + '<td>' + data.iname + '</td>' + '<td>' + data.oname + '</td>' + '<td>' + data.faculty + '</td>' + '<td>' + data.group + '</td>' + '<td class="image">' + '<a class="btn btn-default orderremove" href="#">' + '<span class="glyphicon glyphicon-arrow-down"></span>' + '</a></td></tr>'

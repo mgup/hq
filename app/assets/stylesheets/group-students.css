@@ -1,0 +1,12 @@
+.nav .no-budget-students{
+    background-color: #fcf8e3;
+}
+
+
+.print-students-from-group{
+    cursor: pointer;
+}
+
+.print-students-from-group:hover{
+    text-decoration: underline;
+}
