@@ -102,6 +102,8 @@ class User < ActiveRecord::Base
                                                                       " OR #{department.split(',').collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
   scope :from_position, -> position { where('acl_position.acl_position_title LIKE :posprefix OR user.user_position LIKE :posprefix', posprefix: "%#{position}%")
                                       .includes(:positions) }
+  scope :from_role, -> role { where("acl_position.acl_position_role = (SELECT acl_role.acl_role_id FROM acl_role WHERE acl_role.acl_role_name = '#{role}')")
+  .includes(:positions) }
 
 
   scope :filter, -> filters {

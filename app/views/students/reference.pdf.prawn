@@ -23,7 +23,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   birthday = @student.person.birthday
   if birthday
-    month = case birthday.strftime("%m")
+    month = case birthday.strftime('%m')
               when '01' then 'января'
               when '02' then 'февраля'
               when '03' then 'марта'
@@ -37,7 +37,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
               when '11' then 'ноября'
               when '12' then 'декабря'
            end
-    birth = ", <u>#{birthday.strftime("%d")} #{month} #{birthday.strftime("%Y")}</u>  года рождения,"
+    birth = ", <u>#{birthday.strftime('%d')} #{month} #{birthday.strftime('%Y')}</u>  года рождения,"
   end
   institute = @student.group.speciality.faculty.name.split
   institute[0]+='а'
@@ -48,7 +48,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.move_down 25
 
     @student.orders.each_with_index do |order, index|
-       pdf.text "#{index+1}. Приказ № #{order.number} «#{order.name if order.template}» от #{order.signing_date.strftime("%d.%m.%Y")}"
+       pdf.text "#{index+1}. Приказ № #{order.number} «#{order.name if order.template}» от #{order.signing_date.strftime('%d.%m.%Y')}"
     end
     pdf.move_down 25
     pdf.text "Нормативный срок обучения: #{@student.study_time.round} #{@student.study_time.to_i > 4 ? 'лет' : 'года'}"
@@ -59,11 +59,11 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.text '_'*100
 
     pdf.move_down 25
-    prorector = User.from_position('первый проректор по учебной работе').first.short_name
-    student_hr = User.from_position('начальник студенческого отдела кадров').first.short_name
+    prorector = User.from_role('pro-rector-study').first.short_name_official
+    student_hr = User.from_role('student_hr_boss').first.short_name_official
     pdf.move_down 25
     data = [['Первый проректор по учебной работе', "#{prorector}"], ['Начальник студенческого отдела кадров', "#{student_hr}"]]
-    pdf.table data, header: true,  width: 510.24062992108657, cell_style: { padding: 7, border_color: "ffffff" } do
+    pdf.table data, header: true,  width: 510.24062992108657, cell_style: { padding: 7, border_color: 'ffffff' } do
       column(1).style align: :right
     end
   end
