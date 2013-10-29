@@ -5,28 +5,28 @@ $ ->
     uncheckAllText: 'Снять выбор',
     selectedText: '# выбрано'
   }).multiselectfilter({
-    label: 'Фильтр',
+    label: '',
     placeholder: 'Введите слово'
   })
 
   $('.multiselect#faculty').multiselect({
-    noneSelectedText: 'Выберите институт'
+    noneSelectedText: 'Выберите институт <span class="caret pull-right" style="margin-top: 9px"></span>'
   })
   $('.multiselect#status').multiselect({
-    noneSelectedText: 'Выберите статус'
+    noneSelectedText: 'Выберите статус <span class="caret pull-right" style="margin-top: 9px"></span>'
   })
   $('.multiselect#form').multiselect({
-    noneSelectedText: 'Выберите форму обучения'
+    noneSelectedText: 'Выберите форму обучения <span class="caret pull-right" style="margin-top: 9px"></span>'
   })
   $('.multiselect#finance').multiselect({
-    noneSelectedText: 'Выберите основу обучения'
+    noneSelectedText: 'Выберите основу обучения <span class="caret pull-right" style="margin-top: 9px"></span>'
   })
   $('.multiselect#speciality').multiselect({
-    noneSelectedText: 'Выберите специальность'
+    noneSelectedText: 'Выберите специальность <span class="caret pull-right" style="margin-top: 9px"></span>'
   })
   $('.multiselect#course').multiselect({
-    noneSelectedText: 'Выберите курс'
+    noneSelectedText: 'Выберите курс <span class="caret pull-right" style="margin-top: 9px"></span>'
   })
   $('.multiselect#group').multiselect({
-    noneSelectedText: 'Выберите группу'
+    noneSelectedText: 'Выберите группу <span class="caret pull-right" style="margin-top: 9px"></span>'
   })
