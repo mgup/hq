@@ -22,9 +22,11 @@ HQ::Application.routes.draw do
   resources :groups do
     get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
   end
-  resources :students
+
+  resources :students do
+    get 'reference', on: :member, defaults: { format: :pdf }
+  end
   get '/students/list(/:page)', to: 'students#index'
-  get '/students/:id/reference.pdf', to: 'students#reference', defaults: { format: 'pdf' }, as: :reference
 
   resources :specialities
 
