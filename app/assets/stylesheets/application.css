@@ -16,6 +16,10 @@
  *= require bootstrap-datepicker
  *
  *= require chosen
+ *= require jquery.ui.core
+ *= require jquery.ui.theme
+ *= require jquery.multiselect
+ *= require jquery.multiselect.filter
  *
  *= require_tree .
  */
