@@ -59,11 +59,12 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.text '_'*100
 
     pdf.move_down 25
-    prorector = User.from_role('pro-rector-study').first.short_name_official
-    student_hr = User.from_role('student_hr_boss').first.short_name_official
+    prorector = User.from_role('pro-rector-study').first.short_name
+    student_hr = User.from_role('student_hr_boss').first.short_name
     pdf.move_down 25
     data = [['Первый проректор по учебной работе', "#{prorector}"], ['Начальник студенческого отдела кадров', "#{student_hr}"]]
-    pdf.table data, header: true,  width: 510.24062992108657, cell_style: { padding: 7, border_color: 'ffffff' } do
+
+    pdf.table data, header: true, cell_style: { padding: 7, border_color: 'ffffff' } do
       column(1).style align: :right
     end
   end

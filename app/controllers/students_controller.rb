@@ -36,9 +36,6 @@ class StudentsController < ApplicationController
     find_student
     respond_to do |format|
       format.pdf
-      #{
-      #  response.headers['Content-Disposition'] = 'attachment; filename="' + "Справка для #{@student.person.full_name(:rp)}.pdf" + '"'
-      #}
     end
   end
 
