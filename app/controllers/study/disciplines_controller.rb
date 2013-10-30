@@ -78,9 +78,7 @@ class Study::DisciplinesController < ApplicationController
     authorize! :manage, Study::Discipline
     @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
     respond_to do |format|
-      format.pdf {
-        response.headers['Content-Disposition'] = 'attachment; filename="' + "Состав учебной группы #{@discipline.group.name}.pdf" + '"'
-      }
+      format.pdf
     end
   end
 

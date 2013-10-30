@@ -1,5 +1,6 @@
 prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
+               filename: "Справка для #{@student.person.full_name(:rp)}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
 
   render 'pdf/header', pdf: pdf, title: ''
@@ -21,24 +22,9 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.text "СПРАВКА № #{reference} от «__» __________ 20____г.", align: :center
   end
 
-  birthday = @student.person.birthday
-  if birthday
-    month = case birthday.strftime('%m')
-              when '01' then 'января'
-              when '02' then 'февраля'
-              when '03' then 'марта'
-              when '04' then 'апреля'
-              when '05' then 'мая'
-              when '06' then 'июня'
-              when '07' then 'июля'
-              when '08' then 'августа'
-              when '09' then 'сентября'
-              when '10' then 'октября'
-              when '11' then 'ноября'
-              when '12' then 'декабря'
-           end
-    birth = ", <u>#{birthday.strftime('%d')} #{month} #{birthday.strftime('%Y')}</u>  года рождения,"
-  end
+
+   birth = @student.person.birthday ? ", <u>#{l(@student.person.birthday, format: '%d %B %Y')}</u>  года рождения," : ''
+
   institute = @student.group.speciality.faculty.name.split
   institute[0]+='а'
 
@@ -59,12 +45,19 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.text '_'*100
 
     pdf.move_down 25
-    prorector = User.from_role('pro-rector-study').first.short_name
-    student_hr = User.from_role('student_hr_boss').first.short_name
-    pdf.move_down 25
-    data = [['Первый проректор по учебной работе', "#{prorector}"], ['Начальник студенческого отдела кадров', "#{student_hr}"]]
+    positions = []
+    ['pro-rector-study', 'student_hr_boss'].each do |role|
+      positions << Position.from_role(role).first
+    end
 
-    pdf.table data, header: true, cell_style: { padding: 7, border_color: 'ffffff' } do
+    pdf.move_down 25
+    data = []
+    positions.each do |p|
+    title = Unicode::capitalize(p.title)
+      data << [title, p.user.short_name]
+    end
+
+    pdf.table data, header: true, width: pdf.bounds.width, cell_style: { padding: 7, border_color: 'ffffff' } do
       column(1).style align: :right
     end
   end

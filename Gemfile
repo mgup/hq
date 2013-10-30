@@ -39,6 +39,7 @@ gem 'hairtrigger'
 gem 'axlsx_rails'
 gem 'acts_as_xlsx'
 gem 'ace-rails-ap'
+gem 'unicode'
 gem 'jquery-ui-rails'
 gem 'jquery-multiselect-rails', git: 'git://github.com/arojoal/jquery-multiselect-rails.git'
 

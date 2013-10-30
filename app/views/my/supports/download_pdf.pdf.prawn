@@ -1,5 +1,6 @@
 prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
+               filename: 'Заявление на материальную помощь.pdf',
                page_size: 'A4', page_layout: :portrait do |pdf|
  support = @student.supports.last
    pdf.font_families.update(
@@ -44,7 +45,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     end
   end
   pdf.move_down 30
-  pdf.text "#{DateTime.now.strftime("%d.%m.%Y")}                                                                                                                                                 ___________________ / #{@student.person.iname.ip[0]}. #{@student.person.oname.ip[0]}. #{@student.person.fname.ip}"
+  pdf.text "#{l(Date.today, format: '%d.%m.%Y')}"                                                                                                                                                ___________________ / #{@student.person.iname.ip[0]}. #{@student.person.oname.ip[0]}. #{@student.person.fname.ip}"
   pdf.move_down 30
   pdf.text 'Резолюция старосты группы:'
   pdf.move_down 10

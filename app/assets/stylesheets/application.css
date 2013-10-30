@@ -18,6 +18,7 @@
  *= require chosen
  *= require jquery.ui.core
  *= require jquery.ui.theme
+ *= require jquery.multiselect
  *
  *= require_tree .
  */
