@@ -48,6 +48,8 @@ class Ability
         can :manage, Student
         can :manage, :student
         can :index, :groups
+
+        can :reference, Student, Student.valid_for_today
       end
     end
 
