@@ -69,8 +69,10 @@ HQ::Application.routes.draw do
   end
 
   namespace :social do
+    resources :applications
+
     resources :supports
-    get '/support/claims' => 'supports#claims'
+    #get '/support/claims' => 'supports#claims'
   end
 
   namespace :office do
