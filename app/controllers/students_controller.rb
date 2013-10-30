@@ -24,7 +24,7 @@ class StudentsController < ApplicationController
       @student.save
       redirect_to @student
     end
-    #if @student.update_attributes(student_params)
+    #if @student.update_attributes(resource_params)
     #  redirect_to @student
     #else
     #  render action: :show
@@ -32,21 +32,14 @@ class StudentsController < ApplicationController
   end
 
   def reference
-    authorize! :manage, :student
-    find_student
+    @student = Student.valid_for_today.find(params[i])
+
     respond_to do |format|
       format.pdf
     end
   end
 
-  private
-
-  def student_params
+  def resource_params
     params.require(:students)
-
-  end
-
-  def find_student
-    @student = Student.find(params[:id])
   end
 end
