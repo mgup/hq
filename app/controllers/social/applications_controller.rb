@@ -8,6 +8,12 @@ class Social::ApplicationsController < ApplicationController
     @applications = @applications.where(support_year:  params[:year])
     @applications = @applications.where(support_month: params[:month])
 
+    params[:causes] ||= []
+    params[:strict] ||= false
+    unless params[:causes].empty?
+      @applications = @applications.with_causes(params[:causes], params[:strict])
+    end
+
     @applications = @applications.page(params[:page] || 1)
   end
 end

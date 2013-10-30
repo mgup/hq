@@ -17,4 +17,12 @@ class My::Support < ActiveRecord::Base
   has_many :options,  class_name: My::SupportOptions, primary_key: :support_id,
            foreign_key: :support_options_support
   accepts_nested_attributes_for :options, allow_destroy: true , reject_if: proc { |attrs| attrs[:causes].blank? }
+
+  scope :with_causes, -> (causes, strict = false) {
+    if strict
+
+    else
+      joins(:options).where('support_options_cause IN (?)', causes)
+    end
+  }
 end

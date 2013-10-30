@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/arojoal/jquery-multiselect-rails.git
-  revision: 858cebe4e3178ae3c5ebc408478b82bf58332b75
-  specs:
-    jquery-multiselect-rails (0.0.4)
-      jquery-rails
-      jquery-ui-rails
-
-GIT
   remote: git://github.com/mgup/morpher.git
   revision: a37bc2f3d63c94e997e2e8ce7786a82047cea6a9
   branch: master
@@ -168,8 +160,6 @@ GEM
     jquery-turbolinks (2.0.1)
       railties (>= 3.1.0)
       turbolinks
-    jquery-ui-rails (4.1.0)
-      railties (>= 3.1.0)
     json (1.8.1)
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
@@ -386,10 +376,8 @@ DEPENDENCIES
   fuubar
   hairtrigger
   jbuilder
-  jquery-multiselect-rails!
   jquery-rails
   jquery-turbolinks
-  jquery-ui-rails
   kaminari
   letter_opener
   meta_request

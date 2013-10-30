@@ -2,45 +2,40 @@
   <h1>Заявления на материальную помощь</h1>
 </div>
 
-<%= form_tag nil, method: :get, class: 'form-inline filters', style: 'margin-bottom: 20px;' do %>
-  <div class="row">
-    <div class="col-sm-4">
-      <label for="year" class="form-control-static">Год</label>
-      <div class="form-group">
-        <%= select_tag :year,
-                       options_for_select((2013..Date.today.year).to_a, params[:year]),
-                       class: 'form-control' %>
-      </div>
-
-      <label for="month" class="form-control-static">Месяц</label>
-      <div class="form-group">
-        <%= select_tag :month,
-                       options_for_select(
-                           (1..12).to_a,
-                           params[:month]
-                       ),
-                       class: 'form-control' %>
-      </div>
+<%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+  <div class="form-group">
+    <div class="col-sm-2">
+      <%= select_tag :year,
+                     options_for_select((2013..Date.today.year).to_a, params[:year]),
+                     class: 'form-control' %>
     </div>
 
-    <div class="col-sm-6">
-      <div class="form-group">
-        <%= select_tag :cause, [], class: 'form-control' %>
-      </div>
+    <div class="col-sm-8">
+      <%= multiselect_tag :causes, title: 'Причины', collection: My::SupportCause.all,
+                          value: :id, text: :title, current: params[:causes].map(&:to_i),
+                          pl1: 'Выбрана %c причина',
+                          pl2: 'Выбраны %c причины',
+                          pl5: 'Выбрано %c причин' %>
     </div>
 
     <div class="col-sm-2">
-      <%= submit_tag 'Поиск', class: 'btn btn-primary' %>
+      <%= submit_tag 'Поиск', class: 'btn btn-primary form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-2">
+      <%= select_tag :month,
+                     options_for_select(
+                         (1..12).map { |m| [t('date.standalone_month_names')[m], m] },
+                         params[:month].to_i
+                     ),
+                     class: 'form-control' %>
+    </div>
+    <div class="col-sm-8">
     </div>
   </div>
 <% end %>
-<script>
-  $(function() {
-    $('form.filters select').change(function() {
-      $('form.filters').submit();
-    });
-  });
-</script>
 
 <%= paginate @applications %>
 
