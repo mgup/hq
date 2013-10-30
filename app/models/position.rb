@@ -14,4 +14,6 @@ class Position < ActiveRecord::Base
   #  obj = (self.find(position_id) || self.new)
   #  obj.save
   #end
+
+  scope :from_role, -> role { joins(:role).where(role: { acl_role_name: role })}
 end

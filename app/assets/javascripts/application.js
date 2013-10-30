@@ -25,8 +25,7 @@
 //
 //= require chosen.jquery
 //= require jquery_nested_form
-//= require jquery.ui.core
-//= require jquery.ui.widget
+//= require jquery.ui.all
 //= require jquery.multiselect
 //= require jquery.multiselect.filter
 

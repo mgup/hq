@@ -1,5 +1,6 @@
 prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
+               filename: 'Дисциплины по выбору.pdf',
                page_size: 'A4', page_layout: :portrait do |pdf|
  selects = @student.choices
  pdf.indent 350 do
@@ -25,5 +26,5 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   end
  end
  pdf.move_down 50
- pdf.text "#{DateTime.now.strftime("%d.%m.%Y")}
+ pdf.text "#{l(Date.today, format: '%d.%m.%Y')}"
 end
