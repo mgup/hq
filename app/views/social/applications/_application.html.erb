@@ -1,8 +1,28 @@
-<div class="row">
+<div class="row <%= 'success' if application.accepted? %>">
   <div class="col-sm-1">
     <%= application.id %>
   </div>
-  <div class="col-sm-11">
+  <div class="col-sm-5">
     <%= application.student.person.full_name %>
+    <address>
+      <%= application.phone %>
+    </address>
+  </div>
+  <div class="col-sm-5">
+    <ul style="margin-left: 0; padding-left: 0;">
+      <% application.options.each do |o| %>
+        <li><small><%= o.cause.title %></small></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col-sm-1">
+    <% unless application.accepted? %>
+      <%= form_for application, url: student_support_path(application.student, application) do |f| %>
+        <%= f.hidden_field :accepted, value: 1 %>
+        <%= f.submit 'Принять', class: 'btn btn-default btn-sm' %>
+      <% end %>
+
+      <%#= link_to 'Дублировать',  %>
+    <% end %>
   </div>
 </div>

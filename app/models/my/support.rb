@@ -18,6 +18,12 @@ class My::Support < ActiveRecord::Base
            foreign_key: :support_options_support
   accepts_nested_attributes_for :options, allow_destroy: true , reject_if: proc { |attrs| attrs[:causes].blank? }
 
+  default_scope do
+    #find(:all, from: 'support S1').
+    joins('LEFT JOIN support AS S2 ON S2.support_student = support.support_student AND S2.support_year = support.support_year AND S2.support_month = support.support_month AND support.support_id < S2.support_id')
+    .where('S2.support_id IS NULL')
+  end
+
   scope :with_causes, -> (causes, strict = false) {
     if strict
 
@@ -25,4 +31,8 @@ class My::Support < ActiveRecord::Base
       joins(:options).where('support_options_cause IN (?)', causes)
     end
   }
+
+  def accepted?
+    accepted
+  end
 end

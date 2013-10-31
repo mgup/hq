@@ -33,6 +33,11 @@
                      class: 'form-control' %>
     </div>
     <div class="col-sm-8">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :strict, '1', '1' == params[:strict], disabled: true %> Строгое совпадение причин
+        </label>
+      </div>
     </div>
   </div>
 <% end %>
@@ -44,8 +49,14 @@
     <div class="col-sm-1">
       #
     </div>
-    <div class="col-sm-11">
+    <div class="col-sm-5">
       Студент
+    </div>
+    <div class="col-sm-5">
+      Причины
+    </div>
+    <div class="col-sm-1">
+
     </div>
   </div>
 <% else %>
