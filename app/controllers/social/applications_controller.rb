@@ -4,9 +4,14 @@ class Social::ApplicationsController < ApplicationController
   def index
     params[:year]  ||= Date.today.year
     params[:month] ||= Date.today.month
+    params[:accepted] ||= false
 
     @applications = @applications.where(support_year:  params[:year])
     @applications = @applications.where(support_month: params[:month])
+
+    if params[:accepted]
+      @applications = @applications.where(accepted: true)
+    end
 
     params[:causes] ||= []
     params[:strict] ||= 0
