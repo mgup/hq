@@ -42,7 +42,7 @@
   </div>
 <% end %>
 
-<%= paginate @applications %>
+<%= paginate @applications, total_count: @applications.total_count %>
 
 <% unless @applications.empty? %>
   <div class="row lead">
@@ -65,4 +65,4 @@
 
 <%= render partial: 'application', collection: @applications %>
 
-<%= paginate @applications %>
+<%= paginate @applications, total_count: @applications.total_count %>

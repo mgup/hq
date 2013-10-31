@@ -11,7 +11,7 @@ class Social::ApplicationsController < ApplicationController
     params[:causes] ||= []
     params[:strict] ||= 0
     unless params[:causes].empty?
-      @applications = @applications.with_causes(params[:causes], params[:strict].to_i.zero?)
+      @applications = @applications.with_causes(params[:causes], !params[:strict].to_i.zero?)
     end
 
     @applications = @applications.page(params[:page] || 1)

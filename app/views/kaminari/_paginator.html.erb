@@ -6,6 +6,17 @@
     remote:        data-remote
     paginator:     the paginator that renders the pagination tags inside
 -%>
+
+<% if total_count %>
+  <ul class="pagination pull-right">
+    <li class="page">
+      <span>
+        Всего: <%= total_count %>
+      </span>
+    </li>
+  </ul>
+<% end %>
+
 <%= paginator.render do -%>
   <ul class="pagination">
     <%= first_page_tag if current_page > window + 1 %>

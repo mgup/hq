@@ -28,7 +28,9 @@ class My::Support < ActiveRecord::Base
     if strict
 
     else
-      joins(:options).where('support_options_cause IN (?)', causes)
+      #joins('JOIN support_options ON support.support_id = support_options.support_options_support')
+      joins(:options)
+      .where('support_options_cause IN (?)', causes)
     end
   }
 
