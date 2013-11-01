@@ -6,7 +6,7 @@ class My::SupportCause < ActiveRecord::Base
   alias_attribute :pattern,      :support_cause_pattern
   alias_attribute :patternf,     :support_cause_patternf
 
-  has_many :options,  class_name: My::SupportOptions, primary_key: :support_cause_id,
+  has_many :support_options,  class_name: My::SupportOption, primary_key: :support_cause_id,
            foreign_key: :support_options_cause
   has_many :causereasons,  class_name: My::SupportCauseReason, primary_key: :support_cause_id,
            foreign_key: :support_cause_reason_cause

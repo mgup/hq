@@ -38,28 +38,29 @@ SimpleNavigation::Configuration.run do |navigation|
       if can? :index, :payment_types
         primary.item :prices,    'Стоимость обучения'.html_safe, finance_payment_types_path, icon: 'credit-card', highlights_on: -> { params[:controller].include?('payment_types') }
       end
+
+      if can? :manage, Study::Discipline
+        primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') }
+      end
+
+      if can? :manage, Student
+        primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+      end
+
+      if can? :index, :groups
+        primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
+      end
+
+      if can? :manage, :ciot
+        primary.item :ciot, 'Логины и пароли', '/ciot', icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
+      end
+
+      if can? :manage, :all
+        primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
+      end
     end
+
     primary.item :study, 'Успеваемость'.html_safe, study_groups_path, icon: 'list', highlights_on: -> { params[:controller].include?('progress') }
-
-    if can? :manage, Study::Discipline
-      primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') }
-    end
-
-    if can? :manage, Student
-      primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
-    end
-
-    if can? :index, :groups
-      primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
-    end
-
-    if can? :manage, :ciot
-      primary.item :ciot, 'Логины и пароли', '/ciot', icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
-    end
-
-    if current_user.is?(:developer)
-      primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
-    end
 
     if student_signed_in?
       primary.item :my_student, 'Информация', my_student_path, icon: 'user'

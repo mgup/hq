@@ -1,4 +1,4 @@
-class My::SupportOptions < ActiveRecord::Base
+class My::SupportOption < ActiveRecord::Base
   self.table_name = 'support_options'
 
   alias_attribute :id,           :support_options_id

@@ -37,7 +37,7 @@
   </div>
 <% end %>
 
-<%= paginate @applications %>
+<%= paginate_with_info @applications %>
 
 <% unless @applications.empty? %>
   <div class="row lead">

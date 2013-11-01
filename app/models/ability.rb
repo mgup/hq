@@ -2,13 +2,14 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+
     user ||= User.new
 
     #can :manage, Student
     #can :manage, :student
     if user.is_a?(Student)
       # Набор разрешений для студентов.
-      #can :show, Student, student_group_id: user.id
+      can :manage, Student, student_group_id: user.id
     else
       #if user.is?(:typer)
       #  can [:create, :read], [Study::Subject, Study::Mark], user_id: user.id

@@ -14,9 +14,11 @@ class My::Support < ActiveRecord::Base
 
   belongs_to :student, class_name: Student, primary_key: :student_group_id,
              foreign_key: :support_student
-  has_many :options,  class_name: My::SupportOptions, primary_key: :support_id,
-           foreign_key: :support_options_support
-  accepts_nested_attributes_for :options, allow_destroy: true , reject_if: proc { |attrs| attrs[:causes].blank? }
+  has_many :support_options,  class_name: My::SupportOption, primary_key: :support_id,
+           foreign_key: :support_options_support, dependent: :destroy
+  accepts_nested_attributes_for :support_options, allow_destroy: true
+
+  has_many :causes, through: :support_options
 
   scope :with_causes, -> (causes, strict = false) {
     if strict
