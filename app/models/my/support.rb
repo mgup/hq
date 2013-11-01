@@ -14,17 +14,29 @@ class My::Support < ActiveRecord::Base
 
   belongs_to :student, class_name: Student, primary_key: :student_group_id,
              foreign_key: :support_student
-  has_many :support_options,  class_name: My::SupportOption, primary_key: :support_id,
+  has_many :options,  class_name: My::SupportOption, primary_key: :support_id,
            foreign_key: :support_options_support, dependent: :destroy
-  accepts_nested_attributes_for :support_options, allow_destroy: true
+  accepts_nested_attributes_for :options, allow_destroy: true
 
-  has_many :causes, through: :support_options
+  has_many :causes, through: :options
+
+  default_scope do
+    #find(:all, from: 'support S1').
+    joins('LEFT JOIN support AS S2 ON S2.support_student = support.support_student AND S2.support_year = support.support_year AND S2.support_month = support.support_month AND support.support_id < S2.support_id')
+    .where('S2.support_id IS NULL')
+  end
 
   scope :with_causes, -> (causes, strict = false) {
     if strict
 
     else
-      joins(:options).where('support_options_cause IN (?)', causes)
+      #joins('JOIN support_options ON support.support_id = support_options.support_options_support')
+      joins(:options)
+      .where('support_options_cause IN (?)', causes)
     end
   }
+
+  def accepted?
+    accepted
+  end
 end

@@ -24,7 +24,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.text 'о выплате материальной помощи', align: :center
   pdf.move_down 25
   cause = ''
-  support.support_options.each do |option|
+  support.options.each do |option|
     cause << (@student.person.male? ? option.cause.pattern : (option.cause.patternf == nil ? option.cause.pattern : option.cause.patternf))
     cause << ', '
   end
@@ -34,10 +34,10 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.text 'Приложение:', indent_paragraphs: 10
   pdf.move_down 10
   pdf.text '— копия паспорта (страницы 2-3 и 4-5);'
-  support.support_options.each do |option|
+  support.options.each do |option|
     option.cause.reasons.each do |reason|
       pdf.move_down 10
-      pdf.text "— #{reason.pattern}" + ((option == support.support_options.last && reason == option.cause.reasons.last) ? '.' : ';')
+      pdf.text "— #{reason.pattern}" + ((option == support.options.last && reason == option.cause.reasons.last) ? '.' : ';')
     end
   end
   pdf.move_down 30

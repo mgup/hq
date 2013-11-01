@@ -9,21 +9,6 @@
                      options_for_select((2013..Date.today.year).to_a, params[:year]),
                      class: 'form-control' %>
     </div>
-
-    <div class="col-sm-8">
-      <%= multiselect_tag :causes, title: 'Причины', collection: My::SupportCause.all,
-                          value: :id, text: :title, current: params[:causes].map(&:to_i),
-                          pl1: 'Выбрана %c причина',
-                          pl2: 'Выбраны %c причины',
-                          pl5: 'Выбрано %c причин' %>
-    </div>
-
-    <div class="col-sm-2">
-      <%= submit_tag 'Поиск', class: 'btn btn-primary form-control' %>
-    </div>
-  </div>
-
-  <div class="form-group">
     <div class="col-sm-2">
       <%= select_tag :month,
                      options_for_select(
@@ -32,20 +17,59 @@
                      ),
                      class: 'form-control' %>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-6">
+      <%= text_field_tag :last_name, params[:last_name], class: 'form-control',
+                         placeholder: 'Фамилия' %>
+    </div>
+    <div class="col-sm-2">
+      <%= submit_tag 'Поиск', class: 'btn btn-primary form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-12">
+      <%= multiselect_tag :causes, title: 'Причины', collection: My::SupportCause.all,
+                          value: :id, text: :title, current: params[:causes].map(&:to_i),
+                          pl1: 'Выбрана %c причина',
+                          pl2: 'Выбраны %c причины',
+                          pl5: 'Выбрано %c причин' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :accepted, '1', '1' == params[:accepted] %> Только принятые заявления
+        </label>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :strict, '1', '1' == params[:strict], disabled: true %> Только строгое совпадение причин
+        </label>
+      </div>
     </div>
   </div>
 <% end %>
 
-<%= paginate_with_info @applications %>
+<%= paginate @applications, total_count: @applications.total_count %>
 
 <% unless @applications.empty? %>
   <div class="row lead">
     <div class="col-sm-1">
       #
     </div>
-    <div class="col-sm-11">
+    <div class="col-sm-5">
       Студент
+    </div>
+    <div class="col-sm-5">
+      Причины
+    </div>
+    <div class="col-sm-1">
+
     </div>
   </div>
 <% else %>
@@ -54,4 +78,4 @@
 
 <%= render partial: 'application', collection: @applications %>
 
-<%= paginate @applications %>
+<%= paginate @applications, total_count: @applications.total_count %>

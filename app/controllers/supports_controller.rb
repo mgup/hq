@@ -1,9 +1,11 @@
-class My::SupportsController < ApplicationController
-  load_resource
+class SupportsController < ApplicationController
+  load_resource class: 'My::Support', except: [:update]
 
-  before_filter :find_student
-  skip_before_filter :authenticate_user!
-  before_filter :authenticate_student!
+  authorize_resource class: 'My::Support'
+
+  #before_filter :find_student
+  #skip_before_filter :authenticate_user!
+  #before_filter :authenticate_student!
   def index ; end
 
   def new
@@ -29,6 +31,16 @@ class My::SupportsController < ApplicationController
     end
   end
 
+  def update
+    @support = My::Support.unscoped.find(params[:id])
+
+    if @support.update(resource_params)
+      redirect_to :back
+    else
+      raise 'Сохранение не удалось.'
+    end
+  end
+
   def download_pdf
     authorize! :manage, Student
     find_student
@@ -38,10 +50,11 @@ class My::SupportsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:my_support, {}).permit(:support_student, :year, :month, :series,
+    params.fetch(:my_support, {}).permit(:student, :year, :month, :series,
                                          :number, :date, :department, :birthday,
-                                         :address, :phone)
+                                         :address, :phone, :accepted)
   end
+
 
   private
 
