@@ -25,6 +25,7 @@ HQ::Application.routes.draw do
 
   resources :students do
     resources :supports
+    get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
 
     get 'reference', on: :member, defaults: { format: :pdf }
   end
@@ -62,7 +63,6 @@ HQ::Application.routes.draw do
       get '/progress' => 'progress#index'
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'
-      get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
       resources :selects
       get 'download_pdf.pdf', to: 'selects#download_pdf', defaults: { format: 'pdf' }, as: :student_selects
       #get '/social/download_pdf.pdf', to: 'socials#download_pdf', defaults: { format: 'pdf' }, as: :student_social
