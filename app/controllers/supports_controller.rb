@@ -52,7 +52,6 @@ class SupportsController < ApplicationController
   end
 
   def download_pdf
-    authorize! :manage, Student
     find_student
     #respond_to do |format|
     #  format.pdf
