@@ -19,6 +19,10 @@ class Social::ApplicationsController < ApplicationController
       @applications = @applications.with_causes(params[:causes], !params[:strict].to_i.zero?)
     end
 
+    if params[:last_name]
+      @applications = @applications.with_last_name(params[:last_name])
+    end
+
     @applications = @applications.page(params[:page] || 1)
   end
 end

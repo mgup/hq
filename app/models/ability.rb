@@ -53,6 +53,10 @@ class Ability
 
         can :reference, Student, Student.valid_for_today
       end
+
+      if user.is?(:soc_support)
+        can :manage, My::Support
+      end
     end
 
     can [:index, :show], :progress

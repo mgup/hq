@@ -28,6 +28,9 @@ SimpleNavigation::Configuration.run do |navigation|
           orders.item :order_templates, 'Шаблоны', office_order_templates_path, icon: 'list'
         end
 
+      end
+
+      if can? :manage, My::Support
         primary.item :social_applications, 'Заявления на мат. помощь', social_applications_path, icon: 'file'
       end
 

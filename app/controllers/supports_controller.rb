@@ -1,7 +1,7 @@
 class SupportsController < ApplicationController
   load_resource class: 'My::Support', except: [:update]
 
-  #authorize_resource class: 'My::Support'
+  authorize_resource class: 'My::Support'
 
   #before_filter :find_student
   skip_before_filter :authenticate_user!, only: [:new, :create]
@@ -18,7 +18,7 @@ class SupportsController < ApplicationController
   end
 
   def edit
-    authorize! :manage, Student
+    #authorize! :manage, Student
     find_student
   end
 
@@ -40,8 +40,11 @@ class SupportsController < ApplicationController
     @support = My::Support.unscoped.find(params[:id])
 
     if @support.update(resource_params)
-      @support.causes = My::SupportCause.find(params[:causes])
-      @support.save
+      if params[:causes]
+        @support.causes = My::SupportCause.find(params[:causes])
+        @support.save
+      end
+
       redirect_to social_applications_path
     else
       raise 'Сохранение не удалось.'

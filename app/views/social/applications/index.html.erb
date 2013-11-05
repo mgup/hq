@@ -19,7 +19,7 @@
     </div>
     <div class="col-sm-6">
       <%= text_field_tag :last_name, params[:last_name], class: 'form-control',
-                         placeholder: 'Фамилия' %>
+                         placeholder: 'Фамилия студента' %>
     </div>
     <div class="col-sm-2">
       <%= submit_tag 'Поиск', class: 'btn btn-primary form-control' %>
@@ -73,7 +73,7 @@
     </div>
   </div>
 <% else %>
-  <p class="lead">Не подано ни одного заявления.</p>
+  <p class="lead">Нет ни одного заявления.</p>
 <% end %>
 
 <%= render partial: 'application', collection: @applications %>
