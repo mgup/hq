@@ -79,20 +79,21 @@ class Group < ActiveRecord::Base
         n << 'З'
     end
 
-    case speciality.faculty.id
-      when Department::FITIM
-        n << 'Ц'
-      when Department::FPT
-        n << 'Т'
-      when Department::FRISO
-        n << 'Р'
-      when Department::FIDIZH
-        n << 'К'
-      when Department::FEIM
-        n << 'Э'
-      when Department::FGI
-        n << 'Г'
-    end
+    #case speciality.faculty.id
+    #  when Department::FITIM
+    #    n << 'Ц'
+    #  when Department::FPT
+    #    n << 'Т'
+    #  when Department::FRISO
+    #    n << 'Р'
+    #  when Department::FIDIZH
+    #    n << 'К'
+    #  when Department::FEIM
+    #    n << 'Э'
+    #  when Department::FGI
+    #    n << 'Г'
+    #end
+    n << group_name[1]
 
     n << speciality.suffix
 
