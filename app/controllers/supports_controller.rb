@@ -4,9 +4,9 @@ class SupportsController < ApplicationController
   #authorize_resource class: 'My::Support'
 
   #before_filter :find_student
-  skip_before_filter :authenticate_user!, only: [:new, :create, :download_pdf]
+  skip_before_filter :authenticate_user!, only: [:new, :create]
 
-  before_filter :authenticate_student!, only: [:new, :create, :download_pdf]
+  before_filter :authenticate_student!, only: [:new, :create]
 
   # проблема: нужно и для студентов, и для сотрудников..
 

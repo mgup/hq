@@ -2,7 +2,7 @@
   <div class="col-sm-1">
     <%= application.id %>
   </div>
-  <div class="col-sm-5">
+  <div class="col-sm-4">
     <%= application.student.person.full_name %>
     <address>
       <%= application.phone %>
@@ -15,7 +15,7 @@
       <% end %>
     </ul>
   </div>
-  <div class="col-sm-1">
+  <div class="col-sm-2">
     <% unless application.accepted? %>
       <%= form_for application, url: student_support_path(application.student, application) do |f| %>
         <%= f.hidden_field :accepted, value: 1 %>
@@ -24,6 +24,9 @@
       <br>
       <%= link_to edit_student_support_path(application.student, application), class: 'btn btn-default' do %>
         <span class="glyphicon glyphicon-edit"></span>
+      <% end %>
+      <%= link_to student_student_support_path(application.student), class: 'btn btn-default' do %>
+        <span class="glyphicon glyphicon-print"></span>
       <% end %>
 
       <%#= link_to 'Дублировать',  %>
