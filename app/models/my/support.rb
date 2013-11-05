@@ -21,7 +21,6 @@ class My::Support < ActiveRecord::Base
   has_many :causes, through: :options
 
   default_scope do
-    #find(:all, from: 'support S1').
     joins('LEFT JOIN support AS S2 ON S2.support_student = support.support_student AND S2.support_year = support.support_year AND S2.support_month = support.support_month AND support.support_id < S2.support_id')
     .where('S2.support_id IS NULL')
   end
@@ -30,10 +29,13 @@ class My::Support < ActiveRecord::Base
     if strict
 
     else
-      #joins('JOIN support_options ON support.support_id = support_options.support_options_support')
       joins(:options)
       .where('support_options_cause IN (?)', causes)
     end
+  }
+
+  scope :with_last_name, -> (last_name) {
+    joins(student: :person).where('last_name_hint LIKE ?', "#{last_name}%")
   }
 
   def accepted?
