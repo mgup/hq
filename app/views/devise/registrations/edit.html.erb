@@ -1,29 +1,128 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h2>Редактирование личной информаци</h2>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
-
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <% unless devise_error_messages! == ''%>
+    <div class="alert alert-danger">
+      <%= devise_error_messages! %>
+    </div>
   <% end %>
 
-  <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-  <%= f.password_field :password, :autocomplete => "off" %></div>
+  <fieldset>
+    <legend>Персональная информация</legend>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= f.label :name %>
+      </div>
+      <div class='col-lg-8'>
+        <a data-toggle="modal" data-target="#nameModal" class="btn btn-default"><%= resource.full_name %></a>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= f.label :email %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.email_field :email, class: 'form-control' %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= f.label :phone, 'Мобильный телефон' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :phone, class: 'form-control' %>
+      </div>
+      <div class='col-lg-8 col-lg-offset-2'>
+        <span class='help-block'>Номер телефона нужен для того, чтобы иметь возможность оперативно связаться с сотрудником. Он не доступен никому, кроме руководства.</span>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Контроль доступа</legend>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= f.label :username %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :username, class: 'form-control' %>
+      </div>
+      <div class='col-lg-8 col-lg-offset-2'>
+        <span class='help-block'>Обратите внимание на рекомендуемый формат, «iiivanov» — первая буква имени, первая буква отчества и фамилия полностью.</span>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= f.label :password %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.password_field :password, autocomplete: 'off', class: 'form-control' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class='col-lg-2'><%= f.label :password_confirmation %></div>
+       <div  class='col-lg-8'><%= f.password_field :password_confirmation, class: 'form-control' %></div>
+      <div class='col-lg-8 col-lg-offset-2'>
+        <span class='help-block'>Указывается только в случае смены текущего пароля на новый.</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class='col-lg-2'><%= f.label :current_password %> </div>
+      <div  class='col-lg-8'><%= f.password_field :current_password, class: 'form-control' %></div>
+      <div class='col-lg-8 col-lg-offset-2'>
+        <span class='help-block'>Введите текущий пароль, чтобы сохранить изменения.</span>
+      </div>
+    </div>
+  </fieldset>
+  <%= f.submit 'Сохранить изменения', class: 'btn btn-primary' %>
 
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
+  <!-- Modal -->
+  <div class="modal fade in" id="nameModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style='width: 700px; padding: 20px; right: 14%;'>
+        <div class="modal-header">
+          <button type="button" class="close btn btn-default" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">ФИО</h4>
+        </div>
+        <div class="row">
+          <div class="col col-lg-10 col-lg-offset-2">
+            <div class="row">
+              <div class="col col-lg-4 text-center">
+                <label class="control-label" for="<%= resource_name %>_last_name_ip">Фамилия</label>
+              </div>
+              <div class="col col-lg-4 text-center">
+                <label class="control-label" for="<%= resource_name %>_first_name_ip">Имя</label>
+              </div>
+              <div class="col col-lg-4 text-center">
+                <label class="control-label" for="<%= resource_name %>_patronym_ip">Отчество</label>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-  <%= f.password_field :current_password %></div>
+        <% [[:ip, 'Кто? Что?'], [:rp, 'Кого? Чего?'], [:dp, 'Кому? Чему?'],
+            [:vp, 'Кого? Что?'], [:tp, 'Кем? Чем?'], [:pp, 'О ком? О чём?']].each do |p| %>
+          <div class="row">
+            <label class="col col-lg-2 control-label" for="<%= resource_name %>_last_name_<%= p[0] %>"><%= p[1] %></label>
+            <div class="col col-lg-10">
+              <div class="row">
+                <% [:fname, :iname, :oname].each do |name| %>
+                  <div class="col col-lg-4">
+                    <%= f.fields_for name do |sub_f| %>
+                      <%= sub_f.text_field p[0], required: true, class: 'form-control' %>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
 
-  <div><%= f.submit "Update" %></div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-primary" data-dismiss="modal">Сохранить</a>
+          <a href="#" class="btn btn-default" data-dismiss="modal">Закрыть</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %></p>
-
-<%= link_to "Back", :back %>
