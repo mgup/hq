@@ -9,3 +9,5 @@ ru:
         email: 'электронная почта'
         phone: 'мобильный телефон'
         password: 'пароль'
+        password_confirmation: 'подтверждение пароля'
+        current_password: 'текущий пароль'
