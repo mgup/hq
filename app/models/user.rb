@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, # :validatable,:encryptable,
+  devise :database_authenticatable, :registerable, # :encryptable,
+         :recoverable, :rememberable, :trackable, # :validatable
          authentication_keys: [:username]
 
   alias_attribute :id,       :user_id
@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
   validates_associated :oname
 
   before_create :hash_password
+
+  before_update :hash_password, if: :password_changed?
 
   def hash_password
     self.password = Digest::MD5.hexdigest(self.password)
