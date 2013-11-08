@@ -40,7 +40,7 @@
   </tbody>
 </table>
 
-<a  class="btn btn-default" href="/study/group/<%= params[:group_id] %>/student/<%= @student.id %>"><span class="glyphicon glyphicon-list-alt"></span> Назад ко всем дисциплинам</a>
-<%= link_to "/study/group/#{params[:group_id]}/progress", class: 'btn btn-default' do %>
+<a  class="btn btn-default" href="<%= study_group_student_path(params[:group_id], @student.id) %>"><span class="glyphicon glyphicon-list-alt"></span> Назад ко всем дисциплинам</a>
+<%= link_to study_group_progress_path(params[:group_id]), class: 'btn btn-default' do %>
   <span class="glyphicon glyphicon-backward"></span> Назад к группе
 <% end %>

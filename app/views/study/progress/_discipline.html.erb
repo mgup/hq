@@ -14,6 +14,6 @@
         <div class="progress-bar progress-bar-<%= student[:student].result(discipline)[:color] %>" style="width: <%= student[:progress]%>%"></div>
       </div>
     </td>
-    <td><a class='btn btn-default' href="/study/group/<%= group.id %>/student/<%= student[:student].id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+    <td><a class='btn btn-default' href="<%= study_group_student_path(group.id, student[:student].id) %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
   </tr>
 <% end %>
