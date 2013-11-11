@@ -34,7 +34,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.move_down 25
 
     @student.orders.each_with_index do |order, index|
-       pdf.text "#{index+1}. Приказ № #{order.number} «#{order.name if order.template}» от #{order.signing_date.strftime('%d.%m.%Y')}"
+       pdf.text "#{index+1}. Приказ № #{order.number} «#{order.name if order.template}» от #{order.signing_date.strftime('%d.%m.%Y') if order.signing_date}"
     end
     pdf.move_down 25
     pdf.text "Нормативный срок обучения: #{@student.study_time.round} #{@student.study_time.to_i > 4 ? 'лет' : 'года'}"

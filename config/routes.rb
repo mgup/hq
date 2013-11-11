@@ -24,6 +24,7 @@ HQ::Application.routes.draw do
   end
 
   resources :students do
+    get 'documents' => 'students#documents'
     resources :supports
     get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
 

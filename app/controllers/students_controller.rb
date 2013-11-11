@@ -13,6 +13,10 @@ class StudentsController < ApplicationController
 
   end
 
+  def documents
+    @student = Student.find(params[:student_id])
+  end
+
   def new
 
   end
@@ -32,7 +36,7 @@ class StudentsController < ApplicationController
   end
 
   def reference
-    @student = Student.valid_for_today.find(params[i])
+    @student = Student.valid_for_today.find(params[:id])
 
     respond_to do |format|
       format.pdf
