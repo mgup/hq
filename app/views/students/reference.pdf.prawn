@@ -30,11 +30,11 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   pdf.font 'PT', size: 12 do
     pdf.move_down 40
-    pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} действительно является студентом <u>#{@student.group.course}</u> курса <u>#{@student.group.support}</u> формы обучения <u>#{institute.join(' ')}</u> по #{@student.group.speciality.specialist? ? 'специальности' : 'направлению'} <u>#{@student.group.speciality.code}</u> - «<u>#{@student.group.speciality.name}»</u> ФГБОУ ВПО «Московский государственный университет печати имени Ивана Фёдорова», на #{@student.budget? ? 'бюджетной' : 'договорной'} основе обучения.", inline_format: true
+    pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} действительно является студентом <u>#{@student.group.course}</u> курса <u>#{@student.group.support}</u> формы обучения <u>#{institute.join(' ')}</u> по #{@student.group.speciality.specialist? ? 'специальности' : 'направлению'} <u>#{@student.group.speciality.code}</u> - «<u>#{@student.group.speciality.name}»</u> ФГБОУ ВПО «Московский государственный университет печати имени Ивана Федорова», на #{@student.budget? ? 'бюджетной' : 'договорной'} основе обучения.", inline_format: true
     pdf.move_down 25
 
     @student.orders.each_with_index do |order, index|
-       pdf.text "#{index+1}. Приказ № #{order.number} «#{order.name if order.template}» от #{order.signing_date.strftime('%d.%m.%Y')}"
+       pdf.text "#{index+1}. Приказ № #{order.number} «#{order.name if order.template}» от #{order.signing_date.strftime('%d.%m.%Y') if order.signing_date}"
     end
     pdf.move_down 25
     pdf.text "Нормативный срок обучения: #{@student.study_time.round} #{@student.study_time.to_i > 4 ? 'лет' : 'года'}"

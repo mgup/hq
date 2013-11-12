@@ -1,22 +1,22 @@
-<div class='page-header'>
+<div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
 </div>
 
 <% if @student.choices == [] %>
   <%= form_tag my_student_selects_path(@student) do %>
     <% if @choices == [] %>
-      <p class='alert alert-info'>В этом году у вас нет дисциплин по выбору</p>
+      <p class="alert alert-info">В этом году у вас нет дисциплин по выбору</p>
     <% else %>
-      <p class='help-block'>Перед оформлением заявки на курсы по выбору обязательно ознакомьтесь с их программами. Это ваш выбор – делайте его осознанно.</p>
-      <p class='help-block'>После выбора курсов – распечатайте выданный бланк заявления, <span class='label label-danger'>подпишите его и сдайте в деканат</span>.</p>
+      <p class="help-block">Перед оформлением заявки на курсы по выбору обязательно ознакомьтесь с их программами. Это ваш выбор – делайте его осознанно.</p>
+      <p class="help-block">После выбора курсов – распечатайте выданный бланк заявления, <span class='label label-danger'>подпишите его и сдайте в деканат</span>.</p>
       <br>
       <legend>Предметы по выбору для изучения в <%= Study::Discipline::CURRENT_STUDY_YEAR %>/<%= Study::Discipline::CURRENT_STUDY_YEAR + 1 %> учебном году</legend>
       <% i = 1 %>
       <% @choices.each do |choice| %>
         <fieldset>
-          <div class='row'>
-            <div class='col col-lg-2'><%= label_tag 'choice', "#{choice.first.term} семестр"%></div>
-            <div class='col col-lg-8'>
+          <div class="row">
+            <div class="col col-lg-2"><%= label_tag 'choice', "#{choice.first.term} семестр"%></div>
+            <div class="col col-lg-8">
               <%  choice.each do |c| %>
                 <label><%= radio_button_tag "choices[o#{i}]", c.id, nil,  id: "choice_#{c.id}" %>     <%= c.title %></label>
                 <br>

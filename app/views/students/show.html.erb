@@ -1,3 +1,9 @@
+<ul class="nav nav-tabs">
+  <li class="active"><a href="<%= student_path(@student) %>">Персональная информация</a></li>
+  <li><a href="#">Учебная информация</a></li>
+  <li><a href="<%= student_documents_path(@student) %>">Документы</a></li>
+</ul>
+<br>
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
 </div>
@@ -14,15 +20,11 @@
             <%= p.text_field :passport_date,       class: 'col col-lg-2 col-offset-1 datepicker form-control' %>
           </div>
           <div class="row">
-            <%= p.text_field :passport_department %>
+            <%= p.text_field :passport_department, class: 'form-control' %>
           </div>
         </div>
       </div>
     <% end %>
-
-  <div class="section">
-    <h4>Учебная информация</h4>
-  </div>
 
   <%= f.submit class: 'btn btn-primary'%>
 <% end %>

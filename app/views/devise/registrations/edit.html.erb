@@ -1,4 +1,4 @@
-<h2>Редактирование личной информаци</h2>
+<h2>Редактирование личной информации</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <% unless devise_error_messages! == ''%>
@@ -10,11 +10,9 @@
   <fieldset>
     <legend>Персональная информация</legend>
     <div class='row'>
-      <div class='col-lg-2'>
-        <%= f.label :name %>
-      </div>
+      <div class='col-lg-2'><label>Имя</label></div>
       <div class='col-lg-8'>
-        <a data-toggle="modal" data-target="#nameModal" class="btn btn-default"><%= resource.full_name %></a>
+        <p><%= resource.full_name %></p>
       </div>
     </div>
     <div class='row'>
