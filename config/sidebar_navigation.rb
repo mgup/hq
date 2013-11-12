@@ -55,11 +55,15 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       if can? :manage, :ciot
-        primary.item :ciot, 'Логины и пароли', '/ciot', icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
+        primary.item :ciot, 'Логины и пароли', "#{root_url}ciot", icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
       end
 
       if can? :manage, :all
         primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
+      end
+
+      if can? :manage, :all
+        primary.item :support, 'СПИСКИ по заявлениям'.html_safe,  lists_social_applications_path, icon: 'list'
       end
     end
 

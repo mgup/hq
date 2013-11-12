@@ -72,7 +72,10 @@ HQ::Application.routes.draw do
   end
 
   namespace :social do
-    resources :applications
+    resources :applications do
+      get 'lists', to: 'applications#lists', on: :collection
+      get 'print_list.xlsx', to: 'applications#print_list', on: :collection, defaults: { format: 'xlsx' }, as: :print_list
+    end
 
     #resources :supports
     #get '/support/claims' => 'supports#claims'

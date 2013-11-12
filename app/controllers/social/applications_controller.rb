@@ -25,4 +25,41 @@ class Social::ApplicationsController < ApplicationController
 
     @applications = @applications.page(params[:page] || 1)
   end
+
+  def lists
+    params[:year]  ||= Date.today.year
+    params[:month] ||= Date.today.month
+    params[:accepted] ||= false
+
+    @applications = @applications.where(support_year:  params[:year])
+    @applications = @applications.where(support_month: params[:month])
+
+    if params[:accepted]
+      @applications = @applications.where(accepted: true)
+    end
+
+    params[:lists] ||= []
+    unless params[:lists].empty?
+      @applications = @applications.send("list_#{params[:lists]}")
+    end
+  end
+
+  def print_list
+    params[:year]  ||= Date.today.year
+    params[:month] ||= Date.today.month
+    params[:accepted] ||= false
+
+    @applications = @applications.where(support_year:  params[:year])
+    @applications = @applications.where(support_month: params[:month])
+
+    if params[:accepted]
+      @applications = @applications.where(accepted: true)
+    end
+
+    params[:lists] ||= []
+    unless params[:lists].empty?
+      @applications = @applications.send("list_#{params[:lists]}")
+    end
+
+  end
 end
