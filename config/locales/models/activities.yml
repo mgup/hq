@@ -1,0 +1,17 @@
+ru:
+  activerecord:
+    models:
+      activity_group: 'группа показателей эффективности'
+      activity_type: 'тип показателей эффективности'
+      activity: 'показатель эффективности'
+    attributes:
+      activity_group:
+        name: 'название'
+        description: 'описание'
+      activity_type:
+        name: 'название'
+        description: 'описание'
+      activity:
+        activity_group: 'группа показателей'
+        name: 'название'
+        description: 'описание'

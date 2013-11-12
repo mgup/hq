@@ -1,0 +1,32 @@
+<div class="page-header">
+  <h1>Типы показателей эффективности НПР</h1>
+</div>
+
+<%= link_to 'Добавить новый', new_activity_type_path, class: 'btn btn-default' %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Название</th>
+    <th>Описание</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @activity_types.each do |t| %>
+    <tr>
+      <td><%= t.id %></td>
+      <td><%= t.name %></td>
+      <td>
+        <small><%= t.description %></small>
+      </td>
+      <td>
+        <%= link_to edit_activity_type_path(t), class: 'btn btn-default' do %>
+          <span class="glyphicon glyphicon-edit"></span>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -95,6 +95,10 @@ HQ::Application.routes.draw do
     get 'print_prices.xlsx', to: 'payment_types#print_prices', defaults: { format: 'xlsx' }, as: :print_prices
   end
 
+  resources :activity_groups
+  resources :activity_types
+  resources :activities
+
   get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
 
   get 'schedule/data/departments' => 'schedule/data#departments'
