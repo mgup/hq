@@ -62,7 +62,7 @@ class My::Support < ActiveRecord::Base
 
   scope :list_11, -> {poor.where("(SELECT COUNT(*) FROM support_options WHERE support_options_support = support.support_id AND support_options_cause IN (#{causes.join(', ')})) = 0")}
 
-  scope :list_12, -> {where("(SELECT COUNT(*) FROM support_options WHERE support_options_support = support.support_id AND support_options_cause IN (#{causes.push(6).join(', ')})) = 0")}
+  scope :list_12, -> {where("(SELECT COUNT(*) FROM support_options WHERE support_options_support = support.support_id AND support_options_cause IN (#{causes.push(7).join(', ')})) = 0")}
 
   def accepted?
     accepted
