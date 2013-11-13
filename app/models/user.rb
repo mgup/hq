@@ -34,6 +34,8 @@ class User < ActiveRecord::Base
   has_many :marks, class_name: Study::Mark
   has_many :subjects, class_name: Study::Subject
 
+  has_many :achievements
+
   scope :with_name, -> { includes(:iname, :fname, :oname) }
 
   validates :username, presence: true

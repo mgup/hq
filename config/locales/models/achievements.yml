@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+      achievement_period: 'период ввода достижений'
+      achievement: 'достижение'
+    attributes:
+      achievement_period:
+        year: 'учебный год'
+        semester: 'семестр'
+      achievement:

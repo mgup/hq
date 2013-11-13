@@ -1,0 +1,30 @@
+<div class="page-header">
+  <h1>Периоды ввода достижений НПР</h1>
+</div>
+
+<%= link_to 'Добавить новый', new_achievement_period_path, class: 'btn btn-default' %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Учебный год</th>
+    <th>Семестр</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @achievement_periods.each do |p| %>
+    <tr>
+      <td><%= p.id %></td>
+      <td><%= "#{p.year}/#{p.year.to_i + 1}" %></td>
+      <td><%= p.semester %> семестр</td>
+      <td>
+        <%= link_to edit_achievement_period_path(p), class: 'btn btn-default' do %>
+          <span class="glyphicon glyphicon-edit"></span>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

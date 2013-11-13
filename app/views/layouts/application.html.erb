@@ -3,6 +3,7 @@
 <head>
   <title>Matrix</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application-print', media: 'print', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
@@ -17,10 +18,10 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-3">
+    <div id="page_sidebar" class="col-sm-3 hidden-print">
       <%= render_navigation context: :sidebar, expand_all: true %>
     </div>
-    <div class="col-sm-9">
+    <div id="page_content" class="col-sm-9">
       <%= render_navigation renderer: :breadcrumbs, context: :sidebar %>
       <%= yield %>
     </div>

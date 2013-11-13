@@ -18,8 +18,15 @@ SimpleNavigation::Configuration.run do |navigation|
                      activity_groups_path, icon: 'list'
         primary.item :activity_type, 'Типы показателей эффективности НПР',
                      activity_types_path, icon: 'list'
+        primary.item :activity_credit_type, 'Типы баллов показателей эффективности НПР',
+                     activity_credit_types_path, icon: 'list'
         primary.item :activity, 'Показатели эффективности НПР',
                      activities_path, icon: 'list'
+
+        primary.item :achievement_period, 'Периоды ввода достижений НПР',
+                     achievement_periods_path, icon: 'list'
+        primary.item :achievement, 'Работа с показателями эффективности',
+                     achievements_path, icon: 'list'
 
 
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }

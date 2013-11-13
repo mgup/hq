@@ -3,6 +3,7 @@ ru:
     models:
       activity_group: 'группа показателей эффективности'
       activity_type: 'тип показателей эффективности'
+      activity_credit_type: 'тип балла показателей эффективности'
       activity: 'показатель эффективности'
     attributes:
       activity_group:
@@ -11,7 +12,18 @@ ru:
       activity_type:
         name: 'название'
         description: 'описание'
-      activity:
-        activity_group: 'группа показателей'
+      activity_credit_type:
         name: 'название'
         description: 'описание'
+      activity:
+        activity_group: 'группа показателей'
+        activity_group_id: 'группа показателей'
+        activity_type: 'тип показателя'
+        activity_type_id: 'тип показателя'
+        activity_credit_type: 'тип балла'
+        activity_credit_type_id: 'тип балла'
+        name: 'название'
+        description: 'описание'
+        base: 'основание для расчёта баллов'
+        base_name: 'подсказка к основанию для расчёта баллов'
+        credit: 'балл'

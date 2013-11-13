@@ -1,0 +1,17 @@
+@media print {
+  .profiler-results {
+    display: none;
+  }
+
+  #page_sidebar {
+    display: none;
+  }
+
+  #page_content {
+    width: 100%;
+  }
+
+  .breadcrumb {
+    display: none;
+  }
+}

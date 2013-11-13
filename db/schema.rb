@@ -11,7 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131107144522) do
+ActiveRecord::Schema.define(version: 20131113165111) do
+
+  create_table "achievement_periods", force: true do |t|
+    t.integer  "year",                       null: false
+    t.integer  "semester",                   null: false
+    t.boolean  "active",     default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "achievements", force: true do |t|
+    t.text     "description"
+    t.integer  "user_id"
+    t.integer  "activity_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "achievement_periods_id"
+  end
+
+  add_index "achievements", ["achievement_periods_id"], name: "index_achievements_on_achievement_periods_id", using: :btree
+  add_index "achievements", ["activity_id"], name: "index_achievements_on_activity_id", using: :btree
+  add_index "achievements", ["user_id"], name: "index_achievements_on_user_id", using: :btree
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
     t.integer  "acl_position_user",                    null: false
@@ -40,9 +61,26 @@ ActiveRecord::Schema.define(version: 20131107144522) do
     t.integer  "activity_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "activity_type_id"
+    t.integer  "activity_credit_type_id"
+    t.boolean  "active",                                          default: true
+    t.boolean  "unique",                                          default: true
+    t.boolean  "placeholder"
+    t.integer  "base",                                            default: 1
+    t.decimal  "credit",                  precision: 5, scale: 1, default: 0.0
+    t.string   "base_name",                                       default: "за одно достижение"
   end
 
+  add_index "activities", ["activity_credit_type_id"], name: "index_activities_on_activity_credit_type_id", using: :btree
   add_index "activities", ["activity_group_id"], name: "index_activities_on_activity_group_id", using: :btree
+  add_index "activities", ["activity_type_id"], name: "index_activities_on_activity_type_id", using: :btree
+
+  create_table "activity_credit_types", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "activity_groups", force: true do |t|
     t.string   "name"

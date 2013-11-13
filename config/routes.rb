@@ -101,7 +101,11 @@ HQ::Application.routes.draw do
 
   resources :activity_groups
   resources :activity_types
+  resources :activity_credit_types
   resources :activities
+
+  resources :achievement_periods
+  resources :achievements
 
   get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
 

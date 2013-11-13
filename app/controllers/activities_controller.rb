@@ -2,7 +2,8 @@ class ActivitiesController < ApplicationController
   load_and_authorize_resource
 
   def index
-
+    a = @activities.includes(:activity_group, :activity_type, :activity_credit_type)
+    @groups = a.group_by { |activ| activ.activity_group.name }
   end
 
   def show
@@ -39,6 +40,9 @@ class ActivitiesController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:activity, {}).permit(:name, :description, :activity_group_id)
+    params.fetch(:activity, {}).permit(:name, :description, :activity_group_id,
+                                       :activity_type_id, :base, :base_name,
+                                       :activity_credit_type_id, :credit,
+                                       :unique)
   end
 end
