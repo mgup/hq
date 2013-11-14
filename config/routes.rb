@@ -105,7 +105,9 @@ HQ::Application.routes.draw do
   resources :activities
 
   resources :achievement_periods
-  resources :achievements
+  resources :achievements do
+    get 'periods', on: :collection
+  end
 
   get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
 

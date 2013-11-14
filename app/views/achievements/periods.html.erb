@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h1>Периоды отчётности по показателям эффективности</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Период</th>
+      <th>Состояние</th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @periods.each do |p| %>
+    <tr>
+      <td class="text-muted"><%= p.id %></td>
+      <td><%= p.description %></td>
+      <td>
+        <% if p.active? %>
+          <strong>Можно заполнять данные</strong>
+        <% else %>
+          <span class="text-muted">Приём данных завершён</span>
+        <% end %>
+      </td>
+      <td>
+        <% if p.active? %>
+          <%= link_to achievements_path(year: p.year, semester: p.semester), class: 'btn btn-default' do %>
+            <span class="glyphicon glyphicon-check"></span> Заполнить показатели
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

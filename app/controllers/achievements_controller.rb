@@ -1,7 +1,16 @@
 class AchievementsController < ApplicationController
   load_and_authorize_resource
 
+  def periods
+    @periods = AchievementPeriod.all
+  end
+
   def index
+    @period = AchievementPeriod.where(year: params[:year], semester: params[:semester]).first
+    unless @period.active?
+      redirect_to periods_achievements_path, notice: 'Приём данных по указанному периоду завершён.'
+    end
+
     a = Activity.all.includes(:activity_group, :activity_type, :activity_credit_type)
     @groups = a.group_by { |activ| activ.activity_group.name }
   end
