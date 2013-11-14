@@ -25,8 +25,11 @@ SimpleNavigation::Configuration.run do |navigation|
 
         primary.item :achievement_period, 'Периоды ввода достижений НПР',
                      achievement_periods_path, icon: 'list'
-        primary.item :achievement, 'Мои показатели эффективности',
-                     periods_achievements_path, icon: 'list'
+        primary.item :periods_achievements, 'Мои показатели эффективности',
+                     periods_achievements_path, icon: 'list' do |a|
+          a.dom_class = 'hidden'
+          a.item :achievements, 'Отчёт за период', achievements_path
+        end
 
 
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
