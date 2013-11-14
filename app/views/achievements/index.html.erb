@@ -2,7 +2,9 @@
   <h1>Отчёт за <%= @period.description %></h1>
 </div>
 
-<%= render 'achievements' %>
+<div id="my_achievements">
+  <%= render 'achievements' %>
+</div>
 
 <hr>
 
@@ -12,3 +14,9 @@
 </div>
 
 <%= render 'activities' %>
+
+<br>
+
+<%= link_to '#', class: 'lead scroll-to-top' do %>
+  <span class="glyphicon glyphicon-arrow-up"></span> К отчёту
+<% end %>

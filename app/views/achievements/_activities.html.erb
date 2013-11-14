@@ -20,21 +20,7 @@
                     <small><%= a.description %></small>
                   </p>
 
-                  <%= form_for Achievement.new, namespace: "a#{a.id}", html: { style: 'display: none;' } do |f| %>
-                    <%= f.hidden_field :achievement_period_id, value: @period.id %>
-                    <%= f.hidden_field :activity_id, value: a.id %>
-
-                    <div class="form-group">
-                      <%= f.label :description %>
-                      <%= f.text_area :description, class: 'form-control' %>
-                      <p class="help-block">
-                        <strong>Пример</strong> <%= a.placeholder %>
-                      </p>
-                    </div>
-
-                    <%= f.submit 'Сохранить', class: 'btn btn-primary' %> или
-                    <%= link_to 'отменить', '#', class: 'hide-activity', data: { activity: a.id } %>
-                  <% end %>
+                  <%= render partial: 'activity_form', locals: { period: @period, activity: a } %>
                 </td>
                 <td>
                   <%= link_to '#', class: 'btn btn-default add-activity', data: { activity: a.id } do %>

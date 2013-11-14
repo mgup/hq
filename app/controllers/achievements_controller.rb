@@ -30,8 +30,17 @@ class AchievementsController < ApplicationController
 
     if @achievement.save
       p = @achievement.period
-      redirect_to achievements_path(year: p.year, semester: p.semester),
-                  notice: 'Результат работы сохранён.'
+
+      respond_to do |format|
+        format.html do
+          redirect_to achievements_path(year: p.year, semester: p.semester),
+                      notice: 'Результат работы сохранён.'
+        end
+
+        format.js do
+          @achievements = @achievement.period.achievements.by(current_user)
+        end
+      end
     else
       render action: :new
     end
