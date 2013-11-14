@@ -11,6 +11,8 @@ class AchievementsController < ApplicationController
       redirect_to periods_achievements_path, notice: 'Приём данных по указанному периоду завершён.'
     end
 
+    @achievements = @period.achievements
+
     a = Activity.all.includes(:activity_group, :activity_type, :activity_credit_type)
     @groups = a.group_by { |activ| activ.activity_group.name }
   end
