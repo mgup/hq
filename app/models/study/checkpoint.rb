@@ -19,6 +19,7 @@ class Study::Checkpoint < ActiveRecord::Base
   belongs_to :discipline, class_name: Study::Discipline, foreign_key: :checkpoint_subject, inverse_of: :checkpoints
 
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_checkpoint
+  accepts_nested_attributes_for :marks, allow_destroy: true
 
   validates :name, presence: true, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
   [:max, :min].each do |m|

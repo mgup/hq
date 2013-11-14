@@ -10,6 +10,7 @@ class Study::CheckpointsController < ApplicationController
   def new ; end
 
   def edit
+
     @checkpoints = @discipline.checkpoints.control
     @max_b = 0
     @min_b = 0
@@ -32,11 +33,25 @@ class Study::CheckpointsController < ApplicationController
     end
   end
 
+  def update
+    raise resource_params.inspect
+    @checkpoint = Study::Checkpoint.find(params[:id])
+    if @checkpoint.update(resource_params)
+      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+    else
+      if resource_params.include?(:marks_attributes)
+        render template: 'study/marks/new'
+        return
+      else
+        render action: :edit
+      end
+    end
+  end
+
   def resource_params
-    params.fetch(:study_discipline, {}).permit(
-        checkpoints_attributes: [:id, :checkpoint_date,
-                                 :checkpoint_name, :checkpoint_details,
-                                 :checkpoint_max, :checkpoint_min, :'_destroy']
+    params.fetch(:study_checkpoint, {}).permit( :id, :checkpoint_date, :checkpoint_name, :checkpoint_details,
+                                                :checkpoint_max, :checkpoint_min, :'_destroy',
+                                                marks_attributes: [:id, :checkpoint_mark_student, :mark]
     )
   end
 

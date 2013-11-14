@@ -19,7 +19,10 @@ class Study::MarksController < ApplicationController
 
   def show ; end
 
-  def update ; end
+  def update
+    @mark = Study::Mark.find(params[:id])
+    @mark.update(mark: params[:mark])
+  end
 
   def create
     #raise params.inspect
