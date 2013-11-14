@@ -1,1 +1,34 @@
-<%= @achievements.inspect %>
+<% if @achievements.empty? %>
+  <p class="lead">
+    Вы ещё не добавили себе ни одного показателя эффективности за этот
+    отчётный период. Выберите необходимые показатели из списка ниже.
+  </p>
+<% else %>
+  <table class="table">
+    <% @achievements.group_by { |a| a.activity }.each do |activity, achievements| %>
+      <tr>
+        <td colspan="2">
+          <strong><%= activity.name %></strong>
+        </td>
+      </tr>
+      <% achievements.each do |a| %>
+        <tr>
+          <td class="no-border-top"><%= a.description %></td>
+          <td class="no-border-top">
+            <%= activity_credit_description(a.activity) %>
+          </td>
+          <td class="no-border-top"></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    <tr class="success">
+      <th class="text-right">
+        Всего подано на утверждение:
+      </th>
+      <th colspan="2">
+        <%= achievements_credits(@achievements) %>
+      </th>
+    </tr>
+  </table>
+<% end %>

@@ -14,10 +14,4 @@ module ActivityHelper
         raise 'Неизвестный тип баллов показателя эффективности'
     end
   end
-
-  private
-
-  def prettify(num)
-    num.to_i == num ? num.to_i : num
-  end
 end
