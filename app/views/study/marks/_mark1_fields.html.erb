@@ -1,15 +1,15 @@
 <%# Поля для отметок о посещении лекций. %>
-
-<%= f.hidden_field :id %>
-
-<div class="btn-group" data-toggle="buttons">
-  <label class="btn btn-default">
-    <input type="radio" name="options" id="option1"> Option 1
-  </label>
-  <label class="btn btn-default">
-    <input type="radio" name="options" id="option2"> Option 2
-  </label>
-  <label class="btn btn-default">
-    <input type="radio" name="options" id="option3"> Option 3
-  </label>
-</div>
+<% mark = @checkpoint.marks.by_student(student).last ?  @checkpoint.marks.by_student(student).last : @checkpoint.marks.build  %>
+<%= f.fields_for :marks, mark  do |marks_form| %>
+  <%= marks_form.hidden_field :id, class: 'mark_id' %>
+  <%= marks_form.hidden_field :checkpoint_mark_student, value: student %>
+  <br>
+  <div class="btn-group" data-toggle="buttons">
+    <label class="btn btn-default<%= ' active' if mark.mark == Study::Mark::MARK_LECTURE_ATTEND %>">
+      <%= marks_form.radio_button :mark, Study::Mark::MARK_LECTURE_ATTEND, id: "#{student}_mark_1"  %> Посетил
+    </label>
+    <label class="btn btn-default<%= ' active' if mark.mark == Study::Mark::MARK_LECTURE_NOT_ATTEND %>">
+      <%= marks_form.radio_button :mark, Study::Mark::MARK_LECTURE_NOT_ATTEND, id: "#{student}_mark_2" %> Не посетил
+    </label>
+  </div>
+<% end %>
