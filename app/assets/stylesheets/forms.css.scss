@@ -2,6 +2,10 @@ form {
   .control-label:first-letter {
     text-transform: uppercase;
   }
+
+  .form-group label:first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .ace-editor-wrap {

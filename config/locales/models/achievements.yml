@@ -8,3 +8,4 @@ ru:
         year: 'учебный год'
         semester: 'семестр'
       achievement:
+        description: 'подтверждение'

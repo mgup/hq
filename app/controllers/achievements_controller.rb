@@ -11,6 +11,8 @@ class AchievementsController < ApplicationController
       redirect_to periods_achievements_path, notice: 'Приём данных по указанному периоду завершён.'
     end
 
+    @achievements = @period.achievements.by(current_user)
+
     a = Activity.all.includes(:activity_group, :activity_type, :activity_credit_type)
     @groups = a.group_by { |activ| activ.activity_group.name }
   end
@@ -24,8 +26,21 @@ class AchievementsController < ApplicationController
   end
 
   def create
+    @achievement.user_id = current_user.id
+
     if @achievement.save
-      redirect_to achievements_path, notice: 'Результат работы сохранён.'
+      p = @achievement.period
+
+      respond_to do |format|
+        format.html do
+          redirect_to achievements_path(year: p.year, semester: p.semester),
+                      notice: 'Результат работы сохранён.'
+        end
+
+        format.js do
+          @achievements = @achievement.period.achievements.by(current_user)
+        end
+      end
     else
       render action: :new
     end
@@ -48,6 +63,7 @@ class AchievementsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:achievement, {}).permit(:description)
+    params.fetch(:achievement, {}).permit(:description, :achievement_period_id,
+                                          :activity_id)
   end
 end
