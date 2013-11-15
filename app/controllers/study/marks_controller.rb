@@ -19,9 +19,17 @@ class Study::MarksController < ApplicationController
 
   def show ; end
 
-  def update
+  def ajax_update
     @mark = Study::Mark.find(params[:id])
     @mark.update(mark: params[:mark])
+    if @mark.checkpoint.is_checkpoint?
+      render({ json: {id: @mark.id, result: "#{@mark.mark} из #{@mark.checkpoint.max}",
+                      color:  (@mark.mark < @mark.checkpoint.min ? 'danger' : 'success')}
+             })
+    else
+      render({ json: {id: @mark.id, result: @mark.result[:mark], color:  @mark.result[:color]}
+             })
+    end
   end
 
   def create

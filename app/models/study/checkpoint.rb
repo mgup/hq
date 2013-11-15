@@ -19,15 +19,17 @@ class Study::Checkpoint < ActiveRecord::Base
   belongs_to :discipline, class_name: Study::Discipline, foreign_key: :checkpoint_subject, inverse_of: :checkpoints
 
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_checkpoint
-  accepts_nested_attributes_for :marks, allow_destroy: true
+  accepts_nested_attributes_for :marks, allow_destroy: true, reject_if: proc { |attrs| attrs[:mark].blank? }
 
   validates :name, presence: true, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
   [:max, :min].each do |m|
     validates m,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
   end
+
   #validates :max,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
   #validates :min,  presence: true, numericality: { greater_than: 0 }, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
   validate  :min_should_be_less_than_max, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
+  #validate  :mark_should_be_less_than_max, if: -> c { Study::Checkpoint::TYPE_CHECKPOINT == c.type }
 
   scope :by_discipline, -> discipline { where(checkpoint_subject: discipline) }
   scope :by_date, -> date {where(checkpoint_date: date)}
@@ -73,6 +75,15 @@ class Study::Checkpoint < ActiveRecord::Base
     if !marked_for_destruction? && min >= max
       errors.add(:'minmax',
                  'Минимальный зачётный балл должен быть меньше, чем максимальный балл.')
+    end
+  end
+
+  def mark_should_be_less_than_max
+    marks.each do |m|
+      if m.mark > max or m.mark < 0
+        errors.add("#{m.id}",
+                   'Балл за контрольную точку должен быть меньше, чем максимальный балл, и больше 0.')
+      end
     end
   end
 end

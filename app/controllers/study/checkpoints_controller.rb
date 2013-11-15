@@ -10,7 +10,6 @@ class Study::CheckpointsController < ApplicationController
   def new ; end
 
   def edit
-
     @checkpoints = @discipline.checkpoints.control
     @max_b = 0
     @min_b = 0
@@ -34,7 +33,7 @@ class Study::CheckpointsController < ApplicationController
   end
 
   def update
-    raise resource_params.inspect
+    #raise resource_params.inspect
     @checkpoint = Study::Checkpoint.find(params[:id])
     if @checkpoint.update(resource_params)
       redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'

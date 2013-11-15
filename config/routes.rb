@@ -40,7 +40,9 @@ HQ::Application.routes.draw do
       get 'print_disciplines.xlsx', to: 'disciplines#print_disciplines', on: :collection, defaults: { format: 'xlsx' }, as: :print_disciplines
       match 'download_group',  to: 'checkpoints#download_pdf', via: [:get, :post]
       resources :checkpoints do
-        resources :marks
+        resources :marks do
+          get 'ajax_update', to: 'marks#ajax_update', on: :member
+        end
       end
     end
 
