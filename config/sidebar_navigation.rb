@@ -62,7 +62,13 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       if can? :manage, Study::Discipline
-        primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') }
+        primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') || params[:controller].include?('marks')} do |d|
+          d.dom_class = 'hidden'
+          d.item :edit, 'Редактирование', edit_study_discipline_path(params[:id] || 1)
+          d.item :new_checkpoints, 'Расписание', new_study_discipline_checkpoint_path(params[:discipline_id] || 1)
+          d.item :checkpoints, 'Карта дисциплины', study_discipline_checkpoints_path(params[:discipline_id] || 1)
+          d.item :marks, 'Внесение результатов', study_discipline_checkpoint_marks_path(params[:discipline_id] || 1, params[:checkpoint_id] || 1)
+        end
       end
 
       if can? :manage, Student

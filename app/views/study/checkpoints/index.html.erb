@@ -18,6 +18,17 @@
   <span class='glyphicon glyphicon-print'></span> Студенты
 <% end %>
 
+<% unless @discipline.checkpoints.not_full(@discipline) == []%>
+  <br><br>
+  <div class="alert alert-danger">
+    <p>В некоторых занятиях не введены результаты оценки студентов.</p>
+    <ul>
+    <% @discipline.classes.not_full(@discipline).each do |c| %>
+      <li><%= link_to "Занятие #{c.id} (внести данные)", study_discipline_checkpoint_marks_path(@discipline, c) %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
 <div class="row">
   <table class="table table-striped">
     <thead>
@@ -43,11 +54,17 @@
             <%= '</strong>'.html_safe if checkpoint.is_checkpoint? %>
           </td>
           <td>
-            <% unless checkpoint.date.future? %>
-              <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default' do %>
-                <span class="glyphicon glyphicon-pencil"></span> Внести результаты
+            <div class="pull-right">
+              <% unless checkpoint.date.future? %>
+                <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default' do %>
+                  <span class="glyphicon glyphicon-pencil"></span> Внести результаты
+                <% end %>
+              <% else %>
+                <%= link_to study_discipline_checkpoint_path(@discipline, checkpoint), method: :delete, confirm: 'Вы уверены?', class: 'btn btn-danger', title: 'Удалить' do %>
+                  <span class="glyphicon glyphicon-remove"></span>
+                <% end %>
               <% end %>
-            <% end %>
+            </div>
           </td>
        </tr>
       <% end %> 

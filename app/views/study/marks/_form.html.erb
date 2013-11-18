@@ -1,6 +1,5 @@
 <%= nested_form_for @checkpoint, url: study_discipline_checkpoint_path(@discipline, @checkpoint),
-                    method: :patch, html: { class: 'form-horizontal marks', role: 'form' } do |f| %>
-
+                    method: :patch, html: { class: 'form-horizontal marks', role: 'form', id: 'formForMarks' } do |f| %>
   <div class="form-group">
     <%= f.label :group, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
@@ -44,6 +43,10 @@
       </div>
     </div>
   <% end %>
+
+  <div class="alert alert-warning" style="display: none;">
+    <p>Проверьте правильность введенных баллов</p>
+  </div>
 
   <table class="table" data-value="<%= @checkpoint.type %>">
     <% @students.each do |student| %>
