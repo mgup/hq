@@ -4,7 +4,7 @@ ru:
       study/discipline: 'дисциплина'
     attributes:
       study/discipline:
-        year: 'учебный год'
-        semester: 'семестр'
+        subject_year: 'учебный год'
+        subject_semester: 'семестр'
         group: 'группа'
-        name: 'название дисциплины'
+        subject_name: 'название дисциплины'

@@ -44,6 +44,7 @@ HQ::Application.routes.draw do
           get 'ajax_update', to: 'marks#ajax_update', on: :member
         end
       end
+      resources :exams
     end
 
     #resources :subjects do
