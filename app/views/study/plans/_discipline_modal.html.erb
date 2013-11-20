@@ -1,0 +1,37 @@
+<div class="modal fade" id="addDisciplineModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Добавить экзамен/зачёт для группы <%= group.name %></h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for discipline, class: 'form-horizontal' do |f| %>
+          <%= f.hidden_field :subject_year, value: Study::Discipline::CURRENT_STUDY_YEAR %>
+          <%= f.hidden_field :subject_semester, value: Study::Discipline::CURRENT_STUDY_TERM %>
+          <%= f.hidden_field :subject_group, value: group.id %>
+          <%= f.label :subject_name %>
+          <%= f.text_field :subject_name, placeholder: 'например, "Компьютерная обработка изображений"', class: 'form-control' %>
+          <br>
+          <label>Кафедра и преподаватель</label>
+          <%= select_tag :subdepartment,
+                       options_from_collection_for_select(Department.academic, :id, :name), { class: 'form-control' } %>
+          <br>
+          <%= f.select :subject_teacher,
+                       options_from_collection_for_select(User.teachers, :id, :full_name), {}, { class: 'form-control' } %>
+          <% exams = [['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9], ['курсовая работа', 2], ['курсовой проект', 3],
+                      ['практика', 4], ['ГЭК-1', 7], ['ГЭК-2', 8]] %>
+          <% exams << ['преддипломная практика', 5] << ['итоговый гос. экзамен', 6] if @group.course == 5 %>
+          <% exams.each do |e| %>
+            <br>
+            <label><%= check_box_tag 'exam[]', e[1] %> <%= e[0] %></label>
+          <% end %>
+      </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+            <%= submit_tag 'Добавить испытание в учебный план', class: 'btn btn-primary' %>
+        <% end %>
+        </div>
+        </div>
+  </div>
+</div>

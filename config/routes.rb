@@ -59,6 +59,9 @@ HQ::Application.routes.draw do
       resources :students, path:  '/student'
       get '/student/:id/discipline/:discipline' => 'students#discipline'
     end
+
+    get '/plans' => 'plans#index'
+    get '/plans/add_discipline' => 'plans#add_discipline'
   end
 
   namespace :my do
@@ -125,6 +128,7 @@ HQ::Application.routes.draw do
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'
   get '/ajax/group_students' => 'ajax#group_students'
+  get '/ajax/group_exams' => 'ajax#group_exams'
   get '/ajax/orderstudent' => 'ajax#orderstudent'
 
   root to: 'dashboard#index'
