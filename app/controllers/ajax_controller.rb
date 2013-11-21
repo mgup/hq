@@ -14,6 +14,13 @@ class AjaxController < ApplicationController
     end })
   end
 
+  def teachers
+    render({ json: User.teachers.from_subdepartment(params[:subdepartment]).inject([]) do |teachers, teacher|
+      teachers << { id: teacher.id, name: teacher.full_name }
+      teachers
+    end })
+  end
+
   def disciplines
     render({ json: Study::Discipline.where(subject_year: 2013).from_name(params[:discipline_name]).inject([]) do |disciplines, discipline|
       teachers = []

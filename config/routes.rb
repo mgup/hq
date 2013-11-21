@@ -62,6 +62,8 @@ HQ::Application.routes.draw do
 
     get '/plans' => 'plans#index'
     get '/plans/add_discipline' => 'plans#add_discipline'
+    get '/plans/edit_discipline' => 'plans#edit_discipline'
+    get '/plans/repeat' => 'plans#repeat'
   end
 
   namespace :my do
@@ -127,6 +129,7 @@ HQ::Application.routes.draw do
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'
+  get '/ajax/teachers' => 'ajax#teachers'
   get '/ajax/group_students' => 'ajax#group_students'
   get '/ajax/group_exams' => 'ajax#group_exams'
   get '/ajax/orderstudent' => 'ajax#orderstudent'

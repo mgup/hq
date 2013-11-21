@@ -104,6 +104,8 @@ class User < ActiveRecord::Base
   scope :from_name, -> name { with_name.where('dictionary.dictionary_ip LIKE :prefix OR user.user_name LIKE :prefix', prefix: "%#{name}%")}
   scope :from_department, -> department { where("#{department.split(',').collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
                                                                       " OR #{department.split(',').collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
+  scope :from_subdepartment, -> subdepartment { where("#{subdepartment .split(',').collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
+                                                    " OR #{subdepartment .split(',').collect{|d| 'user.user_subdepartment = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
   scope :from_position, -> position { where('acl_position.acl_position_title LIKE :posprefix OR user.user_position LIKE :posprefix', posprefix: "%#{position}%")
                                       .includes(:positions) }
   scope :from_role, -> role { where("acl_position.acl_position_role = (SELECT acl_role.acl_role_id FROM acl_role WHERE acl_role.acl_role_name = '#{role}')")

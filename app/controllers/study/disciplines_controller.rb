@@ -19,6 +19,7 @@ class Study::DisciplinesController < ApplicationController
   #def show ; end
 
   def create
+    #raise params.inspect
     authorize! :create, Study::Discipline
     @discipline = Study::Discipline.new(resource_params)
     if @discipline.save

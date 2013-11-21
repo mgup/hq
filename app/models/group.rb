@@ -39,6 +39,19 @@ class Group < ActiveRecord::Base
     end
   }
 
+  def study_length
+    case form
+      when 101
+        speciality.speciality_olength
+      when 102
+        speciality.speciality_ozlength
+      when 103
+        speciality.speciality_zlength
+      when 105
+        speciality.speciality_zlength
+    end
+  end
+
   def support
     case form
       when 101

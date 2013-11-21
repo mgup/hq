@@ -10,4 +10,21 @@ class Study::PlansController < ApplicationController
       format.js
     end
   end
+
+  def edit_discipline
+    @group = Group.find(params[:group])
+    @discipline = Study::Discipline.find(params[:discipline])
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def repeat
+    @group = Group.find(params[:group])
+    @parent_exam = Study::Exam.find(params[:exam])
+    @exam = Study::Exam.new
+    respond_to do |format|
+      format.js
+    end
+  end
 end
