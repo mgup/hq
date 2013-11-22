@@ -7,6 +7,7 @@
       </div>
       <div class="modal-body">
         <%= form_for discipline, class: 'form-horizontal' do |f| %>
+          <%= hidden_field_tag :plan, 1 %>
           <%= f.hidden_field :subject_group %>
           <%= f.label :subject_name %>
           <%= f.text_field :subject_name, class: 'form-control' %>

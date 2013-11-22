@@ -27,4 +27,17 @@ class Study::PlansController < ApplicationController
       format.js
     end
   end
+
+  def updatedate
+    @exam = Study::Exam.find(params[:exam_id])
+    @exam.update date: params[:date]
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def updatediscipline
+
+  end
+
 end

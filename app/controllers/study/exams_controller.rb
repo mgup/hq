@@ -26,6 +26,14 @@ class Study::ExamsController < ApplicationController
     end
   end
 
+  def print
+    @exam = Study::Exam.find(params[:exam_id])
+    load_discipline
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   def resource_params
     params.fetch(:study_exam, {}).permit( :id, marks_attributes: [:id, :mark_student_group, :mark_value]
     )

@@ -44,7 +44,9 @@ HQ::Application.routes.draw do
           get 'ajax_update', to: 'marks#ajax_update', on: :member
         end
       end
-      resources :exams
+      resources :exams do
+        get '/print.pdf', to: 'exams#print', defaults: { format: 'pdf' }, as: :print
+      end
     end
 
     #resources :subjects do
@@ -64,6 +66,8 @@ HQ::Application.routes.draw do
     get '/plans/add_discipline' => 'plans#add_discipline'
     get '/plans/edit_discipline' => 'plans#edit_discipline'
     get '/plans/repeat' => 'plans#repeat'
+    get '/plans/:exam_id/updatedate' => 'plans#updatedate'
+    get '/plans/updatediscipline' => 'plans#updatediscipline'
   end
 
   namespace :my do

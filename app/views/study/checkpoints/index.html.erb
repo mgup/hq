@@ -69,22 +69,23 @@
        </tr>
       <% end %>
 
-      <!--Что делать с курсовыми и экзаменами?-->
-      <% @discipline.exams.each do |exam| %>
-      <tr>
-        <td class="text-muted"><%= exam.id %></td>
-        <td></td>
-        <td class="full-width">
-          <span class="glyphicon glyphicon-<%= exam == @discipline.final_exam ? 'star' :  'star-empty' %>"></span> <%= exam.name %>
-        </td>
-        <td>
-          <div class="pull-right">
-              <%= link_to study_discipline_exam_path(@discipline, exam), class: 'btn btn-default', title: 'Внести результаты экзамена' do %>
-                <span class="glyphicon glyphicon-pencil"></span>
-              <% end %>
-          </div>
-        </td>
-      </tr>
+      <% @discipline.exams.order('exam_date').each do |exam| %>
+        <% if exam.date? %>
+        <tr>
+          <td class="text-muted"><%= exam.id %></td>
+          <td><%= l exam.date %></td>
+          <td class="full-width">
+            <span class="glyphicon glyphicon-<%= exam == @discipline.final_exam ? 'star' :  'star-empty' %>"></span> <%= exam.name %>
+          </td>
+          <td>
+            <div class="pull-right">
+                <%= link_to study_discipline_exam_path(@discipline, exam), class: 'btn btn-default', title: 'Внести результаты экзамена' do %>
+                  <span class="glyphicon glyphicon-pencil"></span>
+                <% end %>
+            </div>
+          </td>
+        </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
