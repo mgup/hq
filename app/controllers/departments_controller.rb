@@ -34,7 +34,8 @@ class DepartmentsController < ApplicationController
   end
 
   def destroy
-    @department.destroy
+    @department.department_active = 0
+    @department.save!
 
     redirect_to departments_path
   end
