@@ -3,3 +3,21 @@
 </div>
 
 <%= render 'form' %>
+
+<hr>
+
+<%= form_tag combine_department_path(@department) do %>
+  <div class="form-group">
+    <label>Перенести текущее подразделение в</label>
+    <%= select_tag :to,
+                   options_from_collection_for_select(Department.all, :id, :name),
+                   include_blank: true,
+                   class: 'form-control' %>
+    <p class="help-block">
+      В выбранное подразделение будут перенесены все сотрудники, приписанные
+      к текущему. Текущее после этого станет неактивным.
+    </p>
+  </div>
+
+  <%= submit_tag 'Перенести', class: 'btn btn-default' %>
+<% end %>

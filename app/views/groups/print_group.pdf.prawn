@@ -4,10 +4,10 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                page_size: 'A4', page_layout: :portrait do |pdf|
   render 'pdf/header', pdf: pdf, title: ''
 
-   title =  [['Список студентов',  Date.today.strftime("%d.%m.%Y") ]]
+   title =  [['Список студентов',  Date.today.strftime('%d.%m.%Y') ]]
    pdf.font_size 12 do
       pdf.table title, header: true, width: pdf.bounds.width,
-                    cell_style: { padding: 2, border_color: "ffffff" } do
+                    cell_style: { padding: 2, border_color: 'ffffff' } do
          column(1).style align: :right
       end
    end
@@ -17,7 +17,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   headData = [['Группа', @group.name ], ['Институт', @group.speciality.faculty.name], ['Форма', @group.this_form], ['Направление', @group.speciality.code + ' ' + @group.speciality.name]]
   pdf.font_size 12 do
       pdf.table headData, header: true, width: pdf.bounds.width,
-                cell_style: { padding: 2, border_color: "ffffff" }
+                cell_style: { padding: 2, border_color: 'ffffff' }
     end
 
   pdf.move_down 13

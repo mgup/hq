@@ -31,7 +31,7 @@ class Department < ActiveRecord::Base
   validates :abbreviation, presence: true
 
   default_scope do
-    where('department_active = 1')
+    where('department_active = 1').order('department_name ASC')
   end
 
   scope :only_main, -> { where(department_parent: nil) }

@@ -43,6 +43,6 @@ class ActivitiesController < ApplicationController
     params.fetch(:activity, {}).permit(:name, :description, :activity_group_id,
                                        :activity_type_id, :base, :base_name,
                                        :activity_credit_type_id, :credit,
-                                       :unique)
+                                       :unique, :placeholder)
   end
 end

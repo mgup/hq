@@ -18,7 +18,10 @@ HQ::Application.routes.draw do
   end
   get 'users_filter' => 'users#filter'
 
-  resources :departments
+  resources :departments do
+    post 'combine', on: :member
+  end
+
   resources :positions
 
   resources :groups do
