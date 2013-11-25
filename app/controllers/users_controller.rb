@@ -69,6 +69,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def medical_requests
+    require 'csv'
+    @data = CSV.read '/Users/storkvist/Sites/mgup/med_preps.txt', { col_sep: "\t" }
+  end
+
   private
 
   def set_user

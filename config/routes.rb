@@ -13,6 +13,8 @@ HQ::Application.routes.draw do
   resources :roles
   resources :users do
     get 'profile' => 'users#profile'
+
+    get 'medical_requests.pdf', to: 'users#medical_requests', on: :collection, defaults: { format: 'pdf' }
   end
   get 'users_filter' => 'users#filter'
 

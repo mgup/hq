@@ -34,7 +34,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         column_widths: [15, 32, 200], cell_style: { padding: 2 } do
       row(0).style align: :center
       off_budget.each do |i|
-       row(i).background_color = "d3d3d3"
+       row(i).background_color = 'd3d3d3'
       end
     end
   end

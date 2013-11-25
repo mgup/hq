@@ -1,1 +1,3 @@
 $('#my_achievements').html('<%=j render 'achievements' %>');
+
+$('#a<%= @achievement.activity.id %>_new_achievement').toggle('highlight');
