@@ -68,6 +68,20 @@ class Study::Discipline < ActiveRecord::Base
     exams.where(exam_type: [0,1,9]).first
   end
 
+  def current_ball
+    l1, p1, n1 = 0.0, 0.0, 0.0
+    l = lectures.count
+    p = seminars.count
+    classes.each do |checkpoint|
+      unless checkpoint.date.future?
+        l1 += (5/l) if checkpoint.lecture?
+        p1 += (15/p) if checkpoint.seminar?
+        n1 += checkpoint.max if checkpoint.is_checkpoint?
+      end
+    end
+    (l1+p1+n1).round 2
+  end
+
   def is_active?
     case CURRENT_STUDY_TERM
       when 1

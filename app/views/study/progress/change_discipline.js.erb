@@ -1,2 +1,5 @@
 $('#for_student_progress').html("<%= escape_javascript (render(partial: "discipline",
-locals: { students: @discipline_students, group: @group, discipline: @discipline })).html_safe %>")
+locals: { students: @discipline_students, group: @group, discipline: @discipline })).html_safe %>");
+<% link = study_group_print_progress_path  %>
+<% link << "?discipline=#{@discipline.id}" if @discipline %>
+$('#printProgress').attr('href', "<%= link %>" );

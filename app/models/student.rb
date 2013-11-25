@@ -262,8 +262,16 @@ GROUP BY `group`
     end
   end
 
-  def result(discipline)
-    case progress(discipline).round
+  def result(discipline = nil)
+   if discipline
+     ball = 100*(progress(discipline)/discipline.current_ball)
+   else
+     ball = 0
+     disciplines.each do |d|
+       ball+=100*(progress(d)/d.current_ball)/disciplines.size
+     end
+   end
+    case ball.round
       when 0..49
         {mark: 'неудовлетворительно', color: 'danger'}
       when  50..64
