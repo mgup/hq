@@ -19,6 +19,7 @@ class Study::DisciplinesController < ApplicationController
   #def show ; end
 
   def create
+    #raise params.inspect
     authorize! :create, Study::Discipline
     @discipline = Study::Discipline.new(resource_params)
     if @discipline.save
@@ -53,7 +54,11 @@ class Study::DisciplinesController < ApplicationController
   def update
     authorize! :update, Study::Discipline
     if @discipline.update(resource_params)
-      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+      #if params.include?(:plan)
+      #  redirect_to study_plans_updatediscipline_path
+      #else
+        redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+      #end
     else
       if resource_params.include?(:checkpoints_attributes)
         # Идёт редактирование контрольных точек — возвращаем туда.

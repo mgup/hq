@@ -13,7 +13,7 @@ class Study::Mark < ActiveRecord::Base
   alias_attribute :mark,      :checkpoint_mark_mark
   alias_attribute :retake,    :checkpoint_mark_retake
 
-  belongs_to :student, primary_key: :tudent_group_id, foreign_key: :checkpoint_mark_student
+  belongs_to :student, primary_key: :student_group_id, foreign_key: :checkpoint_mark_student
 
   belongs_to :checkpoint, class_name: Study::Checkpoint, primary_key: :checkpoint_id, foreign_key: :checkpoint_mark_checkpoint
 

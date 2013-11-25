@@ -1,0 +1,3 @@
+$('#for_new').html("<%= escape_javascript (render(partial: 'repeat_modal',
+locals: { group: @group, parent_exam: @parent_exam, exam: @exam })).html_safe %>");
+$('#modalRepeatBtn').click()

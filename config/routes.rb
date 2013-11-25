@@ -42,7 +42,12 @@ HQ::Application.routes.draw do
       get 'print_disciplines.xlsx', to: 'disciplines#print_disciplines', on: :collection, defaults: { format: 'xlsx' }, as: :print_disciplines
       match 'download_group',  to: 'checkpoints#download_pdf', via: [:get, :post]
       resources :checkpoints do
-        resources :marks
+        resources :marks do
+          get 'ajax_update', to: 'marks#ajax_update', on: :member
+        end
+      end
+      resources :exams do
+        get '/print.pdf', to: 'exams#print', defaults: { format: 'pdf' }, as: :print
       end
     end
 
@@ -58,6 +63,13 @@ HQ::Application.routes.draw do
       resources :students, path:  '/student'
       get '/student/:id/discipline/:discipline' => 'students#discipline'
     end
+
+    get '/plans' => 'plans#index'
+    get '/plans/add_discipline' => 'plans#add_discipline'
+    get '/plans/edit_discipline' => 'plans#edit_discipline'
+    get '/plans/repeat' => 'plans#repeat'
+    get '/plans/:exam_id/updatedate' => 'plans#updatedate'
+    get '/plans/updatediscipline' => 'plans#updatediscipline'
   end
 
   namespace :my do
@@ -123,7 +135,9 @@ HQ::Application.routes.draw do
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'
+  get '/ajax/teachers' => 'ajax#teachers'
   get '/ajax/group_students' => 'ajax#group_students'
+  get '/ajax/group_exams' => 'ajax#group_exams'
   get '/ajax/orderstudent' => 'ajax#orderstudent'
 
   root to: 'dashboard#index'

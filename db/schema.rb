@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131114104837) do
+ActiveRecord::Schema.define(version: 20131121091844) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -317,14 +317,18 @@ ActiveRecord::Schema.define(version: 20131114104837) do
   end
 
   create_table "document", primary_key: "document_id", force: true do |t|
-    t.integer   "document_type",                                     null: false
-    t.text      "document_number",      limit: 16777215,             null: false
+    t.integer   "document_type",                                           null: false
+    t.text      "document_number",      limit: 16777215,                   null: false
     t.integer   "document_signed",      limit: 1
-    t.timestamp "document_create_date",                              null: false
-    t.date      "document_expire_date",                              null: false
-    t.integer   "document_juridical",   limit: 1,        default: 0, null: false
+    t.timestamp "document_create_date",                                    null: false
+    t.date      "document_expire_date",                                    null: false
+    t.integer   "document_juridical",   limit: 1,          default: 0,     null: false
     t.datetime  "created_at"
     t.datetime  "updated_at"
+    t.text      "document_department",  limit: 2147483647
+    t.date      "document_date"
+    t.text      "document_name",        limit: 2147483647
+    t.boolean   "document_enternal",                       default: false
   end
 
   create_table "document_meta", primary_key: "document_meta_id", force: true do |t|

@@ -1,0 +1,63 @@
+<div class="modal fade" id="repeatModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%= group.name %> — <%= parent_exam.discipline.name %> <small><%= parent_exam.name %></small></h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <h4>Групповые ведомости</h4>
+        <%= form_for exam, url: study_discipline_exams_path(parent_exam.discipline), class: 'form-horizontal' do |f| %>
+          <%= f.hidden_field :exam_subject, value: parent_exam.discipline.id %>
+          <%= f.hidden_field :parent, value: parent_exam.id %>
+          <%= f.hidden_field :exam_type, value: parent_exam.type %>
+          <%= f.hidden_field :weight, value: parent_exam.weight %>
+          <%= f.hidden_field :exam_group, value: group.id %>
+          <div class="row">
+            <div class="col-sm-5">
+              <%= f.select :repeat, options_for_select([['Первичный', 2], ['Повторный', 3],
+                                                        ['Комиссия', 4], ['Досрочный', 1],
+                                                        ['Уважительная', 5]]), {}, class: 'form-control'%>
+            </div>
+            <div class="col-sm-4">
+              <%= f.text_field :date, value: Date.today, class: 'form-control datepicker' %>
+            </div>
+            <div class="col-sm-2">
+              <%= f.submit 'Добавить', class: 'btn btn-primary' %>
+            </div>
+          </div>
+        <% end %>
+        </div>
+          <br>
+        <div>
+          <h4>Индивидуальные ведомости</h4>
+          <% group.students.each do |student| %>
+            <p class="text-center"><%= student.person.full_name %></p>
+            <%= form_for exam, url: study_discipline_exams_path(parent_exam.discipline), class: 'form-horizontal' do |f| %>
+              <%= f.hidden_field :exam_subject, value: parent_exam.discipline.id %>
+              <%= f.hidden_field :parent, value: parent_exam.id %>
+              <%= f.hidden_field :exam_type, value: parent_exam.type %>
+              <%= f.hidden_field :weight, value: parent_exam.weight %>
+              <%= f.hidden_field :exam_student, value: student.person.id %>
+              <%= f.hidden_field :exam_student_group, value: student.id %>
+              <div class="row">
+                <div class="col-sm-5">
+                  <%= f.select :repeat, options_for_select([['Первичный', 2], ['Повторный', 3],
+                                                            ['Комиссия', 4], ['Досрочный', 1],
+                                                            ['Уважительная', 5]]), {}, class: 'form-control'%>
+                </div>
+                <div class="col-sm-4">
+                  <%= f.text_field :date, value: Date.today, class: 'form-control datepicker' %>
+                </div>
+                <div class="col-sm-2">
+                  <%= f.submit 'Добавить', class: 'btn btn-primary' %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

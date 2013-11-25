@@ -1,6 +1,5 @@
 <%= nested_form_for @checkpoint, url: study_discipline_checkpoint_path(@discipline, @checkpoint),
-                    method: :patch, html: { class: 'form-horizontal marks', role: 'form' } do |f| %>
-
+                    method: :patch, html: { class: 'form-horizontal marks', role: 'form', id: 'formForMarks' } do |f| %>
   <div class="form-group">
     <%= f.label :group, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
@@ -29,7 +28,27 @@
     </div>
   </div>
 
-  <table class="table">
+  <% if @checkpoint.is_checkpoint? %>
+    <div class="form-group">
+      <%= f.label :min, class: 'control-label col-sm-3' %>
+      <div class="col-sm-9">
+        <p class="form-control-static"><%= @checkpoint.min %></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :max, class: 'control-label col-sm-3' %>
+      <div class="col-sm-9">
+        <p class="form-control-static maxValue"><%= @checkpoint.max %></p>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="alert alert-warning" style="display: none;">
+    <p>Проверьте правильность введенных баллов</p>
+  </div>
+
+  <table class="table" data-value="<%= @checkpoint.type %>">
     <% @students.each do |student| %>
       <tr>
         <td class="text-muted"><%= student.id %></td>
@@ -41,14 +60,19 @@
                         f: f, student: student.id %>
           </td>
         <% else %>
-          <% mark = mark.result %>
-          <td><span  class="label label-<%= mark[:color] %>"><%= mark[:mark] %></span>
+          <td>
+            <% if @checkpoint.is_checkpoint? %>
+              <span  class="label label-<%= mark.mark < @checkpoint.min ? 'danger' : 'success' %>"><%= mark.mark %> из <%= @checkpoint.max %></span>
+            <% else %>
+              <span  class="label label-<%= mark.result[:color] %>"><%= mark.result[:mark] %></span>
+            <% end %>
             <div class="editMarkField">
+              <br>
               <%= render "study/marks/mark#{@checkpoint.type}_fields",
                          f: f, student: student.id %>
             </div>
           </td>
-          <td><%= link_to 'Редактировать', '#', class: 'btn btn-default editMarkButton' %></td>
+          <td><button class="btn btn-default editMarkButton">Редактировать</button></td>
         <% end %>
       </tr>
     <% end %>

@@ -3,13 +3,12 @@
 <%= f.fields_for :marks, mark  do |marks_form| %>
   <%= marks_form.hidden_field :id, class: 'mark_id' %>
   <%= marks_form.hidden_field :checkpoint_mark_student, value: student %>
-  <br>
   <div class="btn-group" data-toggle="buttons">
     <label class="btn btn-default<%= ' active' if mark.mark == Study::Mark::MARK_LECTURE_ATTEND %>">
       <%= marks_form.radio_button :mark, Study::Mark::MARK_LECTURE_ATTEND, id: "#{student}_mark_1"  %> Посетил
     </label>
-    <label class="btn btn-default<%= ' active' if mark.mark == Study::Mark::MARK_LECTURE_NOT_ATTEND %>">
-      <%= marks_form.radio_button :mark, Study::Mark::MARK_LECTURE_NOT_ATTEND, id: "#{student}_mark_2" %> Не посетил
+    <label class="btn btn-default<%= ' active' if mark.mark != Study::Mark::MARK_LECTURE_ATTEND %>">
+      <%= marks_form.radio_button :mark, Study::Mark::MARK_LECTURE_NOT_ATTEND, id: "#{student}_mark_2", checked: (mark.mark != Study::Mark::MARK_LECTURE_ATTEND) %> Не посетил
     </label>
   </div>
 <% end %>

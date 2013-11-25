@@ -77,6 +77,10 @@ class Study::Discipline < ActiveRecord::Base
     end
   end
 
+  def brs?
+    classes != []
+  end
+
   def add_semester_work
     exams.create(exam_type: Study::Exam::TYPE_SEMESTER_WORK)
     save!

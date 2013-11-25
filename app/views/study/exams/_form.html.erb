@@ -1,0 +1,55 @@
+<%= nested_form_for @exam, url: study_discipline_exam_path(@discipline, @exam),
+                    method: :patch, html: { class: 'form-horizontal marks', role: 'form'} do |f| %>
+  <div class="form-group">
+    <%= f.label :group, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @discipline.group.name %></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :discipline, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @discipline.name %></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :date, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :type, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @exam.name %></p>
+    </div>
+  </div>
+
+  <table class="table table-hover">
+    <tr>
+      <th class="text-muted">#</th>
+      <th>Студент</th>
+      <th>Результат</th>
+    </tr>
+  <% @discipline.group.students.each do |student| %>
+    <tr>
+      <td class="text-muted"><%= student.id %></td>
+      <td><%= student.person.full_name %></td>
+        <td>
+          <%= f.fields_for :exammarks, @exam.exammarks.build do |marks_form| %>
+            <%= marks_form.hidden_field :id, class: 'mark_id' %>
+            <%= marks_form.hidden_field :mark_student_group, value: student %>
+            <%= marks_form.text_field :mark_value, class: 'form-control' %>
+          <% end %>
+        </td>
+    </tr>
+  <% end %>
+  </table>
+  <div class="col-sm-3 col-sm-offset-4">
+    <%= f.submit 'Внести результаты', class: 'btn btn-primary' %>
+  </div>
+
+<% end %>

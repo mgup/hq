@@ -1,9 +1,8 @@
 <%# Поля для отметок о посещении практических (лабораторных) занятий. %>
 <% mark = @checkpoint.marks.by_student(student).last ?  @checkpoint.marks.by_student(student).last : @checkpoint.marks.build  %>
 <%= f.fields_for :marks, mark  do |marks_form| %>
-  <%= marks_form.hidden_field :id, value: mark.id %>
+  <%= marks_form.hidden_field :id, class: 'mark_id' %>
   <%= marks_form.hidden_field :checkpoint_mark_student, value: student %>
-  <br>
   <div class="btn-group" data-toggle="buttons">
     <label class="btn btn-default<%= ' active' if mark.mark == Study::Mark::MARK_PRACTICAL_BAD %>">
       <%= marks_form.radio_button :mark, Study::Mark::MARK_PRACTICAL_BAD, id: "#{student}_mark_2" %> Неуд.

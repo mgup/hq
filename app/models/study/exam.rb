@@ -19,8 +19,8 @@ class Study::Exam < ActiveRecord::Base
   belongs_to :group, primary_key: :group_id, foreign_key: :exam_group
 
   #has_many :exam_students, class_name: Study::ExamStudents, foreign_key: :exam_student_exam
-  #has_many :students, :through => :exam_students
-  #has_many :exammarks, class_name: Study::Exammark, foreign_key: :mark_exam
+
+  has_many :exammarks, class_name: Study::ExamMark, foreign_key: :mark_exam
 
   validates :type, presence: true, inclusion: { in: [0,
                                                      1,
@@ -29,4 +29,19 @@ class Study::Exam < ActiveRecord::Base
                                                      9] }
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
                                                      less_than_or_equal_to: 80 }
+
+  def name
+    case type
+      when TYPE_TEST
+        'зачёт'
+      when TYPE_GRADED_TEST
+        'дифференцированный зачёт'
+      when TYPE_EXAMINATION
+        'экзамен'
+      when TYPE_SEMESTER_WORK
+        'курсовая работа'
+      when TYPE_SEMESTER_PROJECT
+        'курсовой проект'
+    end
+  end
 end
