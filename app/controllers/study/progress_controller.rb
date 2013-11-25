@@ -6,6 +6,14 @@ class Study::ProgressController < ApplicationController
     authorize! :index, :progress
   end
 
+  def print_progress
+    authorize! :index, :progress
+    find_group
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   def change_discipline
     authorize! :index, :progress
     find_group

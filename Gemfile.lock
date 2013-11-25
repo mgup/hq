@@ -7,6 +7,17 @@ GIT
       httparty
 
 GIT
+  remote: git://github.com/prawnpdf/prawn
+  revision: 203abb5539d0ae494df0cb7648628ac971c1119c
+  branch: master
+  specs:
+    prawn (1.0.0.rc2)
+      afm
+      pdf-reader (~> 1.2)
+      ruby-rc4
+      ttfunk (~> 1.0.3)
+
+GIT
   remote: git://github.com/ryanb/nested_form.git
   revision: 35a2cf060680280413880337a3f89bdec469301c
   specs:
@@ -205,12 +216,6 @@ GEM
     polyamorous (0.6.4)
       activerecord (>= 3.0)
     polyglot (0.3.3)
-    prawn (0.12.0)
-      pdf-reader (>= 0.9.0)
-      ttfunk (~> 1.0.2)
-    prawn-qrcode (0.2.0)
-      prawn (>= 0.11.1, <= 0.13)
-      rqrcode (>= 0.4.1)
     prawn_rails (0.0.11)
       prawn (>= 0.11.1)
       railties (>= 3.0.0)
@@ -391,8 +396,7 @@ DEPENDENCIES
   morpher!
   mysql2
   nested_form!
-  prawn
-  prawn-qrcode
+  prawn!
   prawn_rails
   pry-rails
   quiet_assets

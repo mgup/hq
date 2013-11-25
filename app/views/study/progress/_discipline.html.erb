@@ -1,4 +1,4 @@
-<% students.each do |student| %>
+<% students.sort_by{|s| s[:ball]}.reverse.each do |student| %>
   <tr>
     <td><%= student[:student].id %></td>
     <td><%= student[:student].person.full_name %></td>
