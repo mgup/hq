@@ -17,7 +17,7 @@
   <div class="form-group">
     <%= f.label :date, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <p class="form-control-static"></p>
+      <p class="form-control-static"><%= l @exam.date %></p>
     </div>
   </div>
 
@@ -32,19 +32,35 @@
     <tr>
       <th class="text-muted">#</th>
       <th>Студент</th>
+      <th>Баллы</th>
+      <th></th>
       <th>Результат</th>
     </tr>
   <% @discipline.group.students.each do |student| %>
     <tr>
       <td class="text-muted"><%= student.id %></td>
       <td><%= student.person.full_name %></td>
+      <td><%= student.ball(@exam.discipline) %> +</td>
+
+      <% mark = @exam.exammarks.by_student(student).last %>
+      <% if mark == nil %>
+        <td><%= text_field_tag "mark_#{student}", nil, class: 'form-control', style: 'width: 50px' %></td>
         <td>
-          <%= f.fields_for :exammarks, @exam.exammarks.build do |marks_form| %>
-            <%= marks_form.hidden_field :id, class: 'mark_id' %>
-            <%= marks_form.hidden_field :mark_student_group, value: student %>
-            <%= marks_form.text_field :mark_value, class: 'form-control' %>
-          <% end %>
+          <%= render 'marks_fields',
+                     f: f, student: student.id %>
         </td>
+      <% else %>
+        <td><p class="form-control-static">балл на экзамене</p></td>
+        <td>
+          <span  class="label label-<%= mark.mark < @checkpoint.min ? 'danger' : 'success' %>"><%= mark.mark %> из <%= @checkpoint.max %></span>
+          <div class="editMarkField hidden">
+            <br>
+            <%= render 'marks_fields',
+                       f: f, student: student.id %>
+          </div>
+        </td>
+        <!--<td><button class="btn btn-default editMarkButton">Редактировать</button></td>-->
+      <% end %>
     </tr>
   <% end %>
   </table>

@@ -1,19 +1,106 @@
-<% students.sort_by{|s| s[:ball]}.reverse.each do |student| %>
+<% link = study_group_print_progress_path  %>
+<% if discipline %>
+  <% link << "?discipline=#{discipline.id}" %>
+  <% date = discipline.final_exam.date? %>
+<% else %>
+  <% date = false %>
+<% end %>
+<%= link_to link, id: 'printProgress', class: 'btn btn-info' do %>
+  <span class="glyphicon glyphicon-print"></span> Распечатать успеваемость
+<% end %>
+<br>
+<br>
+<% if date %>
+  <div class="alert alert-danger">
+    Студенты, обязательно посмотрите в конце страницы что вас ждёт на экзамене.
+    Если вас не устраивает возможность повышения оценки, которую даёт вам
+    экзамен — сдавайте и пересдавайте задания по контрольным точкам. Приходите
+    к преподавателям и улучшайте свои баллы. Сделайте максимум в течение
+    семестра, чтобы получить максимальную оценку по дисциплине.
+    <br><br>
+    Если вы заметили ошибку в расчётах — пишите по электронной почте в отдел
+    информационных систем (адреса в конце страницы).
+  </div>
+<% end %>
+
+
+<table class="table table-hover">
+  <thead>
   <tr>
-    <td><%= student[:student].id %></td>
-    <td><%= student[:student].person.full_name %></td>
-    <td><%= student[:ball] %></td>
-    <td>
-      <div style='width: 100px;' class="progress progress-striped">
-        <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
-      </div>
-    </td>
-    <td><%= student[:student].marks == [] ? 'недостаточно данных' : student[:student].result(discipline)[:mark] %></td>
-    <td>
-      <div style='width: 100px;' class="progress progress-striped">
-        <div class="progress-bar progress-bar-<%= student[:student].result(discipline)[:color] %>" style="width: <%= student[:progress]%>%"></div>
-      </div>
-    </td>
-    <td><a class='btn btn-default' href="<%= study_group_student_path(group.id, student[:student].id) %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+    <th class="text-muted">#</th>
+    <th>Студент</th>
+    <th colspan='2'>Набранный балл на <%= DateTime.now.strftime("%d.%m.%Y") %> </th>
+    <th colspan='2'>Средняя оценка на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
+    <th></th>
   </tr>
+  </thead>
+  <tbody>
+  <% students.each do |student| %>
+    <tr>
+      <td><%= student[:student].id %></td>
+      <td><%= student[:student].person.full_name %></td>
+      <td><%= student[:ball] %></td>
+      <td>
+        <div style='width: 100px;' class="progress progress-striped">
+          <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
+        </div>
+      </td>
+      <td><%= student[:student].marks == [] ? 'недостаточно данных' : student[:student].result(discipline)[:mark] %></td>
+      <td>
+        <div style='width: 100px;' class="progress progress-striped">
+          <div class="progress-bar progress-bar-<%= student[:student].result(discipline)[:color] %>" style="width: <%= student[:progress]%>%"></div>
+        </div>
+      </td>
+      <td><a class='btn btn-default' href="<%= study_group_student_path(group.id, student[:student].id) %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<% if date %>
+  <hr>
+  <ul>
+    <li>Вес экзамена, заданный преподавателем: <%= discipline.final_exam.weight %>%</li>
+    <li>
+      При расчёте итоговой оценки по дисциплине будет использована
+      формула:
+      <pre><%= 100 - discipline.final_exam.weight  %> &times; Баллы за семестр + <%= discipline.final_exam.weight %> &times; Баллы за экзамен</pre>
+    </li>
+  </ul>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th rowspan="2" class="muted">#</th>
+      <th rowspan="2">Имя</th>
+      <th colspan="4">
+        Нужно набрать на экзамене в баллах
+        (по данным на <%= l Date.today %>)
+      </th>
+    </tr>
+    <tr>
+      <th>Отлично</th>
+      <th>Хорошо</th>
+      <th>Удовл.</th>
+      <th>Неуд.</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% students.each do |s| %>
+        <% if s[:ball] < 55 then %>
+          <% next %>
+        <% end %>
+        <tr>
+          <td class="muted"><%= s[:student].id %></td>
+          <td><%= s[:student].person.full_name %></td>
+          <% [5,4,3,2].each do |m| %>
+          <td>
+            <% result = discipline.final_exam.predication(m,s[:ball]) %>
+            <%= result[:min] %> - <%= result[:max] %>
+          </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>

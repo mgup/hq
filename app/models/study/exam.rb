@@ -29,6 +29,9 @@ class Study::Exam < ActiveRecord::Base
                                                      9] }
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
                                                      less_than_or_equal_to: 80 }
+  def test?
+    TYPE_TEST == type
+  end
 
   def name
     case type
@@ -43,5 +46,65 @@ class Study::Exam < ActiveRecord::Base
       when TYPE_SEMESTER_PROJECT
         'курсовой проект'
     end
+  end
+
+  def predication(mark, ball)
+    eweight = weight/100.0
+    sweight = 1.0 - eweight
+
+    case mark
+      when 2
+        min = 0
+        max = ((55.0 - sweight * ball) / eweight).floor
+        if max < 55
+          max = 54
+        elsif max > 100
+          max = 100
+        end
+      when 3
+        max = ((70.0 - sweight * ball) / eweight).floor
+        min = ((55.0 - sweight * ball) / eweight).ceil
+        if max > 100
+          max = 100
+        elsif max < 55
+          min = nil
+          max = nil
+        end
+        if max
+          if min > 100
+            min = nil
+            max = nil
+          elsif min < 55
+            min = 55
+          end
+        end
+      when 4
+        max = ((85.0 - sweight * ball) / eweight).floor
+        min = ((70.0 - sweight * ball) / eweight).ceil
+        max = 100 if max > 100
+        if min < 55
+          min = 55
+          if min > max
+            min = nil
+            max = nil
+          end
+        end
+        if min > 100
+          min = nil
+          max = nil
+        end
+      when 5
+        min = ((85.0 - sweight * ball) / eweight).ceil
+        if min > 100
+          min = nil
+          max = nil
+        else
+          max = 100
+          if min < 55
+            min = 55
+          end
+        end
+    end
+    return {max: max, min: min}
   end
 end
