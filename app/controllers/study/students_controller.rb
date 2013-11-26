@@ -9,7 +9,7 @@ class Study::StudentsController < ApplicationController
        dates << checkpoint.date
     end
     dates.uniq!
-    dates.each do |date|
+    dates.sort.each do |date|
       row = []
       row << date
       @student.disciplines.each do |discipline|

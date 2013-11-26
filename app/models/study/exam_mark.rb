@@ -14,4 +14,8 @@ class Study::ExamMark < ActiveRecord::Base
   alias_attribute :id,        :mark_id
   alias_attribute :value,     :mark_value
 
+  belongs_to :exam, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :mark_exam
+
+  scope :by_student, -> student { where(mark_student_group: student) }
+
 end
