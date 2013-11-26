@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :update, :show]
-  load_and_authorize_resource except: [:create]
+  load_and_authorize_resource
 
   def index
     @users = User.all.page(params[:page])
@@ -14,8 +13,9 @@ class UsersController < ApplicationController
   end
 
   def create
-    authorize! :create, User
+    #authorize! :create, User
     #raise resource_params.inspect
+    #raise '123'
     @user = User.new(resource_params)
     if @user.save
       redirect_to users_path, notice: 'Сотрудник успешно добавлен.'
@@ -80,4 +80,11 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
   end
 
+  def require_no_authentication
+    if current_user.is_developer?
+      return true
+    else
+      return super
+    end
+  end
 end

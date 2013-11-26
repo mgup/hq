@@ -1,5 +1,5 @@
 HQ::Application.routes.draw do
-  devise_for :users #, skip: :registrations
+  devise_for :users, controllers: { registrations: 'users' }
   devise_for :students
 
   # Мониторинг состояния сервера.
@@ -23,6 +23,7 @@ HQ::Application.routes.draw do
   end
 
   resources :positions
+  resources :appointments
 
   resources :groups do
     get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group

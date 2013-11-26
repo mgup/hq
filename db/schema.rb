@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131125100023) do
+ActiveRecord::Schema.define(version: 20131125185832) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20131125100023) do
     t.datetime "acl_position_dismission"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "appointment_id"
   end
 
   create_table "acl_role", primary_key: "acl_role_id", force: true do |t|
@@ -92,6 +93,12 @@ ActiveRecord::Schema.define(version: 20131125100023) do
   create_table "activity_types", force: true do |t|
     t.string   "name"
     t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "appointments", force: true do |t|
+    t.text     "title"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

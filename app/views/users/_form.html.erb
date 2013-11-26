@@ -51,12 +51,14 @@
         <%= f.text_field :username, class: "form-control #{'has-error' if @user.errors.include?(:username)}" %>
       </div>
     </div>
+
     <div class="form-group">
       <%= f.label :email, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
         <%= f.email_field :email, class: 'form-control' %>
       </div>
     </div>
+
     <% if @user.id == nil %>
       <div class="form-group">
         <%= f.label :password, class: 'col col-lg-2 control-label' %>
@@ -65,6 +67,7 @@
         </div>
       </div>
     <% end %>
+
     <div class="form-group">
       <%= f.label :phone, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
@@ -76,13 +79,14 @@
 
   <fieldset>
     <legend>Назначения</legend>
+
     <div id="positions">
       <%= render partial: 'positions_fields', locals: {f: f} %>
     </div>
+
     <div class="form-group">
         <%= f.link_to_add 'Назначить сотрудника на новую должность', :positions, class: 'btn btn-default col-lg-offset-4', data: { target: '#positions' } %>
     </div>
-
   </fieldset>
 
 
