@@ -33,7 +33,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.all.includes(:positions).find(params[:id])
+    #raise '123'
     if @user.update(resource_params)
       redirect_to users_path, notice: 'Изменения сохранены.'
     else
@@ -54,7 +54,8 @@ class UsersController < ApplicationController
         fname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
         iname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
         oname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
-        positions_attributes: [:id, :title, :acl_position_role, :acl_position_department, :appointment, :_destroy]
+        positions_attributes: [:id, :appointment_id, :acl_position_role,
+                               :acl_position_department, :started_at, :_destroy]
     )
   end
 
@@ -80,11 +81,11 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
   end
 
-  def require_no_authentication
-    if current_user.is_developer?
-      return true
-    else
-      return super
-    end
-  end
+  #def require_no_authentication
+  #  if current_user.is_developer?
+  #    return true
+  #  else
+  #    return super
+  #  end
+  #end
 end

@@ -22,7 +22,7 @@
       <th>Департамент</th>
       <th>Имя для входа</th>
       <th>Телефон</th>
-      <th></th>
+      <!--<th></th>-->
       <th></th>
     </tr>
     </thead>
@@ -38,9 +38,9 @@
         <td><%= (user.departments.collect{|department| department.abbreviation} << (department if department != '')).uniq.compact.join(', ') %></td>
         <td><%= user.username %></td>
         <td class="nowrap"><%= user.phone %></td>
-        <td>
-          <%= link_to 'Назначения', user %>
-        </td>
+        <!--<td>-->
+          <!--<%= link_to 'Назначения', user %>-->
+        <!--</td>-->
         <td>
           <%= link_to 'Редактировать', edit_user_path(user) %>
         </td>

@@ -26,7 +26,7 @@
         <td><%= position.title %></td>
         <td><%= position.role.title %></td>
         <td><%= position.department.abbreviation %></td>
-        <td>с <%= l position.appointment.to_date %></td>
+        <td>с <%= l position.started_at.to_date %></td>
         <td>
           <%= position.dismission.nil? ? 'по настоящее время' : "по #{l position.dismission.to_date}" %>
         </td>

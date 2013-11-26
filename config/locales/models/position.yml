@@ -5,3 +5,7 @@ ru:
     attributes:
       position:
         title: 'должность'
+        appointment_id: 'должность'
+        acl_position_role: 'роль'
+        acl_position_department: 'подразделение'
+        started_at: 'дата приёма'

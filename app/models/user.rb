@@ -24,7 +24,8 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :oname
 
   has_many :positions, foreign_key: :acl_position_user, dependent: :destroy
-  accepts_nested_attributes_for :positions, allow_destroy: true , reject_if: proc { |attrs| attrs[:title].blank? }
+  accepts_nested_attributes_for :positions, allow_destroy: true
+
   has_many :roles,       through: :positions
   has_many :departments, through: :positions
   
