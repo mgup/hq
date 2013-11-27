@@ -18,6 +18,6 @@ class Position < ActiveRecord::Base
   scope :from_role, -> role { joins(:role).where(role: { acl_role_name: role })}
 
   def info
-    "#{appointment.title}, #{department.abbreviation}"
+    "#{appointment.title}, #{department.abbreviation}" unless appointment.nil?
   end
 end
