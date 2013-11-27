@@ -1,12 +1,12 @@
 $ ->
   root = $('#matrixHQ').attr('href')
-  $('#filterforusers').submit ->
-    name = $('#name').val()
-    department = $('#department option:selected').val()
-    position = $('#position').val()
-    params = 'name='+name+'&department='+department+'&position='+position
-    $.ajax root+'users_filter?' + params
-    return false
+#  $('#filterforusers').submit ->
+#    name = $('#name').val()
+#    department = $('#department option:selected').val()
+#    position = $('#position').val()
+#    params = 'name='+name+'&department='+department+'&position='+position
+#    $.ajax root+'users_filter?' + params
+#    return false
 
   $('#filterforprices').submit ->
     speciality = $('#speciality_name').val()

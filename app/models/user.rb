@@ -39,6 +39,13 @@ class User < ActiveRecord::Base
 
   scope :with_name, -> { includes(:iname, :fname, :oname) }
 
+  scope :by_name, -> (name) {
+    joins('INNER JOIN dictionary AS fname ON fname.dictionary_id = user_fname')
+    .joins('INNER JOIN dictionary AS iname ON iname.dictionary_id = user_iname')
+    .joins('INNER JOIN dictionary AS oname ON oname.dictionary_id = user_oname')
+    .where('user_name LIKE ? OR fname.dictionary_ip LIKE ? OR iname.dictionary_ip LIKE ? OR oname.dictionary_ip LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%")
+  }
+
   validates :username, presence: true
   validates :password, presence: true
   validates_associated :fname

@@ -2,7 +2,11 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @users = User.all.page(params[:page])
+    params[:page] ||= 1
+
+    @users = @users.by_name(params[:name]) if params[:name]
+
+    @users = @users.page(params[:page])
   end
 
   def new

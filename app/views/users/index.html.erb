@@ -2,28 +2,28 @@
   <h1>Пользователи системы</h1>
 </div>
 
+<%= render 'filters' %>
+
 <%= link_to new_user_path, class: 'btn btn-primary' do%>
   <span class='glyphicon glyphicon-plus'></span> Добавить нового пользователя
 <% end %>
-<br><br><br>
-<%= render 'filter' %>
 
 <div id='user-paginator'>
   <%= paginate_with_info @users %>
 </div>
 
-<table id="users" class="table table-hover table-condensed">
+<table class="table table-hover table-condensed">
   <thead>
-  <tr>
-    <th>#</th>
-    <th>Имя</th>
-    <th>Должности</th>
-    <th>Логин</th>
-    <th>Телефон</th>
-    <th></th>
-  </tr>
+    <tr>
+      <th>#</th>
+      <th>Имя</th>
+      <th>Должности</th>
+      <th>Логин</th>
+      <th>Телефон</th>
+      <th></th>
+    </tr>
   </thead>
-  <tbody id="for_users">
+  <tbody>
   <% @users.includes(:positions, :departments).each do |user| %>
     <tr>
       <td><%= user.id %></td>
