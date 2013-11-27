@@ -12,7 +12,7 @@
           <%= f.hidden_field :exam_subject, value: parent_exam.discipline.id %>
           <%= f.hidden_field :parent, value: parent_exam.id %>
           <%= f.hidden_field :exam_type, value: parent_exam.type %>
-          <%= f.hidden_field :weight, value: parent_exam.weight %>
+          <%= f.hidden_field :exam_weight, value: parent_exam.weight %>
           <%= f.hidden_field :exam_group, value: group.id %>
           <div class="row">
             <div class="col-sm-5">
@@ -25,6 +25,27 @@
             </div>
             <div class="col-sm-2">
               <%= f.submit 'Добавить', class: 'btn btn-primary' %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+            <% mass_repeats = Study::Exam.mass.repeats(parent_exam) %>
+            <% unless mass_repeats==[] %>
+              <p><strong>Назначены групповые пересдачи</strong></p>
+              <table class="table table-striped">
+              <% mass_repeats.each do |r| %>
+                <tr>
+                  <td><%= r.id %></td>
+                  <td><%= r.repeat_type %></td>
+                  <td><%= l r.date %></td>
+                  <td><%= link_to '#', class: 'btn btn-default', title: 'Распечатать ведомость' do %>
+                      <span class='glyphicon glyphicon-print'></span>
+                      <% end %>
+                  </td>
+                </tr>
+              <% end %>
+              </table>
+            <% end %>
             </div>
           </div>
         <% end %>
