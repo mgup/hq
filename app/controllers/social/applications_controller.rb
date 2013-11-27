@@ -2,8 +2,10 @@ class Social::ApplicationsController < ApplicationController
   load_and_authorize_resource class: My::Support
 
   def index
-    params[:year]  ||= Date.today.year
-    params[:month] ||= Date.today.month
+    #params[:year]  ||= Date.today.year
+    #params[:month] ||= Date.today.month
+    params[:year]  ||= 2013
+    params[:month] ||= 12
     params[:accepted] ||= false
 
     @applications = @applications.where(support_year:  params[:year])
