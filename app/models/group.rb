@@ -14,7 +14,7 @@ class Group < ActiveRecord::Base
   belongs_to :speciality, primary_key: :speciality_id, foreign_key: :group_speciality
 
   has_many :students, foreign_key: :student_group_group
-  has_many :exams, foreign_key: :exam_group
+  has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_group
   has_many :subjects, foreign_key: :subject_group
   has_many :disciplines, class_name: Study::Discipline, foreign_key: :subject_group
 

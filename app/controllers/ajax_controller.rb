@@ -66,7 +66,7 @@ class AjaxController < ApplicationController
     disciplines = []
     group.disciplines.now.each do |d|
       exams = []
-      d.exams.each do |exam|
+      d.exams.originals.each do |exam|
         exams << { id: exam.id, name: exam.name, date: ( exam.date ? (l exam.date) : exam.date) }
       end
       disciplines << {id: d.id, name: d.name, exams: exams}

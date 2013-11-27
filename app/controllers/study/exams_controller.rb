@@ -16,13 +16,17 @@ class Study::ExamsController < ApplicationController
   def destroy ; end
 
   def create
-    #raise params.inspect
     exam = params[:study_exam]
-    @exam = Study::Exam.create(exam)
     if exam.include?(:exam_group)
+      @exam = Study::Exam.create exam_subject: exam[:exam_subject], parent: exam[:parent], exam_type: exam[:exam_type],
+                                 weight: exam[:exam_weight], exam_group: exam[:exam_group], repeat: exam[:repeat], date: exam[:date]
       Group.find(exam[:exam_group]).students.each do |s|
        Study::ExamStudent.create person: s.person, student: s, exam: @exam
       end
+    elsif exam.include?(:exam_student_group)
+      @exam = Study::Exam.create exam_subject: exam[:exam_subject], parent: exam[:parent], exam_type: exam[:exam_type],
+                                 weight: exam[:weight], exam_student: exam[:exam_student], exam_student_group: exam[:exam_student_group],
+                                 repeat: exam[:repeat], date: exam[:date]
     end
   end
 

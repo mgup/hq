@@ -51,8 +51,7 @@ class Student < ActiveRecord::Base
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :student_group_group
 
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_student
-  has_many :exam_students, foreign_key: :exam_student_student
-  has_many :exams, :through => :exam_students
+  has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_student_group
 
   has_many :xmarks, class_name: Study::Xmark, foreign_key: :student_id
 
@@ -230,13 +229,13 @@ GROUP BY `group`
         mark = checkpoint.marks.by_student(id) == [] ? 0 : checkpoint.marks.by_student(self).last.mark
         result = case mark
                    when MARK_LECTURE_ATTEND
-                     (5/l)
+                     (5.0/l)
                    when MARK_PRACTICAL_FAIR
-                     (5/p)
+                     (5.0/p)
                    when MARK_PRACTICAL_GOOD
-                     (10/p)
+                     (10.0/p)
                    when MARK_PRACTICAL_PERFECT
-                     (15/p)
+                     (15.0/p)
                    else
                      0
                  end
@@ -246,7 +245,7 @@ GROUP BY `group`
       end
       (l1+p1+n1).round 2
     else
-      ball = 0
+      ball = 0.0
       disciplines.each do |d|
         ball+=ball(d)
       end
@@ -262,6 +261,18 @@ GROUP BY `group`
     end
   end
 
+  def got_all_marks(discipline)
+    if discipline
+      return marks.by_discipline(discipline).uniq! {|m| m.checkpoint}.length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
+    else
+      key = true
+      disciplines.each do |d|
+        key= key && (marks.by_discipline(d).uniq! {|m| m.checkpoint}.length >= d.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length)
+      end
+      key
+    end
+  end
+
   def result(discipline = nil)
    if discipline
      ball = 100*(progress(discipline)/discipline.current_ball)
@@ -272,13 +283,13 @@ GROUP BY `group`
      end
    end
     case ball.round
-      when 0..49
+      when 0..54
         {mark: 'неудовлетворительно', color: 'danger'}
-      when  50..64
+      when  55..69
         {mark: 'удовлетворительно', color: 'warning'}
-      when 65..80
+      when 70..85
         {mark: 'хорошо', color: 'info'}
-      else
+      when 85..100
         {mark: 'отлично', color: 'success'}
     end
   end

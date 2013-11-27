@@ -28,7 +28,7 @@ $ ->
                                          <td><button class='saveDate btn btn-default' data-input=#{discipline.id} data-value=#{this.id}>Сохранить дату</button></td>
                                          <td><a href='/study/disciplines/#{discipline.id}/exams/#{this.id}/print.pdf' class='btn btn-info' title='Распечатать ведомость'><span class='glyphicon glyphicon-print'></span></a></td>
                                          <td><button data-value=#{this.id} class='repeatAdd btn btn-default' title='Перезачёты/пересдачи'><span class='glyphicon glyphicon-retweet'></span></button></td>
-                                         <td><a href='#' class='btn btn-danger' title='Удалить предмет из учебного плана'><span class='glyphicon glyphicon-remove'></span></a></td></tr>")
+                                         <td><a href='/study/disciplines/#{discipline.id}/exams/#{this.id}' data-value='delete' class='delete btn btn-danger' title='Удалить предмет из учебного плана'><span class='glyphicon glyphicon-remove'></span></a></td></tr>")
 
       div.append('<button id="addDis" class="btn btn-default">Добавить предмет для группы</button>')
       div.append('<a id="modalBtn" data-toggle="modal" href="#addDisciplineModal" class="hidden"></a>')
@@ -45,6 +45,20 @@ $ ->
 
       $('.repeatAdd').click ->
         $.ajax "#{root}study/plans/repeat?group=#{group}&exam=#{$(this).data('value')}"
+
+        # удаление экзамена
+
+#      $('.delete').click ->
+#        if(confirm('Вы уверены?'))
+#          f = document.createElement('form')
+#          $(this).after($(f).attr({
+#            method: $(this).data('value')
+#            action: $(this).attr('href')
+#          }).append('<input type="hidden" name="_method" value="'
+#                    + $(this).attr('href').toUpperCase()
+#                     + '" />'))
+#          $(f).submit()
+#        return false
 
       $('.saveDate').click ->
         $.ajax "#{root}study/plans/#{$(this).data('value')}/updatedate?date=#{$(this).parents('tr').find('.datepicker').val()}"
