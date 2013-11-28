@@ -8,10 +8,14 @@ names = []
 end
 
 prawn_document size: :A4, page_layout: :portrait do |pdf|
-  names.each do |name|
-    render 'pdf/header', pdf: pdf, title: 'ЗАПРОС', base_size: 9
+  names.each_with_index do |name, index|
+    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}", base_size: 9
+    pdf.move_up 15
+    pdf.font_size 11
+    pdf.text 'в наркологический диспансер по месту жительства или временной регистрации.', align: :center, style: :bold
+    pdf.move_down 12
+
     pdf.font_size 10
-    pdf.text 'в наркологический диспансер по месту жительства или временной регистрации.'
     pdf.text 'Просим вас провести освидетельствование работника'
     pdf.text 'Ф.И.О. (полностью) _____________________________________________________________________________________________________________'
     pdf.text 'должность  ______________________________________________________________________________________________________________________'
@@ -26,9 +30,13 @@ prawn_document size: :A4, page_layout: :portrait do |pdf|
     pdf.stroke_horizontal_rule
     pdf.move_down 10
 
-    render 'pdf/header', pdf: pdf, title: 'ЗАПРОС', base_size: 9
+    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}", base_size: 9
+    pdf.move_up 15
+    pdf.font_size 11
+    pdf.text 'в психоневрологический диспансер по месту жительства или временной регистрации.', align: :center, style: :bold
+    pdf.move_down 14
+
     pdf.font_size 10
-    pdf.text 'в психоневрологический диспансер по месту жительства или временной регистрации.'
     pdf.text 'Просим вас провести освидетельствование работника'
     pdf.text 'Ф.И.О. (полностью) _____________________________________________________________________________________________________________'
     pdf.text 'должность  ______________________________________________________________________________________________________________________'
@@ -43,9 +51,13 @@ prawn_document size: :A4, page_layout: :portrait do |pdf|
     pdf.stroke_horizontal_rule
     pdf.move_down 10
 
-    render 'pdf/header', pdf: pdf, title: 'ЗАПРОС', base_size: 9
+    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}", base_size: 9
+    pdf.move_up 15
+    pdf.font_size 11
+    pdf.text 'в кожно-венерологический диспансер по месту жительства или временной регистрации.', align: :center, style: :bold
+    pdf.move_down 14
+
     pdf.font_size 10
-    pdf.text 'в кожно-венерологический диспансер по месту жительства или временной регистрации.'
     pdf.text 'Просим вас провести освидетельствование работника'
     pdf.text 'Ф.И.О. (полностью) _____________________________________________________________________________________________________________'
     pdf.text 'должность  ______________________________________________________________________________________________________________________'

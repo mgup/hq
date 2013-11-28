@@ -1,7 +1,7 @@
 <%=  form_for @support, url: (@support ? student_support_path(@student, @support) : student_supports_path), method: (@support.id ? :put : :post) do |f| %>
  <%= f.hidden_field :support_student, value: @student.id %>
- <%= f.hidden_field :year, value: DateTime.now.strftime("%Y") %>
- <%= f.hidden_field :month, value: DateTime.now.strftime("%m") %>
+ <%= f.hidden_field :year, value: 2013 %>
+ <%= f.hidden_field :month, value: 12 %>
 
   <% My::SupportCause.all.each do |cause| %>
     <label><%= check_box_tag 'causes[]', cause.id, (@support ? (@support.causes.include? cause) : false),  id: "cause_#{cause.id}" %>     <%= cause.title %></label>
