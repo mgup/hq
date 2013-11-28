@@ -3,13 +3,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><%= group.name %> — <%= parent_exam.discipline.name %> <small><%= parent_exam.name %></small></h4>
+        <h4 class="modal-title"><%= group.name %> — <%= discipline.name %> <small><%= parent_exam.name %></small></h4>
       </div>
       <div class="modal-body">
         <div>
           <h4>Групповые ведомости</h4>
-        <%= form_for exam, url: study_discipline_exams_path(parent_exam.discipline), class: 'form-horizontal' do |f| %>
-          <%= f.hidden_field :exam_subject, value: parent_exam.discipline.id %>
+        <%= form_for exam, url: study_discipline_exams_path(discipline), class: 'form-horizontal' do |f| %>
+          <%= f.hidden_field :exam_subject, value: discipline.id %>
           <%= f.hidden_field :parent, value: parent_exam.id %>
           <%= f.hidden_field :exam_type, value: parent_exam.type %>
           <%= f.hidden_field :exam_weight, value: parent_exam.weight %>
@@ -29,7 +29,7 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-            <% mass_repeats = Study::Exam.mass.repeats(parent_exam) %>
+            <% mass_repeats = discipline.exams.mass.repeats(parent_exam) %>
             <% unless mass_repeats==[] %>
               <p><strong>Назначены групповые пересдачи</strong></p>
               <table class="table table-striped">
@@ -38,10 +38,13 @@
                   <td><%= r.id %></td>
                   <td><%= r.repeat_type %></td>
                   <td><%= l r.date %></td>
-                  <td><%= link_to '#', class: 'btn btn-default', title: 'Распечатать ведомость' do %>
+                  <td><%= link_to '#', class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
                       <span class='glyphicon glyphicon-print'></span>
                       <% end %>
                   </td>
+                  <% if r.date.past? %>
+                  <td>Прошёл</td>
+                  <% end %>
                 </tr>
               <% end %>
               </table>
@@ -54,7 +57,7 @@
         <div>
           <h4>Индивидуальные ведомости</h4>
           <% group.students.each do |student| %>
-            <p class="text-center"><%= student.person.full_name %></p>
+            <p class="text-center"><strong><%= student.person.full_name %></strong></p>
             <%= form_for exam, url: study_discipline_exams_path(parent_exam.discipline), class: 'form-horizontal' do |f| %>
               <%= f.hidden_field :exam_subject, value: parent_exam.discipline.id %>
               <%= f.hidden_field :parent, value: parent_exam.id %>
@@ -76,6 +79,30 @@
                 </div>
               </div>
             <% end %>
+            <div class="row">
+              <div class="col-sm-12">
+                <% individual_repeats = discipline.exams.individual.repeats(parent_exam).by_student(student) %>
+                <% unless individual_repeats==[] %>
+                  <p>Назначены пересдачи</p>
+                  <table class="table table-striped">
+                    <% individual_repeats.each do |r| %>
+                      <tr>
+                        <td><%= r.id %></td>
+                        <td><%= r.repeat_type %></td>
+                        <td><%= l r.date %></td>
+                        <td><%= link_to '#', class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
+                            <span class='glyphicon glyphicon-print'></span>
+                          <% end %>
+                        </td>
+                        <% if r.date.past? %>
+                          <td>Прошёл</td>
+                        <% end %>
+                      </tr>
+                    <% end %>
+                  </table>
+                <% end %>
+              </div>
+            </div>
           <% end %>
         </div>
       </div>

@@ -38,6 +38,8 @@ class Study::Exam < ActiveRecord::Base
   scope :originals, -> {where(exam_parent: nil)}
   scope :repeats, -> exam {where(exam_parent: exam.id)}
   scope :mass, -> {where(exam_student_group: nil)}
+  scope :individual, -> {where('exam_student_group IS NOT NULL')}
+  scope :by_student, -> student {where(exam_student_group: student.id)}
   def test?
     TYPE_TEST == type
   end

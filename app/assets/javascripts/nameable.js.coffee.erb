@@ -1,16 +1,19 @@
-updateInflections = (field) ->
-  input = $("#{field}_ip")
-  input.on 'blur', ->
-#    $.getJSON '/hq/utility/morpher', { word: input.val() }, (response) ->
-    $.getJSON '<%= asset_path('/utility/morpher') %>', { word: input.val() }, (response) ->
-      $(field + "_ip").val(response[0]);
-      $(field + "_rp").val(response[1]);
-      $(field + "_dp").val(response[2]);
-      $(field + "_vp").val(response[3]);
-      $(field + "_tp").val(response[4]);
-      $(field + "_pp").val(response[5]);
-
-$ ->
-  updateInflections('#user_fname_attributes')
-  updateInflections('#user_iname_attributes')
-  updateInflections('#user_oname_attributes')
+#пока не убираю, вруг понадобится
+<% if false %>
+#updateInflections = (field) ->
+#  input = $("#{field}_ip")
+#  input.on 'blur', ->
+##    $.getJSON '/hq/utility/morpher', { word: input.val() }, (response) ->
+#    $.getJSON '<%= asset_path('/utility/morpher') %>', { word: input.val() }, (response) ->
+#      $(field + "_ip").val(response[0]);
+#      $(field + "_rp").val(response[1]);
+#      $(field + "_dp").val(response[2]);
+#      $(field + "_vp").val(response[3]);
+#      $(field + "_tp").val(response[4]);
+#      $(field + "_pp").val(response[5]);
+#
+#$ ->
+#  updateInflections('#user_fname_attributes')
+#  updateInflections('#user_iname_attributes')
+#  updateInflections('#user_oname_attributes')
+<% end %>
