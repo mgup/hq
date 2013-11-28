@@ -45,12 +45,17 @@
           <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
         </div>
       </td>
-      <td><%= student[:student].got_all_marks(discipline) ? student[:student].result(discipline)[:mark] : 'недостаточно данных' %></td>
+      <% if student[:student].got_all_marks(discipline) %>
+      <% result = student[:student].result(discipline) %>
+      <td><%= result[:mark] %></td>
       <td>
         <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-<%= student[:student].result(discipline)[:color] %>" style="width: <%= student[:progress]%>%"></div>
+          <div class="progress-bar progress-bar-<%= result[:color] %>" style="width: <%= result[:width]%>%"></div>
         </div>
       </td>
+      <% else %>
+        <td colspan="2">Недостаточно данных</td>
+      <% end %>
       <td><a class='btn btn-default' href="<%= study_group_student_path(group.id, student[:student].id) %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
     </tr>
   <% end %>

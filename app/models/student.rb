@@ -282,16 +282,26 @@ GROUP BY `group`
        ball+=100*(progress(d)/d.current_ball)/disciplines.size
      end
    end
-    case ball.round
-      when 0..54
-        {mark: 'неудовлетворительно', color: 'danger'}
-      when  55..69
-        {mark: 'удовлетворительно', color: 'warning'}
-      when 70..85
-        {mark: 'хорошо', color: 'info'}
-      when 85..100
-        {mark: 'отлично', color: 'success'}
+    if discipline.final_exam.test?
+      case ball.round
+        when 0..54
+          {mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}
+        when 55..100
+          {mark: 'зачтено', short: 'зачёт', color: 'success', width: ball}
+      end
+    else
+      case ball.round
+        when 0..54
+          {mark: 'неудовлетворительно', short: 'неуд.', color: 'danger', width: ball}
+        when  55..69
+          {mark: 'удовлетворительно', short: 'удовл.', color: 'warning', width: ball}
+        when 70..85
+          {mark: 'хорошо', short: 'хорошо', color: 'info', width: ball}
+        when 85..100
+          {mark: 'отлично', short: 'отлично', color: 'success', width: ball}
+      end
     end
+
   end
 
   def to_nokogiri
