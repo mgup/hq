@@ -18,4 +18,25 @@ class Study::ExamMark < ActiveRecord::Base
 
   scope :by_student, -> student { where(mark_student_group: student) }
 
+  def result
+    case value
+      when VALUE_NEYAVKA
+        'неявка'
+      when VALUE_2
+        'неуд.'
+      when VALUE_3
+        'удовл.'
+      when VALUE_4
+        'хорошо'
+      when VALUE_5
+        'отлично'
+      when VALUE_ZACHET
+        'зачтено'
+      when  VALUE_NEZACHET
+        'не зачтено'
+      when VALUE_NEDOPUSCHEN
+        'недопущен'
+    end
+  end
+
 end

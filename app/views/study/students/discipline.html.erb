@@ -14,9 +14,9 @@
   <tbody>
   <% @checkpoints.each  do |checkpoint| %>
     <tr>
-      <td><%= checkpoint.date.strftime("%d.%m.%Y") %></td>
+      <td><%= l checkpoint.date %></td>
       <td style='width: 550px;'><span class="glyphicon <%= checkpoint.lesson %>"></span>
-        <%= checkpoint.name if checkpoint.type == 3 %>
+        <%= checkpoint.name if checkpoint.is_checkpoint? %>
         <%= checkpoint.lessonname %>
         <span class="help-block"><%= checkpoint.details %></span>
       </td>

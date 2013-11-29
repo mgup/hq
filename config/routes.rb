@@ -1,5 +1,9 @@
 HQ::Application.routes.draw do
   devise_for :users, controllers: { registrations: 'users' }
+    as :user do
+      get 'user/edit' => 'devise/registrations#edit', :as => 'user_profile'
+      put 'user' => 'devise/registrations#update'
+    end
   devise_for :students
 
   # Мониторинг состояния сервера.

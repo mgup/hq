@@ -1,0 +1,36 @@
+<% mark = @exam.final_marks.by_student(student).last ?  @exam.final_marks.by_student(student).last : @exam.final_marks.build %>
+<%= f.fields_for :final_marks, mark do |marks_form| %>
+  <%= marks_form.hidden_field :id, class: 'mark_id' %>
+  <%= marks_form.hidden_field :mark_student_group, value: student %>
+  <div class="btn-group btn-group-sm" data-toggle="buttons">
+  <% if @exam.test? %>
+      <label class="btn btn-default<%= ' active' if mark.value == Study::ExamMark::VALUE_ZACHET %>">
+        <%= marks_form.radio_button :mark_value, Study::ExamMark::VALUE_ZACHET, id: "#{student}_mark_6"  %> Зачтено
+      </label>
+      <label class="btn btn-default<%= ' active' if mark.value = Study::ExamMark::VALUE_NEZACHET %>">
+        <%= marks_form.radio_button :mark_value, Study::ExamMark::VALUE_NEZACHET, id: "#{student}_mark_7" %> Не зачтено
+      </label>
+  <% else %>
+      <label class="btn btn-default<%= ' active' if mark.value == Study::ExamMark::VALUE_5 %>">
+        <%= marks_form.radio_button :mark_value, Study::ExamMark::VALUE_5, id: "#{student}_mark_5"  %> Отлично
+      </label>
+      <label class="btn btn-default<%= ' active' if mark.value == Study::ExamMark::VALUE_4 %>">
+        <%= marks_form.radio_button :mark_value, Study::ExamMark::VALUE_4, id: "#{student}_mark_4"  %> Хорошо
+      </label>
+      <label class="btn btn-default<%= ' active' if mark.value == Study::ExamMark::VALUE_3 %>">
+        <%= marks_form.radio_button :mark_value, Study::ExamMark::VALUE_3, id: "#{student}_mark_3"  %> Удовл.
+      </label>
+      <label class="btn btn-default<%= ' active' if mark.value == Study::ExamMark::VALUE_2 %>">
+        <%= marks_form.radio_button :mark_value, Study::ExamMark::VALUE_2, id: "#{student}_mark_2"  %> Неуд.
+      </label>
+  <% end %>
+    <label class="btn btn-default<%= ' active' if mark.value == Study::ExamMark::VALUE_NEDOPUSCHEN %>">
+      <%= marks_form.radio_button :mark_value, Study::ExamMark::VALUE_NEDOPUSCHEN, id: "#{student}_mark_9" %> Недопущ.
+    </label>
+    <label class="btn btn-default<%= ' active' if mark.value == Study::ExamMark::VALUE_NEYAVKA %>">
+      <%= marks_form.radio_button :mark_value, Study::ExamMark::VALUE_NEYAVKA, id: "#{student}_mark_1" %> Неявка
+    </label>
+  </div>
+  <%= marks_form.hidden_field :mark_date, value: Date.today %>
+  <%= marks_form.hidden_field :mark_final, value: true %>
+<% end %>
