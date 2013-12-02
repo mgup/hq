@@ -79,6 +79,12 @@ class UsersController < ApplicationController
     @data = CSV.read '/Users/storkvist/Sites/mgup/med_preps.txt', { col_sep: "\t" }
   end
 
+  def see_with_eyes
+    @user = User.find params[:user_id]
+    sign_out current_user
+    sign_in_and_redirect @user, event: :authentication
+  end
+
   private
 
   def set_user

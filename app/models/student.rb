@@ -292,7 +292,7 @@ GROUP BY `group`
     else
       case ball.round
         when 0..54
-          {mark: 'неудовлетворительно', short: 'неуд.', color: 'danger', width: ball}
+          {mark: 'недопущен', short: 'недопущен', color: 'danger', width: ball}
         when  55..69
           {mark: 'удовлетворительно', short: 'удовл.', color: 'warning', width: ball}
         when 70..85

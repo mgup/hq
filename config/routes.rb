@@ -1,8 +1,8 @@
 HQ::Application.routes.draw do
   devise_for :users, controllers: { registrations: 'users' }
     as :user do
-      get 'user/edit' => 'devise/registrations#edit', :as => 'user_profile'
-      put 'user' => 'devise/registrations#update'
+      get 'user/edit' => 'devise/registrations#edit', as: 'user_profile'
+      put 'user/user_update' => 'devise/registrations#update'
     end
   devise_for :students
 
@@ -16,8 +16,7 @@ HQ::Application.routes.draw do
 
   resources :roles
   resources :users do
-    get 'profile' => 'users#profile'
-
+    get 'see_with_eyes' => 'users#see_with_eyes', as: :see_with_eyes
     get 'medical_requests.pdf', to: 'users#medical_requests', on: :collection, defaults: { format: 'pdf' }
   end
   get 'users_filter' => 'users#filter'

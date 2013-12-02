@@ -8,7 +8,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   teachers = []
   teachers << @discipline.lead_teacher.full_name
   teachers << @discipline.assistant_teachers.collect{|t| t.full_name} if @discipline.assistant_teachers != []
-  headData = [["Семестр: #{Study::Discipline::CURRENT_STUDY_TERM}, #{Study::Discipline::CURRENT_STUDY_YEAR}-#{Study::Discipline::CURRENT_STUDY_YEAR+1} учебного года", "Дата проведения: #{@exam.date ? @exam.date : 'неизвестно'}" ],
+  headData = [["Семестр: #{Study::Discipline::CURRENT_STUDY_TERM}, #{Study::Discipline::CURRENT_STUDY_YEAR}-#{Study::Discipline::CURRENT_STUDY_YEAR+1} учебного года", "Дата проведения: #{@exam.date ? (l @exam.date) : 'неизвестно'}" ],
               ["Форма контроля: #{@exam.name}", "Группа: #{group.name}"],
               ["Дисциплина: #{@discipline.name}", ''],
               ["Фамилия, имя, отчество преподавател#{teachers.length > 1 ? 'ей' : 'я'}: #{teachers.join(', ')}", '']]

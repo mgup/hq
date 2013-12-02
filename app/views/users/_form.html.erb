@@ -62,12 +62,17 @@
       </div>
     </div>
 
-    <% if @user.id == nil %>
+    <% if @user.id == nil or current_user.is?(:developer) %>
       <div class="form-group">
         <%= f.label :password, class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-10">
           <%= f.password_field :password, class: "form-control #{'has-error' if @user.errors.include?(:password)}"%>
         </div>
+        <% if @user.id != nil %>
+          <div class='col-lg-10 col-lg-offset-2'>
+            <span class='help-block'>Указывается только в случае смены текущего пароля на новый.</span>
+          </div>
+        <% end %>
       </div>
     <% end %>
 
