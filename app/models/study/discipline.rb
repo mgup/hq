@@ -74,8 +74,8 @@ class Study::Discipline < ActiveRecord::Base
     p = seminars.count
     classes.each do |checkpoint|
       unless checkpoint.date.future?
-        l1 += (5/l) if checkpoint.lecture?
-        p1 += (15/p) if checkpoint.seminar?
+        l1 += (5.0/l) if checkpoint.lecture?
+        p1 += (15.0/p) if checkpoint.seminar?
         n1 += checkpoint.max if checkpoint.is_checkpoint?
       end
     end

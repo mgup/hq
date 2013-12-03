@@ -261,13 +261,13 @@ GROUP BY `group`
     end
   end
 
-  def got_all_marks(discipline)
+  def got_all_marks(discipline = nil)
     if discipline
-      return marks.by_discipline(discipline).uniq! {|m| m.checkpoint}.length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
+      return marks.by_discipline(discipline).uniq!{|m| m.checkpoint}.length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
     else
       key = true
       disciplines.each do |d|
-        key= key && (marks.by_discipline(d).uniq! {|m| m.checkpoint}.length >= d.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length)
+        key= key and (marks.by_discipline(d).uniq!{|m| m.checkpoint}.length >= d.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length)
       end
       key
     end
@@ -282,7 +282,7 @@ GROUP BY `group`
        ball+=100*(progress(d)/d.current_ball)/disciplines.size
      end
    end
-    if discipline.final_exam.test?
+    if discipline and discipline.final_exam.test?
       case ball.round
         when 0..54
           {mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}
@@ -297,11 +297,10 @@ GROUP BY `group`
           {mark: 'удовлетворительно', short: 'удовл.', color: 'warning', width: ball}
         when 70..85
           {mark: 'хорошо', short: 'хорошо', color: 'info', width: ball}
-        when 85..100
+        when 86..100
           {mark: 'отлично', short: 'отлично', color: 'success', width: ball}
       end
     end
-
   end
 
   def to_nokogiri

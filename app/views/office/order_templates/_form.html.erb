@@ -5,14 +5,14 @@
       <%= f.text_field :template_name, class: 'form-control' %>
     </div>
   </div>
-
-  <%= f.fields_for :xsl do |xsl| %>
+  <% xsl_for_template = @order_template.xsl == [] ? @order_template.xsl.build : @order_template.xsl %>
+  <%= f.fields_for :xsl, xsl_for_template do |xsl| %>
     <%= xsl.hidden_field :order_xsl_template %>
 
     <div class="form-group">
       <label class="control-label col-sm-3">Последнее изменение</label>
       <div class="col-sm-9">
-        <p class="form-control-static"><%= l @order_template.xsl.first.last_edit %></p>
+        <p class="form-control-static"><%= xsl.object.id ? (l @order_template.xsl.first.last_edit) : 'не редактировался' %></p>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
       <div class="clearfix"></div>
       <div class="ace-editor-wrap">
         <div id="editor" data-field="office_order_template_xsl_attributes_0_order_xsl_content"
-             class="ace-editor"><%= @order_template.xsl.first.stylesheet %></div>
+             class="ace-editor"><%= xsl.object.id ? @order_template.xsl.first.stylesheet : '' %></div>
       </div>
     </div>
   <% end %>

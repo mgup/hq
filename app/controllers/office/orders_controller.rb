@@ -15,7 +15,6 @@ class Office::OrdersController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html
       format.pdf {
         filename = "Приказ №#{@order.id}"
         Dir.chdir(Rails.root)
