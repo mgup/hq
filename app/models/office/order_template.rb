@@ -5,6 +5,8 @@ class Office::OrderTemplate < ActiveRecord::Base
   alias_attribute :name, :template_name
 
   has_many :orders, class_name: Office::Order, foreign_key: :order_template
+  has_many :reasons, class_name: Office::Reason, foreign_key: :template_reason_template
+  has_many :causes, class_name: Office::Cause, foreign_key: :template_cause_template
 
   has_one :current_xsl, -> { order('order_xsl_time DESC').limit(1) }, class_name: Office::OrderXsl, foreign_key: :order_xsl_template
 
@@ -22,6 +24,12 @@ class Office::OrderTemplate < ActiveRecord::Base
       xml.order_template {
         xml.id_   id
         xml.name  name
+        xml.reasons {
+          reasons.each { |reason| xml << reason.to_nokogiri.root.to_xml }
+        }
+        xml.causes {
+          causes.each { |cause| xml << cause.to_nokogiri.root.to_xml }
+        }
       }
     }.doc
   end
