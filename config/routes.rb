@@ -66,11 +66,11 @@ HQ::Application.routes.draw do
 
     resources :groups, path:  '/group' do
       get '/progress' => 'progress#index'
-      get '/progress/discipline/:discipline' => 'progress#discipline'
+      get '/progress/discipline/:discipline' => 'progress#discipline', as: :discipline
       get '/progress/change_discipline' => 'progress#change_discipline'
       get '/print_progress.pdf', to: 'progress#print_progress', defaults: { format: 'pdf' }, as: :print_progress
       resources :students, path:  '/student'
-      get '/student/:id/discipline/:discipline' => 'students#discipline'
+      get '/student/:id/discipline/:discipline' => 'students#discipline', as: :progress_discipline
     end
 
     get '/plans' => 'plans#index'

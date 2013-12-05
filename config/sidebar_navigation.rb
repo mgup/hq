@@ -94,7 +94,13 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     end
 
-    primary.item :study, 'Успеваемость'.html_safe, study_groups_path, icon: 'list', highlights_on: -> { params[:controller].include?('progress') }
+    primary.item :progress, 'Успеваемость'.html_safe, study_groups_path, icon: 'list' do |d|
+      d.dom_class = 'hidden'
+      d.item :group, 'Группа', study_group_progress_path(params[:group_id] || 1)
+      d.item :group_discipline, 'Группа', study_group_discipline_path(params[:group_id] || 1, params[:discipline] || 1)
+      d.item :student, 'Студент', study_group_student_path(params[:group_id] || 1, params[:id] || 1)
+      d.item :student_discipline, 'Студент', study_group_progress_discipline_path(params[:group_id] || 1, params[:id] || 1, params[:discipline] || 1)
+    end
 
     if student_signed_in?
       primary.item :my_student, 'Информация', my_student_path, icon: 'user'
