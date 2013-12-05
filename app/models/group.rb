@@ -126,6 +126,7 @@ class Group < ActiveRecord::Base
       xml.group {
         xml.id_   id
         xml.name  name
+        xml.form form
       }
     }.doc
   end

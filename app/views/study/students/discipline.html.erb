@@ -14,20 +14,22 @@
   <tbody>
   <% @checkpoints.each  do |checkpoint| %>
     <tr>
-      <td><%= checkpoint.date.strftime("%d.%m.%Y") %></td>
+      <td><%= l checkpoint.date %></td>
       <td style='width: 550px;'><span class="glyphicon <%= checkpoint.lesson %>"></span>
-        <%= checkpoint.name if checkpoint.type == 3 %>
+        <%= checkpoint.name if checkpoint.is_checkpoint? %>
         <%= checkpoint.lessonname %>
         <span class="help-block"><%= checkpoint.details %></span>
       </td>
       <td>
         <% mark = checkpoint.marks.by_student(@student).last %>
         <% if checkpoint.is_checkpoint? %>
-          <div class='col col-lg-7'>
             <% if mark != nil %>
               <span class="label label-<%= mark.mark>=checkpoint.min ? 'success' : 'danger'%>"><%= mark.mark %> из <%= checkpoint.max.round %> баллов</span>
+            <% else %>
+            Максимум — <%= checkpoint.max %>;
+            <br>
+            зачётный минимум — <%= checkpoint.min %>.
             <% end %>
-          </div>
         <% else %>
           <div class='col col-lg-10'>
             <% if mark != nil %>

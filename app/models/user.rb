@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   }
 
   validates :username, presence: true
-  validates :password, presence: true
+  validates :password, on: :create, presence: true
   validates_associated :fname
   validates_associated :iname
   validates_associated :oname

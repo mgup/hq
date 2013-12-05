@@ -5,6 +5,7 @@ class Study::CheckpointsController < ApplicationController
 
   def index
     redirect_to new_study_discipline_checkpoint_path(@discipline) if @checkpoints.empty?
+    @classes = @discipline.classes
   end
 
   def new ; end

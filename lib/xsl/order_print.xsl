@@ -113,14 +113,14 @@
                 <fo:table-row>
                   <fo:table-cell>
                     <fo:block font="12pt PT Serif" font-weight="bold">
-                      <xsl:value-of select="template/title" />
+                      <xsl:value-of select="order_template/name" />
                     </fo:block>
                   </fo:table-cell>
                 </fo:table-row>
                 <fo:table-row>
                   <fo:table-cell>
                     <fo:block font="12pt PT Serif" font-weight="bold">
-                      <xsl:value-of select="faculty/short_name" />
+                      <xsl:value-of select="students/student/speciality/faculty/short" />
                     </fo:block>
                   </fo:table-cell>
                 </fo:table-row>
@@ -128,7 +128,7 @@
                   <fo:table-cell>
                     <fo:block font="12pt PT Serif" font-weight="bold">
                       <xsl:call-template name="form_name">
-                        <xsl:with-param name="id" select="/order/form" />
+                        <xsl:with-param name="id" select="students/student/group/form" />
                       </xsl:call-template>
                       форма обучения
                     </fo:block>

@@ -38,7 +38,12 @@
       <td><%= user.username %></td>
       <td class="nowrap"><%= user.phone %></td>
       <td>
-        <%= link_to 'Редактировать', edit_user_path(user) %>
+        <%= link_to edit_user_path(user), title: 'Редактировать', class: 'btn btn-default' do %>
+          <span class="glyphicon glyphicon-edit"></span>
+        <% end %>
+        <%= link_to user_see_with_eyes_path(user), class: 'btn btn-default', title: 'Авторизоваться как пользователь' do %>
+          <span class="glyphicon glyphicon-eye-open"></span>
+        <% end %>
       </td>
     </tr>
   <% end %>

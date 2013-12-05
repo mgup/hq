@@ -45,22 +45,16 @@
           </tr>
         </tbody>
       </table>
-      <p style="margin-bottom: 0; width: 45%; text-align: justify;"><xsl:value-of select="template/title" /></p>
+      <p style="margin-bottom: 0; width: 45%; text-align: justify;"><xsl:value-of select="order_template/name" /></p>
       <p style="margin-bottom: 0;">
-        <xsl:value-of select="faculty/short_name" />
+        <xsl:value-of select="students/student/speciality/faculty/short" />
       </p>
       <p style="margin-bottom: 0;">
         <xsl:call-template name="form_name">
-          <xsl:with-param name="id" select="/order/form" />
+          <xsl:with-param name="id" select="students/student/group/form" />
         </xsl:call-template>
         форма обучения
       </p>
-      <!--<p style="margin-bottom: 0;">-->
-      <!--<xsl:call-template name="form_name">-->
-      <!--<xsl:with-param name="id" select="/order/form" />-->
-      <!--</xsl:call-template>-->
-      <!--форма обучения-->
-      <!--</p>-->
       <xsl:if test="payment">
         <p style="margin-bottom: 0;">(<xsl:value-of select="payment" /> основа)</p>
       </xsl:if>

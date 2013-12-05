@@ -1,0 +1,9 @@
+<% mark = @exam.rating_marks.by_student(student).last ?  @exam.rating_marks.by_student(student).last : @exam.final_marks.build %>
+<%= f.fields_for :rating_marks, mark do |marks_form| %>
+  <%= marks_form.hidden_field :id, class: 'mark_id' %>
+  <%= marks_form.hidden_field :mark_date, value: Date.today %>
+  <%= marks_form.hidden_field :mark_rating, value: true %>
+  <%= marks_form.hidden_field :mark_student_group, value: student.id %>
+  <p><span class="currentBall"><%= student.ball(@exam.discipline) %></span> + <%= text_field_tag :mark, nil, class: 'form-control examBall', style: 'width: 50px' %></p>
+  <%= marks_form.hidden_field :mark_value, class: 'finalSumBall' %>
+<% end %>

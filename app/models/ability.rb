@@ -20,6 +20,8 @@ class Ability
       #  can :manage, [Study::Subject, Study::Mark]
       #end
 
+      can :manage, User, user_id: user.id
+
       if user.is?(:zamestitel_otvetstvennogo_sekretarja)
         can :index, :selection_contracts
       end
@@ -32,6 +34,8 @@ class Ability
         can :manage, Study::Discipline
         can :manage, Study::Checkpoint
         can :manage, Study::Mark
+        #can :manage, Study::Exam
+        #can :manage, Study::ExamMark
         # Загрузка ресурсов, принадлежащих только текущему пользователю,
         # производится в Study::DisciplinesController.
         #can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }

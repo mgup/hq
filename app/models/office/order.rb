@@ -19,6 +19,9 @@ class Office::Order < ActiveRecord::Base
   has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_order
   has_many :students, class_name: Student, through: :students_in_order
 
+  has_many :order_reasons, class_name: Office::OrderReason, foreign_key: :order_reason_order
+  has_many :reasons, class_name: Office::Reason, through: :order_reasons
+
   scope :drafts, -> { where(order_status: STATUS_DRAFT) }
   scope :underways, -> { where(order_status: STATUS_UNDERWAY) }
 
@@ -52,6 +55,9 @@ class Office::Order < ActiveRecord::Base
         xml << template.to_nokogiri.root.to_xml
         xml.students {
           students.each { |student| xml << student.to_nokogiri.root.to_xml }
+        }
+        xml.reasons {
+          reasons.each { |reason| xml << reason.to_nokogiri.root.to_xml }
         }
         xml.text_
       }

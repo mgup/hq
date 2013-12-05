@@ -11,7 +11,9 @@ class Study::ExamsController < ApplicationController
 
   def show ; end
 
-  def update ; end
+  def update
+    raise params.inspect
+  end
 
   def destroy ; end
 
@@ -39,7 +41,8 @@ class Study::ExamsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:study_exam, {}).permit( :id, marks_attributes: [:id, :mark_student_group, :mark_value]
+    params.fetch(:study_exam, {}).permit( :id, final_marks_attributes: [:id, :mark_student_group, :mark_value, :mark_final],
+                                          rating_marks_attributes: [:id, :mark_student_group, :mark_value, :mark_rating]
     )
   end
 

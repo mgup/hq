@@ -24,8 +24,10 @@ class Study::Exam < ActiveRecord::Base
   belongs_to :discipline, class_name: Study::Discipline, primary_key: :subject_id, foreign_key: :exam_subject
   belongs_to :group, primary_key: :group_id, foreign_key: :exam_group
   belongs_to :student, primary_key: :student_group_id, foreign_key: :exam_student_group
-
-  has_many :exammarks, class_name: Study::ExamMark, foreign_key: :mark_exam
+  has_many :final_marks, -> { where(mark_final: true)}, class_name: Study::ExamMark, foreign_key: :mark_exam
+  accepts_nested_attributes_for :final_marks
+  has_many :rating_marks, -> { where(mark_rating: true)}, class_name: Study::ExamMark, foreign_key: :mark_exam
+  accepts_nested_attributes_for :rating_marks
 
   validates :type, presence: true, inclusion: { in: [0,
                                                      1,

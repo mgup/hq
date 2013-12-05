@@ -49,6 +49,8 @@ class Study::DisciplinesController < ApplicationController
   def edit
     detect_lead_teacher
     load_user_colleagues
+    @faculty = @discipline.group.speciality.faculty
+    @speciality = @discipline.group.speciality
   end
 
   def update

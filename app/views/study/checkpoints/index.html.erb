@@ -18,12 +18,12 @@
   <span class='glyphicon glyphicon-print'></span> Студенты
 <% end %>
 
-<% unless @discipline.checkpoints.not_full(@discipline) == []%>
+<% unless @classes.not_full(@discipline) == []%>
   <br><br>
   <div class="alert alert-danger">
     <p>В некоторых занятиях не введены результаты оценки студентов.</p>
     <ul>
-    <% @discipline.classes.not_full(@discipline).each do |c| %>
+    <% @classes.not_full(@discipline).each do |c| %>
       <li><%= link_to "Занятие #{c.id} (внести данные)", study_discipline_checkpoint_marks_path(@discipline, c) %></li>
     <% end %>
     </ul>
@@ -69,7 +69,8 @@
        </tr>
       <% end %>
 
-      <% @discipline.exams.order('exam_date').each do |exam| %>
+      <% if false %>
+      <% @discipline.exams.originals.order('exam_date').each do |exam| %>
         <% if exam.date? %>
         <tr>
           <td class="text-muted"><%= exam.id %></td>
@@ -86,6 +87,7 @@
           </td>
         </tr>
         <% end %>
+      <% end %>
       <% end %>
     </tbody>
   </table>

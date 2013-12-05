@@ -41,6 +41,8 @@ class Speciality < ActiveRecord::Base
         xml.id_   id
         xml.code  code
         xml.name  name
+        xml.type type
+        xml << faculty.to_nokogiri.root.to_xml
       }
     }.doc
   end
