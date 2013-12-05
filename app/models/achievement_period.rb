@@ -6,7 +6,8 @@ class AchievementPeriod < ActiveRecord::Base
   end
 
   def description
-    "#{year}/#{year.to_i + 1} учебный год, #{semester} семестр"
+    #"#{year}/#{year.to_i + 1} учебный год, #{semester} семестр"
+    "#{year} календарный год и #{year - 1}/#{year} учебный год"
   end
 
   def active?

@@ -6,7 +6,7 @@
     <%= f.label :description %>
     <%= f.text_area :description, class: 'form-control' %>
 
-    <%= unless activity.placeholder.blank? %>
+    <% unless activity.placeholder.blank? %>
       <p class="help-block">
         <strong>Заполнять в формате:</strong> «<%= activity.placeholder %>»
       </p>

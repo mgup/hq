@@ -1,4 +1,5 @@
 HQ::Application.routes.draw do
+  get "tttest/index"
   devise_for :users, controllers: { registrations: 'users' }
   devise_for :students
 
