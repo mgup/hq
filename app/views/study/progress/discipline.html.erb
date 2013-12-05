@@ -1,0 +1,12 @@
+<div class="page-header">
+  <h1>Успеваемость <small><%= @group.name %></small></h1>
+</div>
+<%= hidden_field_tag :progress_group, @group.id %>
+<%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name, @discipline.id),
+               prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
+
+<br>
+<div id="for_student_progress">
+  <%= render(partial: 'discipline',
+  locals: { students: @discipline_students.sort_by{|s| s[:ball]}.reverse, group: @group, discipline: @discipline }) %>
+</div>

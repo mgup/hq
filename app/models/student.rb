@@ -220,14 +220,21 @@ GROUP BY `group`
     Study::Checkpoint.where(checkpoint_subject: disciplines.collect{|d| d.id})
   end
 
+  def discipline_marks(discipline)
+    dmarks = []
+    marks.by_discipline(discipline).each do |mark|
+      dmarks << {mark: mark.mark, checkpoint: mark.checkpoint}
+    end
+    dmarks.reverse.uniq{|m| m[:checkpoint]}
+  end
+
   def ball(discipline = nil)
     if discipline
       l1, p1, n1 = 0.0, 0.0, 0.0
       l = discipline.lectures.count
       p = discipline.seminars.count
-      discipline.classes.collect do |checkpoint|
-        mark = checkpoint.marks.by_student(id) == [] ? 0 : checkpoint.marks.by_student(self).last.mark
-        result = case mark
+      discipline_marks(discipline).each do |mark|
+        result = case mark[:mark]
                    when MARK_LECTURE_ATTEND
                      (5.0/l)
                    when MARK_PRACTICAL_FAIR
@@ -239,9 +246,9 @@ GROUP BY `group`
                    else
                      0
                  end
-        l1 += result if checkpoint.lecture?
-        p1 += result if checkpoint.seminar?
-        n1 += mark if checkpoint.is_checkpoint?
+        l1 += result if mark[:checkpoint].lecture?
+        p1 += result if mark[:checkpoint].seminar?
+        n1 += mark[:mark] if mark[:checkpoint].is_checkpoint?
       end
       (l1+p1+n1).round 2
     else
@@ -263,11 +270,11 @@ GROUP BY `group`
 
   def got_all_marks(discipline = nil)
     if discipline
-      return marks.by_discipline(discipline).uniq!{|m| m.checkpoint}.length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
+      marks.by_discipline(discipline).group(:checkpoint_mark_checkpoint).length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
     else
       key = true
       disciplines.each do |d|
-        key= key and (marks.by_discipline(d).uniq!{|m| m.checkpoint}.length >= d.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length)
+        key = (key and got_all_marks(d))
       end
       key
     end
