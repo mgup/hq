@@ -6,6 +6,9 @@ class Office::Reason < ActiveRecord::Base
 
   belongs_to :template, class_name: Office::OrderTemplate, foreign_key: :template_reason_template
 
+  has_many :order_reasons, class_name: Office::OrderReason, foreign_key: :order_reason_reason
+  has_many :orders, class_name: Office::Order, through: :order_reasons
+
   def to_nokogiri
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.reason {
