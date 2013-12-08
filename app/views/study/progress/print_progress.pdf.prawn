@@ -31,7 +31,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   height = 50
   data = [[
             pdf.text_box('№', at: [x_pos - 2, y_pos+30], size: size, height: 100),
-            pdf.text_box('Фамилия, имя, отчетсво', at: [x_pos + 20, y_pos+30], size: size, height: 100),
+            pdf.text_box('Фамилия, имя, отчество', at: [x_pos + 20, y_pos+30], size: size, height: 100),
             pdf.text_box('Номер', at: [x_pos + 172, y_pos+30], size: size, height: 100),
             pdf.text_box('Зачтено', at: [x_pos + 205, y_pos], rotate: 90, size: size, width: 100),
             pdf.text_box('Не зачтено', at: [x_pos + 220, y_pos], rotate: 90, size: size, width: 100),
