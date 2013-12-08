@@ -48,6 +48,8 @@ gem 'spreadsheet'
 # В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
 gem 'morpher', github: 'mgup/morpher', branch: :master
 
+gem 'airbrake'
+
 group :development do
   gem 'thin'
   #gem 'debugger'

@@ -1,5 +1,4 @@
 HQ::Application.routes.draw do
-  get "tttest/index"
   devise_for :users, controllers: { registrations: 'users' }
     as :user do
       get 'user/edit' => 'devise/registrations#edit', as: 'user_profile'
