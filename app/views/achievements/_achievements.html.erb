@@ -7,17 +7,23 @@
   <table class="table">
     <% @achievements.group_by { |a| a.activity }.each do |activity, achievements| %>
       <tr>
-        <td colspan="2">
+        <td colspan="3">
           <strong><%= activity.name %></strong>
         </td>
       </tr>
       <% achievements.each do |a| %>
         <tr>
-          <td class="no-border-top"><%= a.description %></td>
-          <td class="no-border-top">
+          <td class="no-border-top full-width">
+            <%= a.description %>
+          </td>
+          <td class="no-border-top" style="white-space: nowrap;">
             <%= activity_credit_description(a.activity) %>
           </td>
-          <td class="no-border-top"></td>
+          <td class="no-border-top">
+            <%= link_to achievement_path(a, period: @period.id), method: :delete, confirm: 'Вы уверены?', class: 'text-danger' do %>
+              Удалить
+            <% end %>
+          </td>
         </tr>
       <% end %>
     <% end %>

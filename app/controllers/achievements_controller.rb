@@ -59,7 +59,11 @@ class AchievementsController < ApplicationController
   end
 
   def destroy
+    @achievement = Achievement.unscoped.find(params[:id])
+    @achievement.destroy
 
+    @period = AchievementPeriod.find(params[:period])
+    redirect_to achievements_path(year: @period.year, semester: @period.semester)
   end
 
   def resource_params
