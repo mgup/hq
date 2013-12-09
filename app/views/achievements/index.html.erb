@@ -6,14 +6,16 @@
   <%= render 'achievements' %>
 </div>
 
-<hr>
+<% unless @period.achievement_reports.by_user(current_user).only_relevant.any? %>
+  <br>
 
-<div class="page-header">
-  <h2>Выберите из&nbsp;показателей эффективности то, что&nbsp;было
-    сделано в&nbsp;текущем отчётном периоде</h2>
-</div>
+  <div class="page-header">
+    <h2>Выберите из&nbsp;показателей эффективности то, что&nbsp;было
+      сделано в&nbsp;текущем отчётном периоде</h2>
+  </div>
 
-<%= render 'activities' %>
+  <%= render 'activities' %>
+<% end %>
 
 <br>
 

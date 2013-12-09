@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
   has_many :subjects, class_name: Study::Subject
 
   has_many :achievements
+  has_many :achievement_reports
 
   scope :with_name, -> { includes(:iname, :fname, :oname) }
 

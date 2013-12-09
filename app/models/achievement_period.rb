@@ -1,5 +1,6 @@
 class AchievementPeriod < ActiveRecord::Base
   has_many :achievements
+  has_many :achievement_reports
 
   default_scope do
     order(year: :desc).order(active: :desc)

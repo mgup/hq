@@ -21,6 +21,17 @@ ActiveRecord::Schema.define(version: 20131209124618) do
     t.datetime "updated_at"
   end
 
+  create_table "achievement_reports", force: true do |t|
+    t.integer  "achievement_period_id"
+    t.integer  "user_id"
+    t.boolean  "relevant",              default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "achievement_reports", ["achievement_period_id"], name: "index_achievement_reports_on_achievement_period_id", using: :btree
+  add_index "achievement_reports", ["user_id"], name: "index_achievement_reports_on_user_id", using: :btree
+
   create_table "achievements", force: true do |t|
     t.text     "description"
     t.integer  "user_id"
