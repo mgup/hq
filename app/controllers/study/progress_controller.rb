@@ -57,8 +57,8 @@ class Study::ProgressController < ApplicationController
 
   def find_group
     @group = Group.find(params[:group_id])
-    @students =  @group.students.includes([:person, :group])
-    @disciplines = Study::Discipline.now.from_group(@group)
+    @students =  @group.students.valid_for_today.includes([:person, :group])
+    @disciplines = Study::Discipline.now.from_group(@group).with_brs
   end
 
 end

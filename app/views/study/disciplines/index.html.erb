@@ -14,6 +14,7 @@
 <table class="table table-striped">
   <tbody>
     <% @disciplines.each do |d| %>
+      <% next unless d.is_active? %>
       <tr>
         <td class="text-muted"><%= d.id %></td>
         <td>
@@ -33,30 +34,29 @@
             </ul>
           <% end %>
         </td>
-        <% if d.is_active? %>
           <td>
             <div  class="pull-right">
               <% if d.checkpoints.empty? %>
                 <span class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не указаны контрольные точки</span>
+                <br><br>
               <% end %>
-              <%= link_to study_discipline_checkpoints_path(d), class: 'btn btn-default', title: 'Внести данные' do %>
-                <span class="glyphicon glyphicon-<%= d.checkpoints.empty? ? 'calendar' : 'list-alt' %>"></span>
-              <% end %>
-              <%= link_to edit_study_discipline_path(d), class: 'btn btn-default', title: 'Редактировать' do %>
-                <span class="glyphicon glyphicon-edit"></span>
-              <% end %>
+              <%= link_to study_discipline_checkpoints_path(d), class: 'btn btn-default' do %>
+                <span class="glyphicon glyphicon-<%= d.checkpoints.empty? ? 'calendar' : 'list-alt' %>"></span> Внести данные
+            <% end %>
+              <%= link_to edit_study_discipline_path(d), class: 'btn btn-default' do %>
+                <span class="glyphicon glyphicon-edit"></span>  Редактировать
+            <% end %>
               <% if d.checkpoints.empty? %>
-                <%= link_to d, method: :delete, confirm: 'Вы уверены?', class: 'btn btn-danger', title: 'Удалить' do %>
-                  <span class="glyphicon glyphicon-remove"></span>
-                <% end %>
+                <br><br>
+                <%= link_to d, method: :delete, confirm: 'Вы уверены?', class: 'btn btn-danger' do %>
+                  <span class="glyphicon glyphicon-remove"></span> Удалить
+            <% end %>
               <% end %>
             </div>
           </td>
-        <% else %>
-          <td colspan="2">
-            <p class="text-muted">Учебный семестр завершён.</p>
-          </td>
-        <% end %>
+          <!--<td colspan="2">-->
+            <!--<p class="text-muted">Учебный семестр завершён.</p>-->
+          <!--</td>-->
       </tr>
     <% end %>
   </tbody> 
