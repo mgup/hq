@@ -220,12 +220,20 @@ GROUP BY `group`
     Study::Checkpoint.where(checkpoint_subject: disciplines.collect{|d| d.id})
   end
 
-  def discipline_marks(discipline)
+  #def discipline_marks(discipline)
+  #  dmarks = []
+  #  marks.by_discipline(discipline).each do |mark|
+  #    dmarks << {mark: mark.mark, checkpoint: mark.checkpoint}
+  #  end
+  #  dmarks.reverse.uniq{|m| m[:checkpoint]}
+  #end
+
+  def discipline_marks(discipline = nil)
     dmarks = []
-    marks.by_discipline(discipline).each do |mark|
-      dmarks << {mark: mark.mark, checkpoint: mark.checkpoint}
+    group.group_marks(discipline).each_with_object([]){|mark, a| a << mark if mark[2] == id}.each do |mark|
+      dmarks << {mark: mark[3], checkpoint: mark[8]}
     end
-    dmarks.reverse.uniq{|m| m[:checkpoint]}
+    dmarks
   end
 
   def ball(discipline = nil)
@@ -246,9 +254,9 @@ GROUP BY `group`
                    else
                      0
                  end
-        l1 += result if mark[:checkpoint].lecture?
-        p1 += result if mark[:checkpoint].seminar?
-        n1 += mark[:mark] if mark[:checkpoint].is_checkpoint?
+        l1 += result if mark[:checkpoint] == 1
+        p1 += result if mark[:checkpoint] == 2
+        n1 += mark[:mark] if mark[:checkpoint] == 3
       end
       (l1+p1+n1).round 2
     else
@@ -270,6 +278,7 @@ GROUP BY `group`
 
   def got_all_marks(discipline = nil)
     if discipline
+      #group.group_marks(discipline).collect{|m| m[2] == id}.length >= discipline.classes.not_future.length
       marks.by_discipline(discipline).group(:checkpoint_mark_checkpoint).length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
     else
       key = true
@@ -282,30 +291,34 @@ GROUP BY `group`
 
   def result(discipline = nil)
    if discipline
-     ball = 100*(progress(discipline)/discipline.current_ball)
+     current = ball(discipline)
+     ball = 100*(current/discipline.current_ball)
+     current_progress = current
    else
+     current = ball()
+     current_progress = (disciplines.count != 0 ? (current/disciplines.count) : 0)
      ball = 0
      disciplines.each do |d|
-       ball+=100*(progress(d)/d.current_ball)/disciplines.size
+       ball+=100*(current_progress/d.current_ball)/disciplines.size
      end
    end
     if discipline and discipline.final_exam.test?
       case ball.round
         when 0..54
-          {mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}
+          {ball: current, progress: current_progress, mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}
         when 55..100
-          {mark: 'зачтено', short: 'зачёт', color: 'success', width: ball}
+          {ball: current, progress: current_progress, mark: 'зачтено', short: 'зачёт', color: 'success', width: ball}
       end
     else
       case ball.round
         when 0..54
-          {mark: 'недопущен', short: 'недопущен', color: 'danger', width: ball}
+          {ball: current, progress: current_progress, mark: 'недопущен', short: 'недопущен', color: 'danger', width: ball}
         when  55..69
-          {mark: 'удовлетворительно', short: 'удовл.', color: 'warning', width: ball}
+          {ball: current, progress: current_progress, mark: 'удовлетворительно', short: 'удовл.', color: 'warning', width: ball}
         when 70..85
-          {mark: 'хорошо', short: 'хорошо', color: 'info', width: ball}
-        when 86..100
-          {mark: 'отлично', short: 'отлично', color: 'success', width: ball}
+          {ball: current, progress: current_progress, mark: 'хорошо', short: 'хорошо', color: 'info', width: ball}
+        when 86..Float::INFINITY
+          {ball: current, progress: current_progress, mark: 'отлично', short: 'отлично', color: 'success', width: ball}
       end
     end
   end

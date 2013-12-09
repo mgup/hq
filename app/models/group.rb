@@ -121,6 +121,23 @@ class Group < ActiveRecord::Base
     FORM_DISTANCE == form
   end
 
+  def group_marks(discipline = nil)
+    ActiveRecord::Base.connection.execute("SELECT `m1`.*, `checkpoint`.`checkpoint_type`, `checkpoint`.`checkpoint_min`, `checkpoint`.`checkpoint_max`, `checkpoint`.`checkpoint_date`, `subject`.`subject_id` FROM `checkpoint_mark` AS `m1`
+  INNER JOIN `checkpoint` ON checkpoint_id = m1.checkpoint_mark_checkpoint
+  INNER JOIN `subject` ON subject_id = checkpoint_subject
+  LEFT JOIN `checkpoint_mark` AS `m2` ON m1.checkpoint_mark_checkpoint = m2.checkpoint_mark_checkpoint
+              AND m1.checkpoint_mark_student = m2.checkpoint_mark_student
+              AND m1.checkpoint_mark_submitted < m2.checkpoint_mark_submitted
+  WHERE (subject_group = #{id}) AND (m2.checkpoint_mark_submitted IS NULL)
+                                AND (subject_year = #{Study::Discipline::CURRENT_STUDY_YEAR})
+                                AND (subject_semester = #{Study::Discipline::CURRENT_STUDY_TERM})
+                                AND (subject_id IN (#{discipline ? discipline.id : disciplines.now.collect{|d| d.id}.join(', ')}))
+                                GROUP BY `m1`.`checkpoint_mark_checkpoint`,
+  `m1`.`checkpoint_mark_student`,
+  `m1`.`checkpoint_mark_submitted` ORDER BY `checkpoint`.`checkpoint_date` ASC, `m1`.`checkpoint_mark_submitted` ASC
+  ;")
+  end
+
   def to_nokogiri
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.group {

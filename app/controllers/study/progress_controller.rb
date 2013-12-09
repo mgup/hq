@@ -7,8 +7,8 @@ class Study::ProgressController < ApplicationController
     find_group
     @discipline_students = []
     @students.each do |student|
-      @discipline_students << {ball: student.ball(), student: student,
-                               progress: student.progress()}
+      @discipline_students << {student: student,
+                               progress: student.result()}
     end
   end
 
@@ -26,8 +26,8 @@ class Study::ProgressController < ApplicationController
     @discipline_students = []
     @discipline = Study::Discipline.find(params[:discipline])
     @students.each do |student|
-      @discipline_students << {ball: student.ball(@discipline), student: student,
-                                 progress: student.progress(@discipline)}
+      @discipline_students << {student: student,
+                                 progress: student.result(@discipline)}
     end
   end
 
