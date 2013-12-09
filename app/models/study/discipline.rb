@@ -51,13 +51,14 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   scope :from_name, -> name { where('subject_name LIKE :prefix', prefix: "#{name}%")}
-  scope :from_student, -> student {where(subject_group:  student.group )}
+  scope :from_student, -> student {where(subject_group:  student.group)}
   scope :from_group, -> group {where(subject_group: group)}
   scope :now, -> {where(subject_year: CURRENT_STUDY_YEAR, subject_semester: CURRENT_STUDY_TERM)}
   scope :include_teacher, -> user {
     includes(:assistant_teachers)
     .where('subject_teacher = ? OR subject_teacher.teacher_id = ?', user.id, user.id).references(:subject_teacher)
   }
+  scope :with_brs, ->{where(subject_brs:  true)}
 
   def has?(type)
     work = (type == 'work' ? 2 : 3)

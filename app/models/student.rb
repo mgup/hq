@@ -214,7 +214,7 @@ GROUP BY `group`
   end
 
   def disciplines
-    Study::Discipline.now.where(subject_group: group)
+    Study::Discipline.now.where(subject_group: group).with_brs
   end
 
   def checkpoints
