@@ -59,7 +59,7 @@ class UsersController < ApplicationController
         iname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
         oname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
         positions_attributes: [:id, :appointment_id, :acl_position_role,
-                               :acl_position_department, :started_at, :_destroy]
+                               :acl_position_department, :started_at, :primary, :_destroy]
     )
   end
 

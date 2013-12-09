@@ -9,3 +9,4 @@ ru:
         acl_position_role: 'роль'
         acl_position_department: 'подразделение'
         started_at: 'дата приёма'
+        primary: 'форма работы'

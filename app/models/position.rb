@@ -4,6 +4,7 @@ class Position < ActiveRecord::Base
   alias_attribute :id,          :acl_position_id
   alias_attribute :title,       :acl_position_title
   alias_attribute :dismission,  :acl_position_dismission
+  alias_attribute :primary,     :acl_position_primary
 
   belongs_to :user,       primary_key: :user_id,       foreign_key: :acl_position_user
   belongs_to :role,       primary_key: :acl_role_id,   foreign_key: :acl_position_role

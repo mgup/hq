@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131209115204) do
+ActiveRecord::Schema.define(version: 20131209124618) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -46,15 +46,16 @@ ActiveRecord::Schema.define(version: 20131209115204) do
   add_index "achievements", ["user_id"], name: "index_achievements_on_user_id", using: :btree
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
-    t.integer  "acl_position_user",                   null: false
-    t.integer  "acl_position_role",                   null: false
-    t.integer  "acl_position_department",             null: false
+    t.integer  "acl_position_user",                                   null: false
+    t.integer  "acl_position_role",                                   null: false
+    t.integer  "acl_position_department",                             null: false
     t.string   "acl_position_title",      limit: 300
     t.datetime "started_at"
     t.datetime "acl_position_dismission"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "appointment_id"
+    t.boolean  "acl_position_primary",                default: false
   end
 
   create_table "acl_role", primary_key: "acl_role_id", force: true do |t|
@@ -349,10 +350,10 @@ ActiveRecord::Schema.define(version: 20131209115204) do
     t.text      "document_number",      limit: 16777215,             null: false
     t.integer   "document_signed",      limit: 1
     t.timestamp "document_create_date",                              null: false
-    t.date      "document_start_date"
     t.date      "document_expire_date",                              null: false
     t.integer   "document_juridical",   limit: 1,        default: 0, null: false
     t.string    "document_department",  limit: 400
+    t.date      "document_start_date"
     t.string    "document_name",        limit: 400
     t.integer   "document_eternal",                      default: 0
   end
