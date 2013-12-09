@@ -20,7 +20,7 @@
             <%= activity_credit_description(a.activity) %>
           </td>
           <td class="no-border-top">
-            <%= link_to achievement_path(a, period: @period.id), method: :delete, confirm: 'Вы уверены?', class: 'text-danger' do %>
+            <%= link_to achievement_path(a, period: a.period.id), method: :delete, confirm: 'Вы уверены?', class: 'text-danger' do %>
               Удалить
             <% end %>
           </td>

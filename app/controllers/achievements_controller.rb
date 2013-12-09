@@ -6,7 +6,10 @@ class AchievementsController < ApplicationController
   end
 
   def index
-    @period = AchievementPeriod.where(year: params[:year], semester: params[:semester]).first
+    @period = AchievementPeriod.where(year: params[:year],
+                                      semester: params[:semester])
+                               .first
+
     unless @period.active?
       redirect_to periods_achievements_path, notice: 'Приём данных по указанному периоду завершён.'
     end

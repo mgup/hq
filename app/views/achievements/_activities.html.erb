@@ -23,7 +23,9 @@
                   <%= render partial: 'activity_form', locals: { period: @period, activity: a } %>
                 </td>
                 <td>
-                  <%= link_to '#', class: 'btn btn-default add-activity', data: { activity: a.id } do %>
+                  <%= link_to '#',
+                              class: 'btn btn-default add-activity',
+                              data: { activity: a.id }, disabled: @achievements.any? { |achiv| a.unique? && achiv.activity == a } do %>
                     <span class="glyphicon glyphicon-check"></span> Выполнено
                   <% end %>
                 </td>
