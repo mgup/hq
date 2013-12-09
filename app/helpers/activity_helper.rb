@@ -10,6 +10,8 @@ module ActivityHelper
         "#{credit} #{txt} #{a.base_name}"
       when 3
         "От 0 до #{credit} #{txt}"
+      when 4
+        '?'
       else
         raise 'Неизвестный тип баллов показателя эффективности'
     end
