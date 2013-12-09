@@ -4,7 +4,8 @@ class Achievement < ActiveRecord::Base
   belongs_to :activity
 
   default_scope do
-    joins(:activity).order('activities.activity_group_id, activities.id')
+    joins(:activity)
+    .order('activities.activity_group_id, activities.id')
   end
 
   scope :by, -> (user = current_user) { where(user_id: user.id) }
