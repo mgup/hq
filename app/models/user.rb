@@ -48,6 +48,7 @@ class User < ActiveRecord::Base
 
   validates :username, presence: true
   validates :password, on: :create, presence: true
+  validate :primary_position_should_be_one
   validates_associated :fname
   validates_associated :iname
   validates_associated :oname
@@ -58,6 +59,18 @@ class User < ActiveRecord::Base
 
   def hash_password
     self.password = Digest::MD5.hexdigest(self.password)
+  end
+
+  def primary_position_should_be_one
+    return true if positions.length == 0
+    primaries = 0
+    positions.each do |p|
+      primaries += 1 if p.primary
+    end
+    if primaries > 1
+      errors.add(:'primary',
+                 'У сотрудника может быть только одна основная форма работы.')
+    end
   end
 
   def full_name(form = :ip)
