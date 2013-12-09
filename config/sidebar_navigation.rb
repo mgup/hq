@@ -5,6 +5,14 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.dom_id = 'dashboard-menu'
     primary.dom_class = 'nav nav-pills nav-stacked'
 
+    primary.item :progress, 'Успеваемость'.html_safe, study_groups_path, icon: 'list' do |d|
+      d.dom_class = 'hidden'
+      d.item :group, 'Группа', study_group_progress_path(params[:group_id] || 1)
+      d.item :group_discipline, 'Группа', study_group_discipline_path(params[:group_id] || 1, params[:discipline] || 1)
+      d.item :student, 'Студент', study_group_student_path(params[:group_id] || 1, params[:id] || 1)
+      d.item :student_discipline, 'Студент', study_group_progress_discipline_path(params[:group_id] || 1, params[:id] || 1, params[:discipline] || 1)
+    end
+
     if user_signed_in?
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
@@ -27,12 +35,6 @@ SimpleNavigation::Configuration.run do |navigation|
 
         primary.item :achievement_period, 'Периоды ввода достижений НПР',
                      achievement_periods_path, icon: 'list'
-        primary.item :periods_achievements, 'Мои показатели эффективности',
-                     periods_achievements_path, icon: 'list' do |a|
-          a.dom_class = 'hidden'
-          a.item :achievements, 'Отчёт за период', achievements_path
-        end
-
 
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         #primary.item( :study, 'Успеваемость<b class="caret"></b>'.html_safe, '#', icon: 'list', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' }) do |study|
@@ -73,6 +75,14 @@ SimpleNavigation::Configuration.run do |navigation|
         end
       end
 
+      if can? :manage, Achievement
+        primary.item :periods_achievements, 'Мои показатели эффективности',
+                     periods_achievements_path, icon: 'list' do |a|
+          a.dom_class = 'hidden'
+          a.item :achievements, 'Отчёт за период', achievements_path
+        end
+      end
+
       if can? :manage, Student
         primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
       end
@@ -92,14 +102,6 @@ SimpleNavigation::Configuration.run do |navigation|
       if can? :manage, :all
         primary.item :support, 'СПИСКИ по заявлениям'.html_safe,  lists_social_applications_path, icon: 'list'
       end
-    end
-
-    primary.item :progress, 'Успеваемость'.html_safe, study_groups_path, icon: 'list' do |d|
-      d.dom_class = 'hidden'
-      d.item :group, 'Группа', study_group_progress_path(params[:group_id] || 1)
-      d.item :group_discipline, 'Группа', study_group_discipline_path(params[:group_id] || 1, params[:discipline] || 1)
-      d.item :student, 'Студент', study_group_student_path(params[:group_id] || 1, params[:id] || 1)
-      d.item :student_discipline, 'Студент', study_group_progress_discipline_path(params[:group_id] || 1, params[:id] || 1, params[:discipline] || 1)
     end
 
     if student_signed_in?

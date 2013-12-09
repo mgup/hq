@@ -2,7 +2,7 @@ class AchievementPeriod < ActiveRecord::Base
   has_many :achievements
 
   default_scope do
-    order(:year, :semester).order(active: :desc)
+    order(year: :desc).order(active: :desc)
   end
 
   def description
