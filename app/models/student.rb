@@ -1,4 +1,5 @@
 class Student < ActiveRecord::Base
+  include ActionView::Helpers::NumberHelper
   PAYMENT_BUDGET = 1
   PAYMENT_OFF_BUDGET = 2
 
@@ -239,6 +240,7 @@ GROUP BY `group`
   def ball(discipline = nil)
     if discipline
       l1, p1, n1 = 0.0, 0.0, 0.0
+      return 0.0 if discipline.classes.count == 0
       l = discipline.lectures.count
       p = discipline.seminars.count
       discipline_marks(discipline).each do |mark|
@@ -279,7 +281,7 @@ GROUP BY `group`
   def got_all_marks(discipline = nil)
     if discipline
       #group.group_marks(discipline).collect{|m| m[2] == id}.length >= discipline.classes.not_future.length
-      marks.by_discipline(discipline).group(:checkpoint_mark_checkpoint).length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
+      discipline.classes.count != 0 && marks.by_discipline(discipline).group(:checkpoint_mark_checkpoint).length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
     else
       key = true
       disciplines.each do |d|
@@ -292,21 +294,21 @@ GROUP BY `group`
   def result(discipline = nil)
    if discipline
      current = ball(discipline)
-     ball = 100*(current/discipline.current_ball)
+     ball = discipline.current_ball != 0 ? 100*(current/discipline.current_ball) : 0.0
      current_progress = current
    else
      current = ball()
-     current_progress = (disciplines.count != 0 ? (current/disciplines.count) : 0)
+     current_progress = (disciplines.size != 0 ? (current/disciplines.size) : 0)
      ball = 0
      disciplines.each do |d|
-       ball+=100*(current_progress/d.current_ball)/disciplines.size
+       ball+=100*(current_progress/d.current_ball)/disciplines.size if d.current_ball != 0
      end
    end
     if discipline and discipline.final_exam.test?
       case ball.round
         when 0..54
           {ball: current, progress: current_progress, mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}
-        when 55..100
+        when 55..Float::INFINITY
           {ball: current, progress: current_progress, mark: 'зачтено', short: 'зачёт', color: 'success', width: ball}
       end
     else

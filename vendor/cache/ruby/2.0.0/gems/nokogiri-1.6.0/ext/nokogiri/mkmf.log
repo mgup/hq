@@ -1,0 +1,680 @@
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxslt -lxml2     '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxslt -lxml2     '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main() {return 0;}
+/* end */
+
+package configuration for libxslt
+cflags: -I/usr/include/libxml2
+ldflags: 
+libs: -lxslt -lxml2
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lxslt -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main() {return 0;}
+/* end */
+
+package configuration for libxml-2.0
+cflags: -I/usr/include/libxml2
+ldflags: 
+libs: -lxml2
+
+package configuration for libiconv is not found
+find_header: checking for libxml/parser.h... -------------------- yes
+
+"gcc -E -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <libxml/parser.h>
+/* end */
+
+--------------------
+
+find_header: checking for libxslt/xslt.h... -------------------- yes
+
+"gcc -E -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <libxslt/xslt.h>
+/* end */
+
+--------------------
+
+find_header: checking for libexslt/exslt.h... -------------------- yes
+
+"gcc -E -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <libexslt/exslt.h>
+/* end */
+
+--------------------
+
+have_func: checking for iconv_open() in iconv.h... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2      -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:7:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <iconv.h>
+ 4: 
+ 5: /*top*/
+ 6: extern int t(void);
+ 7: int t(void) { void ((*volatile p)()); p = (void ((*)()))iconv_open; return 0; }
+ 8: int main(int argc, char **argv)
+ 9: {
+10:   if (argc > 1000000) {
+11:     printf("%p", &t);
+12:   }
+13: 
+14:   return 0;
+15: }
+/* end */
+
+--------------------
+
+find_library: checking for xmlParseDoc() in -lxml2... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2      -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xmlParseDoc’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xmlParseDoc; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2      -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xmlParseDoc’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xmlParseDoc(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+find_library: checking for xsltParseStylesheetDoc() in -lxslt... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xsltParseStylesheetDoc’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xsltParseStylesheetDoc; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xsltParseStylesheetDoc’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xsltParseStylesheetDoc(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+find_library: checking for exsltFuncRegister() in -lexslt... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘exsltFuncRegister’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))exsltFuncRegister; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘exsltFuncRegister’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { exsltFuncRegister(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+have_func: checking for xmlHasFeature()... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xmlHasFeature’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xmlHasFeature; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xmlHasFeature’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xmlHasFeature(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+have_func: checking for xmlFirstElementChild()... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xmlFirstElementChild’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xmlFirstElementChild; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xmlFirstElementChild’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xmlFirstElementChild(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+have_func: checking for xmlRelaxNGSetParserStructuredErrors()... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xmlRelaxNGSetParserStructuredErrors’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xmlRelaxNGSetParserStructuredErrors; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xmlRelaxNGSetParserStructuredErrors’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xmlRelaxNGSetParserStructuredErrors(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+have_func: checking for xmlRelaxNGSetParserStructuredErrors()... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xmlRelaxNGSetParserStructuredErrors’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xmlRelaxNGSetParserStructuredErrors; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xmlRelaxNGSetParserStructuredErrors’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xmlRelaxNGSetParserStructuredErrors(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+have_func: checking for xmlRelaxNGSetValidStructuredErrors()... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xmlRelaxNGSetValidStructuredErrors’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xmlRelaxNGSetValidStructuredErrors; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xmlRelaxNGSetValidStructuredErrors’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xmlRelaxNGSetValidStructuredErrors(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+have_func: checking for xmlSchemaSetValidStructuredErrors()... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xmlSchemaSetValidStructuredErrors’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xmlSchemaSetValidStructuredErrors; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xmlSchemaSetValidStructuredErrors’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xmlSchemaSetValidStructuredErrors(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+
+have_func: checking for xmlSchemaSetParserStructuredErrors()... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:57: error: ‘xmlSchemaSetParserStructuredErrors’ undeclared (first use in this function)
+conftest.c:5:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:5:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { void ((*volatile p)()); p = (void ((*)()))xmlSchemaSetParserStructuredErrors; return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I. -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include/libxml2 -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/include -I/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/include     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  -g -DXP_UNIX -O3 -Wall -Wcast-qual -Wwrite-strings -Wconversion -Wmissing-noreturn -Winline -DNOKOGIRI_USE_PACKAGED_LIBRARIES -DNOKOGIRI_LIBXML2_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0"' -DNOKOGIRI_LIBXSLT_PATH='"/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26"' -I/usr/include/libxml2 -I/usr/include/libxml2 conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxml2/2.8.0/lib -L/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -Wl,-R/home/anna/www/hq/vendor/cache/ruby/2.0.0/gems/nokogiri-1.6.0/ports/x86_64-linux-gnu/libxslt/1.1.26/lib -lxml2     -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby -lexslt -lxslt -lxml2  -lxslt -lxml2 -lxml2 -lpthread -lrt -ldl -lcrypt -lm   -lc "
+In file included from /home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby.h:33:0,
+                 from conftest.c:1:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h: In function ‘rb_float_value’:
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/ruby.h:777:6: warning: negative integer implicitly converted to unsigned type [-Wsign-conversion]
+conftest.c: In function ‘t’:
+conftest.c:5:1: warning: implicit declaration of function ‘xmlSchemaSetParserStructuredErrors’ [-Wimplicit-function-declaration]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int t(void) { xmlSchemaSetParserStructuredErrors(); return 0; }
+ 6: int main(int argc, char **argv)
+ 7: {
+ 8:   if (argc > 1000000) {
+ 9:     printf("%p", &t);
+10:   }
+11: 
+12:   return 0;
+13: }
+/* end */
+
+--------------------
+

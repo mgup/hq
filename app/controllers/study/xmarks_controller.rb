@@ -1,4 +1,4 @@
-class Study::MarksController < ApplicationController
+class Study::XMarksController < ApplicationController
   load_and_authorize_resource
 
   before_filter :find_subject
@@ -40,7 +40,7 @@ class Study::MarksController < ApplicationController
       end
       redirect_to study_subject_marks_path(@subject), notice: 'Сохранено'
     else
-      redirect_to new_study_subject_mark_path(@subject), 
+      redirect_to new_study_subject_mark_path(@subject),
       notice: 'Вы внесли не все результаты!'
     end
 
@@ -77,7 +77,7 @@ class Study::MarksController < ApplicationController
 
   def find_subject
     @subject = Study::Subject.find(params[:subject_id])
-    @students = Student.in_group_at_date( @subject.group.id, 
+    @students = Student.in_group_at_date( @subject.group.id,
       Time.new((@subject.year + 1), (@subject.in_fall? ? 1 : 6), 1))
   end
 

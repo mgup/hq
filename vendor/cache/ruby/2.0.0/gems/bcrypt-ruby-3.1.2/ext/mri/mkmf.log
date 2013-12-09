@@ -1,0 +1,23 @@
+have_header: checking for ruby/util.h... -------------------- yes
+
+"gcc -o conftest -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -Wl,-R/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -L/home/anna/.rvm/rubies/ruby-2.0.0-p247/lib -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"gcc -E -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/x86_64-linux -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0/ruby/backward -I/home/anna/.rvm/rubies/ruby-2.0.0-p247/include/ruby-2.0.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <ruby/util.h>
+/* end */
+
+--------------------
+

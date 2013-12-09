@@ -40,7 +40,7 @@
       <td><%= student[:student].id %></td>
       <td><%= student[:student].person.full_name %></td>
       <% result = student[:progress] %>
-      <td><%= result[:ball] %></td>
+      <td><%= number_with_precision(result[:ball], precision: 2) %></td>
       <td>
         <div style='width: 100px;' class="progress progress-striped">
           <div class="progress-bar progress-bar-stripped" style="width: <%= result[:progress]%>%"></div>

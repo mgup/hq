@@ -76,7 +76,9 @@ class Study::Discipline < ActiveRecord::Base
       unless checkpoint.date.future?
         l1 += (5.0/l) if checkpoint.lecture?
         p1 += (15.0/p) if checkpoint.seminar?
-        n1 += checkpoint.max if checkpoint.is_checkpoint?
+        if checkpoint.is_checkpoint?
+          n1 += (checkpoint.max? ? checkpoint.max : 0.0)
+        end
       end
     end
     (l1+p1+n1).round 2

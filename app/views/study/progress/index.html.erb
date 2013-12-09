@@ -2,11 +2,15 @@
   <h1>Успеваемость <small><%= @group.name %></small></h1>
 </div>
 <%= hidden_field_tag :progress_group, @group.id %>
-<%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name),
-                   prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
+<% if @disciplines != [] %>
+  <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name),
+                     prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
 
-<br>
-<div id="for_student_progress">
-  <%= render(partial: 'discipline',
-             locals: { students: @discipline_students.sort_by{|s| s[:progress][:ball]}.reverse, group: @group, discipline: nil }) %>
-</div>
+  <br>
+  <div id="for_student_progress">
+    <%= render(partial: 'discipline',
+               locals: { students: @discipline_students.sort_by{|s| s[:progress][:ball]}.reverse, group: @group, discipline: nil }) %>
+  </div>
+<% else %>
+  <p class="text-primary">Группа не участвует в балльно-рейтинговой системе</p>
+<% end %>
