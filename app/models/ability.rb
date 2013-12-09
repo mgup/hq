@@ -69,14 +69,16 @@ class Ability
     can :manage, :progress_group
   end
 
+  # Обычный преподаватель.
   def lecturer(user)
     can :manage, Study::Discipline
     can :manage, Study::Checkpoint
     can :manage, Study::Mark
 
-    can :manage, [Achievement], user_id: user.id
+    can :manage, [Achievement, AchievementReport], user_id: user.id
   end
 
+  # Заведующий кафедрой.
   def subdepartment(user)
     lecturer(user)
   end

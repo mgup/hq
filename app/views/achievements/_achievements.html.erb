@@ -20,7 +20,8 @@
             <%= activity_credit_description(a.activity) %>
           </td>
           <td class="no-border-top">
-            <%= link_to achievement_path(a, period: a.period.id), method: :delete, confirm: 'Вы уверены?', class: 'text-danger' do %>
+            <%= link_to achievement_path(a, period: a.period.id), method: :delete,
+                        confirm: 'Вы уверены?', class: 'text-danger' do %>
               Удалить
             <% end %>
           </td>
@@ -32,9 +33,23 @@
       <th class="text-right">
         Всего подано на утверждение:
       </th>
-      <th colspan="2">
+      <th colspan="2" style="white-space: nowrap;">
         <%= achievements_credits(@achievements) %>
       </th>
     </tr>
   </table>
+
+  <%= form_for AchievementReport.new, class: 'form-horizontal' do |f| %>
+    <%= f.hidden_field :achievement_period_id, value: @achievements.first.period.id %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field :relevant, value: 1 %>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <%= f.submit 'Закончить формирование отчёта об эффективности',
+                     class: 'btn btn-primary pull-right',
+                     confirm: 'Вы всё внимательно проверили?' %>
+      </div>
+    </div>
+  <% end %>
 <% end %>
