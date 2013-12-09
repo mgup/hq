@@ -13,7 +13,7 @@ $ ->
       value = if $(this).parents('table').data('value') == 3 then parseInt($(this).parents('tr').find('.value').val()) else $(this).parents('tr').find('label.active').find('input').val()
       condition = if $(this).parents('table').data('value') == 3 then ( value >= 0 && value <= parseInt($('body').find('.maxValue').text())) else true
       if condition
-        $.getJSON (root+ $('form.marks').attr('action') + '/marks/' + mark + '/ajax_update'),{
+        $.getJSON ($('form.marks').attr('action') + '/marks/' + mark + '/ajax_update'),{
           'mark': value
         }, (mark) ->
           btn.parents('tr').removeClass('warning')

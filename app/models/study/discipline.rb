@@ -85,12 +85,13 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   def is_active?
-    case CURRENT_STUDY_TERM
-      when 1
-        year == CURRENT_STUDY_YEAR || (year == CURRENT_STUDY_YEAR - 1 && semester == 2)
-      when 2
-        year == CURRENT_STUDY_YEAR
-    end
+    year == CURRENT_STUDY_YEAR
+    #case CURRENT_STUDY_TERM
+    #  when 1
+    #    year == CURRENT_STUDY_YEAR || (year == CURRENT_STUDY_YEAR - 1 && semester == 2)
+    #  when 2
+    #    year == CURRENT_STUDY_YEAR
+    #end
   end
 
   def brs?
