@@ -5,3 +5,5 @@ $('#a<%= @achievement.activity.id %>_new_achievement').toggle('highlight');
 <% if @achievement.activity.unique? %>
   $('a[data-activity=<%= @achievement.activity.id %>]').attr('disabled', 'disabled');
 <% end %>
+
+$('#a<%= @achievement.activity.id %>_achievement_description').val('');
