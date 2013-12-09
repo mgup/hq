@@ -8,5 +8,5 @@
 <br>
 <div id="for_student_progress">
   <%= render(partial: 'discipline',
-  locals: { students: @discipline_students.sort_by{|s| s[:ball]}.reverse, group: @group, discipline: @discipline }) %>
+  locals: { students: @discipline_students.sort_by{|s| s[:progress][:ball]}.reverse, group: @group, discipline: @discipline }) %>
 </div>
