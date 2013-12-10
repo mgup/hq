@@ -5,7 +5,7 @@ ru:
     attributes:
       user:
         user_name: 'имя (старая версия)'
-        username: 'имя для входа'
+        username: 'логин'
         email: 'электронная почта'
         phone: 'мобильный телефон'
         password: 'пароль'
