@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131209124618) do
+ActiveRecord::Schema.define(version: 20131210062601) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -1261,6 +1261,7 @@ ActiveRecord::Schema.define(version: 20131209124618) do
     t.text    "support_paddress",                               null: false
     t.text    "support_pphone",                                 null: false
     t.boolean "accepted",                       default: false
+    t.boolean "deferred",                       default: false
   end
 
   create_table "support_cause", primary_key: "support_cause_id", force: true do |t|

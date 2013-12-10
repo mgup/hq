@@ -67,4 +67,8 @@ class My::Support < ActiveRecord::Base
   def accepted?
     accepted
   end
+
+  def deferred?
+    deferred
+  end
 end
