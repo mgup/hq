@@ -18,7 +18,7 @@ role :app, 'matrix2.mgup.ru'
 role :db,  'matrix2.mgup.ru', :primary => true
 
 set :normalize_asset_timestamps, false
-#set :asset_env, "#{asset_env} RAILS_RELATIVE_URL_ROOT=/hq"
+set :asset_env, "#{asset_env} RAILS_RELATIVE_URL_ROOT=/"
 
 before 'deploy:restart', 'deploy:migrate'
 after 'deploy:restart', 'deploy:cleanup'
