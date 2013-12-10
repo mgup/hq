@@ -1,0 +1,27 @@
+<div class="modal fade" id="preventionSupport" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Регистрация заявления</h4>
+      </div>
+      <div class="modal-body">
+        <%= student.person.first_name %>, в связи с вашим выбором причин в заявлении вам
+        придется предоставить в Центр социальной поддержки и воспитательной работы (каб. 1220)
+        следующие документы:
+        <ul>
+          <li>копия паспорта (страницы 2-3 и 4-5)</li>
+          <% options.each do |option| %>
+            <% option.cause.reasons.each do |reason| %>
+              <li><%= reason.pattern %></li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <%= f.submit 'Зарегистрировать заявление', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+</div>

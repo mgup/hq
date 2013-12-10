@@ -18,10 +18,15 @@
     </ul>
   </div>
   <div class="col-sm-2">
-    <% unless application.accepted? %>
+    <% unless application.accepted? or application.deferred? %>
       <%= form_for application, url: student_support_path(application.student, application) do |f| %>
         <%= f.hidden_field :accepted, value: 1 %>
         <%= f.submit 'Принять', class: 'btn btn-default btn-sm' %>
+      <% end %>
+
+      <%= form_for application, url: student_support_path(application.student, application) do |f| %>
+        <%= f.hidden_field :deferred, value: 1 %>
+        <%= f.submit 'Не принимать', class: 'btn btn-default btn-sm' %>
       <% end %>
 
       <br>

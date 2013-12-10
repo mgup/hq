@@ -15,6 +15,10 @@ class Social::ApplicationsController < ApplicationController
       @applications = @applications.where(accepted: true)
     end
 
+    if params[:deferred]
+      @applications = @applications.where(deferred: true)
+    end
+
     params[:causes] ||= []
     params[:strict] ||= 0
     unless params[:causes].empty?
@@ -38,6 +42,10 @@ class Social::ApplicationsController < ApplicationController
 
     if params[:accepted]
       @applications = @applications.where(accepted: true)
+    end
+
+    if params[:deferred]
+      @applications = @applications.where(deferred: true)
     end
 
     params[:lists] ||= []

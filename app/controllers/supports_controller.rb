@@ -61,7 +61,7 @@ class SupportsController < ApplicationController
   def resource_params
     params.fetch(:my_support, {}).permit(:support_student, :year, :month, :series,
                                          :number, :date, :department, :birthday,
-                                         :address, :phone, :accepted)
+                                         :address, :phone, :accepted, :deferred)
   end
 
 

@@ -43,6 +43,11 @@
           <%= check_box_tag :accepted, '1', '1' == params[:accepted] %> Только принятые заявления
         </label>
       </div>
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :deferred, '1', '1' == params[:deferred] %> Только непринятые заявления
+        </label>
+      </div>
     </div>
 
     <div class="col-sm-4">

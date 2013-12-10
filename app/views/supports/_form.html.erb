@@ -69,7 +69,12 @@
 
   <div class='row'>
     <div class='col col-lg-10 col-offset-2'>
-      <%= f.submit 'Зарегистрировать заявление', class: 'btn btn-primary' %>
+      <% if @support %>
+        <%= f.submit 'Зарегистрировать заявление', class: 'btn btn-primary' %>
+      <% else %>
+        <%= link_to 'Зарегистрировать заявление', '#preventionSupport', data: {toggle: 'modal'}, class: 'btn btn-primary' %>
+        <%= render partial: 'support_modal', locals: {student: @student, options: @support.options, f: f} %>
+      <% end %>
     </div>
   </div>
 <% end %>
