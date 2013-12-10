@@ -1,0 +1,255 @@
+<%= form_for @student do |f| %>
+  <h3>Шаг 1: ФИО студента и персональные данные</h3>
+  <fieldset>
+    <legend>Персональная информация</legend>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%=label_tag :student_name, 'Ф.И.О' %>
+      </div>
+      <div class='col-lg-8'>
+        <a data-toggle="modal" data-target="#studentnameModal" class="btn btn-default"><%= @student.person.full_name != nil ? @student.person.full_name : 'Требуется ввести ФИО' %></a>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_birthday, 'Дата рождения' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :birthday, class: 'form-control datepicker', placeholder: '21.09.1992', pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]'%>
+        <p class="help-block">В формате ДД.ММ.ГГГГ</p>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_gender, 'Пол студента' %>
+      </div>
+      <div class='col-lg-8'>
+        <label class="radio" for="student-gender-1">
+          <%= f.radio_button :gender, value: 1, id: 'student-gender-1'%> Мужской
+        </label>
+        <label class="radio" for="student-gender-0">
+          <%= f.radio_button :gender, value: 0, id: 'student-gender-0' %> Женский
+        </label>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Контактная информация</legend>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_email, 'Электронная почта' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :email, class: 'form-control' %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_phone_home, 'Домашний телефон' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :phone_home, class: 'form-control' %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_phone_mobile, 'Мобильный телефон' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :phone_mobile, class: 'form-control' %>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Паспортные данные</legend>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_foreign, 'Иностранный студент' %>
+      </div>
+      <div class='col col-lg-2'>
+        <%= f.check_box :foreign, value: 1 %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_pseries, 'Серия паспорта' %>
+      </div>
+      <div class='col col-lg-2'>
+        <%= f.text_field :pseries, class: 'form-control'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_pnumber, 'Номер паспорта' %>
+      </div>
+      <div class='col col-lg-3'>
+        <%= f.text_field :pnumber, class: 'form-control'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_pdate, 'Когда выдан' %>
+      </div>
+      <div class='col col-lg-3'>
+        <%= f.text_field :pdate, class: 'form-control datepicker', pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_pdepartment, 'Кем выдан' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :pdepartment, class: 'form-control'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_pcode, 'Код подразделения' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :pcode, class: 'form-control'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_registration_zip, 'Регистрация (индекс)' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :registration_zip, class: 'form-control', placeholder: '123123'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_registration_address, 'Регистрация (адрес)' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :registration_address, class: 'form-control'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_residence_zip, 'Прописка (индекс)' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :residence_zip, class: 'form-control', placeholder: '123123'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_residence_address, 'Прописка (адрес)' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :residence_address, class: 'form-control'%>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Информация, связанная с общежитием</legend>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_homeless, 'Нуждается ли в общежитии' %>
+      </div>
+      <div class='col col-lg-2'>
+        <%= f.check_box :homeless, value: 1 %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_region, 'Регион, откуда прибыл' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.select :region, options_for_select: [[1, 'Москва'], [2, 'Московская область'], [3, 'Россия'], [4, 'Другие государства']], class: 'form-control'%>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Информация для ВУС</legend>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_army, 'Воинская обязанность' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.select :army, options_for_select: [[0, 'Невоеннообязанный'], [1, 'Призывник'], [2, 'В запасе'], [3, 'Военнослужащий'], [4, 'Неизвестно']], class: 'form-control'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_army_voenkom, 'Название военкомата' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :army_voenkom, class: 'form-control'%>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Информация для профкома</legend>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_profkom, 'Профсоюзный билет' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :profkom, class: 'form-control'%>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col col-lg-2'>
+        <%= label_tag :student_ticket, 'Номер проездного' %>
+      </div>
+      <div class='col col-lg-6'>
+        <%= f.text_field :ticket, class: 'form-control'%>
+      </div>
+    </div>
+  </fieldset>
+  <%= f.submit 'Создать', class: 'btn btn-primary' %>
+
+  <!-- Modal -->
+  <div class="modal fade in" id="studentnameModal">
+    <div class="modal-dialog">
+      <div class="modal-content" style='width: 700px; padding: 20px; right: 14%;'>
+        <div class="modal-header">
+          <button type="button" class="close btn btn-default" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">ФИО</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col col-lg-10 col-lg-offset-2">
+              <div class="form-group">
+                <div class="col col-lg-4 text-center">
+                  <label class="control-label" for="user_last_name_ip">Фамилия</label>
+                </div>
+                <div class="col col-lg-4 text-center">
+                  <label class="control-label" for="user_first_name_ip">Имя</label>
+                </div>
+                <div class="col col-lg-4 text-center">
+                  <label class="control-label" for="user_patronym_ip">Отчество</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% [[:ip, 'Кто? Что?'], [:rp, 'Кого? Чего?'], [:dp, 'Кому? Чему?'],
+              [:vp, 'Кого? Что?'], [:tp, 'Кем? Чем?'], [:pp, 'О ком? О чём?']].each do |p| %>
+            <div class="form-group">
+              <label class="col col-lg-2 control-label" for="user_last_name_<%= p[0] %>"><%= p[1] %></label>
+              <div class="col col-lg-10">
+                <div class="form-group">
+                  <% [:fname, :iname, :oname].each do |name| %>
+                    <div class="col col-lg-4 <%= 'has-error' if @user.errors.include?(name) %>">
+                      <%= f.fields_for name do |sub_f| %>
+                        <%= sub_f.text_field p[0], required: true, class: 'form-control' %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= submit_tag 'Сохранить', class: 'btn btn-primary', id: 'modalForName' %>
+          <a href="#" class="btn btn-default" data-dismiss="modal">Закрыть</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

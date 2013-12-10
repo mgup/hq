@@ -1,0 +1,11 @@
+<h2>
+  Routes
+</h2>
+
+<p>
+  Routes match in priority from top to bottom
+</p>
+
+<%= render layout: "route_wrapper" do %>
+  <%= render partial: "route", collection: @routes %>
+<% end %>

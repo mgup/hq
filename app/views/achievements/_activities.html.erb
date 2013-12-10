@@ -1,0 +1,39 @@
+<div class="panel-group" id="activities_accordeon">
+  <% @groups.each do |activity_group, activities| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#activities_accordeon"
+             href="#collapse<%= activities[0].activity_group_id %>">
+            <%= activity_group %>
+          </a>
+        </h4>
+      </div>
+      <div id="collapse<%= activities[0].activity_group_id %>" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table table-striped">
+            <% activities.each do |a| %>
+              <tr>
+                <td style="width: 100%;">
+                  <p><%= a.name %></p>
+                  <p>
+                    <small><%= a.description %></small>
+                  </p>
+
+                  <%= render partial: 'activity_form', locals: { period: @period, activity: a } %>
+                </td>
+                <td>
+                  <%= link_to '#',
+                              class: 'btn btn-default add-activity',
+                              data: { activity: a.id }, disabled: @achievements.any? { |achiv| a.unique? && achiv.activity == a } do %>
+                    <span class="glyphicon glyphicon-check"></span> Выполнено
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

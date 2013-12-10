@@ -1,0 +1,7 @@
+<div class='page-header'>
+  <h1>Заявление # <%= @support.id %> <%= @student.person.full_name(:rp) %> <small><%= @student.group.name %></small></h1>
+</div>
+
+<p class='lead'>Прошу предоставить мне материальную помощь в связи с тем, что:</p>
+
+<%= render 'form' %>

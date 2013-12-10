@@ -1,0 +1,14 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
+  wb.add_worksheet(name: "Заполнение БРС на #{Date.today.strftime("%d.%m.%Y")}") do |sheet|
+    sheet.add_row ['№', 'Номер заявления', 'Табельный номер студента', 'Фамилия', 'Имя', 'Отчество', 'Группа', 'Номера причин', 'Причины']
+    sheet["A1:I1"].each do |cell|
+      cell.style = style_shout
+    end
+
+    @applications.each_with_index do |a, index|
+      sheet.add_row ["#{index+1}", "#{a.id}", "#{a.student.id}",  "#{a.student.person.last_name}",
+                     "#{a.student.person.first_name}", "#{a.student.person.patronym}",
+                     "#{a.student.group.name}", "#{a.options.collect{|o| "[#{o.cause.id}]" }.join(', ')}", "#{a.options.collect{|o| o.cause.title }.join(', ')}"]
+    end
+end

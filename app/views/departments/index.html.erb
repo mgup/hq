@@ -1,7 +1,3 @@
-<ul class="breadcrumb">
-  <li class="active">Структура</li>
-</ul>
-
 <div class="page-header">
   <h1>Структура</h1>
 </div>
@@ -20,7 +16,7 @@
     </thead>
     <tbody>
     <%= render partial: 'rows',
-               locals: { departments: Department.only_main, level: 1 } %>
+               locals: { departments: @departments, level: 1 } %>
     </tbody>
   </table>
 

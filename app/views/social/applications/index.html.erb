@@ -1,0 +1,90 @@
+<div class="page-header">
+  <h1>Заявления на материальную помощь</h1>
+</div>
+
+<%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+  <div class="form-group">
+    <div class="col-sm-2">
+      <%= select_tag :year,
+                     options_for_select((2013..Date.today.year).to_a, params[:year]),
+                     class: 'form-control' %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :month,
+                     options_for_select(
+                         (1..12).map { |m| [t('date.standalone_month_names')[m], m] },
+                         params[:month].to_i
+                     ),
+                     class: 'form-control' %>
+    </div>
+    <div class="col-sm-6">
+      <%= text_field_tag :last_name, params[:last_name], class: 'form-control',
+                         placeholder: 'Фамилия студента' %>
+    </div>
+    <div class="col-sm-2">
+      <%= submit_tag 'Поиск', class: 'btn btn-primary form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-12">
+      <%= multiselect_tag :causes, title: 'Причины', collection: My::SupportCause.all,
+                          value: :id, text: :title, current: params[:causes].map(&:to_i),
+                          pl1: 'Выбрана %c причина',
+                          pl2: 'Выбраны %c причины',
+                          pl5: 'Выбрано %c причин' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :accepted, '1', '1' == params[:accepted] %> Только принятые заявления
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :deferred, '1', '1' == params[:deferred] %> Только непринятые заявления
+        </label>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :strict, '1', '1' == params[:strict], disabled: true %> Только строгое совпадение причин
+        </label>
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <%= link_to 'Списки', lists_social_applications_path, class: 'btn btn-info' %>
+    </div>
+  </div>
+<% end %>
+
+<%= paginate @applications, total_count: @applications.total_count %>
+
+<% unless @applications.empty? %>
+  <div class="row lead">
+    <div class="col-sm-1">
+      #
+    </div>
+    <div class="col-sm-4">
+      Студент
+    </div>
+    <div class="col-sm-5">
+      Причины
+    </div>
+    <div class="col-sm-2">
+
+    </div>
+  </div>
+<% else %>
+  <p class="lead">Нет ни одного заявления.</p>
+<% end %>
+
+<%= render partial: 'application', collection: @applications %>
+
+<%= paginate @applications, total_count: @applications.total_count %>

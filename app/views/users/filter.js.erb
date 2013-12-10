@@ -1,0 +1,4 @@
+$('#for_users').empty();
+$('#user-paginator').empty();
+$('#for_users').html("<%= escape_javascript (render(partial: 'after_filter',
+locals: { users: @users })).html_safe %>");

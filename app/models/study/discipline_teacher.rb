@@ -1,7 +1,7 @@
 class Study::DisciplineTeacher < ActiveRecord::Base
 self.table_name = 'subject_teacher'
 
-alias_attribute :id,            :subject_teacher_id
+#alias_attribute :id,            :subject_teacher_id
 alias_attribute :teacher,       :teacher_id
 alias_attribute :discipline,    :subject_id
 

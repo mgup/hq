@@ -19,6 +19,7 @@ class Study::DisciplinesController < ApplicationController
   #def show ; end
 
   def create
+    #raise params.inspect
     authorize! :create, Study::Discipline
     @discipline = Study::Discipline.new(resource_params)
     if @discipline.save
@@ -48,12 +49,18 @@ class Study::DisciplinesController < ApplicationController
   def edit
     detect_lead_teacher
     load_user_colleagues
+    @faculty = @discipline.group.speciality.faculty
+    @speciality = @discipline.group.speciality
   end
 
   def update
     authorize! :update, Study::Discipline
     if @discipline.update(resource_params)
-      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+      #if params.include?(:plan)
+      #  redirect_to study_plans_updatediscipline_path
+      #else
+        redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+      #end
     else
       if resource_params.include?(:checkpoints_attributes)
         # Идёт редактирование контрольных точек — возвращаем туда.
@@ -77,12 +84,15 @@ class Study::DisciplinesController < ApplicationController
   def print_group
     authorize! :manage, Study::Discipline
     @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
+    respond_to do |format|
+      format.pdf
+    end
   end
 
 
   def resource_params
     params.fetch(:study_discipline, {}).permit(
-        :subject_year, :subject_semester, :group, :subject_group, :subject_name,
+        :subject_year, :subject_brs, :subject_semester, :group, :subject_group, :subject_name,
         :subject_teacher, final_exam_attributes: [:id, :exam_type, :exam_weight],
         discipline_teachers_attributes: [:id, :teacher_id, :'_destroy'],
         lectures_attributes: [:id, :checkpoint_date, :'_destroy'],
@@ -93,6 +103,29 @@ class Study::DisciplinesController < ApplicationController
     )
   end
 
+  def print_disciplines
+    authorize! :index, :disciplines
+    @disciplines = ActiveRecord::Base.connection.execute("
+    SELECT department_sname AS `Кафедра`, CONCAT_WS('-', group_name, group_course, group_number) AS `Группа`,
+       subject_name AS `Дисциплина`, CASE WHEN user_name IS NULL or user_name = '' THEN CONCAT_WS(' ',
+                        (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_fname = dictionary.dictionary_id LIMIT 1),
+                        (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_iname = dictionary.dictionary_id LIMIT 1),
+                        (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_oname = dictionary.dictionary_id LIMIT 1))
+                        ELSE user_name END AS `Преподаватель`, COUNT(checkpoint_id) AS `Занятий`,
+    (SELECT COUNT(*) FROM checkpoint WHERE checkpoint_subject = subject_id AND checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}') AS `Прошло занятий`,
+    (SELECT COUNT(*) FROM checkpoint WHERE checkpoint_subject = subject_id AND checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}' AND (SELECT COUNT(*) FROM checkpoint_mark WHERE checkpoint_mark_checkpoint = checkpoint_id > 0) AND (SELECT COUNT(DISTINCT checkpoint_mark_student) FROM checkpoint_mark WHERE checkpoint_mark_checkpoint = checkpoint_id) >= (SELECT COUNT(*) FROM student_group WHERE student_group_group = group_id AND student_group_status = '101')) AS `Оценки`
+    FROM subject JOIN user ON user_id = subject_teacher JOIN
+    department ON department_id = user.user_department JOIN `group` ON group_id = subject_group JOIN checkpoint ON checkpoint_subject =
+    subject_id WHERE subject_year = #{Study::Discipline::CURRENT_STUDY_YEAR} AND subject_semester = #{Study::Discipline::CURRENT_STUDY_TERM} GROUP BY
+    subject_id ORDER BY department_sname ASC, group_course ASC, group_name ASC, group_number ASC, subject_name ASC;
+")
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] = 'attachment; filename="' + "Заполнение БРС на #{Date.today.strftime("%d.%m.%Y")}.xlsx" + '"'
+      }
+    end
+  end
+
   private
 
   def load_user_discipline
@@ -100,7 +133,7 @@ class Study::DisciplinesController < ApplicationController
   end
 
   def load_user_disciplines
-    @disciplines = Study::Discipline.include_teacher(current_user)
+    @disciplines = Study::Discipline.with_brs.include_teacher(current_user).order(:subject_name, :subject_group)
   end
 
   def detect_lead_teacher

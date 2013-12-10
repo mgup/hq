@@ -1,0 +1,80 @@
+<%= nested_form_for @exam, url: study_discipline_exam_path(@discipline, @exam),
+                    method: :patch, html: { class: 'form-horizontal marks', role: 'form'} do |f| %>
+  <div class="form-group">
+    <%= f.label :group, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @discipline.group.name %></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :discipline, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @discipline.name %></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :date, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= l @exam.date %></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :type, class: 'control-label col-sm-3' %>
+    <div class="col-sm-9">
+      <p class="form-control-static"><%= @exam.name %></p>
+    </div>
+  </div>
+
+  <table class="table table-hover">
+    <tr>
+      <th class="text-muted">#</th>
+      <th>Студент</th>
+      <th>Баллы</th>
+      <th>Результат</th>
+    </tr>
+  <% @discipline.group.students.each do |student| %>
+    <tr>
+      <td class="text-muted"><%= student.id %></td>
+      <td><%= student.person.full_name %></td>
+
+      <% final_mark = @exam.final_marks.by_student(student).last %>
+      <% rating_mark = @exam.rating_marks.by_student(student).last %>
+      <% if rating_mark == nil %>
+        <td><%= render 'rating_marks_fields',
+                        f: f, student: student %></td>
+      <% else %>
+        <td><p class="form-control-static"><%= rating_mark.value %></p>
+          <div class="editMarkField hidden">
+            <br>
+            <%= render 'rating_marks_fields',
+                       f: f, student: student %>
+          </div>
+        </td>
+      <% end %>
+      <% if final_mark == nil %>
+        <td>
+          <%= render 'final_marks_fields',
+                     f: f, student: student.id %>
+        </td>
+      <% else %>
+        <td>
+          <span  class="label label-<%= mark.mark < @checkpoint.min ? 'danger' : 'success' %>"><%= mark.mark %> из <%= @checkpoint.max %></span>
+          <div class="editMarkField hidden">
+            <br>
+            <%= render 'final_marks_fields',
+                       f: f, student: student.id %>
+          </div>
+        </td>
+        <!--<td><button class="btn btn-default editMarkButton">Редактировать</button></td>-->
+      <% end %>
+    </tr>
+  <% end %>
+  </table>
+  <div class="col-sm-3 col-sm-offset-4">
+    <%= f.submit 'Внести результаты', class: 'btn btn-primary' %>
+  </div>
+
+<% end %>

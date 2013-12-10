@@ -1,7 +1,8 @@
 class Person < ActiveRecord::Base
+  include Nameable
+
   MALE = true
   FEMALE = false
-  include Nameable
 
   self.table_name = 'student'
 
@@ -27,31 +28,62 @@ class Person < ActiveRecord::Base
     FEMALE == student_gender
   end
 
-  #trigger.after(:insert) do
-  #   %q(
-  #     UPDATE student
-  #     INNER JOIN dictionary fname ON student_fname = fname.dictionary_id
-  #     INNER JOIN dictionary iname ON student_iname = iname.dictionary_id
-  #     INNER JOIN dictionary oname ON student_oname = oname.dictionary_id
-  #     SET student.last_name_hint = fname.dictionary_ip,
-  #         student.first_name_hint = iname.dictionary_ip,
-  #         student.patronym_hint = oname.dictionary_ip
-  #     WHERE student.student_id = NEW.student_id;
-  #   )
-  #end
+  trigger.before(:insert) do
+    %q(
+         SET
+            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_fname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_iname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_oname = dictionary.dictionary_id
+                                  LIMIT 1)
+       )
+  end
 
-  #trigger.after(:update) do |t|
-  #   t.where('OLD.student_fname != NEW.student_fname OR OLD.student_iname != NEW.student_iname OR OLD.student_oname != NEW.student_oname') do
-  #     %q(
-  #       UPDATE student
-  #       INNER JOIN dictionary fname ON student_fname = fname.dictionary_id
-  #       INNER JOIN dictionary iname ON student_iname = iname.dictionary_id
-  #       INNER JOIN dictionary oname ON student_oname = oname.dictionary_id
-  #       SET student.last_name_hint = fname.dictionary_ip,
-  #           student.first_name_hint = iname.dictionary_ip,
-  #           student.patronym_hint = oname.dictionary_ip
-  #       WHERE student.student_id = NEW.student_id;
-  #     )
-  #   end
-  #end
+  trigger.before(:update) do |t|
+    t.where('NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
+             NEW.student_oname <> OLD.student_oname') do
+      %q(
+         SET
+            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_fname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_iname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN student ON NEW.student_oname = dictionary.dictionary_id
+                                  LIMIT 1)
+       )
+    end
+  end
+
+
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.person {
+        xml.id_   id
+        %w(last_name first_name patronym).each do |name|
+          xml.send(name) {
+            %w(ip rp dp vp tp pp).each do |form|
+              xml.send("#{form}_", self.send(name, form.to_sym))
+            end
+          }
+        end
+      }
+    }.doc
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
 end

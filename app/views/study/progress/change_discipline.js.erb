@@ -1,0 +1,2 @@
+$('#for_student_progress').html("<%= escape_javascript (render(partial: 'discipline',
+locals: { students: @discipline_students.sort_by{|s| s[:ball]}.reverse, group: @group, discipline: @discipline })).html_safe %>")

@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+      study/exam: 'итоговый контроль'
+    attributes:
+      study/exam:
+        group: 'группа'
+        discipline: 'дисциплина'
+        date: 'дата проведения'
+        ype: 'форма контроля'

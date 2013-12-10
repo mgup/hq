@@ -2,7 +2,7 @@ class StudentsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @students = @students.filter(params).page(params[:page])
+    @students = @students.includes([:person, :group]).filter(params).page(params[:page])
 
     #@students = Student.in_group_at_date 35, '2013-02-24'
     #@students = Student.in_group_at_date 547, '2011-02-24'
@@ -13,17 +13,37 @@ class StudentsController < ApplicationController
 
   end
 
+  def documents
+    @student = Student.find(params[:student_id])
+  end
+
+  def new
+
+  end
+
   def update
-    if @student.update(student_params)
+    if params[:student][:ciot_password]
+      @student.ciot_password =  params[:student][:ciot_password]
+      @student.ciot_login =  params[:student][:ciot_login]
+      @student.save
       redirect_to @student
-    else
-      render action: :show
+    end
+    #if @student.update_attributes(resource_params)
+    #  redirect_to @student
+    #else
+    #  render action: :show
+    #end
+  end
+
+  def reference
+    @student = Student.valid_for_today.find(params[:id])
+
+    respond_to do |format|
+      format.pdf
     end
   end
 
-  private
-
-  def student_params
+  def resource_params
     params.require(:students)
   end
 end

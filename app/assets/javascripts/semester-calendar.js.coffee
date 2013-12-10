@@ -1,7 +1,10 @@
 $ ->
   # Лекции
   $('.lecture_fields .date').each (index, el) ->
-    $('.lectures .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
+    if 'disabled' == $(el).attr('disabled')
+      $('.lectures .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('danger')
+    else
+      $('.lectures .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
 
   $(document).on 'nested:fieldAdded:lectures', (event) ->
     date_field = event.field.find('.date')
@@ -26,7 +29,10 @@ $ ->
 
   # Практические и лабораторные занятия
   $('.seminar_fields .date').each (index, el) ->
-    $('.seminars .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
+    if 'disabled' == $(el).attr('disabled')
+      $('.seminars .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('danger')
+    else
+      $('.seminars .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
 
   $(document).on 'nested:fieldAdded:seminars', (event) ->
     date_field = event.field.find('.date')
@@ -51,7 +57,10 @@ $ ->
 
   # Контрольные точки
   $('.checkpoint_fields .date').each (index, el) ->
-    $('.checkpoints .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
+    if 'disabled' == $(el).attr('disabled')
+      $('.checkpoints .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('danger')
+    else
+      $('.checkpoints .semester-calendar td[data-date="' + $(el).val() + '"]').addClass('success')
 
   $(document).on 'nested:fieldAdded:checkpoints', (event) ->
     date_field = event.field.find('.date')

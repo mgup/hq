@@ -1,5 +1,9 @@
 HQ::Application.routes.draw do
-  devise_for :users, skip: :registrations
+  devise_for :users, controllers: { registrations: 'users' }
+    as :user do
+      get 'user/edit' => 'devise/registrations#edit', as: 'user_profile'
+      put 'user/user_update' => 'devise/registrations#update'
+    end
   devise_for :students
 
   # Мониторинг состояния сервера.
@@ -8,23 +12,49 @@ HQ::Application.routes.draw do
   get 'utility/morpher'
 
   get '/password' => 'password#index'
+  get '/ciot(/:page)', to: 'ciot#index'
 
   resources :roles
-  resources :users
-  get '/users/:id/profile' => 'users#profile'
-  resources :departments
-  resources :positions
+  resources :users do
+    get 'see_with_eyes' => 'users#see_with_eyes', as: :see_with_eyes
+    get 'medical_requests.pdf', to: 'users#medical_requests', on: :collection, defaults: { format: 'pdf' }
+  end
+  get 'users_filter' => 'users#filter'
 
-  resources :students
+  resources :departments do
+    post 'combine', on: :member
+  end
+
+  resources :positions
+  resources :appointments
+
+  resources :groups do
+    get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
+  end
+
+  resources :students do
+    get 'documents' => 'students#documents'
+    resources :supports
+    get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
+
+    get 'reference', on: :member, defaults: { format: :pdf }
+  end
+  get '/students/list(/:page)', to: 'students#index'
 
   resources :specialities
 
   namespace :study do
     resources :disciplines do
       get 'print_group.pdf', to: 'disciplines#print_group', defaults: { format: 'pdf' }, as: :print_group
+      get 'print_disciplines.xlsx', to: 'disciplines#print_disciplines', on: :collection, defaults: { format: 'xlsx' }, as: :print_disciplines
       match 'download_group',  to: 'checkpoints#download_pdf', via: [:get, :post]
       resources :checkpoints do
-        resources :marks
+        resources :marks do
+          get 'ajax_update', to: 'marks#ajax_update', on: :member
+        end
+      end
+      resources :exams do
+        get '/print.pdf', to: 'exams#print', defaults: { format: 'pdf' }, as: :print
       end
     end
 
@@ -36,48 +66,89 @@ HQ::Application.routes.draw do
 
     resources :groups, path:  '/group' do
       get '/progress' => 'progress#index'
-      get '/progress/discipline/:id' => 'progress#discipline'
+      get '/progress/discipline/:discipline' => 'progress#discipline', as: :discipline
+      get '/progress/change_discipline' => 'progress#change_discipline'
+      get '/print_progress.pdf', to: 'progress#print_progress', defaults: { format: 'pdf' }, as: :print_progress
       resources :students, path:  '/student'
-      get '/student/:id/discipline/:discipline' => 'students#discipline'
+      get '/student/:id/discipline/:discipline' => 'students#discipline', as: :progress_discipline
     end
+
+    get '/plans' => 'plans#index'
+    get '/plans/add_discipline' => 'plans#add_discipline'
+    get '/plans/edit_discipline' => 'plans#edit_discipline'
+    get '/plans/repeat' => 'plans#repeat'
+    get '/plans/:exam_id/updatedate' => 'plans#updatedate'
+    get '/plans/updatediscipline' => 'plans#updatediscipline'
   end
 
   namespace :my do
-    resource :student, path:  '/student' do
+    resource :student do
+
       get '/progress' => 'progress#index'
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'
-      resources :supports 
-      match 'download_support', to: 'supports#download_pdf', via: [:get, :post] 
       resources :selects
-      match 'download_select', to: 'selects#download_pdf', via: [:get, :post]
+      get 'download_pdf.pdf', to: 'selects#download_pdf', defaults: { format: 'pdf' }, as: :student_selects
+      #get '/social/download_pdf.pdf', to: 'socials#download_pdf', defaults: { format: 'pdf' }, as: :student_social
+      #get '/social' => 'socials#new'
     end
   end
 
-  namespace :office do
-    resources :orders
+  namespace :social do
+    resources :applications do
+      get 'lists', to: 'applications#lists', on: :collection
+      get 'print_list.xlsx', to: 'applications#print_list', on: :collection, defaults: { format: 'xlsx' }, as: :print_list
+    end
+
+    #resources :supports
+    #get '/support/claims' => 'supports#claims'
   end
+
+  namespace :office do
+    resources :orders do
+      get 'drafts', to: 'orders#drafts', on: :collection
+      get 'underways', to: 'orders#underways', on: :collection
+    end
+    get 'orders/new(/:page)', to: 'orders#new', defaults: { page: 1 }
+
+    resources :order_templates do
+      resources :order_blanks
+    end
+  end
+
+  namespace :finance do
+    resources :payment_types, path:  '/price'
+    get '/prices_filter' => 'payment_types#prices_filter'
+    get 'print_prices.xlsx', to: 'payment_types#print_prices', defaults: { format: 'xlsx' }, as: :print_prices
+  end
+
+  resources :activity_groups
+  resources :activity_types
+  resources :activity_credit_types
+  resources :activities
+
+  resources :achievement_periods
+  resources :achievements do
+    get 'periods', on: :collection
+  end
+  resources :achievement_reports
 
   get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
 
   get 'schedule/data/departments' => 'schedule/data#departments'
   get 'schedule/data/rooms' => 'schedule/data#rooms'
 
-  get 'study/subjects/ajax/specialities' => 'ajax#specialities'
-  get 'study/subjects/ajax/groups' => 'ajax#groups'
   get 'study/ajax/subjects' => 'ajax#subjects'
   get 'study/ajax/disciplines' => 'ajax#disciplines'
-  get 'study/disciplines/ajax/groups' => 'ajax#groups'
-  get 'study/disciplines/:id/ajax/specialities' => 'ajax#specialities'
-  get 'study/disciplines/:id/ajax/groups' => 'ajax#groups'
-  get 'study/disciplines/ajax/specialities' => 'ajax#specialities'
-  get 'study/ajax/groups' => 'ajax#groups'
-  get 'study/ajax/specialities' => 'ajax#specialities'
-  get 'my/ajax/groups' => 'ajax#groups'
-  get 'my/ajax/specialities' => 'ajax#specialities'
+  get '/study/disciplines/ajax/groups' => 'ajax#groups'
+  get '/study/disciplines/ajax/specialities' => 'ajax#specialities'
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'
+  get '/ajax/teachers' => 'ajax#teachers'
+  get '/ajax/group_students' => 'ajax#group_students'
+  get '/ajax/group_exams' => 'ajax#group_exams'
+  get '/ajax/orderstudent' => 'ajax#orderstudent'
 
   root to: 'dashboard#index'
 

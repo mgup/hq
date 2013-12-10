@@ -22,17 +22,12 @@ class Study::Discipline < ActiveRecord::Base
 
   has_many :assistant_teachers, through: :discipline_teachers
 
-  has_many :lectures, -> { where(checkpoint_type: Study::Checkpoint::TYPE_LECTURE).order(:checkpoint_date) },
-           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
-  accepts_nested_attributes_for :lectures, allow_destroy: true
-
-  has_many :seminars, -> { where(checkpoint_type: Study::Checkpoint::TYPE_SEMINAR).order(:checkpoint_date) },
-           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
-  accepts_nested_attributes_for :seminars, allow_destroy: true
-
-  has_many :checkpoints, -> { where(checkpoint_type: Study::Checkpoint::TYPE_CHECKPOINT).order(:checkpoint_date) },
-           class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
-  accepts_nested_attributes_for :checkpoints, allow_destroy: true
+  [[:lectures, Study::Checkpoint::TYPE_LECTURE], [:seminars, Study::Checkpoint::TYPE_SEMINAR],
+   [:checkpoints, Study::Checkpoint::TYPE_CHECKPOINT]].each do |lessons|
+    has_many lessons[0], -> { where(checkpoint_type: lessons[1]).order(:checkpoint_date) },
+             class_name: Study::Checkpoint, foreign_key: :checkpoint_subject, dependent: :destroy
+    accepts_nested_attributes_for lessons[0], allow_destroy: true
+  end
 
   has_many :classes, -> { order(:checkpoint_date) }, class_name: Study::Checkpoint, foreign_key: :checkpoint_subject
 
@@ -56,13 +51,14 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   scope :from_name, -> name { where('subject_name LIKE :prefix', prefix: "#{name}%")}
-  scope :from_student, -> student {where(subject_group:  student.group )}
+  scope :from_student, -> student {where(subject_group:  student.group)}
   scope :from_group, -> group {where(subject_group: group)}
   scope :now, -> {where(subject_year: CURRENT_STUDY_YEAR, subject_semester: CURRENT_STUDY_TERM)}
   scope :include_teacher, -> user {
     includes(:assistant_teachers)
     .where('subject_teacher = ? OR subject_teacher.teacher_id = ?', user.id, user.id).references(:subject_teacher)
   }
+  scope :with_brs, ->{where(subject_brs:  true)}
 
   def has?(type)
     work = (type == 'work' ? 2 : 3)
@@ -73,13 +69,34 @@ class Study::Discipline < ActiveRecord::Base
     exams.where(exam_type: [0,1,9]).first
   end
 
-  def is_active?
-    case CURRENT_STUDY_TERM
-      when 1
-        year == CURRENT_STUDY_YEAR || (year == CURRENT_STUDY_YEAR - 1 && semester == 2)
-      when 2
-        year == CURRENT_STUDY_YEAR
+  def current_ball
+    l1, p1, n1 = 0.0, 0.0, 0.0
+    l = lectures.count
+    p = seminars.count
+    classes.each do |checkpoint|
+      unless checkpoint.date.future?
+        l1 += (5.0/l) if checkpoint.lecture?
+        p1 += (15.0/p) if checkpoint.seminar?
+        if checkpoint.is_checkpoint?
+          n1 += (checkpoint.max? ? checkpoint.max : 0.0)
+        end
+      end
     end
+    (l1+p1+n1).round 2
+  end
+
+  def is_active?
+    year == CURRENT_STUDY_YEAR
+    #case CURRENT_STUDY_TERM
+    #  when 1
+    #    year == CURRENT_STUDY_YEAR || (year == CURRENT_STUDY_YEAR - 1 && semester == 2)
+    #  when 2
+    #    year == CURRENT_STUDY_YEAR
+    #end
+  end
+
+  def brs?
+    classes != []
   end
 
   def add_semester_work

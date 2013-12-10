@@ -1,0 +1,24 @@
+<div class="page-header">
+  <h1>Должности</h1>
+</div>
+
+<%= link_to 'Добавить новую', new_appointment_path, class: 'btn btn-default' %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="text-muted">#</th>
+      <th>Название (строгое, согласно штатному расписанию)</th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @appointments.each do |a| %>
+    <tr>
+      <td class="text-muted"><%= a.id %></td>
+      <td class="full-width"><%= a.title %></td>
+      <td>
+        <%= link_to 'Редактировать', edit_appointment_path(a) %>
+      </td>
+    </tr>
+  <% end %>
+</table>

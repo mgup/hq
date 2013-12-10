@@ -1,16 +1,12 @@
-<ul class="breadcrumb">
-  <li><a href="<%= my_student_path(@student) %>">Кабинет студента</a></li>
-  <li class="active">Результаты сессии</li>
-</ul>
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
   <h2><%=  "#{@subject.year}/#{@subject.year + 1}" %> (<%= @subject.term %>)</h2>
 </div>
 
-<table id='session_results' class='table table-striped'>
+<table id="session_results" class="table table-striped">
   <thead>
   <tr>
-    <th class='text-muted'>#</th>
+    <th class="text-muted">#</th>
     <th>Дисциплина</th>
     <th>Форма контроля</th>
     <th colspan='2' >Оценка</th>
@@ -21,12 +17,12 @@
   <% @subj.each do |subject| %>
     <tr>
       <% i+=1 %>
-      <td class='text-muted'><%= i %></td>
+      <td class="text-muted"><%= i %></td>
       <td><%= subject[:title] %></td>
       <td><%= subject[:type] %></td>
       <td><%= subject[:test] %></td>
       <td>
-        <div style='width: 100px;' class="progress progress-striped">
+        <div style="width: 100px;" class="progress progress-striped">
           <div class="progress-bar progress-bar-<%= subject[:itog] %>" style="width: <%= subject[:strip] %>"></div>
         </div>
       </td>
@@ -35,4 +31,4 @@
   <% end %>
 </table>
 
-<a  class="btn btn-default" href="<%= my_student_path(@student) %>"><span class='glyphicon glyphicon-backward'></span> Вернуться в кабинет студента</a>
+<a  class="btn btn-default" href="<%= my_student_path(@student) %>"><span class="glyphicon glyphicon-backward"></span> Вернуться в кабинет студента</a>

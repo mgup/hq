@@ -1,0 +1,33 @@
+.multiselect.btn-group {
+  display: block;
+
+  .dropdown-toggle {
+    text-align: left;
+
+    .caret {
+      position: absolute;
+      top:15px;
+      right: 5px;
+    }
+  }
+
+  .dropdown-menu {
+    margin-top: 36px;
+    width: 100%;
+
+    a {
+      white-space: normal;
+
+      &.selected {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: #428bca;
+        background-color: #5cb85c;
+      }
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+  }
+}

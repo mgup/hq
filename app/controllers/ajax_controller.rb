@@ -14,6 +14,13 @@ class AjaxController < ApplicationController
     end })
   end
 
+  def teachers
+    render({ json: User.teachers.from_subdepartment(params[:subdepartment]).inject([]) do |teachers, teacher|
+      teachers << { id: teacher.id, name: teacher.full_name }
+      teachers
+    end })
+  end
+
   def disciplines
     render({ json: Study::Discipline.where(subject_year: 2013).from_name(params[:discipline_name]).inject([]) do |disciplines, discipline|
       teachers = []
@@ -41,6 +48,39 @@ class AjaxController < ApplicationController
       students << { id: student.id, name: student.person.full_name }
       students
     end })
+  end
+
+  def group_students
+    render({ json: Group.filter(params).inject([]) do |groups, group|
+      students = []
+      group.students.each_with_index do |student, index|
+        students << { id: student.id, index: index+1, fullname: student.person.full_name, budget: (student.budget? ? 1 : 0) }
+      end
+      groups << { id: group.id, name: group.name, students: students }
+      groups
+    end })
+  end
+
+  def group_exams
+    group = Group.find(params[:group])
+    disciplines = []
+    group.disciplines.now.each do |d|
+      exams = []
+      d.exams.originals.each do |exam|
+        exams << { id: exam.id, name: exam.name, date: ( exam.date ? (l exam.date) : exam.date) }
+      end
+      disciplines << {id: d.id, name: d.name, exams: exams}
+    end
+    render({ json: { id: group.id, name: group.name, disciplines: disciplines }})
+
+  end
+
+  def orderstudent
+    student = Student.find(params[:id])
+    render({ json: {id: student.id, fname: student.person.last_name, iname:  student.person.first_name,
+                    oname:  student.person.patronym, faculty: student.group.speciality.faculty.abbreviation,
+                    group: student.group.name}
+       })
   end
 
   def checkpoint

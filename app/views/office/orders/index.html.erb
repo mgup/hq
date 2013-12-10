@@ -2,7 +2,7 @@
   <h1>Приказы по контингенту</h1>
 </div>
 
-<%= paginate @orders %>
+<%= paginate_with_info @orders %>
 
 <table class="table table-striped">
   <thead>
@@ -16,10 +16,10 @@
   <tbody>
   <% @orders.each do |order| %>
     <tr>
-      <td><%= order.id %></td>
+      <td><%= order.id %>&ndash;<%= order.version %></td>
       <td><%= order.number if order.signed? %></td>
       <td>
-        <%= l (order.signed? ? order.signing_date : order.editing_date) %>
+        <%= l (order.signed? ? order.signing_date.to_date : order.editing_date) %>
       </td>
       <td><%= order.template.name %></td>
     </tr>

@@ -1,8 +1,3 @@
-<ul class="breadcrumb">
-  <li><a href='/study/group'>Успеваемость</a></li>
-  <li><a href="<%= study_group_progress_path(params[:group_id]) %>">Группа</a></li>
-  <li class="active">Студент</li>
-</ul>
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
   <h2>Успеваемость</h2>
@@ -13,7 +8,7 @@
     <tr>
       <th>Дата</th>
       <% @student.disciplines.each do |d| %>
-        <th><a href="/study/group/<%= params[:group_id] %>/student/<%= @student.id %>/discipline/<%= d.id %>"><%= d.name %></a></th>
+        <th><a href="<%= root_url %>study/group/<%= params[:group_id] %>/student/<%= @student.id %>/discipline/<%= d.id %>"><%= d.name %></a></th>
       <% end %>
     </tr>
   </thead>
@@ -27,33 +22,20 @@
         <% marks.shift %>
         <% marks.each do |mark| %>
            <% if mark[:checkpoint].checkpoint_type == 3 %>
-             <div data-toggle='tooltip' title data-original-title="<%= mark[:checkpoint].name %> / <%=  mark[:mark] != nil ? ( mark[:mark].mark>=mark[:checkpoint].min ? 'прошёл контрольную точку' : 'не прошёл контрольную точку') : 'нет данных' %>" style="border-radius: 50%;
-                 background-color: <%= mark[:mark] != nil ?  ( mark[:mark].mark>=mark[:checkpoint].min ? '#62c462' : '#ee5f5b') : '#fff' %>;
-                 width: 30px; height: 30px;
-                 border: 1px solid black;
-                 margin-right: 10px;
-                 padding: 4px 0 0 <%= (mark[:mark].mark < 10 ? 10 : 6) if mark[:mark] != nil %>px;
-                 margin-top: 5px;"
-                 class='pull-left control'><strong><%= mark[:mark].mark if mark[:mark] != nil %></strong></div>
+            <% if mark[:mark] == nil %>
+              <%= circle_tips("#{mark[:checkpoint].name} / нет данных", '#fff', 30, '10', '', class: 'control') %>
+            <% else %>
+              <%= circle_tips("#{mark[:checkpoint].name} / #{mark[:mark].mark>=mark[:checkpoint].min ? 'прошёл контрольную точку' : 'не прошёл контрольную точку'}",
+                              "#{mark[:mark].mark>=mark[:checkpoint].min ? '#62c462' : '#ee5f5b'}",
+                              30, "#{mark[:mark].mark < 10 ? 10 : 6}", "#{mark[:mark].mark}", class: 'control') %>
+            <% end %>
            <% else %>
              <% if mark[:mark] == nil %>
-              <div data-toggle='tooltip' title data-original-title="<%= mark[:checkpoint].checkpoint_type == 1 ? 'Лекция' : 'Практическое (лабораторное) занятие' %> / нет данных"
-                  style="border-radius: 50%;
-                  background-color: #fff;
-                  width: <%= mark[:checkpoint].checkpoint_type == 1 ? '10' : '20' %>px; height: <%= mark[:checkpoint].checkpoint_type == 1 ? '10' : '20' %>px;
-                  border: 1px solid black;
-                  margin-right: 10px;
-                  margin-top: 5px;"
-                   class='pull-left lesson'></div>
+              <%= circle_tips("#{mark[:checkpoint].lessonname} / нет данных", '#fff', "#{mark[:checkpoint].lecture? ? '10' : '20'}", '0', '', class: 'lesson') %>
              <% else %>
-             <div data-toggle='tooltip' title data-original-title="<%= mark[:checkpoint].checkpoint_type == 1 ? 'Лекция' : 'Практическое (лабораторное) занятие' %> / <%= mark[:mark].result[:mark] %>"
-                  style="border-radius: 50%;
-             background-color: <%= mark[:mark].result[:hue] %>;
-             width: <%= mark[:mark].result[:circle] %>px; height: <%= mark[:mark].result[:circle] %>px;
-             border: 1px solid black;
-             margin-right: 10px;
-             margin-top: 5px;"
-             class='pull-left lesson'></div>
+              <%= circle_tips("#{mark[:checkpoint].lessonname} / #{mark[:mark].result[:mark]}",
+                              "#{mark[:mark].result[:hue]}", "#{mark[:mark].result[:circle]}",
+                              '0', '', class: 'lesson') %>
              <% end %>
            <% end %>
         <% end %>
@@ -63,4 +45,4 @@
     <% end %>
   </tbody>
 </table>
-<a class="btn btn-default" href="/study/group/<%= params[:group_id] %>/progress"><span class='glyphicon glyphicon-backward'></span> Назад к группе</a>
+<a class="btn btn-default" href="<%= study_group_progress_path(params[:group_id]) %>"><span class='glyphicon glyphicon-backward'></span> Назад к группе</a>

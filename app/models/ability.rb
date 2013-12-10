@@ -2,11 +2,18 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+
     user ||= User.new
 
+    user.roles.each do |role|
+      send(role.name, user) if respond_to?(role.name)
+    end
+
+    #can :manage, Student
+    #can :manage, :student
     if user.is_a?(Student)
       # Набор разрешений для студентов.
-      can :show, Student, student_group_id: user.id
+      can :manage, Student, student_group_id: user.id
     else
       #if user.is?(:typer)
       #  can [:create, :read], [Study::Subject, Study::Mark], user_id: user.id
@@ -17,6 +24,8 @@ class Ability
       #  can :manage, [Study::Subject, Study::Mark]
       #end
 
+      can :manage, User, user_id: user.id
+
       if user.is?(:zamestitel_otvetstvennogo_sekretarja)
         can :index, :selection_contracts
       end
@@ -25,49 +34,52 @@ class Ability
         can :index, :selection_contracts
       end
 
-      if user.is?(:lecturer)
-        can :manage, Study::Discipline
-        can :manage, Study::Checkpoint
-        can :manage, Study::Mark
+      #if user.is?(:lecturer)
+        #can :manage, Study::Exam
+        #can :manage, Study::ExamMark
         # Загрузка ресурсов, принадлежащих только текущему пользователю,
         # производится в Study::DisciplinesController.
         #can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }
-      end
+      #end
 
       if user.is?(:developer)
         can :manage, :all
+      end
+
+      if user.is?(:ciot)
+        can :manage, :ciot
+      end
+
+      if user.is?(:student_hr) || user.is?(:student_hr_boss)
+        can :manage, Student
+        can :manage, Office::Order
+        can :manage, :student
+        can :index, :groups
+
+        can :reference, Student, Student.valid_for_today
+      end
+
+      if user.is?(:soc_support)
+        can :manage, My::Support
       end
     end
 
     can [:index, :show], :progress
     can :show, [:student_progress, :student_discipline_progress]
     can :manage, :progress_group
+  end
 
-    # Define abilities for the passed in user here. For example:
-    #
-    #   user ||= User.new # guest user (not logged in)
-    #   if user.admin?
-    #     can :manage, :all
-    #   else
-    #     can :read, :all
-    #   end
-    #
-    # The first argument to `can` is the action you are giving the user 
-    # permission to do.
-    # If you pass :manage it will apply to every action. Other common actions
-    # here are :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on. 
-    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
-    # class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the
-    # objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, :published => true
-    #
-    # See the wiki for details:
-    # https://github.com/ryanb/cancan/wiki/Defining-Abilities
+  # Обычный преподаватель.
+  def lecturer(user)
+    can :manage, Study::Discipline
+    can :manage, Study::Checkpoint
+    can :manage, Study::Mark
+
+    can :manage, [Achievement, AchievementReport], user_id: user.id
+  end
+
+  # Заведующий кафедрой.
+  def subdepartment(user)
+    lecturer(user)
   end
 end

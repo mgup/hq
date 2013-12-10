@@ -1,55 +1,91 @@
-<%= form_tag nil, method: :get, class: 'filter-block' do %>
+<%= form_tag nil, method: :get, class: 'filter-block', id: 'formstudentsearch', class: 'filters' do %>
   <div class="row">
-    <div class="col col-lg-3 pull-right">
+    <div class="col col-sm-2 pull-right">
       <%= submit_tag 'Искать', class: 'btn btn-primary' %>
 
-      <%= link_to students_path, class: 'btn btn-danger pull-right' do %>
+      <%= link_to students_path, class: 'form_reset btn btn-danger pull-right' do %>
         <span class="glyphicon glyphicon-remove"></span>
       <% end %>
     </div>
-    <div class="col col-lg-3">
+    <div class="col-sm-4">
       <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control' %>
     </div>
-    <div class="col col-lg-3">
-      <%= select_tag 'status',
-                     options_from_collection_for_select(Status.all, :id, :name, params[:status]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все статусы' } %>
+    <div class="col-sm-4 col-sm-offset-1">
+      <%= multiselect_tag :status, title: 'Все статусы', collection: Status.all,
+                          value: :id, text: :name, current: params[:status] ? params[:status].map(&:to_i) : [],
+                          pl1: 'Выбран %c статус',
+                          pl2: 'Выбрано %c статуса',
+                          pl5: 'Выбрано %c статусов' %>
     </div>
-    <div class="col col-lg-3">
-      <select>
-        <option>все квалификации</option>
-      </select>
+
+    <!--<div class="col col-lg-3 form-control">-->
+      <!--<select>-->
+        <!--<option>все квалификации</option>-->
+      <!--</select>-->
+    <!--</div>-->
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= multiselect_tag :faculty, title: 'Все факультеты', collection: Department.faculties,
+                            value: :id, text: :abbreviation, current: params[:faculty] ? params[:faculty].map(&:to_i) : [],
+                            pl1: 'Выбран %c факультет',
+                            pl2: 'Выбрано %c факультета',
+                            pl5: 'Выбрано %c факультетов' %>
+    </div>
+
+    <div class="col-sm-4 col-sm-offset-1">
+      <% forms = [] %>
+      <% [{form: 'очная', code: 101}, {form: 'очно-заочная', code: 102}, {form: 'заочная', code: 103}, {form: 'дистанционная', code: 105}].each do |y| %>
+        <% forms << (OpenStruct.new y) %>
+      <% end %>
+      <%= multiselect_tag :form, title: 'Все формы', collection: forms,
+                          value: :code, text: :form, current: params[:form] ? params[:form].map(&:to_i) : [],
+                          pl1: 'Выбрана %c форма',
+                          pl2: 'Выбрано %c формы',
+                          pl5: 'Выбрано %c форм' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <% finance = [] %>
+      <% [{type: 'бюджетная', key:  1}, {type: 'внебюджетная', key: 2}].each do |fin| %>
+        <% finance << (OpenStruct.new fin) %>
+      <% end %>
+      <%= multiselect_tag :finance, title: 'Все основы', collection: finance,
+                          value: :key, text: :type, current: params[:finance] ? params[:finance].map(&:to_i) : [],
+                          pl1: 'Выбрана %c основа обучения',
+                          pl2: 'Выбрано %c основы обучения',
+                          pl5: 'Выбрано %c основ обучения' %>
+    </div>
+
+    <div class="col-sm-4 col-sm-offset-1">
+      <%= multiselect_tag :speciality, title: 'Все специальности', collection: Speciality.all,
+                          value: :id, text: :name, current: params[:speciality] ? params[:speciality].map(&:to_i) : [],
+                          pl1: 'Выбрана %c специальность',
+                          pl2: 'Выбрано %c специальности',
+                          pl5: 'Выбрано %c специальностей' %>
     </div>
   </div>
   <div class="row">
-    <div class="col col-lg-3">
-      <%= select_tag 'faculty',
-                     options_from_collection_for_select(Department.faculties, :id, :abbreviation, params[:faculty]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все факультеты' } %>
+    <div class="col-sm-4">
+      <% course = [] %>
+      <% [{c:  1}, {c: 2}, {c:  3}, {c:  4}, {c:  5}, {c:  6}].each do |c| %>
+        <% course << (OpenStruct.new c) %>
+      <% end %>
+      <%= multiselect_tag :course, title: 'Все курсы', collection: course,
+                          value: :c, text: :c, current: params[:course] ? params[:course].map(&:to_i) : [],
+                          pl1: 'Выбран %c курс',
+                          pl2: 'Выбрано %c курса',
+                          pl5: 'Выбрано %c курсов' %>
     </div>
-    <div class="col col-lg-3">
-      <%= select_tag 'form', options_for_select([['очная', 101], ['очно-заочная', 102], ['заочная', 103], ['дистанционная', 105]], params[:form]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все формы' } %>
-    </div>
-    <div class="col col-lg-3">
-      <%= select_tag 'finance', options_for_select([['бюджетная', 1], ['внебюджетная', 2]], params[:finance]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все основы' } %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col col-lg-5">
-      <%= select_tag 'speciality',
-                     options_from_collection_for_select(Speciality.all, :id, :name, params[:speciality]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все специальности' } %>
-    </div>
-    <div class="col col-lg-2">
-      <%= select_tag 'course', options_for_select([1, 2, 3, 4, 5, 6], params[:course]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все курсы' } %>
-    </div>
-    <div class="col col-lg-2">
-      <%= select_tag 'group',
-                     options_from_collection_for_select(Group.all, :id, :name, params[:groups]),
-                     multiple: true, class: 'chzn-select form-control', data: { placeholder: 'все группы' } %>
+
+    <div class="col-sm-4 col-sm-offset-1">
+      <%= multiselect_tag :group, title: 'Все группы', collection: Group.all,
+                          value: :id, text: :name, current: params[:group] ? params[:group].map(&:to_i) : [],
+                          pl1: 'Выбрана %c группа',
+                          pl2: 'Выбрано %c группы',
+                          pl5: 'Выбрано %c групп' %>
     </div>
   </div>
 <% end %>

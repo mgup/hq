@@ -1,0 +1,71 @@
+<div class="page-header">
+  <h1>Заявления на материальную помощь</h1>
+</div>
+
+<%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+  <div class="form-group">
+    <div class="col-sm-2">
+      <%= select_tag :year,
+                     options_for_select((2013..Date.today.year).to_a, params[:year]),
+                     class: 'form-control' %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :month,
+                     options_for_select(
+                         (1..12).map { |m| [t('date.standalone_month_names')[m], m] },
+                         params[:month].to_i
+                     ),
+                     class: 'form-control' %>
+    </div>
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :accepted, '1', '1' == params[:accepted] %> Только принятые заявления
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
+    </div>
+  </div>
+  <div class="row">
+    <%= select_tag :lists, options_for_select([['Проживающие в общежитии', 1], ['Не проживающие в общежитии', 2],
+                                               ['Сироты', 3], ['Инвалиды', 4], ['Ожидающие ребёнка', 5],
+                                               ['Воспитывающие ребёнка', 6], ['Потерявшие кормильца', 7],
+                                               ['Малоимущие + многодетные', 8], ['Малоимущие + родители пенсионеры/инвалиды', 9],
+                                               ['Малоимущие + неполная семья', 10], ['Малоимущие', 11],
+                                               ['Остальные', 12]], params[:lists]),
+                   prompt: 'Общий список',
+                   class: 'form-control' %>
+  </div>
+<% end %>
+
+<% unless @applications.empty? %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Студент</th>
+        <th>Причины</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @applications.each do |a| %>
+      <tr>
+        <td><%= a.id %></td>
+        <td><%= a.student.person.full_name %><br><%= a.student.group.name %></td>
+        <td>
+          <ul style="margin-left: 0; padding-left: 0;">
+            <% a.options.each do |o| %>
+              <li><small><%= o.cause.title %></small></li>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to 'Распечатать', print_list_social_applications_path, class: 'btn btn-primary btn-lg' %>
+<% else %>
+  <p class="lead">Нет ни одного заявления.</p>
+<% end %>

@@ -1,0 +1,44 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
+style_spec = wb.styles.add_style sz: 12, alignment: { horizontal: :center, vertical: :center }
+  Department.faculties.each do |faculty|
+    wb.add_worksheet(name: "#{faculty.abbreviation}") do |sheet|
+      sheet.add_row ['Специальность', 'Год поступления', 'Форма обучения', '', '', '', '', '', '', '']
+      sheet.merge_cells("C1:J1")
+      sheet.add_row ['', '', 'Очная', '', 'Очно-заочная', '', 'Заочная', '', 'Дистанционная', '']
+      sheet.merge_cells("C2:D2")
+      sheet.merge_cells("E2:F2")
+      sheet.merge_cells("G2:H2")
+      sheet.merge_cells("I2:J2")
+      sheet.add_row ['', '', 'Стоимость по годам', 'Общая сумма', 'Стоимость по годам', 'Общая сумма', 'Стоимость по годам', 'Общая сумма', 'Стоимость по годам', 'Общая сумма']
+      sheet.merge_cells("A1:A3")
+      sheet.merge_cells("B1:B3")
+      sheet["A1:J3"].each do |cell|
+        cell.style = style_shout
+      end
+
+      j=4
+      i=3
+      faculty.payment_types(@year).each do |type|
+        type[:prices].each do |price|
+          prices = []
+          [:full_time,:part_time,:abcsentia,:distance].each do |form|
+            sum_by_year = []
+            if price[form] != nil
+              price[form].sum[:by_year].each do |year, sum|
+                sum_by_year << year + ': ' + number_to_currency(sum)
+              end
+              prices << { year: sum_by_year.join("\n"), total: number_to_currency(price[form].sum[:total])}
+            else
+              prices << { year: '-', total: '-'}
+            end
+          end
+            i+=1
+            sheet.add_row ["#{type[:name]}", "#{price[:year]}", "#{prices[0][:year]}", "#{prices[0][:total]}", "#{prices[1][:year]}", "#{prices[1][:total]}", "#{prices[2][:year]}", "#{prices[2][:total]}", "#{prices[3][:year]}", "#{prices[3][:total]}"], style: style_spec
+        end
+        sheet.merge_cells("A#{j}:A#{i}")
+        j = i+1
+      end
+    end
+  end
+

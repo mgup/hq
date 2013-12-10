@@ -1,0 +1,49 @@
+<div class="page-header">
+  <h1>Периоды отчётности по показателям эффективности</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Период</th>
+      <th>Состояние</th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @periods.each do |p| %>
+    <tr>
+      <td class="text-muted"><%= p.id %></td>
+      <td class="full-width">
+        <%= p.description %>
+      </td>
+      <td style="white-space: nowrap;">
+        <% if p.achievement_reports.by_user(current_user).only_relevant.any? %>
+          <strong>Отчёт заполнен.</strong>
+        <% else %>
+          <% if p.active? %>
+              <strong>Можно заполнять данные</strong>
+          <% else %>
+            <span class="text-muted">Приём данных завершён</span>
+          <% end %>
+        <% end %>
+      </td>
+      <td>
+        <% if p.achievement_reports.by_user(current_user).only_relevant.any? %>
+          <%= link_to achievement_report_path(p.achievement_reports.by_user(current_user).only_relevant.first, format: :pdf), class: 'btn btn-default', disabled: true do %>
+            <span class="glyphicon glyphicon-print"></span> Распечатать
+          <% end %>
+          <p>
+            <em>Печать отчёта будет доступна после окончательного утверждения его формы.</em>
+          </p>
+        <% else %>
+          <% if p.active? %>
+            <%= link_to achievements_path(year: p.year, semester: p.semester), class: 'btn btn-default' do %>
+              <span class="glyphicon glyphicon-check"></span> Заполнить показатели
+            <% end %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

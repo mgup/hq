@@ -1,0 +1,6 @@
+ru:
+  helpers:
+    submit:
+      activity_group:
+        create: 'Создать группу показателей'
+        update: 'Обновить группу показателей'

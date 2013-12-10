@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, # :validatable,
+  devise :database_authenticatable, :registerable, # :encryptable,
+         :recoverable, :rememberable, :trackable, # :validatable
          authentication_keys: [:username]
 
   alias_attribute :id,       :user_id
@@ -24,44 +24,59 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :oname
 
   has_many :positions, foreign_key: :acl_position_user, dependent: :destroy
-  accepts_nested_attributes_for :positions, allow_destroy: true , reject_if: proc { |attrs| attrs[:title].blank? }
+  accepts_nested_attributes_for :positions, allow_destroy: true
+
   has_many :roles,       through: :positions
   has_many :departments, through: :positions
   
   has_many :discipline_teachers, class_name: Study::DisciplineTeacher, primary_key: :user_id, foreign_key: :teacher_id
-  has_many :disciplines, :through => :discipline_teachers, primary_key: :user_id
+  has_many :disciplines, through: :discipline_teachers, primary_key: :user_id
 
   has_many :marks, class_name: Study::Mark
   has_many :subjects, class_name: Study::Subject
 
+  has_many :achievements
+  has_many :achievement_reports
+
   scope :with_name, -> { includes(:iname, :fname, :oname) }
 
+  scope :by_name, -> (name) {
+     joins('LEFT JOIN dictionary AS fname ON fname.dictionary_id = user_fname')
+    .joins('LEFT JOIN dictionary AS iname ON iname.dictionary_id = user_iname')
+    .joins('LEFT JOIN dictionary AS oname ON oname.dictionary_id = user_oname')
+    .where('user_name LIKE ? OR fname.dictionary_ip LIKE ? OR iname.dictionary_ip LIKE ? OR oname.dictionary_ip LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%")
+  }
+
   validates :username, presence: true
-  validates :password, presence: true
+  validates :password, on: :create, presence: true
+  validate :primary_position_should_be_one
   validates_associated :fname
   validates_associated :iname
   validates_associated :oname
 
+  before_create :hash_password
+
+  before_update :hash_password, if: :password_changed?
+
+  def hash_password
+    self.password = Digest::MD5.hexdigest(self.password)
+  end
+
+  def primary_position_should_be_one
+    return true if positions.length == 0
+    primaries = 0
+    positions.each do |p|
+      primaries += 1 if p.primary
+    end
+    if primaries > 1
+      errors.add(:'primary',
+                 'У сотрудника может быть только одна основная форма работы.')
+    end
+  end
+
   def full_name(form = :ip)
     # TODO Убрать после того, как все имена будут перенесены в словарь.
     if last_name.nil? then user_name else super(form) end
-  end
-
-  def update_name(parts)
-    fname_params = { ip: parts['last_name_ip'], rp: parts[:last_name_rp],
-                     dp: parts[:last_name_dp], vp: parts[:last_name_vp],
-                     tp: parts[:last_name_tp], pp: parts[:last_name_pp] }
-    iname_params = { ip: parts[:first_name_ip], rp: parts[:first_name_rp],
-                     dp: parts[:first_name_dp], vp: parts[:first_name_vp],
-                     tp: parts[:first_name_tp], pp: parts[:first_name_pp] }
-    oname_params = { ip: parts[:patronym_ip], rp: parts[:patronym_rp],
-                     dp: parts[:patronym_dp], vp: parts[:patronym_vp],
-                     tp: parts[:patronym_tp], pp: parts[:patronym_pp] }
-
-    self.fname = Dictionary.create(fname_params)
-    self.iname = Dictionary.create(iname_params)
-    self.oname = Dictionary.create(oname_params)
-    self.save
   end
 
   def valid_password?(password)
@@ -109,15 +124,19 @@ class User < ActiveRecord::Base
   }
 
   scope :from_name, -> name { with_name.where('dictionary.dictionary_ip LIKE :prefix OR user.user_name LIKE :prefix', prefix: "%#{name}%")}
-  scope :from_department, -> department { where("#{department.collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
-                                                                      " OR #{department.collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
+  scope :from_department, -> department { where("#{department.split(',').collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
+                                                                      " OR #{department.split(',').collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
+  scope :from_subdepartment, -> subdepartment { where("#{subdepartment .split(',').collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
+                                                    " OR #{subdepartment .split(',').collect{|d| 'user.user_subdepartment = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
   scope :from_position, -> position { where('acl_position.acl_position_title LIKE :posprefix OR user.user_position LIKE :posprefix', posprefix: "%#{position}%")
                                       .includes(:positions) }
+  scope :from_role, -> role { where("acl_position.acl_position_role = (SELECT acl_role.acl_role_id FROM acl_role WHERE acl_role.acl_role_name = '#{role}')")
+  .includes(:positions) }
 
 
   scope :filter, -> filters {
     [:name, :department, :position].inject(all) do |cond, field|
-      if filters.include?(field) && !filters[field].empty?
+      if filters.include?(field) && !filters[field].empty? && filters[field]
         cond = cond.send "from_#{field.to_s}", filters[field]
       end
       cond

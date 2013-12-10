@@ -24,6 +24,7 @@
       </div>
     </div>
 
+    <div id="form-fio">
     <% [[:ip, 'Кто? Что?'], [:rp, 'Кого? Чего?'], [:dp, 'Кому? Чему?'],
         [:vp, 'Кого? Что?'], [:tp, 'Кем? Чем?'], [:pp, 'О ком? О чём?']].each do |p| %>
       <div class="form-group">
@@ -41,6 +42,8 @@
         </div>
       </div>
     <% end %>
+    </div>
+    <span class="help-block">Поля заполняются автоматически при вводе фамилии, имени и отчества в именительном падеже. Пожалуйста, проверяйте правильность сгенерированных данных.</span>
   </fieldset>
 
   <fieldset>
@@ -51,20 +54,28 @@
         <%= f.text_field :username, class: "form-control #{'has-error' if @user.errors.include?(:username)}" %>
       </div>
     </div>
+
     <div class="form-group">
       <%= f.label :email, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
         <%= f.email_field :email, class: 'form-control' %>
       </div>
     </div>
-    <% if @user.id == nil %>
+
+    <% if @user.id == nil or current_user.is?(:developer) %>
       <div class="form-group">
         <%= f.label :password, class: 'col col-lg-2 control-label' %>
         <div class="col col-lg-10">
           <%= f.password_field :password, class: "form-control #{'has-error' if @user.errors.include?(:password)}"%>
         </div>
+        <% if @user.id != nil %>
+          <div class='col-lg-10 col-lg-offset-2'>
+            <span class='help-block'>Указывается только в случае смены текущего пароля на новый.</span>
+          </div>
+        <% end %>
       </div>
     <% end %>
+
     <div class="form-group">
       <%= f.label :phone, class: 'col col-lg-2 control-label' %>
       <div class="col col-lg-10">
@@ -76,18 +87,22 @@
 
   <fieldset>
     <legend>Назначения</legend>
+
     <div id="positions">
       <%= render partial: 'positions_fields', locals: {f: f} %>
     </div>
-    <div class="form-group">
-        <%= f.link_to_add 'Назначить сотрудника на новую должность', :positions, class: 'btn btn-default col-lg-offset-4', data: { target: '#positions' } %>
-    </div>
 
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.link_to_add 'Добавить сотруднику ещё одну должность', :positions, class: 'btn btn-default', data: { target: '#positions' } %>
+      </div>
+    </div>
   </fieldset>
 
+  <hr>
 
   <div class="form-group">
-    <div class="col col-lg-10 col-offset-2">
+    <div class="col-sm-offset-2 col-sm-10">
       <%= f.submit class: 'btn btn-primary' %>
       или
       <%= link_to 'назад ко всем пользователям', users_path %>

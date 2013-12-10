@@ -37,14 +37,13 @@
   <div class='row'>
     <%= label_tag :progress_group_id, 'Группа', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-      <%= select_tag :progress_group_id, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.includes(:speciality), :id, :name), { class: 'ajax-group_id form-control navigation_trip',
-                     required: 'required', data: { input: '#progress_group_id', content: 'Выберите группу, чтобы посмотреть её рейтинг.', position: 's'}} %>
+      <%= select_tag :progress_group_id, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.includes(:speciality), :id, :name), { class: 'ajax-group_id form-control', required: 'required'} %>
     </div>
   </div>
 
   <div class='row'>
     <div class='col col-lg-10 col-offset-2'>
-      <%= submit_tag 'Посмотреть рейтинги группы',class: 'btn btn-default view-group-progress'%>
+      <%= submit_tag 'Посмотреть рейтинги группы',class: 'btn btn-default view-group-progress' %>
     </div>
   </div>
 

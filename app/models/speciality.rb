@@ -10,9 +10,10 @@ class Speciality < ActiveRecord::Base
   belongs_to :faculty, class_name: Department, primary_key: :department_id, foreign_key: :speciality_faculty
 
   has_many :groups, foreign_key: :group_speciality
+  has_many :payment_types, class_name: Finance::PaymentType, primary_key: :speciality_id, foreign_key: :finance_payment_type_speciality
 
   default_scope do
-    order(:speciality_name, :speciality_code)
+    includes(:faculty).order(:speciality_name, :speciality_code)
   end
 
   scope :from_faculty, -> faculty { where(speciality_faculty: faculty) }
@@ -34,4 +35,19 @@ class Speciality < ActiveRecord::Base
     full_name = code + " " + name
   end
 
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.speciality {
+        xml.id_   id
+        xml.code  code
+        xml.name  name
+        xml.type type
+        xml << faculty.to_nokogiri.root.to_xml
+      }
+    }.doc
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
 end

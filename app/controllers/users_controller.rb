@@ -1,9 +1,12 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :update, :show]
-  load_and_authorize_resource except: [:create]
+  load_and_authorize_resource
 
   def index
-    @users = User.all.page(params[:page])
+    params[:page] ||= 1
+
+    @users = @users.by_name(params[:name]) if params[:name]
+
+    @users = @users.page(params[:page])
   end
 
   def new
@@ -14,8 +17,9 @@ class UsersController < ApplicationController
   end
 
   def create
-    authorize! :create, User
+    #authorize! :create, User
     #raise resource_params.inspect
+    #raise '123'
     @user = User.new(resource_params)
     if @user.save
       redirect_to users_path, notice: 'Сотрудник успешно добавлен.'
@@ -33,7 +37,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.all.includes(:positions).find(params[:id])
+    #raise '123'
     if @user.update(resource_params)
       redirect_to users_path, notice: 'Изменения сохранены.'
     else
@@ -54,8 +58,31 @@ class UsersController < ApplicationController
         fname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
         iname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
         oname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
-        positions_attributes: [:id, :title, :acl_position_role, :acl_position_department, :appointment, :_destroy]
+        positions_attributes: [:id, :appointment_id, :acl_position_role,
+                               :acl_position_department, :started_at, :primary, :_destroy]
     )
+  end
+
+  def filter
+    if params
+      @users = User.filter(params)
+    else
+      @users = User.all
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def medical_requests
+    require 'csv'
+    @data = CSV.read '/Users/storkvist/Sites/mgup/med_preps.txt', { col_sep: "\t" }
+  end
+
+  def see_with_eyes
+    @user = User.find params[:user_id]
+    sign_out current_user
+    sign_in_and_redirect @user, event: :authentication
   end
 
   private
@@ -64,4 +91,11 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
   end
 
+  #def require_no_authentication
+  #  if current_user.is_developer?
+  #    return true
+  #  else
+  #    return super
+  #  end
+  #end
 end

@@ -1,4 +1,7 @@
-<%# Поля для отметок о рзультатах контрольных точек. %>
-
-<%= f.hidden_field :id %>
-<%= f.text_field "mark_#{student.id}", class: 'form-control' %>
+<%# Поля для отметок по контрольным точкам. %>
+<% mark = @checkpoint.marks.by_student(student).last ?  @checkpoint.marks.by_student(student).last : @checkpoint.marks.build  %>
+<%= f.fields_for :marks, mark  do |marks_form| %>
+  <%= marks_form.hidden_field :id, class: 'mark_id' %>
+  <%= marks_form.hidden_field :checkpoint_mark_student, value: student %>
+  <%= marks_form.text_field :mark, value: mark.mark, class: 'form-control value' %>
+<% end %>

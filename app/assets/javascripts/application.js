@@ -25,5 +25,9 @@
 //
 //= require chosen.jquery
 //= require jquery_nested_form
+// require jquery.ui.all
+// require jquery.multiselect
+//
+//= require ace/ace
 //
 //= require_tree .

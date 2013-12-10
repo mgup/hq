@@ -1,0 +1,33 @@
+<%= form_tag nil, method: :get do %>
+  <div class="row">
+    <div class="col col-sm-2 pull-right">
+      <%= submit_tag 'Искать', class: 'btn btn-primary' %>
+
+      <%= link_to users_path, class: 'btn btn-danger pull-right' do %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </div>
+
+    <div class="col-sm-4">
+      <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control' %>
+    </div>
+
+    <div class="col-sm-4 col-sm-offset-1">
+      <%= multiselect_tag :appointment, title: 'Все должности', collection: Appointment.all,
+                          value: :id, text: :title, current: params[:appointment] ? params[:appointment].map(&:to_i) : [],
+                          pl1: 'Выбрана %c должность',
+                          pl2: 'Выбраны %c должности',
+                          pl5: 'Выбрано %c должностей' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-sm-9">
+      <%= multiselect_tag :department, title: 'Все подразделения', collection: Department.all,
+                          value: :id, text: :name, current: params[:department] ? params[:department].map(&:to_i) : [],
+                          pl1: 'Выбрано %c подразделение',
+                          pl2: 'Выбраны %c подразделения',
+                          pl5: 'Выбраны %c подразделений' %>
+    </div>
+  </div>
+<% end %>

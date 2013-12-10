@@ -10,28 +10,28 @@
   <div class="form-group">
     <%= f.label :checkpoint_date, 'Дата', class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.text_field :checkpoint_date, value: f.object.date ? l(f.object.date) : nil, class: 'form-control date', readonly: true %>
+      <%= f.text_field :checkpoint_date, value: f.object.date ? l(f.object.date) : nil, class: 'form-control date', readonly: true, disabled: f.object.marks.any? %>
     </div>
   </div>
 
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'checkpoints.name') %>">
     <%= f.label :checkpoint_name, 'Название', class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.text_field :checkpoint_name, class: 'form-control' %>
+      <%= f.text_field :checkpoint_name, class: 'form-control', disabled: f.object.marks.any? %>
     </div>
   </div>
 
   <div class="form-group">
     <%= f.label :checkpoint_details, 'Описание', class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.text_area :checkpoint_details, class: 'form-control' %>
+      <%= f.text_area :checkpoint_details, class: 'form-control', disabled: f.object.marks.any? %>
     </div>
   </div>
 
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'checkpoints.max') %>">
     <%= f.label :checkpoint_max, 'Максимальный балл', class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.number_field :checkpoint_max, class: 'form-control' %>
+      <%= f.number_field :checkpoint_max, class: 'form-control', disabled: f.object.marks.any? %>
 
       <% if @discipline.errors.include?(:'checkpoints.max') %>
         <span class="help-block"><%= @discipline.errors[:'checkpoints.max'].join(' ') %></span>
@@ -42,7 +42,7 @@
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'checkpoints.min') %>">
     <%= f.label :checkpoint_min, 'Зачётный минимум', class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.number_field :checkpoint_min, class: 'form-control' %>
+      <%= f.number_field :checkpoint_min, class: 'form-control', disabled: f.object.marks.any? %>
 
       <% if @discipline.errors.include?(:'checkpoints.minmax') %>
         <span class="help-block"><%= @discipline.errors[:'checkpoints.minmax'].join(' ') %></span>

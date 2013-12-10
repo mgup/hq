@@ -1,10 +1,11 @@
 class Study::CheckpointsController < ApplicationController
   before_filter :load_discipline
   load_and_authorize_resource :discipline
-  load_and_authorize_resource through: :discipline, except: [:new, :create, :update]
+  load_and_authorize_resource through: :discipline, except: [:new, :create, :update, :destroy]
 
   def index
     redirect_to new_study_discipline_checkpoint_path(@discipline) if @checkpoints.empty?
+    @classes = @discipline.classes
   end
 
   def new ; end
@@ -32,11 +33,34 @@ class Study::CheckpointsController < ApplicationController
     end
   end
 
+  def update
+    #raise resource_params.inspect
+    @checkpoint = Study::Checkpoint.find(params[:id])
+    if @checkpoint.update(resource_params)
+      redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+    else
+      if resource_params.include?(:marks_attributes)
+        #render template: 'study/marks/index'
+        #return
+        redirect_to study_discipline_checkpoint_marks_path(@discipline,
+                                                              @checkpoint)
+      else
+        render action: :edit
+      end
+    end
+  end
+
+  def destroy
+    @checkpoint = Study::Checkpoint.find(params[:id])
+    @checkpoint.destroy
+
+    redirect_to study_discipline_checkpoints_path(@discipline)
+  end
+
   def resource_params
-    params.fetch(:study_discipline, {}).permit(
-        checkpoints_attributes: [:id, :checkpoint_date,
-                                 :checkpoint_name, :checkpoint_details,
-                                 :checkpoint_max, :checkpoint_min, :'_destroy']
+    params.fetch(:study_checkpoint, {}).permit( :id, :checkpoint_date, :checkpoint_name, :checkpoint_details,
+                                                :checkpoint_max, :checkpoint_min, :'_destroy',
+                                                marks_attributes: [:id, :checkpoint_mark_student, :mark]
     )
   end
 

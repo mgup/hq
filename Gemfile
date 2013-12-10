@@ -29,18 +29,26 @@ gem 'rack-mini-profiler'
 gem 'cancan'
 gem 'bootstrap-datepicker-rails'
 gem 'kaminari'
-gem 'prawn'
+gem 'prawn', git: 'git://github.com/prawnpdf/prawn', branch: 'master'
 gem 'prawn_rails'
 gem 'rqrcode'
-gem 'prawn-qrcode'
 gem 'squeel'
 gem 'nested_form', github: 'ryanb/nested_form'
 gem 'hairtrigger'
+gem 'axlsx_rails'
+gem 'acts_as_xlsx'
+gem 'ace-rails-ap'
+gem 'unicode'
+gem 'spreadsheet'
+#gem 'jquery-ui-rails'
+#gem 'jquery-multiselect-rails', git: 'git://github.com/arojoal/jquery-multiselect-rails.git'
 
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 # gem 'ui', github: 'mgup/ui', branch: :master
 # В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
 gem 'morpher', github: 'mgup/morpher', branch: :master
+
+gem 'airbrake'
 
 group :development do
   gem 'thin'
@@ -62,6 +70,7 @@ end
 
 group :test do
   gem 'faker'
+  gem 'capybara'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'fuubar'

@@ -1,0 +1,43 @@
+<div class="row <%= 'success' if application.accepted? %>">
+  <div class="col-sm-1">
+    <%= application.id %>
+  </div>
+  <div class="col-sm-4">
+    <%= application.student.person.full_name %>
+    <br>
+    <%= application.student.group.name %>
+    <address>
+      <%= application.phone %>
+    </address>
+  </div>
+  <div class="col-sm-5">
+    <ul style="margin-left: 0; padding-left: 0;">
+      <% application.options.each do |o| %>
+        <li><small><%= o.cause.title %></small></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col-sm-2">
+    <% unless application.accepted? or application.deferred? %>
+      <%= form_for application, url: student_support_path(application.student, application) do |f| %>
+        <%= f.hidden_field :accepted, value: 1 %>
+        <%= f.submit 'Принять', class: 'btn btn-default btn-sm' %>
+      <% end %>
+
+      <%= form_for application, url: student_support_path(application.student, application) do |f| %>
+        <%= f.hidden_field :deferred, value: 1 %>
+        <%= f.submit 'Не принимать', class: 'btn btn-default btn-sm' %>
+      <% end %>
+
+      <br>
+
+      <%= link_to edit_student_support_path(application.student, application), class: 'btn btn-default btn-sm' do %>
+        <span class="glyphicon glyphicon-edit"></span>
+      <% end %>
+
+      <%= link_to student_student_support_path(application.student), class: 'btn btn-default btn-sm' do %>
+        <span class="glyphicon glyphicon-print"></span>
+      <% end %>
+    <% end %>
+  </div>
+</div>

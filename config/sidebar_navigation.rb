@@ -5,29 +5,103 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.dom_id = 'dashboard-menu'
     primary.dom_class = 'nav nav-pills nav-stacked'
 
+    primary.item :progress, 'Успеваемость'.html_safe, study_groups_path, icon: 'list' do |d|
+      d.dom_class = 'hidden'
+      d.item :group, 'Группа', study_group_progress_path(params[:group_id] || 1)
+      d.item :group_discipline, 'Группа', study_group_discipline_path(params[:group_id] || 1, params[:discipline] || 1)
+      d.item :student, 'Студент', study_group_student_path(params[:group_id] || 1, params[:id] || 1)
+      d.item :student_discipline, 'Студент', study_group_progress_discipline_path(params[:group_id] || 1, params[:id] || 1, params[:discipline] || 1)
+    end
+
     if user_signed_in?
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
 
         primary.item :roles,        'Роли'.html_safe, roles_path, icon: 'tags', highlights_on: -> { 'roles' == params[:controller] }
+        primary.item :appointments, 'Должности'.html_safe, appointments_path, icon: 'tags'
         primary.item :departments,  'Структура'.html_safe, departments_path, icon: 'list', highlights_on: -> { 'departments' == params[:controller] }
         primary.item :users,        'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
-        primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+
+        primary.item :plans,        'Сессия'.html_safe, study_plans_path, icon: 'bell'
+
+        primary.item :activity_group, 'Группы показателей эффективности НПР',
+                     activity_groups_path, icon: 'list'
+        primary.item :activity_type, 'Типы показателей эффективности НПР',
+                     activity_types_path, icon: 'list'
+        primary.item :activity_credit_type, 'Типы баллов показателей эффективности НПР',
+                     activity_credit_types_path, icon: 'list'
+        primary.item :activity, 'Показатели эффективности НПР',
+                     activities_path, icon: 'list'
+
+        primary.item :achievement_period, 'Периоды ввода достижений НПР',
+                     achievement_periods_path, icon: 'list'
+
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         #primary.item( :study, 'Успеваемость<b class="caret"></b>'.html_safe, '#', icon: 'list', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' }) do |study|
         #  study.dom_class = 'dropdown-menu'
         #  study.item :progress, 'Текущая успеваемость', study_groups_path
         #  #study.item :subjects, 'Результаты сессий', study_subjects_path
         #end
+
+        primary.item :office_orders, raw('Работа с приказами <span class="caret"></span>'), office_orders_path, icon: 'file', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' } do |orders|
+          orders.dom_class = 'dropdown-menu'
+          orders.item :orders_drafts, 'Черновики приказов', drafts_office_orders_path, icon: 'paperclip'
+          orders.item :orders_underways, 'Приказы на подписи', underways_office_orders_path, icon: 'time'
+
+          orders.item :order_templates, 'Шаблоны', office_order_templates_path, icon: 'list'
+        end
+
       end
+
+      if can? :manage, My::Support
+        primary.item :social_applications, 'Заявления на мат. помощь', social_applications_path, icon: 'file'
+      end
+
       if can? :index, :selection_contracts
         primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
       end
-    end
-    primary.item :study, 'Успеваемость'.html_safe, study_groups_path, icon: 'list', highlights_on: -> { params[:controller].include?('progress') }
 
-    if can? :manage, Study::Discipline
-      primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') }
+      if can? :index, :payment_types
+        primary.item :prices,    'Стоимость обучения'.html_safe, finance_payment_types_path, icon: 'credit-card', highlights_on: -> { params[:controller].include?('payment_types') }
+      end
+
+      if can? :manage, Study::Discipline
+        primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') || params[:controller].include?('marks')} do |d|
+          d.dom_class = 'hidden'
+          d.item :edit, 'Редактирование', edit_study_discipline_path(params[:id] || 1)
+          d.item :new_checkpoints, 'Расписание', new_study_discipline_checkpoint_path(params[:discipline_id] || 1)
+          d.item :checkpoints, 'Карта дисциплины', study_discipline_checkpoints_path(params[:discipline_id] || 1)
+          d.item :marks, 'Внесение результатов', study_discipline_checkpoint_marks_path(params[:discipline_id] || 1, params[:checkpoint_id] || 1)
+        end
+      end
+
+      if can? :manage, Achievement
+        primary.item :periods_achievements, 'Мои показатели эффективности',
+                     periods_achievements_path, icon: 'list' do |a|
+          a.dom_class = 'hidden'
+          a.item :achievements, 'Отчёт за период', achievements_path
+        end
+      end
+
+      if can? :manage, Student
+        primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+      end
+
+      if can? :index, :groups
+        primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
+      end
+
+      if can? :manage, :ciot
+        primary.item :ciot, 'Логины и пароли', "#{root_url}ciot", icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
+      end
+
+      if can? :manage, :all
+        primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
+      end
+
+      if can? :manage, :all
+        primary.item :support, 'СПИСКИ по заявлениям'.html_safe,  lists_social_applications_path, icon: 'list'
+      end
     end
 
     if student_signed_in?

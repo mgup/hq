@@ -1,5 +1,6 @@
 prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
+               filename: "Список студентов группы #{@discipline.group.name}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
   render 'pdf/header', pdf: pdf, title: "СОСТАВ УЧЕБНОЙ ГРУППЫ #{@discipline.group.name}"
 
@@ -15,7 +16,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   end
 
   pdf.font_size 10 do
-    pdf.table data, header: true, width: 510.24062992108657,
+    pdf.table data, header: true, width: pdf.bounds.width,
               column_widths: [15, 200, 32], cell_style: { padding: 2 }
   end
 end

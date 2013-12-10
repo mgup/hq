@@ -13,7 +13,7 @@ class Study::Subject < ActiveRecord::Base
   belongs_to :group
   belongs_to :user
 
-  has_many :marks, class_name: Study::Mark
+  has_many :marks, class_name: Study::Xmark
 
   validates_presence_of :year, :semester, :title, :kind
 

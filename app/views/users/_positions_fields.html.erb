@@ -1,18 +1,67 @@
 <%= f.fields_for :positions do |p| %>
-  <div class="row fields">
-    <%= p.hidden_field :id %>
-    <div class="col col-lg-3" style="margin-left: 30px">
-      <%= p.text_field :title, {placeholder: 'Старший преподаватель', class: 'form-control'} %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Редактирование назначения</h3>
     </div>
-    <div class="col col-lg-2">
-      <%= p.select :acl_position_role, Role.all.collect{|r|[ r.title, r.id]}, {}, { class: 'form-control' }  %>
+    <div class="panel-body">
+      <%= p.hidden_field :id %>
+
+      <div class="form-group">
+        <%= p.label :title, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= p.text_field :title, class: 'form-control', disabled: true %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :appointment_id, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= p.select :appointment_id, options_from_collection_for_select(Appointment.all, :id, :title, p.object.appointment_id), { include_blank: true }, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :acl_position_role, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= p.select :acl_position_role, Role.all.collect{|r|[ r.title, r.id]}, {}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :acl_position_department, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= p.select :acl_position_department, Department.all.collect{ |d|[d.name, d.id] }, {}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :started_at, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= p.text_field :started_at, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group <%= 'has-error' if @user.errors.include?(:'primary') %>">
+        <%= p.label :primary, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <div class="radio">
+            <label><%= p.radio_button :primary, '0', checked: (p.object.primary ? false : true) %> по совместительству</label>
+          </div>
+          <div class="radio">
+            <label><%= p.radio_button :primary, '1', checked: (p.object.primary ? true : false) %> основная</label>
+          </div>
+        </div>
+      </div>
+
+      <% if @user.errors.include?(:'primary') %>
+        <p class="text-danger"><%= @user.errors[:'primary'].join(' ') %></p>
+      <% end %>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= p.link_to_remove 'Удалить назначение', class: 'btn btn-danger' %>
+        </div>
+      </div>
     </div>
-    <div class="col col-lg-2">
-      <%= p.select :acl_position_department, Department.all.collect{|r|[ r.abbreviation, r.id]}, {}, { class: 'form-control'}  %>
-    </div>
-    <div class="col col-lg-2 input-append date">
-      <%= p.text_field :appointment, {class: 'form-control datepicker'} %>
-    </div>
-    <div><%= p.link_to_remove 'Удалить' %></div>
   </div>
 <% end %>

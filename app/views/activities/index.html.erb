@@ -1,0 +1,55 @@
+<div class="page-header">
+  <h1>Показатели эффективности НПР</h1>
+</div>
+
+<%= link_to 'Добавить новый', new_activity_path, class: 'btn btn-default hidden-print' %>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Название, описание</th>
+    <th>Тип</th>
+    <th>Баллы</th>
+    <th>Свойства</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @groups.each do |group_name, activities| %>
+    <tr>
+      <th colspan="6"><%= group_name %></th>
+    </tr>
+    <% activities.each do |a| %>
+      <tr>
+        <td><%= a.id %></td>
+        <td>
+          <%= a.name %>
+          <p>
+            <small><%= a.description %></small>
+          </p>
+        </td>
+        <td>
+          <small>
+            <%= a.activity_type.name %>,
+            <%= a.activity_credit_type.name %>
+          </small>
+        </td>
+        <td style="width: 110px;">
+          <small><%= activity_credit_description(a) %></small>
+        </td>
+        <td>
+          <small><%= a.unique? ? 'уникальный' : 'повторяющийся' %></small>
+        </td>
+        <td>
+          <%= link_to edit_activity_path(a), class: 'btn btn-default hidden-print' do %>
+            <span class="glyphicon glyphicon-edit"></span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Добавить новый', new_activity_path, class: 'btn btn-default hidden-print' %>
