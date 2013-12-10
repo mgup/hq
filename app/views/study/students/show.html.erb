@@ -25,8 +25,8 @@
             <% if mark[:mark] == nil %>
               <%= circle_tips("#{mark[:checkpoint].name} / нет данных", '#fff', 30, '10', '', class: 'control') %>
             <% else %>
-              <%= circle_tips("#{mark[:checkpoint].name} / #{mark[:mark].mark>=mark[:checkpoint].min ? 'прошёл контрольную точку' : 'не прошёл контрольную точку'}",
-                              "#{mark[:mark].mark>=mark[:checkpoint].min ? '#62c462' : '#ee5f5b'}",
+              <%= circle_tips("#{mark[:checkpoint].name} / #{mark[:mark].mark >= mark[:checkpoint].min ? 'прошёл контрольную точку' : 'не прошёл контрольную точку'}",
+                              "#{mark[:mark].mark >= mark[:checkpoint].min ? '#62c462' : '#ee5f5b'}",
                               30, "#{mark[:mark].mark < 10 ? 10 : 6}", "#{mark[:mark].mark}", class: 'control') %>
             <% end %>
            <% else %>
