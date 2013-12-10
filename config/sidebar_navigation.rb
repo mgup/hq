@@ -76,8 +76,8 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       if can? :manage, Achievement
-        primary.item :periods_achievements, 'Мои показатели эффективности',
-                     periods_achievements_path, icon: 'list' do |a|
+        primary.item :periods_achievements, 'Показатели эффективности',
+                     periods_achievements_path, icon: 'stats' do |a|
           a.dom_class = 'hidden'
           a.item :achievements, 'Отчёт за период', achievements_path
         end

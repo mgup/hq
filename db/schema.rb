@@ -350,10 +350,10 @@ ActiveRecord::Schema.define(version: 20131209124618) do
     t.text      "document_number",      limit: 16777215,             null: false
     t.integer   "document_signed",      limit: 1
     t.timestamp "document_create_date",                              null: false
+    t.date      "document_start_date"
     t.date      "document_expire_date",                              null: false
     t.integer   "document_juridical",   limit: 1,        default: 0, null: false
     t.string    "document_department",  limit: 400
-    t.date      "document_start_date"
     t.string    "document_name",        limit: 400
     t.integer   "document_eternal",                      default: 0
   end
