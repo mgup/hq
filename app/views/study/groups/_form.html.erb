@@ -3,25 +3,25 @@
   <div class='row'>
     <%= label_tag :faculty, 'Факультет', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-      <%= hidden_field_tag :faculty %>
-      <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty', class: 'ajax-faculty') %>
+      <%= hidden_field_tag :faculty, nil,  class: 'ajax-faculty' %>
+      <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
     </div>
   </div>
 
   <div class='row'>
     <%= label_tag :course, 'Курс', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-      <%= hidden_field_tag 'course_study' %>
-      <%= pill_tabs('course', [1,2,3,4,5,6], 'course_study', class: 'ajax-course') %>
+      <%= hidden_field_tag 'course_study', nil, class: 'ajax-course' %>
+      <%= pill_tabs('course', [1,2,3,4,5,6], 'course_study') %>
     </div>
   </div>
 
   <div class='row'>
     <%= label_tag :form, 'Форма обучения', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-      <%= hidden_field_tag :form %>
+      <%= hidden_field_tag :form, nil, class: 'ajax-form' %>
       <%= pill_tabs('form', [['101', 'очная'], ['102', 'очно-заочная'], ['103', 'заочная'],
-                             ['105', 'дистанционная']], 'form', class: 'ajax-form') %>
+                             ['105', 'дистанционная']], 'form') %>
     </div>
   </div>
 
@@ -37,7 +37,8 @@
   <div class='row'>
     <%= label_tag :progress_group_id, 'Группа', class: 'control-label col-lg-2' %>
     <div class='col col-lg-10'>
-      <%= select_tag :progress_group_id, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.includes(:speciality), :id, :name), { class: 'ajax-group_id form-control', required: 'required'} %>
+      <%= select_tag :progress_group_id, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.includes(:speciality), :id, :name), { class: 'ajax-group form-control navigation_trip',
+          required: 'required', data: { input: '#progress_group_id', content: 'Выберите группу, чтобы посмотреть её рейтинг.', position: 's'}} %>
     </div>
   </div>
 

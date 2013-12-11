@@ -30,6 +30,7 @@ $(function () {
     });
 
     $('#trip').click(function(){
-        navigation_trip.start();
+        if ($('.navigation_trip').length > 0) navigation_trip.start();
+        else alert('Для данной страницы нет подсказок.')
     });
 })

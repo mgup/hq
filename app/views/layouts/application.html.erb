@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
-  <a class="navbar-brand" href="<%= root_url %>">
+  <a id="matrixHQ" class="navbar-brand" href="<%= root_url %>">
     <strong>Матрица</strong>
   </a>
 
@@ -18,7 +18,11 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-3">
+    <div id="page_sidebar" class="col-sm-3 hidden-print">
+      <%= link_to '#', class: 'btn btn-block btn-warning btn-lg', id: 'trip' do %>
+        <span class='glyphicon glyphicon-comment'></span> Помощь
+      <% end %>
+      <br>
       <%= render_navigation context: :sidebar, expand_all: true %>
     </div>
     <div class="col-sm-9">

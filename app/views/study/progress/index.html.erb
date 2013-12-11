@@ -1,59 +1,17 @@
-<ul class="breadcrumb">
-  <li><a href='/study/group'>Успеваемость</a></li>
-  <li class="active">Группа</li>
-</ul>
-
 <div class="page-header">
   <h1>Успеваемость <small><%= @group.name %></small></h1>
 </div>
+<% if @disciplines != [] %>
 <%= hidden_field_tag :progress_group, @group.id %>
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name),
-                   prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
+               prompt: 'суммарно по всем дисциплинам', class: 'form-control navigation_trip',
+               data: { input: '#disciplines_for_group', content: 'Вы можете выбрать другую дисциплину или посмотреть суммарную успеваемость по всем дисциплинам.'}%>
 
 <br>
-
-<table class="table table-hover">
-  <thead>
-  <tr>
-    <th class='text-muted'>#</th>
-    <th>Студент</th>
-    <th colspan='2'>Набранный балл на <%= DateTime.now.strftime("%d.%m.%Y") %> </th>
-    <th colspan='2'>Средняя оценка на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @discipline_students.each do |student| %>
-    <tr>
-      <td><%= student[:students].id %></td>
-      <td><%= student[:students].person.full_name %></td>
-      <td><%= student[:ball] %></td>
-      <td>
-        <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-stripped" style="width: <%= student[:progress]%>%"></div>
-        </div>
-      </td>
-      <% ball = case student[:progress].round %>
-                    <% when 0..49 then 'неудовлетворительно' %>
-                    <% when 50..64 then 'удовлетворительно' %>
-                    <% when 65..80 then 'хорошо' %>
-                    <% else 'отлично' %>
-                 <% end %>
-      <td><%= student[:students].marks == [] ? 'недостаточно данных' : ball %></td>
-      <td>
-        <% result = case student[:progress].round %>
-                     <% when 0..49 then 'danger' %>
-                     <% when 50..64 then 'warning' %>
-                     <% when 65..80 then 'info' %>
-                     <% else 'success' %>
-                  <% end %>
-
-        <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-<%= result %>" style="width: <%= student[:progress]%>%"></div>
-        </div>
-      </td>
-      <td><a class='btn btn-default' href="/study/group/<%= @group.id %>/student/<%= student[:students].id %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+<div id="for_student_progress">
+  <%= render(partial: 'discipline',
+             locals: { students: @discipline_students.sort_by{|s| s[:progress][:ball]}.reverse, group: @group, discipline: nil }) %>
+</div>
+<% else %>
+<p class="text-primary">Группа не участвует в балльно-рейтинговой системе</p>
+<% end %>

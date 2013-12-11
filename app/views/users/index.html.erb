@@ -1,55 +1,51 @@
-<ul class="breadcrumb">
-  <li class="active">Сотрудники</li>
-</ul>
-
 <div class="page-header">
   <h1>Пользователи системы</h1>
 </div>
 
+<%= render 'filters' %>
+
 <%= link_to new_user_path, class: 'btn btn-primary' do%>
   <span class='glyphicon glyphicon-plus'></span> Добавить нового пользователя
 <% end %>
-<br><br><br>
-<%= render 'filter' %>
 
 <div id='user-paginator'>
-  <%= paginate @users %>
+  <%= paginate_with_info @users %>
 </div>
 
-<div class="row">
-  <table id="users" class="table table-hover table-condensed">
-    <thead>
+<table class="table table-hover table-condensed">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Имя</th>
+    <th>Должности</th>
+    <th>Логин</th>
+    <th>Телефон</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @users.includes(:positions, :departments).each do |user| %>
     <tr>
-      <th>#</th>
-      <th>Имя</th>
-      <th>Должность / учёная степень</th>
-      <th>Департамент</th>
-      <th>Имя для входа</th>
-      <th>Телефон</th>
-      <th></th>
-      <th></th>
+      <td><%= user.id %></td>
+      <td><%= user.full_name %></td>
+      <td>
+        <ul class="list-unstyled">
+          <% user.positions.each do |p| %>
+            <li><%= p.info %></li>
+          <% end %>
+        </ul>
+      </td>
+      <td><%= user.username %></td>
+      <td class="nowrap"><%= user.phone %></td>
+      <td>
+        <%= link_to edit_user_path(user), title: 'Редактировать', class: 'btn btn-default' do %>
+          <span class="glyphicon glyphicon-edit"></span>
+        <% end %>
+        <%= link_to user_see_with_eyes_path(user), class: 'btn btn-default', title: 'Авторизоваться как пользователь' do %>
+          <span class="glyphicon glyphicon-eye-open"></span>
+        <% end %>
+      </td>
     </tr>
-    </thead>
-    <tbody>
-    <% @users.includes(:positions, :departments).each do |user| %>
-      <tr>
-        <td><%= user.id %></td>
-        <td><%= user.full_name %></td>
-        <td>
-          <%= user.positions.collect{|position| position.title}.push(user.user_position == nil ? [] : user.user_position.split(', ')).flatten.compact.uniq.join(', ')%>
-        </td>
-        <% department = (Department.exists?(user.user_department) ? Department.find(user.user_department).abbreviation : '') %>
-        <td><%= (user.departments.collect{|department| department.abbreviation} << (department if department != '')).uniq.compact.join(', ') %></td>
-        <td><%= user.username %></td>
-        <td class="nowrap"><%= user.phone %></td>
-        <td>
-          <%= link_to 'Назначения', user %>
-        </td>
-        <td>
-          <%= link_to 'Редактировать', edit_user_path(user) %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
- </div> 
+  <% end %>
+  </tbody>
+</table>
