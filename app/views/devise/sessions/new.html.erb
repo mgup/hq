@@ -3,12 +3,14 @@
     <%= content_tag :div, msg, class: 'alert alert-info' %>
   <% end %>
   <div class="col-md-4">
-    <h2>Вход для сотрудников</h2>
+    <h2>Вход для преподавателей и&nbsp;сотрудников</h2>
     <%= form_for User.new, as: :user, url: session_path(:user), html: { role: 'form' } do |f| %>
       <div class="form-group">
+        <%= f.label :username %>
         <%= f.text_field :username, autofocus: true, placeholder: 'Имя пользователя', class: 'form-control' %>
       </div>
       <div class="form-group">
+        <%= f.label :password %>
         <%= f.password_field :password, placeholder: 'Пароль', class: 'form-control' %>
         <p class="help-block">
           — Где я могу получить учётную запись?
@@ -43,7 +45,7 @@
 
   <div class="col-md-4">
     <h2>Вход для студентов</h2>
-    <%= image_tag 'keep-calm-and-wait.png', class: 'img-responsive' %>
+    <%= image_tag 'keep-calm-and-wait.png', class: 'img-responsive', style: 'opacity: 0.3;' %>
   </div>
 </div>
 

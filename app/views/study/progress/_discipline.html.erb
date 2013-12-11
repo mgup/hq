@@ -100,7 +100,7 @@
     </thead>
     <tbody>
       <% students.each do |s| %>
-        <% if s[:ball] < 55 then %>
+        <% if s[:ball].blank? || s[:ball] < 55 then %>
           <% next %>
         <% end %>
         <tr>
