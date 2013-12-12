@@ -14,6 +14,7 @@ class StudentsController < ApplicationController
   end
 
   def documents
+    @reference = Document::Doc.new
     @student = Student.find(params[:student_id])
   end
 
@@ -37,7 +38,12 @@ class StudentsController < ApplicationController
 
   def reference
     @student = Student.valid_for_today.find(params[:id])
-
+    #raise @student.person.attributes.inspect
+    @reference = Document::Doc.create document_type: params[:document_doc][:document_type],
+                                      document_number: (Document::Doc.last.number.to_i + 1),
+                                      document_expire_date: Date.today.change(year: Date.today.year+1)
+    @document_person = Document::DocumentPerson.create (@student.person.attributes.merge(document: @reference))
+    @document_student = Document::DocumentStudent.create (@student.attributes.merge(document: @reference))
     respond_to do |format|
       format.pdf
     end

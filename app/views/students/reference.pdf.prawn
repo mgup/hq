@@ -5,8 +5,6 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   render 'pdf/header', pdf: pdf, title: ''
 
-  reference = 1
-
   pdf.move_down 15
   pdf.font 'PT', size: 10 do
     pdf.text '127550, Москва, Прянишникова, 2а'
@@ -19,7 +17,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.move_down 30
 
   pdf.font 'PT', size: 16, style: :bold do
-    pdf.text "СПРАВКА № #{reference} от «__» __________ 20____г.", align: :center
+    pdf.text "СПРАВКА № #{@reference.number} от «__» __________ 20____г.", align: :center
   end
 
 

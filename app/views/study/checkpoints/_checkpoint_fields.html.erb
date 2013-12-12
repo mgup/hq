@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'checkpoints.name') %>">
+  <div class="form-group <%= 'has-error' if @discipline.errors.include?(:'checkpoints.name') %> checkpoint_body navigation_trip"  data-input=".checkpoint_body" data-content="Когда вы заполните календарь с контрольными точками, не забудьте заполнить информацию по ним." data-position="n">
     <%= f.label :checkpoint_name, 'Название', class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
       <%= f.text_field :checkpoint_name, class: 'form-control', disabled: f.object.marks.any? %>

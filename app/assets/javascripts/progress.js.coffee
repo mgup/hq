@@ -3,7 +3,7 @@ $ ->
   $('.view-group-progress').click (event) ->
     event.preventDefault()
     group = $('#progress_group_id').val()
-    if '' == group || null == group then alert 'Сначала необходимо выбрать группу.' else document.location = document.location + '/' + group + '/progress'
+    if '' == group || null == group then alert 'Сначала необходимо выбрать группу.' else document.location = "#{root}study/group/#{group}/progress"
 
 
 

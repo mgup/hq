@@ -5,7 +5,9 @@
 <% else %>
   <% date = false %>
 <% end %>
-<%= link_to link, id: 'printProgress', class: 'btn btn-info' do %>
+<%= link_to link, id: 'printProgress', class: 'btn btn-info navigation_trip',
+            data: { input: '#printProgress', content: "Вы можете распечатать текущую успеваемость #{group.name} #{discipline ? ('по дисциплине ' + discipline.name) : 'по всем предметам'}.",
+                    position: 's'} do %>
   <span class="glyphicon glyphicon-print"></span> Распечатать успеваемость
 <% end %>
 <br>
@@ -30,7 +32,7 @@
     <th class="text-muted">#</th>
     <th>Студент</th>
     <th colspan='2'>Набранный балл на <%= DateTime.now.strftime("%d.%m.%Y") %> </th>
-    <th colspan='2'>Средняя оценка на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
+    <th colspan='2'>Прогноз на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
     <th></th>
   </tr>
   </thead>
@@ -56,7 +58,13 @@
       <% else %>
         <td colspan="2">Недостаточно данных</td>
       <% end %>
-      <td><a class='btn btn-default' href="<%= study_group_student_path(group.id, student[:student].id) %>" title='Подробнее'><span class='glyphicon glyphicon-search'></span></a></td>
+      <td>
+        <%= link_to  study_group_student_path(group.id, student[:student].id), class: 'btn btn-default student_progress navigation_trip', title: 'Подробнее',
+                    data: { input: '.student_progress:first-child', content: 'Пройдите по ссылке, чтобы узнать успеваемость отдельного студента.',
+                            position: 'w'} do %>
+          <span class='glyphicon glyphicon-search'></span></a>
+        <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>

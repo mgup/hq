@@ -5,20 +5,32 @@
 </div>
 
 <%= link_to new_study_discipline_checkpoint_path(@discipline),
-            class: 'btn btn-default' do %>
+            class: 'btn btn-default navigation_trip', id: 'edit_checkpoints_button',
+            data: { input: '#edit_checkpoints_button', content: 'Вы можете отредактировать своё расписание
+                        <br>или информацию по контрольным точкам, пройдя по данной ссылке.',
+                    position: 's'}  do %>
   <span class="glyphicon glyphicon-calendar"></span>
   Расписание
 <% end %>
 
-<%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-default' do %>
+<%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-default navigation_trip',
+            id: 'edit_discipline_button', data: { input: '#edit_discipline_button',
+            content: 'Вы можете редактировать карту дисциплины. Для этого пройдите по данной ссылке.',
+            position: 's'} do %>
   <span class="glyphicon glyphicon-edit"></span> Редактировать дисциплину
 <% end %>
 
-<%= link_to study_discipline_print_group_path(@discipline), class: 'btn btn-default' do %>
+<%= link_to study_discipline_print_group_path(@discipline), class: 'btn btn-default navigation_trip',
+            id: 'print_students_list', data: { input: '#print_students_list',
+            content: 'Чтобы распечатать список студентов группы, нажмите на эту кнопку.',
+            position: 's'} do %>
   <span class='glyphicon glyphicon-print'></span> Студенты
 <% end %>
 
-<%= link_to study_group_discipline_path(@discipline.group, @discipline), class: 'btn btn-info pull-right' do %>
+<%= link_to study_group_discipline_path(@discipline.group, @discipline), class: 'btn btn-info pull-right navigation_trip',
+            id: 'show_progress', data: { input: '#show_progress',
+            content: 'Вы можете перейти на страницу с успеваемостью по этой дисциплине.',
+            position: 'w'} do %>
   <span class='glyphicon glyphicon-eye-open'></span> Успеваемость
 <% end %>
 
@@ -27,14 +39,14 @@
   <div class="alert alert-danger">
     <p>В некоторых занятиях не введены результаты оценки студентов.</p>
     <ul>
-    <% @classes.not_full(@discipline).each do |c| %>
-      <li>
-        <%= link_to study_discipline_checkpoint_marks_path(@discipline, c) do%>
-          <%= c.name if c.is_checkpoint? %>
-          <%= c.lessonname %> (<%= l c.date %>)
-        <% end %>
-      </li>
-    <% end %>
+      <% @classes.not_full(@discipline).each do |c| %>
+        <li>
+          <%= link_to study_discipline_checkpoint_marks_path(@discipline, c) do%>
+            <%= c.name if c.is_checkpoint? %>
+            <%= c.lessonname %> (<%= l c.date %>)
+          <% end %>
+        </li>
+      <% end %>
     </ul>
   </div>
 <% end %>
@@ -49,56 +61,60 @@
     </tr>
     </thead>
     <tbody>
-      <% @discipline.classes.each  do |checkpoint| %>
-        <tr>
-          <td class="text-muted"><%= checkpoint.id %></td>
-          <td><%= l checkpoint.date %></td>
-          <td class="full-width">
-            <%= '<strong>'.html_safe if checkpoint.is_checkpoint? %>
+    <% @discipline.classes.each  do |checkpoint| %>
+      <tr>
+        <td class="text-muted"><%= checkpoint.id %></td>
+        <td><%= l checkpoint.date %></td>
+        <td class="full-width">
+          <%= '<strong>'.html_safe if checkpoint.is_checkpoint? %>
 
-            <span class="glyphicon <%= checkpoint.lesson %>"></span>
-            <%= checkpoint.name if checkpoint.type == 3 %>
-            <%= checkpoint.lessonname %>
+          <span class="glyphicon <%= checkpoint.lesson %>"></span>
+          <%= checkpoint.name if checkpoint.type == 3 %>
+          <%= checkpoint.lessonname %>
 
-            <%= '</strong>'.html_safe if checkpoint.is_checkpoint? %>
-          </td>
-          <td>
-            <div class="pull-right">
-              <% unless checkpoint.date.future? %>
-                <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default' do %>
-                  <span class="glyphicon glyphicon-pencil"></span> Внести результаты
-                <% end %>
-              <% else %>
-                <%= link_to study_discipline_checkpoint_path(@discipline, checkpoint), method: :delete, confirm: 'Вы уверены?',
-                            class: 'btn btn-danger' do %>
-                  <span class="glyphicon glyphicon-remove"></span> Удалить
-                <% end %>
+          <%= '</strong>'.html_safe if checkpoint.is_checkpoint? %>
+        </td>
+        <td>
+          <div class="pull-right">
+            <% unless checkpoint.date.future? %>
+              <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default add_marks_buttons navigation_trip',
+                          data: { input: '.add_marks_buttons:first-child', content: 'Вы можете внести результаты по проведённому занятию.',
+                                  position: 'w'} do %>
+                <span class="glyphicon glyphicon-pencil"></span> Внести результаты
               <% end %>
-            </div>
-          </td>
-       </tr>
-      <% end %>
+            <% else %>
+              <%= link_to study_discipline_checkpoint_path(@discipline, checkpoint), method: :delete, confirm: 'Вы уверены?',
+                          class: 'btn btn-danger delete_checkpoint navigation_trip',
+                          data: { input: '.delete_checkpoint:first-child', content: 'Вы можете удалить занятия, которые еще не прошли.',
+                                  position: 'w'} do %>
+                <span class="glyphicon glyphicon-remove"></span> Удалить
+              <% end %>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
 
-      <% if false %>
+    <% if false %>
       <% @discipline.exams.originals.order('exam_date').each do |exam| %>
         <% if exam.date? %>
-        <tr>
-          <td class="text-muted"><%= exam.id %></td>
-          <td><%= l exam.date %></td>
-          <td class="full-width">
-            <span class="glyphicon glyphicon-<%= exam == @discipline.final_exam ? 'star' :  'star-empty' %>"></span> <%= exam.name %>
-          </td>
-          <td>
-            <div class="pull-right">
+          <tr>
+            <td class="text-muted"><%= exam.id %></td>
+            <td><%= l exam.date %></td>
+            <td class="full-width">
+              <span class="glyphicon glyphicon-<%= exam == @discipline.final_exam ? 'star' :  'star-empty' %>"></span> <%= exam.name %>
+            </td>
+            <td>
+              <div class="pull-right">
                 <%= link_to study_discipline_exam_path(@discipline, exam), class: 'btn btn-default', title: 'Внести результаты экзамена' do %>
                   <span class="glyphicon glyphicon-pencil"></span>
                 <% end %>
-            </div>
-          </td>
-        </tr>
+              </div>
+            </td>
+          </tr>
         <% end %>
       <% end %>
-      <% end %>
+    <% end %>
     </tbody>
   </table>
- </div>
+</div>

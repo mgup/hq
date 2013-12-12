@@ -17,15 +17,42 @@
                      ),
                      class: 'form-control' %>
     </div>
+
+    <div class="col-sm-offset-5 col-sm-2">
+      <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-12">
+      <%= multiselect_tag :causes, title: 'Причины', collection: My::SupportCause.all,
+                          value: :id, text: :title, current: params[:causes].map(&:to_i),
+                          pl1: 'Выбрана %c причина',
+                          pl2: 'Выбраны %c причины',
+                          pl5: 'Выбрано %c причин' %>
+    </div>
+  </div>
+
+  <div class="form-group">
     <div class="col-sm-4">
       <div class="checkbox">
         <label>
           <%= check_box_tag :accepted, '1', '1' == params[:accepted] %> Только принятые заявления
         </label>
       </div>
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :deferred, '1', '1' == params[:deferred] %> Только непринятые заявления
+        </label>
+      </div>
     </div>
-    <div class="col-sm-2">
-      <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
+
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :strict, '1', '1' == params[:strict] %> Только строгое совпадение причин
+        </label>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -36,7 +63,7 @@
                                                ['Малоимущие + неполная семья', 10], ['Малоимущие', 11],
                                                ['Остальные', 12]], params[:lists]),
                    prompt: 'Общий список',
-                   class: 'form-control' %>
+                   class: 'form-control', disabled: true %>
   </div>
 <% end %>
 
@@ -65,7 +92,9 @@
       <% end %>
     </tbody>
   </table>
-  <%= link_to 'Распечатать', print_list_social_applications_path, class: 'btn btn-primary btn-lg' %>
+  <%= link_to 'Распечатать', print_list_social_applications_path(year: params[:year], month: params[:month],
+                             accepted: params[:accepted], deferred: params[:deferred],
+                             strict: params[:strict], causes: params[:causes]), class: 'btn btn-primary btn-lg' %>
 <% else %>
   <p class="lead">Нет ни одного заявления.</p>
 <% end %>

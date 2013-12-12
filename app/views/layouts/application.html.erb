@@ -3,8 +3,8 @@
 <head>
   <title>Matrix</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= stylesheet_link_tag    'application-print', media: 'print', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -28,10 +28,13 @@
 <div class="container">
   <div class="row">
     <div id="page_sidebar" class="col-sm-3 hidden-print">
+      <%= link_to '#', class: 'btn btn-block btn-warning btn-lg', id: 'trip' do %>
+        <span class='glyphicon glyphicon-comment'></span> Помощь
+      <% end %>
+      <br>
       <%= render_navigation context: :sidebar, expand_all: true %>
     </div>
-    <div id="page_content" class="col-sm-9">
-      <%= render_navigation renderer: :breadcrumbs, context: :sidebar %>
+    <div class="col-sm-9">
       <%= yield %>
     </div>
   </div>

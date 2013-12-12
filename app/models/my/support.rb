@@ -25,9 +25,18 @@ class My::Support < ActiveRecord::Base
     .where('S2.support_id IS NULL')
   end
 
+  # ! В одном месте для таких случаев предложили наглый выход !
+  def readonly?
+    false
+  end
+
   scope :with_causes, -> (causes, strict = false) {
     if strict
-
+      joins = []
+      causes.each_with_index do |cause, index|
+        joins << "INNER JOIN support_options `op#{index+1}` ON support.support_id = `op#{index+1}`.support_options_support AND `op#{index+1}`.support_options_cause = #{cause}"
+      end
+      joins(joins.join(' ')).where("(SELECT COUNT(*) FROM support_options WHERE support_options_support = support.support_id) = #{causes.size}")
     else
       joins(:options)
       .where('support_options_cause IN (?)', causes)

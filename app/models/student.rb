@@ -62,7 +62,7 @@ class Student < ActiveRecord::Base
   has_many :payments, class_name: Finance::Payment, primary_key: :student_group_id, foreign_key: :finance_payment_student_group
 
   has_many :supports, class_name: My::Support, primary_key: :student_group_id,
-             foreign_key: :support_student
+           foreign_key: :support_student
   has_many :selections,  class_name: My::Select, primary_key: :student_group_id,
            foreign_key: :optional_select_student
   has_many :choices, class_name: My::Choice, :through => :selections
@@ -154,6 +154,10 @@ GROUP BY `group`
   # Факультет, на котором обучается студент.
   def faculty
     group.speciality.faculty
+  end
+
+  def valid?
+    STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status
   end
 
   def course
@@ -292,18 +296,18 @@ GROUP BY `group`
   end
 
   def result(discipline = nil)
-   if discipline
-     current = ball(discipline)
-     ball = discipline.current_ball != 0 ? 100*(current/discipline.current_ball) : 0.0
-     current_progress = current
-   else
-     current = ball()
-     current_progress = (disciplines.size != 0 ? (current/disciplines.size) : 0)
-     ball = 0
-     disciplines.each do |d|
-       ball+=100*(current_progress/d.current_ball)/disciplines.size if d.current_ball != 0
-     end
-   end
+    if discipline
+      current = ball(discipline)
+      ball = discipline.current_ball != 0 ? 100*(current/discipline.current_ball) : 0.0
+      current_progress = current
+    else
+      current = ball()
+      current_progress = (disciplines.size != 0 ? (current/disciplines.size) : 0)
+      ball = 0
+      disciplines.each do |d|
+        ball+=100*(current_progress/d.current_ball)/disciplines.size if d.current_ball != 0
+      end
+    end
     if discipline and discipline.final_exam.test?
       case ball.round
         when 0..54

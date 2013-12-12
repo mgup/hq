@@ -2,11 +2,13 @@
   <h1>Успеваемость <small><%= @group.name %></small></h1>
 </div>
 <%= hidden_field_tag :progress_group, @group.id %>
+
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name, @discipline.id),
-               prompt: 'суммарно по всем дисциплинам', class: 'form-control' %>
+               prompt: 'суммарно по всем дисциплинам', class: 'form-control navigation_trip',
+    data: { input: '#disciplines_for_group', content: 'Вы можете выбрать другую дисциплину или посмотреть суммарную успеваемость по всем дисциплинам.'}%>
 
 <br>
 <div id="for_student_progress">
   <%= render(partial: 'discipline',
-  locals: { students: @discipline_students.sort_by{|s| s[:progress][:ball]}.reverse, group: @group, discipline: @discipline }) %>
+             locals: { students: @discipline_students.sort_by{|s| s[:progress][:ball]}.reverse, group: @group, discipline: @discipline }) %>
 </div>
