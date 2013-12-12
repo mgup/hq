@@ -7,7 +7,8 @@
       </div>
       <div class="modal-body">
         <h4><%= student.person.full_name %></h4>
-        <%= form_tag reference_student_path(student), method: :get, class: 'form-horizontal', id: 'referenceOptions' do %>
+        <%= form_for @reference, url: reference_student_path(student), class: 'form-horizontal', id: 'referenceOptions' do |f| %>
+          <%= f.hidden_field :document_type, value: 4 %>
           <label><%= check_box_tag :addBirthday %> Добавить день рождения студента</label>
           <br>
           <label><%= check_box_tag :addOrders %> Добавить в справку приказы</label>
@@ -61,13 +62,15 @@
           <div class="row">
             <div class="thumbnail">
               <h4>Подпись:</h4>
-              <%= select_tag :sign, options_for_select([['Подпись директора', 0], ['Подпись проректора и директора', 2]]), class: 'form-control'%>
+              <%= select_tag :sign, options_for_select([['Подпись начальника студенческого отдела кадров', 0],
+                                                        ['Подпись первого проректора по учебной работе и начальника студенческого отдела кадров', 2]]),
+                                                        class: 'form-control'%>
             </div>
           </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-        <%= submit_tag 'Распечатать', class: 'btn btn-primary' %>
+        <%= f.submit 'Распечатать', class: 'btn btn-primary' %>
         <% end %>
       </div>
     </div>

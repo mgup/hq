@@ -156,6 +156,10 @@ GROUP BY `group`
     group.speciality.faculty
   end
 
+  def valid?
+    STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status
+  end
+
   def course
     group.course
   end
