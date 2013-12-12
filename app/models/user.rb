@@ -47,6 +47,16 @@ class User < ActiveRecord::Base
     .where('user_name LIKE ? OR fname.dictionary_ip LIKE ? OR iname.dictionary_ip LIKE ? OR oname.dictionary_ip LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%")
   }
 
+  scope :in_department, -> (ids) {
+    joins(:positions)
+    .where('acl_position_department IN (?)', ids)
+  }
+
+  scope :with_role, -> (roles_ids) {
+    joins(:positions)
+    .where('acl_position_role IN (?)', roles_ids)
+  }
+
   validates :username, presence: true
   validates :password, on: :create, presence: true
   validate :primary_position_should_be_one

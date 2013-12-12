@@ -54,10 +54,22 @@ class Study::Discipline < ActiveRecord::Base
   scope :from_student, -> student {where(subject_group:  student.group)}
   scope :from_group, -> group {where(subject_group: group)}
   scope :now, -> {where(subject_year: CURRENT_STUDY_YEAR, subject_semester: CURRENT_STUDY_TERM)}
+
   scope :include_teacher, -> user {
-    includes(:assistant_teachers)
-    .where('subject_teacher = ? OR subject_teacher.teacher_id = ?', user.id, user.id).references(:subject_teacher)
+    if user.is?(:subdepartment_assistant)
+      # Определяем его кафедру.
+      dep_ids = user.positions.from_role(:subdepartment_assistant.to_s).map { |p| p.department.id }
+      users = User.in_department(dep_ids).with_role(Role.select(:acl_role_id).where(acl_role_name: ['lecturer', 'subdepartment']))
+      ids = users.map { |u| u.id }.push(user.id)
+
+      includes(:assistant_teachers)
+      .where('subject_teacher IN (?) OR subject_teacher.teacher_id IN (?)', ids, ids).references(:subject_teacher)
+    else
+      includes(:assistant_teachers)
+      .where('subject_teacher = ? OR subject_teacher.teacher_id = ?', user.id, user.id).references(:subject_teacher)
+    end
   }
+
   scope :with_brs, ->{where(subject_brs:  true)}
 
   def has?(type)
