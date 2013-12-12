@@ -6,7 +6,8 @@
 
 <%= link_to new_study_discipline_checkpoint_path(@discipline),
             class: 'btn btn-default navigation_trip', id: 'edit_checkpoints_button',
-            data: { input: '#edit_checkpoints_button', content: 'Вы можете отредактировать расписание, пройдя по данной ссылке.',
+            data: { input: '#edit_checkpoints_button', content: 'Вы можете отредактировать своё расписание
+                        <br>или информацию по контрольным точкам, пройдя по данной ссылке.',
                     position: 's'}  do %>
   <span class="glyphicon glyphicon-calendar"></span>
   Расписание

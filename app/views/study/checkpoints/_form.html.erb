@@ -24,7 +24,8 @@
 
   <div class="row">
     <div class="col-md-4 lectures">
-      <h3>Лекции</h3>
+      <h3 class="navigation_trip" id="lecturesHead" data-input="#lecturesHead" data-content="Заполните каждый кадендарь своими лекциями," data-position="n">
+      Лекции</h3>
       <%= render_checkpoints_calendar @discipline %>
 
       <%= f.fields_for :lectures do |lectures_form| %>
@@ -33,7 +34,7 @@
       <%= f.link_to_add 'Добавить лекцию', :lectures, style: 'display: none;' %>
     </div>
     <div class="col-md-4 seminars">
-      <h3>
+      <h3 class="navigation_trip" id="seminarsHead" data-input="#seminarsHead" data-content="лабораторными (практическими) занятиями" data-position="n">
         <abbr title="Практические и лабораторные занятия">
           Практ. и&nbsp;лаб.
         </abbr>
@@ -47,7 +48,8 @@
                         :seminars, style: 'display: none;' %>
     </div>
     <div class="col-md-4 checkpoints">
-      <h3>Контрольные точки</h3>
+      <h3 class="navigation_trip" id="checkpointsHead" data-input="#checkpointsHead" data-content="и контрольными точками." data-position="n">
+        Контрольные точки</h3>
       <%= render_checkpoints_calendar @discipline  %>
     </div>
   </div>
