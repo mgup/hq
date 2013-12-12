@@ -2,6 +2,14 @@
   <h1>Заявления на материальную помощь</h1>
 </div>
 
+<div class="col-sm-13">
+  <%= link_to close_social_applications_path(year: params[:year], month: params[:month]),
+              class: 'btn btn-lg btn-default' do %>
+    <span class="glyphicon glyphicon-lock"></span> Закрыть приём
+  <% end %>
+</div>
+<br>
+
 <%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
   <div class="form-group">
     <div class="col-sm-2">
@@ -53,7 +61,7 @@
     <div class="col-sm-4">
       <div class="checkbox">
         <label>
-          <%= check_box_tag :strict, '1', '1' == params[:strict], disabled: true %> Только строгое совпадение причин
+          <%= check_box_tag :strict, '1', '1' == params[:strict] %> Только строгое совпадение причин
         </label>
       </div>
     </div>

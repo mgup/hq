@@ -37,7 +37,7 @@ HQ::Application.routes.draw do
     resources :supports
     get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
 
-    get 'reference', on: :member, defaults: { format: :pdf }
+    post 'reference.pdf', to: 'students#reference', on: :member, defaults: { format: :pdf }, as: :reference
   end
   get '/students/list(/:page)', to: 'students#index'
 
@@ -97,6 +97,7 @@ HQ::Application.routes.draw do
   namespace :social do
     resources :applications do
       get 'lists', to: 'applications#lists', on: :collection
+      get 'close', to: 'applications#close_receipt', on: :collection
       get 'print_list.xlsx', to: 'applications#print_list', on: :collection, defaults: { format: 'xlsx' }, as: :print_list
     end
 
