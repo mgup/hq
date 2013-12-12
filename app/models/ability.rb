@@ -78,6 +78,10 @@ class Ability
     can :manage, [Achievement, AchievementReport], user_id: user.id
   end
 
+  def subdepartment_assistant(user)
+    lecturer(user)
+  end
+
   # Заведующий кафедрой.
   def subdepartment(user)
     lecturer(user)
