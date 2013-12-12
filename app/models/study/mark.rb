@@ -42,10 +42,13 @@ class Study::Mark < ActiveRecord::Base
         {mark: 'хорошо', color: 'info', circle: 20, hue: '#5bc0de'}
       when MARK_PRACTICAL_PERFECT
         {mark: 'отлично', color: 'success', circle: 20, hue: '#62c462'}
+      #else
+      #  {mark: 'xxx', color: 'success', circle: 80, hue: '#62c462'}
     end
   end
 
   protected
+
   def record_date
     self.checkpoint_mark_submitted = read_attribute(:checkpoint_mark_submitted) || Time.now
   end
