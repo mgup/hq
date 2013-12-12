@@ -1,7 +1,9 @@
 $(function () {
+    $('#trip').hide();
     var array = [];
     var key = 1;
     $('.navigation_trip').each(function(){
+        $('#trip').show();
        var $this = $(this);
        var e = {
            'sel': $($this.data('input')),
@@ -29,8 +31,8 @@ $(function () {
         finishLabel: 'закрыть'
     });
 
+
     $('#trip').click(function(){
         if ($('.navigation_trip').length > 0) navigation_trip.start();
-        else alert('Для данной страницы нет подсказок.')
     });
 })
