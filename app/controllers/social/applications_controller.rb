@@ -12,6 +12,12 @@ class Social::ApplicationsController < ApplicationController
     @applications = @applications.where(support_year:  params[:year])
     @applications = @applications.where(support_month: params[:month])
 
+    if (!params[:accepted] && !params[:deferred] && !params[:causes] && (params[:last_name] == '' || !params[:last_name]))
+      @close = @applications.open == [] ? 2 : 1
+    else
+      @close = 0
+    end
+
     if params[:accepted]
       @applications = @applications.where(accepted: true)
     end
