@@ -3,9 +3,11 @@
 </div>
 
 <div class="col-sm-13">
-  <%= link_to close_social_applications_path(year: params[:year], month: params[:month]),
-              class: 'btn btn-lg btn-default' do %>
-    <span class="glyphicon glyphicon-lock"></span> Закрыть приём
+  <% if @close != 0 %>
+    <%= link_to close_social_applications_path(year: params[:year], month: params[:month]),
+                class: 'btn btn-lg btn-default', disabled: (@close == 2 ? true : false) do %>
+      <%= @close == 2 ? "<span class='glyphicon glyphicon-lock'></span> Приём закрыт".html_safe : 'Закрыть приём' %>
+    <% end %>
   <% end %>
 </div>
 <br>

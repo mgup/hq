@@ -20,6 +20,8 @@ class My::Support < ActiveRecord::Base
 
   has_many :causes, through: :options
 
+  scope :open, -> {where(accepted: false, deferred: false)}
+
   default_scope do
     joins('LEFT JOIN support AS S2 ON S2.support_student = support.support_student AND S2.support_year = support.support_year AND S2.support_month = support.support_month AND support.support_id < S2.support_id')
     .where('S2.support_id IS NULL')

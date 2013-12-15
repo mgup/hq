@@ -69,7 +69,11 @@ class User < ActiveRecord::Base
   before_update :hash_password, if: :password_changed?
 
   def hash_password
-    self.password = Digest::MD5.hexdigest(self.password)
+    if self.password.blank?
+      self.password = self.password_was
+    else
+      self.password = Digest::MD5.hexdigest(self.password)
+    end
   end
 
   def primary_position_should_be_one

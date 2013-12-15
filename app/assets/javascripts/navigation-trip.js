@@ -32,7 +32,8 @@ $(function () {
     });
 
 
-    $('#trip').click(function(){
+    $('#trip').click(function(event){
+        event.preventDefault();
         if ($('.navigation_trip').length > 0) navigation_trip.start();
     });
 })
