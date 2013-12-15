@@ -19,7 +19,8 @@ class Group < ActiveRecord::Base
   has_many :disciplines, class_name: Study::Discipline, foreign_key: :subject_group
 
   default_scope do
-   includes(speciality: :faculty).where('group_speciality != 1')
+    includes(speciality: :faculty).where('group_speciality != 1')
+    .order('group_name ASC, group_course ASC, group_number ASC')
   end
 
   scope :from_speciality, -> speciality { where(group_speciality: speciality) }
