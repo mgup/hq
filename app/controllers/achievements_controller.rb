@@ -10,6 +10,11 @@ class AchievementsController < ApplicationController
                                       semester: params[:semester])
                                .first
 
+    if @period.nil?
+      redirect_to periods_achievements_path
+      return
+    end
+
     unless @period.active?
       redirect_to periods_achievements_path, notice: 'Приём данных по указанному периоду завершён.'
     end
