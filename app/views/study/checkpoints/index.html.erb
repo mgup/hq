@@ -63,13 +63,6 @@
           <%= '</strong>'.html_safe if checkpoint.is_checkpoint? %>
         </td>
         <td>
-          <%= button_tag  class: 'btn btn-default change_date_buttons navigation_trip hidden-print',
-                      data: { input: '.change_date_buttons:first-child', content: 'Вы можете изменить дату проведения занятия.',
-                              position: 'w', value: checkpoint.id, parent: checkpoint.discipline.id} do %>
-            <span class="glyphicon glyphicon-calendar"></span> Изменить дату
-          <% end %>
-        </td>
-        <td>
           <div class="pull-right">
             <% unless checkpoint.date.future? %>
               <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default add_marks_buttons navigation_trip hidden-print',
@@ -93,6 +86,13 @@
               <% end %>
             <% end %>
           </div>
+        </td>
+        <td>
+          <%= button_tag  class: 'btn btn-default change_date_buttons navigation_trip hidden-print', title: 'Изменить дату',
+                          data: { input: '.change_date_buttons:first-child', content: 'Вы можете изменить дату проведения занятия.',
+                                  position: 'w', value: checkpoint.id, parent: checkpoint.discipline.id} do %>
+            <span class="glyphicon glyphicon-calendar"></span>
+          <% end %>
         </td>
       </tr>
     <% end %>
