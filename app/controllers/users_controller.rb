@@ -6,6 +6,8 @@ class UsersController < ApplicationController
 
     @users = @users.by_name(params[:name]) if params[:name]
 
+    @users = @users.by_department(params[:department]) if params[:department]
+
     @users = @users.page(params[:page])
   end
 

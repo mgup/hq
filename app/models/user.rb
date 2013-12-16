@@ -47,6 +47,13 @@ class User < ActiveRecord::Base
     .where('user_name LIKE ? OR fname.dictionary_ip LIKE ? OR iname.dictionary_ip LIKE ? OR oname.dictionary_ip LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%")
   }
 
+  scope :by_department, -> (dep_ids) {
+    dep_ids = [dep_ids.id] if dep_ids.instance_of?(Department)
+
+    joins('LEFT JOIN acl_position ON acl_position_user = user_id')
+    .where("user_department IN (:ids) OR acl_position_department IN (:ids)", ids: dep_ids)
+  }
+
   scope :in_department, -> (ids) {
     joins(:positions)
     .where('acl_position_department IN (?)', ids)
