@@ -1,7 +1,8 @@
 <ul class="nav nav-tabs">
   <li class="active"><a href="<%= student_path(@student) %>">Персональная информация</a></li>
-  <li><a href="#">Учебная информация</a></li>
+  <li><a href="<%= student_study_path(@student) %>">Учебная информация</a></li>
   <li><a href="<%= student_documents_path(@student) %>">Документы</a></li>
+  <li><a href="<%= student_grants_path(@student) %>">Выплаты и стипендии</a></li>
 </ul>
 <br>
 <div class="page-header">
@@ -10,20 +11,144 @@
 
 <%= form_for @student, html: { class: 'form-horizontal' } do |f| %>
     <%= f.fields_for @student.person do |p| %>
-      <legend>Персональная информация</legend>
-      <div class="row">
-        <%= p.label :passport_series, 'Паспорт', class: 'col col-lg-2 control-label' %>
-        <div class="col col-lg-10">
-          <div class="row">
-            <%= p.text_field :passport_series,     class: 'col col-lg-1 form-control' %>
-            <%= p.text_field :passport_number,     class: 'col col-lg-2 col-offset-1 form-control' %>
-            <%= p.text_field :passport_date,       class: 'col col-lg-2 col-offset-1 datepicker form-control' %>
+    <legend>Персональная информация</legend>
+    <div class="row">
+      <div class="col col-lg-12">
+        <div class="row">
+          <div class="col-sm-3"><%= p.label :birthday %></div>
+          <div class="col-sm-9">
+            <%= p.text_field :birthday, class: 'form-control datepicker' %>
           </div>
-          <div class="row">
-            <%= p.text_field :passport_department, class: 'form-control' %>
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><%= p.label :birthplace %></div>
+          <div class="col-sm-9">
+            <%= p.text_field :birthplace, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><%= p.label :gender %></div>
+          <div class="col-sm-9">
+            <%= p.hidden_field :gender %>
+            <%= text_field_tag :sex, p.object.sex, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><%= p.label :homeless %></div>
+          <div class="col-sm-9">
+            <%= p.check_box :homeless %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><%= p.label :benefits %></div>
+          <div class="col-sm-9">
+            <%= p.check_box :benefits %>
           </div>
         </div>
       </div>
+    </div>
+
+      <legend>Паспортные данные</legend>
+      <div class="row">
+        <div class="col col-lg-12">
+          <div class="row">
+            <div class="col-sm-3"><%= p.label :passport_series %></div>
+            <div class="col-sm-9">
+              <%= p.text_field :passport_series, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3"><%= p.label :passport_number %></div>
+            <div class="col-sm-9">
+              <%= p.text_field :passport_number, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3"><%= p.label :passport_date %></div>
+            <div class="col-sm-9">
+              <%= p.text_field :passport_date, class: 'col col-lg-2 col-offset-1 datepicker form-control' %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3"><%= p.label :passport_department %></div>
+            <div class="col-sm-9">
+              <%= p.text_field :passport_department, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <legend>Контактная информация</legend>
+    <div class="row">
+      <div class="col col-lg-12">
+        <div class='row'>
+          <div class='col-lg-3'><%= p.label :email %></div>
+          <div class='col-lg-9'>
+            <%= p.email_field :email, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><%= p.label :phone_home %></div>
+          <div class="col-sm-9">
+            <%= p.text_field :phone_home, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><%= p.label :phone_mobile %></div>
+          <div class="col-sm-9">
+            <%= p.text_field :phone_mobile, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <%= p.label :residence_address %><br>
+            <%= p.label :residence_zip %>
+          </div>
+          <div class="col-sm-6">
+            <%= p.text_field :residence_address, class: 'form-control' %>
+          </div>
+          <div class="col-sm-3">
+            <%= p.text_field :residence_zip, class: 'form-control' %>
+            <p class="help-block text-center">индекс</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <%= p.label :registration_address %><br>
+            <%= p.label :registration_zip %>
+          </div>
+          <div class="col-sm-6">
+            <%= p.text_field :registration_address, placeholder: 'Не заполнять, если совпадает с фактическим',
+                             class: 'form-control' %>
+          </div>
+          <div class="col-sm-3">
+            <%= p.text_field :registration_zip, class: 'form-control' %>
+            <p class="help-block text-center">индекс</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if p.object.male? %>
+      <legend>Воинская обязанность</legend>
+      <div class="row">
+        <div class="col col-lg-12">
+          <div class="row">
+            <div class="col-sm-3"><%= p.label :army %></div>
+            <%= p.hidden_field :army %>
+            <div class="col-sm-9">
+              <%= text_field_tag :army, p.object.army_status, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3"><%= p.label :army_voenkom %></div>
+            <div class="col-sm-9">
+              <%= p.text_field :army_voenkom, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
     <% end %>
 
   <%= f.submit class: 'btn btn-primary'%>

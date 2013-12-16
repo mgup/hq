@@ -59,6 +59,10 @@ class SupportsController < ApplicationController
   end
 
   def resource_params
+    if params[:my_support][:accepted] == '1'
+      params[:my_support][:deferred] = false
+    end
+    #raise params[:my_support].inspect
     params.fetch(:my_support, {}).permit(:support_student, :year, :month, :series,
                                          :number, :date, :department, :birthday,
                                          :address, :phone, :accepted, :deferred)

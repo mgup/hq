@@ -1,7 +1,7 @@
 class Study::CheckpointsController < ApplicationController
   before_filter :load_discipline
   load_and_authorize_resource :discipline
-  load_and_authorize_resource through: :discipline, except: [:new, :create, :update, :destroy]
+  load_and_authorize_resource through: :discipline, except: [:new, :create, :update, :destroy, :change_date, :update_date]
 
   def index
     redirect_to new_study_discipline_checkpoint_path(@discipline) if @checkpoints.empty?
@@ -47,6 +47,22 @@ class Study::CheckpointsController < ApplicationController
       else
         render action: :edit
       end
+    end
+  end
+
+  def change_date
+    load_discipline
+    @checkpoint = Study::Checkpoint.find(params[:id])
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_date
+    @checkpoint = Study::Checkpoint.find(params[:id])
+    @checkpoint.update checkpoint_date: params[:study_checkpoint][:date]
+    respond_to do |format|
+      format.js
     end
   end
 

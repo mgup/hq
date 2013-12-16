@@ -1,0 +1,3 @@
+$('#forModalChange').html("<%= escape_javascript (render(partial: 'change_date_modal',
+locals: { checkpoint: @checkpoint })).html_safe %>");
+$('#changeDateModalBtn').click()

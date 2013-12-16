@@ -1,4 +1,4 @@
-<div class="row <%= 'success' if application.accepted? %>">
+<div class="row <%= application.accepted? ? 'success' : (application.deferred? && current_user.is?(:soc_support_boss) ? 'danger' : '') %>">
   <div class="col-sm-1">
     <%= application.id %>
   </div>
@@ -18,15 +18,17 @@
     </ul>
   </div>
   <div class="col-sm-2">
-    <% unless application.accepted? or application.deferred? %>
+    <% unless application.accepted? or (application.deferred? && !current_user.is?(:soc_support_boss)) %>
       <%= form_for application, url: student_support_path(application.student, application) do |f| %>
         <%= f.hidden_field :accepted, value: 1 %>
         <%= f.submit 'Принять', class: 'btn btn-default btn-sm' %>
       <% end %>
 
-      <%= form_for application, url: student_support_path(application.student, application) do |f| %>
-        <%= f.hidden_field :deferred, value: 1 %>
-        <%= f.submit 'Не принимать', class: 'btn btn-default btn-sm' %>
+      <% unless application.deferred? %>
+         <%= form_for application, url: student_support_path(application.student, application) do |f| %>
+           <%= f.hidden_field :deferred, value: 1 %>
+           <%= f.submit 'Не принимать', class: 'btn btn-default btn-sm' %>
+         <% end %>
       <% end %>
 
       <br>

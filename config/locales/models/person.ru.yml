@@ -1,0 +1,24 @@
+ru:
+  activerecord:
+    models:
+     person: 'студент'
+    attributes:
+      person:
+        passport_series: 'серия паспорта'
+        passport_number: 'номер паспорта'
+        passport_date: 'когда выдан паспорт'
+        passport_department: 'кем выдан паспорт'
+        birthday: 'день рождения'
+        birthplace: 'место рождения'
+        gender: 'пол'
+        homeless: 'нуждается в общежитии'
+        registration_address: 'адрес (регистрация)'
+        registration_zip: 'почтовый индекс (регистрация)'
+        residence_address: 'адрес (фактический)'
+        residence_zip: 'почтовый индекс (фактический)'
+        phone_home: 'домашний телефон'
+        phone_mobile: 'мобильный телефон'
+        email: 'электронная почта'
+        benefits: 'льготы'
+        army: 'воинская обязанность'
+        army_voenkom: 'военкомат'

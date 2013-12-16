@@ -18,6 +18,14 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:student_id])
   end
 
+  def study
+    @student = Student.find(params[:student_id])
+  end
+
+  def grants
+    @student = Student.find(params[:student_id])
+  end
+
   def new
 
   end

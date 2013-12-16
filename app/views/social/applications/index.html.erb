@@ -3,7 +3,7 @@
 </div>
 
 <div class="col-sm-13">
-  <% if @close != 0 %>
+  <% if @close != 0 && current_user.is?(:soc_support_boss) %>
     <%= link_to close_social_applications_path(year: params[:year], month: params[:month]),
                 class: 'btn btn-lg btn-default', disabled: (@close == 2 ? true : false) do %>
       <%= @close == 2 ? "<span class='glyphicon glyphicon-lock'></span> Приём закрыт".html_safe : 'Закрыть приём' %>
@@ -50,12 +50,17 @@
     <div class="col-sm-4">
       <div class="checkbox">
         <label>
-          <%= check_box_tag :accepted, '1', '1' == params[:accepted] %> Только принятые заявления
+          <%= check_box_tag :accepted, '1', '1' == params[:accepted], class: 'support_check' %> Только принятые заявления
         </label>
       </div>
       <div class="checkbox">
         <label>
-          <%= check_box_tag :deferred, '1', '1' == params[:deferred] %> Только непринятые заявления
+          <%= check_box_tag :deferred, '1', '1' == params[:deferred], class: 'support_check' %> Только непринятые заявления
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :empty, '1', '1' == params[:empty], class: 'support_check' %> Только новые заявления
         </label>
       </div>
     </div>

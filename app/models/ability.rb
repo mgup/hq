@@ -59,7 +59,7 @@ class Ability
         can :reference, Student, Student.valid_for_today
       end
 
-      if user.is?(:soc_support)
+      if user.is?(:soc_support) or user.is?(:soc_support_boss)
         can :manage, My::Support
       end
     end

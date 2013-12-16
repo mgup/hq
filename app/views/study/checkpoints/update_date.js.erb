@@ -1,0 +1,4 @@
+$('.change_date_buttons[data-value="<%= @checkpoint.id %>"]').parents('tr').find('.date').html("<%= l @checkpoint.date %>");
+$('#not-full-classes').html("<%= escape_javascript (render(partial: 'not_full',
+locals: { classes: @discipline.classes, discipline: @discipline })).html_safe %>");
+$('#changeDate').modal('hide');

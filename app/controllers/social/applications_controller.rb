@@ -6,8 +6,9 @@ class Social::ApplicationsController < ApplicationController
     #params[:month] ||= Date.today.month
     params[:year]  ||= 2013
     params[:month] ||= 12
-    params[:accepted] ||= false
-    params[:deferred] ||= false
+    params[:accepted] ||= 0
+    params[:deferred] ||= 0
+    params[:empty] ||= 0
 
     @applications = @applications.where(support_year:  params[:year])
     @applications = @applications.where(support_month: params[:month])
@@ -18,12 +19,16 @@ class Social::ApplicationsController < ApplicationController
       @close = 0
     end
 
-    if params[:accepted]
+    unless params[:accepted].to_i.zero?
       @applications = @applications.where(accepted: true)
     end
 
-    if params[:deferred]
+    unless params[:deferred].to_i.zero?
       @applications = @applications.where(deferred: true)
+    end
+
+    unless params[:empty].to_i.zero?
+      @applications = @applications.where(deferred: false, accepted: false)
     end
 
     params[:causes] ||= []
@@ -43,17 +48,17 @@ class Social::ApplicationsController < ApplicationController
   def lists
     params[:year]  ||= Date.today.year
     params[:month] ||= Date.today.month
-    params[:accepted] ||= false
-    params[:deferred] ||= false
+    params[:accepted] ||= 0
+    params[:deferred] ||= 0
 
     @applications = @applications.where(support_year:  params[:year])
     @applications = @applications.where(support_month: params[:month])
 
-    if params[:accepted]
+    unless params[:accepted].to_i.zero?
       @applications = @applications.where(accepted: true)
     end
 
-    if params[:deferred]
+    unless params[:deferred].to_i.zero?
       @applications = @applications.where(deferred: true)
     end
 

@@ -34,6 +34,8 @@ HQ::Application.routes.draw do
 
   resources :students do
     get 'documents' => 'students#documents'
+    get 'study' => 'students#study'
+    get 'grants' => 'students#grants'
     resources :supports
     get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
 
@@ -49,6 +51,8 @@ HQ::Application.routes.draw do
       get 'print_disciplines.xlsx', to: 'disciplines#print_disciplines', on: :collection, defaults: { format: 'xlsx' }, as: :print_disciplines
       match 'download_group',  to: 'checkpoints#download_pdf', via: [:get, :post]
       resources :checkpoints do
+        get 'change_date', to: 'checkpoints#change_date', on: :member
+        get 'update_date', to: 'checkpoints#update_date', on: :member
         resources :marks do
           get 'ajax_update', to: 'marks#ajax_update', on: :member
         end
