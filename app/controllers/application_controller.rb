@@ -49,6 +49,14 @@ class ApplicationController < ActionController::Base
   #   authorize! :manage, :all if user_signed_in?
   # end
 
+  #def auth_user!(opts = {})
+  #  if student_signed_in?
+  #    authenticate_student!
+  #  else
+  #    authenticate_user!
+  #  end
+  #end
+
   def enable_profiler
     Rack::MiniProfiler.authorize_request if can?(:manage, :all)
   end

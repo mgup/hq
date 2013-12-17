@@ -48,75 +48,8 @@
       <th></th>
     </tr>
     </thead>
-    <tbody>
-    <% @discipline.classes.each  do |checkpoint| %>
-      <tr>
-        <td class="text-muted"><%= checkpoint.id %></td>
-        <td class="date"><%= l checkpoint.date %></td>
-        <td class="full-width">
-          <%= '<strong>'.html_safe if checkpoint.is_checkpoint? %>
-
-          <span class="glyphicon <%= checkpoint.lesson %>"></span>
-          <%= checkpoint.name if checkpoint.type == 3 %>
-          <%= checkpoint.lessonname %>
-
-          <%= '</strong>'.html_safe if checkpoint.is_checkpoint? %>
-        </td>
-        <td>
-          <div class="pull-right">
-            <% unless checkpoint.date.future? %>
-              <%= link_to study_discipline_checkpoint_marks_path(@discipline, checkpoint), class: 'btn btn-default add_marks_buttons navigation_trip hidden-print',
-                          data: { input: '.add_marks_buttons:first-child', content: 'Вы можете внести результаты по проведённому занятию.',
-                                  position: 'w'} do %>
-                <span class="glyphicon glyphicon-pencil"></span> Внести результаты
-              <% end %>
-              <% if checkpoint.marks.length == 0 %>
-                <br><br>
-                <%= link_to study_discipline_checkpoint_path(@discipline, checkpoint), method: :delete, confirm: 'Вы уверены?',
-                            class: 'btn btn-danger pull-right delete_checkpoint navigation_trip hidden-print',
-                            data: { input: '.delete_checkpoint:first-child', content: 'Вы можете удалить занятия, которые еще не прошли.',
-                                    position: 'w'} do %>
-                  <span class="glyphicon glyphicon-remove"></span> Удалить
-                <% end %>
-              <% end %>
-            <% else %>
-              <%= link_to study_discipline_checkpoint_path(@discipline, checkpoint), method: :delete, confirm: 'Вы уверены?',
-                          class: 'btn btn-danger delete_checkpoint hidden-print' do %>
-                <span class="glyphicon glyphicon-remove"></span> Удалить
-              <% end %>
-            <% end %>
-          </div>
-        </td>
-        <td>
-          <%= button_tag  class: 'btn btn-default change_date_buttons navigation_trip hidden-print', title: 'Изменить дату',
-                          data: { input: '.change_date_buttons:first-child', content: 'Вы можете изменить дату проведения занятия.',
-                                  position: 'w', value: checkpoint.id, parent: checkpoint.discipline.id} do %>
-            <span class="glyphicon glyphicon-calendar"></span>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-
-    <% if false %>
-      <% @discipline.exams.originals.order('exam_date').each do |exam| %>
-        <% if exam.date? %>
-          <tr>
-            <td class="text-muted"><%= exam.id %></td>
-            <td><%= l exam.date %></td>
-            <td class="full-width">
-              <span class="glyphicon glyphicon-<%= exam == @discipline.final_exam ? 'star' :  'star-empty' %>"></span> <%= exam.name %>
-            </td>
-            <td>
-              <div class="pull-right">
-                <%= link_to study_discipline_exam_path(@discipline, exam), class: 'btn btn-default', title: 'Внести результаты экзамена' do %>
-                  <span class="glyphicon glyphicon-pencil"></span>
-                <% end %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      <% end %>
-    <% end %>
+    <tbody id="classes_rows">
+      <%= render partial: 'classes', locals: {discipline: @discipline} %>
     </tbody>
   </table>
   <div id="forModalChange"></div>

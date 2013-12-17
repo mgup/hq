@@ -11,18 +11,24 @@
         следующие документы:
         <ul>
           <li>копия паспорта (страницы 2-3 и 4-5)</li>
-          <% options.each do |option| %>
-            <% option.cause.reasons.each do |reason| %>
+          <% reasons.each do |reason| %>
               <li><%= reason.pattern %></li>
-            <% end %>
           <% end %>
         </ul>
         <p>Внимание! Если у Вас не хватает документов для подтверждения оснований, измените причины, по которым Вы претендуете на материальную помощь.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Изменить заявление</button>
-        <%= f.submit 'Зарегистрировать заявление', class: 'btn btn-primary' %>
+        <%= submit_tag 'Зарегистрировать заявление', class: 'btn btn-primary', id: 'submitSupport' %>
       </div>
     </div>
   </div>
 </div>
+<script>
+  $(function(){
+    $('#submitSupport').click(function(){
+      $('#new_my_support').submit();
+      $('#preventionSupport').modal('hide');
+    })
+  })
+</script>

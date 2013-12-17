@@ -5,10 +5,6 @@ class Ability
 
     user ||= User.new
 
-    user.roles.each do |role|
-      send(role.name, user) if respond_to?(role.name)
-    end
-
     #can :manage, Student
     #can :manage, :student
     if user.is_a?(Student)
@@ -23,6 +19,10 @@ class Ability
       #if user.is?(:supertyper)
       #  can :manage, [Study::Subject, Study::Mark]
       #end
+
+      user.roles.each do |role|
+        send(role.name, user) if respond_to?(role.name)
+      end
 
       can :manage, User, user_id: user.id
 

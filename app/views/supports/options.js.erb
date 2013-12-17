@@ -1,0 +1,3 @@
+$('#preventModal').html("<%= escape_javascript (render partial: 'support_modal',
+    locals: {student: @student, reasons: @reasons}).html_safe %>");
+$('#preventionSupport').modal('show');

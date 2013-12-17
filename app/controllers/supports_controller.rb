@@ -1,12 +1,12 @@
 class SupportsController < ApplicationController
   load_resource class: 'My::Support', except: [:update]
 
-  authorize_resource class: 'My::Support'
+  authorize_resource class: 'My::Support', except: [:new, :create, :options, :download_pdf]
 
   #before_filter :find_student
-  skip_before_filter :authenticate_user!, only: [:new, :create]
+  skip_before_filter :authenticate_user!, only: [:new, :create, :options]
 
-  before_filter :authenticate_student!, only: [:new, :create]
+  before_filter :authenticate_student!, only: [:new, :create, :options]
 
   # проблема: нужно и для студентов, и для сотрудников..
 
@@ -14,7 +14,22 @@ class SupportsController < ApplicationController
 
   def new
     authorize! :manage, Student
+    @support = My::Support.new
     find_student
+  end
+
+  def options
+    authorize! :manage, Student
+    find_student
+    causes = My::SupportCause.find(params[:causes].split(','))
+    reasons = []
+    causes.each do |c|
+      reasons << c.reasons.collect{|r| r.id}
+    end
+    @reasons = My::SupportReason.find(reasons)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def edit
@@ -24,15 +39,16 @@ class SupportsController < ApplicationController
 
   def create
     authorize! :manage,  Student
+    find_student
     @support = My::Support.new(resource_params)
     if @support.save
       params[:causes].each do |cause|
         option = My::SupportOption.new support: @support, cause: My::SupportCause.find(cause)
         option.save
       end
-      redirect_to student_student_support_path, notice: 'Успешно создано'
+      redirect_to student_support_student_support_path(@student, @support), notice: 'Успешно создано'
     else
-      redirect_to new_student_support_path, notice: 'Произошла ошибка'
+      redirect_to new_student_support_path(@student), notice: 'Произошла ошибка'
     end
   end
 
@@ -53,14 +69,13 @@ class SupportsController < ApplicationController
 
   def download_pdf
     find_student
-    #respond_to do |format|
-    #  format.pdf
-    #end
   end
 
   def resource_params
-    if params[:my_support][:accepted] == '1'
-      params[:my_support][:deferred] = false
+    if params[:my_support]
+      if params[:my_support][:accepted] == '1'
+        params[:my_support][:deferred] = false
+      end
     end
     #raise params[:my_support].inspect
     params.fetch(:my_support, {}).permit(:support_student, :year, :month, :series,

@@ -36,9 +36,10 @@ HQ::Application.routes.draw do
     get 'documents' => 'students#documents'
     get 'study' => 'students#study'
     get 'grants' => 'students#grants'
-    resources :supports
-    get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
-
+    resources :supports do
+      get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
+      get 'options', to: 'supports#options', on: :collection
+    end
     post 'reference.pdf', to: 'students#reference', on: :member, defaults: { format: :pdf }, as: :reference
   end
   get '/students/list(/:page)', to: 'students#index'
@@ -87,7 +88,6 @@ HQ::Application.routes.draw do
 
   namespace :my do
     resource :student do
-
       get '/progress' => 'progress#index'
       get '/progress/subject/:id' => 'progress#subject'
       get '/progress/discipline/:id' => 'progress#discipline'
