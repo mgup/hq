@@ -38,6 +38,9 @@ class User < ActiveRecord::Base
   has_many :achievements
   has_many :achievement_reports
 
+  has_many :visitor_event_dates, as: :visitor, primary_key: :id
+  has_many :dates, through: :visitor_event_dates
+
   scope :with_name, -> { includes(:iname, :fname, :oname) }
 
   scope :by_name, -> (name) {

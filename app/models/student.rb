@@ -70,6 +70,9 @@ class Student < ActiveRecord::Base
   has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_student
   has_many :orders, class_name: Office::Order, through: :students_in_order
 
+  has_many :visitor_event_dates, as: :visitor
+  has_many :dates, through: :visitor_event_dates
+
 
   default_scope do
     joins(:person)

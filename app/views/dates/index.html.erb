@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1><%= @event.name %></h1>
+</div>
+
+<% unless @event.description.empty? %>
+  <p class="help-block"><%= @event.description %></p>
+<% end %>
+<% condition = @current.dates.where(id: @dates.collect{|i| i.id}).empty? %>
+<% unless condition %>
+  <% book = @current.dates.where(id: @dates.collect{|i| i.id}).last %>
+  <div class="alert-info alert">Вы уже забронировали дату на это мероприятие:
+    <strong><%= l book.date, format: :long %> (<%= l book.time_start, format: '%H:%M' %><%= " - #{ l book.time_end, format: '%H:%M' }" if book.time_end %>)</strong></div>
+<% end %>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Дата проведения</th>
+      <th>Время</th>
+      <th>Количество мест</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @dates.each do |date| %>
+      <% remains = (date.max_visitors - date.visitors.length).to_f/date.max_visitors %>
+      <tr class="<%= remains > 0.5 ? 'success' : ((remains < 0.1 || date.max_visitors - date.visitors.length == 1) ? 'danger' : '') %>">
+        <td><%= l date.date, format: :long %></td>
+        <td><%= l date.time_start, format: '%H:%M' %><%= " - #{ l date.time_end, format: '%H:%M' }" if date.time_end %></td>
+        <td><%= date.max_visitors - date.visitors.length %> из <%= date.max_visitors %></td>
+        <td>
+          <% if condition || date.max_visitors == date.visitors.length %>
+            <%= form_for @visitor, url: event_date_visitor_event_dates_path(@event, date) do |f| %>
+            <%= f.hidden_field :event_date_id, value: date.id %>
+            <%= f.hidden_field :visitor_type, value: (current_user ? 'User' : 'Student') %>
+            <%= f.hidden_field :visitor_id, value: current_user.id || current_student.id %>
+            <%= f.submit 'Забронировать дату', class: 'btn btn-default' %>
+          <% end %>
+        <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

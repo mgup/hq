@@ -25,6 +25,12 @@ HQ::Application.routes.draw do
     post 'combine', on: :member
   end
 
+  resources :events do
+    resources :dates do
+      resources :visitor_event_dates
+    end
+  end
+
   resources :positions
   resources :appointments
 

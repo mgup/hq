@@ -1,0 +1,28 @@
+<div class="modal fade" id="changeDateEvent<%= date.id %>_<%= visitor.id %>" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%= event.name %></h4>
+      </div>
+      <div class="modal-body">
+        <label>Посетитель:</label>
+        <%= visitor.full_name %>
+        <%= form_for event_visitor, url: event_date_visitor_event_date_path(event, date, event_visitor),
+                     class: 'form-horizontal' do |f| %>
+          <%= f.hidden_field :id %>
+          <%= f.hidden_field :visitor_id, value: visitor.id %>
+          <label>Выберите дату и время:</label>
+          <%= f.select :event_date_id,
+                       options_from_collection_for_select(@event.dates, :id, :date_with_time, date.id),
+                        {},
+                       class: 'form-control' %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+            <%= submit_tag 'Изменить', class: 'btn btn-primary' %>
+        <% end %>
+        </div>
+        </div>
+  </div>
+</div>

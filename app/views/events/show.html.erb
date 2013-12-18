@@ -1,0 +1,51 @@
+<div class="page-header">
+  <h1><%= @event.name %></h1>
+</div>
+
+<% unless @event.description.empty? %>
+  <p class="help-block"><%= @event.description %></p>
+<% end %>
+
+<div class="panel-group" id="accordionDates">
+  <% @event.dates.each do |date| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordionDates" href="#date_<%= date.id%>">
+            <strong><%= l date.date, format: :long %> (<%= l date.time_start, format: '%H:%M' %><%= " - #{ l date.time_end, format: '%H:%M' }" if date.time_end %>)</strong>
+          </a>
+          <br><br>
+          <%= date.visitors.length %> из <%= date.max_visitors %>
+        </h4>
+      </div>
+      <div id="date_<%= date.id%>" class="panel-collapse collapse">
+        <div class="panel-body">
+          <% if date.visitors.empty? %>
+            Это время никто не забронировал
+          <% else %>
+          <ol>
+            <% date.visitors.each do |visitor| %>
+              <li>
+                <%= visitor.full_name %>
+                <% event_visitor = date.visitor_event_dates.from_visitor(visitor).first %>
+                <%= link_to event_date_visitor_event_date_path(@event, date, event_visitor), method: :delete, confirm: 'Вы уверены?',
+                            class: 'btn  btn-sm btn-danger pull-right' do %>
+                  <span class="glyphicon glyphicon-remove"></span>
+                <% end %>
+                <%= link_to "#changeDateEvent#{date.id}_#{visitor.id}", data: {toggle: 'modal'}, title: 'Удалить бронь',
+                            class: 'btn btn-sm btn-default pull-right', style: 'margin-right: 15px;' do %>
+                  <span class="glyphicon glyphicon-calendar"></span> Изменить время
+                <% end %>
+              </li>
+              <br>
+              <%= render partial: 'change_date_modal', locals:{ event: @event,
+                          date: date, visitor: visitor,
+                          event_visitor: event_visitor} %>
+            <% end %>
+          </ol>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

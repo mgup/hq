@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131210141044) do
+ActiveRecord::Schema.define(version: 20131217115401) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -264,8 +264,8 @@ ActiveRecord::Schema.define(version: 20131210141044) do
     t.string   "checkpoint_name",    limit: 200,  default: ""
     t.string   "checkpoint_details", limit: 1000
     t.date     "checkpoint_date",                              null: false
-    t.integer  "checkpoint_min",                  default: 0,  null: false
-    t.integer  "checkpoint_max",                  default: 0,  null: false
+    t.integer  "checkpoint_min",                  default: 0
+    t.integer  "checkpoint_max",                  default: 0
     t.integer  "checkpoint_closed",               default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -528,6 +528,25 @@ ActiveRecord::Schema.define(version: 20131210141044) do
 
   add_index "employee_position", ["employee_position_employee"], name: "employee_position_employee", using: :btree
   add_index "employee_position", ["employee_position_position"], name: "employee_position_position", using: :btree
+
+  create_table "event", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "event_date", force: true do |t|
+    t.date     "date"
+    t.time     "time_start"
+    t.time     "time_end"
+    t.integer  "max_visitors"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "event_id"
+  end
+
+  add_index "event_date", ["event_id"], name: "index_event_date_on_event_id", using: :btree
 
   create_table "exam", primary_key: "exam_id", force: true do |t|
     t.integer "exam_subject",                       null: false
@@ -1438,6 +1457,14 @@ ActiveRecord::Schema.define(version: 20131210141044) do
 
   add_index "user", ["reset_password_token"], name: "index_user_on_reset_password_token", unique: true, using: :btree
   add_index "user", ["user_department"], name: "user_department", using: :btree
+
+  create_table "visitor_event_date", force: true do |t|
+    t.integer "event_date_id"
+    t.integer "visitor_id"
+    t.string  "visitor_type"
+  end
+
+  add_index "visitor_event_date", ["event_date_id"], name: "index_visitor_event_date_on_event_date_id", using: :btree
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
