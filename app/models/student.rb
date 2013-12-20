@@ -311,7 +311,7 @@ GROUP BY `group`
         ball+=100*(current_progress/d.current_ball)/disciplines.size if d.current_ball != 0
       end
     end
-    if discipline and discipline.final_exam.test?
+    if discipline and discipline.final_exam and discipline.final_exam.test?
       case ball.round
         when 0..54
           {ball: current, progress: current_progress, mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}

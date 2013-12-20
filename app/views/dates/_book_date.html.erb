@@ -1,0 +1,61 @@
+<div class="modal fade" id="dateBook<%= index %>" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%= event.name %></h4>
+      </div>
+      <div class="modal-body show_event_dates">
+        <%= hidden_field_tag :id %>
+        <% if book %>
+          <% select = book.id == date.id ? 'selected' : '' %>
+        <% else %>
+          <% select = '' %>
+        <% end %>
+        <% remains = (date.max_visitors - date.visitors.length).to_f/date.max_visitors %>
+        <%= hidden_field_tag :event_date_date, (l date.date), class: 'form-control',
+                             data: {value: (((remains < 0.1 && remains > 0) || date.max_visitors - date.visitors.length == 1) ? 'warning' : (date.max_visitors == date.visitors.length ? 'danger' : 'success')),
+                                    select: select}%>
+        <div class="row">
+          <%= label_tag :date, '<span class="glyphicon glyphicon-calendar"></span> Дата проведения'.html_safe, class: 'col-sm-5' %>
+          <div class="col col-sm-7">
+            <p class="form-control-static"><%= l date.date, format: :long %></p>
+          </div>
+        </div>
+        <div class="row">
+          <%= label_tag :time, '<span class="glyphicon glyphicon-time"></span> Время'.html_safe, class: 'col-sm-5' %>
+          <div class="col col-sm-7">
+            <p class="form-control-static"><%= l date.time_start, format: '%H:%M' %><%= " - #{ l date.time_end, format: '%H:%M' }" if date.time_end %></p>
+          </div>
+        </div>
+        <div class="row">
+          <%= label_tag :visitors, '<span class="glyphicon glyphicon-user"></span> Количество свободных мест'.html_safe, class: 'col-sm-5' %>
+          <div class="col col-sm-7">
+            <p class="form-control-static"><%= date.max_visitors - date.visitors.length %> из <%= date.max_visitors %></p>
+          </div>
+        </div>
+      <% if date.max_visitors > date.visitors.length && condition %>
+        <%= form_for @visitor, url: event_date_visitor_event_dates_path(@event, date) do |f| %>
+          <%= f.hidden_field :event_date_id, value: date.id %>
+          <%= f.hidden_field :visitor_type, value: (current_user ? 'User' : 'Student') %>
+          <%= f.hidden_field :visitor_id, value: current_user.id || current_student.id %>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+         <%= submit_tag 'Забронировать', class: 'btn btn-primary' %>
+        <% end %>
+      <% else %>
+          <% if date == book %>
+            <p class="alert alert-info">Вы забронировали это время</p>
+          <% end %>
+          <% if date.max_visitors == date.visitors.length %>
+            <p class="alert alert-danger">Все места забронированы</p>
+          <% end %>
+      </div>
+      <div class="modal-footer">
+           <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>

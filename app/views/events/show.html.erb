@@ -6,12 +6,21 @@
   <p class="help-block"><%= @event.description %></p>
 <% end %>
 
+<div class="col-sm-12 event_dates">
+  <%= render_dates_calendar(@event) %>
+  <% @event.dates.each do |date| %>
+    <% remains = (date.max_visitors - date.visitors.length).to_f/date.max_visitors %>
+    <%= hidden_field_tag :event_date_date, (l date.date), class: 'form-control',
+        data: {value: (((remains < 0.1 && remains > 0) || date.max_visitors - date.visitors.length == 1) ? 'warning' : (date.max_visitors == date.visitors.length ? 'danger' : 'success'))}%>
+  <% end %>
+</div>
+
 <div class="panel-group" id="accordionDates">
   <% @event.dates.each do |date| %>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordionDates" href="#date_<%= date.id%>">
+          <a data-toggle="collapse" data-date="<%= l date.date %>" data-parent="#accordionDates" href="#date_<%= date.id%>">
             <strong><%= l date.date, format: :long %> (<%= l date.time_start, format: '%H:%M' %><%= " - #{ l date.time_end, format: '%H:%M' }" if date.time_end %>)</strong>
           </a>
           <br><br>

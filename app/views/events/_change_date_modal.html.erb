@@ -14,7 +14,7 @@
           <%= f.hidden_field :visitor_id, value: visitor.id %>
           <label>Выберите дату и время:</label>
           <%= f.select :event_date_id,
-                       options_from_collection_for_select(@event.dates, :id, :date_with_time, date.id),
+                       options_from_collection_for_select(@event.dates.not_full.push(date).uniq, :id, :date_with_time, date.id),
                         {},
                        class: 'form-control' %>
           </div>
