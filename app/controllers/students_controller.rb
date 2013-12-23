@@ -1,6 +1,8 @@
 class StudentsController < ApplicationController
   load_and_authorize_resource
 
+  before_filter :find_student, only: [:documents, :study, :grants, :orders]
+
   def index
     @students = @students.includes([:person, :group]).filter(params).page(params[:page])
 
@@ -15,15 +17,15 @@ class StudentsController < ApplicationController
 
   def documents
     @reference = Document::Doc.new
-    @student = Student.find(params[:student_id])
   end
 
   def study
-    @student = Student.find(params[:student_id])
   end
 
   def grants
-    @student = Student.find(params[:student_id])
+  end
+
+  def orders
   end
 
   def new
@@ -59,5 +61,11 @@ class StudentsController < ApplicationController
 
   def resource_params
     params.require(:students)
+  end
+
+  private
+
+  def find_student
+    @student = Student.find(params[:student_id])
   end
 end

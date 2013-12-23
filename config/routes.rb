@@ -40,6 +40,7 @@ HQ::Application.routes.draw do
 
   resources :students do
     get 'documents' => 'students#documents'
+    get 'orders' => 'students#orders'
     get 'study' => 'students#study'
     get 'grants' => 'students#grants'
     resources :supports do

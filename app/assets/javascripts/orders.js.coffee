@@ -1,7 +1,9 @@
 #  Запросы к серверу пока закомментируем
-$('.meta-popover .cancel').on 'click', ->
-    $('#meta' + $(this).data('uid') + '.hasDatepicker').datepicker('destroy')
-    $('#' + $(this).data('uid')).popover('hide')
+
+$ ->
+  $('.meta-popover .cancel').on 'click', ->
+      $('#meta' + $(this).data('uid') + '.hasDatepicker').datepicker('destroy')
+      $('#' + $(this).data('uid')).popover('hide')
 
 
 # Создание мета-блока с текстом, связанным со студентом.
@@ -18,7 +20,7 @@ $('.meta-popover .cancel').on 'click', ->
     text = $this.attr('data-meta-pattern')
   $this.html(text)
 
-  div = $('<div>', {'class' : 'meta-popover meta-text meta-text-student', 'data-uid'  : 'uid'})
+  div = $('<div>', {'class' : 'meta-popover meta-text meta-text-student', 'id'  : uid})
 
   input = $('<textarea>', {'rows' : 5, 'class' : 'form-control', 'id' : 'meta' + uid, 'width' : required ? '234px' : '300px'})
   div.append(input)
@@ -41,6 +43,7 @@ $('.meta-popover .cancel').on 'click', ->
       $('#' + uid + ' + div').css('max-width', 340)
       $('#' + uid + ' + div').css('width', 340)
     $('#meta' + uid).val($this.attr('data-meta-text'))
+
 
 #Создание мета-блока с текстом, связанным с приказом.
 #@param uid

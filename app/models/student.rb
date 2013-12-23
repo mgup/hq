@@ -44,6 +44,12 @@ class Student < ActiveRecord::Base
 
 
   alias_attribute :id,              :student_group_id
+  alias_attribute :status,          :student_group_status
+  alias_attribute :record,          :student_group_record
+  alias_attribute :abit,            :student_group_abit
+  alias_attribute :abitpoints,      :student_group_abitpoints
+  alias_attribute :school,            :student_group_a_school
+  alias_attribute :state_line,      :student_group_a_state_line
   alias_attribute :password,        :encrypted_password
   alias_attribute :payment,         :student_group_tax
   alias_attribute :admission_year,  :student_group_yearin
