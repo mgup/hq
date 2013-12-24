@@ -32,7 +32,7 @@
     <th class="text-muted">#</th>
     <th>Студент</th>
     <th colspan='2'>Набранный балл на <%= DateTime.now.strftime("%d.%m.%Y") %> </th>
-    <th colspan='2'>Прогноз на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
+    <!--<th colspan='2'>Прогноз на <%= DateTime.now.strftime("%d.%m.%Y") %></th>-->
     <th></th>
   </tr>
   </thead>
@@ -49,15 +49,15 @@
         </div>
       </td>
       <% if student[:student].got_all_marks(discipline) %>
-      <td><%= result[:mark] %></td>
-      <td>
-        <div style='width: 100px;' class="progress progress-striped">
-          <div class="progress-bar progress-bar-<%= result[:color] %>" style="width: <%= result[:width]%>%"></div>
-        </div>
-      </td>
-      <% else %>
-        <td colspan="2">Недостаточно данных</td>
-      <% end %>
+      <!--<td><%= result[:mark] %></td>-->
+      <!--<td>-->
+        <!--<div style='width: 100px;' class="progress progress-striped">-->
+          <!--<div class="progress-bar progress-bar-<%= result[:color] %>" style="width: <%= result[:width]%>%"></div>-->
+        <!--</div>-->
+      <!--</td>-->
+      <!--<% else %>-->
+        <!--<td colspan="2">Недостаточно данных</td>-->
+      <!--<% end %>-->
       <td>
         <%= link_to  study_group_student_path(group.id, student[:student].id), class: 'btn btn-default student_progress navigation_trip', title: 'Подробнее',
                     data: { input: '.student_progress:first-child', content: 'Пройдите по ссылке, чтобы узнать успеваемость отдельного студента.',
