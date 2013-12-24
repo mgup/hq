@@ -1,10 +1,4 @@
-<ul class="nav nav-tabs">
-  <li class="active"><a href="<%= student_path(@student) %>">Персональная информация</a></li>
-  <li><a href="<%= student_study_path(@student) %>">Учебная информация</a></li>
-  <li><a href="<%= student_orders_path(@student) %>">Приказы</a></li>
-  <li><a href="<%= student_documents_path(@student) %>">Документы</a></li>
-  <li><a href="<%= student_grants_path(@student) %>">Выплаты и стипендии</a></li>
-</ul>
+<%= render_navigation context: :student %>
 <br>
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
@@ -38,12 +32,6 @@
           <div class="col-sm-3"><%= p.label :homeless %></div>
           <div class="col-sm-9">
             <%= p.check_box :homeless %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-3"><%= p.label :benefits %></div>
-          <div class="col-sm-9">
-            <%= p.check_box :benefits %>
           </div>
         </div>
       </div>

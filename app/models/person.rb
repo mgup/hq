@@ -4,6 +4,27 @@ class Person < ActiveRecord::Base
   MALE = true
   FEMALE = false
 
+  # Статус по общежитию
+  HOSTEL_STATUS_NOT = 1 # Отказано в заселении или не проживает в общежитии
+  HOSTEL_STATUS_RECOMMEND = 2 # Рекомендован к заселению
+  HOSTEL_STATUS_ACCEPT = 3 # Человек проживает в общежитии
+  HOSTEL_STATUS_EVICTSELF = 4 # Человек выселен по собственному желанию
+  # Нужны ли сейчас последние два статуса
+  HOSTEL_STATUS_NEO = 5 # для разных форм
+  HOSTEL_STATUS_NEO_ACCEPT = 6 # заселен для разных форм
+
+  # Льготы
+   BENEFITS_FREE = 1 # Льгот нет
+   BENEFITS_ORPHAN = 2 # Сирота
+   BENEFITS_DISABLEDCHILDREN  = 3 # Дети-инвалиды
+   BENEFITS_DISABLED1AND2 = 4 # Инвалид 1-2 группы
+   BENEFITS_DISABLED3 = 5 # Инвалид 3 группы
+   BENEFITS_DISABLEDCHILDREN3 = 6 # 3 группа инвалид с детства
+   BENEFITS_ARMY = 7 # Инвалиды и ветераны боевых действий
+   BENEFITS_RADIATION = 8 # Радиационные катастрофы (ЧАЭС)
+   BENEFITS_POOR = 9 # Малоимущие
+   BENEFITS_OTHER = 10 # Другие льготы
+
   self.table_name = 'student'
 
   alias_attribute :id, :student_id
@@ -46,6 +67,23 @@ class Person < ActiveRecord::Base
         'мужской'
       when FEMALE
         'женский'
+    end
+  end
+
+  def hostel_status
+    case student_hostel_status
+      when HOSTEL_STATUS_NOT
+        'Студент не проживает в общежитии'
+      when HOSTEL_STATUS_RECOMMEND
+        'Студент рекомендован к заселению в общежитие'
+      when HOSTEL_STATUS_ACCEPT
+        'Студент проживает в общежитии'
+      when HOSTEL_STATUS_EVICTSELF
+        'Студент выселился из общежития по собственному желанию'
+      when HOSTEL_STATUS_NEO
+        'Студент рекомендован к заселению (другие формы)'
+      when HOSTEL_STATUS_NEO_ACCEPT
+        'Студент проживает в общежитии (другие формы)'
     end
   end
 

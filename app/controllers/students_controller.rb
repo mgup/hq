@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
   load_and_authorize_resource
 
-  before_filter :find_student, only: [:documents, :study, :grants, :orders]
+  before_filter :find_student, only: [:documents, :study, :grants, :orders, :hostel]
 
   def index
     @students = @students.includes([:person, :group]).filter(params).page(params[:page])
@@ -26,6 +26,9 @@ class StudentsController < ApplicationController
   end
 
   def orders
+  end
+
+  def hostel
   end
 
   def new
@@ -54,6 +57,12 @@ class StudentsController < ApplicationController
                                       document_expire_date: Date.today.change(year: Date.today.year+1)
     @document_person = Document::DocumentPerson.create (@student.person.attributes.merge(document: @reference))
     @document_student = Document::DocumentStudent.create (@student.attributes.merge(document: @reference))
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
+  def petition
     respond_to do |format|
       format.pdf
     end
