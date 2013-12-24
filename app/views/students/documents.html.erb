@@ -1,9 +1,4 @@
-<ul class="nav nav-tabs">
-  <li><a href="<%= student_path(@student) %>">Персональная информация</a></li>
-  <li><a href="<%= student_study_path(@student) %>">Учебная информация</a></li>
-  <li class="active"><a href="<%= student_documents_path(@student) %>">Документы</a></li>
-  <li><a href="<%= student_grants_path(@student) %>">Выплаты и стипендии</a></li>
-</ul>
+<%= render_navigation context: :student %>
 <br>
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
@@ -14,13 +9,22 @@
   <div class="thumbnail col-lg-5">
     <div class="caption">
       <h3>Справка</h3>
-      <p>Справка о том, что студент действительно обучается в Московском государственном университете печати имени Ивана Фёдорова</p>
+      <p>Справка о том, что студент действительно обучается в МГУПечати имени Ивана Фёдорова</p>
       <p><%= link_to '#referenceModal', class: 'btn btn-default pull-right', data: {toggle: 'modal'} do %>
             Распечатать
          <% end %>
     </div>
   </div>
   <% end %>
+  <div class="thumbnail col-lg-offset-1 col-lg-5">
+    <div class="caption">
+      <h3>Справка-ходатайство</h3>
+      <p>Справка для предоставления в Отделение ОУФМС для регистрации.</p>
+      <p><%= link_to petition_student_path(@student), class: 'btn btn-default pull-right' do %>
+          Распечатать
+        <% end %>
+    </div>
+  </div>
 </div>
 
 <%= render partial: 'reference_modal', locals: {student: @student} %>

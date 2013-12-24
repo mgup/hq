@@ -5,3 +5,11 @@ ru:
     attributes:
       student:
         id: 'личный номер'
+        payment: 'основа обучения'
+        group: 'группа'
+        status: 'статус'
+        state_line: 'гослиния'
+        record: 'номер зачётки'
+        abit: 'номер личного дела'
+        abitpoints: 'баллы при зачислении'
+        school: 'общеобразовательная школа'

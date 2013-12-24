@@ -1,0 +1,40 @@
+<%= render_navigation context: :student %>
+<br>
+<div class="page-header">
+  <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
+  <h2>Приказы студента</h2>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th colspan="3">#</th>
+      <th>Статус</th>
+      <th>Тип приказа</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @student.orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td> — </td>
+        <!--Что значит этот прочерк О_о-->
+        <td><%= order.version %></td>
+        <td class="<%= order.signed? ? 'success' : 'warning' %>"><%= order.number %> от <%= l order.signing_date, format: '%d.%m.%Y' %></td>
+        <td><%= order.template.name if order.template %></td>
+        <td>
+          <%= link_to office_order_path(order), class: 'btn btn-default' do %>
+            <span class="glyphicon glyphicon-search"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to '#', class: 'btn btn-default' do %>
+            <span class="glyphicon glyphicon-print"></span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

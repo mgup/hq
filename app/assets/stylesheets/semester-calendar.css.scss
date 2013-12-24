@@ -26,4 +26,15 @@
   .border-left {
     border-left: 1px solid #dddddd;
   }
+
+  .selected {
+    border: 3px solid #ddd !important;
+  }
+  .selected a{
+    font-weight: bold;
+  }
+
+  a{
+    display: block;
+  }
 }

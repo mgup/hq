@@ -3,14 +3,16 @@ class EventDate < ActiveRecord::Base
 
   belongs_to :event, class_name: Event
   has_many :visitor_event_dates
-  has_many :users, through: :visitor_event_dates, source: :user,
-          conditions: "visitor_event_date.visitor_type = 'User'"
-  has_many :students, through: :visitor_event_dates, source: :student,
-           conditions: "visitor_event_date.visitor_type = 'Student'"
+  has_many :users, -> {where("visitor_event_date.visitor_type = 'User'")},
+                      through: :visitor_event_dates, source: :user
 
-#  scope :not_full, -> { where("max_visitors > (SELECT COUNT(*) from `event_date`
-#  JOIN `visitor_event_date` on `event_date`.id = `visitor_event_date`.event_date_id
-#WHERE `event_date`.id)") }
+  has_many :students, -> {where("visitor_event_date.visitor_type = 'Student'")},
+                          through: :visitor_event_dates, source: :student
+
+  scope :not_full, -> { where('max_visitors > (SELECT COUNT(visitor_event_date.id) from `event_date` as `ed`
+  JOIN `visitor_event_date` on `ed`.id = `visitor_event_date`.event_date_id
+  WHERE `ed`.id = `event_date`.id)') }
+
   def visitors
     self.users + self.students
   end

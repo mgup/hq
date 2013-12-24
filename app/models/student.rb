@@ -44,6 +44,12 @@ class Student < ActiveRecord::Base
 
 
   alias_attribute :id,              :student_group_id
+  alias_attribute :status,          :student_group_status
+  alias_attribute :record,          :student_group_record
+  alias_attribute :abit,            :student_group_abit
+  alias_attribute :abitpoints,      :student_group_abitpoints
+  alias_attribute :school,            :student_group_a_school
+  alias_attribute :state_line,      :student_group_a_state_line
   alias_attribute :password,        :encrypted_password
   alias_attribute :payment,         :student_group_tax
   alias_attribute :admission_year,  :student_group_yearin
@@ -59,7 +65,7 @@ class Student < ActiveRecord::Base
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
 
-  has_many :payments, class_name: Finance::Payment, primary_key: :student_group_id, foreign_key: :finance_payment_student_group
+  has_many :payments, class_name: Finance::Payment, primary_key: :student_group_id, foreign_key: :finance_payment_student
 
   has_many :supports, class_name: My::Support, primary_key: :student_group_id,
            foreign_key: :support_student
@@ -67,7 +73,7 @@ class Student < ActiveRecord::Base
            foreign_key: :optional_select_student
   has_many :choices, class_name: My::Choice, :through => :selections
 
-  has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_student
+  has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_student_group_id
   has_many :orders, class_name: Office::Order, through: :students_in_order
 
   has_many :visitor_event_dates, as: :visitor
@@ -311,7 +317,7 @@ GROUP BY `group`
         ball+=100*(current_progress/d.current_ball)/disciplines.size if d.current_ball != 0
       end
     end
-    if discipline and discipline.final_exam.test?
+    if discipline and discipline.final_exam and discipline.final_exam.test?
       case ball.round
         when 0..54
           {ball: current, progress: current_progress, mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}

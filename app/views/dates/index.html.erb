@@ -5,39 +5,59 @@
 <% unless @event.description.empty? %>
   <p class="help-block"><%= @event.description %></p>
 <% end %>
+
 <% condition = @current.dates.where(id: @dates.collect{|i| i.id}).empty? %>
 <% unless condition %>
   <% book = @current.dates.where(id: @dates.collect{|i| i.id}).last %>
+  <%= hidden_field_tag :current_book, (l book.date) %>
   <div class="alert-info alert">Вы уже забронировали дату на это мероприятие:
     <strong><%= l book.date, format: :long %> (<%= l book.time_start, format: '%H:%M' %><%= " - #{ l book.time_end, format: '%H:%M' }" if book.time_end %>)</strong></div>
 <% end %>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>Дата проведения</th>
-      <th>Время</th>
-      <th>Количество мест</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @dates.each do |date| %>
-      <% remains = (date.max_visitors - date.visitors.length).to_f/date.max_visitors %>
-      <tr class="<%= remains > 0.5 ? 'success' : ((remains < 0.1 || date.max_visitors - date.visitors.length == 1) ? 'danger' : '') %>">
-        <td><%= l date.date, format: :long %></td>
-        <td><%= l date.time_start, format: '%H:%M' %><%= " - #{ l date.time_end, format: '%H:%M' }" if date.time_end %></td>
-        <td><%= date.max_visitors - date.visitors.length %> из <%= date.max_visitors %></td>
-        <td>
-          <% if condition || date.max_visitors == date.visitors.length %>
-            <%= form_for @visitor, url: event_date_visitor_event_dates_path(@event, date) do |f| %>
-            <%= f.hidden_field :event_date_id, value: date.id %>
-            <%= f.hidden_field :visitor_type, value: (current_user ? 'User' : 'Student') %>
-            <%= f.hidden_field :visitor_id, value: current_user.id || current_student.id %>
-            <%= f.submit 'Забронировать дату', class: 'btn btn-default' %>
-          <% end %>
-        <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+
+<div class="panel-group" id="accordionHelper">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordionHelper" href="#answer">
+            Как пользоваться календарём?
+          </a>
+        </h4>
+      </div>
+      <div id="answer" class="panel-collapse collapse">
+        <div class="panel-body">
+          <ul class="list-unstyled">
+            <li>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 success"></div> — есть свободные места
+              <br><br>
+            </li>
+            <li>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 warning"></div> — есть свободные места, но их количество меньше 10% или равно 1
+              <br><br>
+            </li>
+            <li>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 danger"></div> — свободных мест нет
+              <br><br>
+            </li>
+            <li>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 selected"></div> — ваш выбор
+              <br><br>
+            </li>
+          </ul>
+          <p>Чтобы забронировать время, нажмите на удобную вам дату в календаре. Обратите внимание, что изменить сделанный выбор вы не можете.</p>
+        </div>
+      </div>
+    </div>
+</div>
+<br>
+
+
+<div class="col-sm-12 events">
+  <%= render_dates_calendar(@event) %>
+</div>
+
+<div class="event_dates">
+  <% @event.dates.order(:date).each_with_index do |date, index| %>
+    <%= render partial: 'book_date', locals: {event: @event, index: index+1, book: book,
+                                              date: date, condition: condition} %>
+  <% end %>
+</div>

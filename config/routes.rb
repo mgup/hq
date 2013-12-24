@@ -40,13 +40,16 @@ HQ::Application.routes.draw do
 
   resources :students do
     get 'documents' => 'students#documents'
+    get 'orders' => 'students#orders'
     get 'study' => 'students#study'
+    get 'hostel' => 'students#hostel'
     get 'grants' => 'students#grants'
     resources :supports do
       get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
       get 'options', to: 'supports#options', on: :collection
     end
     post 'reference.pdf', to: 'students#reference', on: :member, defaults: { format: :pdf }, as: :reference
+    get 'petition.pdf', to: 'students#petition', on: :member, defaults: { format: :pdf }, as: :petition
   end
   get '/students/list(/:page)', to: 'students#index'
 

@@ -5,10 +5,13 @@
 <% else %>
   <% date = false %>
 <% end %>
+
+<% if false %>
 <%= link_to link, id: 'printProgress', class: 'btn btn-info navigation_trip',
             data: { input: '#printProgress', content: "Вы можете распечатать текущую успеваемость #{group.name} #{discipline ? ('по дисциплине ' + discipline.name) : 'по всем предметам'}.",
                     position: 's'} do %>
   <span class="glyphicon glyphicon-print"></span> Распечатать успеваемость
+<% end %>
 <% end %>
 <br>
 <br>
