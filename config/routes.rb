@@ -145,7 +145,9 @@ HQ::Application.routes.draw do
   resources :achievements do
     get 'periods', on: :collection
   end
-  resources :achievement_reports
+  resources :achievement_reports do
+    get 'reopen', on: :member
+  end
 
   get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
 

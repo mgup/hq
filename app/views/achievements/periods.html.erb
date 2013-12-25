@@ -29,8 +29,16 @@
         <% end %>
       </td>
       <td>
-        <% if p.achievement_reports.by_user(current_user).only_relevant.any? %>
-          <%= link_to achievement_report_path(p.achievement_reports.by_user(current_user).only_relevant.first, format: :pdf), class: 'btn btn-default', disabled: true do %>
+        <% relevant_reports = p.achievement_reports.by_user(current_user).only_relevant %>
+        <% if relevant_reports.any? %>
+          <%= link_to reopen_achievement_report_path(relevant_reports.first), class: 'btn btn-success' do %>
+            <span class="glyphicon glyphicon-edit"></span>
+            Внести изменения
+          <% end %>
+
+          <br><br>
+
+          <%= link_to achievement_report_path(relevant_reports.first, format: :pdf), class: 'btn btn-default', disabled: true do %>
             <span class="glyphicon glyphicon-print"></span> Распечатать
           <% end %>
           <p>
@@ -39,7 +47,7 @@
         <% else %>
           <% if p.active? %>
             <%= link_to achievements_path(year: p.year, semester: p.semester), class: 'btn btn-default' do %>
-              <span class="glyphicon glyphicon-check"></span> Ввести показатели
+              <span class="glyphicon glyphicon-edit"></span> Ввести показатели
             <% end %>
           <% end %>
         <% end %>

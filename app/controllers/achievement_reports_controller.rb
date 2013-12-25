@@ -23,6 +23,14 @@ class AchievementReportsController < ApplicationController
     end
   end
 
+  def reopen
+    @achievement_report.relevant = false
+    @achievement_report.save!
+
+    p = @achievement_report.achievement_period
+    redirect_to achievements_path(year: p.year, semester: p.semester)
+  end
+
   def resource_params
     params.fetch(:achievement_report, {}).permit(:achievement_period_id,
                                                  :user_id, :valid)
