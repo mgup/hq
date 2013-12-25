@@ -1,7 +1,11 @@
 <% link = study_group_print_progress_path  %>
 <% if discipline %>
   <% link << "?discipline=#{discipline.id}" %>
-  <% date = discipline.final_exam.date? %>
+  <% if discipline.final_exam %>
+    <% date = discipline.final_exam.date? %>
+  <% else %>
+    <% date = false %>
+  <% end %>
 <% else %>
   <% date = false %>
 <% end %>
