@@ -1,21 +1,19 @@
 module AchievementHelper
   def achievements_credits(achievements)
-    has_dynamic_credits = false
-
+    only_fixed_credits = true
     credits = achievements.inject(0) do |res, a|
-      has_dynamic_credits = true if a.activity.dynamic_credits?
-
-      if a.activity.flexible_credits?
-        has_dynamic_credits = true
-      else
+      if a.activity.fixed_credits?
         res += a.activity.credit
+      else
+        only_fixed_credits = false
       end
+
       res
     end
 
     res = "#{prettify(credits)} #{Russian::p(prettify(credits), 'балл', 'балла', 'баллов', 'балла')}"
 
-    res += ' + ?' if has_dynamic_credits
+    res += ' + ?' unless only_fixed_credits
 
     res
   end

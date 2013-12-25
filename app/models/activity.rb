@@ -19,11 +19,19 @@ class Activity < ActiveRecord::Base
     unique
   end
 
-  def dynamic_credits?
-    ActivityCreditType::DYNAMIC == activity_credit_type_id
+  def fixed_credits?
+    ActivityCreditType::FIXED == activity_credit_type_id
+  end
+
+  def numeric_credits?
+    ActivityCreditType::NUMERIC == activity_credit_type_id
   end
 
   def flexible_credits?
     ActivityCreditType::FLEXIBLE == activity_credit_type_id
+  end
+
+  def dynamic_credits?
+    ActivityCreditType::DYNAMIC == activity_credit_type_id
   end
 end
