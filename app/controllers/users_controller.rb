@@ -78,7 +78,8 @@ class UsersController < ApplicationController
 
   def medical_requests
     require 'csv'
-    @data = CSV.read '/Users/storkvist/Sites/mgup/med_preps.txt', { col_sep: "\t" }
+    #@data = CSV.read '/Users/storkvist/Sites/mgup/med_preps.txt', { col_sep: "\t" }
+    @data = CSV.read '/home/anna/med_preps.txt', { col_sep: "\t" }
   end
 
   def see_with_eyes
