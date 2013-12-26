@@ -2,7 +2,7 @@
 <% if discipline %>
   <% link << "?discipline=#{discipline.id}" %>
   <% if discipline.final_exam %>
-    <% date = discipline.final_exam.date? %>
+    <% date = discipline.final_exam.exam? %>
   <% else %>
     <% date = false %>
   <% end %>
@@ -39,7 +39,9 @@
     <th class="text-muted">#</th>
     <th>Студент</th>
     <th colspan='2'>Набранный балл на <%= DateTime.now.strftime("%d.%m.%Y") %> </th>
-    <!--<th colspan='2'>Прогноз на <%= DateTime.now.strftime("%d.%m.%Y") %></th>-->
+    <% if false %>
+      <th colspan='2'>Прогноз на <%= DateTime.now.strftime("%d.%m.%Y") %></th>
+    <% end %>
     <th></th>
   </tr>
   </thead>
@@ -55,16 +57,15 @@
           <div class="progress-bar progress-bar-stripped" style="width: <%= result[:progress]%>%"></div>
         </div>
       </td>
-      <% if student[:student].got_all_marks(discipline) %>
-      <!--<td><%= result[:mark] %></td>-->
-      <!--<td>-->
-        <!--<div style='width: 100px;' class="progress progress-striped">-->
-          <!--<div class="progress-bar progress-bar-<%= result[:color] %>" style="width: <%= result[:width]%>%"></div>-->
-        <!--</div>-->
-      <!--</td>-->
-      <!--<% else %>-->
-        <!--<td colspan="2">Недостаточно данных</td>-->
-      <!--<% end %>-->
+      <% if false && student[:student].got_all_marks(discipline) %>
+      <td><%= result[:mark] %></td>
+      <td>
+        <div style='width: 100px;' class="progress progress-striped">
+          <div class="progress-bar progress-bar-<%= result[:color] %>" style="width: <%= result[:width]%>%"></div>
+        </div>
+      </td>
+        <td colspan="2">Недостаточно данных</td>
+      <% end %>
       <td>
         <%= link_to  study_group_student_path(group.id, student[:student].id), class: 'btn btn-default student_progress navigation_trip', title: 'Подробнее',
                     data: { input: '.student_progress:first-child', content: 'Пройдите по ссылке, чтобы узнать успеваемость отдельного студента.',
@@ -107,7 +108,8 @@
     </thead>
     <tbody>
       <% students.each do |s| %>
-        <% if s[:ball].blank? || s[:ball] < 55 then %>
+      <% r = s[:progress] %>
+        <% if r[:ball].blank? || r[:ball] < 55 then %>
           <% next %>
         <% end %>
         <tr>
@@ -115,7 +117,7 @@
           <td><%= s[:student].person.full_name %></td>
           <% [5,4,3,2].each do |m| %>
           <td>
-            <% result = discipline.final_exam.predication(m,s[:ball]) %>
+            <% result = discipline.final_exam.predication(m,r[:ball]) %>
             <%= result[:min] %> — <%= result[:max] %>
           </td>
           <% end %>

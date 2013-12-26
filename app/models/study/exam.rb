@@ -46,6 +46,10 @@ class Study::Exam < ActiveRecord::Base
     TYPE_TEST == type
   end
 
+  def exam?
+    TYPE_EXAMINATION == type
+  end
+
   def name
     case type
       when TYPE_TEST
