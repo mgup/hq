@@ -1,0 +1,9 @@
+ru:
+  activerecord:
+    models:
+      document/doc: 'документ'
+    attributes:
+      document/doc:
+        name: 'название'
+        department: 'кем выдан'
+        document_type: 'тип'

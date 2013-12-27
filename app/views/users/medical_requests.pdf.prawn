@@ -9,7 +9,7 @@ end
 
 prawn_document size: :A4, page_layout: :portrait do |pdf|
   names.each_with_index do |name, index|
-    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}", base_size: 9
+    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}н", base_size: 9
     pdf.move_up 15
     pdf.font_size 11
     pdf.text 'в наркологический диспансер по месту жительства или временной регистрации.', align: :center, style: :bold
@@ -30,7 +30,7 @@ prawn_document size: :A4, page_layout: :portrait do |pdf|
     pdf.stroke_horizontal_rule
     pdf.move_down 10
 
-    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}", base_size: 9
+    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}п", base_size: 9
     pdf.move_up 15
     pdf.font_size 11
     pdf.text 'в психоневрологический диспансер по месту жительства или временной регистрации.', align: :center, style: :bold
@@ -51,7 +51,7 @@ prawn_document size: :A4, page_layout: :portrait do |pdf|
     pdf.stroke_horizontal_rule
     pdf.move_down 10
 
-    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}", base_size: 9
+    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}к", base_size: 9
     pdf.move_up 15
     pdf.font_size 11
     pdf.text 'в кожно-венерологический диспансер по месту жительства или временной регистрации.', align: :center, style: :bold
@@ -91,7 +91,7 @@ prawn_document size: :A4, page_layout: :portrait do |pdf|
 
     pdf.start_new_page
       pdf.font 'PT', size: 12, style: :bold, align: :center do
-        render 'pdf/header', pdf: pdf, title: 'НАПРАВЛЕНИЕ НА ПЕРИОДИЧЕСКИЙ МЕДИЦИНСКИЙ ОСМОТР (ОБСЛЕДОВАНИЕ)', base_size: 9
+        render 'pdf/header', pdf: pdf, title: "НАПРАВЛЕНИЕ НА ПЕРИОДИЧЕСКИЙ МЕДИЦИНСКИЙ ОСМОТР (ОБСЛЕДОВАНИЕ) № #{index + 1}", base_size: 9
       end
 
       pdf.font_size 10
@@ -142,6 +142,7 @@ prawn_document size: :A4, page_layout: :portrait do |pdf|
       academic[0] = 'кафедра' if name[1].squish.index('кафедр')
       academic[0] = 'институт' if name[1].squish.index('институт')
       job = Unicode::downcase(name[1].squish[0..(academic_i-2)])
+      job += ' кафедрой' if name[1].squish.index('аведующ')
       [
         [name[0].squish, 50, 608, 446, 10],
         [academic.join(' '), 80, 561, 446, 10],

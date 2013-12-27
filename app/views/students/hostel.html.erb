@@ -4,4 +4,44 @@
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
 </div>
 
-<p class="lead"><%= @student.person.hostel_status %></p>
+<p class="lead"><%= @student.person.hostel_status[:status] %></p>
+
+<legend>Информация по общежитию</legend>
+<div class="row">
+  <div class="col-sm-4">
+    <label>Общежитие</label>
+  </div>
+  <div class="col-sm-8">
+    <p class="form-control-static"><%= @student.person.room.flat.hostel.short_name %></p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+    <label>Квартира</label>
+   </div>
+  <div class="col-sm-8">
+    <p class="form-control-static"><%= @student.person.room.flat.number %></p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+    <label>Комната</label>
+  </div>
+  <div class="col-sm-8">
+    <p class="form-control-static"><%= @student.person.room.seats %>-х местная</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+    <label>Статус</label>
+  </div>
+  <div class="col-sm-8">
+    <p class="form-control-static"><%= @student.person.hostel_status[:short] %></p>
+  </div>
+</div>
+
+<legend>Информация по договору</legend>
+<p>Надо подождать =(</p>
+
+<legend>Информация по договору</legend>
+<p>Надо подождать =(</p>

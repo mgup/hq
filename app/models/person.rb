@@ -52,6 +52,8 @@ class Person < ActiveRecord::Base
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname
   belongs_to :iname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_iname
   belongs_to :oname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_oname
+  belongs_to :room, class_name: Hostel::Room, primary_key: :room_id,
+           foreign_key: :student_room
 
   def male?
     MALE == gender
@@ -70,20 +72,49 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def benefits_free?
+    BENEFITS_FREE == benefits
+  end
+
   def hostel_status
     case student_hostel_status
       when HOSTEL_STATUS_NOT
-        'Студент не проживает в общежитии'
+        {status: 'Студент не проживает в общежитии', short: 'не заселён'}
       when HOSTEL_STATUS_RECOMMEND
-        'Студент рекомендован к заселению в общежитие'
+        {status: 'Студент рекомендован к заселению в общежитие', short: 'рекомендован'}
       when HOSTEL_STATUS_ACCEPT
-        'Студент проживает в общежитии'
+        {status: 'Студент проживает в общежитии', short: 'заселён'}
       when HOSTEL_STATUS_EVICTSELF
-        'Студент выселился из общежития по собственному желанию'
+        {status: 'Студент выселился из общежития по собственному желанию', short: 'выселился'}
       when HOSTEL_STATUS_NEO
-        'Студент рекомендован к заселению (другие формы)'
+        {status: 'Студент рекомендован к заселению (другие формы)', short: 'рекомендован'}
       when HOSTEL_STATUS_NEO_ACCEPT
-        'Студент проживает в общежитии (другие формы)'
+        {status: 'Студент проживает в общежитии (другие формы)', short: 'заселён'}
+    end
+  end
+
+  def benefits_type
+    case benefits
+      when BENEFITS_FREE
+        'льгот нет'
+      when BENEFITS_ORPHAN
+        'сирота'
+      when BENEFITS_DISABLEDCHILDREN
+        'дети-инвалиды'
+      when BENEFITS_DISABLED1AND2
+        'инвалид 1-2 группы'
+      when BENEFITS_DISABLED3
+        'инвалид 3 группы'
+      when BENEFITS_DISABLEDCHILDREN3
+        '3 группа инвалид с детства'
+      when BENEFITS_ARMY
+        'инвалиды и ветераны боевых действий'
+      when BENEFITS_RADIATION
+        'радиационные катастрофы (ЧАЭС)'
+      when BENEFITS_POOR
+        'малоимущие'
+      when BENEFITS_OTHER
+        'другие льготы'
     end
   end
 

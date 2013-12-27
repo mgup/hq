@@ -23,6 +23,7 @@ class StudentsController < ApplicationController
   end
 
   def grants
+    @document = Document::Doc.new
   end
 
   def orders

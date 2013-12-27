@@ -12,10 +12,15 @@ class Document::Doc < ActiveRecord::Base
 
   self.table_name = 'document'
 
-  alias_attribute :id,       :document_id
-  alias_attribute :type,     :document_type
-  alias_attribute :number,   :document_number
-  alias_attribute :date,     :document_create_date
+  alias_attribute :id,          :document_id
+  alias_attribute :type,        :document_type
+  alias_attribute :number,      :document_number
+  alias_attribute :date,        :document_create_date
+  alias_attribute :name,        :document_name
+  alias_attribute :department,  :document_department
+  alias_attribute :start_date,  :document_start_date
+  alias_attribute :expire_date, :document_expire_date
+  alias_attribute :eternal,     :document_eternal
 
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :document_id,
            foreign_key: :document_student_document
