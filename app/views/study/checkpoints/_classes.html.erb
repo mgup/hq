@@ -19,7 +19,7 @@
                               position: 'w'} do %>
             <span class="glyphicon glyphicon-pencil"></span> Внести результаты
           <% end %>
-          <% if checkpoint.marks.length == 0 %>
+          <% if checkpoint.marks.length == 0 && !checkpoint.is_checkpoint? %>
             <br><br>
             <%= link_to study_discipline_checkpoint_path(discipline, checkpoint), method: :delete, confirm: 'Вы уверены?',
                         class: 'btn btn-danger pull-right delete_checkpoint navigation_trip hidden-print',
@@ -29,9 +29,11 @@
             <% end %>
           <% end %>
         <% else %>
-          <%= link_to study_discipline_checkpoint_path(discipline, checkpoint), method: :delete, confirm: 'Вы уверены?',
-                      class: 'btn btn-danger delete_checkpoint hidden-print' do %>
-            <span class="glyphicon glyphicon-remove"></span> Удалить
+          <% if !checkpoint.is_checkpoint? %>
+            <%= link_to study_discipline_checkpoint_path(discipline, checkpoint), method: :delete, confirm: 'Вы уверены?',
+                        class: 'btn btn-danger delete_checkpoint hidden-print' do %>
+              <span class="glyphicon glyphicon-remove"></span> Удалить
+            <% end %>
           <% end %>
         <% end %>
       </div>

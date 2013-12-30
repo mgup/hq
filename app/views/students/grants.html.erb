@@ -10,6 +10,12 @@
   <%= link_to '#addDocumentModal', class: 'btn btn-primary', data: {toggle: 'modal'} do %>
     <span class="glyphicon glyphicon-plus"></span> Добавить студенту справку
   <% end %>
+
+
+  <% unless @student.documents.socials.empty? %>
+  <% else %>
+    <p class="lead">Пока </p>
+  <% end %>
 <% end %>
 
 <%= render 'add_document' %>

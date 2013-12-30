@@ -7,3 +7,5 @@ ru:
         name: 'название'
         department: 'кем выдан'
         document_type: 'тип'
+        start_date: 'с'
+        expire_date: 'по'

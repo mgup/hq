@@ -120,8 +120,7 @@ class Study::Exam < ActiveRecord::Base
             min = nil
             max = nil
           end
-        end
-        if min > 100
+        elsif min > 100
           min = nil
           max = nil
         end

@@ -256,16 +256,26 @@ GROUP BY `group`
       return 0.0 if discipline.classes.count == 0
       l = discipline.lectures.count
       p = discipline.seminars.count
+      if l == 0
+        sum_p = 20.0
+        sum_l = 0.0
+      elsif p == 0
+        sum_p = 0.0
+        sum_l = 20.0
+      else
+        sum_p = 15.0
+        sum_l = 5.0
+      end
       discipline_marks(discipline).each do |mark|
         result = case mark[:mark]
                    when MARK_LECTURE_ATTEND
-                     (5.0/l)
+                     (sum_l/l)
                    when MARK_PRACTICAL_FAIR
-                     (5.0/p)
+                     (sum_p/(3*p))
                    when MARK_PRACTICAL_GOOD
-                     (10.0/p)
+                     ((sum_p*2)/(3*p))
                    when MARK_PRACTICAL_PERFECT
-                     (15.0/p)
+                     (sum_p/p)
                    else
                      0
                  end

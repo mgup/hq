@@ -12,8 +12,10 @@
           </div>
           <p><%= @student.person.full_name %></p>
         </div>
-        <%= form_for @document, url: reference_student_path(@student), class: 'form-horizontal' do |f| %>
+        <%= form_for @document, class: 'form-horizontal' do |f| %>
           <div class="row">
+            <%= hidden_field_tag :student, @student.id %>
+            <%= f.hidden_field :date, value: (l Date.today)%>
             <div class="col-sm-3">
               <label>Льгота:</label>
             </div>

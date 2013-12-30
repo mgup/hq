@@ -28,6 +28,9 @@ class Document::Doc < ActiveRecord::Base
 
   has_many :metas, class_name: Document::Meta, primary_key: :document_id, foreign_key: :document_meta_document
 
+  scope :references, -> { where(document_type: TYPE_UNIVERSITY_REFERENCE) }
+  scope :socials, -> { where(document_type: TYPE_SOCIAL_SCHOLARSHIP) }
+
   # Получение имени плательщика по договору.
   def payer
     metas.where(document_meta_pattern: 'Плательщик').first.text if TYPE_CONTRACT == type
