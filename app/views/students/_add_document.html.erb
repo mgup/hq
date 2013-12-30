@@ -35,7 +35,7 @@
               <%= f.label :name %>
             </div>
             <div class="col-sm-9">
-              <%= f.text_field :name, class: 'form-control'%>
+              <%= f.text_field :name, class: 'form-control', required: true %>
             </div>
           </div>
           <div class="row">
@@ -43,7 +43,7 @@
               <%= f.label :department %>
             </div>
             <div class="col-sm-9">
-              <%= f.text_field :department, class: 'form-control'%>
+              <%= f.text_field :department, class: 'form-control', required: true %>
             </div>
           </div>
           <div class="row">
@@ -56,13 +56,13 @@
               <%= f.label :start_date %>
             </div>
             <div class="col-sm-3">
-              <%= f.text_field :start_date, class: 'form-control', placeholder: 'дд.мм.гггг' %>
+              <%= f.text_field :start_date, class: 'form-control', placeholder: 'дд.мм.гггг', required: true %>
             </div>
             <div class="col-sm-1">
               <%= f.label :expire_date %>
             </div>
             <div class="col-sm-3">
-              <%= f.text_field :expire_date, class: 'form-control', placeholder: 'дд.мм.гггг' %>
+              <%= f.text_field :expire_date, class: 'form-control', placeholder: 'дд.мм.гггг', required: true %>
             </div>
             <div class="col-sm-offset-1 col-sm-3">
               <label><%= f.check_box :eternal %> Бессрочно</label>

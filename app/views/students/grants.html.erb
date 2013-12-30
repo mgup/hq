@@ -7,14 +7,71 @@
 <% if @student.person.benefits_free? %>
   <p class="lead">У студента нет льгот</p>
 <% elsif @student.valid? %>
-  <%= link_to '#addDocumentModal', class: 'btn btn-primary', data: {toggle: 'modal'} do %>
+  <%= link_to '#addDocumentModal', class: 'btn btn-primary pull-right', data: {toggle: 'modal'} do %>
     <span class="glyphicon glyphicon-plus"></span> Добавить студенту справку
   <% end %>
 
+  <br><br>
+  <div class="panel-group" id="accordionHelperSocials">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordionHelperrSocials" href="#answer">
+            Как пользоваться таблицей?
+          </a>
+        </h4>
+      </div>
+      <div id="answer" class="panel-collapse collapse">
+        <div class="panel-body">
+          <ul class="list-unstyled">
+            <li>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 success"></div> — справка действительна
+              <br><br>
+            </li>
+            <!--<li>-->
+              <!--<div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 warning"></div> — срок действия справки истечёт меньше через месяц-->
+              <!--<br><br>-->
+            <!--</li>-->
+            <li>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 danger"></div> — срок действия справки истек
+              <br><br>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
 
+  <h3>Справки для получения государственной социальной стипендии</h3>
   <% unless @student.documents.socials.empty? %>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th rowspan="2">#</th>
+          <th rowspan="2">Название</th>
+          <th rowspan="2">Орган, выдавший справку</th>
+          <th colspan="2">Действительна</th>
+        </tr>
+        <tr>
+          <th>с</th>
+          <th>по</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @student.documents.socials.each do |document| %>
+          <tr class="<%= document.expire_date.future? ? 'success' : 'danger' %>">
+            <td><%= document.number %></td>
+            <td><%= document.name %></td>
+            <td><%= document.department %></td>
+            <td><%= l document.start_date %></td>
+            <td><%= document.eternal == 1 ? 'бессрочно' : (l document.expire_date) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   <% else %>
-    <p class="lead">Пока </p>
+    <p class="lead">Справки не найдены</p>
   <% end %>
 <% end %>
 
