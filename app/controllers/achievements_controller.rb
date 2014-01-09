@@ -1,5 +1,6 @@
 class AchievementsController < ApplicationController
-  load_and_authorize_resource
+  load_resource except: [:update, :destroy, :validate]
+  authorize_resource
 
   def periods
     @periods = AchievementPeriod.all
@@ -59,8 +60,13 @@ class AchievementsController < ApplicationController
   end
 
   def update
+    @achievement = Achievement.unscoped.find(params[:id])
+
     if @achievement.update(resource_params)
-      redirect_to achievements_path, notice: 'Изменения сохранены.'
+      respond_to do |format|
+        format.js
+        format.html { redirect_to achievements_path, notice: 'Изменения сохранены.' }
+      end
     else
       render action: :edit
     end
@@ -74,8 +80,12 @@ class AchievementsController < ApplicationController
     redirect_to achievements_path(year: @period.year, semester: @period.semester)
   end
 
+  def validate
+    @achievements = Achievement.validatable_by(current_user)
+  end
+
   def resource_params
     params.fetch(:achievement, {}).permit(:description, :achievement_period_id,
-                                          :activity_id)
+                                          :activity_id, :value)
   end
 end

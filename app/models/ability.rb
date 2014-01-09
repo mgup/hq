@@ -76,6 +76,7 @@ class Ability
     can :manage, Study::Mark
 
     can :manage, [Achievement, AchievementReport], user_id: user.id
+    cannot :validate, Achievement
   end
 
   def subdepartment_assistant(user)
@@ -85,5 +86,11 @@ class Ability
   # Заведующий кафедрой.
   def subdepartment(user)
     lecturer(user)
+  end
+
+  # Проректор по научно-исследовательской работе
+  def pro_rector_science(user)
+    can :update, Achievement
+    can :validate, Achievement
   end
 end

@@ -9,3 +9,5 @@ ru:
         semester: 'семестр'
       achievement:
         description: 'подтверждение'
+        activity_id: 'показатель'
+        value:  'значение показателя'

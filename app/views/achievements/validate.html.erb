@@ -1,0 +1,9 @@
+<div class="page-header">
+  <h1>
+    Подтверждение <small>показателей эффективности</small>
+  </h1>
+</div>
+
+<% @achievements.each do |achievement| %>
+  <%= render partial: 'achievement_validation', locals: { achievement: achievement } %>
+<% end %>

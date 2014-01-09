@@ -1,0 +1,3 @@
+$('#<%= dom_id(@achievement, :edit) %>').html(
+  '<%=j render partial: 'achievement_validation', locals: { achievement: @achievement } %>'
+);

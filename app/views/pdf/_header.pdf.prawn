@@ -7,6 +7,7 @@ pdf.font 'PT', size: base_size, style: :bold, align: :center do
   pdf.text 'федеральное государственное бюджетное образовательное', align: :center
   pdf.text 'учреждение высшего профессионального образования', align: :center
   pdf.text '«МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА»', align: :center
+  #pdf.text '127550 г. Москва, ул. Прянишникова, д. 2А, тел: +7 499 976-14-70', align: :center
 end
 
 pdf.line_width = 2

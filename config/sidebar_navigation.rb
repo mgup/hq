@@ -81,6 +81,13 @@ SimpleNavigation::Configuration.run do |navigation|
           a.dom_class = 'hidden'
           a.item :achievements, 'Отчёт за период', achievements_path
         end
+
+        if can? :manage, :all
+          if can? :validate, Achievement
+            primary.item :validate_achievements, 'Подтверждение показателей эффективности',
+                         validate_achievements_path, icon: 'check'
+          end
+        end
       end
 
       if can? :manage, Student

@@ -143,7 +143,8 @@ HQ::Application.routes.draw do
 
   resources :achievement_periods
   resources :achievements do
-    get 'periods', on: :collection
+    get 'periods',  on: :collection
+    get 'validate', on: :collection
   end
   resources :achievement_reports do
     get 'reopen', on: :member

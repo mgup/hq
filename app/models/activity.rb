@@ -11,6 +11,9 @@ class Activity < ActiveRecord::Base
 
   belongs_to :activity_credit_type
 
+  belongs_to :validator, class_name: 'Role',
+             foreign_key: :acl_role_id, primary_key: :role_id
+
   has_many :achievements
 
   scope :without_teaching_load, -> { where('activities.id != ?', TEACHING_LOAD) }

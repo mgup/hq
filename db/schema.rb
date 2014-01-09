@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131217115401) do
+ActiveRecord::Schema.define(version: 20131225182622) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -39,6 +39,9 @@ ActiveRecord::Schema.define(version: 20131217115401) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "achievement_period_id"
+    t.integer  "value"
+    t.decimal  "cost",                  precision: 5, scale: 1
+    t.integer  "status",                                        default: 1
   end
 
   add_index "achievements", ["achievement_period_id"], name: "index_achievements_on_achievement_period_id", using: :btree
@@ -82,6 +85,7 @@ ActiveRecord::Schema.define(version: 20131217115401) do
     t.integer  "base",                                            default: 1
     t.decimal  "credit",                  precision: 5, scale: 1, default: 0.0
     t.string   "base_name",                                       default: "за одно достижение"
+    t.integer  "role_id"
   end
 
   add_index "activities", ["activity_credit_type_id"], name: "index_activities_on_activity_credit_type_id", using: :btree
