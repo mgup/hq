@@ -21,7 +21,7 @@ module CalendarHelper
             tags << render_month_td(d, first_day)
           end
 
-          if first_day == d
+          if first_day == d && !d.monday?
             d.cwday.times { tags << '<td class="border-none border-bottom"></td>'.html_safe }
           end
 
@@ -53,7 +53,7 @@ module CalendarHelper
     classes << 'border-bottom'if date.cweek == date.end_of_month.cweek
     classes << 'border-top'   if date.cweek == date.beginning_of_month.cweek
 
-    classes << 'border-left' if date == first_study_date
+    #classes << 'border-left' if date == first_study_date
     classes << 'border-right' if date == last_study_date
 
     classes << 'border-top' if date.cweek == first_study_date.cweek

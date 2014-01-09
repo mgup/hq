@@ -3,7 +3,7 @@ class Document::Doc < ActiveRecord::Base
   TYPE_HOSTEL_CONTRACT      = 2 #Договор найма
   TYPE_REG_REFERENCE        = 3 #Заявление о регистрации
   TYPE_UNIVERSITY_REFERENCE = 4 #Справка о том, что студент учится в университете
-  TYPE_CONTRACT             = 5  #Договор студента с университетом
+  TYPE_CONTRACT             = 5 #Договор студента с университетом
   TYPE_PAYMENT_HOSTEL       = 6 #Справка об оплате за общежитие
   TYPE_SOCIAL_SCHOLARSHIP   = 7 #Справка для получения государственной соц стипендии
   TYPE_DISABLED             = 8 #Справка об инвалидности
