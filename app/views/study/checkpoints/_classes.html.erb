@@ -49,22 +49,18 @@
 <% end %>
 
 <% if false %>
-  <% discipline.exams.originals.order('exam_date').each do |exam| %>
-    <% if exam.date? %>
-      <tr>
-        <td class="text-muted"><%= exam.id %></td>
-        <td><%= l exam.date %></td>
-        <td class="full-width">
-          <span class="glyphicon glyphicon-<%= exam == discipline.final_exam ? 'star' :  'star-empty' %>"></span> <%= exam.name %>
-        </td>
-        <td>
-          <div class="pull-right">
-            <%= link_to study_discipline_exam_path(discipline, exam), class: 'btn btn-default', title: 'Внести результаты экзамена' do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-            <% end %>
-          </div>
-        </td>
-      </tr>
-    <% end %>
-  <% end %>
+   <tr>
+    <td class="text-muted"><%= discipline.final_exam.id %></td>
+    <td><%= l discipline.final_exam.date %></td>
+    <td class="full-width">
+      <strong><span class="glyphicon glyphicon-star"></span> <%= discipline.final_exam.name %></strong>
+    </td>
+    <td colspan="2">
+      <div class="pull-right">
+      <%= link_to study_discipline_exam_path(discipline, discipline.final_exam), class: 'btn btn-default', title: 'Внести результаты экзамена' do %>
+        <span class="glyphicon glyphicon-pencil"></span>  Внести итоговые результаты
+      <% end %>
+      </div>
+    </td>
+  </tr>
 <% end %>

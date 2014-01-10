@@ -53,15 +53,15 @@ class Study::Exam < ActiveRecord::Base
   def name
     case type
       when TYPE_TEST
-        'зачёт'
+        'Зачёт'
       when TYPE_GRADED_TEST
-        'дифференцированный зачёт'
+        'Дифференцированный зачёт'
       when TYPE_EXAMINATION
-        'экзамен'
+        'Экзамен'
       when TYPE_SEMESTER_WORK
-        'курсовая работа'
+        'Курсовая работа'
       when TYPE_SEMESTER_PROJECT
-        'курсовой проект'
+        'Курсовой проект'
     end
   end
 

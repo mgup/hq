@@ -12,7 +12,10 @@ class Study::ExamsController < ApplicationController
   def show ; end
 
   def update
-    raise params.inspect
+    raise resource_params.inspect
+    if @exam.save
+      redirect_to study_discipline_checkpoints_path(@discipline)
+    end
   end
 
   def destroy ; end

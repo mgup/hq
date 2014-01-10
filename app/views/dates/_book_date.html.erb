@@ -39,6 +39,7 @@
           <%= f.hidden_field :event_date_id, value: date.id %>
           <%= f.hidden_field :visitor_type, value: (current_user ? 'User' : 'Student') %>
           <%= f.hidden_field :visitor_id, value: current_user.id || current_student.id %>
+        <p class="help-block">Предварительно согласуйте дату с руководителем вашего структурного подразделения. После нажатия кнопки "Забронировать" изменить сделанный выбор можно будет, только обратившись в ЦСПиВР (каб. 1222).</p>
       </div>
       <div class="modal-footer">
          <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>

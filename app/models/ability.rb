@@ -79,7 +79,7 @@ class Ability
     can :manage, Study::Discipline
     can :manage, Study::Checkpoint
     can :manage, Study::Mark
-
+    #can :manage, Study::Exam
     can :manage, [Achievement, AchievementReport], user_id: user.id
     cannot :validate, Achievement
   end

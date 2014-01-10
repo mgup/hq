@@ -6,6 +6,9 @@ class AchievementReportsController < ApplicationController
   end
 
   def show
+    @report = AchievementReport.find(params[:id])
+    @period = @report.achievement_period
+    @achievements = @period.achievements.by(current_user)
     respond_to do |format|
       format.pdf
     end
