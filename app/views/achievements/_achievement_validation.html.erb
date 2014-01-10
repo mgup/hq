@@ -56,7 +56,11 @@
                            data: { id: achievement.id }, pattern: '\d+(\.\d{2})?' %>
       </div>
       <div class="col-sm-4">
-        <%= f.button class: 'btn btn-default pull-right achievement-approve', data: { id: achievement.id } do %>
+        <%
+          opts = { class: 'btn btn-default pull-right achievement-approve', data: { id: achievement.id } }
+          opts[:disabled] = 'disabled' if achievement.cost.blank?
+        %>
+        <%= f.button opts do %>
           <span class="glyphicon glyphicon-thumbs-up"></span> Оценить и подтвердить
         <% end %>
       </div>
