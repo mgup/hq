@@ -5,10 +5,10 @@ $ ->
     credit = parseFloat($credit.attr('data-credit'))
     value = parseFloat($('.achievement-value[data-id="' + id + '"]').eq(0).val()) * credit / base
     if isNaN(value)
-      $('input[type="submit"][data-id="' + id + '"]').eq(0).attr('disabled', 'disabled')
+      $('input.achievement-save[data-id="' + id + '"]').eq(0).attr('disabled', 'disabled')
       $credit.val('НЕ УКАЗАНО')
     else
-      $('input[type="submit"][data-id="' + id + '"]').eq(0).removeAttr('disabled')
+      $('input.achievement-save[data-id="' + id + '"]').eq(0).removeAttr('disabled')
       $credit.val(value)
 
   $('.achievement-value').each ->
@@ -16,7 +16,7 @@ $ ->
 
   $(document).on 'keyup', '.achievement-value', ->
     id = $(this).attr('data-id')
-    $('input[type="submit"][data-id="' + id + '"]').eq(0).addClass('btn-primary')
+    $('input.achievement-save[data-id="' + id + '"]').eq(0).addClass('btn-primary')
     recalcBaseCredit(id)
 
   checkCost = (id) ->
