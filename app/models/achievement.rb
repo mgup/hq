@@ -18,6 +18,7 @@ class Achievement < ActiveRecord::Base
     user_roles = user.roles.map(&:id)
 
     joins(:activity).where('activities.role_id IN (?)', user_roles)
+    .order('status ASC, user_id')
   }
 
   def new?

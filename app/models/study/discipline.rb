@@ -1,6 +1,6 @@
 class Study::Discipline < ActiveRecord::Base
   STUDY_START = { 2013 => { 1 => Date.new(2013,  9,  4) } }
-  STUDY_END   = { 2013 => { 1 => Date.new(2013, 12, 30) } }
+  STUDY_END   = { 2013 => { 1 => Date.new(2013, 12, 31) } }
   CURRENT_STUDY_YEAR  = 2013
   CURRENT_STUDY_TERM  = 1
 
@@ -85,10 +85,20 @@ class Study::Discipline < ActiveRecord::Base
     l1, p1, n1 = 0.0, 0.0, 0.0
     l = lectures.count
     p = seminars.count
+    if l == 0
+      sum_p = 20.0
+      sum_l = 0.0
+    elsif p == 0
+      sum_p = 0.0
+      sum_l = 20.0
+    else
+      sum_p = 15.0
+      sum_l = 5.0
+    end
     classes.each do |checkpoint|
       unless checkpoint.date.future?
-        l1 += (5.0/l) if checkpoint.lecture?
-        p1 += (15.0/p) if checkpoint.seminar?
+        l1 += (sum_l/l) if checkpoint.lecture?
+        p1 += (sum_p/p) if checkpoint.seminar?
         if checkpoint.is_checkpoint?
           n1 += (checkpoint.max? ? checkpoint.max : 0.0)
         end

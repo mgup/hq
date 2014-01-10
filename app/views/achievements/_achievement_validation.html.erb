@@ -1,46 +1,71 @@
-<%= form_for achievement, remote: true, html: { class: 'form-horizontal form-achievement-validation' } do |f| %>
-  <fieldset>
-    <legend><%= achievement.user.full_name %></legend>
+<div id="<%= dom_id(achievement, :validate) %>"
+     <%= 'style="background-color: #dff0d8;"'.html_safe if achievement.accepted? %>
+     <%= 'style="background-color: #f2dede;"'.html_safe if achievement.refused? %>>
 
-    <div class="form-group">
-      <%= f.label :activity_id, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-10">
-        <p class="form-control-static"><%= achievement.activity.name %></p>
+  <%= form_for achievement, remote: true, html: { class: 'form-horizontal form-achievement-validation' } do |f| %>
+    <fieldset>
+      <legend><%= achievement.user.full_name %></legend>
+
+      <div class="form-group">
+        <%= f.label :activity_id, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <p class="form-control-static"><%= achievement.activity.name %></p>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <%= f.label :description, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-10">
-        <%= f.text_area :description, rows: 5, class: 'form-control' %>
+      <div class="form-group">
+        <%= f.label :description, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= f.text_area :description, rows: 5, class: 'form-control' %>
+        </div>
       </div>
-    </div>
+
+      <div class="form-group">
+        <%= f.label :value, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-2">
+          <%= f.number_field :value, class: 'form-control achievement-value',
+                             data: { id: achievement.id }, pattern: '\d+(\.\d{2})?' %>
+        </div>
+        <div class="col-sm-2">
+          <p class="form-control-static" style="text-align: center;">
+            <strong>= (в баллах)</strong>
+          </p>
+        </div>
+        <div class="col-sm-2">
+          <input type="text" class="form-control achievement-credit" disabled
+                 data-id="<%= achievement.id %>"
+                 data-base="<%= achievement.activity.base %>"
+                 data-credit="<%= achievement.activity.credit %>"
+                 value="<%= achievement.value * achievement.activity.credit / achievement.activity.base unless achievement.value.blank? %>">
+        </div>
+        <div class="col-sm-4">
+          <%= f.submit 'Сохранить изменения', class: 'btn btn-default pull-right achievement-save',
+                       data: { id: achievement.id } %>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+
+  <%= form_for achievement, remote: true, html: { class: 'form-horizontal form-achievement-cost', data: { id: achievement.id } } do |f| %>
+    <%= f.hidden_field :status, class: 'achievement-status', data: { id: achievement.id } %>
 
     <div class="form-group">
-      <%= f.label :value, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-4">
-        <%= f.number_field :value, class: 'form-control achievement-value',
+      <%= f.label :cost, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-2">
+        <%= f.number_field :cost, class: 'form-control achievement-cost',
                            data: { id: achievement.id }, pattern: '\d+(\.\d{2})?' %>
       </div>
-      <div class="col-sm-2">
-        <p class="form-control-static" style="text-align: center;">
-          <strong>= (в баллах)</strong>
-        </p>
+      <div class="col-sm-4">
+        <%= f.button class: 'btn btn-default pull-right achievement-approve', data: { id: achievement.id } do %>
+          <span class="glyphicon glyphicon-thumbs-up"></span> Оценить и подтвердить
+        <% end %>
       </div>
       <div class="col-sm-4">
-        <input type="text" class="form-control achievement-credit" disabled
-               data-id="<%= achievement.id %>"
-               data-base="<%= achievement.activity.base %>"
-               data-credit="<%= achievement.activity.credit %>"
-               value="<%= achievement.value * achievement.activity.credit / achievement.activity.base unless achievement.value.blank? %>">
+        <%= f.button class: 'btn btn-danger pull-right achievement-refuse', data: { id: achievement.id }, confirm: 'Вы уверены?' do %>
+          <span class="glyphicon glyphicon-thumbs-down"></span> Нет подтверждения
+        <% end %>
       </div>
     </div>
-
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit 'Сохранить изменения', class: 'btn btn-default achievement-save',
-                     data: { id: achievement.id } %>
-      </div>
-    </div>
-  </fieldset>
-<% end %>
+  <% end %>
+  <br><br><br>
+</div>

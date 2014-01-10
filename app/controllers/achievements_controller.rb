@@ -86,6 +86,6 @@ class AchievementsController < ApplicationController
 
   def resource_params
     params.fetch(:achievement, {}).permit(:description, :achievement_period_id,
-                                          :activity_id, :value)
+                                          :activity_id, :value, :cost, :status)
   end
 end

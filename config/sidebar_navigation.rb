@@ -61,6 +61,13 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
       end
 
+      if can? :manage, Event
+        primary.item :events,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
+      end
+      if can? :manage, EventDate
+        primary.item :dates,    'Профосмотр (выбор даты)'.html_safe, event_dates_path(1), icon: 'calendar'
+      end
+
       if can? :index, :payment_types
         primary.item :prices,    'Стоимость обучения'.html_safe, finance_payment_types_path, icon: 'credit-card', highlights_on: -> { params[:controller].include?('payment_types') }
       end
@@ -82,11 +89,9 @@ SimpleNavigation::Configuration.run do |navigation|
           a.item :achievements, 'Отчёт за период', achievements_path
         end
 
-        if can? :manage, :all
-          if can? :validate, Achievement
-            primary.item :validate_achievements, 'Подтверждение показателей эффективности',
-                         validate_achievements_path, icon: 'check'
-          end
+        if can? :validate, Achievement
+          primary.item :validate_achievements, 'Подтверждение показателей эффективности',
+                       validate_achievements_path, icon: 'check'
         end
       end
 

@@ -70,6 +70,11 @@ class Study::DisciplinesController < ApplicationController
         detect_lead_teacher
         load_user_colleagues
 
+        if @discipline && @discipline.group
+          @faculty = @discipline.group.speciality.faculty
+          @speciality = @discipline.group.speciality
+        end
+
         render action: :edit
       end
     end

@@ -34,6 +34,10 @@ HQ::Application.routes.draw do
   resources :positions
   resources :appointments
 
+  namespace :document do
+    resources :docs
+  end
+
   resources :groups do
     get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
   end

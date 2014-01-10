@@ -52,6 +52,24 @@ prawn_document size: :A4, page_layout: :portrait, margin: [10,10,10,10] do |pdf|
     pdf.stroke_horizontal_rule
     pdf.move_down 10
 
+    render 'pdf/header', pdf: pdf, title: "ЗАПРОС № #{index + 1}к", base_size: 9
+    pdf.move_up 15
+    pdf.font_size 11
+    pdf.text 'в кожно-венерологический диспансер по месту жительства или временной регистрации.', align: :center, style: :bold
+    pdf.move_down 14
+
+    pdf.font_size 10
+    pdf.text 'Просим вас провести освидетельствование работника'
+    pdf.text 'Ф.И.О. (полностью) _____________________________________________________________________________________________________________'
+    pdf.text 'должность  ______________________________________________________________________________________________________________________'
+    pdf.text 'в целях прохождения периодического медицинского осмотра в соответствии с приказом Минздравсоцразвития РФ от 12.04.2011 г. № 302н, для допуска к работе. '
+    pdf.text 'Дата __________________'
+
+    pdf.move_down 10
+
+    pdf.text 'Начальник отдела кадров                                                                                                        Гончарова Н. С.', style: :bold
+
+
     n = name[0].squish
     d = Unicode::downcase(name[2].squish)
 
@@ -110,6 +128,25 @@ prawn_document size: :A4, page_layout: :portrait, margin: [10,10,10,10] do |pdf|
         pdf.indent 50 do
           pdf.text '(номер пункта или пунктов Перечня*, перечислить)'
         end
+      pdf.text '9. Профессия (работа) ________________________________________________________________________________________________________'
+
+       pdf.move_down 10
+
+      pdf.text 'Начальник отдела кадров                                                                                                        Гончарова Н. С.', style: :bold
+
+      academic_i = name[1].squish.index('кафедр') || name[1].squish.index('институт')
+      academic = name[1].squish[academic_i..-1].split
+      academic[0] = 'кафедра' if name[1].squish.index('кафедр')
+      academic[0] = 'институт' if name[1].squish.index('институт')
+      job = Unicode::downcase(name[1].squish[0..(academic_i-2)])
+      job += ' кафедрой' if name[1].squish.index('аведующ')
+      [
+        [name[0].squish, 50, 608, 446, 10],
+        [academic.join(' '), 80, 561, 446, 10],
+        [job, 265, 547, 446, 10],
+        ['работа в образовательной организации прил. 2, п. 18.', 112, 421, 446, 10],
+      ].each do |n, x, y, w, h|
+        pdf.text_box n, at: [x, y], width: w, height: h, overflow: :shrink_to_fit
       end
     end
     pdf.text '9. Профессия (работа) ________________________________________________________________________________________________________'

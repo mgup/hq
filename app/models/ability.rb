@@ -62,6 +62,11 @@ class Ability
       if user.is?(:soc_support) or user.is?(:soc_support_boss)
         can :manage, My::Support
       end
+
+      if user.is?(:soc_support_boss)
+        can :manage, EventDate
+        can :manage, Event
+      end
     end
 
     can [:index, :show], :progress

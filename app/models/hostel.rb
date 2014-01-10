@@ -1,0 +1,3 @@
+module Hostel
+
+end

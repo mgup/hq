@@ -12,7 +12,6 @@ class StudentsController < ApplicationController
   end
 
   def show
-
   end
 
   def documents
@@ -23,6 +22,7 @@ class StudentsController < ApplicationController
   end
 
   def grants
+    @document = Document::Doc.new
   end
 
   def orders
@@ -53,7 +53,7 @@ class StudentsController < ApplicationController
     @student = Student.valid_for_today.find(params[:id])
     #raise @student.person.attributes.inspect
     @reference = Document::Doc.create document_type: params[:document_doc][:document_type],
-                                      document_number: (Document::Doc.last.number.to_i + 1),
+                                      document_number: (Document::Doc.references.last.number.to_i + 1),
                                       document_expire_date: Date.today.change(year: Date.today.year+1)
     @document_person = Document::DocumentPerson.create (@student.person.attributes.merge(document: @reference))
     @document_student = Document::DocumentStudent.create (@student.attributes.merge(document: @reference))

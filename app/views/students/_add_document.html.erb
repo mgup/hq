@@ -1,0 +1,79 @@
+<div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Добавление новой справки</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <label>Студент:</label>
+          </div>
+          <p><%= @student.person.full_name %></p>
+        </div>
+        <%= form_for @document, class: 'form-horizontal' do |f| %>
+          <div class="row">
+            <%= hidden_field_tag :student, @student.id %>
+            <%= f.hidden_field :date, value: (l Date.today)%>
+            <div class="col-sm-3">
+              <label>Льгота:</label>
+            </div>
+            <p><%= @student.person.benefits_type %></p>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <%= f.label :document_type %>
+            </div>
+            <div class="col-sm-9">
+              <%= f.select :document_type, options_for_select([['Справка для гос. соц. стипендии', 7]]), {},
+                         class: 'form-control'%>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <%= f.label :name %>
+            </div>
+            <div class="col-sm-9">
+              <%= f.text_field :name, class: 'form-control', required: true %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <%= f.label :department %>
+            </div>
+            <div class="col-sm-9">
+              <%= f.text_field :department, class: 'form-control', required: true %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <%= label_tag :timedate, 'Действительна' %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-1">
+              <%= f.label :start_date %>
+            </div>
+            <div class="col-sm-3">
+              <%= f.text_field :start_date, class: 'form-control', placeholder: 'дд.мм.гггг', required: true %>
+            </div>
+            <div class="col-sm-1">
+              <%= f.label :expire_date %>
+            </div>
+            <div class="col-sm-3">
+              <%= f.text_field :expire_date, class: 'form-control', placeholder: 'дд.мм.гггг', required: true %>
+            </div>
+            <div class="col-sm-offset-1 col-sm-3">
+              <label><%= f.check_box :eternal %> Бессрочно</label>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <%= f.submit 'Создать', class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,3 @@
-$('#<%= dom_id(@achievement, :edit) %>').html(
+$('#<%= dom_id(@achievement, :validate) %>').html(
   '<%=j render partial: 'achievement_validation', locals: { achievement: @achievement } %>'
 );
