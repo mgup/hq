@@ -32,7 +32,7 @@
     <tr>
       <th class="text-muted">#</th>
       <th>Студент</th>
-      <th>Баллы</th>
+      <th>Итоговый балл</th>
       <th>Результат</th>
     </tr>
   <% @discipline.group.students.each do |student| %>
@@ -56,6 +56,7 @@
           </div>
         </td>
       <% end %>
+
       <% if final_mark == nil %>
         <td>
           <%= render 'final_marks_fields',
@@ -64,7 +65,7 @@
         </td>
       <% else %>
         <td>
-          <span  class="label label-<%= mark.mark < @checkpoint.min ? 'danger' : 'success' %>"><%= mark.mark %> из <%= @checkpoint.max %></span>
+          <span  class="label label-<%= final_mark.long_result[:span] %>"><%= final_mark.long_result[:mark] %></span>
           <div class="editMarkField hidden">
             <br>
             <%= render 'final_marks_fields',

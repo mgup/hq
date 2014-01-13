@@ -48,7 +48,7 @@
   </tr>
 <% end %>
 
-<% if discipline.final_exam.date %>
+<% if discipline.final_exam.date? && discipline.final_exam.exam? %>
    <tr>
     <td class="text-muted"><%= discipline.final_exam.id %></td>
     <td><%= l discipline.final_exam.date %></td>

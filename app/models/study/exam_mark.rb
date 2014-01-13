@@ -39,4 +39,25 @@ class Study::ExamMark < ActiveRecord::Base
     end
   end
 
+  def long_result
+    case value
+      when VALUE_NEYAVKA
+        {mark: 'неявка', span: 'danger'}
+      when VALUE_2
+        {mark: 'неуд.', span: 'danger'}
+      when VALUE_3
+        {mark: 'удовл.', span: 'warning'}
+      when VALUE_4
+        {mark: 'хорошо', span: 'info'}
+      when VALUE_5
+        {mark: 'отлично', span: 'success'}
+      when VALUE_ZACHET
+        {mark: 'зачтено', span: 'success'}
+      when  VALUE_NEZACHET
+        {mark: 'не зачтено', span: 'danger'}
+      when VALUE_NEDOPUSCHEN
+        {mark: 'недопущен', span: 'danger'}
+    end
+  end
+
 end

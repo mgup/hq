@@ -1,6 +1,7 @@
 <% mark = @exam.final_marks.by_student(student).last ?  @exam.final_marks.by_student(student).last : @exam.final_marks.build %>
 <%= f.fields_for :final_marks, mark do |marks_form| %>
   <%= marks_form.hidden_field :id, class: 'mark_id' %>
+  <%= marks_form.hidden_field :mark_date, value: (l Date.today) %>
   <%= marks_form.hidden_field :mark_student_group, value: student %>
   <%= marks_form.hidden_field :mark_value, id: "#{student}_final_mark" %>
   <% if false %>
@@ -36,4 +37,5 @@
   <% end %>
   <%= marks_form.hidden_field :mark_date, value: Date.today %>
   <%= marks_form.hidden_field :mark_final, value: true %>
+  <%= marks_form.hidden_field :mark_rating, value: false %>
 <% end %>

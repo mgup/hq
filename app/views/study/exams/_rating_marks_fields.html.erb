@@ -1,7 +1,7 @@
 <% mark = @exam.rating_marks.by_student(student).last ?  @exam.rating_marks.by_student(student).last : @exam.final_marks.build %>
 <%= f.fields_for :rating_marks, mark do |marks_form| %>
   <%= marks_form.hidden_field :id, class: 'mark_id' %>
-  <%= marks_form.hidden_field :mark_date, value: Date.today %>
+  <%= marks_form.hidden_field :mark_date, value: (l Date.today) %>
   <%= marks_form.hidden_field :mark_rating, value: true %>
   <%= marks_form.hidden_field :mark_student_group, value: student.id %>
   <p><label><%=radio_button_tag "exam_result#{student.id}", 0, (student.ball(@exam.discipline) >= 55), class: 'results' %> <span class="currentBall"><strong><%= student.ball(@exam.discipline) %></strong> * <%= 1.0 - @exam.weight/100.0 %></span> + <%= @exam.weight/100.0 %> * <%= number_field_tag :mark, nil, class: 'form-control examBall', min: 0, max: 100,
@@ -10,4 +10,5 @@
   <br>
   <label><%=radio_button_tag "exam_result#{student.id}", 9, (student.ball(@exam.discipline) < 55), class: 'results', data: {value: @exam.discipline.id, student: student.id} %> Недопущен</label>
   <%= marks_form.hidden_field :mark_value, id: "finalSumBall#{student.id}" %>
+  <%= marks_form.hidden_field :mark_final, value: 0 %>
 <% end %>

@@ -17,6 +17,7 @@ $ ->
         div.trigger('liszt:updated')
         $("#finalSumBall#{data.student}").val(data.final.ball)
         $("##{data.student}_final_mark").val(data.final.value)
+  $('.examBall').trigger('keyup')
 
   $(".results").change ->
     if $("input[name=#{$(this).attr('name')}]:checked").val() == '0'
