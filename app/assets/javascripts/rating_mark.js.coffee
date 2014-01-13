@@ -1,6 +1,6 @@
 $ ->
   root = $('#matrixHQ').attr('href')
-  $('.examBall').change ->
+  $('.examBall').keyup ->
     exam = parseInt($(this).val())
     if (exam < 0 || exam > 100)
       $(this).addClass('danger')
@@ -17,6 +17,7 @@ $ ->
         div.trigger('liszt:updated')
         $("#finalSumBall#{data.student}").val(data.final.ball)
         $("##{data.student}_final_mark").val(data.final.value)
+
   $(".results").change ->
     if $("input[name=#{$(this).attr('name')}]:checked").val() == '0'
      $('.examBall').change()
