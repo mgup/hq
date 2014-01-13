@@ -26,7 +26,9 @@ HQ::Application.routes.draw do
   end
 
   resources :events do
+    get 'print.pdf', to: 'events#print', on: :member, defaults: { format: 'pdf' }, as: :print
     resources :dates do
+      get 'print.pdf', to: 'dates#print', on: :member, defaults: { format: 'pdf' }, as: :print
       resources :visitor_event_dates
     end
   end
@@ -166,6 +168,7 @@ HQ::Application.routes.draw do
   get 'my/ajax/students' => 'ajax#students'
   get '/ajax/checkpoint' => 'ajax#checkpoint'
   get '/ajax/users' => 'ajax#users'
+  get '/ajax/count_final' => 'ajax#count_final'
   get '/ajax/teachers' => 'ajax#teachers'
   get '/ajax/group_students' => 'ajax#group_students'
   get '/ajax/group_exams' => 'ajax#group_exams'

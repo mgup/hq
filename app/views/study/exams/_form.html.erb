@@ -44,7 +44,9 @@
       <% rating_mark = @exam.rating_marks.by_student(student).last %>
       <% if rating_mark == nil %>
         <td><%= render 'rating_marks_fields',
-                        f: f, student: student %></td>
+                        f: f, student: student %>
+        </td>
+
       <% else %>
         <td><p class="form-control-static"><%= rating_mark.value %></p>
           <div class="editMarkField hidden">
@@ -58,6 +60,7 @@
         <td>
           <%= render 'final_marks_fields',
                      f: f, student: student.id %>
+          <div id="finalMark<%= student.id %>"></div>
         </td>
       <% else %>
         <td>

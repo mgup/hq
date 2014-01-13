@@ -8,6 +8,12 @@ class DatesController < ApplicationController
     @current = current_user || current_student
   end
 
+  def print
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   private
 
   def find_event

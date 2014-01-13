@@ -100,4 +100,35 @@ class AjaxController < ApplicationController
     end })
   end
 
+  def count_final
+    discipline = Study::Discipline.find(params[:discipline])
+    student = Student.find(params[:student])
+    current = student.ball(discipline)
+    if params[:reason]
+      result = case params[:reason]
+                 when '1'
+                   {ball: 0, mark: 'неявка', value: Study::ExamMark::VALUE_NEYAVKA, span: 'danger'}
+                 when '9'
+                   {ball: 0, mark: 'недопущен', value: Study::ExamMark::VALUE_NEDOPUSCHEN, span: 'danger'}
+               end
+    else
+      final = params[:ball].to_i*discipline.final_exam.weight/100.0 + (1.0-discipline.final_exam.weight/100.0)*current
+      if params[:ball].to_i > 54
+        result = case final.round
+                   when 0..54
+                     {ball: final.round, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
+                   when 55..69
+                     {ball: final.round, mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning'}
+                   when 70..84
+                     {ball: final.round, mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info'}
+                   when 85..100
+                     {ball: final.round, mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success'}
+                 end
+      else
+        result = {ball: final.round, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
+      end
+    end
+    render({ json: {student: student.id, final: result} })
+  end
+
 end

@@ -48,7 +48,7 @@
   </tr>
 <% end %>
 
-<% if false %>
+<% if discipline.final_exam %>
    <tr>
     <td class="text-muted"><%= discipline.final_exam.id %></td>
     <td><%= l discipline.final_exam.date %></td>
@@ -57,7 +57,7 @@
     </td>
     <td colspan="2">
       <div class="pull-right">
-      <%= link_to study_discipline_exam_path(discipline, discipline.final_exam), class: 'btn btn-default', title: 'Внести результаты экзамена' do %>
+      <%= link_to study_discipline_exam_path(discipline, discipline.final_exam), class: 'btn btn-success', title: 'Внести результаты экзамена' do %>
         <span class="glyphicon glyphicon-pencil"></span>  Внести итоговые результаты
       <% end %>
       </div>

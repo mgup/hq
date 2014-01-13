@@ -15,6 +15,10 @@
   <% end %>
 </div>
 
+<%= link_to print_event_path(@event), class: 'btn btn-primary' do %>
+  <span class="glyphicon glyphicon-print"></span> Распечатать приложение к приказу по всем датам
+<% end %>
+<br><br>
 <div class="panel-group" id="accordionDates">
   <% @event.dates.each do |date| %>
     <div class="panel panel-default">
@@ -32,10 +36,14 @@
           <% if date.visitors.empty? %>
             Это время никто не забронировал
           <% else %>
+            <%= link_to print_event_date_path(@event, date), class: 'btn btn-info' do %>
+              <span class="glyphicon glyphicon-print"></span> Распечатать приложение к приказу
+            <% end %>
+            <br><br>
           <ol>
             <% date.visitors.each do |visitor| %>
               <li>
-                <%= visitor.full_name %>
+                <%= visitor.full_name %>, <%= (visitor.departments.empty? ? visitor.user_department.abbreviation : visitor.departments.first.abbreviation) %>
                 <% event_visitor = date.visitor_event_dates.from_visitor(visitor).first %>
                 <%= link_to event_date_visitor_event_date_path(@event, date, event_visitor), method: :delete, confirm: 'Вы уверены?',
                             class: 'btn  btn-sm btn-danger pull-right' do %>
