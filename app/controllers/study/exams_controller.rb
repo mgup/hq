@@ -12,7 +12,8 @@ class Study::ExamsController < ApplicationController
   def show ; end
 
   def update
-    raise resource_params.inspect
+    #raise resource_params.inspect
+    @exam.update(resource_params)
     if @exam.save
       redirect_to study_discipline_checkpoints_path(@discipline)
     end
@@ -44,8 +45,8 @@ class Study::ExamsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:study_exam, {}).permit( :id, final_marks_attributes: [:id, :mark_student_group, :mark_value, :mark_final],
-                                          rating_marks_attributes: [:id, :mark_student_group, :mark_value, :mark_rating]
+    params.fetch(:study_exam, {}).permit( :id, final_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_final],
+                                          rating_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_rating, :mark_final]
     )
   end
 

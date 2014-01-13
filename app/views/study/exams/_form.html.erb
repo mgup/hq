@@ -64,7 +64,7 @@
         </td>
       <% else %>
         <td>
-          <span  class="label label-<%= mark.mark < @checkpoint.min ? 'danger' : 'success' %>"><%= mark.mark %> из <%= @checkpoint.max %></span>
+          <span  class="label label-<%= final_mark.long_result[:span] %>"><%= final_mark.long_result[:mark] %></span>
           <div class="editMarkField hidden">
             <br>
             <%= render 'final_marks_fields',
