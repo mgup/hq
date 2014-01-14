@@ -1,7 +1,7 @@
 prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
-               filename: "Отчёт за #{@period.description}.pdf",
-               page_size: 'A4', page_layout: :portrait do |pdf|
+               #filename: "Отчёт за #{@period.description}.pdf",
+               page_size: 'A4', page_layout: :portrait, inline: true do |pdf|
   render 'pdf/header', pdf: pdf, title: "Отчёт по показателям эффективности\n за #{@period.description}"
 
     data = []
@@ -19,25 +19,26 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     pdf.font_size 10 do
       pdf.font_size 11 do
-        pdf.text "Преподаватель: <u>#{current_user.full_name}</u>", inline_format: true
-        pdf.text "Версия отчёта: <u>№ #{@report.id} от #{l @report.updated_at, format: '%d %B %Y'}</u>", inline_format: true
+        pdf.text "Преподаватель: #{current_user.full_name}", inline_format: true
+        pdf.text "Версия отчёта: ##{@report.id} от #{l @report.updated_at, format: '%d %B %Y'}", inline_format: true
       end
+
       pdf.move_down 10
-      pdf.table data, width: pdf.bounds.width, cell_style: { padding: 2,  border_width: [0,1] } do
+      pdf.table data, width: pdf.bounds.width, cell_style: { padding: 2,  border_width: [0,0] } do
         activities.each do |i|
-         row(i).style(font_style: :bold,  border_width: 1, padding: 4).size = 11
+         row(i).style(font_style: :bold, border_width: 0, padding: 4).size = 11
         end
-        row(index-1).style border_width: [0,1,1,1]
+        row(index-1).style border_width: [0,0,0,0]
       end
 
       pdf.move_down 20
        pdf.text 'Отчёт утверждён на заседании кафедры _____________________________________________________________________________'
-       pdf.text 'протокол № ____________________.'
+       pdf.text 'протокол № __________ от «____» _______________ 20____ г..'
 
        pdf.move_down 30
        pdf.text 'Сотрудник:'
        pdf.move_down 5
-       pdf.text '«__» _______________ 20____г.                                                                                             ___________________ / ___________________'
+       pdf.text '«____» _______________ 20____ г.                                                                                       ___________________ / ___________________'
        pdf.font_size 8 do
          pdf.indent 370 do
             pdf.text 'подпись                     расшифровка'
@@ -46,7 +47,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
        pdf.move_down 10
        pdf.text 'Заведующий кафедры:'
        pdf.move_down 5
-       pdf.text '«__» _______________ 20____г.                                                                                             ___________________ / ___________________'
+       pdf.text '«____» _______________ 20____ г.                                                                                       ___________________ / ___________________'
        pdf.font_size 8 do
          pdf.indent 370 do
            pdf.text 'подпись                     расшифровка'

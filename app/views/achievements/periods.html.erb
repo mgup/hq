@@ -41,9 +41,6 @@
           <%= link_to achievement_report_path(relevant_reports.first, format: :pdf), class: 'btn btn-default' do %>
             <span class="glyphicon glyphicon-print"></span> Распечатать
           <% end %>
-          <p>
-            <em>Печать отчёта будет доступна после окончательного утверждения его формы.</em>
-          </p>
         <% else %>
           <% if p.active? %>
             <%= link_to achievements_path(year: p.year, semester: p.semester), class: 'btn btn-default' do %>
