@@ -42,13 +42,20 @@
 
       <% final_mark = @exam.final_marks.by_student(student).last %>
       <% rating_mark = @exam.rating_marks.by_student(student).last %>
+      <%# raise '123' %>
       <% if rating_mark == nil %>
         <td><%= render 'rating_marks_fields',
                         f: f, student: student %>
         </td>
 
       <% else %>
-        <td><p class="form-control-static"><%= rating_mark.value %></p>
+        <td>
+          <ul class="list-unstyled">
+            <li>за семестр — <%= student.ball(@exam.discipline) %></li>
+            <li>за экзамен — <%= rating_mark.value %></li>
+          </ul>
+
+          <!--<p class="form-control-static"><%= rating_mark.value %></p>-->
           <div class="editMarkField hidden">
             <br>
             <%= render 'rating_marks_fields',

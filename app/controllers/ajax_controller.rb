@@ -112,21 +112,31 @@ class AjaxController < ApplicationController
                    {ball: 0, mark: 'недопущен', value: Study::ExamMark::VALUE_NEDOPUSCHEN, span: 'danger'}
                end
     else
-      final = params[:ball].to_i*discipline.final_exam.weight/100.0 + (1.0-discipline.final_exam.weight/100.0)*current
-      if params[:ball].to_i > 54
-        result = case final.round
-                   when 0..54
-                     {ball: final.round, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
-                   when 55..69
-                     {ball: final.round, mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning'}
-                   when 70..84
-                     {ball: final.round, mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info'}
-                   when 85..100
-                     {ball: final.round, mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success'}
-                 end
-      else
-        result = {ball: final.round, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
-      end
+      final = params[:ball].to_f * discipline.final_exam.weight / 100.0 + (1.0 - discipline.final_exam.weight / 100.0) * current
+      result = if final >= 85
+                 {ball: params[:ball], mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success'}
+               elsif final >= 70
+                 {ball: params[:ball], mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info'}
+               elsif final >= 55
+                 {ball: params[:ball], mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning'}
+               else
+                 {ball: params[:ball], mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
+               end
+
+      #if params[:ball].to_f >= 55
+      #  result = case final
+      #             #when 0..54
+      #             #  {ball: final.round, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
+      #             when 55..69.999999
+      #               {ball: final, mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning'}
+      #             when 70..84.999999
+      #               {ball: final, mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info'}
+      #             when 85..100
+      #               {ball: final, mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success'}
+      #           end
+      #else
+      #  result = {ball: final, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
+      #end
     end
     render({ json: {student: student.id, final: result} })
   end
