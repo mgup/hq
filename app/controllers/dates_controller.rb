@@ -14,6 +14,15 @@ class DatesController < ApplicationController
     end
   end
 
+  def update
+    if EventDate.valid_max_visitors?(@date.visitors.count, params[:event_date][:max_visitors])
+      @date.update_attribute  :max_visitors, params[:event_date][:max_visitors]
+      redirect_to event_path(@event), notice: 'Дата успешно сохранена'
+    else 
+      redirect_to event_path(@event), notice: 'Число свободных мест не может быть меньше пользователей, которые уже забронировали дату' 
+    end
+  end
+
   private
 
   def find_event

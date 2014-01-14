@@ -6,6 +6,13 @@
   <p class="help-block"><%= @event.description %></p>
 <% end %>
 
+<% if  flash[:notice] %>
+<div class="alert alert-info">
+  <p><%= flash[:notice] %></p>
+</div>
+<% end %>
+
+
 <div class="col-sm-12 event_dates">
   <%= render_dates_calendar(@event) %>
   <% @event.dates.each do |date| %>
@@ -61,6 +68,22 @@
             <% end %>
           </ol>
           <% end %>
+          <br><br>
+          <button data-value="<%= date.id %>" class="changeMaxVisitors btn btn-default">Изменить число мест</button>
+          <br><br>
+          <div id="changeMaxVisitors<%= date.id %>" style="display: none;">
+            <%= form_for date, url: event_date_path(@event, date), class: 'form-horizontal' do |f| %>
+            <div class="row">
+              <%= f.hidden_field :id %>
+              <div class="col-sm-3">
+                <%= f.number_field :max_visitors, min: 0, class: 'form-control' %>
+              </div>
+              <div class="col-sm-2">
+                <%= f.submit 'Сохранить', class: 'btn btn-primary' %>
+              </div>
+            </div>  
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

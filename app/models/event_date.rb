@@ -20,4 +20,10 @@ class EventDate < ActiveRecord::Base
   def date_with_time
     "#{I18n.l date, format: :long} (#{I18n.l time_start, format: '%H:%M'}#{ ' - ' + (I18n.l time_end, format: '%H:%M') if time_end})"
   end
+
+  def self.valid_max_visitors?(visitors, value)
+    date = self.new('max_visitors' => value)
+    return date.max_visitors > visitors
+  end
+
 end
