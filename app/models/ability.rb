@@ -58,20 +58,13 @@ class Ability
 
         can :reference, Student, Student.valid_for_today
       end
-
-      if user.is?(:soc_support) or user.is?(:soc_support_boss)
-        can :manage, My::Support
-      end
-
-      if user.is?(:soc_support_boss)
-        can :manage, EventDate
-        can :manage, Event
-      end
     end
 
     can [:index, :show], :progress
     can :show, [:student_progress, :student_discipline_progress]
     can :manage, :progress_group
+
+    can :manage, EventDate
   end
 
   # Обычный преподаватель.
@@ -97,5 +90,18 @@ class Ability
   def pro_rector_science(user)
     can :update, Achievement
     can :validate, Achievement
+  end
+
+  def soc_support_boss(user)
+    soc_support(user)
+    soc_support_vedush(user)
+  end
+
+  def soc_support_vedush(user)
+    can :manage, Event
+  end
+
+  def soc_support(user)
+    can :manage, My::Support
   end
 end

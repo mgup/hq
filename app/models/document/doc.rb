@@ -9,6 +9,7 @@ class Document::Doc < ActiveRecord::Base
   TYPE_DISABLED             = 8 #Справка об инвалидности
   TYPE_RADIATION            = 9 #Удостоверение для ЧАЭС
   TYPE_DEMAND               = 10 #Справка по требованию
+  TYPE_TRANSFER_PROTOCOL    = 11 # Протокол заседания комиссии по отчислению, восстановлению и переводу студентов.
 
   self.table_name = 'document'
 
@@ -29,7 +30,10 @@ class Document::Doc < ActiveRecord::Base
   has_many :metas, class_name: Document::Meta, primary_key: :document_id, foreign_key: :document_meta_document
 
   scope :references, -> { where(document_type: TYPE_UNIVERSITY_REFERENCE) }
+
   scope :socials, -> { where(document_type: TYPE_SOCIAL_SCHOLARSHIP) }
+
+  scope :transfer_protocols, -> { where(document_type: TYPE_TRANSFER_PROTOCOL) }
 
   # Получение имени плательщика по договору.
   def payer

@@ -64,6 +64,7 @@ SimpleNavigation::Configuration.run do |navigation|
       if can? :manage, Event
         primary.item :events,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
       end
+
       if can? :manage, EventDate
         primary.item :dates,    'Профосмотр (выбор даты)'.html_safe, event_dates_path(1), icon: 'calendar'
       end
@@ -97,6 +98,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
       if can? :manage, Student
         primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+        primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
       end
 
       if can? :index, :groups

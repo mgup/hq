@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131225182622) do
+ActiveRecord::Schema.define(version: 20140113132526) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -262,14 +262,22 @@ ActiveRecord::Schema.define(version: 20131225182622) do
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
 
+  create_table "blanks", force: true do |t|
+    t.integer  "type"
+    t.integer  "number"
+    t.text     "details"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "checkpoint", primary_key: "checkpoint_id", force: true do |t|
     t.integer  "checkpoint_subject",                           null: false
     t.integer  "checkpoint_type",                 default: 1,  null: false
     t.string   "checkpoint_name",    limit: 200,  default: ""
     t.string   "checkpoint_details", limit: 1000
     t.date     "checkpoint_date",                              null: false
-    t.integer  "checkpoint_min",                  default: 0
-    t.integer  "checkpoint_max",                  default: 0
+    t.integer  "checkpoint_min",                  default: 0,  null: false
+    t.integer  "checkpoint_max",                  default: 0,  null: false
     t.integer  "checkpoint_closed",               default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -354,10 +362,10 @@ ActiveRecord::Schema.define(version: 20131225182622) do
     t.text      "document_number",      limit: 16777215,             null: false
     t.integer   "document_signed",      limit: 1
     t.timestamp "document_create_date",                              null: false
+    t.date      "document_start_date"
     t.date      "document_expire_date",                              null: false
     t.integer   "document_juridical",   limit: 1,        default: 0, null: false
     t.string    "document_department",  limit: 400
-    t.date      "document_start_date"
     t.string    "document_name",        limit: 400
     t.integer   "document_eternal",                      default: 0
   end
@@ -1472,7 +1480,7 @@ ActiveRecord::Schema.define(version: 20131225182622) do
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
+CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1486,7 +1494,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
+CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1500,7 +1508,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
+CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1514,7 +1522,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
+CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(OLD.mark_student_group, OLD.mark_exam);
@@ -1523,7 +1531,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
+CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
@@ -1532,7 +1540,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
+CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);

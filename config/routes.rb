@@ -1,4 +1,6 @@
 HQ::Application.routes.draw do
+  resources :blanks
+
   devise_for :users, controllers: { registrations: 'users' }
     as :user do
       get 'user/edit' => 'devise/registrations#edit', as: 'user_profile'
@@ -38,6 +40,9 @@ HQ::Application.routes.draw do
 
   namespace :document do
     resources :docs
+  end
+  resources :blanks do
+    get 'transfer_protocols', on: :collection
   end
 
   resources :groups do
