@@ -45,7 +45,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
          end
        end
        pdf.move_down 10
-       pdf.text 'Заведующий кафедры:'
+       pdf.text 'Заведующий кафедрой:'
        pdf.move_down 5
        pdf.text '«____» _______________ 20____ г.                                                                                       ___________________ / ___________________'
        pdf.font_size 8 do
