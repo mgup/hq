@@ -7,3 +7,23 @@
 <% @achievements.each do |achievement| %>
   <%= render partial: 'achievement_validation', locals: { achievement: achievement } %>
 <% end %>
+
+<% if @subdepartment_achievements %>
+  <% @subdepartment_achievements.each do |info, user_achievements| %>
+    <h2>
+      <%= info[0].full_name %>
+      <br>
+      <small><%= info[1].description %></small>
+    </h2>
+    <% user_achievements.group_by { |a| a.activity.activity_group }.each do |group, group_achievements| %>
+      <h4><%= group.name %></h4>
+      <% group_achievements.group_by { |a| a.activity }.each do |activity, achievements| %>
+        <p><em><%= activity.name %></em></p>
+        <% achievements.each do |achievement| %>
+          <%= render partial: 'achievement_subdepartment_validation', locals: { achievement: achievement } %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <hr style="margin: 60px 0;">
+  <% end %>
+<% end %>
