@@ -2,10 +2,12 @@ module AchievementHelper
   def achievements_credits(achievements)
     only_fixed_credits = true
     credits = achievements.inject(0) do |res, a|
-      if a.activity.fixed_credits?
-        res += a.activity.credit
-      else
-        only_fixed_credits = false
+      unless a.refused?
+        if a.activity.fixed_credits?
+          res += a.activity.credit
+        else
+          only_fixed_credits = false
+        end
       end
 
       res

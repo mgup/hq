@@ -12,19 +12,26 @@
         </td>
       </tr>
       <% achievements.each do |a| %>
-        <tr>
+        <tr class="<%= 'danger' if a.refused? %>">
           <td class="no-border-top full-width">
             <%= a.description %>
           </td>
-          <td class="no-border-top" style="white-space: nowrap;">
-            <%= activity_credit_description(a.activity) %>
-          </td>
-          <td class="no-border-top">
-            <%= link_to achievement_path(a, period: a.period.id), method: :delete,
-                        confirm: 'Вы уверены?', class: 'text-danger' do %>
-              Удалить
-            <% end %>
-          </td>
+          <% if a.refused? %>
+            <td colspan="2">
+              Показатель не&nbsp;подтверждён
+              контролирующим лицом
+            </td>
+          <% else %>
+            <td class="no-border-top" style="white-space: nowrap;">
+              <%= activity_credit_description(a.activity) unless a.refused? %>
+            </td>
+            <td class="no-border-top">
+              <%= link_to achievement_path(a, period: a.period.id), method: :delete,
+                          confirm: 'Вы уверены?', class: 'text-danger' do %>
+                Удалить
+              <% end %>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     <% end %>

@@ -8,7 +8,7 @@ class AchievementReportsController < ApplicationController
   def show
     @report = AchievementReport.find(params[:id])
     @period = @report.achievement_period
-    @achievements = @period.achievements.by(current_user)
+    @achievements = @period.achievements.by(current_user).not_refused
     respond_to do |format|
       format.pdf
     end
