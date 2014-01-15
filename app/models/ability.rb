@@ -26,6 +26,9 @@ class Ability
       if user.is?(:lecturer)
         lecturer(user)
       end
+      if user.is?(:subdepartment_assistant)
+        subdepartment_assistant(user)
+      end
 
       user.roles.reject { |r| r.name == 'lecturer' }.each do |role|
         send(role.name, user) if respond_to?(role.name)
