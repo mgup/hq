@@ -39,7 +39,7 @@
       </div>
       <%= f.hidden_field :visitor_type, value: 'User' %>
       <div class="col-sm-4">
-        <%= f.collection_select :visitor_id, User.all, :id, :name_with_positions,
+        <%= f.collection_select :visitor_id, User.where('user_fname IS NOT NULL').joins('LEFT JOIN dictionary AS fname ON fname.dictionary_id = user_fname').order('fname.dictionary_ip'), :id, :name_with_positions,
                                 {prompt: 'выберите сотрудника'}, class: 'form-control' %>
       </div>
       <div class="col-sm-2">
