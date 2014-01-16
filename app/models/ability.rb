@@ -20,7 +20,17 @@ class Ability
       #  can :manage, [Study::Subject, Study::Mark]
       #end
 
-      user.roles.each do |role|
+      # Так как у преподавателей самые "узкие" роли с разными ограничениями —
+      # выносим их в начало.
+      # TODO В будущем нужно сделать иерархию ролей в базе, чтобы порядок их обработки устанавливался автоматически.
+      if user.is?(:lecturer)
+        lecturer(user)
+      end
+      if user.is?(:subdepartment_assistant)
+        subdepartment_assistant(user)
+      end
+
+      user.roles.reject { |r| r.name == 'lecturer' }.each do |role|
         send(role.name, user) if respond_to?(role.name)
       end
 
@@ -84,6 +94,8 @@ class Ability
   # Заведующий кафедрой.
   def subdepartment(user)
     lecturer(user)
+
+    can :validate, Achievement
   end
 
   # Проректор по научно-исследовательской работе

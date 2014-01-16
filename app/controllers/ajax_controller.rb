@@ -113,15 +113,19 @@ class AjaxController < ApplicationController
                end
     else
       final = params[:ball].to_f * discipline.final_exam.weight / 100.0 + (1.0 - discipline.final_exam.weight / 100.0) * current
-      result = if final >= 85
-                 {ball: params[:ball], mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success'}
-               elsif final >= 70
-                 {ball: params[:ball], mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info'}
-               elsif final >= 55
-                 {ball: params[:ball], mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning'}
-               else
-                 {ball: params[:ball], mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
-               end
+      if params[:ball].to_f < 55
+        result = {ball: params[:ball], mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
+      else
+        result = if final >= 85
+                   {ball: params[:ball], mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success'}
+                 elsif final >= 70
+                   {ball: params[:ball], mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info'}
+                 elsif final >= 55
+                   {ball: params[:ball], mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning'}
+                 else
+                   {ball: params[:ball], mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
+                 end
+      end
 
       #if params[:ball].to_f >= 55
       #  result = case final

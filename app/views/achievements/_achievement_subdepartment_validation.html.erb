@@ -1,0 +1,31 @@
+<div id="<%= dom_id(achievement, :validate) %>"
+     <%= 'style="background-color: #f2dede;"'.html_safe if achievement.refused? %>>
+
+  <%= form_for achievement, remote: true, html: { class: 'form-horizontal form-achievement-validation' } do |f| %>
+    <%= hidden_field_tag :role, 'subdepartment' %>
+  <style>
+    .achievement {
+      padding: 5px;
+    }
+    .achievement:hover {
+      background-color: #bfbfbf;
+    }
+  </style>
+  <div class="row achievement">
+    <div class="col-sm-10">
+      <p><%= achievement.description %></p>
+    </div>
+
+    <div class="col-sm-2">
+      <% if achievement.refused? %>
+        <%= f.hidden_field :status, value: Achievement::STATUS_NEW %>
+        <%= f.submit 'Вернуть', class: 'btn btn-success pull-right' %>
+      <% else %>
+        <%= f.hidden_field :status, value: Achievement::STATUS_REFUSED %>
+        <%= f.submit 'Удалить', class: 'btn btn-danger pull-right', confirm: 'Вы уверены?' %>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+
+</div>

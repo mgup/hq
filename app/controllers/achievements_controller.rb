@@ -82,6 +82,10 @@ class AchievementsController < ApplicationController
 
   def validate
     @achievements = Achievement.validatable_by(current_user)
+
+    if current_user.is?(:subdepartment)
+      @subdepartment_achievements = Achievement.for_subdepartment(current_user).group_by { |a| [a.user, a.period] }
+    end
   end
 
   def resource_params
