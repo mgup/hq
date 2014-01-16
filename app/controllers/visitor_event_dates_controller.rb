@@ -6,7 +6,11 @@ class VisitorEventDatesController < ApplicationController
     @visitor = VisitorEventDate.create event_date_id: visitor[:event_date_id],
                                        visitor_id: visitor[:visitor_id],
                                        visitor_type: visitor[:visitor_type]
-    redirect_to event_dates_path(@event)
+    if params[:by_admin]
+      redirect_to event_path(@event)
+    else
+      redirect_to event_dates_path(@event)
+    end
   end
 
   def update

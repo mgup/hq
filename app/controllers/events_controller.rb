@@ -4,6 +4,10 @@ class EventsController < ApplicationController
   def index
   end
 
+  def show
+    @visitor = VisitorEventDate.new
+  end
+
   def print
     respond_to do |format|
       format.pdf
