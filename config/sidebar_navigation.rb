@@ -111,6 +111,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
       if can? :manage, :all
         primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
+        primary.item :npr, 'Заполненение НПР'.html_safe, print_achievements_path, icon: 'list'
       end
 
       if can? :manage, :all

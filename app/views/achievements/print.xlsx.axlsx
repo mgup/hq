@@ -1,0 +1,67 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
+  wb.add_worksheet(name: 'Показатели (преподаватели)') do |sheet|
+    sheet.add_row ['Кафедра', 'Преподаватель', 'Количество введённых показателей']
+    sheet["A1:C1"].each do |cell|
+      cell.style = style_shout
+    end
+
+    @count_by_teacher.each do |c|
+      sheet.add_row [c[0], c[1], c[2]]
+    end
+  end
+
+wb.add_worksheet(name: 'Показатели (кафедры)') do |sheet|
+  sheet.add_row ['Кафедра', 'Всего преподавателей', 'Количество преподавателей, которые внесли данные', 'Количество введённых показателей']
+  sheet["A1:D1"].each do |cell|
+    cell.style = style_shout
+  end
+
+  @count_by_academic.each do |c|
+    sheet.add_row [c[0], c[3], c[2], c[1]]
+  end
+end
+
+wb.add_worksheet(name: 'Показатели (activity)') do |sheet|
+  sheet.add_row ['Название показателя', 'Количество введённых показателей']
+  sheet["A1:B1"].each do |cell|
+    cell.style = style_shout
+  end
+
+  @all_by_activity.each do |c|
+    sheet.add_row [c[0], c[1]]
+  end
+end
+
+wb.add_worksheet(name: 'Показатели (activity_group)') do |sheet|
+  sheet.add_row ['Название группы показателей', 'Количество введённых показателей']
+  sheet["A1:B1"].each do |cell|
+    cell.style = style_shout
+  end
+
+  @all_by_activity_group.each do |c|
+    sheet.add_row [c[0], c[1]]
+  end
+end
+
+wb.add_worksheet(name: 'Отчеты (кафедры)') do |sheet|
+  sheet.add_row ['Кафедра', 'Отчёты за 2013 календарный год и 2012/2013 учебный год', 'Отчёты за 2012 календарный год и 2011/2012 учебный год']
+  sheet["A1:C1"].each do |cell|
+    cell.style = style_shout
+  end
+
+  @count_reports.each do |c|
+    sheet.add_row [c[0], c[1], c[2]]
+  end
+end
+
+wb.add_worksheet(name: 'Преподаватели без отчётов') do |sheet|
+  sheet.add_row ['Кафедра', 'Преподаватель']
+  sheet["A1:B1"].each do |cell|
+    cell.style = style_shout
+  end
+
+  @no_reports.each do |c|
+    sheet.add_row [c[0], c[1]]
+  end
+end

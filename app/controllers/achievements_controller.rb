@@ -88,6 +88,66 @@ class AchievementsController < ApplicationController
     end
   end
 
+  def print
+    @no_reports = ActiveRecord::Base.connection.execute("
+      SELECT department_sname AS `Кафедра`,
+             CASE WHEN user_name IS NULL or user_name = '' THEN CONCAT_WS(' ',
+                   (SELECT dictionary.dictionary_ip FROM dictionary WHERE dictionary_id = user_fname  LIMIT 1),
+                   (SELECT dictionary.dictionary_ip FROM dictionary WHERE dictionary_id = user_iname LIMIT 1),
+                   (SELECT dictionary.dictionary_ip FROM dictionary WHERE dictionary_id = user_oname LIMIT 1))
+                  ELSE user_name END AS `Преподаватель`
+      FROM user JOIN acl_position ON acl_position.acl_position_user = user.user_id
+                JOIN department ON department_id = user.user_department
+      WHERE user.user_id NOT IN (SELECT user.user_id FROM user
+                                JOIN achievement_reports ON  achievement_reports.user_id = user.user_id
+                                WHERE achievement_reports.relevant IS TRUE)
+      AND acl_position.acl_position_role IN (7,8) ORDER BY department_sname;
+    ")
+    @count_reports = ActiveRecord::Base.connection.execute("
+      SELECT department_sname AS `Кафедра`,
+      COUNT(CASE WHEN achievement_reports.achievement_period_id = 1 THEN achievement_reports.id END) AS `Количество`,
+      COUNT(CASE WHEN achievement_reports.achievement_period_id = 2 THEN achievement_reports.id END) AS `Количество2`
+      FROM achievement_reports JOIN user ON user.user_id = achievement_reports.user_id
+        JOIN department ON department_id = user.user_department
+      WHERE achievement_reports.relevant IS TRUE
+      GROUP BY  department_sname ORDER BY COUNT(achievement_reports.id) ASC;
+    ")
+    @all_by_activity = ActiveRecord::Base.connection.execute("
+    SELECT name AS `Название`, COUNT(achievements.id) AS `Количество`
+    FROM `achievements`
+      JOIN activities ON achievements.activity_id = activities.id
+    GROUP BY activities.id ORDER BY  COUNT(achievements.id);
+    ")
+    @all_by_activity_group = ActiveRecord::Base.connection.execute("
+      SELECT activity_groups.name AS `Название`, COUNT(achievements.id) AS `Количество`
+      FROM `achievements`
+        JOIN activities ON achievements.activity_id = activities.id
+        JOIN activity_groups on activity_groups.id = activity_group_id
+      GROUP BY activity_groups.id
+      ORDER BY  COUNT(achievements.id);
+    ")
+    @count_by_academic = ActiveRecord::Base.connection.execute("
+      SELECT department_sname AS `Кафедра`, COUNT(achievements.id) AS `Количество`,
+      COUNT(DISTINCT user.user_id) AS `2`,
+      (SELECT COUNT(user_id) from user WHERE user_department = department_id) as `4`
+      FROM `achievements` JOIN user ON user.user_id = achievements.user_id
+            JOIN department ON department_id = user.user_department
+      GROUP BY department_id ORDER BY COUNT(achievements.id) ASC;
+    ")
+    @count_by_teacher = ActiveRecord::Base.connection.execute("
+      SELECT department_sname AS `Кафедра`,
+      CASE WHEN user_name IS NULL or user_name = '' THEN CONCAT_WS(' ',
+                      (SELECT dictionary.dictionary_ip FROM dictionary WHERE dictionary_id = user_fname  LIMIT 1),
+                      (SELECT dictionary.dictionary_ip FROM dictionary WHERE dictionary_id = user_iname LIMIT 1),
+                      (SELECT dictionary.dictionary_ip FROM dictionary WHERE dictionary_id = user_oname LIMIT 1))
+                      ELSE user_name END AS `Преподаватель`,
+      COUNT(achievements.id) AS `Количество показателей`
+      FROM `achievements` JOIN user ON user.user_id = achievements.user_id
+      JOIN department ON department_id = user.user_department
+      GROUP BY achievements.user_id ORDER BY department_sname ASC, COUNT(achievements.id) ASC;
+    ")
+  end
+
   def resource_params
     params.fetch(:achievement, {}).permit(:description, :achievement_period_id,
                                           :activity_id, :value, :cost, :status)

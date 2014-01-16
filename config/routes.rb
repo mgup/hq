@@ -155,6 +155,7 @@ HQ::Application.routes.draw do
   resources :achievement_periods
   resources :achievements do
     get 'periods',  on: :collection
+    get 'print.xlsx', to: 'achievements#print', on: :collection, defaults: { format: 'xlsx' }, as: :print
     get 'validate', on: :collection
   end
   resources :achievement_reports do
