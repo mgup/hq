@@ -93,6 +93,9 @@ class Study::Exam < ActiveRecord::Base
         elsif max > 100
           max = 100
         end
+        if max == max.round
+            max-=1
+        end
       when 3
         max = ((70.0 - sweight * ball) / eweight).floor
         min = ((55.0 - sweight * ball) / eweight).ceil
@@ -103,6 +106,9 @@ class Study::Exam < ActiveRecord::Base
           max = nil
         end
         if max
+          if max == max.round
+            max-=1
+          end
           if min > 100
             min = nil
             max = nil
@@ -113,6 +119,9 @@ class Study::Exam < ActiveRecord::Base
       when 4
         max = ((85.0 - sweight * ball) / eweight).floor
         min = ((70.0 - sweight * ball) / eweight).ceil
+        if max == max.round
+          max-=1
+        end
         max = 100 if max > 100
         if min < 55
           min = 55
