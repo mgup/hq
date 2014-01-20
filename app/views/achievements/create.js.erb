@@ -1,9 +1,12 @@
 $('#my_achievements').html('<%=j render 'achievements' %>');
 
-$('#a<%= @achievement.activity.id %>_new_achievement').toggle('highlight');
+$('#a<%= @achievement.activity.id %>_new_achievement').replaceWith(
+    '<%=j render partial: 'form', locals: { period: @period, activity: @achievement.activity, achievement: Achievement.new } %>'
+);
+initEditAchievementForm($('#a<%= @achievement.activity.id %>_new_achievement'));
+
+//$('#a<%= @achievement.activity.id %>_new_achievement').toggle('highlight');
 
 <% if @achievement.activity.unique? %>
   $('a[data-activity=<%= @achievement.activity.id %>]').attr('disabled', 'disabled');
 <% end %>
-
-$('#a<%= @achievement.activity.id %>_achievement_description').val('');

@@ -38,11 +38,11 @@ class AchievementsController < ApplicationController
     @achievement.user_id = current_user.id
 
     if @achievement.save
-      p = @achievement.period
+      @period = @achievement.period
 
       respond_to do |format|
         format.html do
-          redirect_to achievements_path(year: p.year, semester: p.semester),
+          redirect_to achievements_path(year: @period.year, semester: @period.semester),
                       notice: 'Результат работы сохранён.'
         end
 

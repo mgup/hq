@@ -2,6 +2,8 @@
   $('#<%= dom_id(@achievement, :validate) %>').html(
       '<%=j render partial: 'achievement_subdepartment_validation', locals: { achievement: @achievement } %>'
   );
+<% elsif 'user' == params[:role] %>
+  document.location.reload();
 <% else %>
   $('#<%= dom_id(@achievement, :validate) %>').html(
       '<%=j render partial: 'achievement_validation', locals: { achievement: @achievement } %>'

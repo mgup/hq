@@ -22,10 +22,12 @@ class Activity < ActiveRecord::Base
     unique
   end
 
+  # Фиксированный максимальный балл.
   def fixed_credits?
     ActivityCreditType::FIXED == activity_credit_type_id
   end
 
+  # Количественный максимальный балл — зависит от величины значения value в достижении.
   def numeric_credits?
     ActivityCreditType::NUMERIC == activity_credit_type_id
   end

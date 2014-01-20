@@ -1,4 +1,6 @@
-<%= form_for Achievement.new, namespace: "a#{activity.id}", remote: true, html: { class: 'edit-achievement-form', style: 'display: none;' } do |f| %>
+<%= form_for achievement, namespace: "a#{activity.id}", remote: true, html: { class: 'edit-achievement-form', style: 'display: none;' } do |f| %>
+  <input type="hidden" name="role" value="user">
+
   <%= f.hidden_field :achievement_period_id, value: period.id %>
   <%= f.hidden_field :activity_id, value: activity.id %>
 
@@ -28,16 +30,24 @@
 
   <% if activity.fixed_credits? || activity.numeric_credits? %>
     <div class="form-group">
+      <label>Максимально возможный балл (на всех соисполнителей)</label>
+      <input type="text" class="form-control achievement-maximum-cost" disabled="disabled">
+    </div>
+
+    <div class="form-group">
       <label>
         <%= check_box_tag 'has_partners', '1', false, class: 'has-partners' %> Работа выполнялась коллективно
       </label>
     </div>
-  <% end %>
 
-  <div class="form-group">
-    <%= f.label :cost %>
-    <%= f.text_field :cost, class: 'form-control achievement-cost', disabled: true %>
-  </div>
+    <div class="form-group">
+      <%= f.label :cost %>
+      <%= f.text_field :cost, class: 'form-control achievement-cost', disabled: true %>
+      <p class="help-block">
+        Сумма заработанных баллов всех соисполнителей работы должна равняться максимально возможному баллу!
+      </p>
+    </div>
+  <% end %>
 
   <%= f.submit 'Сохранить', class: 'btn btn-primary' %> или
   <%= link_to 'отменить', '#', class: 'hide-activity', data: { activity: activity.id } %>

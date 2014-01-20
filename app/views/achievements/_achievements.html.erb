@@ -7,7 +7,7 @@
   <table class="table">
     <% @achievements.group_by { |a| a.activity }.each do |activity, achievements| %>
       <tr>
-        <td colspan="3">
+        <td colspan="4">
           <strong><%= activity.name %></strong>
         </td>
       </tr>
@@ -17,15 +17,44 @@
             <%= a.description %>
           </td>
           <% if a.refused? %>
-            <td colspan="2">
-              Показатель не&nbsp;подтверждён
+            <td colspan="3">
+              Показатель отклонён
               контролирующим лицом
             </td>
           <% else %>
             <td class="no-border-top" style="white-space: nowrap;">
-              <%= activity_credit_description(a.activity) unless a.refused? %>
+              <% if a.cost? %>
+                <%= "#{prettify(a.cost)} #{Russian::p(prettify(a.cost), 'балл', 'балла', 'баллов', 'балла')}" %>
+              <% else %>
+                <%= activity_credit_description(a.activity) unless a.refused? %>
+              <% end %>
             </td>
             <td class="no-border-top">
+              <% if (a.activity.fixed_credits? || a.activity.numeric_credits?) && a.cost.blank? %>
+                <button class="btn btn-danger" class="toggle_edit_achievement_<%= a.id %>">
+                  ТРЕБУЕТСЯ КОРРЕКТИРОВКА
+                </button>
+              <% end %>
+            </td>
+            <td class="no-border-top">
+              <a href="#" class="toggle_edit_achievement_<%= a.id %> text-success">Редактировать</a>
+              <script>
+                $(function() {
+                  $('.toggle_edit_achievement_<%= a.id %>').click(function(event) {
+                    debugger;
+                    event.preventDefault();
+
+                    $('#edit_achievement_<%= a.id %>').html(
+                      '<%=j render partial: 'form', locals: { period: @period, activity: a.activity, achievement: a } %>'
+                    );
+                    initEditAchievementForm($('#a<%= a.activity.id %>_edit_achievement_<%= a.id %>'));
+                    $('#a<%= a.activity.id %>_edit_achievement_<%= a.id %>').show();
+                  });
+                });
+              </script>
+
+              <br>
+
               <%= link_to achievement_path(a, period: a.period.id), method: :delete,
                           confirm: 'Вы уверены?', class: 'text-danger' do %>
                 Удалить
@@ -33,6 +62,13 @@
             </td>
           <% end %>
         </tr>
+        <% unless a.refused? %>
+          <tr>
+            <td colspan="4" class="no-border-top" id="edit_achievement_<%= a.id %>">
+
+            </td>
+          </tr>
+        <% end %>
       <% end %>
     <% end %>
 
@@ -40,7 +76,7 @@
       <th class="text-right">
         Всего подано на утверждение:
       </th>
-      <th colspan="2" style="white-space: nowrap;">
+      <th colspan="3" style="white-space: nowrap;">
         <%= achievements_credits(@achievements) %>
       </th>
     </tr>
