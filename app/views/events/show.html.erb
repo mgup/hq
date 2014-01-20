@@ -26,6 +26,29 @@
   <span class="glyphicon glyphicon-print"></span> Распечатать приложение к приказу по всем датам
 <% end %>
 <br><br>
+<button data-value="<%= @event.id %>" class="addVisitor btn btn-success">Добавить сотрудника</button>
+<br><br>
+<div id="addVisitor<%= @event.id %>" style="display: none;">
+  <%= form_for @visitor, url: event_date_visitor_event_dates_path(@event, @event.dates.first) do |f| %>
+    <div class="row">
+      <%= hidden_field_tag :by_admin, 1 %>
+      <div class="col-sm-4">
+      <%= f.select :event_date_id,
+                   options_from_collection_for_select(@event.dates.not_full, :id, :date_with_time),
+                   {}, class: 'form-control' %>
+      </div>
+      <%= f.hidden_field :visitor_type, value: 'User' %>
+      <div class="col-sm-4">
+        <%= f.collection_select :visitor_id, User.where('user_fname IS NOT NULL').joins('LEFT JOIN dictionary AS fname ON fname.dictionary_id = user_fname').order('fname.dictionary_ip'), :id, :name_with_positions,
+                                {prompt: 'выберите сотрудника'}, class: 'form-control' %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.submit 'Забронировать', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
 <div class="panel-group" id="accordionDates">
   <% @event.dates.each do |date| %>
     <div class="panel panel-default">

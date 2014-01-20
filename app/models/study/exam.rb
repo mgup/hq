@@ -87,15 +87,23 @@ class Study::Exam < ActiveRecord::Base
     case mark
       when 2
         min = 0
-        max = ((55.0 - sweight * ball) / eweight).floor
+        max = ((55.0 - sweight * ball) / eweight)
+        if max == max.round
+          max-=1
+        end
+        max = max.floor
         if max <= 55
           max = 54
         elsif max > 100
           max = 100
         end
       when 3
-        max = ((70.0 - sweight * ball) / eweight).floor
+        max = ((70.0 - sweight * ball) / eweight)
         min = ((55.0 - sweight * ball) / eweight).ceil
+        if max == max.round
+          max-=1
+        end
+        max = max.floor
         if max > 100
           max = 100
         elsif max < 55
@@ -111,8 +119,12 @@ class Study::Exam < ActiveRecord::Base
           end
         end
       when 4
-        max = ((85.0 - sweight * ball) / eweight).floor
+        max = ((85.0 - sweight * ball) / eweight)
         min = ((70.0 - sweight * ball) / eweight).ceil
+        if max == max.round
+          max-=1
+        end
+        max = max.floor
         max = 100 if max > 100
         if min < 55
           min = 55

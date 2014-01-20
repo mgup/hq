@@ -184,4 +184,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  def name_with_positions
+    full_name+(' (' + roles.collect{|r| r.title }.join(', ') + ')')
+  end
+
 end
