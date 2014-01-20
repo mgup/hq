@@ -68,6 +68,7 @@
         <td>
           <%= render 'final_marks_fields',
                      f: f, student: student.id %>
+          <img id="loader<%= student.id %>" src="/assets/loader.gif">
           <div id="finalMark<%= student.id %>"></div>
         </td>
       <% else %>
