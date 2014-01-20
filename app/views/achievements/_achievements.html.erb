@@ -31,7 +31,7 @@
             </td>
             <td class="no-border-top">
               <% if (a.activity.fixed_credits? || a.activity.numeric_credits?) && a.cost.blank? %>
-                <button class="btn btn-danger" class="toggle_edit_achievement_<%= a.id %>">
+                <button class="btn btn-danger">
                   ТРЕБУЕТСЯ КОРРЕКТИРОВКА
                 </button>
               <% end %>
