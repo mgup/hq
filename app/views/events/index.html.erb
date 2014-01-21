@@ -1,0 +1,62 @@
+<div class="page-header">
+  <h1>События</h1>
+</div>
+
+<div style="margin-bottom: 20px;">
+  <%= link_to new_event_path, class: 'btn btn-primary pull-right' do%>
+    <span class='glyphicon glyphicon-plus'></span> Добавить новое событие
+  <% end %>
+</div>
+
+<%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+  <div class="form-group">
+    <div class="col-sm-4">
+      <%= text_field_tag :name, params[:name], class: 'form-control', placeholder: 'Название' %>
+    </div>
+    <div class="col-sm-2">
+      <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
+    </div>
+    <div class="col-sm-1">
+      <%= link_to events_path, class: 'btn btn-default form-control' do %>
+        <span class="glyphicon-remove glyphicon"></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Событие</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @events.empty? %>
+      <tr>
+        <td colspan="4">
+          <p class="lead">Ни одного события не было найдено, попробуйте изменить параметры поиска.</p>
+        </td>
+      </tr>
+    <% else %>
+      <% @events.each_with_index do |event, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td>
+            <strong><%= event.name %></strong>
+            <p class="help-block"><%= event.description %></p>
+          </td>
+          <td>
+            <%= link_to event_path(event), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', confirm: 'Вы уверены?' do %>
+              <span class="glyphicon glyphicon-remove"></span>
+            <% end %>
+            <%= link_to edit_event_path(event), class: 'btn btn-default pull-right', style: 'margin-right: 10px;' do %>
+                <span class="glyphicon glyphicon-pencil"></span> Редактировать
+              <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

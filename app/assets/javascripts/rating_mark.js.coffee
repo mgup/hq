@@ -1,5 +1,7 @@
 $ ->
   root = $('#matrixHQ').attr('href')
+  $('.examBall').change ->
+    $('.results').change()
   $('.examBall').keyup ->
     exam = parseInt($(this).val())
     if (exam < 0 || exam > 100)

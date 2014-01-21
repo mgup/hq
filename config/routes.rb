@@ -34,6 +34,7 @@ HQ::Application.routes.draw do
       resources :visitor_event_dates
     end
   end
+  resources :event_categories
 
   resources :positions
   resources :appointments
