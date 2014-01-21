@@ -23,7 +23,7 @@
             </td>
           <% else %>
             <td class="no-border-top" style="white-space: nowrap;">
-              <% if a.cost? %>
+              <% if a.activity.need_cost? %>
                 <%= "#{prettify(a.cost)} #{Russian::p(prettify(a.cost), 'балл', 'балла', 'баллов', 'балла')}" %>
               <% else %>
                 <%= activity_credit_description(a.activity) unless a.refused? %>
@@ -33,7 +33,7 @@
               <td colspan="2" class="no-border-top"></td>
             <% else %>
               <td class="no-border-top">
-                <% if (a.activity.fixed_credits? || a.activity.numeric_credits?) && a.cost.blank? %>
+                <% if a.activity.need_cost? && a.cost.zero? %>
                   <strong class="text-danger">
                     ТРЕБУЕТСЯ УТОЧНЕНИЕ, НАЖМИТЕ «РЕДАКТИРОВАТЬ»
                   </strong>

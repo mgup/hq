@@ -1,6 +1,6 @@
 module ActivityHelper
   def activity_credit_description(a = @activity)
-    credit = number_with_precision(prettify(a.credit), precision: 1, strip_insignificant_zeros: true)
+    credit = number_with_precision(prettify(a.credit), strip_insignificant_zeros: true)
     txt = Russian::p(prettify(a.credit.abs), 'балл', 'балла', 'баллов', 'балла')
 
     case a.activity_credit_type_id.to_i

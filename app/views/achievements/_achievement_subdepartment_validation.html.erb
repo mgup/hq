@@ -1,7 +1,8 @@
-<div id="<%= dom_id(achievement, :validate) %>"
-     <%= 'style="background-color: #f2dede;"'.html_safe if achievement.refused? %>>
+<div id="<%= dom_id(achievement, :validate) %>">
 
-  <%= form_for achievement, remote: true, html: { class: 'form-horizontal form-achievement-validation' } do |f| %>
+  <%= form_for achievement, remote: true,
+               html: { class: 'form-horizontal form-achievement-validation',
+                       style: "#{'background-color: #d9534f;' if achievement.refused?} #{'background-color: #5cb85c;' if achievement.accepted?}" } do |f| %>
     <%= hidden_field_tag :role, 'subdepartment' %>
   <style>
     .achievement {
@@ -12,17 +13,38 @@
     }
   </style>
   <div class="row achievement">
-    <div class="col-sm-10">
+    <div class="col-sm-6">
       <p><%= achievement.description %></p>
     </div>
-
     <div class="col-sm-2">
-      <% if achievement.refused? %>
-        <%= f.hidden_field :status, value: Achievement::STATUS_NEW %>
-        <%= f.submit 'Вернуть', class: 'btn btn-success pull-right' %>
+      <strong>
+        <% if achievement.cost? && !achievement.refused? %>
+          <%= "#{prettify(achievement.cost)} #{Russian::p(prettify(achievement.cost), 'балл', 'балла', 'баллов', 'балла')}" %>
+        <% else %>
+          <%= activity_credit_description(achievement.activity) unless achievement.refused? %>
+        <% end %>
+      </strong>
+    </div>
+
+    <%= f.hidden_field :status, class: 'achievement-status' %>
+
+    <div class="col-sm-4">
+      <% if achievement.activity.need_cost? && achievement.cost.zero? %>
+        <strong>Требуется уточнение показателя. Пусть сотрудник проверит заполнение информации о соисполнителях в своём личном кабинете.</strong>
       <% else %>
-        <%= f.hidden_field :status, value: Achievement::STATUS_REFUSED %>
-        <%= f.submit 'Удалить', class: 'btn btn-danger pull-right', confirm: 'Вы уверены?' %>
+        <% if achievement.refused? %>
+          <%= f.submit 'Вернуть и подтвердить', class: 'btn btn-success',
+                       onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(2);" %>
+        <% else %>
+          <% unless achievement.accepted? || achievement.accepted_final? %>
+            <%= f.submit 'Подтвердить', class: 'btn btn-success',
+                         onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(2);" %>
+          <% end %>
+
+          <%= f.submit 'Удалить', class: 'btn btn-danger pull-right',
+                       confirm: 'Вы уверены?',
+                       onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(3);" %>
+        <% end %>
       <% end %>
     </div>
   </div>

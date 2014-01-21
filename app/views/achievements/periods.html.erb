@@ -13,12 +13,18 @@
   </thead>
   <% @periods.each do |p| %>
     <tr>
+      <% relevant_reports = p.achievement_reports.by_user(current_user).only_relevant %>
+
       <td class="text-muted"><%= p.id %></td>
       <td class="full-width">
         <%= p.description %>
         <br><br>
-        <% if p.achievement_reports.by_user(current_user).only_relevant.any? %>
-          <strong>Отчёт заполнен и ожидает верификации.</strong>
+        <% if relevant_reports.any? %>
+          <% if relevant_reports.first.accepted? %>
+            <strong>Отчёт заполнен и верифицирован. Пожалуйста, распечатайте его, подпишите и&nbsp;сдайте в ДУОП.</strong>
+          <% else %>
+            <strong>Отчёт заполнен и ожидает верификации.</strong>
+          <% end %>
         <% else %>
           <% if p.active? %>
             <strong>Можно заполнять данные</strong>
@@ -28,7 +34,6 @@
         <% end %>
       </td>
       <td>
-        <% relevant_reports = p.achievement_reports.by_user(current_user).only_relevant %>
         <% if relevant_reports.any? %>
           <%= link_to achievements_path(year: p.year, semester: p.semester), class: 'btn btn-default' do %>
             <span class="glyphicon glyphicon-eye-open"></span> Просмотреть
@@ -43,12 +48,12 @@
 
           <br><br>
 
-          <% if relevant_reports.first.accepted_final? %>
+          <% if relevant_reports.first.accepted? %>
             <%= link_to achievement_report_path(relevant_reports.first, format: :pdf), class: 'btn btn-default' do %>
               <span class="glyphicon glyphicon-print"></span> Распечатать
             <% end %>
           <% else %>
-            <p><em>Отчёт не прошёл полное подтверждение руководителями структурных подразделений — печать не возможна.</em></p>
+            <p><em>Отчёт не прошёл полную верификацию заведующим кафедрой — печать не возможна.</em></p>
           <% end %>
         <% else %>
           <% if p.active? %>

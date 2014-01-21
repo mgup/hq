@@ -39,4 +39,8 @@ class Activity < ActiveRecord::Base
   def dynamic_credits?
     ActivityCreditType::DYNAMIC == activity_credit_type_id
   end
+
+  def need_cost?
+    activity_type.id != ActivityType::TYPE_BOOLEAN && (fixed_credits? || numeric_credits?)
+  end
 end
