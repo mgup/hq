@@ -2,6 +2,7 @@ class Achievement < ActiveRecord::Base
   STATUS_NEW      = 1
   STATUS_ACCEPTED = 2
   STATUS_REFUSED  = 3
+  STATUS_ACCEPTED_FINAL = 4
 
   belongs_to :period, class_name: 'AchievementPeriod', foreign_key: 'achievement_period_id'
   belongs_to :user

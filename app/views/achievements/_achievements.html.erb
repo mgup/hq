@@ -29,37 +29,41 @@
                 <%= activity_credit_description(a.activity) unless a.refused? %>
               <% end %>
             </td>
-            <td class="no-border-top">
-              <% if (a.activity.fixed_credits? || a.activity.numeric_credits?) && a.cost.blank? %>
-                <strong class="text-danger">
-                  ТРЕБУЕТСЯ УТОЧНЕНИЕ, НАЖМИТЕ «РЕДАКТИРОВАТЬ»
-                </strong>
-              <% end %>
-            </td>
-            <td class="no-border-top">
-              <a href="#" class="toggle_edit_achievement_<%= a.id %> text-success">Редактировать</a>
-              <script>
-                $(function() {
-                  $('.toggle_edit_achievement_<%= a.id %>').click(function(event) {
-                    debugger;
-                    event.preventDefault();
+            <% if @already_closed %>
+              <td colspan="2" class="no-border-top"></td>
+            <% else %>
+              <td class="no-border-top">
+                <% if (a.activity.fixed_credits? || a.activity.numeric_credits?) && a.cost.blank? %>
+                  <strong class="text-danger">
+                    ТРЕБУЕТСЯ УТОЧНЕНИЕ, НАЖМИТЕ «РЕДАКТИРОВАТЬ»
+                  </strong>
+                <% end %>
+              </td>
+              <td class="no-border-top">
+                <a href="#" class="toggle_edit_achievement_<%= a.id %> text-success">Редактировать</a>
+                <script>
+                  $(function() {
+                    $('.toggle_edit_achievement_<%= a.id %>').click(function(event) {
+                      debugger;
+                      event.preventDefault();
 
-                    $('#edit_achievement_<%= a.id %>').html(
-                      '<%=j render partial: 'form', locals: { period: @period, activity: a.activity, achievement: a } %>'
-                    );
-                    initEditAchievementForm($('#a<%= a.activity.id %>_edit_achievement_<%= a.id %>'));
-                    $('#a<%= a.activity.id %>_edit_achievement_<%= a.id %>').show();
+                      $('#edit_achievement_<%= a.id %>').html(
+                          '<%=j render partial: 'form', locals: { period: @period, activity: a.activity, achievement: a } %>'
+                      );
+                      initEditAchievementForm($('#a<%= a.activity.id %>_edit_achievement_<%= a.id %>'));
+                      $('#a<%= a.activity.id %>_edit_achievement_<%= a.id %>').show();
+                    });
                   });
-                });
-              </script>
+                </script>
 
-              <br>
+                <br>
 
-              <%= link_to achievement_path(a, period: a.period.id), method: :delete,
-                          confirm: 'Вы уверены?', class: 'text-danger' do %>
-                Удалить
-              <% end %>
-            </td>
+                <%= link_to achievement_path(a, period: a.period.id), method: :delete,
+                            confirm: 'Вы уверены?', class: 'text-danger' do %>
+                  Удалить
+                <% end %>
+              </td>
+            <% end %>
           <% end %>
         </tr>
         <% unless a.refused? %>
@@ -82,17 +86,26 @@
     </tr>
   </table>
 
-  <%= form_for AchievementReport.new, class: 'form-horizontal' do |f| %>
-    <%= f.hidden_field :achievement_period_id, value: @achievements.first.period.id %>
-    <%= f.hidden_field :user_id, value: current_user.id %>
-    <%= f.hidden_field :relevant, value: 1 %>
+  <% if @already_closed && @period.active? %>
+    <% relevant_reports = @period.achievement_reports.by_user(current_user).only_relevant %>
+    <% if relevant_reports.any? %>
+      <%= link_to reopen_achievement_report_path(relevant_reports.first), class: 'btn btn-success pull-right', confirm: 'Уверены? Если уже распечатана и подписана бумажная версия отчёта — её придётся печатать заново.' do %>
+        <span class="glyphicon glyphicon-edit"></span>
+        Внести изменения
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= form_for AchievementReport.new, class: 'form-horizontal' do |f| %>
+      <%= f.hidden_field :achievement_period_id, value: @achievements.first.period.id %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.hidden_field :relevant, value: 1 %>
 
-    <div class="form-group">
-      <div class="col-sm-12">
-        <%= f.submit 'Закончить формирование отчёта об эффективности',
-                     class: 'btn btn-primary pull-right',
-                     confirm: 'Вы всё внимательно проверили?' %>
+      <div class="form-group">
+        <div class="col-sm-12">
+          <%= f.submit 'Закончить формирование отчёта об эффективности',
+                       class: 'btn btn-primary pull-right' %>
+        </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 <% end %>

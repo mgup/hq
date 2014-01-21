@@ -24,6 +24,8 @@ class AchievementsController < ApplicationController
 
     a = Activity.all.includes(:activity_group, :activity_type, :activity_credit_type)
     @groups = a.group_by { |activ| activ.activity_group.name }
+
+    @already_closed = @period.achievement_reports.by_user(current_user).only_relevant.any?
   end
 
   def show

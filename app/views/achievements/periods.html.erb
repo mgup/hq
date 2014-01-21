@@ -31,6 +31,12 @@
       <td>
         <% relevant_reports = p.achievement_reports.by_user(current_user).only_relevant %>
         <% if relevant_reports.any? %>
+          <%= link_to achievements_path(year: p.year, semester: p.semester), class: 'btn btn-default' do %>
+            <span class="glyphicon glyphicon-eye-open"></span> Просмотреть
+          <% end %>
+
+          <br><br>
+
           <%= link_to reopen_achievement_report_path(relevant_reports.first), class: 'btn btn-success' do %>
             <span class="glyphicon glyphicon-edit"></span>
             Внести изменения

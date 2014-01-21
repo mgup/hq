@@ -6,7 +6,7 @@
   <%= render 'achievements' %>
 </div>
 
-<% unless @period.achievement_reports.by_user(current_user).only_relevant.any? %>
+<% unless @already_closed %>
   <br>
 
   <div class="page-header">
@@ -15,10 +15,4 @@
   </div>
 
   <%= render 'activities' %>
-<% end %>
-
-<br>
-
-<%= link_to '#', class: 'lead scroll-to-top' do %>
-  <span class="glyphicon glyphicon-arrow-up"></span> К отчёту
 <% end %>

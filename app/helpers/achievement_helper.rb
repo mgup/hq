@@ -2,11 +2,14 @@ module AchievementHelper
   def achievements_credits(achievements)
     only_cost = true
     credits = achievements.inject(0) do |res, a|
-      if a.cost?
-        res += a.cost
-      else
-        only_cost = false
+      unless a.refused?
+        if a.cost?
+          res += a.cost
+        else
+          only_cost = false
+        end
       end
+
       res
     end
 
