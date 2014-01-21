@@ -64,6 +64,10 @@ class AchievementsController < ApplicationController
   def update
     @achievement = Achievement.unscoped.find(params[:id])
 
+    unless @achievement.new?
+      @achievement.status = Achievement::STATUS_NEW
+    end
+
     if @achievement.update(resource_params)
       respond_to do |format|
         format.js

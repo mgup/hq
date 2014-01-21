@@ -1,16 +1,36 @@
 @initEditAchievementForm = (form) ->
   $form = $(form)
 
-  $form.submit ->
-    $form.find('.achievement-cost').removeAttr('disabled')
+  $form.submit (e) ->
+    $cost = $form.find('.achievement-cost')
+    if $cost.length > 0
+      if !(parseFloat($cost.val().match(/^-?\d*(\.\d+)?$/)) > 0)
+        e.preventDefault()
+        e.stopPropagation()
+        alert('Ошибка! Необходимо ввести число. Для ввода десятичного числа используйте точку в качестве разделителя — "10.1", а не "10,1".')
+      else
+        if parseFloat($cost.val()) > parseFloat($form.find('.achievement-maximum-cost').val())
+          e.preventDefault()
+          e.stopPropagation()
+          alert('Ошибка! Заработанный балл не может быть максимального балла.')
+        else
+          $form.find('.achievement-cost').removeAttr('disabled')
+    else
+      $form.find('.achievement-cost').removeAttr('disabled')
 
   has_value = $form.find('.achievement-value').eq(0)
   if has_value.length > 0
     activity_base = parseFloat($form.find('.activity-base').val())
     activity_credit = parseFloat($form.find('.activity-credit').val())
     $(has_value).keyup ->
-      $form.find('.achievement-maximum-cost').val(parseFloat($(this).val()) * activity_credit / activity_base)
-      $form.find('.achievement-cost').val(parseFloat($(this).val()) * activity_credit / activity_base)
+      if parseFloat($(this).val().match(/^-?\d*(\.\d+)?$/)) > 0
+        max = parseFloat($(this).val()) * activity_credit / activity_base
+      else
+        max = NaN
+
+      $form.find('.achievement-maximum-cost').val(max)
+      $form.find('.achievement-cost').val(max)
+    $(has_value).trigger('keyup')
   else
     $form.find('.achievement-maximum-cost').val($form.find('.activity-credit').val())
     if $form.find('.has-partners').eq(0).length > 0
