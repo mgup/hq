@@ -1,6 +1,9 @@
-<%= form_for Achievement.new, namespace: "a#{activity.id}", remote: true, html: { style: 'display: none;' } do |f| %>
+<%= form_for Achievement.new, namespace: "a#{activity.id}", remote: true, html: { class: 'edit-achievement-form', style: 'display: none;' } do |f| %>
   <%= f.hidden_field :achievement_period_id, value: period.id %>
   <%= f.hidden_field :activity_id, value: activity.id %>
+
+  <input type="hidden" class="activity-base" value="<%= activity.base %>">
+  <input type="hidden" class="activity-credit" value="<%= activity.credit %>">
 
   <div class="form-group">
     <%= f.label :description %>
@@ -8,9 +11,32 @@
 
     <% unless activity.placeholder.blank? %>
       <p class="help-block">
-        <strong>Заполните по образцу:</strong> «<%= activity.placeholder %>»
+        <strong>Образец заполнения:</strong> «<%= activity.placeholder %>»
       </p>
     <% end %>
+  </div>
+
+  <% if activity.numeric_credits? %>
+    <div class="form-group">
+      <%= f.label :value %>
+      <%= f.text_field :value, class: 'form-control achievement-value' %>
+      <p class="help-block">
+        Заполните величину показателя. Например, для полученного гранта или договора на выполнение НИР — сумма гранта или договора в рублях.
+      </p>
+    </div>
+  <% end %>
+
+  <% if activity.fixed_credits? || activity.numeric_credits? %>
+    <div class="form-group">
+      <label>
+        <%= check_box_tag 'has_partners', '1', false, class: 'has-partners' %> Работа выполнялась коллективно
+      </label>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :cost %>
+    <%= f.text_field :cost, class: 'form-control achievement-cost', disabled: true %>
   </div>
 
   <%= f.submit 'Сохранить', class: 'btn btn-primary' %> или

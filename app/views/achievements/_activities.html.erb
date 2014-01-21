@@ -20,7 +20,7 @@
                     <small><%= a.description %></small>
                   </p>
 
-                  <%= render partial: 'activity_form', locals: { period: @period, activity: a } %>
+                  <%= render partial: 'form', locals: { period: @period, activity: a, achievement: Achievement.new } %>
                 </td>
                 <td>
                   <%= link_to '#',
@@ -37,3 +37,9 @@
     </div>
   <% end %>
 </div>
+
+<br>
+
+<%= link_to '#', class: 'lead scroll-to-top' do %>
+  <span class="glyphicon glyphicon-arrow-up"></span> К отчёту
+<% end %>

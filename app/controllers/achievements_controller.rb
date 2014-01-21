@@ -24,6 +24,8 @@ class AchievementsController < ApplicationController
 
     a = Activity.all.includes(:activity_group, :activity_type, :activity_credit_type)
     @groups = a.group_by { |activ| activ.activity_group.name }
+
+    @already_closed = @period.achievement_reports.by_user(current_user).only_relevant.any?
   end
 
   def show
@@ -38,11 +40,11 @@ class AchievementsController < ApplicationController
     @achievement.user_id = current_user.id
 
     if @achievement.save
-      p = @achievement.period
+      @period = @achievement.period
 
       respond_to do |format|
         format.html do
-          redirect_to achievements_path(year: p.year, semester: p.semester),
+          redirect_to achievements_path(year: @period.year, semester: @period.semester),
                       notice: 'Результат работы сохранён.'
         end
 

@@ -19,7 +19,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     pdf.font_size 10 do
       pdf.font_size 11 do
-        pdf.text "Преподаватель: #{current_user.full_name}", inline_format: true
+        pdf.text "НПР: #{current_user.full_name}", inline_format: true
         pdf.text "Версия отчёта: ##{@report.id} от #{l @report.updated_at, format: '%d %B %Y'}", inline_format: true
       end
 
@@ -31,27 +31,23 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         row(index-1).style border_width: [0,0,0,0]
       end
 
-      pdf.move_down 20
-       pdf.text 'Отчёт утверждён на заседании кафедры _____________________________________________________________________________'
-       pdf.text 'протокол № __________ от «____» _______________ 20____ г.'
-
-       pdf.move_down 30
-       pdf.text 'Сотрудник:'
-       pdf.move_down 5
-       pdf.text '«____» _______________ 20____ г.                                                                                       ___________________ / ___________________'
-       pdf.font_size 8 do
-         pdf.indent 370 do
-            pdf.text 'подпись                     расшифровка'
-         end
+      pdf.move_down 30
+      pdf.text 'НПР:'
+      pdf.move_down 5
+      pdf.text '«____» _______________ 20____ г.                                                                                       ___________________ / ___________________'
+      pdf.font_size 8 do
+       pdf.indent 370 do
+          pdf.text 'подпись                     расшифровка'
        end
-       pdf.move_down 10
-       pdf.text 'Заведующий кафедрой:'
-       pdf.move_down 5
-       pdf.text '«____» _______________ 20____ г.                                                                                       ___________________ / ___________________'
-       pdf.font_size 8 do
-         pdf.indent 370 do
-           pdf.text 'подпись                     расшифровка'
-         end
+      end
+      pdf.move_down 10
+      pdf.text 'Заведующий кафедрой:'
+      pdf.move_down 5
+      pdf.text '«____» _______________ 20____ г.                                                                                       ___________________ / ___________________'
+      pdf.font_size 8 do
+       pdf.indent 370 do
+         pdf.text 'подпись                     расшифровка'
        end
+      end
     end
 end

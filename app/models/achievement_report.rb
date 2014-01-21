@@ -6,7 +6,7 @@ class AchievementReport < ActiveRecord::Base
     where(user_id: user.id)
   }
 
-  scope :only_relevant, -> { where(relevant: true) }
+  scope :only_relevant, -> { where(relevant: true).order('id DESC') }
 
   def relevant?
     relevant
