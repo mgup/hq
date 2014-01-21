@@ -20,7 +20,7 @@
         <%= p.description %>
         <br><br>
         <% if relevant_reports.any? %>
-          <% if relevant_reports.first.accepted? %>
+          <% if relevant_reports.first.accepted_or_refused? %>
             <strong>Отчёт заполнен и верифицирован. Пожалуйста, распечатайте его, подпишите и&nbsp;сдайте в ДУОП.</strong>
           <% else %>
             <strong>Отчёт заполнен и ожидает верификации.</strong>
@@ -48,7 +48,7 @@
 
           <br><br>
 
-          <% if relevant_reports.first.accepted? %>
+          <% if relevant_reports.first.accepted_or_refused? %>
             <%= link_to achievement_report_path(relevant_reports.first, format: :pdf), class: 'btn btn-default' do %>
               <span class="glyphicon glyphicon-print"></span> Распечатать
             <% end %>

@@ -18,7 +18,7 @@
     </div>
     <div class="col-sm-2">
       <strong>
-        <% if achievement.cost? && !achievement.refused? %>
+        <% if achievement.cost? %>
           <%= "#{prettify(achievement.cost)} #{Russian::p(prettify(achievement.cost), 'балл', 'балла', 'баллов', 'балла')}" %>
         <% else %>
           <%= activity_credit_description(achievement.activity) unless achievement.refused? %>

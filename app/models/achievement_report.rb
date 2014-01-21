@@ -20,6 +20,14 @@ class AchievementReport < ActiveRecord::Base
     end
   end
 
+  def accepted_or_refused?
+    achievement_period.achievements.by(user).inject(true) do |res, a|
+      res = res && false unless a.accepted? || a.refused?
+
+      res
+    end
+  end
+
   def accepted_final?
     achievement_period.achievements.by(user).inject(true) do |res, a|
       res = res && false unless a.accepted_final? && a.cost?
