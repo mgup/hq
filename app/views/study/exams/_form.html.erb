@@ -28,12 +28,14 @@
     </div>
   </div>
 
+  <%= hidden_field_tag :new_results, (@exam.marks.empty? ? 1 : 0) %>
+
   <table class="table table-hover">
     <tr>
       <th class="text-muted">#</th>
       <th>Студент</th>
       <th>Итоговый балл</th>
-      <th>Результат</th>
+      <th colspan="2">Результат</th>
     </tr>
   <% @discipline.group.students.each do |student| %>
     <tr>
@@ -42,7 +44,6 @@
 
       <% final_mark = @exam.final_marks.by_student(student).last %>
       <% rating_mark = @exam.rating_marks.by_student(student).last %>
-      <%# raise '123' %>
       <% if rating_mark == nil %>
         <td><%= render 'rating_marks_fields',
                         f: f, student: student %>
@@ -52,11 +53,10 @@
         <td>
           <ul class="list-unstyled">
             <li>за семестр — <%= student.ball(@exam.discipline) %></li>
-            <li>за экзамен — <%= rating_mark.value %></li>
+            <li>за экзамен — <span id="exam_mark_li_<%= student.id %>"><%= rating_mark.value %></span></li>
           </ul>
 
-          <!--<p class="form-control-static"><%= rating_mark.value %></p>-->
-          <div class="editMarkField hidden">
+          <div class="editFinalMarkField" style="display: none;">
             <br>
             <%= render 'rating_marks_fields',
                        f: f, student: student %>
@@ -65,7 +65,7 @@
       <% end %>
 
       <% if final_mark == nil %>
-        <td>
+        <td colspan="2">
           <%= render 'final_marks_fields',
                      f: f, student: student.id %>
           <%= image_tag 'loader.gif', id: "loader#{student.id}"  %>
@@ -73,20 +73,21 @@
         </td>
       <% else %>
         <td>
-          <span  class="label label-<%= final_mark.long_result[:span] %>"><%= final_mark.long_result[:mark] %></span>
-          <div class="editMarkField hidden">
+          <%= image_tag 'loader.gif', id: "loader#{student.id}"  %>
+          <div id="finalMark<%= student.id %>"></div>
+          <div class="editFinalMarkField" style="display: none;">
             <br>
             <%= render 'final_marks_fields',
                        f: f, student: student.id %>
           </div>
         </td>
-        <!--<td><button class="btn btn-default editMarkButton">Редактировать</button></td>-->
+        <td><button class="btn btn-default editFinalMarkButton">Редактировать</button></td>
       <% end %>
     </tr>
   <% end %>
   </table>
   <div class="col-sm-3 col-sm-offset-4">
-    <%= f.submit 'Внести результаты', class: 'btn btn-primary' %>
+    <%= f.submit 'Внести результаты', class: 'btn btn-primary', confirm: 'Вы уверены, что внесли все оценки?' %>
   </div>
 
 <% end %>
