@@ -16,13 +16,12 @@
       <td class="text-muted"><%= p.id %></td>
       <td class="full-width">
         <%= p.description %>
-      </td>
-      <td style="white-space: nowrap;">
+        <br><br>
         <% if p.achievement_reports.by_user(current_user).only_relevant.any? %>
-          <strong>Отчёт заполнен.</strong>
+          <strong>Отчёт заполнен и ожидает верификации.</strong>
         <% else %>
           <% if p.active? %>
-              <strong>Можно заполнять данные</strong>
+            <strong>Можно заполнять данные</strong>
           <% else %>
             <span class="text-muted">Приём данных завершён</span>
           <% end %>
@@ -44,8 +43,12 @@
 
           <br><br>
 
-          <%= link_to achievement_report_path(relevant_reports.first, format: :pdf), class: 'btn btn-default' do %>
-            <span class="glyphicon glyphicon-print"></span> Распечатать
+          <% if relevant_reports.first.accepted_final? %>
+            <%= link_to achievement_report_path(relevant_reports.first, format: :pdf), class: 'btn btn-default' do %>
+              <span class="glyphicon glyphicon-print"></span> Распечатать
+            <% end %>
+          <% else %>
+            <p><em>Отчёт не прошёл полное подтверждение руководителями структурных подразделений — печать не возможна.</em></p>
           <% end %>
         <% else %>
           <% if p.active? %>

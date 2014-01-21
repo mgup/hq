@@ -40,6 +40,10 @@ class Achievement < ActiveRecord::Base
     STATUS_ACCEPTED == status
   end
 
+  def accepted_final?
+    STATUS_ACCEPTED == status
+  end
+
   def refused?
     STATUS_REFUSED == status
   end

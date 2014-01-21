@@ -11,4 +11,12 @@ class AchievementReport < ActiveRecord::Base
   def relevant?
     relevant
   end
+
+  def accepted_final?
+    achievement_period.achievements.by(user).inject(true) do |res, a|
+      res = res && false unless a.accepted_final? && a.cost?
+
+      res
+    end
+  end
 end
