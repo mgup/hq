@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+     event: 'событие'
+    attributes:
+      event:
+        name: 'название'
+        description: 'описание'

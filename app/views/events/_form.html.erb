@@ -1,0 +1,20 @@
+<%= form_for @event,  html: { class: 'form-horizontal' } do |f| %>
+  <%= f.hidden_field :booking, value: false %>
+  <div class="form-group <%= 'has-error' if @event.errors.include?(:name) %>">
+    <%= f.label :name, class: 'col col-sm-2 control-label' %>
+    <div class="col col-sm-10">
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @event.errors.include?(:description) %>">
+    <%= f.label :description, class: 'col col-sm-2 control-label' %>
+    <div class="col col-sm-10">
+      <%= f.text_area :description, rows: 5, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="col col-sm-10 col-sm-offset-2">
+   <%= f.submit 'Сохранить', class: 'btn btn-primary' %> или <%= link_to 'Отмена', events_path, class: 'btn btn-default' %>
+  </div>
+<% end %>
