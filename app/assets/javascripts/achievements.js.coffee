@@ -29,6 +29,10 @@
         $cost.attr('disabled', 'disabled')
         $cost.val($form.find('.achievement-maximum-cost').val())
 
+  $('.hide-activity').click (e) ->
+    e.preventDefault()
+
+    $(this).parents('form').eq(0).hide()
 
 
 $ ->
