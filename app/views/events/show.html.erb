@@ -73,7 +73,7 @@
           <ol>
             <% date.visitors.each do |visitor| %>
               <li>
-                <%= visitor.full_name %>, <%= (visitor.departments.empty? ? visitor.user_department.abbreviation : visitor.departments.first.abbreviation) %>
+                <%= visitor.full_name %>, <%= (visitor.departments.empty? ? (visitor.user_department? ? Department.find(visitor.user_department).abbreviation : '') : visitor.departments.first.abbreviation) %>
                 <% event_visitor = date.visitor_event_dates.from_visitor(visitor).first %>
                 <%= link_to event_date_visitor_event_date_path(@event, date, event_visitor), method: :delete, confirm: 'Вы уверены?',
                             class: 'btn  btn-sm btn-danger pull-right' do %>
