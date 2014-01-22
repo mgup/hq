@@ -47,4 +47,20 @@ class Achievement < ActiveRecord::Base
   def refused?
     STATUS_REFUSED == status
   end
+
+  def has_cost?
+    if activity.need_cost?
+      cost?
+    else
+      true
+    end
+  end
+
+  def get_cost
+    if activity.need_cost?
+      cost
+    else
+      activity.credit
+    end
+  end
 end

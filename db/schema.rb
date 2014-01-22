@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140121112158) do
+ActiveRecord::Schema.define(version: 20140121122640) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20140121112158) do
     t.datetime "updated_at"
     t.integer  "achievement_period_id"
     t.integer  "value"
-    t.float    "cost"
+    t.float    "cost",                  default: 0.0, null: false
     t.integer  "status",                default: 1
   end
 

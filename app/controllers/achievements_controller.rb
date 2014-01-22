@@ -64,6 +64,10 @@ class AchievementsController < ApplicationController
   def update
     @achievement = Achievement.unscoped.find(params[:id])
 
+    unless @achievement.new?
+      @achievement.status = Achievement::STATUS_NEW
+    end
+
     if @achievement.update(resource_params)
       respond_to do |format|
         format.js
@@ -87,6 +91,14 @@ class AchievementsController < ApplicationController
 
     if current_user.is?(:subdepartment)
       @subdepartment_achievements = Achievement.for_subdepartment(current_user).group_by { |a| [a.user, a.period] }
+
+      #@subdepartment_achievements.reject! do |user, period|
+      #
+      #end
+      #
+      #@subdepartment_achievements.reject! do |a|
+      #  !AchievementReport.where(user_id: a[0].id, achievement_period_id: a[1].id).order('id DESC').first.relevant?
+      #end
     end
   end
 

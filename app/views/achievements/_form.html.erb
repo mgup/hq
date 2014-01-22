@@ -18,7 +18,7 @@
     <% end %>
   </div>
 
-  <% if activity.numeric_credits? %>
+  <% if activity.need_cost? && activity.numeric_credits? %>
     <div class="form-group">
       <%= f.label :value %>
       <%= f.text_field :value, class: 'form-control achievement-value' %>
@@ -28,7 +28,7 @@
     </div>
   <% end %>
 
-  <% if activity.fixed_credits? || activity.numeric_credits? %>
+  <% if activity.need_cost? %>
     <div class="form-group">
       <label>Максимально возможный балл (на всех соисполнителей)</label>
       <input type="text" class="form-control achievement-maximum-cost" disabled="disabled">
