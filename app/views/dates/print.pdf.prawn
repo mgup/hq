@@ -5,7 +5,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
  render 'pdf/font', pdf: pdf
  data = []
  @date.visitors.each do |visitor|
-   data << {name: visitor.full_name, date: (l @date.date), department: (visitor.departments.empty? ? visitor.user_department.name : visitor.departments.first.name) }
+   data << {name: visitor.full_name, date: (l @date.date), department: (visitor.departments.empty? ? (visitor.user_department? ? Department.find(visitor.user_department).name : '') : visitor.departments.first.name) }
  end
 
  table_data = [['№ п/п', 'ФИО', 'Дата профосмотра', 'Структурное подразделение']]
