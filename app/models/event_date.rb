@@ -23,7 +23,7 @@ class EventDate < ActiveRecord::Base
 
   def self.valid_max_visitors?(visitors, value)
     date = self.new('max_visitors' => value)
-    return date.max_visitors > visitors
+    return date.max_visitors >= visitors
   end
 
 end

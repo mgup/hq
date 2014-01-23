@@ -15,7 +15,7 @@ class VisitorEventDatesController < ApplicationController
 
   def update
     date = params[:visitor_event_date][:event_date_id]
-    unless EventDate.not_full.find_all{|x| x == date}.empty?
+    unless EventDate.not_full.find_all{|x| x.id == date.to_i}.empty?
       @visitor = VisitorEventDate.find(params[:visitor_event_date][:id])
       @visitor.update_attribute  :event_date_id, date
     end
