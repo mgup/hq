@@ -12,6 +12,7 @@ class EventDate < ActiveRecord::Base
   scope :not_full, -> { where('max_visitors > (SELECT COUNT(visitor_event_date.id) from `event_date` as `ed`
   JOIN `visitor_event_date` on `ed`.id = `visitor_event_date`.event_date_id
   WHERE `ed`.id = `event_date`.id)') }
+  scope :from_date, -> somedate { where(date: Date.parse(somedate))}
 
   def visitors
     self.users + self.students

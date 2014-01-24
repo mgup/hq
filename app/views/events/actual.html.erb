@@ -1,0 +1,14 @@
+<div class="page-header">
+  <h1>Актуальные события</h1>
+</div>
+
+<div class="col-sm-12 actuals">
+  <%= render_dates_calendar(Date.parse(@dates.first),
+                            Date.parse(@dates.last)) %>
+</div>
+
+<div class="actual_dates">
+  <% @dates.each_with_index do |date, index| %>
+    <%= render partial: 'date_events', locals: {index: index+1, date: date, dates: EventDate.from_date(date)} %>
+  <% end %>
+</div>

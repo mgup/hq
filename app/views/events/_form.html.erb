@@ -1,4 +1,4 @@
-<%= form_for @event,  html: { class: 'form-horizontal' } do |f| %>
+<%= nested_form_for @event,  html: { class: 'form-horizontal' } do |f| %>
   <%= f.hidden_field :booking, value: false %>
   <div class="form-group <%= 'has-error' if @event.errors.include?(:name) %>">
     <%= f.label :name, class: 'col col-sm-2 control-label' %>
@@ -12,6 +12,12 @@
     <div class="col col-sm-10">
       <%= f.text_area :description, rows: 5, class: 'form-control' %>
     </div>
+  </div>
+
+  <%= render partial: 'dates_fields', locals: {f: f} %>
+  <div class="form-group">
+    <%= f.link_to_add 'Добавить для события дату', :dates,
+                      class: 'add-nested btn btn-default col-sm-offset-4' %>
   </div>
 
   <div class="col col-sm-10 col-sm-offset-2">

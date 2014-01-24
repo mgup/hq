@@ -14,7 +14,7 @@
 
 
 <div class="col-sm-12 event_dates">
-  <%= render_dates_calendar(@event) %>
+  <%= render_dates_calendar(@event.dates.order(:date).first.date, @event.dates.order(:date).last.date) %>
   <% @event.dates.each do |date| %>
     <% remains = (date.max_visitors - date.visitors.length).to_f/date.max_visitors %>
     <%= hidden_field_tag :event_date_date, (l date.date), class: 'form-control',
@@ -39,7 +39,7 @@
       </div>
       <%= f.hidden_field :visitor_type, value: 'User' %>
       <div class="col-sm-4">
-        <%= f.collection_select :visitor_id, User.except(@event.users.collect{|u| u.id}).where('user_fname IS NOT NULL').joins('LEFT JOIN dictionary AS fname ON fname.dictionary_id = user_fname').order('fname.dictionary_ip'), :id, :name_with_positions,
+        <%= f.collection_select :visitor_id, User.includes(:roles).except(@event.users.collect{|u| u.id}).where('user_fname IS NOT NULL').joins('LEFT JOIN dictionary AS fname ON fname.dictionary_id = user_fname').order('fname.dictionary_ip'), :id, :name_with_positions,
                                 {prompt: 'выберите сотрудника'}, class: 'form-control' %>
       </div>
       <div class="col-sm-2">
