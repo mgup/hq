@@ -28,6 +28,14 @@ class Study::Mark < ActiveRecord::Base
 
   before_create :record_date
 
+  before_update :create_new, if: :mark_changed?
+
+  def create_new
+    mark = Study::Mark.find(self.id)
+    Study::Mark.create(mark.attributes.merge(mark: self.mark, id: Study::Mark.last.id+1, created_at: DateTime.now, updated_at: DateTime.now, retake: true,  checkpoint_mark_submitted: DateTime.now))
+    self.mark = self.mark_was
+  end
+
   def result
     case mark
       when MARK_LECTURE_NOT_ATTEND

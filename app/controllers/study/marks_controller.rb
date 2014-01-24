@@ -21,13 +21,15 @@ class Study::MarksController < ApplicationController
 
   def ajax_update
     @mark = Study::Mark.find(params[:id])
-    @mark.update(mark: params[:mark])
+    @new = Study::Mark.create(@mark.attributes.merge(mark: params[:mark], id: Study::Mark.last.id+1,
+                              created_at: DateTime.now, updated_at: DateTime.now, retake: true,
+                              checkpoint_mark_submitted: DateTime.now))
     if @mark.checkpoint.is_checkpoint?
-      render({ json: {id: @mark.id, result: "#{@mark.mark} из #{@mark.checkpoint.max}",
-                      color:  (@mark.mark < @mark.checkpoint.min ? 'danger' : 'success')}
+      render({ json: {id: @new.id, result: "#{@new.mark} из #{@new.checkpoint.max}",
+                      color:  (@new.mark < @new.checkpoint.min ? 'danger' : 'success')}
              })
     else
-      render({ json: {id: @mark.id, result: @mark.result[:mark], color:  @mark.result[:color]}
+      render({ json: {id: @new.id, result: @new.result[:mark], color:  @new.result[:color]}
              })
     end
   end
