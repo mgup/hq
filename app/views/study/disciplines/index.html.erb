@@ -20,7 +20,7 @@
       <tr>
         <td class="text-muted"><%= d.id %></td>
         <td>
-          <p><%= d.name %></p>
+          <h4 style="margin-top: 0;"><%= d.name %></h4>
           <p>
             <strong><%= d.group.name %></strong>,
             <%= study_year(d.year) %> учебный год, <%= study_semester(d.semester) %>
@@ -37,7 +37,7 @@
           <% end %>
         </td>
         <td>
-          <div  class="pull-right">
+          <div class="pull-right">
             <% if d.checkpoints.empty? %>
               <span class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не указаны контрольные точки</span>
               <br><br>
@@ -47,6 +47,7 @@
                                 position: 'w'} do %>
               <span class="glyphicon glyphicon-<%= d.checkpoints.empty? ? 'calendar' : 'list-alt' %>"></span> Внести данные
             <% end %>
+            <br><br>
             <%= link_to edit_study_discipline_path(d), class: 'btn btn-default edit_discipline navigation_trip',
                         data: { input: '.edit_discipline', content: 'Вы можете редактировать созданные дисциплины.',
                                 position: 'w'} do %>
