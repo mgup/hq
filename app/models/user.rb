@@ -147,6 +147,8 @@ class User < ActiveRecord::Base
     cond
   }
 
+  scope :except, -> ids { where("user_id NOT IN (#{ids.join(', ')})") }
+
   scope :from_name, -> name { with_name.where('dictionary.dictionary_ip LIKE :prefix OR user.user_name LIKE :prefix', prefix: "%#{name}%")}
   scope :from_department, -> department { where("#{department.split(',').collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
                                                                       " OR #{department.split(',').collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
