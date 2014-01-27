@@ -1,27 +1,40 @@
 require 'spec_helper'
 
 describe Study::CheckpointsController do
-  context 'для разработчиков' do
+  context 'для авторизованных преподавателей' do
     before do
-      @user = FactoryGirl.create(:developer)
+      @user = create(:user, :lecturer)
       sign_in @user
-      @discipline = FactoryGirl.create(:discipline_with_controls,  subject_teacher: @user.id, group: FactoryGirl.create(:group))
+      @discipline = create(:discipline, lead_teacher: @user)
     end
 
     describe 'GET #index' do
-      before :each do
-        #@checkpoint = FactoryGirl.create(:checkpoint, checkpoint_subject: @discipline.id)
-        get :index, discipline_id: @discipline
+      context 'при отсутствии у дисциплины контрольных точек' do
+        it 'должен перейти на страницу с контрольными точками' do
+          get :index, discipline_id: @discipline
+          response.should redirect_to new_study_discipline_checkpoint_path(@discipline)
+        end
       end
 
-      it 'должен выполняться успешно' do
-        response.should be_success
-      end
+      context 'при наличии у дисциплины контрольных точек' do
+        before :each do
+          @discipline.classes << create(:checkpoint, :checkpoint_control, discipline: @discipline)
+          @checkpoint = create(:checkpoint, discipline: @discipline)
+          get :index, discipline_id: @discipline
+        end
 
-      it 'должен выводить правильное представление' do
-        response.should render_template(:index)
-      end
+        it 'должен выполняться успешно' do
+          response.should be_success
+        end
 
+        it 'должен выводить правильное представление' do
+          response.should render_template(:index)
+        end
+
+        it 'должен содержать тестовую точку' do
+          assigns(:classes).should include(@checkpoint)
+        end
+      end
     end
 
     describe 'GET #new' do

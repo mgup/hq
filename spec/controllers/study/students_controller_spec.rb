@@ -29,7 +29,7 @@ describe Study::StudentsController do
   describe 'GET #discipline' do
     before :each do
       user = FactoryGirl.create(:user)
-      @discipline = FactoryGirl.create(:discipline_with_controls, subject_teacher: user.id,
+      @discipline = FactoryGirl.create(:discipline, lead_teacher: user,
                                        group: @group)
       get :discipline, group_id: @group.id, id: @student.id, discipline: @discipline.id
     end

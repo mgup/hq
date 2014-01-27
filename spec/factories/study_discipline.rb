@@ -2,10 +2,10 @@ require 'faker'
 
 FactoryGirl.define do
   factory :discipline, class: Study::Discipline do
-    subject_year		  { Date.today.year }
+    subject_year		  { Study::Discipline::CURRENT_STUDY_YEAR }
     subject_semester  { 1 + rand(1) }
     subject_name      { Faker::Lorem.sentence }
-
+    subject_brs { true }
     group
     association :lead_teacher, factory: :user, strategy: :build
     association :final_exam,   factory: [:exam, :final], strategy: :build
@@ -20,7 +20,7 @@ FactoryGirl.define do
     #  end
     #end
     #
-    #factory :discipline_with_controls, parent: :discipline do
+    #trait :discipline_with_controls do
     #  after(:build) do |discipline|
     #    4.times do
     #      discipline.checkpoints << FactoryGirl.build(:checkpoint_control, checkpoint_subject: discipline)

@@ -165,7 +165,8 @@ GROUP BY `group`
     group.speciality.faculty
   end
 
-  def valid?
+  # нужно найти все valid? и заменить
+  def is_valid?
     STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status
   end
 

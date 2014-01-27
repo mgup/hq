@@ -6,7 +6,7 @@
 
 <% if @student.person.benefits_free? %>
   <p class="lead">У студента нет льгот</p>
-<% elsif @student.valid? %>
+<% elsif @student.is_valid? %>
   <%= link_to '#addDocumentModal', class: 'btn btn-primary pull-right', data: {toggle: 'modal'} do %>
     <span class="glyphicon glyphicon-plus"></span> Добавить студенту справку
   <% end %>

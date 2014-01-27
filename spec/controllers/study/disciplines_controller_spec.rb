@@ -199,40 +199,40 @@ describe Study::DisciplinesController do
       end
     end
 
-    describe 'при удалении дисциплины, в которой он дополнительный преподаватель' do
-      before :each do
-        @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
-        @discipline.assistant_teachers << @user
-      end
-
-      context 'при отсутствии у неё контрольных точек' do
-        it 'должен удалить дисциплину' do
-          expect {
-            delete :destroy, id: @discipline
-          }.to change { Study::Discipline.count }.by(-1)
-        end
-
-        it 'должен перейти на страницу со списком дисциплин' do
-          delete :destroy, id: @discipline
-          response.should redirect_to(study_disciplines_path)
-        end
-      end
-
-      context 'при наличии у неё контрольных точек' do
-        before :each do
-          pending
-        end
-
-        it 'не должен удалить дисциплину' do
-          pending
-        end
-
-        it 'должен перейти на страницу со списокм дисциплин' do
-          delete :destroy, id: @discipline
-          response.should redirect_to(study_disciplines_path)
-        end
-      end
-    end
+    #describe 'при удалении дисциплины, в которой он дополнительный преподаватель' do
+    #  before :each do
+    #    @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+    #    @discipline.assistant_teachers << @user
+    #  end
+    #
+    #  context 'при отсутствии у неё контрольных точек' do
+    #    it 'должен удалить дисциплину' do
+    #      expect {
+    #        delete :destroy, id: @discipline
+    #      }.to change { Study::Discipline.count }.by(-1)
+    #    end
+    #
+    #    it 'должен перейти на страницу со списком дисциплин' do
+    #      delete :destroy, id: @discipline
+    #      response.should redirect_to(study_disciplines_path)
+    #    end
+    #  end
+    #
+    #  context 'при наличии у неё контрольных точек' do
+    #    before :each do
+    #      pending
+    #    end
+    #
+    #    it 'не должен удалить дисциплину' do
+    #      pending
+    #    end
+    #
+    #    it 'должен перейти на страницу со списокм дисциплин' do
+    #      delete :destroy, id: @discipline
+    #      response.should redirect_to(study_disciplines_path)
+    #    end
+    #  end
+    #end
 
     describe 'при удалении чужой дисциплины' do
       it 'должен получить ошибку ActiveRecord::RecordNotFound' do
@@ -241,43 +241,4 @@ describe Study::DisciplinesController do
     end
   end
 
-   #context 'для разработчиков' do
-   #  describe 'PUT #update' do
-   #    before :each do
-   #      @discipline = FactoryGirl.create(:discipline_with_controls, subject_teacher: @user.id,
-   #                                       group: FactoryGirl.create(:group))
-   #    end
-   #    context 'в случае успешного изменения' do
-   #      before :each do
-   #        Study::Discipline.any_instance.should_receive(:update).and_return(true)
-   #      end
-   #
-   #      it 'должен находить правильную дисциплину' do
-   #        put :update, id: @discipline
-   #        assigns(:discipline).should eq(@discipline)
-   #      end
-   #
-   #      it 'должен переходить на представление с занятиями' do
-   #        put :update, id: @discipline
-   #        response.should redirect_to study_discipline_checkpoints_path(@discipline)
-   #      end
-   #    end
-   #
-   #    #context 'в случае неудачи' do
-   #    #   context ', если идёт редактирование контрольных точек, ' do
-   #    #      it 'должен перенаправлять на редактирование контрольных точек' do
-   #    #        put :update, id: @discipline, checkpoints_attributes: 5
-   #    #        response.should render_template 'study/checkpoints/new'
-   #    #      end
-   #    #    end
-   #    #   context ', если не идёт редактирование контрольных точек, ' do
-   #    #      it 'должен перенаправлять на редактирование дисциплины' do
-   #    #        put :update, id: @discipline, name: nil
-   #    #        response.should render_template :edit
-   #    #        response.body.should == ''
-   #    #      end
-   #    #    end
-   #    #end
-   #  end
-   #
 end
