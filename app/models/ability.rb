@@ -100,8 +100,8 @@ class Ability
 
   # Проректор по научно-исследовательской работе
   def pro_rector_science(user)
-    can :update, Achievement
-    can :validate, Achievement
+    #can :update, Achievement
+    #can :validate, Achievement
   end
 
   def soc_support_boss(user)
