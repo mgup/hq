@@ -37,7 +37,7 @@
       <th>Итоговый балл</th>
       <th colspan="2">Результат</th>
     </tr>
-  <% @discipline.group.students.each do |student| %>
+  <% @discipline.group.students.valid_for_today.each do |student| %>
     <tr>
       <td class="text-muted"><%= student.id %></td>
       <td><%= student.person.full_name %></td>
