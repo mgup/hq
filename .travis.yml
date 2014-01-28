@@ -1,5 +1,0 @@
-language: ruby
-rvm:
-  - 2.0.0
-before_script:
-  - mysql -e 'create database cni_test;'
