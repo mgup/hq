@@ -14,6 +14,4 @@ describe Study::Checkpoint do
     end
   end
 
-  #describe 'обладает ограничениями на поля:' do
-  #end
 end

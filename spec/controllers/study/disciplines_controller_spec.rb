@@ -150,18 +150,80 @@ describe Study::DisciplinesController do
     end
 
     describe 'при сохранении изменений в дисциплину' do
-      pending
+      context 'при отсутствии ошибок в данных дисциплины' do
+        before :each do
+          @discipline = create(:discipline, lead_teacher: @user)
+          @discipline_attrs = build(:discipline, subject_id: @discipline.id,
+                                    lead_teacher: @user, subject_name: 'Some name').attributes
+          @discipline_attrs[:final_exam_attributes] = build(:exam, :final).attributes
+        end
+
+        it 'должен вызывать редактирование правильной дисциплины' do
+          put :update, id: @discipline, study_discipline: @discipline_attrs
+          assigns(:discipline).should eq(@discipline)
+        end
+
+        it 'должен вносить изменения в дисциплину' do
+          put :update, id: @discipline, study_discipline: @discipline_attrs
+          @discipline.reload
+          @discipline.name.should eq('Some name')
+        end
+
+        it 'должен перейти на страницу с занятиями' do
+          put :update, id: @discipline, study_discipline: @discipline_attrs
+          response.should redirect_to study_discipline_checkpoints_path(@discipline)
+        end
+      end
+
+      context 'при наличии ошибок в данных дисциплины' do
+        before :each do
+          @discipline = create(:discipline, lead_teacher: @user)
+          @name =  @discipline.name
+          @discipline_attrs = build(:discipline, subject_id: @discipline.id,
+                                    lead_teacher: @user, subject_name: '').attributes
+          @discipline_attrs[:final_exam_attributes] = build(:exam, :final).attributes
+        end
+        it 'не должен вызывать изменение дисциплины' do
+          put :update, id: @discipline, study_discipline: @discipline_attrs
+          @discipline.reload
+          @discipline.name.should eq(@name)
+        end
+        it 'должен видеть форму создания дисциплины' do
+          put :update, id: @discipline, study_discipline: @discipline_attrs
+          should render_template(:edit)
+        end
+      end
+
+      context 'при наличии ошибок в данных контрольных точек' do
+        before :each do
+          @discipline = create(:discipline, lead_teacher: @user)
+          @old = @discipline
+          @checkpoint = create(:checkpoint, :checkpoint_control, discipline: @discipline)
+          @discipline_attrs = @discipline.attributes
+          @discipline_attrs[:checkpoints_attributes] = {2 => build(:checkpoint, :checkpoint_control,
+                                                             checkpoint_subject: @discipline.id,
+                                                             checkpoint_max: 90).attributes}
+        end
+        it 'не должен вызывать изменение дисциплины и контрольных точек' do
+          put :update, id: @discipline, study_discipline: @discipline_attrs
+          @discipline.reload
+          @discipline.should eq(@old)
+        end
+        it 'должен видеть форму создания контрольных точек' do
+          #put :update, id: @discipline, study_discipline: @discipline_attrs
+          #should render_template 'study/checkpoints/new'
+        end
+      end
     end
 
     describe 'при сохранении изменений в чужую дисциплину' do
       it 'должен получать ошибку ActiveRecord::RecordNotFound' do
-        pending
-        #discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
-        #attrs = discipline.attributes
-        #attrs[:subject_name] = 'Новое название'
-        #expect {
-        #  put :update, id: discipline.id, study_discipline: attrs
-        #}.to raise_error(ActiveRecord::RecordNotFound)
+        discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        attrs = discipline.attributes
+        attrs[:subject_name] = 'Новое название'
+        expect {
+          put :update, id: discipline.id, study_discipline: attrs
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -185,14 +247,17 @@ describe Study::DisciplinesController do
 
       context 'при наличии у неё контрольных точек' do
         before :each do
-          pending
+          @discipline = create(:discipline, lead_teacher: @user)
+          create(:checkpoint, :checkpoint_control, discipline: @discipline)
         end
 
         it 'не должен удалить дисциплину' do
-          pending
+          expect {
+            delete :destroy, id: @discipline
+          }.not_to change { Study::Discipline.count }.by(-1)
         end
 
-        it 'должен перейти на страницу со списокм дисциплин' do
+        it 'должен перейти на страницу со списком дисциплин' do
           delete :destroy, id: @discipline
           response.should redirect_to(study_disciplines_path)
         end
@@ -220,11 +285,13 @@ describe Study::DisciplinesController do
     #
     #  context 'при наличии у неё контрольных точек' do
     #    before :each do
-    #      pending
+    #      create(:checkpoint, :checkpoint_control, discipline: @discipline)
     #    end
     #
     #    it 'не должен удалить дисциплину' do
-    #      pending
+    #      expect {
+    #        delete :destroy, id: @discipline
+    #      }.not_to change { Study::Discipline.count }.by(-1)
     #    end
     #
     #    it 'должен перейти на страницу со списокм дисциплин' do
@@ -236,7 +303,10 @@ describe Study::DisciplinesController do
 
     describe 'при удалении чужой дисциплины' do
       it 'должен получить ошибку ActiveRecord::RecordNotFound' do
-        pending
+        discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        expect {
+          delete :destroy, id: discipline
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
