@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140121122640) do
+ActiveRecord::Schema.define(version: 20140124092801) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -1474,6 +1474,9 @@ ActiveRecord::Schema.define(version: 20140121122640) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "last_name_hint"
+    t.string   "first_name_hint"
+    t.string   "patronym_hint"
   end
 
   add_index "user", ["reset_password_token"], name: "index_user_on_reset_password_token", unique: true, using: :btree
@@ -1600,6 +1603,55 @@ BEGIN
                     NEW.patronym_hint = (SELECT dictionary.dictionary_ip
                                           FROM dictionary
                                           JOIN student ON NEW.student_oname = dictionary.dictionary_id
+                                          LIMIT 1);
+    END IF;
+END
+  TRIGGERSQL
+
+  # WARNING: generating adapter-specific definition for user_before_insert_row_tr due to a mismatch.
+  # either there's a bug in hairtrigger or you've messed up your migrations and/or db :-/
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@localhost TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
+FOR EACH ROW
+BEGIN
+    
+             SET
+                NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN user ON NEW.user_fname = dictionary.dictionary_id
+                                      LIMIT 1),
+                NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN user ON NEW.user_iname = dictionary.dictionary_id
+                                      LIMIT 1),
+                NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN user ON NEW.user_oname = dictionary.dictionary_id
+                                      LIMIT 1);
+END
+  TRIGGERSQL
+
+  # WARNING: generating adapter-specific definition for user_before_update_row_tr due to a mismatch.
+  # either there's a bug in hairtrigger or you've messed up your migrations and/or db :-/
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@localhost TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
+FOR EACH ROW
+BEGIN
+    IF NEW.user_fname <> OLD.user_fname OR NEW.user_iname <> OLD.user_iname OR
+                 NEW.user_oname <> OLD.user_oname THEN
+        
+                 SET
+                    NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN user ON NEW.user_fname = dictionary.dictionary_id
+                                          LIMIT 1),
+                    NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN user ON NEW.user_iname = dictionary.dictionary_id
+                                          LIMIT 1),
+                    NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN user ON NEW.user_oname = dictionary.dictionary_id
                                           LIMIT 1);
     END IF;
 END

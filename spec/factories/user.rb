@@ -5,6 +5,10 @@ FactoryGirl.define do
     username { Faker::Internet.user_name }
     password ::Digest::MD5.hexdigest('password')
 
+    association :fname, factory: :dictionary, strategy: :build
+    association :iname, factory: :dictionary, strategy: :build
+    association :oname, factory: :dictionary, strategy: :build
+
     trait :developer do
       after(:create) do |user|
         FactoryGirl.create :position,

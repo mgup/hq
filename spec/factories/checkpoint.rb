@@ -5,10 +5,10 @@ FactoryGirl.define do
     type { 1 + rand(1) }
     date 	{ Date.today }
     discipline
-    factory :checkpoint_control do
+    trait :checkpoint_control do
       type { 3 }
-      min { 11 }
-      max { 20 }
+      min { 44 }
+      max { 80 }
       name { Faker::Lorem.word }
       details { Faker::Lorem.sentence }
     end

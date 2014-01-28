@@ -3,7 +3,7 @@ require 'faker'
 FactoryGirl.define do
   factory :position, class: Position do
     title       { Faker::Lorem.word }
-    appointment { Date.today }
+    appointment
 
     user
     role

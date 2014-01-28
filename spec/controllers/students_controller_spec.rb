@@ -3,14 +3,13 @@ require 'spec_helper'
 describe StudentsController do
   context 'для разработчиков' do
     before do
-      @user = FactoryGirl.create(:developer)
+      @user = create(:user, :developer)
       sign_in @user
     end
 
     describe 'GET "index"' do
       before :each do
-        @student = FactoryGirl.create(:student, person: FactoryGirl.create(:person, fname: FactoryGirl.create(:dictionary),
-                  iname: FactoryGirl.create(:dictionary), oname: FactoryGirl.create(:dictionary)), group: FactoryGirl.create(:group))
+        @student = create(:student)
         get :index
       end
       it 'должен выполняться успешно' do
@@ -28,8 +27,7 @@ describe StudentsController do
 
     describe 'GET "show"' do
       before :each do
-        @shown = FactoryGirl.create(:student, person: FactoryGirl.create(:person, fname: FactoryGirl.create(:dictionary),
-                             iname: FactoryGirl.create(:dictionary), oname: FactoryGirl.create(:dictionary)), group: FactoryGirl.create(:group))
+        @shown = create(:student)
         get :show, id: @shown.id
       end
       it 'должен выполняться успешно' do

@@ -1,6 +1,6 @@
 module CalendarHelper
 
-  def render_dates_calendar(event, options = {})
+  def render_dates_calendar(first_day, last_day, options = {})
     content_tag :div do
       content_tag :table, class: 'table semester-calendar' do
         tags = []
@@ -11,8 +11,6 @@ module CalendarHelper
         end
         tags << '</tr>'.html_safe
 
-        first_day = event.dates.order(:date).first.date
-        last_day  = event.dates.order(:date).last.date
         (first_day..last_day).each do |d|
           # Если первый день семестра выпадает не на понедельник — добавляем
           # в начало строки пустые ячейки.
@@ -31,8 +29,6 @@ module CalendarHelper
             tags << '</tr>'.html_safe
           end
 
-          # Если последний день семестра выпадает не на воскресенье — добавляем
-          # в конец строки пустые ячейки.
           if last_day == d
             (7 - d.cwday).times { tags << '<td class="border-none border-top"></td>'.html_safe }
             tags << '</tr>'.html_safe

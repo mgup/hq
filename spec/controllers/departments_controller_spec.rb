@@ -3,7 +3,7 @@ require 'spec_helper'
 describe DepartmentsController do
   context 'для разработчиков' do
     before do
-      @user = FactoryGirl.create(:developer)
+      @user = create(:user, :developer)
       sign_in @user
     end
 
@@ -119,8 +119,9 @@ describe DepartmentsController do
     describe 'DELETE #destroy' do
       before :each do
         @deleted = FactoryGirl.create(:department)
-        Department.any_instance.should_receive(:destroy).and_return(true)
-        delete :destroy, id: @deleted
+        expect {
+          delete :destroy, id: @deleted
+        }.to change { Department.count }.by(-1)
       end
 
       it 'должен находить правильный департамент' do

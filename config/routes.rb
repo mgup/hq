@@ -28,6 +28,7 @@ HQ::Application.routes.draw do
   end
 
   resources :events do
+    get 'actual', to: 'events#actual', on: :collection
     get 'print.pdf', to: 'events#print', on: :member, defaults: { format: 'pdf' }, as: :print
     resources :dates do
       get 'print.pdf', to: 'dates#print', on: :member, defaults: { format: 'pdf' }, as: :print

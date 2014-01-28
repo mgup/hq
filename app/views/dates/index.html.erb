@@ -52,7 +52,7 @@
 
 
 <div class="col-sm-12 events">
-  <%= render_dates_calendar(@event) %>
+  <%= render_dates_calendar(@event.dates.order(:date).first.date, @event.dates.order(:date).last.date) %>
 </div>
 
 <div class="event_dates">

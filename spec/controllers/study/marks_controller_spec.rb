@@ -1,21 +1,19 @@
 require 'spec_helper'
 
 describe Study::MarksController do
-  context 'для разработчиков' do
+  context 'для авторизованных преподавателей' do
     before do
-      @user = FactoryGirl.create(:developer)
-      @discipline = FactoryGirl.create(:discipline_with_controls,  subject_teacher: @user.id, group: FactoryGirl.create(:group))
-      @checkpoint = @discipline.checkpoints.first
-      @student = FactoryGirl.create(:student, person: FactoryGirl.create(:person, fname: FactoryGirl.create(:dictionary),
-       iname: FactoryGirl.create(:dictionary), oname: FactoryGirl.create(:dictionary)), group: @discipline.group)
-      @other_student = FactoryGirl.create(:student, person: FactoryGirl.create(:person, fname: FactoryGirl.create(:dictionary),
-                                                                         iname: FactoryGirl.create(:dictionary), oname: FactoryGirl.create(:dictionary)), group: @discipline.group)
+      @user = create(:user, :lecturer)
+      @discipline = create(:discipline, lead_teacher: @user)
+      @checkpoint = create(:checkpoint, :checkpoint_control, discipline: @discipline)
+      @student = create(:student, group: @discipline.group)
+      @other_student = create(:student, group: @discipline.group)
       sign_in @user
     end
 
     describe 'GET "index"' do
       before :each do
-        @mark = FactoryGirl.create(:practical_mark,  student: @student,
+        @mark = create(:mark, :checkpoint_mark,  student: @student,
                                          checkpoint: @checkpoint)
         get :index, discipline_id: @discipline, checkpoint_id: @checkpoint
       end
@@ -78,8 +76,8 @@ describe Study::MarksController do
   context 'для не авторизованных пользователей' do
     it 'должен быть переход на страницу авторизации' do
       sign_out :user
-      @discipline = FactoryGirl.create(:discipline_with_controls,  subject_teacher: FactoryGirl.create(:user).id, group: FactoryGirl.create(:group))
-      @checkpoint = @discipline.checkpoints.first
+      @discipline = create(:discipline)
+      @checkpoint = create(:checkpoint, :checkpoint_control, discipline: @discipline)
 
       get :index, discipline_id: @discipline, checkpoint_id: @checkpoint
       response.should redirect_to(new_user_session_path)

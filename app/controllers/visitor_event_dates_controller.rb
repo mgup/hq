@@ -14,8 +14,11 @@ class VisitorEventDatesController < ApplicationController
   end
 
   def update
-    @visitor = VisitorEventDate.find(params[:visitor_event_date][:id])
-    @visitor.update_attribute  :event_date_id, params[:visitor_event_date][:event_date_id]
+    date = params[:visitor_event_date][:event_date_id]
+    unless EventDate.not_full.find_all{|x| x.id == date.to_i}.empty?
+      @visitor = VisitorEventDate.find(params[:visitor_event_date][:id])
+      @visitor.update_attribute  :event_date_id, date
+    end
     redirect_to event_path(@event)
   end
 

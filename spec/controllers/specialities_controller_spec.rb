@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SpecialitiesController do
   context 'для разработчиков' do
     before do
-      @user = FactoryGirl.create(:developer)
+      @user = create(:user, :developer)
       sign_in @user
     end
 

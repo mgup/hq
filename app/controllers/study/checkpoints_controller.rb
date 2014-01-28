@@ -76,7 +76,7 @@ class Study::CheckpointsController < ApplicationController
   def resource_params
     params.fetch(:study_checkpoint, {}).permit( :id, :checkpoint_date, :checkpoint_name, :checkpoint_details,
                                                 :checkpoint_max, :checkpoint_min, :'_destroy',
-                                                marks_attributes: [:id, :checkpoint_mark_student, :mark]
+                                                marks_attributes: [:id, :checkpoint_mark_student, :mark, :created_at, :updated_at]
     )
   end
 

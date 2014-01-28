@@ -31,7 +31,7 @@ module Study::CheckpointHelper
             tags << render_month_td(d, first_day)
           end
 
-          if first_day == d
+          if first_day == d && !d.monday?
             d.cwday.times { tags << '<td class="border-none border-bottom"></td>'.html_safe }
           end
 

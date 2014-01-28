@@ -23,6 +23,7 @@ $ ->
           span.text(mark.result)
           span.attr('class', "label label-#{mark.color}")
           btn.parents('tr').find('.editMarkField').hide()
+          btn.parents('tr').find('.mark_id').val(mark.id)
           td = btn.parent()
           td.empty()
           td.html('<button class="btn-default btn editMarkButton">Редактировать</button>')

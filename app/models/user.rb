@@ -147,6 +147,8 @@ class User < ActiveRecord::Base
     cond
   }
 
+  scope :except, -> ids { where("user_id NOT IN (#{ids.join(', ')})") }
+
   scope :from_name, -> name { with_name.where('dictionary.dictionary_ip LIKE :prefix OR user.user_name LIKE :prefix', prefix: "%#{name}%")}
   scope :from_department, -> department { where("#{department.split(',').collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
                                                                       " OR #{department.split(',').collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
@@ -186,6 +188,45 @@ class User < ActiveRecord::Base
 
   def name_with_positions
     full_name+(' (' + roles.collect{|r| r.title }.join(', ') + ')')
+  end
+
+  trigger.before(:insert) do
+    %q(
+         SET
+            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN user ON NEW.user_fname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN user ON NEW.user_iname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN user ON NEW.user_oname = dictionary.dictionary_id
+                                  LIMIT 1)
+       )
+  end
+
+  trigger.before(:update) do |t|
+    t.where('NEW.user_fname <> OLD.user_fname OR NEW.user_iname <> OLD.user_iname OR
+             NEW.user_oname <> OLD.user_oname') do
+      %q(
+         SET
+            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN user ON NEW.user_fname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN user ON NEW.user_iname = dictionary.dictionary_id
+                                  LIMIT 1),
+            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                  FROM dictionary
+                                  JOIN user ON NEW.user_oname = dictionary.dictionary_id
+                                  LIMIT 1)
+       )
+    end
   end
 
 end

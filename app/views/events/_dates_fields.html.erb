@@ -1,0 +1,28 @@
+<%= f.fields_for :dates do |sub_f| %>
+  <%= sub_f.hidden_field :id %>
+  <div style="padding-left: 10px;">
+  <div class="form-group">
+    <%= sub_f.label :date, 'Дата', class: 'control-label col-sm-2' %>
+    <div class="col-sm-7">
+      <%= sub_f.text_field :date, class: 'form-control', placeholder: 'дд.мм.гггг', required: true %>
+    </div>
+    <div class="col-sm-2">
+      <%= sub_f.link_to_remove 'Удалить', class: 'btn btn-danger' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= sub_f.label :time_start, 'Время начала', class: 'control-label col-sm-2', required: true %>
+    <div class="col-sm-7">
+      <%= sub_f.text_field :time_start, class: 'form-control', placeholder: 'чч:мм:сс' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= sub_f.label :time_end, 'Время окончания', class: 'control-label col-sm-2' %>
+    <div class="col-sm-7">
+      <%= sub_f.text_field :time_end, class: 'form-control', placeholder: 'чч:мм:сс' %>
+    </div>
+  </div>
+  <!--Пока так (потому что нет брони), посмотрим, как пойдет-->
+  <%= sub_f.hidden_field :max_visitors, value: 100 %>
+  </div>
+<% end %>

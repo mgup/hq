@@ -1,6 +1,6 @@
 class Study::DisciplinesController < ApplicationController
   before_filter :load_user_disciplines, only: :index
-  before_filter :load_user_discipline,  only: [:edit, :destroy]
+  before_filter :load_user_discipline,  only: [:edit, :destroy, :update]
   load_and_authorize_resource except: [:create]
 
   def index ; end
@@ -81,7 +81,7 @@ class Study::DisciplinesController < ApplicationController
   end
 
   def destroy
-    @discipline.destroy
+    @discipline.destroy if @discipline.checkpoints.empty?
 
     redirect_to study_disciplines_path
   end
@@ -138,7 +138,7 @@ class Study::DisciplinesController < ApplicationController
   end
 
   def load_user_disciplines
-    @disciplines = Study::Discipline.with_brs.include_teacher(current_user).order(:subject_name, :subject_group)
+    @disciplines = Study::Discipline.with_brs.include_teacher(current_user).order('subject_semester DESC', :subject_name, :subject_group)
   end
 
   def detect_lead_teacher
