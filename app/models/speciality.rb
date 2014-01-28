@@ -7,10 +7,10 @@ class Speciality < ActiveRecord::Base
   alias_attribute :type,    :speciality_ntype
   alias_attribute :suffix,  :speciality_short_name
 
-  belongs_to :faculty, class_name: Department, primary_key: :department_id, foreign_key: :speciality_faculty
+  belongs_to :faculty, class_name: 'Department', primary_key: :department_id, foreign_key: :speciality_faculty
 
   has_many :groups, foreign_key: :group_speciality
-  has_many :payment_types, class_name: Finance::PaymentType, primary_key: :speciality_id, foreign_key: :finance_payment_type_speciality
+  has_many :payment_types, class_name: 'Finance::PaymentType', primary_key: :speciality_id, foreign_key: :finance_payment_type_speciality
 
   default_scope do
     includes(:faculty).order(:speciality_name, :speciality_code)
