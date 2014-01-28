@@ -1,7 +1,0 @@
---protected
---no-private
---main README.md
---title "acts_as_xlsx: a rails plug in for axlsx"
--
-LICENSE
-CHANGELOG.md
