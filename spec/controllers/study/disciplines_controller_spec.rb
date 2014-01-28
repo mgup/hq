@@ -264,42 +264,42 @@ describe Study::DisciplinesController do
       end
     end
 
-    #describe 'при удалении дисциплины, в которой он дополнительный преподаватель' do
-    #  before :each do
-    #    @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
-    #    @discipline.assistant_teachers << @user
-    #  end
-    #
-    #  context 'при отсутствии у неё контрольных точек' do
-    #    it 'должен удалить дисциплину' do
-    #      expect {
-    #        delete :destroy, id: @discipline
-    #      }.to change { Study::Discipline.count }.by(-1)
-    #    end
-    #
-    #    it 'должен перейти на страницу со списком дисциплин' do
-    #      delete :destroy, id: @discipline
-    #      response.should redirect_to(study_disciplines_path)
-    #    end
-    #  end
-    #
-    #  context 'при наличии у неё контрольных точек' do
-    #    before :each do
-    #      create(:checkpoint, :checkpoint_control, discipline: @discipline)
-    #    end
-    #
-    #    it 'не должен удалить дисциплину' do
-    #      expect {
-    #        delete :destroy, id: @discipline
-    #      }.not_to change { Study::Discipline.count }.by(-1)
-    #    end
-    #
-    #    it 'должен перейти на страницу со списокм дисциплин' do
-    #      delete :destroy, id: @discipline
-    #      response.should redirect_to(study_disciplines_path)
-    #    end
-    #  end
-    #end
+    describe 'при удалении дисциплины, в которой он дополнительный преподаватель' do
+      before :each do
+        @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        @discipline.assistant_teachers << @user
+      end
+
+      context 'при отсутствии у неё контрольных точек' do
+        it 'должен удалить дисциплину' do
+          expect {
+            delete :destroy, id: @discipline
+          }.to change { Study::Discipline.count }.by(-1)
+        end
+
+        it 'должен перейти на страницу со списком дисциплин' do
+          delete :destroy, id: @discipline
+          response.should redirect_to(study_disciplines_path)
+        end
+      end
+
+      context 'при наличии у неё контрольных точек' do
+        before :each do
+          create(:checkpoint, :checkpoint_control, discipline: @discipline)
+        end
+
+        it 'не должен удалить дисциплину' do
+          expect {
+            delete :destroy, id: @discipline
+          }.not_to change { Study::Discipline.count }.by(-1)
+        end
+
+        it 'должен перейти на страницу со списокм дисциплин' do
+          delete :destroy, id: @discipline
+          response.should redirect_to(study_disciplines_path)
+        end
+      end
+    end
 
     describe 'при удалении чужой дисциплины' do
       it 'должен получить ошибку ActiveRecord::RecordNotFound' do
