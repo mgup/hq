@@ -1,5 +1,7 @@
 language: ruby
 rvm:
   - 2.0.0
+  - 2.1.0
 before_script:
+  - mysql -e 'create database cni_test;'
   - bundle exec rake db:migrate
