@@ -3,6 +3,5 @@ rvm:
   - 2.0.0
   - 2.1.0
 before_script:
-  - bundle exec rake db:create
-  - bundle exec rake db:migrate
+  - bundle exec rake db:setup
   - bundle exec rake db:test:prepare
