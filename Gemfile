@@ -71,6 +71,7 @@ end
 group :test do
   gem 'faker'
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'fuubar'

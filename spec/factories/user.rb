@@ -3,7 +3,7 @@ require 'faker'
 FactoryGirl.define do
   factory :user do
     username { Faker::Internet.user_name }
-    password ::Digest::MD5.hexdigest('password')
+    password { 'password' }
 
     association :fname, factory: :dictionary, strategy: :build
     association :iname, factory: :dictionary, strategy: :build
