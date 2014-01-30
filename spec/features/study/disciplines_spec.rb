@@ -1,53 +1,67 @@
 require 'spec_helper'
 
-feature 'Добавление новой дисциплины' do
+feature 'Просмотр дисциплин' do
   background 'Преподаватель' do
-
-    # понять, куда это перенести
-    @fd = create(:department, name: 'First Department', abbreviation: 'FD', department_role: 'faculty')
-    sd = create(:department, name: 'Second Department', abbreviation: 'SD', department_role: 'faculty')
-    @ffs = create(:speciality, name: 'First department first speciality', suffix: 'fdf', faculty: @fd)
-    fss = create(:speciality, name: 'First department second speciality', faculty: @fd)
-    @sfs = create(:speciality, name: 'Second department first speciality', suffix: 'sdf', faculty: sd)
-    @ffs.groups << create(:group, speciality: @ffs)
-
+    fd = create(:department, name: 'First Department', abbreviation: 'FD', department_role: 'faculty')
+    ffs = create(:speciality, name: 'Empty', suffix: 'fdf', faculty: fd)
+    fss = create(:speciality, name: 'First department second speciality', suffix: 'fdf', faculty: fd)
+    @group = create(:group, speciality: fss)
     @user = create(:user, :lecturer)
     as_user(@user)
   end
-  #scenario 'Просмотр списка дисциплин' do
-  #  discipline = create(:discipline, lead_teacher: @user)
-  #    visit study_disciplines_url
-  #    within 'h1' do
-  #      page.should have_content 'Балльно-рейтинговая система'
-  #    end
-  #    within 'a#new_discipline_button' do
-  #      page.should have_content 'Добавить дисциплину'
-  #    end
-  #    within 'h4' do
-  #      page.should have_content discipline.name
-  #    end
-  #end
-  scenario 'С корректными данными', js: true, driver: :webkit do
+  scenario 'Просмотр списка дисциплин' do
+    discipline = create(:discipline, lead_teacher: @user, group: @group)
     visit study_disciplines_path
     within 'h1' do
       page.should have_content 'Балльно-рейтинговая система'
     end
-    click_link 'Добавить дисциплину'
-    find_field('study_discipline[subject_year]').find('option[selected]').text.should eql "#{Study::Discipline::CURRENT_STUDY_YEAR}"
-    select('FD', from: 'faculty')
-    expect { select("#{@sfs.code} #{@sfs.name}", from: 'speciality') }.to raise_error
-    select("#{@ffs.code} #{@ffs.name}", from: 'speciality')
-    expect { find_field('study_discipline[subject_group]').find("#{@sg.name}")}.to raise_error
-    #within '#study_discipline_subject_group' do
-    #  page.should have_content @ffs.groups.collect{|f| f.name}.join(', ')
-    #end
-    #select("#{@ffs.groups.collect{|f| f.name}.join(', ')}", from: 'study_discipline[subject_group]')
-    fill_in 'study_discipline[subject_name]', with: 'Example name'
-    select('экзамен', from: 'study_discipline[final_exam_attributes][exam_type]')
-    click_button('Сохранить дисциплину')
-    #page.should have_content @ffs.groups.collect{|f| f.name}.join(', ')
-    within '.has-error' do
-      page.should have_content 'па ведущим преподавателем понимается'
+    within 'h4' do
+      page.should have_content discipline.name
     end
+  end
+  scenario 'Добавление новой дисциплины' do
+    visit study_disciplines_path
+    click_link 'Добавить дисциплину'
+    page.should have_selector '#new_study_discipline'
+  end
+  scenario 'Внесение данных для дисциплины без контрольных точек' do
+    discipline = create(:discipline, lead_teacher: @user, group: @group)
+    visit study_disciplines_path
+    page.should have_selector '.add_marks .glyphicon-calendar'
+    click_link 'Внести данные'
+    within 'h1' do
+      page.should have_content 'Расписание занятий и контрольных точек'
+    end
+    page.should have_content  discipline.name
+  end
+  scenario 'Внесение данных для дисциплины с контрольными точками' do
+    discipline = create(:discipline, lead_teacher: @user, group: @group)
+    control = create(:checkpoint, :checkpoint_control, discipline: discipline)
+    visit study_disciplines_path
+    page.should have_selector '.add_marks .glyphicon-list-alt'
+    click_link 'Внести данные'
+    within 'h1' do
+      page.should have_content  discipline.name
+    end
+    page.should have_content control.name
+  end
+  scenario 'Редактирование дисциплины' do
+    discipline = create(:discipline, lead_teacher: @user, group: @group)
+    visit study_disciplines_path
+    click_link 'Редактировать'
+    page.should have_selector "#edit_study_discipline_#{discipline.id}"
+  end
+  scenario 'Удаление дисциплины без контрольных точек', js: true, driver: :webkit do
+    discipline = create(:discipline, lead_teacher: @user, group: @group)
+    visit study_disciplines_path
+    click_link 'Удалить'
+    page.driver.browser.accept_js_confirms
+    page.should_not have_content  discipline.name
+  end
+  scenario 'Нельзя удалить дисциплину с контрольными точками' do
+    discipline = create(:discipline, lead_teacher: @user, group: @group)
+    create(:checkpoint, :checkpoint_control, discipline: discipline)
+    visit study_disciplines_path
+    page.should_not have_selector '.delete_empty_discipline'
   end
 end
