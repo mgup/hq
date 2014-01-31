@@ -16,7 +16,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
  end
  table_data = [['№ п/п', 'ФИО', 'Дата профосмотра', 'Структурное подразделение']]
  data.sort_by { |d| d[:name] }.each_with_index do |visitor, index|
-   table_data << ["#{index+1}.", visitor[:name], visitor[:date], visitor[:department]]
+   table_data << ["#{index+1}", visitor[:name], visitor[:date], visitor[:department]]
  end
 
  pdf.font_size 10 do
