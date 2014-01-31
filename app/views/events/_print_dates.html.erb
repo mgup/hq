@@ -1,0 +1,25 @@
+<div class="modal fade" id="printDifferentDates" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%= @event.name %></h4>
+      </div>
+      <div class="modal-body">
+        <h3>Отметьте даты, приложения по которым вы хотите распечатать:</h3>
+        <table>
+        <% @event.dates.each do |date| %>
+          <tr>
+            <td><%= check_box_tag 'dates[]', date.id, false,  class: 'dateCheckbox' %></td>
+            <td><%= date.date_with_time %></td>
+          </tr>
+        <% end %>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <%= button_tag 'Распечатать', class: 'btn btn-primary', id: 'printDates', data: {value: @event.id} %>
+      </div>
+    </div>
+  </div>
+</div>
