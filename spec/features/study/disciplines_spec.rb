@@ -49,7 +49,7 @@ feature 'Просмотр дисциплин' do
     discipline = create(:discipline, lead_teacher: @user, group: @group)
     visit study_disciplines_path
     click_link 'Редактировать'
-    page.should have_selector "#edit_study_discipline_#{discipline.id}"
+    page.should have_css "#edit_study_discipline_#{discipline.id}"
   end
   scenario 'Удаление дисциплины без контрольных точек', js: true, driver: :webkit do
     discipline = create(:discipline, lead_teacher: @user, group: @group)

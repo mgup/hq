@@ -43,14 +43,14 @@ feature 'Добавление новой дисциплины' do
     select(@group.name, from: 'study_discipline[subject_group]')
     select('экзамен', from: 'study_discipline[final_exam_attributes][exam_type]')
     click_button('Сохранить дисциплину')
-    page.should have_selector '.has-error'
+    page.should have_css '.has-error'
   end
 
   scenario 'с дополнительными преподавателями', js: true, driver: :webkit do
     visit new_study_discipline_path
     click_link 'Указать дополнительного преподавателя'
     page.should have_content 'Доп. преподаватель'
-    page.should have_selector '#discipline_teachers'
+    page.should have_css '#discipline_teachers'
   end
 
 end
