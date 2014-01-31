@@ -25,6 +25,11 @@
 <%= link_to print_event_path(@event), class: 'btn btn-primary' do %>
   <span class="glyphicon glyphicon-print"></span> Распечатать приложение к приказу по всем датам
 <% end %>
+<%= link_to '#printDifferentDates', data: {toggle: 'modal'},
+            class: 'btn btn-info', style: 'margin-left: 15px;' do %>
+  <span class="glyphicon glyphicon-print"></span> Распечатать приложение к приказу по нескольким датам
+<% end %>
+<%= render 'print_dates' %>
 <br><br>
 <button data-value="<%= @event.id %>" class="addVisitor btn btn-success">Добавить сотрудника</button>
 <br><br>

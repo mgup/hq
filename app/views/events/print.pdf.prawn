@@ -4,7 +4,12 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                page_size: 'A4', page_layout: :portrait do |pdf|
  render 'pdf/font', pdf: pdf
  data = []
- @event.dates.each do |date|
+ if params[:dates]
+  dates = @event.dates.find(params[:dates].split(','))
+ else
+  dates = @event.dates
+ end
+ dates.each do |date|
   date.visitors.each do |visitor|
     data << {name: visitor.full_name, date: (l date.date), department: (visitor.departments.empty? ? (visitor.user_department? ? Department.find(visitor.user_department).name : '') : visitor.departments.first.name) }
   end
@@ -22,7 +27,11 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     end
    pdf.font_size 11 do
      pdf.move_down 15
-     pdf.text "Список работников, направляемых на ежегодный\n периодический профосмотр.", style: :bold, align: :center
+     if params[:dates]
+       pdf.text "Список работников, направляемых на ежегодный\n периодический профосмотр #{dates.collect{|d| (l d.date, format: '%d %B')}.join(', ')} 2014 г.", style: :bold, align: :center
+      else
+       pdf.text "Список работников, направляемых на ежегодный\n периодический профосмотр.", style: :bold, align: :center
+      end
    end
    pdf.move_down 10
    pdf.table table_data, width: pdf.bounds.width, cell_style: { padding: [2, 4] } do
