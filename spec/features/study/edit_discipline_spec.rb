@@ -56,6 +56,27 @@ feature 'Редактирование дисциплины' do
     find('#discipline_teachers').find('select').find('option[selected]').text.should eql "#{@user.full_name}"
   end
 
+  # scenario 'должен удалять дополнительных преподавателей' do
+  #   other_teacher = create(:user)
+  #   create(:position, user: other_teacher, role: FactoryGirl.create(:role, :lecturer), department: @user.departments.academic.first)
+  #   @discipline.assistant_teachers << other_teacher
+  #   visit edit_study_discipline_path(@discipline)
+  #   within '#discipline_teachers' do
+  #     click_link 'Удалить'
+  #   end  
+  #   click_button('Сохранить дисциплину')
+  #   page.should have_content other_teacher
+  # end
+
+  # scenario 'при удалении себя как дополнительного преподавателя дисциплина должна исчезать из списка' do
+  #   discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+  #   discipline.assistant_teachers << @user
+  #   visit edit_study_discipline_path(discipline)
+  #   click_link 'Удалить' 
+  #   click_button('Сохранить дисциплину')
+  #   page.should_not have_content discipline.name
+  # end
+
   scenario 'должен редактировать дисциплину при корректных данных' do
     create(:checkpoint, :checkpoint_control, discipline: @discipline)
     visit edit_study_discipline_path(@discipline)
@@ -75,7 +96,24 @@ feature 'Редактирование дисциплины' do
   end
 
   scenario 'если у дисциплины есть курсовая работа или проект, они должны быть отмечены' do
+     create(:exam, :work, discipline: @discipline)
     visit edit_study_discipline_path(@discipline)
+    page.should have_checked_field 'has_semester_work'
   end
+
+  scenario 'если у дисциплины нет курсовой работы или проекта, они не должны быть отмечены' do
+    visit edit_study_discipline_path(@discipline)
+    page.should_not have_checked_field 'has_semester_work'
+    page.should_not have_checked_field 'has_semester_project'
+  end
+
+   scenario 'при редактировании можно добавить курсовую работу или проект' do
+    visit edit_study_discipline_path(@discipline)
+    find("input[type='checkbox']#has_semester_work").set(true)
+    expect{
+      click_button('Сохранить дисциплину')
+    }.to change { Study::Exam.count }.by(1)
+  end
+  
 
 end

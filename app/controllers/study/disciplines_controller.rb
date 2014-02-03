@@ -59,6 +59,8 @@ class Study::DisciplinesController < ApplicationController
       #if params.include?(:plan)
       #  redirect_to study_plans_updatediscipline_path
       #else
+        @discipline.add_semester_work    if '1' == params[:has_semester_work]
+        @discipline.add_semester_project if '1' == params[:has_semester_project]
         redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
       #end
     else
