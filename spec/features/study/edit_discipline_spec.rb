@@ -112,7 +112,16 @@ feature 'Редактирование дисциплины' do
     find("input[type='checkbox']#has_semester_work").set(true)
     expect{
       click_button('Сохранить дисциплину')
-    }.to change { Study::Exam.count }.by(1)
+    }.to change { @discipline.exams.count }.by(1)
+  end
+
+  scenario 'при редактировании можно убрать курсовую работу или проект' do
+    create(:exam, :work, discipline: @discipline)
+    visit edit_study_discipline_path(@discipline)
+    find("input[type='checkbox']#has_semester_work").set(false)
+    expect{
+      click_button('Сохранить дисциплину')
+    }.to change { @discipline.exams.count }.by(-1)
   end
   
 
