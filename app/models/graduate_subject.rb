@@ -5,7 +5,7 @@ class GraduateSubject < ActiveRecord::Base
   belongs_to :graduate
 
   has_many :graduate_students
-  has_many :graduate_marks
+  has_many :graduate_marks, dependent: :destroy
 
   scope :only_subjects, -> { where(kind: TYPE_SUBJECT) }
   scope :only_papers, -> { where(kind: TYPE_PAPER) }
