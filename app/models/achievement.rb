@@ -33,13 +33,13 @@ class Achievement < ActiveRecord::Base
   }
 
   scope :in_selection, -> {
-    includes(:period)
-    .where(activity_id: 44)
+    joins(:period)
+    .where(activity_id: 44).order('user_id, year')
   }
 
   scope :in_social, -> {
-    includes(:period)
-    .where(activity_id: 43)
+    joins(:period)
+    .where(activity_id: 43).order('user_id, year')
   }
 
   def new?
@@ -51,7 +51,7 @@ class Achievement < ActiveRecord::Base
   end
 
   def accepted_final?
-    STATUS_ACCEPTED == status
+    STATUS_ACCEPTED_FINAL == status
   end
 
   def refused?
