@@ -7,7 +7,7 @@ FactoryGirl.define do
 
     user
     role
-    department
+    association :department, factory: [:department, :academic], strategy: :build
 
     factory :position_developer do
       association :role, factory: :role_developer

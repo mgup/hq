@@ -37,6 +37,12 @@ class Study::Discipline < ActiveRecord::Base
   has_one :final_exam, -> { where(exam_type: [Study::Exam::TYPE_TEST, Study::Exam::TYPE_GRADED_TEST, Study::Exam::TYPE_EXAMINATION]) }, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
   accepts_nested_attributes_for :final_exam
 
+  has_one :semester_work, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_WORK)}, 
+          class_name: Study::Exam, foreign_key: :exam_subject
+  has_one :semester_project, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)}, 
+          class_name: Study::Exam, foreign_key: :exam_subject
+  
+
   validates :name, presence: true
   validates :year, presence: true, numericality: { greater_than: 2012, less_than: 2020 }
   validates :semester, presence: true, inclusion: { in: [1,2] }
@@ -127,6 +133,15 @@ class Study::Discipline < ActiveRecord::Base
   end
   def add_semester_project
     exams.create(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)
+  end
+
+  def destroy_semester_work
+    semester_work.destroy
+    save!
+  end
+  def destroy_semester_project
+    semester_project.destroy
+    save!
   end
 
   private

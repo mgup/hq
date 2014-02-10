@@ -6,7 +6,7 @@ FactoryGirl.define do
     subject_semester  { 1 + rand(1) }
     subject_name      { Faker::Lorem.sentence }
     subject_brs { true }
-    group
+    association :group, factory: :group, strategy: :build
     association :lead_teacher, factory: :user, strategy: :build
     association :final_exam,   factory: [:exam, :final], strategy: :build
 
