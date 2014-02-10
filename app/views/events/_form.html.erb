@@ -10,7 +10,9 @@
   <div class="form-group <%= 'has-error' if @event.errors.include?(:description) %>">
     <%= f.label :description, class: 'col col-sm-2 control-label' %>
     <div class="col col-sm-10">
-      <%= f.text_area :description, rows: 5, class: 'form-control' %>
+      <div>
+        <%= f.text_area :description, rows: 10, class: 'form-control rich-text-redactor' %>
+      </div>
     </div>
   </div>
 

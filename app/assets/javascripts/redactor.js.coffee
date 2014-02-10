@@ -1,0 +1,2 @@
+$ ->
+  $('.rich-text-redactor').redactor()
