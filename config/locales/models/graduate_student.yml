@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+     graduate_student: 'выпускник'
+    attributes:
+      graduate_student:
+        thesis: 'тема'
+        mark: 'оценка'
+        registration: 'регистрационный номер'
+        education: 'предыдущее образование'

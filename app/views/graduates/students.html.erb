@@ -21,7 +21,7 @@
       <td><%= student.person.full_name %></td>
       <td>
         <% if student.graduate_student %>
-          <%= link_to 'Редактировать', edit_graduate_graduate_student_path(student.graduate_student) %>
+          <%= link_to 'Редактировать', edit_graduate_graduate_student_path(@graduate, student.graduate_student) %>
         <% else %>
           <%= link_to 'Добавить информацию', graduate_graduate_students_path(@graduate, student_id: student.id), method: :post %>
         <% end %>
