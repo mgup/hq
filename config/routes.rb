@@ -1,6 +1,10 @@
 HQ::Application.routes.draw do
   # Выпуски (группы выпускников).
-  resources :graduates
+  resources :graduates do
+    get 'students', on: :member
+
+    resources :graduate_students
+  end
 
   resources :blanks
 
