@@ -29,7 +29,7 @@ class Achievement < ActiveRecord::Base
     users = User.in_department(dep_ids).with_role(Role.select(:acl_role_id).where(acl_role_name: 'lecturer'))
     ids = users.map { |u| u.id }.push(user.id)
 
-    where(user_id: ids).order('status ASC, user_id')
+    where(user_id: ids).where('status != 4').order('status ASC, user_id')
   }
 
   scope :in_selection, -> {
