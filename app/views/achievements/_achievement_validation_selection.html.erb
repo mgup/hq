@@ -1,4 +1,4 @@
-<div <%= 'style="background-color: #dff0d8; padding: 5px;"'.html_safe if achievement.accepted? %>
+<div <%= 'style="background-color: #dff0d8; padding: 5px;"'.html_safe if achievement.accepted_final? %>
      <%= 'style="background-color: #f2dede; padding: 5px;"'.html_safe if achievement.refused? %>>
 
   <%= form_for achievement, remote: true, html: { class: 'form-horizontal form-achievement-validation' } do |f| %>
@@ -21,7 +21,7 @@
       <%= f.label :comment, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
         <%= f.text_area :comment, class: 'form-control achievement-comment',
-                           data: { id: achievement.id }, rows: 2, disabled: achievement.accepted? %>
+                           data: { id: achievement.id }, rows: 2, disabled: achievement.accepted_final? %>
       </div>
     </div>
 
@@ -30,17 +30,17 @@
       <div class="col-sm-2">
         <%= f.number_field :cost, class: 'form-control achievement-cost',
                            data: { id: achievement.id }, pattern: '\d+(\.\d{2})?',
-                           min: 0, max: achievement.activity.credit, step: 0.1, disabled: achievement.accepted? %>
+                           min: 0, max: achievement.activity.credit, step: 0.1, disabled: achievement.accepted_final? %>
       </div>
       <div class="col-sm-4 col-sm-offset-4">
         <% if achievement.refused? %>
           <%= f.submit 'Вернуть и подтвердить', class: 'btn btn-success pull-right',
                        style: 'margin-right: 10px;',
-                       onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(2);" %>
+                       onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(4);" %>
         <% else %>
-          <% unless achievement.accepted? || achievement.accepted_final? %>
+          <% unless achievement.accepted_final? %>
             <%= f.submit 'Подтвердить', class: 'btn btn-success',
-                         onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(2);" %>
+                         onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(4);" %>
           <% end %>
 
           <%= f.submit 'Удалить', class: 'btn btn-danger pull-right',
