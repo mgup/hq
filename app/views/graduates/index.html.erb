@@ -20,13 +20,15 @@
       <th>#</th>
       <th>Группа</th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <% @graduates.each do |graduate| %>
     <tr>
       <td><%= graduate.id %></td>
-      <td><%= graduate.group.name %></td>
+      <td class="full-width"><%= graduate.group.name %></td>
       <td><%= link_to 'Дисциплины', edit_graduate_path(graduate) %></td>
+      <td><%= link_to 'Студенты', students_graduate_path(graduate) %></td>
     </tr>
   <% end %>
 </table>

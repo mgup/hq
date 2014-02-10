@@ -79,6 +79,7 @@ class Student < ActiveRecord::Base
   has_many :visitor_event_dates, as: :visitor
   has_many :dates, through: :visitor_event_dates
 
+  has_one :graduate_student
 
   default_scope do
     joins(:person)

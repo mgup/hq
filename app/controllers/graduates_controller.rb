@@ -26,6 +26,10 @@ class GraduatesController < ApplicationController
     end
   end
 
+  def students
+    @students = @graduate.group.students.valid_for_today
+  end
+
   def resource_params
     params.fetch(:graduate, {}).permit(:group_id, :year, :chairman, :secretary,
                                        graduate_subjects_attributes: [

@@ -757,6 +757,14 @@ ActiveRecord::Schema.define(version: 20140210065413) do
 
   add_index "flat", ["flat_hostel"], name: "flatHostel", using: :btree
 
+  create_table "graduate_marks", force: true do |t|
+    t.integer  "graduate_student_id"
+    t.integer  "graduate_subject_id"
+    t.string   "mark"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "graduate_students", force: true do |t|
     t.integer  "graduate_id"
     t.integer  "student_id"
@@ -1520,4 +1528,5 @@ ActiveRecord::Schema.define(version: 20140210065413) do
   end
 
   add_index "visitor_event_date", ["event_date_id"], name: "index_visitor_event_date_on_event_date_id", using: :btree
+end
 
