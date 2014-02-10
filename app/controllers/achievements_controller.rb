@@ -107,7 +107,7 @@ class AchievementsController < ApplicationController
     @achievements = Achievement.in_selection
   end
 
-  # Валидация показателей эффективности про приёмке и профориентационной работе.
+  # Валидация показателей эффективности по социальной работе.
   def validate_social
     @achievements = Achievement.in_social
   end
