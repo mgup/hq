@@ -1,0 +1,13 @@
+<div class="page-header">
+  <h1>
+    Подтверждение показателей эффективности<br><small>Профориентационная работа, работа по привлечению контингента и работа в приёмной комиссии</small>
+  </h1>
+</div>
+<p class="lead">Данный показатель может быть оценен в пределах от <strong>0</strong> до <strong>6</strong> баллов</p>
+
+
+<% @achievements.each do |achievement| %>
+  <div id="<%= dom_id(achievement, :validate_selection) %>">
+    <%= render partial: 'achievement_validation_selection', locals: { achievement: achievement } %>
+  </div>
+<% end %>

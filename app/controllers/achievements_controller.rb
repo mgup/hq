@@ -1,5 +1,5 @@
 class AchievementsController < ApplicationController
-  load_resource except: [:update, :destroy, :validate]
+  load_resource except: [:update, :destroy, :validate, :validate_selection, :validate_social]
   authorize_resource
 
   def periods
@@ -174,6 +174,6 @@ class AchievementsController < ApplicationController
 
   def resource_params
     params.fetch(:achievement, {}).permit(:description, :achievement_period_id,
-                                          :activity_id, :value, :cost, :status)
+                                          :activity_id, :value, :cost, :status, :comment)
   end
 end

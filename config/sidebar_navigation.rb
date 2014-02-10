@@ -94,6 +94,16 @@ SimpleNavigation::Configuration.run do |navigation|
           primary.item :validate_achievements, 'Подтверждение показателей эффективности',
                        validate_achievements_path, icon: 'check'
         end
+
+        if can? :validate_selection, Achievement
+          primary.item :validate_selection_achievements, 'Подтверждение показателей эффективности (профориентационная работа, работа по привлечению контингента и работа в приёмной комиссии)',
+                       validate_selection_achievements_path, icon: 'check'
+        end
+
+        if can? :validate_social, Achievement
+          primary.item :validate_social_achievements, 'Подтверждение показателей эффективности (работа куратором)',
+                       validate_social_achievements_path, icon: 'check'
+        end
       end
 
       if can? :manage, Student

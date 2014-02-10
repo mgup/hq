@@ -33,12 +33,12 @@ class Achievement < ActiveRecord::Base
   }
 
   scope :in_selection, -> {
-    includes(:achievement_periods)
+    includes(:period)
     .where(activity_id: 44)
   }
 
-  scope :in_selection, -> {
-    includes(:achievement_periods)
+  scope :in_social, -> {
+    includes(:period)
     .where(activity_id: 43)
   }
 

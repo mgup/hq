@@ -68,6 +68,7 @@ class Ability
 
         can :reference, Student, Student.valid_for_today
       end
+
     end
 
     can [:index, :show], :progress
@@ -85,6 +86,8 @@ class Ability
     can :manage, Study::Exam
     can :manage, [Achievement, AchievementReport], user_id: user.id
     cannot :validate, Achievement
+    cannot :validate_social, Achievement
+    cannot :validate_selection, Achievement
   end
 
   def subdepartment_assistant(user)
@@ -107,6 +110,11 @@ class Ability
   def executive_secretary(user)
     can :update, Achievement
     can :validate_selection, Achievement
+  end
+
+  def pro_rector_social(user)
+    can :update, Achievement
+    can :validate_social, Achievement
   end
 
   def soc_support_boss(user)
