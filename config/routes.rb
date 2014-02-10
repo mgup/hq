@@ -1,4 +1,7 @@
 HQ::Application.routes.draw do
+  # Выпуски (группы выпускников).
+  resources :graduates
+
   resources :blanks
 
   devise_for :users, controllers: { registrations: 'users' }
@@ -160,6 +163,8 @@ HQ::Application.routes.draw do
     get 'periods',  on: :collection
     get 'print.xlsx', to: 'achievements#print', on: :collection, defaults: { format: 'xlsx' }, as: :print
     get 'validate', on: :collection
+    get 'validate_selection', on: :collection
+    get 'validate_social', on: :collection
   end
   resources :achievement_reports do
     get 'reopen', on: :member

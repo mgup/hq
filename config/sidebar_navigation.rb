@@ -101,6 +101,10 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
       end
 
+      if can? :manage, Graduate
+        primary.item :graduates, 'Выпускники', graduates_path, icon: 'folder-open'
+      end
+
       if can? :index, :groups
         primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
       end

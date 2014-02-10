@@ -32,6 +32,16 @@ class Achievement < ActiveRecord::Base
     where(user_id: ids).order('status ASC, user_id')
   }
 
+  scope :in_selection, -> {
+    includes(:achievement_periods)
+    .where(activity_id: 44)
+  }
+
+  scope :in_selection, -> {
+    includes(:achievement_periods)
+    .where(activity_id: 43)
+  }
+
   def new?
     STATUS_NEW == status
   end

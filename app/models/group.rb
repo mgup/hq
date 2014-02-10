@@ -40,6 +40,16 @@ class Group < ActiveRecord::Base
     end
   }
 
+  scope :without_graduate, -> {
+    joins('LEFT JOIN graduates ON graduates.group_id = group.group_id')
+    .where('graduates.id IS NULL')
+  }
+
+  # Поиск всех групп с выпускниками.
+  def self.for_graduate
+    Group.all.without_graduate.find_all { |g| g.study_length == g.course }
+  end
+
   def study_length
     case form
       when 101

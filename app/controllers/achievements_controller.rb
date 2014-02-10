@@ -102,6 +102,16 @@ class AchievementsController < ApplicationController
     end
   end
 
+  # Валидация показателей эффективности про приёмке и профориентационной работе.
+  def validate_selection
+    @achievements = Achievement.in_selection
+  end
+
+  # Валидация показателей эффективности про приёмке и профориентационной работе.
+  def validate_social
+    @achievements = Achievement.in_social
+  end
+
   def print
     @no_reports = ActiveRecord::Base.connection.execute("
       SELECT department_sname AS `Кафедра`,

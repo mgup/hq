@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+     graduate: 'выпуск'
+    attributes:
+      graduate:
+        chairman: 'председатель'
+        secretary: 'секретарь'

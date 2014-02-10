@@ -104,6 +104,11 @@ class Ability
     #can :validate, Achievement
   end
 
+  def executive_secretary(user)
+    can :update, Achievement
+    can :validate_selection, Achievement
+  end
+
   def soc_support_boss(user)
     soc_support(user)
     soc_support_vedush(user)
