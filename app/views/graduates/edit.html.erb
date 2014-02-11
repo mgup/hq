@@ -27,6 +27,21 @@
   <fieldset>
     <legend>Дисциплины</legend>
 
+    <div class="form-group">
+      <div class="col-sm-2">
+        <label>Вид</label>
+      </div>
+      <div class="col-sm-5">
+        <label>Название</label>
+      </div>
+      <div class="col-sm-2">
+        <label>Часы</label>
+      </div>
+      <div class="col-sm-2">
+        <label>ЗЕТ</label>
+      </div>
+    </div>
+
     <%= f.fields_for :graduate_subjects do |sf| %>
       <div class="form-group">
         <div class="col-sm-2">
