@@ -39,7 +39,7 @@ class Achievement < ActiveRecord::Base
 
   scope :in_social, -> {
     joins(:period)
-    .where(activity_id: 43).order('user_id, year')
+    .where(activity_id: 43).order('year, user_id')
   }
 
   def new?
