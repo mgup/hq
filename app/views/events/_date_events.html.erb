@@ -10,7 +10,7 @@
         <% dates.each_with_index do |date| %>
           <div class="thumbnail">
             <h4><%= date.event.name %></h4>
-            <p><%= date.event.description %></p>
+            <p><%= raw date.event.description %></p>
             <label>Время проведения: <%= l date.time_start, format: '%H:%M' %><%= " - #{ l date.time_end, format: '%H:%M' }" if date.time_end %></label>
           </div>
           <br>

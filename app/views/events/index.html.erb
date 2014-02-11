@@ -45,7 +45,7 @@
           <td><%= index + 1 %></td>
           <td>
             <strong><%= event.name %></strong>
-            <p class="help-block"><%= event.description %></p>
+            <p class="help-block"><%= raw event.description %></p>
           </td>
           <td>
             <%= link_to event_path(event), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', confirm: 'Вы уверены?' do %>

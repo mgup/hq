@@ -21,7 +21,7 @@ $.Redactor.opts.langs['ru'] = {
 	italic: 'Наклонный',
 	fontcolor: 'Цвет текста',
 	backcolor: 'Заливка текста',
-	unorderedlist: 'Обычный список',
+	unorderedlist: 'Маркированный список',
 	orderedlist: 'Нумерованный список',
 	outdent: 'Уменьшить отступ',
 	indent: 'Увеличить отступ',
