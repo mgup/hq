@@ -69,7 +69,7 @@
           <%= sf.object.graduate_subject.name %>
         </label>
         <div class="col-sm-3">
-          <%= sf.select :mark, options_for_select([['отлично', 5], ['хорошо', 4]], selected: sf.object.mark),
+          <%= sf.select :mark, options_for_select([['отлично', 5], ['хорошо', 4], ['удовлетворительно', 3], ['зачтено', 6]], selected: sf.object.mark),
                         { prompt: 'оценка' }, class: 'form-control input-sm' %>
         </div>
       </div>
