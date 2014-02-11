@@ -2,7 +2,7 @@
   <h1>
     <%= @graduate_student.student.person.short_name %>
     <small>
-      <%= @graduate.group.name %>, <%= @graduate.year %> / <%= @graduate.year + 1 %>
+      <%= @graduate.group.name %>, <%= @graduate.year %>/<%= @graduate.year + 1 %>
     </small>
   </h1>
 </div>
@@ -49,7 +49,7 @@
       <div class="col-sm-10">
         <%= f.text_field :education, class: 'form-control' %>
         <p class="help-block">
-          Маша, дай мне пример заполнения!
+          Диплом бакалавра Московского государственного университета печати имени Ивана Федорова по направлению «Менеджмент» 2011 год
         </p>
       </div>
     </div>
