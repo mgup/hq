@@ -2,13 +2,16 @@
   <h1>Актуальные события</h1>
 </div>
 
-<div class="col-sm-12 actuals">
-  <%= render_dates_calendar(Date.parse(@dates.first),
+<!--<div class="col-sm-12 actuals">-->
+  <% render_dates_calendar(Date.parse(@dates.first),
                             Date.parse(@dates.last)) %>
-</div>
+<!--</div>-->
 
 <div class="actual_dates">
-  <% @dates.each_with_index do |date, index| %>
-    <%= render partial: 'date_events', locals: {index: index+1, date: date, dates: EventDate.from_date(date)} %>
+  <% @event_dates.each_with_index do |date, index| %>
+    <h2><%= date.event.name %> <small><%= l date.date, format: '%d.%m.%Y' %></small></h2>
+    <div><%= raw date.event.description %></div>
+    <hr>
+    <br>
   <% end %>
 </div>

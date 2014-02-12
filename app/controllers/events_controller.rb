@@ -13,6 +13,11 @@ class EventsController < ApplicationController
       @dates << event.dates.collect{|d| (l d.date, format: '%d.%m.%Y')}
     end
     @dates = @dates.flatten.uniq.sort_by{|d| d,m,y=d.split('.');[y,m,d]}
+    @event_dates = []
+    @events.each do |event|
+      @event_dates << event.dates.collect{|d| d}
+    end
+    @event_dates = @event_dates.flatten.uniq
   end
 
   def show
