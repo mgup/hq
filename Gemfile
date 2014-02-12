@@ -4,15 +4,12 @@ gem 'rails'
 gem 'mysql2'
 gem 'coveralls', require: false
 
-group :assets do
-  gem 'sass-rails'
-  gem 'bootstrap-sass'
-  gem 'coffee-rails'
+gem 'sass-rails'
+gem 'bootstrap-sass'
+gem 'coffee-rails'
 
-  gem 'therubyracer', platforms: :ruby
-
-  gem 'uglifier'
-end
+gem 'therubyracer', platforms: :ruby
+gem 'uglifier'
 
 gem 'jquery-rails'
 gem 'turbolinks'

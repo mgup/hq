@@ -10,11 +10,6 @@
  *
  *= require_self
  *
- *= require fonts
- *= require bootstrap
- *
- *= require bootstrap-datepicker
- *
  *= require chosen
  ** require jquery.ui.core
  ** require jquery.ui.theme
@@ -24,6 +19,8 @@
  */
 
 @import 'bootstrap';
+@import 'bootstrap.override';
+@import 'bootstrap-datepicker';
 
 @font-face {
   font-family: 'Glyphicons Halflings';
