@@ -6,6 +6,7 @@ gem 'coveralls', require: false
 
 group :assets do
   gem 'sass-rails'
+  gem 'bootstrap-sass'
   gem 'coffee-rails'
 
   gem 'therubyracer', platforms: :ruby

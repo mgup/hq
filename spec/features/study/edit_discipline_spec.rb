@@ -56,26 +56,26 @@ feature 'Редактирование дисциплины' do
     find('#discipline_teachers').find('select').find('option[selected]').text.should eql "#{@user.full_name}"
   end
 
-  # scenario 'должен удалять дополнительных преподавателей' do
+  #scenario 'должен удалять дополнительных преподавателей' do
   #   other_teacher = create(:user)
   #   create(:position, user: other_teacher, role: FactoryGirl.create(:role, :lecturer), department: @user.departments.academic.first)
   #   @discipline.assistant_teachers << other_teacher
   #   visit edit_study_discipline_path(@discipline)
   #   within '#discipline_teachers' do
   #     click_link 'Удалить'
-  #   end  
+  #   end
   #   click_button('Сохранить дисциплину')
   #   page.should have_content other_teacher
-  # end
-
-  # scenario 'при удалении себя как дополнительного преподавателя дисциплина должна исчезать из списка' do
+  #end
+  #
+  #scenario 'при удалении себя как дополнительного преподавателя дисциплина должна исчезать из списка' do
   #   discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
   #   discipline.assistant_teachers << @user
   #   visit edit_study_discipline_path(discipline)
-  #   click_link 'Удалить' 
+  #   click_link 'Удалить'
   #   click_button('Сохранить дисциплину')
   #   page.should_not have_content discipline.name
-  # end
+  #end
 
   scenario 'должен редактировать дисциплину при корректных данных' do
     create(:checkpoint, :checkpoint_control, discipline: @discipline)

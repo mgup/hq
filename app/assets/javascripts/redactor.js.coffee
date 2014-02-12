@@ -3,5 +3,6 @@ $ ->
     lang: 'ru',
     buttons: ['formatting',  '|', 'table', '|', 'bold', 'italic', 'underline', '|',
               'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-              'orderedlist', 'unorderedlist', 'outdent', 'indent']
+              'orderedlist', 'unorderedlist', 'outdent', 'indent', '|',
+              'image']
   })

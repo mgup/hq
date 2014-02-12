@@ -12,5 +12,11 @@ FactoryGirl.define do
       name { Faker::Lorem.word }
       details { Faker::Lorem.sentence }
     end
+    trait :lecture do
+      type { 1 }
+    end
+    trait :practical do
+      type { 2 }
+    end
   end
 end
