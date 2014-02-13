@@ -1,5 +1,6 @@
 <div class="page-header">
   <h1>События</h1>
+  <h3 style="height: 5px;"><small class="pull-right"><%= link_to 'Назад ко всем', events_path %></small></h3>
 </div>
 
 <div style="margin-bottom: 20px;">
@@ -15,11 +16,6 @@
     </div>
     <div class="col-sm-2">
       <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
-    </div>
-    <div class="col-sm-1">
-      <%= link_to events_path, class: 'btn btn-default form-control' do %>
-        <span class="glyphicon-remove glyphicon"></span>
-      <% end %>
     </div>
   </div>
 <% end %>
@@ -48,12 +44,13 @@
             <p class="help-block"><%= raw event.description %></p>
           </td>
           <td>
+            <%= link_to edit_event_path(event), class: 'btn btn-default pull-right', title: 'Редактировать' do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+            <br><br>
             <%= link_to event_path(event), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', confirm: 'Вы уверены?' do %>
               <span class="glyphicon glyphicon-remove"></span>
             <% end %>
-            <%= link_to edit_event_path(event), class: 'btn btn-default pull-right', style: 'margin-right: 10px;' do %>
-                <span class="glyphicon glyphicon-pencil"></span> Редактировать
-              <% end %>
           </td>
         </tr>
       <% end %>

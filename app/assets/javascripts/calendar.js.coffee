@@ -8,7 +8,7 @@ $ ->
 
   $('.dates-for-events').each (index, element) ->
     text = $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').text()
-    $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html("<a data-toggle='modal' href='#dateEvents#{index+1}'>#{text}</a>")
+    $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html("<a href='#{$('#matrixHQ').attr('href')}events/actual?month=#{$(element).data('month')}&year=#{$(element).data('year')}&day=#{text}'>#{text}</a>")
 
   $('.event_dates #event_date_date').each (index, element) ->
     $('.event_dates .semester-calendar td[data-date="' + $(element).val() + '"]').addClass($(element).data('value'))

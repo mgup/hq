@@ -7,17 +7,30 @@ class EventsController < ApplicationController
   end
 
   def actual
-    @events = @events.no_booking  # Пока так, чтобы ничего лишнего не смотрели
+    @events = @events.no_booking
+    unless params[:year] || params[:month]
+      redirect_to actual_events_path(year: Date.today.year, month: Date.today.month, name: params[:name])
+    end
+    @year = params[:year].to_i
+    @month = params[:month].to_i
+    day = params[:day]
+
     @dates = []
     @events.each do |event|
       @dates << event.dates.collect{|d| (l d.date, format: '%d.%m.%Y')}
     end
     @dates = @dates.flatten.uniq.sort_by{|d| d,m,y=d.split('.');[y,m,d]}
-    @event_dates = []
-    @events.each do |event|
-      @event_dates << event.dates.collect{|d| d}
+
+    @events = @events.from_name(params[:name]) if params[:name]
+
+    if day
+      @selected_day = "#{day}.#{@month}.#{@year}"
+      search_dates = []
+      @events.each do |e|
+        search_dates << e.dates.from_date(@selected_day)
+      end
+      @events = search_dates.flatten.collect{ |sd| sd.event }.uniq
     end
-    @event_dates = @event_dates.flatten.uniq
   end
 
   def show
