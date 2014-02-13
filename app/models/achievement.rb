@@ -27,7 +27,7 @@ class Achievement < ActiveRecord::Base
   scope :for_subdepartment, -> (user = current_user) {
     dep_ids = user.positions.from_role(:subdepartment.to_s).map { |p| p.department.id }
     users = User.in_department(dep_ids).with_role(Role.select(:acl_role_id).where(acl_role_name: 'lecturer'))
-    ids = users.map { |u| u.id }.push(user.id)
+    ids = users.map(&:id).push(user.id)
 
     where(user_id: ids).where('status != 4').order('status ASC, user_id')
   }
