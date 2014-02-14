@@ -6,3 +6,4 @@ ru:
       event:
         name: 'название'
         description: 'описание'
+        category: 'категория'

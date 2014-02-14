@@ -19,4 +19,12 @@ $ ->
       scrollTop: $($('#accordionDates a[data-date="' + $(this).attr('data-date') + '"]').attr('href')).offset().top - 150
     }, 2000);
 
+  $('.simple-calendar').hide()
+  $('.open-calendar').click ->
+   $(this).parent().find('.simple-calendar').toggle()
+   if $(this).hasClass('closed')
+     $(this).html('<span class="glyphicon glyphicon-remove"></span>').addClass('btn-sm pull-right').removeClass('closed')
+   else
+     $(this).html('<span class="glyphicon glyphicon-search"></span> Поиск по дате').removeClass('btn-sm pull-right').addClass('closed')
+
 

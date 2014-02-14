@@ -40,7 +40,7 @@
         <tr>
           <td><%= index + 1 %></td>
           <td>
-            <strong><%= event.name %></strong>
+            <h4 style="margin: 0;"><%= event.name %> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h4>
             <p class="help-block"><%= raw event.description %></p>
           </td>
           <td>

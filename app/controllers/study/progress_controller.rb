@@ -1,5 +1,4 @@
 class Study::ProgressController < ApplicationController
-
   before_filter :find_group
   skip_before_filter :authenticate_user!
   def index

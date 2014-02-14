@@ -4,7 +4,10 @@
 </div>
 
 <div class="col-sm-12 actuals" style="margin-bottom: 25px;">
-  <%= calendar_for(@year, @month, @selected_day) %>
+  <div class="col-sm-4">
+    <button class="open-calendar btn closed"><span class="glyphicon glyphicon-search"></span> Поиск по дате</button>
+    <%= calendar_for(@year, @month, @selected_day) %>
+  </div>
   <%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
     <div class="form-group">
       <div class="col-sm-4">

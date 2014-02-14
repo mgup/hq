@@ -1,26 +1,27 @@
 <%= f.fields_for :dates do |sub_f| %>
   <%= sub_f.hidden_field :id %>
   <div style="padding-left: 10px;">
-  <div class="form-group">
+  <div class="form-group <%= 'has-error' if @event.errors.include?(:'dates.date') %>">
     <%= sub_f.label :date, 'Дата', class: 'control-label col-sm-2' %>
     <div class="col-sm-7">
-      <%= sub_f.text_field :date, class: 'form-control', placeholder: 'дд.мм.гггг', required: true %>
+      <%= sub_f.text_field :date, value: (l sub_f.object.date, format: '%d.%m.%Y' if sub_f.object.id), class: 'form-control', placeholder: 'дд.мм.гггг' %>
     </div>
     <div class="col-sm-2">
       <%= sub_f.link_to_remove 'Удалить', class: 'btn btn-danger' %>
     </div>
   </div>
-  <div class="form-group">
-    <%= sub_f.label :time_start, 'Время начала', class: 'control-label col-sm-2', required: true %>
+  <div class="form-group <%= 'has-error' if @event.errors.include?(:'dates.time_start') %>">
+    <%= sub_f.label :time_start, 'Время начала', class: 'control-label col-sm-2' %>
     <div class="col-sm-7">
-      <%= sub_f.text_field :time_start, class: 'form-control', placeholder: 'чч:мм:сс' %>
+      <%= sub_f.text_field :time_start, value: (l sub_f.object.time_start, format: '%H:%M:%S' if sub_f.object.id), class: 'form-control', placeholder: 'чч:мм:сс' %>
     </div>
   </div>
   <div class="form-group">
     <%= sub_f.label :time_end, 'Время окончания', class: 'control-label col-sm-2' %>
     <div class="col-sm-7">
-      <%= sub_f.text_field :time_end, class: 'form-control', placeholder: 'чч:мм:сс' %>
+      <%= sub_f.text_field :time_end, value: (l sub_f.object.time_end, format: '%H:%M:%S' if sub_f.object.time_end), class: 'form-control', placeholder: 'чч:мм:сс' %>
     </div>
+    <p class="help-block">Не обязательно указывать</p>
   </div>
   <!--Пока так (потому что нет брони), посмотрим, как пойдет-->
   <%= sub_f.hidden_field :max_visitors, value: 100 %>

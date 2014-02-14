@@ -1,6 +1,9 @@
 class EventDate < ActiveRecord::Base
   self.table_name = 'event_date'
 
+  validates :date, presence: true
+  validates :time_start, presence: true
+
   belongs_to :event, class_name: Event
   has_many :visitor_event_dates
   has_many :users, -> {where("visitor_event_date.visitor_type = 'User'")},

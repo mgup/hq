@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+     event_category: 'категория событий'
+    attributes:
+      event_category:
+        name: 'название'
+        description: 'описание'

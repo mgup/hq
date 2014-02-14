@@ -1,7 +1,7 @@
 module SimpleCalendarHelper
 
   def calendar_for(year, month, selected = nil, options = {})
-    content_tag :div, style: 'border: 1px solid #dddddd; width: 40%;', class: 'pull-right' do
+    content_tag :div, style: 'border: 1px solid #dddddd;', class: 'simple-calendar' do
       content_tag :table, class: 'table semester-calendar' do
         tags = []
         first = Date.new(year, month, 1)
@@ -57,7 +57,7 @@ module SimpleCalendarHelper
                  when 12
                    'ДЕКАБРЬ'
                end
-        tags.join.html_safe + "<h3 style='text-align: center;'><a href='#{actual_events_path(year: (first - 1.month).year, month: (first - 1.month).month)}'>&laquo;</a> #{month_name} #{first.year} <a href='#{actual_events_path(year: (first + 1.month).year, month: (first + 1.month).month)}'>&raquo;</a></h3>".html_safe
+        tags.join.html_safe + "<h4 style='text-align: center;'><a href='#{actual_events_path(year: (first - 1.month).year, month: (first - 1.month).month)}'>&laquo;</a> #{month_name} #{first.year} <a href='#{actual_events_path(year: (first + 1.month).year, month: (first + 1.month).month)}'>&raquo;</a></h4>".html_safe
       end
     end
   end

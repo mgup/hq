@@ -13,6 +13,8 @@ SimpleNavigation::Configuration.run do |navigation|
       d.item :student_discipline, 'Студент', study_group_progress_discipline_path(params[:group_id] || 1, params[:id] || 1, params[:discipline] || 1)
     end
 
+    primary.item :actual_events, 'Актуальные события', actual_events_path, icon: 'calendar'
+
     if user_signed_in?
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
@@ -35,6 +37,8 @@ SimpleNavigation::Configuration.run do |navigation|
 
         primary.item :achievement_period, 'Периоды ввода достижений НПР',
                      achievement_periods_path, icon: 'list'
+
+        primary.item :event_categories, 'Категории событий', event_categories_path, icon: 'th-list'
 
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         #primary.item( :study, 'Успеваемость<b class="caret"></b>'.html_safe, '#', icon: 'list', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' }) do |study|
@@ -61,12 +65,20 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
       end
 
-      if can? :manage, Event
-        primary.item :events,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
+      if can? :manage, Event.new(event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY)
+        primary.item :event,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
       end
 
       if can? :manage, EventDate
         primary.item :dates,    'Профосмотр (выбор даты)'.html_safe, event_dates_path(1), icon: 'calendar'
+      end
+
+      if can? :manage, Event.new(event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY)
+        primary.item :events, 'Мероприятия', events_path, icon: 'folder-open' do |d|
+          d.dom_class = 'hidden'
+          d.item :edit, 'Редактирование', edit_event_path(params[:id] || 2)
+          d.item :new, 'Создание', new_event_path
+        end
       end
 
       if can? :index, :payment_types
