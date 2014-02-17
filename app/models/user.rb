@@ -86,6 +86,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def department_ids
+    positions.map { |p| d.department.id }
+  end
+
   def primary_position_should_be_one
     return true if positions.length == 0
     primaries = 0

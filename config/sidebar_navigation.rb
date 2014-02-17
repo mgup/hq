@@ -128,7 +128,8 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :graduates, 'Выпускники', graduates_path, icon: 'folder-open'
       end
 
-      if can? :index, :groups
+      #if can? :index, :groups
+      if can? :index, :all
         primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
       end
 

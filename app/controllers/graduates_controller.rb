@@ -2,7 +2,9 @@ class GraduatesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @groups = Group.for_graduate
+    @groups = Group.for_graduate.find_all do |g|
+      current_user.department_ids.include?(g.speciality.speciality_department)
+    end
   end
 
   def create
