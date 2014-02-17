@@ -3,7 +3,7 @@ class GraduatesController < ApplicationController
 
   def index
     @groups = Group.for_graduate.find_all do |g|
-      current_user.department_ids.include?(g.speciality.speciality_department)
+      current_user.department_ids.include?(g.speciality.speciality.faculty.id)
     end
   end
 
