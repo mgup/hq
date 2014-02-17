@@ -76,6 +76,7 @@ class Ability
     can :manage, :progress_group
 
     can :manage, EventDate
+    can :actual, :events
   end
 
   # Обычный преподаватель.
@@ -115,6 +116,8 @@ class Ability
   def pro_rector_social(user)
     can :update, Achievement
     can :validate_social, Achievement
+    can :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
+    cannot :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
   end
 
   def soc_support_boss(user)
@@ -123,7 +126,8 @@ class Ability
   end
 
   def soc_support_vedush(user)
-    can :manage, Event
+    cannot :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
+    can :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
   end
 
   def soc_support(user)

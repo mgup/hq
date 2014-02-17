@@ -7,6 +7,13 @@
     </div>
   </div>
 
+  <div class="form-group">
+    <%= f.label :event_category_id, class: 'col col-sm-2 control-label' %>
+    <div class="col col-sm-10">
+      <%= f.select :event_category_id, options_from_collection_for_select(EventCategory.all, :id, :name, EventCategory::SOCIAL_EVENTS_CATEGORY), {}, { class: 'form-control', readonly: true} %>
+    </div>
+  </div>
+
   <div class="form-group <%= 'has-error' if @event.errors.include?(:description) %>">
     <%= f.label :description, class: 'col col-sm-2 control-label' %>
     <div class="col col-sm-10">

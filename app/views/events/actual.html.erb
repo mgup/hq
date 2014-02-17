@@ -1,14 +1,40 @@
 <div class="page-header">
   <h1>Актуальные события</h1>
+  <h2 style="height: 10px;"><small class="pull-right"><%= link_to 'Назад ко всем', actual_events_path %></small></h2>
 </div>
 
-<div class="col-sm-12 actuals">
-  <%= render_dates_calendar(Date.parse(@dates.first),
-                            Date.parse(@dates.last)) %>
+<div class="col-sm-12 actuals" style="margin-bottom: 25px;">
+  <div class="col-sm-4">
+    <button class="open-calendar btn closed"><span class="glyphicon glyphicon-search"></span> Поиск по дате</button>
+    <%= calendar_for(@year, @month, @selected_day) %>
+  </div>
+  <%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+    <div class="form-group">
+      <div class="col-sm-4">
+        <%= text_field_tag :name, params[:name], class: 'form-control', placeholder: 'Название' %>
+      </div>
+      <div class="col-sm-2">
+        <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <div class="actual_dates">
-  <% @dates.each_with_index do |date, index| %>
-    <%= render partial: 'date_events', locals: {index: index+1, date: date, dates: EventDate.from_date(date)} %>
+  <% if @events.empty? %>
+    <p class="lead">События не найдены</p>
+  <% else %>
+    <% @events.each do |event| %>
+      <h2><%= event.name %> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h2>
+      <div><%= raw event.description %></div>
+      <hr>
+      <br>
+    <% end %>
   <% end %>
 </div>
+
+<% @dates.each do |d| %>
+  <%= hidden_field_tag 'dates[]', d, class: 'dates-for-events', data: { date: Date.parse(d).day,
+                                                                        month:  Date.parse(d).month,
+                                                                        year:  Date.parse(d).year} %>
+<% end %>
