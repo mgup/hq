@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def department_ids
+  def departments_ids
     positions.map { |p| p.department.id }
   end
 

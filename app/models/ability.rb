@@ -134,7 +134,7 @@ class Ability
     can :manage, My::Support
   end
 
-  def managemenet_employee(user)
+  def faculty_employee(user)
     can :manage, Graduate
     can :manage, GraduateStudent
     can :manage, GraduateSubject
