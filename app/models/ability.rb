@@ -133,4 +133,11 @@ class Ability
   def soc_support(user)
     can :manage, My::Support
   end
+
+  def managemenet_employee(user)
+    can :manage, Graduate
+    can :manage, GraduateStudent
+    can :manage, GraduateSubject
+    can :manage, GraduateMark
+  end
 end
