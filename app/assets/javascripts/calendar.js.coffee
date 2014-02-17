@@ -8,7 +8,7 @@ $ ->
 
   $('.dates-for-events').each (index, element) ->
     text = $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').text()
-    $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html("<a href='#{$('#matrixHQ').attr('href')}events/actual?month=#{$(element).data('month')}&year=#{$(element).data('year')}&day=#{text}'>#{text}</a>")
+    $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html("<a href='#{$('#matrixHQ').attr('href')}events/actual?opened=1&month=#{$(element).data('month')}&year=#{$(element).data('year')}&day=#{text}'>#{text}</a>")
 
   $('.event_dates #event_date_date').each (index, element) ->
     $('.event_dates .semester-calendar td[data-date="' + $(element).val() + '"]').addClass($(element).data('value'))
@@ -19,7 +19,10 @@ $ ->
       scrollTop: $($('#accordionDates a[data-date="' + $(this).attr('data-date') + '"]').attr('href')).offset().top - 150
     }, 2000);
 
-  $('.simple-calendar').hide()
+  if $('.simple-calendar').parent().find('.open-calendar').hasClass('closed')
+    $('.simple-calendar').hide()
+  else
+    $('.simple-calendar').parent().find('.open-calendar').html('<span class="glyphicon glyphicon-remove"></span>').addClass('btn-sm pull-right')
   $('.open-calendar').click ->
    $(this).parent().find('.simple-calendar').toggle()
    if $(this).hasClass('closed')
