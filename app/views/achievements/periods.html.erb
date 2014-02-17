@@ -41,12 +41,13 @@
 
           <br><br>
 
-          <%= link_to reopen_achievement_report_path(relevant_reports.first), class: 'btn btn-success' do %>
-            <span class="glyphicon glyphicon-edit"></span>
-            Внести изменения
+          <% if p.active? %>
+            <%= link_to reopen_achievement_report_path(relevant_reports.first), class: 'btn btn-success' do %>
+              <span class="glyphicon glyphicon-edit"></span>
+              Внести изменения
+            <% end %>
+            <br><br>
           <% end %>
-
-          <br><br>
 
           <% if relevant_reports.first.accepted_or_refused? %>
             <%= link_to achievement_report_path(relevant_reports.first, format: :pdf), class: 'btn btn-default' do %>

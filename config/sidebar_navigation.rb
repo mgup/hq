@@ -106,7 +106,8 @@ SimpleNavigation::Configuration.run do |navigation|
         end
       end
 
-      if can? :manage, Student
+      #if can? :manage, Student
+      if can? :manage, :all
         primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
       end
