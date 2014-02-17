@@ -11,10 +11,12 @@ class EventsController < ApplicationController
     authorize! :actual, :events
     @events = Event.no_booking
     unless params[:year] || params[:month]
-      redirect_to actual_events_path(year: Date.today.year, month: Date.today.month, name: params[:name])
+      @year = Date.today.year
+      @month = Date.today.month
+    else
+      @year = params[:year].to_i
+      @month = params[:month].to_i
     end
-    @year = params[:year].to_i
-    @month = params[:month].to_i
     day = params[:day]
 
     @dates = []
