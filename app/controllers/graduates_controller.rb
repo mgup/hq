@@ -2,9 +2,12 @@ class GraduatesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @groups = Group.for_graduate.find_all do |g|
-      current_user.department_ids.include?(g.speciality.speciality.faculty.id)
-    end
+    @groups = Group.for_graduate #.find_all do |g|
+      #current_user.department_ids.include?(g.speciality.speciality.faculty.id)
+    #end
+
+    @graduates = @graduates.joins(:group, :speciality, :faculty)
+    .where('department_id IN (?)', current_user.department_ids)
   end
 
   def create
