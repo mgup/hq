@@ -6,8 +6,8 @@ class GraduatesController < ApplicationController
       #current_user.department_ids.include?(g.speciality.speciality.faculty.id)
     #end
 
-    @graduates = @graduates.joins(:group, :speciality, :faculty)
-    .where('department_id IN (?)', current_user.department_ids)
+    #@graduates = @graduates.joins(:group, :speciality, :faculty)
+    #.where('department_id IN (?)', current_user.department_ids)
   end
 
   def create
