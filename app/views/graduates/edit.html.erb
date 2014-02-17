@@ -45,8 +45,24 @@
     <%= f.fields_for :graduate_subjects do |sf| %>
       <div class="form-group">
         <div class="col-sm-2">
-          <%= sf.select :kind, options_for_select([['предмет', GraduateSubject::TYPE_SUBJECT], ['курсовая', GraduateSubject::TYPE_PAPER]], selected: sf.object.kind),
-                        {}, class: 'form-control input-sm' %>
+          <%= sf.select :kind, options_for_select(
+              [
+                ['предмет', GraduateSubject::TYPE_SUBJECT],
+                ['курсовая', GraduateSubject::TYPE_PAPER],
+                ['научно-исследовательская практика', GraduateSubject::TYPE_WORK3],
+                ['научно-производственная практика', GraduateSubject::TYPE_WORK4],
+                ['педагогическая практика', GraduateSubject::TYPE_WORK5],
+                ['преддипломная практика', GraduateSubject::TYPE_WORK6],
+                ['производственная практика', GraduateSubject::TYPE_WORK7],
+                ['производственная практика (пленэр)', GraduateSubject::TYPE_WORK8],
+                ['производственно-технологическая практика', GraduateSubject::TYPE_WORK9],
+                ['технологическая практика', GraduateSubject::TYPE_WORK10],
+                ['научно-исследовательская работа', GraduateSubject::TYPE_WORK11],
+                ['учебная ознакомительная практика', GraduateSubject::TYPE_WORK12],
+                ['учебная практика', GraduateSubject::TYPE_WORK13],
+                ['учебная практика (мастерство)', GraduateSubject::TYPE_WORK14],
+                ['учебная художественно-технологическая практика', GraduateSubject::TYPE_WORK15]
+              ], selected: sf.object.kind), {}, class: 'form-control input-sm' %>
         </div>
         <div class="col-sm-5">
           <%= sf.text_field :name, class: 'form-control input-sm' %>

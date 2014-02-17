@@ -28,6 +28,11 @@ class GraduateStudentsController < ApplicationController
     papers.each do |p|
       @graduate_student.graduate_marks.build(graduate_subject: p) unless p.graduate_marks.where(graduate_student_id: @graduate_student.id).any?
     end
+
+    works = @graduate.graduate_subjects.only_works
+    works.each do |p|
+      @graduate_student.graduate_marks.build(graduate_subject: p) unless p.graduate_marks.where(graduate_student_id: @graduate_student.id).any?
+    end
   end
 
   def update
