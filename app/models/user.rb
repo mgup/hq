@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
   end
 
   def department_ids
-    positions.map { |p| d.department.id }
+    positions.map { |p| p.department.id }
   end
 
   def primary_position_should_be_one
