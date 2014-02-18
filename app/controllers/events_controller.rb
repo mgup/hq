@@ -37,6 +37,15 @@ class EventsController < ApplicationController
     end
   end
 
+  def calendar
+    #authorize! :actual, :events
+    @year = params[:year].to_i
+    @month = params[:month].to_i
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def show
     @visitor = VisitorEventDate.new
   end

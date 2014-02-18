@@ -19,6 +19,12 @@ $ ->
       scrollTop: $($('#accordionDates a[data-date="' + $(this).attr('data-date') + '"]').attr('href')).offset().top - 150
     }, 2000);
 
+  root = $('#matrixHQ').attr('href')
+  $('.previousMonth').click ->
+    $.ajax "#{root}events/calendar?year=#{$(this).data('year')}&month=#{$(this).data('month')}"
+  $('.nextMonth').click ->
+    $.ajax "#{root}events/calendar?year=#{$(this).data('year')}&month=#{$(this).data('month')}"
+
   if $('.simple-calendar').parent().find('.open-calendar').hasClass('closed')
     $('.simple-calendar').hide()
   else
@@ -29,5 +35,6 @@ $ ->
      $(this).html('<span class="glyphicon glyphicon-remove"></span>').addClass('btn-sm pull-right').removeClass('closed')
    else
      $(this).html('<span class="glyphicon glyphicon-search"></span> Поиск по дате').removeClass('btn-sm pull-right').addClass('closed')
+
 
 
