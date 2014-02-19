@@ -1,6 +1,8 @@
 class Study::StudentsController < ApplicationController
+
   load_resource
-  skip_before_filter :authenticate_user! , :only => [:show, :discipline]
+  skip_before_filter :authenticate_user! , only: [:show, :discipline]
+
   def show
     authorize! :show, :student_progress
     dates = []
