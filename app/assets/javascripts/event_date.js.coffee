@@ -14,3 +14,6 @@ $ ->
     window.location.href = "/events/#{$(this).data('value')}/print.pdf?dates=#{dates}"
     $('.dateCheckbox').prop("checked", false)
     $('#printDifferentDates').modal('hide')
+
+  $('.pill-inputs').each ->
+    $('.pill-select a[data-value='+$(this).val()+']').tab('show')

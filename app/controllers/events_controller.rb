@@ -8,8 +8,9 @@ class EventsController < ApplicationController
   end
 
   def actual
+    params[:page] ||= 1
     authorize! :actual, :events
-    @events = Event.no_booking
+    @events = Event.publications
     unless params[:year] || params[:month]
       @year = Date.today.year
       @month = Date.today.month
@@ -18,6 +19,9 @@ class EventsController < ApplicationController
       @month = params[:month].to_i
     end
     day = params[:day]
+
+    #@future = (@events.future + @events.without_date)
+    #@past = @events.past
 
     @dates = []
     @events.each do |event|
@@ -28,13 +32,16 @@ class EventsController < ApplicationController
     @events = @events.from_name(params[:name]) if params[:name]
 
     if day
-      @selected_day = "#{day}.#{@month}.#{@year}"
+      month = @month < 10 ? "0#{@month}" : @month
+      @selected_day = "#{day}.#{month}.#{@year}"
       search_dates = []
       @events.each do |e|
         search_dates << e.dates.from_date(@selected_day)
       end
       @events = search_dates.flatten.collect{ |sd| sd.event }.uniq
     end
+
+    @events = Kaminari.paginate_array(@events).page(params[:page]).per(5)
   end
 
   def calendar
@@ -87,7 +94,7 @@ class EventsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:event, {}).permit(:name, :description, :booking, :event_category_id,
+    params.fetch(:event, {}).permit(:name, :description, :booking, :status, :event_category_id,
                  dates_attributes: [:id, :date, :time_start, :time_end, :max_visitors, :'_destroy'])
   end
 end

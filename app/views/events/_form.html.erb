@@ -29,6 +29,14 @@
                       class: 'add-nested btn btn-default col-sm-offset-4' %>
   </div>
 
+  <div class='row'>
+    <%= f.label :status, class: 'control-label col-lg-2' %>
+    <div class='col col-lg-10'>
+      <%= f.hidden_field :status, class: 'pill-inputs' %>
+      <%= pill_tabs('event_status', [[2, 'Черновик' ], [1, 'Публикация']], 'event_status') %>
+    </div>
+  </div>
+
   <div class="col col-sm-10 col-sm-offset-2">
    <%= f.submit 'Сохранить', class: 'btn btn-primary' %> или <%= link_to 'Отмена', events_path, class: 'btn btn-default' %>
   </div>

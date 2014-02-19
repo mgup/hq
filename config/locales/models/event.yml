@@ -7,3 +7,4 @@ ru:
         name: 'название'
         description: 'описание'
         category: 'категория'
+        status: 'статус'

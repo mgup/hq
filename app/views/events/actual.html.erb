@@ -26,9 +26,15 @@
   <% if @events.empty? %>
     <p class="lead">События не найдены</p>
   <% else %>
+    <div id='event-paginator'>
+      <%= paginate_with_info @events %>
+    </div>
     <% @events.each do |event| %>
       <h2><%= event.name %> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h2>
       <div><%= raw event.description %></div>
+      <% if Event.past.include? event %>
+        <p style="height: 1px; color: #aaa"><small class="pull-right">Данное событие уже прошло</small></p>
+      <% end %>
       <hr>
       <br>
     <% end %>
@@ -39,4 +45,8 @@
   <%= hidden_field_tag 'dates[]', d, class: 'dates-for-events', data: { date: Date.parse(d).day,
                                                                         month:  Date.parse(d).month,
                                                                         year:  Date.parse(d).year} %>
+<% end %>
+
+<% if @selected_day %>
+  <%= hidden_field_tag :selected_day, @selected_day %>
 <% end %>

@@ -18,11 +18,7 @@ $('.dates-for-events').each(function(index, element){
   $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html('<a href="' + $('#matrixHQ').attr('href') + 'events/actual?opened=1&month='
       + $(element).data('month') + '&year='
       + $(element).data('year') + '&day=' + text +'">' + text + '</a>')
-
-})
-
-$('.event_dates #event_date_date').each( function(index, element){
-$('.event_dates .semester-calendar td[data-date="' + $(element).val() + '"]').addClass($(element).data('value'));
+  $('.actuals .semester-calendar td[data-date="' + $('#selected_day').val() + '"]').addClass('success');
 })
 
 
