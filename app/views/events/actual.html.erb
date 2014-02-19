@@ -6,7 +6,7 @@
 </div>
 
 <div class="col-sm-12 actuals" style="margin-bottom: 25px;">
-  <div class="col-sm-4">
+  <div id="actualEventsCalendar" class="col-sm-4">
     <button class="open-calendar btn <%= 'closed' if params[:opened] != '1' %>"><span class="glyphicon glyphicon-search"></span> Поиск по дате</button>
     <%= calendar_for(@year, @month, @selected_day) %>
   </div>

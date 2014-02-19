@@ -57,7 +57,7 @@ module SimpleCalendarHelper
                  when 12
                    'ДЕКАБРЬ'
                end
-        tags.join.html_safe + "<h4 style='text-align: center;'><a href='#{actual_events_path(year: (first - 1.month).year, month: (first - 1.month).month, opened: 1)}'>&laquo;</a> #{month_name} #{first.year} <a href='#{actual_events_path(year: (first + 1.month).year, month: (first + 1.month).month, opened: 1)}'>&raquo;</a></h4>".html_safe
+        tags.join.html_safe + "<h4 style='text-align: center;'><button class='previousMonth' data-year='#{(first - 1.month).year}' data-month='#{(first - 1.month).month}'>&laquo;</button> #{month_name} #{first.year} <button class='nextMonth' data-year='#{(first + 1.month).year}' data-month='#{(first + 1.month).month}'>&raquo;</button></h4>".html_safe
       end
     end
   end

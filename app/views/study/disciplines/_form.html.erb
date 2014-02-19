@@ -2,7 +2,7 @@
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:year) %>">
     <%= f.label :subject_year, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.select :subject_year, options_for_select(%w(2013), 2013), {}, { class: 'form-control' } %>
+      <%= f.select :subject_year, options_for_select([['2013/2014', 2013]], 2013), {}, { class: 'form-control' } %>
     </div>
   </div>
 

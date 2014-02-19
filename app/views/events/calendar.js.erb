@@ -1,0 +1,29 @@
+$('#actualEventsCalendar').html("<button class='open-calendar btn btn-sm pull-right'><span class='glyphicon glyphicon-remove'></span></button><%= escape_javascript (calendar_for(@year, @month)).html_safe %>");
+var root = $('#matrixHQ').attr('href');
+$('.previousMonth').click(function(){
+  $.ajax(root + 'events/calendar?year=' + $(this).data('year') + '&month=' + $(this).data('month'));
+})
+$('.nextMonth').click(function(){
+  $.ajax(root + 'events/calendar?year=' + $(this).data('year') + '&month=' + $(this).data('month'));
+})
+
+$('.open-calendar').click(function(){
+  $(this).parent().find('.simple-calendar').toggle();
+  if ($(this).hasClass('closed')) $(this).html('<span class="glyphicon glyphicon-remove"></span>').addClass('btn-sm pull-right').removeClass('closed');
+  else $(this).html('<span class="glyphicon glyphicon-search"></span> Поиск по дате').removeClass('btn-sm pull-right').addClass('closed');
+})
+
+$('.dates-for-events').each(function(index, element){
+  var text = $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').text();
+  $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html('<a href="' + $('#matrixHQ').attr('href') + 'events/actual?opened=1&month='
+      + $(element).data('month') + '&year='
+      + $(element).data('year') + '&day=' + text +'">' + text + '</a>')
+
+})
+
+$('.event_dates #event_date_date').each( function(index, element){
+$('.event_dates .semester-calendar td[data-date="' + $(element).val() + '"]').addClass($(element).data('value'));
+})
+
+
+
