@@ -29,13 +29,19 @@
                       class: 'add-nested btn btn-default col-sm-offset-4' %>
   </div>
 
-  <div class='row'>
-    <%= f.label :status, class: 'control-label col-lg-2' %>
-    <div class='col col-lg-10'>
+  <div class='form-group <%= 'has-error' if @event.errors.include?(:name) %>'>
+    <%= f.label :status, class: 'control-label col-sm-2' %>
+    <div class='col col-sm-10'>
       <%= f.hidden_field :status, class: 'pill-inputs' %>
       <%= pill_tabs('event_status', [[2, 'Черновик' ], [1, 'Публикация']], 'event_status') %>
     </div>
+    <% if @event.errors.include?(:status) %>
+      <div class='col col-sm-10 col-sm-offset-2'>
+        <p class="help-block">Вы не указали статус записи!</p>
+      </div>
+    <% end %>
   </div>
+
 
   <div class="col col-sm-10 col-sm-offset-2">
    <%= f.submit 'Сохранить', class: 'btn btn-primary' %> или <%= link_to 'Отмена', events_path, class: 'btn btn-default' %>

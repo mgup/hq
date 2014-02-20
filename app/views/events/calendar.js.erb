@@ -1,10 +1,22 @@
-$('#actualEventsCalendar').html("<button class='open-calendar btn btn-sm pull-right'><span class='glyphicon glyphicon-remove'></span></button><%= escape_javascript (calendar_for(@year, @month)).html_safe %>");
+$('#actualEventsCalendar').html("<button class='open-calendar btn btn-sm pull-right'><span class='glyphicon glyphicon-remove'></span></button><%= escape_javascript (calendar_for(@year, @month, @href)).html_safe %>");
 var root = $('#matrixHQ').attr('href');
 $('.previousMonth').click(function(){
-  $.ajax(root + 'events/calendar?year=' + $(this).data('year') + '&month=' + $(this).data('month'));
+  var url;
+  <% if @href == '/events' %>
+    url = '1';
+  <% else %>
+    url = '2';
+  <% end %>
+  $.ajax(root + 'events/calendar?year=' + $(this).data('year') + '&month=' + $(this).data('month') + '&href=' + url);
 })
 $('.nextMonth').click(function(){
-  $.ajax(root + 'events/calendar?year=' + $(this).data('year') + '&month=' + $(this).data('month'));
+  var url;
+  <% if @href == '/events' %>
+    url = '1';
+  <% else %>
+    url = '2';
+  <% end %>
+  $.ajax(root + 'events/calendar?year=' + $(this).data('year') + '&month=' + $(this).data('month') + '&href=' + url);
 })
 
 $('.open-calendar').click(function(){
@@ -15,7 +27,7 @@ $('.open-calendar').click(function(){
 
 $('.dates-for-events').each(function(index, element){
   var text = $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').text();
-  $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html('<a href="' + $('#matrixHQ').attr('href') + 'events/actual?opened=1&month='
+  $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html('<a href="' + $('.actuals .semester-calendar').data('url') + '?opened=1&month='
       + $(element).data('month') + '&year='
       + $(element).data('year') + '&day=' + text +'">' + text + '</a>')
   $('.actuals .semester-calendar td[data-date="' + $('#selected_day').val() + '"]').addClass('success');

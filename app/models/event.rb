@@ -4,6 +4,7 @@ class Event < ActiveRecord::Base
   self.table_name = 'event'
   validates :name, presence: true
   validates :description, presence: true
+  validates :status, presence: true
   validates_associated :dates
 
   has_many :dates, class_name: EventDate

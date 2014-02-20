@@ -6,5 +6,5 @@ ru:
       event:
         name: 'название'
         description: 'описание'
-        category: 'категория'
+        event_category_id: 'категория'
         status: 'статус'

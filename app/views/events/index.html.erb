@@ -1,26 +1,32 @@
 <div class="page-header">
   <h1>События</h1>
-  <% if params[:name] %>
+  <% if params[:name] || params[:day] %>
     <h2 style="height: 10px;"><small class="pull-right"><%= link_to 'Назад ко всем', events_path %></small></h2>
   <% end %>
 </div>
 
-<div style="margin-bottom: 20px;">
+<div class="col-sm-12 actuals" >
+  <div id="actualEventsCalendar" class="col-sm-4">
+    <button class="open-calendar btn <%= 'closed' if params[:opened] != '1' %>"><span class="glyphicon glyphicon-search"></span> Поиск по дате</button>
+    <%= calendar_for(@year, @month, events_path, @selected_day) %>
+  </div>
+  <%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+    <div class="form-group">
+      <div class="col-sm-4">
+        <%= text_field_tag :name, params[:name], class: 'form-control', placeholder: 'Название' %>
+      </div>
+      <div class="col-sm-2">
+        <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div>
   <%= link_to new_event_path, class: 'btn btn-primary pull-right' do%>
     <span class='glyphicon glyphicon-plus'></span> Добавить новое событие
   <% end %>
 </div>
-
-<%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
-  <div class="form-group">
-    <div class="col-sm-4">
-      <%= text_field_tag :name, params[:name], class: 'form-control', placeholder: 'Название' %>
-    </div>
-    <div class="col-sm-2">
-      <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
-    </div>
-  </div>
-<% end %>
 
 <table class="table table-hover">
   <thead>
@@ -44,7 +50,7 @@
           <td>
             <h4 style="margin: 0;"><%= event.name %> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h4>
             <p class="help-block"><%= raw event.description %></p>
-            <% if Event.past.include? event %>
+            <% if (Event.past.include? event) && !(Event.future.include? event) %>
               <p style="height: 1px; color: #aaa"><small class="pull-right">Данное событие уже прошло</small></p>
             <% end %>
           </td>
@@ -62,3 +68,13 @@
     <% end %>
   </tbody>
 </table>
+
+<% @dates.each do |d| %>
+  <%= hidden_field_tag 'dates[]', d, class: 'dates-for-events', data: { date: Date.parse(d).day,
+                                                                        month:  Date.parse(d).month,
+                                                                        year:  Date.parse(d).year} %>
+<% end %>
+
+<% if @selected_day %>
+  <%= hidden_field_tag :selected_day, @selected_day %>
+<% end %>

@@ -1,8 +1,8 @@
 module SimpleCalendarHelper
 
-  def calendar_for(year, month, selected = nil, options = {})
+  def calendar_for(year, month, path, selected = nil, options = {})
     content_tag :div, style: 'border: 1px solid #dddddd;', class: 'simple-calendar' do
-      content_tag :table, class: 'table semester-calendar' do
+      content_tag :table, data: {url: path}, class: 'table semester-calendar' do
         tags = []
         first = Date.new(year, month, 1)
         tags << '<tr>'.html_safe

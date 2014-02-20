@@ -1,10 +1,37 @@
 class EventsController < ApplicationController
   skip_before_filter :authenticate_user!, only: :actual
-  load_resource except: :actual
-  authorize_resource :event, except: :actual
+  load_resource except: [:actual, :calendar]
+  authorize_resource :event, except: [:actual, :calendar]
   def index
     @events = @events.no_booking  # Пока так, чтобы ничего лишнего не смотрели
     @events = @events.from_name(params[:name]) if params[:name]
+
+    unless params[:year] || params[:month]
+      @year = Date.today.year
+      @month = Date.today.month
+    else
+      @year = params[:year].to_i
+      @month = params[:month].to_i
+    end
+    day = params[:day]
+
+    @dates = []
+    @events.each do |event|
+      @dates << event.dates.collect{|d| (l d.date, format: '%d.%m.%Y')}
+    end
+    @dates = @dates.flatten.uniq.sort_by{|d| d,m,y=d.split('.');[y,m,d]}
+
+    @events = @events.from_name(params[:name]) if params[:name]
+
+    if day
+      month = @month < 10 ? "0#{@month}" : @month
+      @selected_day = "#{day}.#{month}.#{@year}"
+      search_dates = []
+      @events.each do |e|
+        search_dates << e.dates.from_date(@selected_day)
+      end
+      @events = search_dates.flatten.collect{ |sd| sd.event }.uniq
+    end
   end
 
   def actual
@@ -45,9 +72,10 @@ class EventsController < ApplicationController
   end
 
   def calendar
-    #authorize! :actual, :events
+    authorize! :actual, :events
     @year = params[:year].to_i
     @month = params[:month].to_i
+    @href = (params[:href] == '1' ? events_path : actual_events_path)
     respond_to do |format|
       format.js
     end

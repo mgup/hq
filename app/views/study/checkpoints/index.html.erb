@@ -4,8 +4,13 @@
   </h1>
 </div>
 
+<%= link_to study_disciplines_path, class: 'btn btn-default btn-sm' do %>
+  <span class="glyphicon glyphicon-list"></span>
+  Назад ко всем дисциплинам
+<% end %>
+
 <%= link_to new_study_discipline_checkpoint_path(@discipline),
-            class: 'btn btn-default navigation_trip hidden-print', id: 'edit_checkpoints_button',
+            class: 'btn btn-sm btn-default navigation_trip hidden-print', id: 'edit_checkpoints_button',
             data: { input: '#edit_checkpoints_button', content: 'Вы можете отредактировать своё расписание
                         <br>или информацию по контрольным точкам, пройдя по данной ссылке.',
                     position: 's'}  do %>
@@ -13,21 +18,21 @@
   Расписание
 <% end %>
 
-<%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-default navigation_trip hidden-print',
+<%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-sm btn-default navigation_trip hidden-print',
             id: 'edit_discipline_button', data: { input: '#edit_discipline_button',
             content: 'Вы можете редактировать карту дисциплины. Для этого пройдите по данной ссылке.',
             position: 's'} do %>
   <span class="glyphicon glyphicon-edit"></span> Редактировать дисциплину
 <% end %>
 
-<%= link_to study_discipline_print_group_path(@discipline), class: 'btn btn-default navigation_trip hidden-print',
+<%= link_to study_discipline_print_group_path(@discipline), class: 'btn btn-sm btn-default navigation_trip hidden-print',
             id: 'print_students_list', data: { input: '#print_students_list',
             content: 'Чтобы распечатать список студентов группы, нажмите на эту кнопку.',
             position: 's'} do %>
   <span class='glyphicon glyphicon-print'></span> Студенты
 <% end %>
 
-<%= link_to study_group_discipline_path(@discipline.group, @discipline), class: 'btn btn-info pull-right navigation_trip hidden-print',
+<%= link_to study_group_discipline_path(@discipline.group, @discipline), class: 'btn btn-sm btn-info pull-right navigation_trip hidden-print',
             id: 'show_progress', data: { input: '#show_progress',
             content: 'Вы можете перейти на страницу с успеваемостью по этой дисциплине.',
             position: 'w'} do %>

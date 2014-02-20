@@ -4,5 +4,6 @@ $ ->
     buttons: ['formatting',  '|', 'table', '|', 'bold', 'italic', 'underline', '|',
               'alignleft', 'aligncenter', 'alignright', 'justify', '|',
               'orderedlist', 'unorderedlist', 'outdent', 'indent', '|',
-              'image']
+              'image', 'link'],
+    convertVideoLinks: true
   })

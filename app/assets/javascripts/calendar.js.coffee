@@ -8,7 +8,7 @@ $ ->
 
   $('.dates-for-events').each (index, element) ->
     text = $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').text()
-    $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html("<a href='#{$('#matrixHQ').attr('href')}events/actual?opened=1&month=#{$(element).data('month')}&year=#{$(element).data('year')}&day=#{text}'>#{text}</a>")
+    $('.actuals .semester-calendar td[data-date="' + $(element).val() + '"]').html("<a href='#{$('.actuals .semester-calendar').data('url')}?opened=1&month=#{$(element).data('month')}&year=#{$(element).data('year')}&day=#{text}'>#{text}</a>")
 
   $('.event_dates #event_date_date').each (index, element) ->
     $('.event_dates .semester-calendar td[data-date="' + $(element).val() + '"]').addClass($(element).data('value'))
@@ -21,9 +21,9 @@ $ ->
 
   root = $('#matrixHQ').attr('href')
   $('.previousMonth').click ->
-    $.ajax "#{root}events/calendar?year=#{$(this).data('year')}&month=#{$(this).data('month')}"
+    $.ajax "#{root}events/calendar?year=#{$(this).data('year')}&month=#{$(this).data('month')}&href=#{if $('.actuals .semester-calendar').data('url') == '/events' then '1' else '2'}"
   $('.nextMonth').click ->
-    $.ajax "#{root}events/calendar?year=#{$(this).data('year')}&month=#{$(this).data('month')}"
+    $.ajax "#{root}events/calendar?year=#{$(this).data('year')}&month=#{$(this).data('month')}&href=#{if $('.actuals .semester-calendar').data('url') == '/events' then '1' else '2'}"
 
   if $('.simple-calendar').parent().find('.open-calendar').hasClass('closed')
     $('.simple-calendar').hide()
