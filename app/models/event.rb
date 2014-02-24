@@ -8,6 +8,7 @@ class Event < ActiveRecord::Base
   validates_associated :dates
 
   has_many :dates, class_name: EventDate
+  has_many :claims, class_name: EventDateClaim
   accepts_nested_attributes_for :dates, allow_destroy: true
   has_many :users, through: :dates
   belongs_to :category, class_name: EventCategory

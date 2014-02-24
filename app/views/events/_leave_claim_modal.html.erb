@@ -1,0 +1,52 @@
+<div class="modal fade" id="leaveClaim<%= event.id %>" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"><%= event.name %> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for claim, url: event_claims_path(event) do |f| %>
+          <%= f.hidden_field :id %>
+          <%= f.hidden_field :event_id, value: event.id %>
+          <label class="col-sm-3">Фамилия</label>
+          <div class="col-sm-9">
+            <%= f.text_field :fname, class: 'form-control' %>
+          </div>
+          <br><br>
+          <label class="col-sm-3">Имя</label>
+          <div class="col-sm-9">
+            <%= f.text_field :iname, class: 'form-control' %>
+          </div>
+          <br><br>
+          <label class="col-sm-3">Отчество</label>
+          <div class="col-sm-9">
+            <%= f.text_field :oname, class: 'form-control' %>
+          </div>
+          <br><br>
+          <label class="col-sm-3">Группа</label>
+          <div class="col-sm-9">
+            <%= f.select :group_id,
+                       content_tag(:option, 'Выберите группу', value: '') + options_from_collection_for_select(Group.all, :id, :name),
+                       {}, class: 'form-control' %>
+          </div>
+          <br><br>
+          <label class="col-sm-3">Телефон</label>
+          <div class="col-sm-9">
+            <%= f.text_field :phone, class: 'form-control', placeholder: '+7 916 123-45-67' %>
+          </div>
+          <br><br>
+          <label class="col-sm-3">Электронная почта</label>
+          <div class="col-sm-9">
+            <%= f.text_field :email, class: 'form-control', placeholder: 'example@example.com' %>
+          </div>
+          <br><br>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+          <%= f.submit 'Оставить заявку', class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

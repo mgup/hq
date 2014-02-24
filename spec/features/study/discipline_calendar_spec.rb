@@ -63,14 +63,49 @@ feature 'Вывод списка группы для ввода оценок' do
     end
   end
 
-  #scenario 'занятия должны сохраняться (лекции)', js: true, driver: :webkit do
-  #  visit study_discipline_checkpoints_path(@discipline)
-  #  within '.lectures' do
-  #    find('td[data-date="13.02.2014"]').click
-  #  end
-  #  click_button 'Сохранить информацию о контрольных точках'
-  #  @discipline.classes.count.should eql(1)
-  #end
+  scenario 'занятия должны сохраняться (лекции)', js: true, driver: :webkit do
+    visit study_discipline_checkpoints_path(@discipline)
+    within '.lectures' do
+      find('td[data-date="13.02.2014"]').click
+    end
+    within '.checkpoints' do
+      find('td[data-date="13.02.2014"]').click
+    end
+    within '.checkpoint_fields' do
+      fill_in 'Название', with: 'Example name'
+      fill_in 'Описание', with: 'Example descripltion'
+      fill_in 'Максимальный балл', with: '80'
+      fill_in 'Зачётный минимум', with: '44'
+    end
+    click_button 'Сохранить информацию о контрольных точках'
+    within 'table' do
+      page.should have_content 'Лекция'
+      page.should have_content 'Example name'
+      page.should have_content 'Внести результаты'
+    end
+  end
+
+  scenario 'занятия должны сохраняться (лекции)', js: true, driver: :webkit do
+    visit study_discipline_checkpoints_path(@discipline)
+    within '.seminars' do
+      find('td[data-date="13.02.2014"]').click
+    end
+    within '.checkpoints' do
+      find('td[data-date="13.02.2014"]').click
+    end
+    within '.checkpoint_fields' do
+      fill_in 'Название', with: 'Example name'
+      fill_in 'Описание', with: 'Example descripltion'
+      fill_in 'Максимальный балл', with: '80'
+      fill_in 'Зачётный минимум', with: '44'
+    end
+    click_button 'Сохранить информацию о контрольных точках'
+    within 'table' do
+      page.should have_content 'Практическое (лабораторное) занятие'
+      page.should have_content 'Example name'
+      page.should have_content 'Внести результаты'
+    end
+  end
 
   scenario 'по клику на календарь должны появляться формы (контрольные точки)', js: true, driver: :webkit do
     visit study_discipline_checkpoints_path(@discipline)

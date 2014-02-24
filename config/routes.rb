@@ -38,6 +38,7 @@ HQ::Application.routes.draw do
     get 'actual', to: 'events#actual', on: :collection
     get 'calendar', to: 'events#calendar', on: :collection
     get 'print.pdf', to: 'events#print', on: :member, defaults: { format: 'pdf' }, as: :print
+    resources :claims
     resources :dates do
       get 'print.pdf', to: 'dates#print', on: :member, defaults: { format: 'pdf' }, as: :print
       resources :visitor_event_dates

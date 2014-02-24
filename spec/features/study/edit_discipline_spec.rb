@@ -25,7 +25,7 @@ feature 'Редактирование дисциплины' do
                  when 2
                    'весенний'
                end
-    find_field('study_discipline[subject_year]').find('option[selected]').text.should eql "#{@discipline.year}"
+    find_field('study_discipline[subject_year]').find('option[selected]').text.should eql "#{@discipline.year}/#{@discipline.year+1}"
     find_field('study_discipline[subject_semester]').find('option[selected]').text.should eql "#{semester}"
     find_field('faculty').find('option[selected]').text.should eql "#{@discipline.group.speciality.faculty.abbreviation}"
     find_field('speciality').find('option[selected]').text.should eql "#{@discipline.group.speciality.code} #{@discipline.group.speciality.name}"
@@ -56,18 +56,17 @@ feature 'Редактирование дисциплины' do
     find('#discipline_teachers').find('select').find('option[selected]').text.should eql "#{@user.full_name}"
   end
 
-  #scenario 'должен удалять дополнительных преподавателей' do
-  #   other_teacher = create(:user)
-  #   create(:position, user: other_teacher, role: FactoryGirl.create(:role, :lecturer), department: @user.departments.academic.first)
-  #   @discipline.assistant_teachers << other_teacher
-  #   visit edit_study_discipline_path(@discipline)
-  #   within '#discipline_teachers' do
-  #     click_link 'Удалить'
-  #   end
-  #   click_button('Сохранить дисциплину')
-  #   page.should have_content other_teacher
-  #end
-  #
+  scenario 'должен удалять дополнительных преподавателей', js: true, driver: :webkit do
+     other_teacher = create(:user)
+     create(:position, user: other_teacher, role: FactoryGirl.create(:role, :lecturer), department: @user.departments.academic.first)
+     @discipline.assistant_teachers << other_teacher
+     visit edit_study_discipline_path(@discipline)
+     within '#discipline_teachers' do
+       click_link 'Удалить'
+     end
+     click_button('Сохранить дисциплину')
+  end
+
   #scenario 'при удалении себя как дополнительного преподавателя дисциплина должна исчезать из списка' do
   #   discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
   #   discipline.assistant_teachers << @user
@@ -107,7 +106,7 @@ feature 'Редактирование дисциплины' do
     page.should_not have_checked_field 'has_semester_project'
   end
 
-   scenario 'при редактировании можно добавить курсовую работу или проект' do
+  scenario 'при редактировании можно добавить курсовую работу или проект' do
     visit edit_study_discipline_path(@discipline)
     find("input[type='checkbox']#has_semester_work").set(true)
     expect{
@@ -123,6 +122,5 @@ feature 'Редактирование дисциплины' do
       click_button('Сохранить дисциплину')
     }.to change { @discipline.exams.count }.by(-1)
   end
-  
 
 end
