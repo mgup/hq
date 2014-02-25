@@ -26,6 +26,11 @@
   <%= link_to new_event_path, class: 'btn btn-primary pull-right' do%>
     <span class='glyphicon glyphicon-plus'></span> Добавить новое событие
   <% end %>
+  <%= link_to event_claims_path(Event.where(event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY).first),
+              class: 'btn btn-default pull-right',
+              style: 'margin-right: 10px;' do%>
+    <span class='glyphicon glyphicon-list-alt'></span> Заявки
+  <% end %>
 </div>
 
 <table class="table table-hover">

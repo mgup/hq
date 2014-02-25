@@ -17,3 +17,6 @@ $ ->
 
   $('.pill-inputs').each ->
     $('.pill-select a[data-value='+$(this).val()+']').tab('show')
+
+  $('.updateListOfClaims').change ->
+    $('.claims-filters').submit()

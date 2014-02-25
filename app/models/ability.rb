@@ -77,6 +77,7 @@ class Ability
 
     can :manage, EventDate
     can :actual, :events
+    can :create, EventDateClaim
   end
 
   # Обычный преподаватель.
@@ -117,6 +118,7 @@ class Ability
     can :update, Achievement
     can :validate_social, Achievement
     can :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
+    can :manage, EventDateClaim
     cannot :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
   end
 

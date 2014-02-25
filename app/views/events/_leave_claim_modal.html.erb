@@ -9,6 +9,7 @@
         <%= form_for claim, url: event_claims_path(event) do |f| %>
           <%= f.hidden_field :id %>
           <%= f.hidden_field :event_id, value: event.id %>
+          <%= f.hidden_field :status, value: EventDateClaim::STATUS_NOT_ACCEPTED %>
           <label class="col-sm-3">Фамилия</label>
           <div class="col-sm-9">
             <%= f.text_field :fname, class: 'form-control' %>

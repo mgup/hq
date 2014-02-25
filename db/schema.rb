@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140224071111) do
+ActiveRecord::Schema.define(version: 20140225052559) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -581,6 +581,7 @@ ActiveRecord::Schema.define(version: 20140224071111) do
     t.datetime "updated_at"
     t.integer  "group_id"
     t.integer  "event_id"
+    t.integer  "status"
   end
 
   add_index "event_date_claim", ["event_id"], name: "index_event_date_claim_on_event_id", using: :btree
