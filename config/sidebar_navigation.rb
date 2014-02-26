@@ -103,7 +103,7 @@ SimpleNavigation::Configuration.run do |navigation|
         end
 
         if can? :validate, Achievement
-          primary.item :validate_achievements, 'Подтверждение показателей эффективности',
+          primary.item :validate_achievements, 'Подтверждение показателей эффективности (кафедра)',
                        validate_achievements_path, icon: 'check'
         end
 

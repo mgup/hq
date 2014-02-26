@@ -1,5 +1,5 @@
 class AchievementsController < ApplicationController
-  load_resource except: [:update, :destroy, :validate, :validate_selection, :validate_social]
+  load_resource except: [:update, :destroy, :validate, :validate_selection, :validate_social, :validate_additional]
   authorize_resource
 
   def periods
@@ -114,6 +114,8 @@ class AchievementsController < ApplicationController
 
   # Подтверждение показателей эффективности по дополнительным поручениям.
   def validate_additional
+    redirect_to '/' unless current_user.can?(:validate_additional, Achievement)
+
     @year = params[:year] || Study::Discipline::CURRENT_STUDY_YEAR
 
     # Определяем, какой институт возглавляет текущий пользователь.
