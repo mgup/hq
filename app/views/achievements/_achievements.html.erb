@@ -85,26 +85,28 @@
     </tr>
   </table>
 
-  <% if @already_closed && @period.active? %>
-    <% relevant_reports = @period.achievement_reports.by_user(current_user).only_relevant %>
-    <% if relevant_reports.any? %>
-      <%= link_to reopen_achievement_report_path(relevant_reports.first), class: 'btn btn-success pull-right', confirm: 'Уверены? Если уже распечатана и подписана бумажная версия отчёта — её придётся печатать заново.' do %>
-        <span class="glyphicon glyphicon-edit"></span>
-        Внести изменения
+  <% if @period.active? %>
+    <% if @already_closed %>
+      <% relevant_reports = @period.achievement_reports.by_user(current_user).only_relevant %>
+      <% if relevant_reports.any? %>
+        <%= link_to reopen_achievement_report_path(relevant_reports.first), class: 'btn btn-success pull-right', confirm: 'Уверены? Если уже распечатана и подписана бумажная версия отчёта — её придётся печатать заново.' do %>
+          <span class="glyphicon glyphicon-edit"></span>
+          Внести изменения
+        <% end %>
       <% end %>
-    <% end %>
-  <% else %>
-    <%= form_for AchievementReport.new, class: 'form-horizontal' do |f| %>
-      <%= f.hidden_field :achievement_period_id, value: @achievements.first.period.id %>
-      <%= f.hidden_field :user_id, value: current_user.id %>
-      <%= f.hidden_field :relevant, value: 1 %>
+    <% else %>
+      <%= form_for AchievementReport.new, class: 'form-horizontal' do |f| %>
+        <%= f.hidden_field :achievement_period_id, value: @achievements.first.period.id %>
+        <%= f.hidden_field :user_id, value: current_user.id %>
+        <%= f.hidden_field :relevant, value: 1 %>
 
-      <div class="form-group">
-        <div class="col-sm-12">
-          <%= f.submit 'Закончить формирование отчёта об эффективности',
-                       class: 'btn btn-primary pull-right' %>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <%= f.submit 'Закончить формирование отчёта об эффективности',
+                         class: 'btn btn-primary pull-right' %>
+          </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

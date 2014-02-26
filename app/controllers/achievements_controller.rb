@@ -16,9 +16,9 @@ class AchievementsController < ApplicationController
       return
     end
 
-    unless @period.active?
-      redirect_to periods_achievements_path, notice: 'Приём данных по указанному периоду завершён.'
-    end
+    #unless @period.active?
+    #  redirect_to periods_achievements_path, notice: 'Приём данных по указанному периоду завершён.'
+    #end
 
     @achievements = @period.achievements.by(current_user)
 
