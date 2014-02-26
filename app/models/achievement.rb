@@ -42,7 +42,7 @@ class Achievement < ActiveRecord::Base
     .where(activity_id: 43).order('year, user_id')
   }
 
-  scope :in_additional, -> (user, department, year) {
+  scope :in_additional, -> (user, department, subdepartment = nil, year = 2013) {
     query = joins(:period).where(activity_id: 45).order('year, user_id')
               .where('achievement_periods.year = ?', year)
 
@@ -50,6 +50,10 @@ class Achievement < ActiveRecord::Base
       query = query.joins(user: [{positions: :department}])
       query = query.joins('JOIN department AS pd ON department.department_parent = pd.department_id')
       query = query.where('pd.department_id = ?', department)
+
+      if subdepartment
+        query = query.where('department.department_id = ?', subdepartment)
+      end
     end
 
     query
@@ -87,40 +91,40 @@ class Achievement < ActiveRecord::Base
     end
   end
 
-  def self.combine_45_achievements
-    [1,2].each do |period_id|
-      user_ids = Achievement.unscoped.where(activity_id: 45)
-        .where(achievement_period_id: period_id)
-        .where('status NOT IN (?)', [3]).map(&:user_id).uniq
-
-      user_ids.each do |user_id|
-        user = User.find(user_id)
-
-        iidizh = false
-        user.departments_ids.each do |i|
-          iidizh = true if [63,58,78,81,69,62,5].include?(i.to_i)
-        end
-
-        unless iidizh
-          achievements = Achievement.unscoped.where(user_id: user_id)
-            .where(achievement_period_id: period_id)
-            .where(activity_id: 45)
-            .where('status NOT IN (?)', [3])
-
-          description = achievements.map(&:description).join("\n")
-          cost = achievements.map(&:cost).map(&:to_i).sum
-
-          Achievement.create(user_id: user_id,
-                             achievement_period_id: period_id,
-                             description: description,
-                             activity_id: 45,
-                             cost: cost,
-                             status: 1
-          )
-
-          achievements.map(&:destroy)
-        end
-      end
-    end
-  end
+  #def self.combine_45_achievements
+  #  [1,2].each do |period_id|
+  #    user_ids = Achievement.unscoped.where(activity_id: 45)
+  #      .where(achievement_period_id: period_id)
+  #      .where('status NOT IN (?)', [3]).map(&:user_id).uniq
+  #
+  #    user_ids.each do |user_id|
+  #      user = User.find(user_id)
+  #
+  #      iidizh = false
+  #      user.departments_ids.each do |i|
+  #        iidizh = true if [63,58,78,81,69,62,5].include?(i.to_i)
+  #      end
+  #
+  #      unless iidizh
+  #        achievements = Achievement.unscoped.where(user_id: user_id)
+  #          .where(achievement_period_id: period_id)
+  #          .where(activity_id: 45)
+  #          .where('status NOT IN (?)', [3])
+  #
+  #        description = achievements.map(&:description).join("\n")
+  #        cost = achievements.map(&:cost).map(&:to_i).sum
+  #
+  #        Achievement.create(user_id: user_id,
+  #                           achievement_period_id: period_id,
+  #                           description: description,
+  #                           activity_id: 45,
+  #                           cost: cost,
+  #                           status: 1
+  #        )
+  #
+  #        achievements.map(&:destroy)
+  #      end
+  #    end
+  #  end
+  #end
 end

@@ -14,6 +14,12 @@
     <%= select_tag :year, options_for_select([[2013, 2013], [2012, 2012]], @year),
                    class: 'form-control', onchange: %q($(this).parents('form').submit();) %>
   </div>
+
+  <div class="form-group">
+    <label>Кафедра</label>
+    <%= select_tag :subdepartment, options_for_select(Department.where('department_parent = ?', @current_department).map { |d| [d.abbreviation, d.id] }, params[:subdepartment]),
+                   prompt: 'все кафедры института', class: 'form-control', onchange: %q($(this).parents('form').submit();) %>
+  </div>
 </form>
 
 <% @achievements.each do |achievement| %>

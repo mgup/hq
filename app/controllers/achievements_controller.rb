@@ -118,12 +118,12 @@ class AchievementsController < ApplicationController
 
     # Определяем, какой институт возглавляет текущий пользователь.
     deps = [Department::IPIT, Department::IIDIZH, Department::IKIM, Department::IGRIK]
-    current_department = nil
+    @current_department = nil
     current_user.department_ids.each do |d|
-      current_department = d if deps.include?(d)
+      @current_department = d if deps.include?(d)
     end
 
-    @achievements = Achievement.in_additional(current_user, current_department, @year)
+    @achievements = Achievement.in_additional(current_user, @current_department, params[:subdepartment], @year)
   end
 
   def print
