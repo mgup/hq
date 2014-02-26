@@ -47,7 +47,9 @@ class Achievement < ActiveRecord::Base
               .where('achievement_periods.year = ?', year)
 
     if user.is?(:dean)
-      query = query.joins(user: [{positions: :department}]).where('department.department_id = ?', department)
+      query = query.joins(user: [{positions: :department}])
+      query = query.joins('JOIN department AS pd ON department.department_parent = pd.department_id')
+      query = query.where('pd.department_id = ?', department)
     end
 
     query
