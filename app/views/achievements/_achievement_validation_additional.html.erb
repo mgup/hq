@@ -1,0 +1,67 @@
+<div <%= 'style="background-color: #dff0d8; padding: 5px;"'.html_safe if achievement.accepted_final? %>
+     <%= 'style="background-color: #f2dede; padding: 5px;"'.html_safe if achievement.refused? %>>
+
+  <%= form_for achievement, remote: true, html: { class: 'form-horizontal form-achievement-validation' } do |f| %>
+    <fieldset>
+      <legend><%= achievement.user.full_name %></legend>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Год</label>
+        <div class="col-sm-10">
+          <p class="form-control-static"><%= achievement.period.year %> год</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Подтверждение</label>
+        <div class="col-sm-10">
+          <p class="form-control-static"><%= achievement.description %></p>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+
+  <%= form_for achievement, remote: true, html: { class: 'form-horizontal selection-validation form-achievement-cost', data: { id: achievement.id } } do |f| %>
+    <%= f.hidden_field :status, class: 'achievement-status', data: { id: achievement.id } %>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Комментарий к подтверждению</label>
+      <div class="col-sm-10">
+        <%= f.text_area :comment, class: 'form-control achievement-comment',
+                           data: { id: achievement.id }, rows: 2, disabled: achievement.accepted_final? %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :cost, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-2">
+        <%= f.number_field :cost, class: 'form-control achievement-cost',
+                           data: { id: achievement.id },
+                           min: 0.0, max: achievement.activity.credit, step: 0.1, disabled: achievement.accepted_final?,
+                           value: (achievement.accepted_final? ? achievement.cost : 0.0) %>
+      </div>
+      <div class="col-sm-4 col-sm-offset-4">
+        <% if achievement.refused? %>
+          <%= f.submit 'Вернуть и подтвердить', class: 'final-approve btn btn-success pull-right',
+                       style: 'margin-right: 10px;',
+                       data: { id: achievement.id },
+                       onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(4);" %>
+        <% else %>
+          <% unless achievement.accepted_final? %>
+            <%= f.submit 'Подтвердить', class: 'btn btn-success final-approve',
+                         data: { id: achievement.id },
+                         onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(4);" %>
+          <% end %>
+
+          <%= f.submit 'Удалить', class: 'btn btn-danger pull-right refuse',
+                       confirm: 'Вы уверены?',
+                       data: { id: achievement.id },
+                       style: 'margin-right: 10px;',
+                       onclick: "$(this).parents('form').eq(0).find('.achievement-status').val(3);" %>
+        <% end %>
+      </div>
+      <br><br><br>
+    </div>
+  <% end %>
+</div>
+<br><br>

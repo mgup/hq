@@ -42,6 +42,11 @@ class Achievement < ActiveRecord::Base
     .where(activity_id: 43).order('year, user_id')
   }
 
+  scope :in_additional, -> (year = Date.today.year) {
+    joins(:period)
+    .where(activity_id: 45).order('year, user_id')
+  }
+
   def new?
     STATUS_NEW == status
   end

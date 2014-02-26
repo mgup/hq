@@ -1,0 +1,17 @@
+<div class="page-header">
+  <h1>
+    Подтверждение показателей эффективности<br><small>поручения директора</small>
+  </h1>
+</div>
+<p class="lead">
+  Данный показатель может быть оценён в пределах
+  от <strong>0</strong> до <strong>10</strong> баллов.
+</p>
+
+
+<% @achievements.each do |achievement| %>
+  <div id="<%= dom_id(achievement, :validate_social) %>">
+    <%= render partial: 'achievement_validation_additional',
+               locals: { achievement: achievement } %>
+  </div>
+<% end %>

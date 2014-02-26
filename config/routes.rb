@@ -171,6 +171,7 @@ HQ::Application.routes.draw do
     get 'validate', on: :collection
     get 'validate_selection', on: :collection
     get 'validate_social', on: :collection
+    get 'validate_additional', on: :collection
   end
   resources :achievement_reports do
     get 'reopen', on: :member

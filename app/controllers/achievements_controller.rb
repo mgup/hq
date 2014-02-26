@@ -112,6 +112,11 @@ class AchievementsController < ApplicationController
     @achievements = Achievement.in_social
   end
 
+  # Подтверждение показателей эффективности по дополнительным поручениям.
+  def validate_additional
+    @achievements = Achievement.in_additional
+  end
+
   def print
     @no_reports = ActiveRecord::Base.connection.execute("
       SELECT department_sname AS `Кафедра`,
