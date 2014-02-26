@@ -8,6 +8,13 @@
   от <strong>0</strong> до <strong>10</strong> баллов.
 </p>
 
+<form class="form-inline" style="margin-bottom: 15px;">
+  <div class="form-group">
+    <label>Период отчётности</label>
+    <%= select_tag :year, options_for_select([[2013, 2013], [2012, 2012]], @year),
+                   class: 'form-control', onchange: %q($(this).parents('form').submit();) %>
+  </div>
+</form>
 
 <% @achievements.each do |achievement| %>
   <div id="<%= dom_id(achievement, :validate_social) %>">

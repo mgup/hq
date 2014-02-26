@@ -114,7 +114,9 @@ class AchievementsController < ApplicationController
 
   # Подтверждение показателей эффективности по дополнительным поручениям.
   def validate_additional
-    @achievements = Achievement.in_additional
+    @year = params[:year] || Study::Discipline::CURRENT_STUDY_YEAR
+
+    @achievements = Achievement.in_additional(current_user, @year)
   end
 
   def print

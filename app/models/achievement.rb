@@ -42,10 +42,11 @@ class Achievement < ActiveRecord::Base
     .where(activity_id: 43).order('year, user_id')
   }
 
-  scope :in_additional, -> (year = Date.today.year) {
+  scope :in_additional, -> (user, year) {
     query = joins(:period).where(activity_id: 45).order('year, user_id')
+              .where('achievement_periods.year = ?', year)
 
-    if current_user.is?(:dean)
+    if user.is?(:dean)
       query.joins(:user)
     end
 
