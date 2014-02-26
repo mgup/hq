@@ -17,7 +17,7 @@
 </form>
 
 <% @achievements.each do |achievement| %>
-  <div id="<%= dom_id(achievement, :validate_social) %>">
+  <div id="<%= dom_id(achievement, :validate_additional) %>">
     <%= render partial: 'achievement_validation_additional',
                locals: { achievement: achievement } %>
   </div>

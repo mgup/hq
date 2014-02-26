@@ -12,6 +12,10 @@
   $('#<%= dom_id(@achievement, :validate_social) %>').html(
      '<%=j render partial: 'achievement_validation_selection', locals: { achievement: @achievement } %>'
   );
+<% elsif current_user.is?(:dean) %>
+  $('#<%= dom_id(@achievement, :validate_additional) %>').html(
+      '<%=j render partial: 'achievement_validation_additional', locals: { achievement: @achievement } %>'
+  );
 <% else %>
   $('#<%= dom_id(@achievement, :validate) %>').html(
       '<%=j render partial: 'achievement_validation', locals: { achievement: @achievement } %>'
