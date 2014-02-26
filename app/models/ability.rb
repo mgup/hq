@@ -90,6 +90,7 @@ class Ability
     cannot :validate, Achievement
     cannot :validate_social, Achievement
     cannot :validate_selection, Achievement
+    cannot :validate_additional, Achievement
   end
 
   def subdepartment_assistant(user)
@@ -112,6 +113,11 @@ class Ability
   def executive_secretary(user)
     can :update, Achievement
     can :validate_selection, Achievement
+  end
+
+  def dean(user)
+    can :update, Achievement
+    can :validate_additional, Achievement
   end
 
   def pro_rector_social(user)

@@ -117,10 +117,10 @@ SimpleNavigation::Configuration.run do |navigation|
                        validate_social_achievements_path, icon: 'check'
         end
 
-        #if can? :validate_additional, Achievement
-        #  primary.item :validate_social_achievements, 'Подтверждение показателей эффективности (поручения директора)',
-        #               validate_additional_achievements_path, icon: 'check'
-        #end
+        if can? :validate_additional, Achievement
+          primary.item :validate_social_achievements, 'Подтверждение показателей эффективности (поручения директора)',
+                       validate_additional_achievements_path, icon: 'check'
+        end
       end
 
       #if can? :manage, Student
