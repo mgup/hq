@@ -116,7 +116,14 @@ class AchievementsController < ApplicationController
   def validate_additional
     @year = params[:year] || Study::Discipline::CURRENT_STUDY_YEAR
 
-    @achievements = Achievement.in_additional(current_user, @year)
+    # Определяем, какой институт возглавляет текущий пользователь.
+    deps = [Department::IPIT, Department::IIDIZH, Department::IKIM, Department::IGRIK]
+    current_department = nil
+    current_user.department_ids.each do |d|
+      current_department = d if deps.include?(d)
+    end
+
+    @achievements = Achievement.in_additional(current_user, current_department, @year)
   end
 
   def print

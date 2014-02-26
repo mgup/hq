@@ -1,4 +1,9 @@
 class Department < ActiveRecord::Base
+  IPIT   = 3
+  IIDIZH = 5
+  IKIM   = 6
+  IGRIK  = 7
+
   FITIM  = 2
   FPT    = 3
   FRISO  = 4
