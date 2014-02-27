@@ -114,7 +114,7 @@ class AchievementsController < ApplicationController
 
   # Подтверждение показателей эффективности по дополнительным поручениям.
   def validate_additional
-    redirect_to '/' unless current_user.can?(:validate_additional, Achievement)
+    #redirect_to '/' unless current_user.can?(:validate_additional, Achievement)
 
     @year = params[:year] || Study::Discipline::CURRENT_STUDY_YEAR
 

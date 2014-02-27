@@ -23,6 +23,9 @@ class Ability
       # Так как у преподавателей самые "узкие" роли с разными ограничениями —
       # выносим их в начало.
       # TODO В будущем нужно сделать иерархию ролей в базе, чтобы порядок их обработки устанавливался автоматически.
+      if user.is?(:subdepartment)
+        lecturer(user)
+      end
       if user.is?(:lecturer)
         lecturer(user)
       end
@@ -30,7 +33,7 @@ class Ability
         subdepartment_assistant(user)
       end
 
-      user.roles.reject { |r| r.name == 'lecturer' }.each do |role|
+      user.roles.reject { |r| ['lecturer', 'subdepartment'].include?(r.name) }.each do |role|
         send(role.name, user) if respond_to?(role.name)
       end
 
