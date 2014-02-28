@@ -50,6 +50,7 @@ class Achievement < ActiveRecord::Base
       query = query.joins(user: [{positions: :department}])
       query = query.joins('JOIN department AS pd ON department.department_parent = pd.department_id')
       query = query.where('pd.department_id = ?', department)
+      query = query.where('acl_position_role IN (?)', [8, 7])
 
       if subdepartment
         query = query.where('department.department_id = ?', subdepartment)
