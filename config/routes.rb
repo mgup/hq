@@ -25,6 +25,7 @@ HQ::Application.routes.draw do
 
   resources :roles
   resources :users do
+    get 'without_med.xlsx', to: 'users#without_med', on: :collection, defaults: { format: 'xlsx' }, as: :without_med
     get 'see_with_eyes' => 'users#see_with_eyes', as: :see_with_eyes
     get 'medical_requests.pdf', to: 'users#medical_requests', on: :collection, defaults: { format: 'pdf' }
   end
@@ -36,6 +37,7 @@ HQ::Application.routes.draw do
 
   resources :events do
     get 'actual', to: 'events#actual', on: :collection
+    get 'more', to: 'events#more', on: :member
     get 'calendar', to: 'events#calendar', on: :collection
     get 'print.pdf', to: 'events#print', on: :member, defaults: { format: 'pdf' }, as: :print
     resources :claims

@@ -3,11 +3,8 @@ class UsersController < ApplicationController
 
   def index
     params[:page] ||= 1
-
     @users = @users.by_name(params[:name]) if params[:name]
-
     @users = @users.by_department(params[:department]) if params[:department]
-
     @users = @users.page(params[:page])
   end
 
@@ -86,6 +83,13 @@ class UsersController < ApplicationController
     @user = User.find params[:user_id]
     sign_out current_user
     sign_in_and_redirect @user, event: :authentication
+  end
+
+  def without_med
+    @users = User.teachers.find(:all, conditions: ['user_id not in (?)', Event.first.users.collect{|u| u.id}]).sort_by{|u| u.full_name}
+    respond_to do |format|
+      format.xlsx
+    end
   end
 
   private

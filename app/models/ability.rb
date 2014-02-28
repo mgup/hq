@@ -138,6 +138,7 @@ class Ability
 
   def soc_support_vedush(user)
     cannot :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
+    can :without_med, User
     can :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
   end
 
