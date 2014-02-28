@@ -67,6 +67,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
       if can? :manage, Event.new(event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY)
         primary.item :event,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
+        primary.item :without_med, 'Незаписавшиеся на медосмотр'.html_safe, without_med_users_path, icon: 'print'
       end
 
       if can? :manage, EventDate

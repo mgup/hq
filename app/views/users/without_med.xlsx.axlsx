@@ -1,0 +1,13 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
+  wb.add_worksheet(name: 'Незаписавшиеся на медосмотр') do |sheet|
+    sheet.add_row ['№', 'ФИО', 'Телефон', 'Кафедра']
+    sheet["A1:D1"].each do |cell|
+      cell.style = style_shout
+    end
+
+    @users.each_with_index do |user, index|
+      sheet.add_row ["#{index+1}", "#{user.full_name}", "#{user.phone}",
+                     "#{user.departments.academic.collect{|d| d.abbreviation}.join(', ')}"]
+    end
+end

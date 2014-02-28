@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
-  skip_before_filter :authenticate_user!, only: :actual
-  load_resource except: [:actual, :calendar]
-  authorize_resource :event, except: [:actual, :calendar]
+  skip_before_filter :authenticate_user!, only: [:actual, :calendar, :more]
+  load_resource except: [:more]
+  authorize_resource :event, except: [:actual, :calendar, :more]
   def index
     @events = @events.no_booking  # Пока так, чтобы ничего лишнего не смотрели
     @events = @events.from_name(params[:name]) if params[:name]
@@ -67,8 +67,14 @@ class EventsController < ApplicationController
       end
       @events = search_dates.flatten.collect{ |sd| sd.event }.uniq
     end
-
+    @events = @events.reverse
     @events = Kaminari.paginate_array(@events).page(params[:page]).per(5)
+  end
+
+  def more
+    authorize! :actual, :events
+    @event = Event.find(params[:id])
+    redirect_to actual_events_path if !Event.publications.include?(@event)
   end
 
   def calendar
