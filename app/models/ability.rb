@@ -23,11 +23,11 @@ class Ability
       # Так как у преподавателей самые "узкие" роли с разными ограничениями —
       # выносим их в начало.
       # TODO В будущем нужно сделать иерархию ролей в базе, чтобы порядок их обработки устанавливался автоматически.
-      if user.is?(:subdepartment)
-        lecturer(user)
-      end
       if user.is?(:lecturer)
         lecturer(user)
+      end
+      if user.is?(:subdepartment)
+        subdepartment(user)
       end
       if user.is?(:subdepartment_assistant)
         subdepartment_assistant(user)
