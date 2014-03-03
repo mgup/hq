@@ -10,6 +10,14 @@ class Study::CheckpointsController < ApplicationController
 
   def new ; end
 
+  def create
+    #raise params.inspect
+    @checkpoint = Study::Checkpoint.new(resource_params)
+    if @checkpoint.save
+      redirect_to study_discipline_checkpoints_path(@discipline)
+    end
+  end
+
   def edit
     @checkpoints = @discipline.checkpoints.control
     @max_b = 0
@@ -74,7 +82,7 @@ class Study::CheckpointsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:study_checkpoint, {}).permit( :id, :checkpoint_date, :checkpoint_name, :checkpoint_details,
+    params.fetch(:study_checkpoint, {}).permit( :id, :date, :checkpoint_name, :checkpoint_details, :checkpoint_subject, :checkpoint_type,
                                                 :checkpoint_max, :checkpoint_min, :'_destroy',
                                                 marks_attributes: [:id, :checkpoint_mark_student, :mark, :created_at, :updated_at]
     )
