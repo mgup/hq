@@ -13,14 +13,14 @@
           <div class="row">
             <%= f.label :checkpoint_type, class: 'col-sm-3' %>
             <div class="col col-sm-8">
-              <%= f.hidden_field :type, class: 'ajax-form' %>
-              <%= pill_tabs('type', [['1', 'лекция'], ['2', 'практическое/лабораторное занятие']], 'study_checkpoint_type') %>
+              <%= f.hidden_field :checkpoint_type, class: 'ajax-form', value: 1 %>
+              <%= pill_tabs('checkpoint_type', [['1', 'лекция'], ['2', 'практическое/лабораторное занятие']], 'study_checkpoint_checkpoint_type') %>
             </div>
           </div>
           <div class="row">
             <%= f.label :date, class: 'col-sm-3' %>
             <div class="col col-sm-5">
-              <%= f.text_field :date, class: 'form-control', placeholder: 'дд.мм.гггг', required: true %>
+              <%= f.text_field :date, class: 'form-control', placeholder: 'дд.мм.гггг', pattern: '\d{1,2}.\d{1,2}.\d{4}', required: true %>
             </div>
           </div>
           </div>
@@ -32,3 +32,8 @@
         </div>
   </div>
 </div>
+<script>
+  $(function(){
+    $('#pillcheckpoint_type a:first').tab('show');
+  })
+</script>
