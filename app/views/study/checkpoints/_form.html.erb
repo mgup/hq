@@ -8,6 +8,8 @@
   });
 </script>
 
+<%= render partial: 'create', locals: {discipline: @discipline, checkpoint: Study::Checkpoint.new} %>
+
 <%= nested_form_for @discipline, url: study_discipline_path(@discipline), method: :patch, html: { class: 'form-horizontal', role: 'form' } do |f| %>
   <div class="form-group">
     <%= f.label :group, class: 'control-label col-sm-3' %>
@@ -21,6 +23,12 @@
       <p class="form-control-static"><%= @discipline.name %></p>
     </div>
   </div>
+
+  <%= link_to '#createClass', class: 'btn btn-info pull-right', id: 'createClassButton',
+              data: {toggle: 'modal'} do %>
+    <span class="glyphicon glyphicon-plus"></span> Добавить занятие
+  <% end %>
+
 
   <div class="row">
     <div class="col-md-4 lectures">
@@ -65,3 +73,7 @@
     </div>
   </div>
 <% end %>
+
+<span class="navigation_trip" data-input="#createClassButton"
+data-content="Если у вас есть занятия одного типа в один день, вы можете добавить занятие вручную."
+data-position="n"></span>

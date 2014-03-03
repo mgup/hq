@@ -1,0 +1,39 @@
+<div class="modal fade" id="createClass" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Создание занятия</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for checkpoint, url: study_discipline_checkpoints_path(discipline), method: :post,
+                     class: 'form-horizontal' do |f| %>
+          <%= f.hidden_field :id %>
+          <%= f.hidden_field :checkpoint_subject, value: discipline.id %>
+          <div class="row">
+            <%= f.label :checkpoint_type, class: 'col-sm-3' %>
+            <div class="col col-sm-8">
+              <%= f.hidden_field :checkpoint_type, class: 'ajax-form', value: 1 %>
+              <%= pill_tabs('checkpoint_type', [['1', 'лекция'], ['2', 'практическое/лабораторное занятие']], 'study_checkpoint_checkpoint_type') %>
+            </div>
+          </div>
+          <div class="row">
+            <%= f.label :date, class: 'col-sm-3' %>
+            <div class="col col-sm-5">
+              <%= f.text_field :date, class: 'form-control', placeholder: 'дд.мм.гггг', pattern: '\d{1,2}.\d{1,2}.\d{4}', required: true %>
+            </div>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+            <%= f.submit 'Cохранить', class: 'btn btn-primary' %>
+        <% end %>
+        </div>
+        </div>
+  </div>
+</div>
+<script>
+  $(function(){
+    $('#pillcheckpoint_type a:first').tab('show');
+  })
+</script>
