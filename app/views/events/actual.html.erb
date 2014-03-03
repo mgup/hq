@@ -36,7 +36,8 @@
     <% @events.each do |event| %>
       <h2><a href="<%= more_event_path(event) %>" class="header-link"><%= event.name %></a> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h2>
       <% if event.description.length > 500 %>
-      <div><%= raw event.description.truncate(500) %> <%= link_to '<p class="lead">Читать далее</p>'.html_safe, more_event_path(event) %></div>
+      <div><%= raw event.description.truncate(500) %></div>
+      <%= link_to '<p class="lead">Читать далее</p>'.html_safe, more_event_path(event) %>
       <% else %>
         <div><%= raw event.description %></div>
       <% end %>
