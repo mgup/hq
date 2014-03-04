@@ -60,16 +60,23 @@ class Achievement < ActiveRecord::Base
     query
   }
 
-  scope :in_department, -> (department, only_accepted = false) {
+  scope :in_department, -> (department, params = {}) {
+    params[:only_accepted] ||= false
+    params[:without_additional] ||= false
+
     query = joins(:period).order('year, user_id')
     query = query.joins(user: [{positions: :department}])
     query = query.joins('JOIN department AS pd ON department.department_parent = pd.department_id')
     query = query.where('pd.department_id = ?', department)
     query = query.where('acl_position_role IN (?)', [8, 7])
 
-    if only_accepted
+    if params[:only_accepted]
       query = query.where('achievements.status IN (?)',
                           [Achievement::STATUS_ACCEPTED, Achievement::STATUS_ACCEPTED_FINAL])
+    end
+
+    if params[:without_additional]
+      query = query.where('achievement.activity_id != 45')
     end
 
     query

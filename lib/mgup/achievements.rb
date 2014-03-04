@@ -1,6 +1,6 @@
 class Mgup::Achievements
   def self.sums(faculty_id = Department::IGRIK)
-    achievements = Achievement.in_department(faculty_id, true)
+    achievements = Achievement.in_department(faculty_id, only_accepted: true)
 
     by_user = achievements.group_by { |a| a.user_id }
 
@@ -18,10 +18,20 @@ class Mgup::Achievements
       end
     end
 
-    by_user_and_year_summed
+    result = []
+    by_user_and_year_summed.each do |user, years|
+      sum = 0
+      sum += years[2013] if years[2013]
+      sum += 0.8 * years[2012] if years[2012]
+
+      result << [user, sum]
+    end
+
+    result
   end
 
   def self.sums_without_additional(faculty_id = Department::IGRIK)
+    achievements = Achievement.in_department(faculty_id, only_accepted: true, without_additional: true)
 
   end
 end
