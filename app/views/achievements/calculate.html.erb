@@ -10,9 +10,12 @@
   </div>
 </form>
 
+
+
 <ul>
   <li>Минимальный балл — <%= @sums.min_by { |pair| pair[1] }[1] %></li>
   <li>Максимальный балл — <%= @sums.max_by { |pair| pair[1] }[1] %></li>
+  <li>Медиана — <%= @sums.length%2 == 1 ? @sums.sort_by{|x| x[1]}[(@sums.length/2).round][1] : (@sums.sort_by{|x| x[1]}[(@sums.length/2)-1][1] + @sums.sort_by{|x| x[1]}[(@sums.length/2)+1][1])/2 %></li>
 </ul>
 
 <%= render_distribution("Распределение баллов — #{@department.abbreviation}", @sums, id: 'sums') %>
