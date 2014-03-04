@@ -60,6 +60,8 @@ class Achievement < ActiveRecord::Base
     query
   }
 
+  scope :accepted, -> { where('status IN (?)', [STATUS_ACCEPTED_FINAL, STATUS_ACCEPTED]) }
+
   def new?
     STATUS_NEW == status
   end

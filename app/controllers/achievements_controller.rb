@@ -36,6 +36,10 @@ class AchievementsController < ApplicationController
 
   end
 
+  def test
+
+  end
+
   def create
     @achievement.user_id = current_user.id
 
