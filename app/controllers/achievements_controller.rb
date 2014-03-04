@@ -128,6 +128,15 @@ class AchievementsController < ApplicationController
     @achievements = Achievement.in_additional(current_user, @current_department, params[:subdepartment], @year)
   end
 
+  def calculate
+    @departments = [Department::IGRIK, Department::IPIT, Department::IIDIZH, Department::IKIM]
+    params[:department] ||= @departments[0]
+
+    @department = Department.find(params[:department] || @departments[0])
+
+    @achievements = Achievement.in_department(params[:department])
+  end
+
   def print
     @no_reports = ActiveRecord::Base.connection.execute("
       SELECT department_sname AS `Кафедра`,

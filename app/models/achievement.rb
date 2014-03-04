@@ -60,6 +60,15 @@ class Achievement < ActiveRecord::Base
     query
   }
 
+  scope :in_department, -> (department) {
+    query = joins(:period).where(activity_id: 45).order('year, user_id')
+    query = query.joins(user: [{positions: :department}])
+    query = query.joins('JOIN department AS pd ON department.department_parent = pd.department_id')
+    query = query.where('pd.department_id = ?', department)
+    query = query.where('acl_position_role IN (?)', [8, 7])
+    query
+  }
+
   def new?
     STATUS_NEW == status
   end
