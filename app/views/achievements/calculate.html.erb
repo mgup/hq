@@ -1,0 +1,11 @@
+<div class="page-header">
+  <h2>Расчёт надбавок</h2>
+</div>
+
+<form class="form-inline" style="margin-bottom: 15px;">
+  <div class="form-group">
+    <label>Институт</label>
+    <%= select_tag :department, options_for_select(Department.where(department_id: @departments).map { |d| [d.abbreviation, d.id] }, params[:department]),
+                   class: 'form-control', onchange: %q($(this).parents('form').submit();) %>
+  </div>
+</form>
