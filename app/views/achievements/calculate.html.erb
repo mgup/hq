@@ -15,7 +15,8 @@
   <li>Максимальный балл — <%= @sums.max_by { |pair| pair[1] }[1] %></li>
 </ul>
 
-<%= render_distribution("Распределение баллов — #{@department.abbreviation}", @sums) %>
+<%= render_distribution("Распределение баллов — #{@department.abbreviation}", @sums, id: 'sums') %>
+<%= render_distribution("Распределение баллов без дополнительных показателей — #{@department.abbreviation}", @sums_without_additional, id: 'sums_without_additional') %>
 
 <table class="table table-striped">
   <thead>
@@ -33,3 +34,5 @@
     </tr>
   <% end %>
 </table>
+
+

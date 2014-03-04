@@ -139,6 +139,7 @@ class AchievementsController < ApplicationController
     @department = Department.find(params[:department] || @departments[0])
 
     @sums = Mgup::Achievements.sums(params[:department])
+    @sums_without_additional = Mgup::Achievements.sums_without_additional(params[:department])
   end
 
   def print

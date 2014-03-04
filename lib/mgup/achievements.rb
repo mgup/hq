@@ -1,7 +1,17 @@
 class Mgup::Achievements
   def self.sums(faculty_id = Department::IGRIK)
     achievements = Achievement.in_department(faculty_id, only_accepted: true)
+    calculate_result(achievements)
+  end
 
+  def self.sums_without_additional(faculty_id = Department::IGRIK)
+    achievements = Achievement.in_department(faculty_id, only_accepted: true, without_additional: true)
+    calculate_result(achievements)
+  end
+
+  private
+
+  def self.calculate_result(achievements)
     by_user = achievements.group_by { |a| a.user_id }
 
     by_user_and_year = {}
@@ -28,10 +38,5 @@ class Mgup::Achievements
     end
 
     result
-  end
-
-  def self.sums_without_additional(faculty_id = Department::IGRIK)
-    achievements = Achievement.in_department(faculty_id, only_accepted: true, without_additional: true)
-
   end
 end

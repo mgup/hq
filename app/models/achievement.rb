@@ -76,7 +76,7 @@ class Achievement < ActiveRecord::Base
     end
 
     if params[:without_additional]
-      query = query.where('achievement.activity_id != 45')
+      query = query.where('achievements.activity_id != 45')
     end
 
     query
