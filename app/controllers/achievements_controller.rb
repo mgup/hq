@@ -134,7 +134,7 @@ class AchievementsController < ApplicationController
 
     @department = Department.find(params[:department] || @departments[0])
 
-    @achievements = Achievement.in_department(params[:department])
+    @sums = Mgup::Achievements.sums(params[:department])
   end
 
   def print
