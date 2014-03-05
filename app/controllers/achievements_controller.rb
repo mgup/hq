@@ -142,8 +142,65 @@ class AchievementsController < ApplicationController
     @sums_without_additional = Mgup::Achievements.sums_without_additional(params[:department])
   end
 
-  def salary
-    
+  def salary_igrik
+    @salaries = Salary::Salary201403.where(faculty_id: Department::IGRIK).joins(:user)
+                  .order('last_name_hint, first_name_hint, patronym_hint')
+
+    @sums = Mgup::Achievements.sums(Department::IGRIK)
+
+    @lower = 0.48613
+
+    @prev_fund = 1128688.0
+    @curr_fund = @lower * @prev_fund
+
+    @credits = @sums.map { |p| p[1] }
+    @credits_min = @credits.min
+    @credits_max = @credits.max
+    @median = median(@credits)
+
+    @e = 0.05
+    @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
+
+    untouchables_fund = 0.0
+    @salaries.each do |salary|
+      if salary.untouchable?
+        untouchables_fund += @lower * salary.previous_premium
+      end
+    end
+
+    right_fund = @curr_fund - untouchables_fund
+
+    current_fund = 0.0
+    @salaries.each do |salary|
+      unless salary.untouchable?
+        s = @sums.find { |p| p[0] == salary.user.id }
+        credit = s ? s[1] : 0
+        credit = credit.round(5)
+
+        current_premium = @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
+        current_fund += current_premium
+      end
+    end
+
+    @alpha = right_fund / current_fund
+  end
+
+  def median(array)
+    sorted = array.sort
+    len = sorted.length
+
+    return (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+  end
+
+  def sgn(number)
+    return  1 if number > 0
+    return -1 if number < 0
+
+    return  0
+  end
+
+  def vvv(x, b)
+    sgn(x) * (1 - Math::E**(-b * x.abs))
   end
 
   def print

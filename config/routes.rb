@@ -176,6 +176,7 @@ HQ::Application.routes.draw do
     get 'validate_social', on: :collection
     get 'validate_additional', on: :collection
     get 'calculate', on: :collection
+    get 'salary_igrik',    on: :collection
   end
   resources :achievement_reports do
     get 'reopen', on: :member

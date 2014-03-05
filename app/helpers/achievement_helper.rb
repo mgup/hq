@@ -23,4 +23,15 @@ module AchievementHelper
 
     res
   end
+
+  def sgn(number)
+    return  1 if number > 0
+    return -1 if number < 0
+
+    return  0
+  end
+
+  def vvv(x, b)
+    sgn(x) * (1 - Math::E**(-b * x.abs))
+  end
 end
