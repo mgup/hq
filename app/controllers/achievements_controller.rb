@@ -142,6 +142,10 @@ class AchievementsController < ApplicationController
     @sums_without_additional = Mgup::Achievements.sums_without_additional(params[:department])
   end
 
+  def salary
+    
+  end
+
   def print
     @no_reports = ActiveRecord::Base.connection.execute("
       SELECT department_sname AS `Кафедра`,

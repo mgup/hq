@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140225052559) do
+ActiveRecord::Schema.define(version: 20140305072654) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -993,6 +993,20 @@ ActiveRecord::Schema.define(version: 20140225052559) do
   end
 
   add_index "room", ["room_flat"], name: "roomFlat", using: :btree
+
+  create_table "salary201403", force: true do |t|
+    t.integer  "faculty_id"
+    t.integer  "department_id"
+    t.integer  "user_id"
+    t.decimal  "wage_rate",        precision: 10, scale: 0
+    t.boolean  "untouchable",                               default: false
+    t.boolean  "has_report"
+    t.decimal  "credits",          precision: 10, scale: 0
+    t.decimal  "previous_premium", precision: 10, scale: 0
+    t.decimal  "new_premium",      precision: 10, scale: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "schedule_cycle", primary_key: "schedule_cycle_id", force: true do |t|
     t.integer "schedule_cycle_course"
