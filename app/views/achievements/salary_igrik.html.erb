@@ -21,13 +21,13 @@
 <hr>
 <p>Минимальный балл — <%= @credits_min %></p>
 <p>Максимальный балл — <%= @credits_max %></p>
-<p>Медиана — <%= @median %></p>
+<p>Медиана (среди тех, кто участвует в рейтинге) — <%= @median %></p>
 
 
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th>e</th>
+      <th>&#x03b5;</th>
       <th><%= @e %></th>
     </tr>
   </thead>
@@ -69,6 +69,8 @@
       <%
          if salary.untouchable?
            current_premium = @lower * salary.previous_premium
+         elsif 0 == credit
+           current_premium = 0
          else
            current_premium = @alpha * @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
          end

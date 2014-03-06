@@ -146,7 +146,23 @@ class AchievementsController < ApplicationController
     @salaries = Salary::Salary201403.where(faculty_id: Department::IGRIK).joins(:user)
                   .order('last_name_hint, first_name_hint, patronym_hint')
 
-    @sums = Mgup::Achievements.sums(Department::IGRIK)
+    draft_sums = Mgup::Achievements.sums(Department::IGRIK)
+    @sums = []
+    @sums_without_untouchables = []
+    @salaries.each do |salary|
+      pair = draft_sums.find { |p| salary.user_id == p[0] }
+      if pair
+        credit = pair[1]
+        @sums << pair
+      else
+        credit = 0
+        @sums << [salary.user_id, 0]
+      end
+
+      unless salary.untouchable? || 0 == credit
+        @sums_without_untouchables << pair
+      end
+    end
 
     @lower = 0.48613
 
@@ -154,11 +170,12 @@ class AchievementsController < ApplicationController
     @curr_fund = @lower * @prev_fund
 
     @credits = @sums.map { |p| p[1] }
-    @credits_min = @credits.min
-    @credits_max = @credits.max
-    @median = median(@credits)
+    @credits_min = @sums_without_untouchables.map { |p| p[1] }.min
+    @credits_max = @sums_without_untouchables.map { |p| p[1] }.max
+    #@median = median(@credits)
+    @median = median(@sums_without_untouchables.map { |p| p[1] })
 
-    @e = 0.05
+    @e = params[:e] || 0.05
     @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
 
     untouchables_fund = 0.0
@@ -172,7 +189,7 @@ class AchievementsController < ApplicationController
 
     current_fund = 0.0
     @salaries.each do |salary|
-      unless salary.untouchable?
+      unless salary.untouchable? || 0 == @sums.find { |p| salary.user_id == p[0] }[1]
         s = @sums.find { |p| p[0] == salary.user.id }
         credit = s ? s[1] : 0
         credit = credit.round(5)
