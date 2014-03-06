@@ -175,7 +175,7 @@ class AchievementsController < ApplicationController
     #@median = median(@credits)
     @median = median(@sums_without_untouchables.map { |p| p[1] })
 
-    @e = params[:e] || 0.05
+    @e = params[:e].to_f || 0.05
     @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
 
     untouchables_fund = 0.0
