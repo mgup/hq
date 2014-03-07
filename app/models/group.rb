@@ -140,8 +140,8 @@ class Group < ActiveRecord::Base
               AND m1.checkpoint_mark_student = m2.checkpoint_mark_student
               AND m1.checkpoint_mark_submitted < m2.checkpoint_mark_submitted
   WHERE (subject_group = #{id}) AND (m2.checkpoint_mark_submitted IS NULL)
-                                AND (subject_year = #{Study::Discipline::CURRENT_STUDY_YEAR})
-                                AND (subject_semester = #{Study::Discipline::CURRENT_STUDY_TERM})
+                                AND (subject_year = #{discipline ? discipline.year : Study::Discipline::CURRENT_STUDY_YEAR})
+                                AND (subject_semester = #{discipline ? discipline.semester : :Study::Discipline::CURRENT_STUDY_TERM})
                                 AND (subject_id IN (#{discipline ? discipline.id : disciplines.now.collect{|d| d.id}.join(', ')}))
                                 GROUP BY `m1`.`checkpoint_mark_checkpoint`,
   `m1`.`checkpoint_mark_student`,
