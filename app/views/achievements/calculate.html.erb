@@ -10,8 +10,6 @@
   </div>
 </form>
 
-
-
 <ul>
   <li>Минимальный балл — <%= @sums.min_by { |pair| pair[1] }[1] %></li>
   <li>Максимальный балл — <%= @sums.max_by { |pair| pair[1] }[1] %></li>
@@ -30,8 +28,14 @@
     </tr>
   </thead>
   <% @sums.sort_by { |p| p[1] }.each do |user_id, credit| %>
+  <%# @sums.sort_by { |p| u = User.find(p[0]) ; [u.departments_ids, u.full_name] }.each do |user_id, credit| %>
+  <%
+     res = {}
+     @sums.each { |p| res[p[0]] = { credit: p[1] }
+  %>
     <tr>
       <td><%= user_id %></td>
+      <td><%= User.find(user_id).positions.inspect %></td>
       <td><%= User.find(user_id).full_name %></td>
       <td><%= credit %></td>
     </tr>
