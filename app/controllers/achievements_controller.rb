@@ -175,7 +175,187 @@ class AchievementsController < ApplicationController
     #@median = median(@credits)
     @median = median(@sums_without_untouchables.map { |p| p[1] })
 
-    @e = params[:e] || 0.05
+    @e = params[:e] ? params[:e].to_f : 0.05
+    @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
+
+    untouchables_fund = 0.0
+    @salaries.each do |salary|
+      if salary.untouchable?
+        untouchables_fund += @lower * salary.previous_premium
+      end
+    end
+
+    right_fund = @curr_fund - untouchables_fund
+
+    current_fund = 0.0
+    @salaries.each do |salary|
+      unless salary.untouchable? || 0 == @sums.find { |p| salary.user_id == p[0] }[1]
+        s = @sums.find { |p| p[0] == salary.user.id }
+        credit = s ? s[1] : 0
+        credit = credit.round(5)
+
+        current_premium = @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
+        current_fund += current_premium
+      end
+    end
+
+    @alpha = right_fund / current_fund
+  end
+
+  def salary_iidizh
+    @salaries = Salary::Salary201403.where(faculty_id: Department::IIDIZH).joins(:user)
+    .order('last_name_hint, first_name_hint, patronym_hint')
+
+    draft_sums = Mgup::Achievements.sums(Department::IIDIZH)
+    @sums = []
+    @sums_without_untouchables = []
+    @salaries.each do |salary|
+      pair = draft_sums.find { |p| salary.user_id == p[0] }
+      if pair
+        credit = pair[1]
+        @sums << pair
+      else
+        credit = 0
+        @sums << [salary.user_id, 0]
+      end
+
+      unless salary.untouchable? || 0 == credit
+        @sums_without_untouchables << pair
+      end
+    end
+
+    @lower = 0.48613
+
+    @prev_fund = 1481719.0
+    @curr_fund = @lower * @prev_fund
+
+    @credits = @sums.map { |p| p[1] }
+    @credits_min = @sums_without_untouchables.map { |p| p[1] }.min
+    @credits_max = @sums_without_untouchables.map { |p| p[1] }.max
+    #@median = median(@credits)
+    @median = median(@sums_without_untouchables.map { |p| p[1] })
+
+    @e = params[:e] ? params[:e].to_f : 0.05
+    @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
+
+    untouchables_fund = 0.0
+    @salaries.each do |salary|
+      if salary.untouchable?
+        untouchables_fund += @lower * salary.previous_premium
+      end
+    end
+
+    right_fund = @curr_fund - untouchables_fund
+
+    current_fund = 0.0
+    @salaries.each do |salary|
+      unless salary.untouchable? || 0 == @sums.find { |p| salary.user_id == p[0] }[1]
+        s = @sums.find { |p| p[0] == salary.user.id }
+        credit = s ? s[1] : 0
+        credit = credit.round(5)
+
+        current_premium = @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
+        current_fund += current_premium
+      end
+    end
+
+    @alpha = right_fund / current_fund
+  end
+
+  def salary_ikim
+    @salaries = Salary::Salary201403.where(faculty_id: Department::IKIM).joins(:user)
+    .order('last_name_hint, first_name_hint, patronym_hint')
+
+    draft_sums = Mgup::Achievements.sums(Department::IKIM)
+    @sums = []
+    @sums_without_untouchables = []
+    @salaries.each do |salary|
+      pair = draft_sums.find { |p| salary.user_id == p[0] }
+      if pair
+        credit = pair[1]
+        @sums << pair
+      else
+        credit = 0
+        @sums << [salary.user_id, 0]
+      end
+
+      unless salary.untouchable? || 0 == credit
+        @sums_without_untouchables << pair
+      end
+    end
+
+    @lower = 0.48613
+
+    @prev_fund = 2125790.0
+    @curr_fund = @lower * @prev_fund
+
+    @credits = @sums.map { |p| p[1] }
+    @credits_min = @sums_without_untouchables.map { |p| p[1] }.min
+    @credits_max = @sums_without_untouchables.map { |p| p[1] }.max
+    #@median = median(@credits)
+    @median = median(@sums_without_untouchables.map { |p| p[1] })
+
+    @e = params[:e] ? params[:e].to_f : 0.05
+    @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
+
+    untouchables_fund = 0.0
+    @salaries.each do |salary|
+      if salary.untouchable?
+        untouchables_fund += @lower * salary.previous_premium
+      end
+    end
+
+    right_fund = @curr_fund - untouchables_fund
+
+    current_fund = 0.0
+    @salaries.each do |salary|
+      unless salary.untouchable? || 0 == @sums.find { |p| salary.user_id == p[0] }[1]
+        s = @sums.find { |p| p[0] == salary.user.id }
+        credit = s ? s[1] : 0
+        credit = credit.round(5)
+
+        current_premium = @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
+        current_fund += current_premium
+      end
+    end
+
+    @alpha = right_fund / current_fund
+  end
+
+  def salary_ipit
+    @salaries = Salary::Salary201403.where(faculty_id: Department::IPIT).joins(:user)
+    .order('last_name_hint, first_name_hint, patronym_hint')
+
+    draft_sums = Mgup::Achievements.sums(Department::IPIT)
+    @sums = []
+    @sums_without_untouchables = []
+    @salaries.each do |salary|
+      pair = draft_sums.find { |p| salary.user_id == p[0] }
+      if pair
+        credit = pair[1]
+        @sums << pair
+      else
+        credit = 0
+        @sums << [salary.user_id, 0]
+      end
+
+      unless salary.untouchable? || 0 == credit
+        @sums_without_untouchables << pair
+      end
+    end
+
+    @lower = 0.48613
+
+    @prev_fund = 3048000.0
+    @curr_fund = @lower * @prev_fund
+
+    @credits = @sums.map { |p| p[1] }
+    @credits_min = @sums_without_untouchables.map { |p| p[1] }.min
+    @credits_max = @sums_without_untouchables.map { |p| p[1] }.max
+    #@median = median(@credits)
+    @median = median(@sums_without_untouchables.map { |p| p[1] })
+
+    @e = params[:e] ? params[:e].to_f : 0.05
     @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
 
     untouchables_fund = 0.0

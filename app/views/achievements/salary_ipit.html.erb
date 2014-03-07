@@ -1,0 +1,94 @@
+<style>
+  #page_sidebar {
+    display: none !important;
+  }
+  #page_sidebar + div {
+    width: 100% !important;
+  }
+</style>
+
+<div class="page-header">
+  <h2>
+    ИПИТ
+    <small>Расчёт надбавок</small>
+  </h2>
+</div>
+
+<p>Предыдущий фонд — <%= number_to_currency(@prev_fund) %></p>
+<p>Мартовский фонд — <%= number_to_currency(@curr_fund) %></p>
+
+<p>Понижение — <%= number_with_precision(@lower, precision: 5) %></p>
+<hr>
+<p>Минимальный балл — <%= @credits_min %></p>
+<p>Максимальный балл — <%= @credits_max %></p>
+<p>Медиана (среди тех, кто участвует в рейтинге) — <%= @median %></p>
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>&#x03b5;</th>
+      <th><%= @e %></th>
+    </tr>
+  </thead>
+  <tr>
+    <th>B</th>
+    <td><%= @b %></td>
+  </tr>
+</table>
+
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>НПР</th>
+      <th>Ставка</th>
+      <th>Февраль, 2014</th>
+      <th>Февраль, 2014 (с&nbsp;понижением)</th>
+      <th>Баллы</th>
+      <th>Март, 2014</th>
+    </tr>
+  </thead>
+
+  <% credits = 0 %>
+  <% current_fund = 0 %>
+
+  <% @salaries.each do |salary| %>
+    <% s = @sums.find { |p| p[0] == salary.user.id } ; credit = s ? s[1] : 0 %>
+    <% credit = credit.round(5) %>
+    <% credits += credit %>
+
+    <tr <%= 'class="success" style="text-decoration: line-through;"'.html_safe if salary.untouchable? %>>
+      <td><%= salary.user.id %></td>
+      <td><%= salary.user.full_name %></td>
+      <td><%= salary.wage_rate %></td>
+      <td class="text-right nowrap"><%= number_to_currency(salary.previous_premium) %></td>
+      <td class="text-right nowrap"><%= number_to_currency(@lower * salary.previous_premium) %></td>
+      <td><%= credit %></td>
+
+      <%
+         if salary.untouchable?
+           current_premium = @lower * salary.previous_premium
+         elsif 0 == credit
+           current_premium = 0
+         else
+           current_premium = @alpha * @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
+         end
+         current_fund += current_premium
+      %>
+
+      <td class="text-right nowrap"><%= number_to_currency(current_premium) %></td>
+    </tr>
+  <% end %>
+  <tfoot>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th class="text-right nowrap"><%= number_to_currency(@prev_fund) %></th>
+      <th class="text-right nowrap"><%= number_to_currency(@lower * @prev_fund) %></th>
+      <th><%= credits.round(5) %></th>
+      <th class="text-right nowrap"><%= number_to_currency(current_fund) %></th>
+    </tr>
+  </tfoot>
+</table>
