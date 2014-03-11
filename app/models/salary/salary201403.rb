@@ -13,6 +13,7 @@ class Salary::Salary201403 < ActiveRecord::Base
   def untouchable?
     return true if wage_rate.to_f < 1
 
+    return true if new_premium != nil
 
     untouchable
   end

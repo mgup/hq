@@ -70,7 +70,11 @@
 
       <%
          if salary.untouchable?
-           current_premium = @lower * salary.previous_premium
+           if salary.new_premium != nil
+             current_premium = salary.new_premium
+           else
+             current_premium = @lower * salary.previous_premium
+           end
          elsif 0 == credit
            current_premium = 0
          else

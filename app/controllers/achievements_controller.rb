@@ -181,7 +181,11 @@ class AchievementsController < ApplicationController
     untouchables_fund = 0.0
     @salaries.each do |salary|
       if salary.untouchable?
-        untouchables_fund += @lower * salary.previous_premium
+        if salary.new_premium != nil
+          untouchables_fund += salary.new_premium
+        else
+          untouchables_fund += @lower * salary.previous_premium
+        end
       end
     end
 
@@ -241,7 +245,11 @@ class AchievementsController < ApplicationController
     untouchables_fund = 0.0
     @salaries.each do |salary|
       if salary.untouchable?
-        untouchables_fund += @lower * salary.previous_premium
+        if salary.new_premium != nil
+          untouchables_fund += salary.new_premium
+        else
+          untouchables_fund += @lower * salary.previous_premium
+        end
       end
     end
 
@@ -301,7 +309,11 @@ class AchievementsController < ApplicationController
     untouchables_fund = 0.0
     @salaries.each do |salary|
       if salary.untouchable?
-        untouchables_fund += @lower * salary.previous_premium
+        if salary.new_premium != nil
+          untouchables_fund += salary.new_premium
+        else
+          untouchables_fund += @lower * salary.previous_premium
+        end
       end
     end
 
@@ -361,7 +373,11 @@ class AchievementsController < ApplicationController
     untouchables_fund = 0.0
     @salaries.each do |salary|
       if salary.untouchable?
-        untouchables_fund += @lower * salary.previous_premium
+        if salary.new_premium != nil
+          untouchables_fund += salary.new_premium
+        else
+          untouchables_fund += @lower * salary.previous_premium
+        end
       end
     end
 
