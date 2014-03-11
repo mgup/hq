@@ -41,6 +41,7 @@
   <thead>
     <tr>
       <th>#</th>
+      <th>Каф.</th>
       <th>НПР</th>
       <th>Ставка</th>
       <th>Февраль, 2014</th>
@@ -60,6 +61,7 @@
 
     <tr <%= 'class="success" style="text-decoration: line-through;"'.html_safe if salary.untouchable? %>>
       <td><%= salary.user.id %></td>
+      <td><%= salary.department.abbreviation %></td>
       <td><%= salary.user.full_name %></td>
       <td><%= salary.wage_rate %></td>
       <td class="text-right nowrap"><%= number_to_currency(salary.previous_premium) %></td>
@@ -82,6 +84,7 @@
   <% end %>
   <tfoot>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>

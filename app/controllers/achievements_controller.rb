@@ -144,7 +144,7 @@ class AchievementsController < ApplicationController
 
   def salary_igrik
     @salaries = Salary::Salary201403.where(faculty_id: Department::IGRIK).joins(:user)
-                  .order('last_name_hint, first_name_hint, patronym_hint')
+                  .order('department_id, last_name_hint, first_name_hint, patronym_hint')
 
     draft_sums = Mgup::Achievements.sums(Department::IGRIK)
     @sums = []
@@ -204,7 +204,7 @@ class AchievementsController < ApplicationController
 
   def salary_iidizh
     @salaries = Salary::Salary201403.where(faculty_id: Department::IIDIZH).joins(:user)
-    .order('last_name_hint, first_name_hint, patronym_hint')
+    .order('department_id, last_name_hint, first_name_hint, patronym_hint')
 
     draft_sums = Mgup::Achievements.sums(Department::IIDIZH)
     @sums = []
@@ -264,7 +264,7 @@ class AchievementsController < ApplicationController
 
   def salary_ikim
     @salaries = Salary::Salary201403.where(faculty_id: Department::IKIM).joins(:user)
-    .order('last_name_hint, first_name_hint, patronym_hint')
+    .order('department_id, last_name_hint, first_name_hint, patronym_hint')
 
     draft_sums = Mgup::Achievements.sums(Department::IKIM)
     @sums = []
@@ -324,7 +324,7 @@ class AchievementsController < ApplicationController
 
   def salary_ipit
     @salaries = Salary::Salary201403.where(faculty_id: Department::IPIT).joins(:user)
-    .order('last_name_hint, first_name_hint, patronym_hint')
+    .order('department_id, last_name_hint, first_name_hint, patronym_hint')
 
     draft_sums = Mgup::Achievements.sums(Department::IPIT)
     @sums = []
