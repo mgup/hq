@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140305072654) do
+ActiveRecord::Schema.define(version: 20140312070848) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -311,6 +311,34 @@ ActiveRecord::Schema.define(version: 20140305072654) do
 
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
   add_index "checkpoint_mark", ["checkpoint_mark_student"], name: "checkpoint_mark_student", using: :btree
+
+  create_table "curator_task", force: true do |t|
+    t.string   "name",                 null: false
+    t.text     "description"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "curator_task_type_id"
+  end
+
+  add_index "curator_task", ["curator_task_type_id"], name: "index_curator_task_on_curator_task_type_id", using: :btree
+
+  create_table "curator_task_type", force: true do |t|
+    t.string   "name",        null: false
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "curator_task_user", force: true do |t|
+    t.integer "status"
+    t.boolean "accepted"
+    t.integer "curator_task_id"
+    t.integer "user_id"
+  end
+
+  add_index "curator_task_user", ["curator_task_id"], name: "index_curator_task_user_on_curator_task_id", using: :btree
+  add_index "curator_task_user", ["user_id"], name: "index_curator_task_user_on_user_id", using: :btree
 
   create_table "department", primary_key: "department_id", force: true do |t|
     t.integer "department_oldid"

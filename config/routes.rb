@@ -161,6 +161,12 @@ HQ::Application.routes.draw do
     get 'print_prices.xlsx', to: 'payment_types#print_prices', defaults: { format: 'xlsx' }, as: :print_prices
   end
 
+  namespace :curator do
+    resources :tasks
+    resources :task_types
+  end
+
+
   resources :activity_groups
   resources :activity_types
   resources :activity_credit_types
