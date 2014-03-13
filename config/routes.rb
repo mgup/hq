@@ -164,6 +164,7 @@ HQ::Application.routes.draw do
   namespace :curator do
     resources :tasks
     resources :task_types
+    resources :task_users
   end
 
 

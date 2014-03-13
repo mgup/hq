@@ -48,6 +48,7 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :tasks, 'Задания для кураторов', curator_tasks_path, icon: 'bullhorn' do |d|
           d.dom_class = 'hidden'
           d.item :edit, 'Редактирование', edit_curator_task_path(params[:id] || 1)
+          d.item :show, 'Просмотр', curator_task_path(params[:id] || 1)
           d.item :new, 'Создание', new_curator_task_path
         end
 

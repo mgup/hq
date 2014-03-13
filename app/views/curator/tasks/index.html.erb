@@ -22,7 +22,7 @@
   <span class='glyphicon glyphicon-plus'></span> Добавить новое задание
 <% end %>
 
-<table class="table table-hover">
+<table class="table">
   <thead>
   <tr>
     <th>#</th>
@@ -40,24 +40,37 @@
     </tr>
   <% else %>
     <% @tasks.each_with_index do |task, index| %>
-      <tr>
+      <tr class="<%= task.draft? ? 'active' : (task.closed? ? 'warning' : '') %>">
         <td><%= index + 1 %></td>
-        <td>
+        <td style="width: 60%;">
           <h4 style="margin: 0;"><%= task.name %> <small><%= task.type %></small></h4>
           <p class="help-block"><%= task.description %></p>
         </td>
-        <!--<td> # task.users.collect{|u| u.full_name}.join(', ')</td>-->
         <td>
-          <%= link_to curator_task_path(task), class: 'btn btn-default pull-right', title: 'Подробнее' do %>
-            <span class="glyphicon glyphicon-search"></span>
+          <%= User.curators.collect{|c| c.id}.sort == task.users.collect{|c| c.id}.sort ? 'Задание для всех кураторов' : task.users.collect{|u| u.short_name}.join(', ') %>
+        </td>
+        <td>
+          <% unless task.draft? %>
+            <%= link_to curator_task_path(task), class: 'btn btn-default pull-right', title: 'Подробнее' do %>
+              <span class="glyphicon glyphicon-search"></span>
+            <% end %>
           <% end %>
-          <br><br>
-          <%= link_to edit_curator_task_path(task), class: 'btn btn-default pull-right', title: 'Редактировать' do %>
-            <span class="glyphicon glyphicon-pencil"></span>
-          <% end %>
-          <br><br>
-          <%= link_to curator_task_path(task), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', confirm: 'Вы уверены?' do %>
-            <span class="glyphicon glyphicon-remove"></span>
+          <% if task.draft? %>
+            <%= link_to edit_curator_task_path(task), class: 'btn btn-default pull-right', title: 'Редактировать' do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+            <br><br>
+            <%= link_to curator_task_path(task), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', confirm: 'Вы уверены?' do %>
+              <span class="glyphicon glyphicon-remove"></span>
+            <% end %>
+          <% elsif task.active? %>
+            <br><br>
+            <%= form_for task, url: curator_task_path(task) do |f| %>
+              <%= f.hidden_field :status, value: 3 %>
+              <button type="submit" class="btn btn-warning pull-right" title="Закрыть">
+                <span class="glyphicon glyphicon-eye-close"></span>
+              </button>
+            <% end %>
           <% end %>
         </td>
       </tr>

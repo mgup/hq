@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140312070848) do
+ActiveRecord::Schema.define(version: 20140313060928) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -331,7 +331,7 @@ ActiveRecord::Schema.define(version: 20140312070848) do
   end
 
   create_table "curator_task_user", force: true do |t|
-    t.integer "status"
+    t.integer "status",          default: 1
     t.boolean "accepted"
     t.integer "curator_task_id"
     t.integer "user_id"
