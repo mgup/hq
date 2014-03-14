@@ -18,6 +18,11 @@ class Group < ActiveRecord::Base
   has_many :subjects, foreign_key: :subject_group
   has_many :disciplines, class_name: Study::Discipline, foreign_key: :subject_group
 
+  has_many :curator_groups, class_name: Curator::Group, foreign_key: :group_id
+  has_many :curators, through: :curator_groups, class_name: User, foreign_key: :user_id
+  has_one :current_group, -> { where("start_date <= '#{Date.today}' AND end_date >= '#{Date.today}'") }, class_name: Curator::Group, foreign_key: :group_id
+  #has_one :current_curator, through: :current_curator_group, class_name: User, foreign_key: :user_id
+
   default_scope do
     includes(speciality: :faculty).where('group_speciality != 1')
     .order('group_name ASC, group_course ASC, group_number ASC')

@@ -6,6 +6,8 @@ class CreateCuratorTaskUser < ActiveRecord::Migration
 
       t.references :curator_task, index: true
       t.references :user, index: true
+
+      t.timestamps
     end
   end
 end

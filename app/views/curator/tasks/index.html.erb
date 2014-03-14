@@ -47,7 +47,7 @@
           <p class="help-block"><%= task.description %></p>
         </td>
         <td>
-          <%= User.curators.collect{|c| c.id}.sort == task.users.collect{|c| c.id}.sort ? 'Задание для всех кураторов' : task.users.collect{|u| u.short_name}.join(', ') %>
+          <%= User.curators.collect{|c| c.id}.sort == task.users.collect{|c| c.id}.sort ? 'Задание для всех кураторов' : task.users.collect{|u|  "#{u.short_name} (#{u.current_group ? u.current_group.group.name : '-'})"}.join(', ') %>
         </td>
         <td>
           <% unless task.draft? %>

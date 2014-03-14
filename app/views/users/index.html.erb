@@ -44,6 +44,17 @@
         <%= link_to user_see_with_eyes_path(user), class: 'btn btn-default', title: 'Авторизоваться как пользователь' do %>
           <span class="glyphicon glyphicon-eye-open"></span>
         <% end %>
+        <% if user.is?(:curator) && current_user.is?(:developer) %>
+          <% if user.current_group %>
+            <strong><%= user.current_group.group.name %></strong>
+          <% else %>
+            <%= render partial: 'curator_modal', locals: {user: user, curator_group: Curator::Group.new} %>
+            <%= link_to "#createCuratorGroup_#{user.id}", class: 'btn btn-info',
+                        data: {toggle: 'modal'}, title: 'Добавить куратору группу'  do %>
+              <span class="glyphicon glyphicon-link"></span>
+            <% end %>
+          <% end %>
+        <% end %>
       </td>
     </tr>
   <% end %>

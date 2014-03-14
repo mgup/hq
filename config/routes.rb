@@ -165,6 +165,7 @@ HQ::Application.routes.draw do
     resources :tasks
     resources :task_types
     resources :task_users
+    resources :groups
   end
 
 

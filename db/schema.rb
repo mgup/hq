@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140313060928) do
+ActiveRecord::Schema.define(version: 20140314055423) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -311,6 +311,16 @@ ActiveRecord::Schema.define(version: 20140313060928) do
 
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
   add_index "checkpoint_mark", ["checkpoint_mark_student"], name: "checkpoint_mark_student", using: :btree
+
+  create_table "curator_group", force: true do |t|
+    t.date    "start_date"
+    t.date    "end_date"
+    t.integer "group_id"
+    t.integer "user_id"
+  end
+
+  add_index "curator_group", ["group_id"], name: "index_curator_group_on_group_id", using: :btree
+  add_index "curator_group", ["user_id"], name: "index_curator_group_on_user_id", using: :btree
 
   create_table "curator_task", force: true do |t|
     t.string   "name",                 null: false
