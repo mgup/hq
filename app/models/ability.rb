@@ -69,7 +69,7 @@ class Ability
         can :manage, :student
         can :index, :groups
 
-        can :reference, Student, Student.valid_for_today
+        can :reference, Student.valid_for_today
       end
 
     end
