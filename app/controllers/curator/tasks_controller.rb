@@ -4,6 +4,20 @@ class Curator::TasksController < ApplicationController
   def index
   end
 
+  def actual
+    @task_users = current_user.task_users
+
+    unless params[:accepted].to_i.zero?
+      @task_users = @task_users.where(accepted: true)
+    end
+    unless params[:neversaw].to_i.zero?
+      @task_users = @task_users.where(status: Curator::TaskUser::STATUS_NEVER_SAW)
+    end
+    unless params[:reopened].to_i.zero?
+      @task_users = @task_users.where(status: Curator::TaskUser::STATUS_REOPENED)
+    end
+  end
+
   def new
   end
 

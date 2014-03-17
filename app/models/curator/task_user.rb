@@ -25,4 +25,16 @@ class Curator::TaskUser < ActiveRecord::Base
   def finished?
     STATUS_FINISHED == status
   end
+
+  def reopened?
+    STATUS_REOPENED == status
+  end
+
+  def saw?
+    STATUS_SAW == status
+  end
+
+  def never_saw?
+    STATUS_NEVER_SAW == status
+  end
 end

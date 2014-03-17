@@ -3,7 +3,11 @@ class Curator::TaskUsersController < ApplicationController
 
   def update
     @task_user.update(resource_params)
-    redirect_to curator_task_path(@task_user.task)
+    if params[:curator_key] == '1'
+      redirect_to actual_curator_tasks_path
+    else
+      redirect_to curator_task_path(@task_user.task)
+    end
   end
 
   def destroy

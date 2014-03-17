@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   has_many :visitor_event_dates, as: :visitor, primary_key: :id
   has_many :dates, through: :visitor_event_dates
 
-  has_many :task_users, class_name: Curator::TaskUser
+  has_many :task_users, -> { includes(:task).where(curator_task: {status: [Curator::Task::STATUS_ACTIVE, Curator::Task::STATUS_CLOSED]})}, class_name: Curator::TaskUser
   has_many :tasks, through: :task_users
 
   has_many :curator_groups, class_name: Curator::Group, foreign_key: :user_id
