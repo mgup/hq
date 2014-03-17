@@ -5,13 +5,13 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   render 'pdf/header', pdf: pdf, title: "СОСТАВ УЧЕБНОЙ ГРУППЫ #{@discipline.group.name}"
 
   pdf.text @discipline.name
-  pdf.text "#{@discipline.semester}-й семестер #{study_year(@discipline.year)} учебного года"
+  pdf.text "#{@discipline.semester}-й семестр #{study_year(@discipline.year)} учебного года"
   pdf.text @discipline.lead_teacher.full_name
 
   pdf.move_down 13
 
   data = [['№', 'Студент', '#', '', '', '', '']]
-  @discipline.group.students.each_with_index do |s, index|
+  @discipline.group.students.valid_for_today.each_with_index do |s, index|
     data << [index + 1, s.person.full_name, s.id, '', '', '', '']
   end
 

@@ -1,0 +1,35 @@
+<div class="page-header">
+  <h1>Типы заданий</h1>
+</div>
+
+<%= link_to 'Добавить новый тип', new_curator_task_type_path, class: 'btn btn-default' %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Название</th>
+    <th>Описание</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @task_types.each do |type| %>
+    <tr>
+      <td><%= type.id %></td>
+      <td><%= type.name %></td>
+      <td>
+        <small><%= type.description %></small>
+      </td>
+      <td>
+        <%= link_to edit_curator_task_type_path(type), class: 'btn btn-default' do %>
+          <span class="glyphicon glyphicon-edit"></span> Редактировать
+        <% end %>
+        <%= link_to curator_task_type_path(type), method: :delete, class: 'btn btn-danger', confirm: 'Вы уверены?' do %>
+          <span class="glyphicon glyphicon-remove"></span> Удалить
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

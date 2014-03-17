@@ -80,7 +80,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       pdf.font 'PT', size: 10 do
             pdf.text 'Исполнитель:'
             pdf.text "#{current_user.full_name}"
-            pdf.text "Тел.: #{current_user.phone}"
+            pdf.text "Тел.: #{(current_user.is?(:student_hr) || current_user.is?(:student_hr_boss)) ? '+7 (499) 976-37-77' : current_user.phone}"
       end
     end
 

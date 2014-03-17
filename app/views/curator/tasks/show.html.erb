@@ -1,0 +1,88 @@
+<div class="page-header">
+  <h1><%= @task.name %></h1>
+</div>
+
+<% if @task.closed? %>
+  <p class="alert alert-warning">Это задание было закрыто.</p>
+<% end %>
+
+<p class="help-block"><%= @task.description %></p>
+
+<h2>Работа кураторов</h2>
+
+<%= form_tag nil, method: :get, class: 'form-horizontal', id: 'curators-filters' do %>
+  <div class="form-group">
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :accepted, '1', '1' == params[:accepted], class: 'task_user_check' %> Показать только принятые
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :neversaw, '1', '1' == params[:neversaw], class: 'task_user_check' %> Показать только неприступивших
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :finished, '1', '1' == params[:finished], class: 'task_user_check' %> Показать только завершённые
+        </label>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th rowspan="2">#</th>
+      <th colspan="2" class="text-center">Куратор</th>
+      <th rowspan="2">Группа</th>
+      <th rowspan="2">Этап выполнения</th>
+      <th rowspan="2"></th>
+    </tr>
+    <tr>
+      <th class="text-center">ФИО</th>
+      <th class="text-center">Контакты</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @task_users.each_with_index do |tu, index| %>
+      <tr class="<%= 'success' if tu.accepted %>">
+        <td><%= index+1 %></td>
+        <td><%= tu.user.full_name %></td>
+        <td><%= tu.user.phone %><br><%= tu.user.email %></td>
+        <td><%= tu.user.current_group ? tu.user.current_group.group.name : '-' %></td>
+        <td><span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span></td>
+        <td>
+          <% if tu.finished? %>
+            <% unless tu.accepted %>
+              <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
+                <%= f.hidden_field :id, value: tu.id %>
+                <%= f.hidden_field :accepted, value: 1 %>
+                <button type="submit" class="btn btn-success pull-right" title="Принять">
+                  <span class="glyphicon glyphicon-ok"></span>
+                </button>
+              <% end %>
+              <br><br>
+              <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
+                <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_REOPENED %>
+                <button type="submit" class="btn btn-danger pull-right" title="Отклонить">
+                  <span class="glyphicon glyphicon-remove"></span>
+                </button>
+              <% end %>
+            <% else %>
+              <p class="lead">ОДОБРЕНО</p>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to curator_tasks_path, class: 'btn btn-default' do %>
+  <span class="glyphicon glyphicon-chevron-left"></span> Вернуться ко всем заданиям
+<% end %>

@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+      curator/task: 'задание'
+    attributes:
+      curator/task:
+        curator_task_type_id: 'тип задания'
+        name: 'название задания'
+        description: 'описание задания'
+        status: 'статус задания'

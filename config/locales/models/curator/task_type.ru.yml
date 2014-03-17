@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+      curator/task_type: 'тип заданий'
+    attributes:
+      curator/task_type:
+        name: 'название типа заданий'
+        description: 'описание типа заданий'

@@ -41,6 +41,14 @@ class User < ActiveRecord::Base
   has_many :visitor_event_dates, as: :visitor, primary_key: :id
   has_many :dates, through: :visitor_event_dates
 
+  has_many :task_users, class_name: Curator::TaskUser
+  has_many :tasks, through: :task_users
+
+  has_many :curator_groups, class_name: Curator::Group, foreign_key: :user_id
+  has_many :groups, through: :curator_groups
+  has_one :current_group, -> { where("start_date <= '#{Date.today}' AND end_date >= '#{Date.today}'") }, class_name: Curator::Group, foreign_key: :user_id
+  #has_one :current_group, through: :current_curator_group
+
   scope :with_name, -> { includes(:iname, :fname, :oname) }
 
   scope :by_name, -> (name) {
@@ -140,6 +148,7 @@ class User < ActiveRecord::Base
   end
 
   scope :teachers, ->  {where(user_role: 'lecturer')}
+  scope :curators, ->  {joins(:positions).where('acl_position_role = (?)', Role::ROLE_CURATOR)}
 
   scope :without, -> id {
     cond = all

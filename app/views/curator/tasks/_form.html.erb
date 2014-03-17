@@ -1,0 +1,47 @@
+<%= form_for @task,  html: { class: 'form-horizontal' } do |f| %>
+  <div class="form-group <%= 'has-error' if @task.errors.include?(:name) %>">
+    <%= f.label :name, class: 'col col-sm-2 control-label' %>
+    <div class="col col-sm-10">
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, class: 'col col-sm-2 control-label' %>
+    <div class="col col-sm-10">
+      <%= f.text_area :description, class: 'form-control', rows: 5 %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :curator_task_type_id, class: 'col col-sm-2 control-label' %>
+    <div class="col col-sm-10">
+      <%= f.select :curator_task_type_id, options_from_collection_for_select(Curator::TaskType.all, :id, :name), {}, { class: 'form-control'} %>
+    </div>
+  </div>
+
+  <div class='form-group <%= 'has-error' if @task.errors.include?(:status) %>'>
+    <%= f.label :status, class: 'control-label col-sm-2' %>
+    <div class='col col-sm-10'>
+      <%= f.hidden_field :status, class: 'pill-inputs' %>
+      <%= pill_tabs('curator_task_status', [[2, 'Черновик' ], [1, 'Активное задание']], 'curator_task_status') %>
+    </div>
+    <% if @task.errors.include?(:status) %>
+      <div class='col col-sm-10 col-sm-offset-2'>
+        <p class="help-block">Вы не указали статус задания!</p>
+      </div>
+    <% end %>
+  </div>
+
+  <h2>Кураторы</h2>
+  <p><label><%= check_box_tag :allcurators, 1, (@task ? (User.curators.collect{|c| c.id}.sort == @task.users.collect{|c| c.id}.sort) : false), id: 'checkAllCurators' %>
+    Задание для всех кураторов</label></p>
+  <% User.curators.each do |curator| %>
+    <label><%= check_box_tag 'curators[]', curator.id, (@task ? (@task.users.include? curator) : false),  id: "curator_#{curator.id}", class: 'curatorCheckbox' %>     <%= curator.full_name %> (<%= curator.current_group ? curator.current_group.group.name : '-' %>)</label>
+    <br>
+  <% end %>
+
+  <div class="col col-sm-10 col-sm-offset-2">
+    <%= f.submit class: 'btn btn-primary' %> или <%= link_to 'Отмена', curator_tasks_path, class: 'btn btn-default' %>
+  </div>
+<% end %>

@@ -1,0 +1,80 @@
+<div class="page-header">
+<h1>Задания</h1>
+<% if params[:name] %>
+  <h2 style="height: 10px;"><small class="pull-right"><%= link_to 'Назад ко всем', curator_tasks_path %></small></h2>
+<% end %>
+</div>
+
+<div class="col-sm-12">
+  <%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+    <div class="form-group">
+      <div class="col-sm-4">
+        <%= text_field_tag :name, params[:name], class: 'form-control', placeholder: 'Название' %>
+      </div>
+      <div class="col-sm-2">
+        <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to new_curator_task_path, class: 'btn btn-primary pull-right' do%>
+  <span class='glyphicon glyphicon-plus'></span> Добавить новое задание
+<% end %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Задание</th>
+    <th>Кураторы</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @tasks.empty? %>
+    <tr>
+      <td colspan="4">
+        <p class="lead">Ни одного задания не было найдено, попробуйте изменить параметры поиска.</p>
+      </td>
+    </tr>
+  <% else %>
+    <% @tasks.each_with_index do |task, index| %>
+      <tr class="<%= task.draft? ? 'active' : (task.closed? ? 'warning' : '') %>">
+        <td><%= index + 1 %></td>
+        <td style="width: 60%;">
+          <h4 style="margin: 0;"><%= task.name %> <small><%= task.type %></small></h4>
+          <p class="help-block"><%= task.description %></p>
+        </td>
+        <td>
+          <%= User.curators.collect{|c| c.id}.sort == task.users.collect{|c| c.id}.sort ? 'Задание для всех кураторов' : task.users.collect{|u|  "#{u.short_name} (#{u.current_group ? u.current_group.group.name : '-'})"}.join(', ') %>
+        </td>
+        <td>
+          <% unless task.draft? %>
+            <%= link_to curator_task_path(task), class: 'btn btn-default pull-right', title: 'Подробнее' do %>
+              <span class="glyphicon glyphicon-search"></span>
+            <% end %>
+          <% end %>
+          <% if task.draft? %>
+            <%= link_to edit_curator_task_path(task), class: 'btn btn-default pull-right', title: 'Редактировать' do %>
+              <span class="glyphicon glyphicon-pencil"></span>
+            <% end %>
+            <br><br>
+            <%= link_to curator_task_path(task), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', confirm: 'Вы уверены?' do %>
+              <span class="glyphicon glyphicon-remove"></span>
+            <% end %>
+          <% elsif task.active? %>
+            <br><br>
+            <%= form_for task, url: curator_task_path(task) do |f| %>
+              <%= f.hidden_field :status, value: 3 %>
+              <button type="submit" class="btn btn-warning pull-right" title="Закрыть">
+                <span class="glyphicon glyphicon-eye-close"></span>
+              </button>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
