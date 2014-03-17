@@ -47,6 +47,7 @@
       <th>Февраль, 2014</th>
       <th>Февраль, 2014 (с&nbsp;понижением)</th>
       <th>Баллы</th>
+      <th>Баллы</th>
       <th>Март, 2014</th>
     </tr>
   </thead>
@@ -66,6 +67,7 @@
       <td><%= salary.wage_rate %></td>
       <td class="text-right nowrap"><%= number_to_currency(salary.previous_premium) %></td>
       <td class="text-right nowrap"><%= number_to_currency(@lower * salary.previous_premium) %></td>
+      <td><%= number_with_precision(credit) %></td>
       <td><%= salary.untouchable? ? 'вне рейтинга' : number_with_precision(credit) %></td>
 
       <%
