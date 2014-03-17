@@ -1,0 +1,87 @@
+<div class="page-header">
+  <h1>Текущие задания</h1>
+</div>
+
+<%= form_tag nil, method: :get, class: 'form-horizontal', id: 'curators-filters' do %>
+  <div class="form-group">
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :accepted, '1', '1' == params[:accepted], class: 'task_user_check' %> Показать только принятые
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :neversaw, '1', '1' == params[:neversaw], class: 'task_user_check' %> Показать только новые
+        </label>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <%= check_box_tag :reopened, '1', '1' == params[:reopened], class: 'task_user_check' %> Показать только открытые заново
+        </label>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Задание</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @task_users.empty? %>
+    <tr>
+      <td colspan="4">
+        <p class="lead">Ни одного задания не было найдено.</p>
+      </td>
+    </tr>
+  <% else %>
+    <% @task_users.each_with_index do |tu, index| %>
+    <% task = tu.task %>
+      <tr class="<%=task.closed? ? 'warning' : '' %>">
+        <td><%= index + 1 %></td>
+        <td>
+          <h4 style="margin: 0;"><%= task.name %> <small><%= task.type %></small></h4>
+          <p class="help-block"><%= task.description %></p>
+        </td>
+        <td>
+          <% if task.active? %>
+            <% case tu.status %>
+              <% when Curator::TaskUser::STATUS_NEVER_SAW %>
+                <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
+                  <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_SAW %>
+                  <%= hidden_field_tag :curator_key, 1 %>
+                  <%= f.submit 'Приступить', class: 'btn btn-default' %>
+                <% end %>
+              <% when Curator::TaskUser::STATUS_SAW %>
+              <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
+                <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_FINISHED %>
+                <%= hidden_field_tag :curator_key, 1 %>
+                <%= f.submit 'Завершить', class: 'btn btn-default' %>
+              <% end %>
+              <% when Curator::TaskUser::STATUS_FINISHED %>
+                <span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span>
+                <br><br>
+                <%= tu.accepted ? 'ОДОБРЕНО' : 'ОЖИДАЕТ ПОДТВЕРЖДЕНИЯ' %>
+              <% when Curator::TaskUser::STATUS_REOPENED %>
+                <span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span>
+                <br><br>
+                <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
+                  <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_FINISHED %>
+                  <%= hidden_field_tag :curator_key, 1 %>
+                  <%= f.submit 'Завершить', class: 'btn btn-default' %>
+                <% end %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>

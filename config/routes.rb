@@ -162,7 +162,9 @@ HQ::Application.routes.draw do
   end
 
   namespace :curator do
-    resources :tasks
+    resources :tasks do
+      get 'actual', to: 'tasks#actual', on: :collection
+    end
     resources :task_types
     resources :task_users
     resources :groups
