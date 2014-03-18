@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140314055423) do
+ActiveRecord::Schema.define(version: 20140318054635) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -581,13 +581,14 @@ ActiveRecord::Schema.define(version: 20140314055423) do
   add_index "employee_position", ["employee_position_position"], name: "employee_position_position", using: :btree
 
   create_table "event", force: true do |t|
-    t.string   "name",              null: false
-    t.text     "description",       null: false
+    t.string   "name",                              null: false
+    t.text     "description",                       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "event_category_id"
     t.boolean  "booking"
     t.integer  "status"
+    t.boolean  "hasclaims",         default: false
   end
 
   create_table "event_category", force: true do |t|

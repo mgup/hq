@@ -1,6 +1,7 @@
 class Event < ActiveRecord::Base
   STATUS_PUBLICATION = 1
   STATUS_DRAFT = 2
+  STATUS_CLOSED = 3
   self.table_name = 'event'
   validates :name, presence: true
   validates :description, presence: true
@@ -27,4 +28,9 @@ class Event < ActiveRecord::Base
   def publication?
     STATUS_PUBLICATION == status
   end
+
+  def closed?
+    STATUS_CLOSED == status
+  end
+
 end
