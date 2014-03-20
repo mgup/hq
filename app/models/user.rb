@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
 
   has_many :curator_groups, class_name: Curator::Group, foreign_key: :user_id
   has_many :groups, through: :curator_groups
-  has_one :current_group, -> { where("start_date <= '#{Date.today}' AND end_date >= '#{Date.today}'") }, class_name: Curator::Group, foreign_key: :user_id
+  has_many :current_groups, -> { where("start_date <= '#{Date.today}' AND end_date >= '#{Date.today}'") }, class_name: Curator::Group, foreign_key: :user_id
   #has_one :current_group, through: :current_curator_group
 
   scope :with_name, -> { includes(:iname, :fname, :oname) }

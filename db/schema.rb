@@ -277,8 +277,8 @@ ActiveRecord::Schema.define(version: 20140319054420) do
     t.string   "checkpoint_name",    limit: 200,  default: ""
     t.string   "checkpoint_details", limit: 1000
     t.date     "checkpoint_date",                              null: false
-    t.integer  "checkpoint_min",                  default: 0
-    t.integer  "checkpoint_max",                  default: 0
+    t.integer  "checkpoint_min",                  default: 0,  null: false
+    t.integer  "checkpoint_max",                  default: 0,  null: false
     t.integer  "checkpoint_closed",               default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -402,10 +402,10 @@ ActiveRecord::Schema.define(version: 20140319054420) do
     t.text      "document_number",      limit: 16777215,             null: false
     t.integer   "document_signed",      limit: 1
     t.timestamp "document_create_date",                              null: false
+    t.date      "document_start_date"
     t.date      "document_expire_date",                              null: false
     t.integer   "document_juridical",   limit: 1,        default: 0, null: false
     t.string    "document_department",  limit: 400
-    t.date      "document_start_date"
     t.string    "document_name",        limit: 400
     t.integer   "document_eternal",                      default: 0
   end
@@ -839,7 +839,7 @@ ActiveRecord::Schema.define(version: 20140319054420) do
     t.string   "name"
     t.integer  "kind"
     t.integer  "hours"
-    t.integer  "zet"
+    t.decimal  "zet",         precision: 19, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -875,11 +875,12 @@ ActiveRecord::Schema.define(version: 20140319054420) do
   end
 
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer   "hostel_payment_type",                null: false
-    t.integer   "hostel_payment_student",             null: false
-    t.timestamp "hostel_payment_date",                null: false
-    t.integer   "hostel_payment_sum",     default: 0, null: false
-    t.integer   "hostel_payment_year",                null: false
+    t.integer   "hostel_payment_type",                 null: false
+    t.integer   "hostel_payment_student",              null: false
+    t.timestamp "hostel_payment_date",                 null: false
+    t.integer   "hostel_payment_sum",      default: 0, null: false
+    t.integer   "hostel_payment_year",                 null: false
+    t.integer   "hostel_payment_semester",             null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -1040,6 +1041,7 @@ ActiveRecord::Schema.define(version: 20140319054420) do
     t.integer  "user_id"
     t.decimal  "wage_rate",        precision: 10, scale: 2
     t.boolean  "untouchable",                               default: false
+    t.boolean  "subdepartment",                             default: false
     t.boolean  "has_report"
     t.decimal  "credits",          precision: 10, scale: 0
     t.decimal  "previous_premium", precision: 10, scale: 0

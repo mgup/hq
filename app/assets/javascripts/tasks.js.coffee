@@ -26,12 +26,12 @@ $ ->
       this.checked = true
     $('#curators-filters').submit()
 
-  $('#taskFormSubmit').click (e) ->
-    key = false
-    $('.curatorCheckbox').each ->
-      key = $(this).prop('checked')+key
-    if key
-      $('#curatorAlert').hide()
-    else
-      $('#curatorAlert').show()
-      e.preventDefault()
+#  $('#taskFormSubmit').click (e) ->
+#    key = false
+#    $('.curatorCheckbox').each ->
+#      key = $(this).prop('checked')+key
+#    if key
+#      $('#curatorAlert').hide()
+#    else
+#      $('#curatorAlert').show()
+#      e.preventDefault()
