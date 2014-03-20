@@ -142,7 +142,15 @@ class AchievementsController < ApplicationController
     @sums_without_additional = Mgup::Achievements.sums_without_additional(params[:department])
   end
 
+  def calculate_salary
+    redirect_to root_path unless can?(:manage, :all)
+
+    
+  end
+
   def salary_igrik
+    redirect_to root_path unless can?(:manage, :all)
+
     @salaries = Salary::Salary201403.where(faculty_id: Department::IGRIK).joins(:user)
                   .order('department_id, last_name_hint, first_name_hint, patronym_hint')
 
@@ -207,6 +215,8 @@ class AchievementsController < ApplicationController
   end
 
   def salary_iidizh
+    redirect_to root_path unless can?(:manage, :all)
+
     @salaries = Salary::Salary201403.where(faculty_id: Department::IIDIZH).joins(:user)
     .order('department_id, last_name_hint, first_name_hint, patronym_hint')
 
@@ -271,6 +281,8 @@ class AchievementsController < ApplicationController
   end
 
   def salary_ikim
+    redirect_to root_path unless can?(:manage, :all)
+
     @salaries = Salary::Salary201403.where(faculty_id: Department::IKIM).joins(:user)
     .order('department_id, last_name_hint, first_name_hint, patronym_hint')
 
@@ -335,6 +347,8 @@ class AchievementsController < ApplicationController
   end
 
   def salary_ipit
+    redirect_to root_path unless can?(:manage, :all)
+
     @salaries = Salary::Salary201403.where(faculty_id: Department::IPIT).joins(:user)
     .order('department_id, last_name_hint, first_name_hint, patronym_hint')
 

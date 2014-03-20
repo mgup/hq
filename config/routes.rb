@@ -190,6 +190,7 @@ HQ::Application.routes.draw do
     get 'salary_iidizh',    on: :collection
     get 'salary_ikim',    on: :collection
     get 'salary_ipit',    on: :collection
+    get 'calculate_salary', on: :collection
   end
   resources :achievement_reports do
     get 'reopen', on: :member
