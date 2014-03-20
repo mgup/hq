@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140314055423) do
+ActiveRecord::Schema.define(version: 20140319054420) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -329,6 +329,7 @@ ActiveRecord::Schema.define(version: 20140314055423) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "curator_task_type_id"
+    t.text     "report"
   end
 
   add_index "curator_task", ["curator_task_type_id"], name: "index_curator_task_on_curator_task_type_id", using: :btree
@@ -583,13 +584,14 @@ ActiveRecord::Schema.define(version: 20140314055423) do
   add_index "employee_position", ["employee_position_position"], name: "employee_position_position", using: :btree
 
   create_table "event", force: true do |t|
-    t.string   "name",              null: false
-    t.text     "description",       null: false
+    t.string   "name",                              null: false
+    t.text     "description",                       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "event_category_id"
     t.boolean  "booking"
     t.integer  "status"
+    t.boolean  "hasclaims",         default: false
   end
 
   create_table "event_category", force: true do |t|
@@ -839,7 +841,7 @@ ActiveRecord::Schema.define(version: 20140314055423) do
     t.string   "name"
     t.integer  "kind"
     t.integer  "hours"
-    t.integer  "zet"
+    t.decimal  "zet",         precision: 19, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -875,11 +877,12 @@ ActiveRecord::Schema.define(version: 20140314055423) do
   end
 
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer   "hostel_payment_type",                null: false
-    t.integer   "hostel_payment_student",             null: false
-    t.timestamp "hostel_payment_date",                null: false
-    t.integer   "hostel_payment_sum",     default: 0, null: false
-    t.integer   "hostel_payment_year",                null: false
+    t.integer   "hostel_payment_type",                 null: false
+    t.integer   "hostel_payment_student",              null: false
+    t.timestamp "hostel_payment_date",                 null: false
+    t.integer   "hostel_payment_sum",      default: 0, null: false
+    t.integer   "hostel_payment_year",                 null: false
+    t.integer   "hostel_payment_semester",             null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -1040,6 +1043,7 @@ ActiveRecord::Schema.define(version: 20140314055423) do
     t.integer  "user_id"
     t.decimal  "wage_rate",        precision: 10, scale: 2
     t.boolean  "untouchable",                               default: false
+    t.boolean  "subdepartment",                             default: false
     t.boolean  "has_report"
     t.decimal  "credits",          precision: 10, scale: 0
     t.decimal  "previous_premium", precision: 10, scale: 0

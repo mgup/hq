@@ -50,16 +50,19 @@
       </tr>
     <% else %>
       <% @events.each_with_index do |event, index| %>
-        <tr class="<%= 'success' if event.status == 1 %>">
+        <tr class="<%= event.publication? ? 'success' : (event.closed? ? 'warning' : '')  %>">
           <td><%= index + 1 %></td>
           <td>
             <h4 style="margin: 0;"><%= event.name %> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h4>
             <p class="help-block"><%= raw event.description %></p>
-            <% if (Event.past.include? event) && !(Event.future.include? event) %>
-              <p style="height: 1px; color: #aaa"><small class="pull-right">Данное событие уже прошло</small></p>
+            <% if event.closed? %>
+              <p style="height: 1px"><small class="text-warning pull-right">Данное событие было закрыто</small></p>
+            <% elsif event.hasclaims %>
+              <p style="height: 1px"><small class="text-success pull-right">На данное событие можно оставлять заявки</small></p>
             <% end %>
           </td>
           <td>
+            <% unless event.closed? %>
             <%= link_to edit_event_path(event), class: 'btn btn-default pull-right', title: 'Редактировать' do %>
               <span class="glyphicon glyphicon-pencil"></span>
             <% end %>
@@ -67,6 +70,16 @@
             <%= link_to event_path(event), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', confirm: 'Вы уверены?' do %>
               <span class="glyphicon glyphicon-remove"></span>
             <% end %>
+            <% end %>
+            <% if event.publication? %>
+            <br><br>
+            <%= form_for event, url: event_path(event) do |f| %>
+              <%= f.hidden_field :status, value: Event::STATUS_CLOSED %>
+              <button type="submit" class="btn btn-warning pull-right" title="Закрыть событие">
+                <span class="glyphicon glyphicon-eye-close"></span>
+              </button>
+            <% end %>
+    <% end %>
           </td>
         </tr>
       <% end %>

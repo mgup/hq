@@ -41,9 +41,7 @@
       <% else %>
         <div><%= raw event.description %></div>
       <% end %>
-      <% if (Event.past.include? event) && !(Event.future.include? event) %>
-        <p style="height: 1px; color: #aaa"><small class="pull-right">Данное событие уже прошло</small></p>
-      <% else %>
+      <% if event.hasclaims %>
         <%= link_to "#leaveClaim#{event.id}", data: {toggle: 'modal'},
                     class: 'btn btn-sm btn-default' do %>
           <span class="glyphicon glyphicon-pencil"></span> Оставить заявку

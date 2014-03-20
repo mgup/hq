@@ -4,9 +4,9 @@
   </h1>
 </div>
 
-<% if (Event.past.include? @event) && !(Event.future.include? @event) %>
+<% if @event.closed? %>
   <div class="alert-info alert">Данное событие уже прошло</div>
-<% else %>
+<% elsif @event.hasclaims %>
   <div class="alert-info alert">Вы можете оставить заявку на данное мероприятие.
     <%= link_to "#leaveClaim#{@event.id}", data: {toggle: 'modal'},
                 style: 'margin-top: -7px;',

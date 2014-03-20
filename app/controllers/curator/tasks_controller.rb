@@ -1,10 +1,21 @@
 class Curator::TasksController < ApplicationController
-  load_and_authorize_resource
+  load_resource
+  authorize_resource except: :actual
 
   def index
+    unless params[:draft].to_i.zero?
+      @tasks = @tasks.drafts
+    end
+    unless params[:publication].to_i.zero?
+      @tasks = @tasks.publications
+    end
+    @tasks = @tasks.from_name(params[:name]) if params[:name]
+
+    @tasks = @tasks.sort_by(&:status) if params[:draft].to_i.zero? and params[:publication].to_i.zero?
   end
 
   def actual
+    authorize! :actual, :curator_tasks
     @task_users = current_user.task_users
 
     unless params[:accepted].to_i.zero?
@@ -66,7 +77,7 @@ class Curator::TasksController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:curator_task, {}).permit(:name, :description, :curator_task_type_id, :status,
+    params.fetch(:curator_task, {}).permit(:name, :description, :curator_task_type_id, :status, :report,
                                     task_users_attributes: [:id, :user_id, :status, :accepted, :'_destroy'])
   end
 end

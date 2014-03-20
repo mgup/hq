@@ -132,6 +132,14 @@ class Ability
     can :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
     can :manage, EventDateClaim
     cannot :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
+    can :manage, Curator::TaskUser
+    can :manage, Curator::Task
+    can :manage, Curator::TaskType
+  end
+
+  def curator(user)
+    can :actual, :curator_tasks
+    can :manage, Curator::TaskUser, user_id: user.id
   end
 
   def soc_support_boss(user)

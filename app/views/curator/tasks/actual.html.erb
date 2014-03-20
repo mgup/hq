@@ -19,7 +19,7 @@
     <div class="col-sm-4">
       <div class="checkbox">
         <label>
-          <%= check_box_tag :reopened, '1', '1' == params[:reopened], class: 'task_user_check' %> Показать только открытые заново
+          <%= check_box_tag :reopened, '1', '1' == params[:reopened], class: 'task_user_check' %> Показать только неподтверждённые
         </label>
       </div>
     </div>
@@ -44,40 +44,39 @@
   <% else %>
     <% @task_users.each_with_index do |tu, index| %>
     <% task = tu.task %>
-      <tr class="<%=task.closed? ? 'warning' : '' %>">
+      <tr>
         <td><%= index + 1 %></td>
         <td>
-          <h4 style="margin: 0;"><%= task.name %> <small><%= task.type %></small></h4>
+          <h4 style="margin: 0;"><%= task.name %> <small><%= task.type.name %></small></h4>
           <p class="help-block"><%= task.description %></p>
+          <p><strong>Форма отчётности:</strong> <%= task.report %></p>
         </td>
         <td>
-          <% if task.active? %>
-            <% case tu.status %>
-              <% when Curator::TaskUser::STATUS_NEVER_SAW %>
-                <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
-                  <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_SAW %>
-                  <%= hidden_field_tag :curator_key, 1 %>
-                  <%= f.submit 'Приступить', class: 'btn btn-default' %>
-                <% end %>
-              <% when Curator::TaskUser::STATUS_SAW %>
+          <% case tu.status %>
+            <% when Curator::TaskUser::STATUS_NEVER_SAW %>
+              <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
+                <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_SAW %>
+                <%= hidden_field_tag :curator_key, 1 %>
+                <%= f.submit 'Приступить', class: 'btn btn-default' %>
+              <% end %>
+            <% when Curator::TaskUser::STATUS_SAW %>
+            <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
+              <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_FINISHED %>
+              <%= hidden_field_tag :curator_key, 1 %>
+              <%= f.submit 'Завершить', class: 'btn btn-primary' %>
+            <% end %>
+            <% when Curator::TaskUser::STATUS_FINISHED %>
+              <span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span>
+              <br><br>
+              <%= tu.accepted ? 'ОДОБРЕНО' : 'ОЖИДАЕТ ПОДТВЕРЖДЕНИЯ' %>
+            <% when Curator::TaskUser::STATUS_REOPENED %>
+              <span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span>
+              <p class="help-block">Обратитесь к </p>
               <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
                 <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_FINISHED %>
                 <%= hidden_field_tag :curator_key, 1 %>
                 <%= f.submit 'Завершить', class: 'btn btn-default' %>
               <% end %>
-              <% when Curator::TaskUser::STATUS_FINISHED %>
-                <span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span>
-                <br><br>
-                <%= tu.accepted ? 'ОДОБРЕНО' : 'ОЖИДАЕТ ПОДТВЕРЖДЕНИЯ' %>
-              <% when Curator::TaskUser::STATUS_REOPENED %>
-                <span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span>
-                <br><br>
-                <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
-                  <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_FINISHED %>
-                  <%= hidden_field_tag :curator_key, 1 %>
-                  <%= f.submit 'Завершить', class: 'btn btn-default' %>
-                <% end %>
-            <% end %>
           <% end %>
         </td>
       </tr>
