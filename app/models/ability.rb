@@ -5,6 +5,8 @@ class Ability
 
     user ||= User.new
 
+    cannot :salary_igrik, Achievement
+
     #can :manage, Student
     #can :manage, :student
     if user.is_a?(Student)
@@ -48,11 +50,11 @@ class Ability
       end
 
       #if user.is?(:lecturer)
-        #can :manage, Study::Exam
-        #can :manage, Study::ExamMark
+        # can :manage, Study::Exam
+        # can :manage, Study::ExamMark
         # Загрузка ресурсов, принадлежащих только текущему пользователю,
         # производится в Study::DisciplinesController.
-        #can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }
+        # can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }
       #end
 
       if user.is?(:developer)
@@ -90,6 +92,7 @@ class Ability
     can :manage, Study::Mark
     can :manage, Study::Exam
     can :manage, [Achievement, AchievementReport], user_id: user.id
+
     cannot :validate, Achievement
     cannot :validate_social, Achievement
     cannot :validate_selection, Achievement

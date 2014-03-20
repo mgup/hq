@@ -277,8 +277,8 @@ ActiveRecord::Schema.define(version: 20140314055423) do
     t.string   "checkpoint_name",    limit: 200,  default: ""
     t.string   "checkpoint_details", limit: 1000
     t.date     "checkpoint_date",                              null: false
-    t.integer  "checkpoint_min",                  default: 0
-    t.integer  "checkpoint_max",                  default: 0
+    t.integer  "checkpoint_min",                  default: 0,  null: false
+    t.integer  "checkpoint_max",                  default: 0,  null: false
     t.integer  "checkpoint_closed",               default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -341,10 +341,12 @@ ActiveRecord::Schema.define(version: 20140314055423) do
   end
 
   create_table "curator_task_user", force: true do |t|
-    t.integer "status",          default: 1
-    t.boolean "accepted"
-    t.integer "curator_task_id"
-    t.integer "user_id"
+    t.integer  "status",          default: 1
+    t.boolean  "accepted"
+    t.integer  "curator_task_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "curator_task_user", ["curator_task_id"], name: "index_curator_task_user_on_curator_task_id", using: :btree
@@ -401,10 +403,10 @@ ActiveRecord::Schema.define(version: 20140314055423) do
     t.text      "document_number",      limit: 16777215,             null: false
     t.integer   "document_signed",      limit: 1
     t.timestamp "document_create_date",                              null: false
+    t.date      "document_start_date"
     t.date      "document_expire_date",                              null: false
     t.integer   "document_juridical",   limit: 1,        default: 0, null: false
     t.string    "document_department",  limit: 400
-    t.date      "document_start_date"
     t.string    "document_name",        limit: 400
     t.integer   "document_eternal",                      default: 0
   end
