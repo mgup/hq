@@ -14,6 +14,10 @@ class Curator::Task < ActiveRecord::Base
   scope :drafts, -> {where(status: STATUS_DRAFT)}
   scope :from_name, -> name { where('name LIKE :prefix', prefix: "%#{name}%")}
 
+  validates :name, presence: true
+  validates :status, presence: true
+  validates :type, presence: true
+
   def draft?
     STATUS_DRAFT == status
   end
