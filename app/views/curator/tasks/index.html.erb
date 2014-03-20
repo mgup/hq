@@ -60,7 +60,7 @@
           <p><strong>Форма отчётности:</strong> <%= task.report %></p>
         </td>
         <td>
-          <%= User.curators.collect{|c| c.id}.sort == task.users.collect{|c| c.id}.sort ? 'Задание для всех кураторов' : task.users.collect{|u|  "#{u.short_name} (#{u.current_group ? u.current_group.group.name : '-'})"}.join(', ') %>
+          <%= User.curators.collect{|c| c.id}.sort == task.users.collect{|c| c.id}.sort ? 'Задание для всех кураторов' : task.users.collect{|u|  "#{u.short_name} (#{!u.current_groups.empty? ? u.current_groups.collect{|g| g.group.name}.join(', ') : '-'})"}.join(', ') %>
         </td>
         <td>
           <% unless task.draft? %>
