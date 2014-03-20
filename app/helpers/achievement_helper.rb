@@ -34,4 +34,15 @@ module AchievementHelper
   def vvv(x, b)
     sgn(x) * (1 - Math::E**(-b * x.abs))
   end
+
+  def salary_type_icon(salary)
+    case salary.type
+    when Salary::Salary201403::TYPE_OK
+      '&#x2713;'.html_safe
+    when Salary::Salary201403::TYPE_LUCKY
+      '&#x263C;'.html_safe
+    when Salary::Salary201403::TYPE_KING
+      '&#x2654;'.html_safe
+    end
+  end
 end

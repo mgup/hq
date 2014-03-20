@@ -145,7 +145,33 @@ class AchievementsController < ApplicationController
   def calculate_salary
     redirect_to root_path unless can?(:manage, :all)
 
-    
+    params[:department] ||= 7
+    @department = Department.find(params[:department])
+
+    params[:e] ||= 0.2
+
+    @lower = 0.48613
+    funds = {
+      '7' => 1128688.0,
+      '5' => 1481719.0,
+      '6' => 2125790.0,
+      '3' => 3048000.0
+    }
+    @prev_fund = funds[params[:department]]
+    @curr_fund = @lower * @prev_fund
+
+    @salaries = Salary::Salary201403.where(faculty_id: params[:department])
+      .includes(:user, :department).joins(:user)
+      .order('department.department_id, last_name_hint, first_name_hint, patronym_hint')
+
+    @sums = Mgup::Achievements.sums(params[:department])
+
+    # Вычисляем баллы для рейтинга, используя информацию о защитах и заведующих кафедрой.
+
+    # Считаем медиану среди незащищённых и не заведующих кафедрой.
+    ok_credits = []
+    @salaries.each { |s| ok_credits << (@sums[s.user.id] || 0) unless s.untouchable? }
+    @first_median = median(ok_credits)
   end
 
   def salary_igrik

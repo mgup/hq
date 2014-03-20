@@ -28,13 +28,13 @@ class Mgup::Achievements
       end
     end
 
-    result = []
+    result = {}
     by_user_and_year_summed.each do |user, years|
       sum = 0
       sum += years[2013] if years[2013]
       sum += 0.8 * years[2012] if years[2012]
 
-      result << [user, sum]
+      result[user] = sum
     end
 
     result

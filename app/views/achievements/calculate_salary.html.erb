@@ -1,0 +1,77 @@
+<style>
+  #page_sidebar {
+    display: none !important;
+  }
+  #page_sidebar + div {
+    width: 100% !important;
+  }
+</style>
+
+<div class="page-header">
+  <h2>Расчёт надбавок</h2>
+</div>
+
+<form class="form-inline hidden-print" style="margin-bottom: 15px;">
+  <div class="form-group">
+    <label>Институт</label>
+    <%= select_tag :department,
+      options_for_select(
+        Department.faculties.map { |d| [d.abbreviation, d.id] },
+        params[:department]
+      ),
+      class: 'form-control', onchange: %q($(this).parents('form').submit();) %>
+
+    <label>&#x03b5;</label>
+    <%= select_tag :e, options_for_select([0.2, 0.1, 0.05], params[:e]),
+      class: 'form-control', onchange: %q($(this).parents('form').submit();) %>
+  </div>
+</form>
+
+<dl class="dl-horizontal">
+  <dt>Институт</dt>
+  <dd><%= @department.name %></dd>
+
+  <dt>Фонд, февраль 2014 г.</dt>
+  <dd><%= number_to_currency(@prev_fund) %></dd>
+
+  <dt>Фонд, март 2014 г.</dt>
+  <dd><%= number_to_currency(@curr_fund) %></dd>
+
+  <dt>Снижение фонда</dt>
+  <dd><%= number_to_percentage(100.0 * (1.0 - @lower)) %></dd>
+
+  <dt>«Уравнивание», &#x03b5;</dt>
+  <dd><%= number_with_precision(params[:e], precision: 2) %></dd>
+
+  <dt>Первая медиана</td>
+  <dd><%= number_with_precision(@first_median) %></dd>
+</dl>
+
+<table class="table table-striped table-bordered table-condensed">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Кафедра</th>
+      <th>НПР</th>
+      <th>Ставка</th>
+      <th>Февраль, 2014</th>
+      <th>Февраль, 2014 <br> (с учётом понижения)</th>
+      <th>Фактический <br> балл</th>
+      <th></th>
+      <th>Балл рейтинга</th>
+    </tr>
+  </thead>
+  <% @salaries.each do |salary| %>
+  <tr>
+    <td><%= salary.user.id %></td>
+    <td><%= salary.department.abbreviation %></td>
+    <td><%= salary.user.full_name %></td>
+    <td><%= salary.wage_rate %></td>
+    <td class="text-right nowrap"><%= number_to_currency(salary.previous_premium) %></td>
+    <td class="text-right nowrap"><%= number_to_currency(@lower * salary.previous_premium) %></td>
+    <td class="text-right nowrap"><%= number_with_precision(@sums[salary.user.id] || 0) %></td>
+    <td><%= salary_type_icon(salary) %></td>
+    <td></td>
+  </tr>
+  <% end %>
+</table>
