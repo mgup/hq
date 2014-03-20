@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140318054635) do
+ActiveRecord::Schema.define(version: 20140319054420) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -329,6 +329,7 @@ ActiveRecord::Schema.define(version: 20140318054635) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "curator_task_type_id"
+    t.text     "report"
   end
 
   add_index "curator_task", ["curator_task_type_id"], name: "index_curator_task_on_curator_task_type_id", using: :btree

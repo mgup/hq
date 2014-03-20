@@ -18,7 +18,7 @@ class Curator::TaskUser < ActiveRecord::Base
       when STATUS_FINISHED
         {text: 'завершено', color: 'success'}
       when STATUS_REOPENED
-        {text: 'заново открыто', color: 'warning'}
+        {text: 'не было подтверждено', color: 'warning'}
     end
   end
 

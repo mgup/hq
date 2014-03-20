@@ -40,18 +40,6 @@ SimpleNavigation::Configuration.run do |navigation|
 
         primary.item :event_categories, 'Категории событий', event_categories_path, icon: 'th-list'
 
-        primary.item :task_types, 'Типы заданий', curator_task_types_path, icon: 'inbox' do |d|
-          d.dom_class = 'hidden'
-          d.item :edit, 'Редактирование', edit_curator_task_type_path(params[:id] || 1)
-          d.item :new, 'Создание', new_curator_task_type_path
-        end
-        primary.item :tasks, 'Задания для кураторов', curator_tasks_path, icon: 'bullhorn' do |d|
-          d.dom_class = 'hidden'
-          d.item :edit, 'Редактирование', edit_curator_task_path(params[:id] || 1)
-          d.item :show, 'Просмотр', curator_task_path(params[:id] || 1)
-          d.item :new, 'Создание', new_curator_task_path
-        end
-
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         #primary.item( :study, 'Успеваемость<b class="caret"></b>'.html_safe, '#', icon: 'list', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' }) do |study|
         #  study.dom_class = 'dropdown-menu'
@@ -71,6 +59,24 @@ SimpleNavigation::Configuration.run do |navigation|
 
       if can? :manage, My::Support
         primary.item :social_applications, 'Заявления на мат. помощь', social_applications_path, icon: 'file'
+      end
+
+      if can? :actual, :curator_tasks
+        primary.item :actual_tasks, 'Текущие задания', actual_curator_tasks_path, icon: 'tags'
+      end
+
+      if can? :manage, Curator::Task
+        primary.item :task_types, 'Типы заданий для кураторов', curator_task_types_path, icon: 'inbox' do |d|
+          d.dom_class = 'hidden'
+          d.item :edit, 'Редактирование', edit_curator_task_type_path(params[:id] || 1)
+          d.item :new, 'Создание', new_curator_task_type_path
+        end
+        primary.item :tasks, 'Задания для кураторов', curator_tasks_path, icon: 'bullhorn' do |d|
+          d.dom_class = 'hidden'
+          d.item :edit, 'Редактирование', edit_curator_task_path(params[:id] || 1)
+          d.item :show, 'Просмотр', curator_task_path(params[:id] || 1)
+          d.item :new, 'Создание', new_curator_task_path
+        end
       end
 
       if can? :index, :selection_contracts

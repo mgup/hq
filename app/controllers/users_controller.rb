@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   def index
     params[:page] ||= 1
+    @users = @users.from_appointment(params[:appointment]) if params[:appointment]
     @users = @users.by_name(params[:name]) if params[:name]
     @users = @users.by_department(params[:department]) if params[:department]
     @users = @users.page(params[:page])

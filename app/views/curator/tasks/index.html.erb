@@ -8,6 +8,18 @@
 <div class="col-sm-12">
   <%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
     <div class="form-group">
+      <div class="col-sm-5">
+        <div class="checkbox">
+          <label>
+            <%= check_box_tag :draft, '1', '1' == params[:draft], class: 'task_user_check' %> Показать только черновики
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <%= check_box_tag :publication, '1', '1' == params[:publication], class: 'task_user_check' %> Показать только активные задания
+          </label>
+        </div>
+      </div>
       <div class="col-sm-4">
         <%= text_field_tag :name, params[:name], class: 'form-control', placeholder: 'Название' %>
       </div>
@@ -43,8 +55,9 @@
       <tr class="<%= task.draft? ? 'active' : (task.closed? ? 'warning' : '') %>">
         <td><%= index + 1 %></td>
         <td style="width: 60%;">
-          <h4 style="margin: 0;"><%= task.name %> <small><%= task.type %></small></h4>
+          <h4 style="margin: 0;"><%= task.name %> <small><%= task.type.name %></small></h4>
           <p class="help-block"><%= task.description %></p>
+          <p><strong>Форма отчётности:</strong> <%= task.report %></p>
         </td>
         <td>
           <%= User.curators.collect{|c| c.id}.sort == task.users.collect{|c| c.id}.sort ? 'Задание для всех кураторов' : task.users.collect{|u|  "#{u.short_name} (#{u.current_group ? u.current_group.group.name : '-'})"}.join(', ') %>

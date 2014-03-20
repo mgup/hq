@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1><%= @task.name %></h1>
+  <h1><%= @task.name %> <small><%= @task.type.name %></small></h1>
 </div>
 
 <% if @task.closed? %>
@@ -7,6 +7,7 @@
 <% end %>
 
 <p class="help-block"><%= @task.description %></p>
+<p><strong>Форма отчётности:</strong> <%= @task.report %></p>
 
 <h2>Работа кураторов</h2>
 
