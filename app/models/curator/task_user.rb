@@ -19,9 +19,9 @@ class Curator::TaskUser < ActiveRecord::Base
         {text: 'приступил', color: 'default'}
       when STATUS_FINISHED
         if accepted
-          {text: 'завершено', color: 'success', title: 'Было подтверждено'}
+          {text: 'завершено', color: 'success', title: 'было подтверждено'}
         else
-          {text: 'завершено', color: 'info', title: 'Ожидает подтверждения'}
+          {text: 'завершено', color: 'info', title: 'ожидает подтверждения'}
         end
       when STATUS_REOPENED
         {text: 'не было подтверждено', color: 'warning'}
