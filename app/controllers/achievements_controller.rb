@@ -189,6 +189,11 @@ class AchievementsController < ApplicationController
         s.final_credit = 0.5 * ((@sums[s.user.id] || 0) + avg)
       end
     end
+
+    # Считаем вторую медиану.
+    second_median_credits = []
+    @salaries.each { |s| second_median_credits << s.final_credit }
+    @second_median = median(second_median_credits)
   end
 
   def salary_igrik
