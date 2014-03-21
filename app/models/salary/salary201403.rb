@@ -5,6 +5,8 @@ class Salary::Salary201403 < ActiveRecord::Base
 
   self.table_name = 'salary201403'
 
+  attr_accessor :final_credit
+
   belongs_to :user
   belongs_to :department
 
@@ -24,11 +26,23 @@ class Salary::Salary201403 < ActiveRecord::Base
     untouchable
   end
 
+  def touchable?
+    !untouchable?
+  end
+
   def type
     return TYPE_KING if subdepartment?
 
     return TYPE_LUCKY if untouchable?
 
     return TYPE_OK
+  end
+
+  def king?
+    TYPE_KING == type
+  end
+
+  def lucky?
+    TYPE_LUCKY == type
   end
 end
