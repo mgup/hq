@@ -149,6 +149,7 @@ class AchievementsController < ApplicationController
     @department = Department.find(params[:department])
 
     params[:e] ||= 0.2
+    params[:e] = params[:e].to_f
 
     @lower = 0.48613
     funds = {
@@ -171,7 +172,7 @@ class AchievementsController < ApplicationController
     # Считаем медиану среди незащищённых и не заведующих кафедрой.
     ok_credits = []
     @salaries.find_all { |s| s.touchable? }.each do |s|
-      s.final_credit = @sums[s.user.id] || 0
+      s.final_credit = @sums[s.user.id] || 0.0
       ok_credits << s.final_credit
     end
     @first_median = median(ok_credits)
@@ -186,7 +187,7 @@ class AchievementsController < ApplicationController
       avg = credits.sum / credits.length
 
       department.find_all { |s| s.king? }.each do |s|
-        s.final_credit = 0.5 * ((@sums[s.user.id] || 0) + avg)
+        s.final_credit = 0.5 * ((@sums[s.user.id] || 0.0) + avg)
       end
     end
 
@@ -194,6 +195,29 @@ class AchievementsController < ApplicationController
     second_median_credits = []
     @salaries.each { |s| second_median_credits << s.final_credit }
     @second_median = median(second_median_credits)
+
+    # Обрабатываем тех, у кого фиксированные надбавки.
+    credits_fund = @curr_fund
+    @salaries.find_all { |s| s.new_premium? }.each do |salary|
+      salary.final_premium = salary.new_premium
+      credits_fund -= salary.final_premium
+    end
+
+    minimal_credit = @salaries.map(&:final_credit).min
+    @b = Math.log(params[:e].to_f) / (minimal_credit - @second_median)
+
+    fund_to_normalize = 0.0
+    @salaries.find_all { |s| s.new_premium.nil? }.each do |salary|
+      f = 1.0 + vvv(salary.final_credit - @second_median, @b)
+      fund_to_normalize += @lower * salary.previous_premium.to_f * f
+    end
+
+    @alpha = credits_fund / fund_to_normalize
+
+    @salaries.find_all { |s| s.new_premium.nil? }.each do |salary|
+      f = 1.0 + vvv(salary.final_credit - @second_median, @b)
+      salary.final_premium = @alpha * @lower * salary.previous_premium.to_f * f
+    end
   end
 
   def salary_igrik
