@@ -80,7 +80,9 @@
     <td><%= salary.wage_rate %></td>
     <td class="text-right nowrap"><%= number_to_currency(salary.previous_premium) %></td>
     <td class="text-right nowrap"><%= number_to_currency(@lower * salary.previous_premium) %></td>
-    <td class="text-right nowrap"><%= number_with_precision(@sums[salary.user.id] || 0) %></td>
+    <td class="text-right nowrap">
+      <%= number_with_precision(salary.credits || @sums[salary.user.id] || 0) %>
+    </td>
     <td><%= salary_type_icon(salary) %></td>
     <td><%= number_with_precision(salary.final_credit) %></td>
     <td class="text-right nowrap">
