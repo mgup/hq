@@ -146,7 +146,11 @@ class AchievementsController < ApplicationController
     redirect_to root_path unless can?(:manage, :all)
 
     params[:department] ||= 7
-    @department = Department.find(params[:department])
+    if '0' == params[:department]
+      @department = Department.new
+    else
+      @department = Department.find(params[:department])
+    end
 
     params[:e] ||= 0.2
     params[:e] = params[:e].to_f
@@ -156,16 +160,23 @@ class AchievementsController < ApplicationController
       '7' => 1128688.0,
       '5' => 1481719.0,
       '6' => 2125790.0,
-      '3' => 3048000.0
+      '3' => 3048000.0,
+      '0' => 7784197.0
     }
     @prev_fund = funds[params[:department]]
     @curr_fund = @lower * @prev_fund
 
-    @salaries = Salary::Salary201403.where(faculty_id: params[:department])
-      .includes(:user, :department).joins(:user)
-      .order('department.department_id, last_name_hint, first_name_hint, patronym_hint')
+    if '0' == params[:department]
+      @salaries = Salary::Salary201403.includes(:user, :department).joins(:user)
+        .order('department.department_id, last_name_hint, first_name_hint, patronym_hint')
+      @sums = Mgup::Achievements.sums(params[:department])
+    else
+      @salaries = Salary::Salary201403.where(faculty_id: params[:department])
+        .includes(:user, :department).joins(:user)
+        .order('department.department_id, last_name_hint, first_name_hint, patronym_hint')
+      @sums = Mgup::Achievements.sums(params[:department])
+    end
 
-    @sums = Mgup::Achievements.sums(params[:department])
 
     # Вычисляем баллы для рейтинга, используя информацию о защитах и заведующих кафедрой.
 

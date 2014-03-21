@@ -1,6 +1,10 @@
 class Mgup::Achievements
   def self.sums(faculty_id = Department::IGRIK)
-    achievements = Achievement.in_department(faculty_id, only_accepted: true)
+    if '0' == faculty_id
+      achievements = Achievement.in_department(0, only_accepted: true)
+    else
+      achievements = Achievement.in_department(faculty_id, only_accepted: true)
+    end
     calculate_result(achievements)
   end
 
