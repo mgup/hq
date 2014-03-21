@@ -28,8 +28,8 @@
 </form>
 
 <dl class="dl-horizontal">
-  <dt>Институт</dt>
-  <dd><%= @department.name %></dd>
+  <!-- <dt>Институт</dt> -->
+  <dd><strong><%= @department.name %></strong></dd>
 
   <dt>Фонд, февраль 2014 г.</dt>
   <dd><%= number_to_currency(@prev_fund) %></dd>
@@ -71,7 +71,7 @@
     <td class="text-right nowrap"><%= number_to_currency(@lower * salary.previous_premium) %></td>
     <td class="text-right nowrap"><%= number_with_precision(@sums[salary.user.id] || 0) %></td>
     <td><%= salary_type_icon(salary) %></td>
-    <td></td>
+    <td><%= number_with_precision(salary.final_credit) %></td>
   </tr>
   <% end %>
 </table>

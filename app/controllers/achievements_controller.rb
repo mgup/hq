@@ -170,8 +170,25 @@ class AchievementsController < ApplicationController
 
     # Считаем медиану среди незащищённых и не заведующих кафедрой.
     ok_credits = []
-    @salaries.each { |s| ok_credits << (@sums[s.user.id] || 0) unless s.untouchable? }
+    @salaries.find_all { |s| s.touchable? }.each do |s|
+      s.final_credit = @sums[s.user.id] || 0
+      ok_credits << s.final_credit
+    end
     @first_median = median(ok_credits)
+
+    # Ставим всем счастливчикам балл, равный первой медиане.
+    @salaries.find_all { |s| s.lucky? }.each { |s| s.final_credit = @first_median }
+
+    # Разбиваем все сотрудников на группы, по кафедрам.
+    @salaries.group_by { |s| s.department.id }.each do |i, department|
+      credits = []
+      department.each { |s| credits << s.final_credit unless s.king? }
+      avg = credits.sum / credits.length
+
+      department.find_all { |s| s.king? }.each do |s|
+        s.final_credit = 0.5 * ((@sums[s.user.id] || 0) + avg)
+      end
+    end
   end
 
   def salary_igrik
