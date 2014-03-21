@@ -9,6 +9,8 @@ class Curator::TaskUser < ActiveRecord::Base
   belongs_to :task, class_name: Curator::Task, foreign_key: :curator_task_id
   belongs_to :user, foreign_key: :user_id
 
+  scope :by_user, -> user { where(user_id: user.id) }
+
   def phase
     case status
       when STATUS_NEVER_SAW
@@ -16,7 +18,11 @@ class Curator::TaskUser < ActiveRecord::Base
       when STATUS_SAW
         {text: 'приступил', color: 'default'}
       when STATUS_FINISHED
-        {text: 'завершено', color: 'success'}
+        if accepted
+          {text: 'завершено', color: 'success', title: 'Было подтверждено'}
+        else
+          {text: 'завершено', color: 'info', title: 'Ожидает подтверждения'}
+        end
       when STATUS_REOPENED
         {text: 'не было подтверждено', color: 'warning'}
     end

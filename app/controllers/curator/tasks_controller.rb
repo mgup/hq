@@ -14,6 +14,34 @@ class Curator::TasksController < ApplicationController
     @tasks = @tasks.sort_by(&:status) if params[:draft].to_i.zero? and params[:publication].to_i.zero?
   end
 
+  def analyze
+   @rows = []
+   User.curators.each do |curator|
+      row = []
+      row << curator
+     Curator::Task.publications.each do |task|
+        result = task.task_users.by_user(curator).last
+        row << result
+      end
+
+      @rows << row
+    end
+  end
+
+  def print_tasks
+    @rows = []
+    User.curators.each do |curator|
+      row = []
+      row << curator
+      row << (!curator.current_groups.empty? ? curator.current_groups.collect{|g| g.group.name}.join(', ') : '-')
+      Curator::Task.without_drafts.each do |task|
+        result = task.task_users.by_user(curator).last
+        row << result
+      end
+      @rows << row
+    end
+  end
+
   def actual
     authorize! :actual, :curator_tasks
     @task_users = current_user.task_users

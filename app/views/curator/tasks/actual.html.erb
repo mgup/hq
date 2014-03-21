@@ -32,6 +32,7 @@
     <th>#</th>
     <th>Задание</th>
     <th></th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -52,6 +53,20 @@
           <p><strong>Форма отчётности:</strong> <%= task.report %></p>
         </td>
         <td>
+        <% case tu.status %>
+          <% when Curator::TaskUser::STATUS_SAW %>
+            Приступил к выполнению <%= l tu.updated_at %>
+          <% when Curator::TaskUser::STATUS_FINISHED %>
+            <% if tu.accepted %>
+              Было подтверждено <%= l tu.updated_at %>
+            <% else %>
+              Было завершено <%= l tu.updated_at %>
+            <% end %>
+          <% when Curator::TaskUser::STATUS_REOPENED %>
+            Было отклонено <%= l tu.updated_at %>
+          <% end %>
+        </td>
+        <td>
           <% case tu.status %>
             <% when Curator::TaskUser::STATUS_NEVER_SAW %>
               <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
@@ -63,7 +78,7 @@
             <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
               <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_FINISHED %>
               <%= hidden_field_tag :curator_key, 1 %>
-              <%= f.submit 'Завершить', class: 'btn btn-primary' %>
+              <%= f.submit 'Завершить', class: 'btn btn-primary', confirm: 'Для завершения задания необходимо предоставить отчётные документы. Вы уверены, что все отчётные документы сданы?' %>
             <% end %>
             <% when Curator::TaskUser::STATUS_FINISHED %>
               <span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span>
@@ -71,11 +86,11 @@
               <%= tu.accepted ? 'ОДОБРЕНО' : 'ОЖИДАЕТ ПОДТВЕРЖДЕНИЯ' %>
             <% when Curator::TaskUser::STATUS_REOPENED %>
               <span class="label label-<%= tu.phase[:color] %>"><%= tu.phase[:text] %></span>
-              <p class="help-block">Обратитесь к </p>
+              <p class="help-block">Обратитесь к помощнику проректора по воспитательной и социальной работе Рекус Ирине Григорьевне </p>
               <%= form_for tu, url: curator_task_user_path(tu) do |f| %>
                 <%= f.hidden_field :status, value: Curator::TaskUser::STATUS_FINISHED %>
                 <%= hidden_field_tag :curator_key, 1 %>
-                <%= f.submit 'Завершить', class: 'btn btn-default' %>
+                <%= f.submit 'Завершить', class: 'btn btn-default', confirm: 'Для завершения задания необходимо предоставить отчётные документы. Вы уверены, что все отчётные документы сданы?' %>
               <% end %>
           <% end %>
         </td>

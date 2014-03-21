@@ -5,7 +5,7 @@ class SidebarRenderer < SimpleNavigation::Renderer::List
       text = %Q(
         <span class="glyphicon glyphicon-#{item.html_options[:icon]}"></span>
         #{text}
-      )
+      ).html_safe
     end
 
     if suppress_link?(item)

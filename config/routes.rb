@@ -164,6 +164,8 @@ HQ::Application.routes.draw do
   namespace :curator do
     resources :tasks do
       get 'actual', to: 'tasks#actual', on: :collection
+      get 'analyze', to: 'tasks#analyze', on: :collection
+      get 'print_tasks.xlsx', to: 'tasks#print_tasks', defaults: { format: 'xlsx' }, as: :print_tasks, on: :collection
     end
     resources :task_types
     resources :task_users

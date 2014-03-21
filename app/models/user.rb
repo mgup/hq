@@ -149,6 +149,7 @@ class User < ActiveRecord::Base
 
   scope :teachers, ->  {where(user_role: 'lecturer')}
   scope :curators, ->  {joins(:positions).where('acl_position_role = (?)', Role::ROLE_CURATOR)}
+  scope :curators_for_today, -> {joins(:positions).where('acl_position_role = (?)', Role::ROLE_CURATOR).joins(:curator_groups).where("start_date <= '#{Date.today}' AND end_date >= '#{Date.today}'").group(:user_id)}
 
   scope :without, -> id {
     cond = all

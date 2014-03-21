@@ -1,0 +1,21 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
+  wb.add_worksheet(name: 'Работа кураторов') do |sheet|
+    header = ['Куратор', 'Курируемые группы']
+    Curator::Task.without_drafts.each do |task|
+      header<<task.name
+    end
+    sheet.add_row header
+
+    @rows.each do |r|
+      body = [r[0].full_name, r[1]]
+      Curator::Task.without_drafts.each_with_index do |task, index|
+        if r[index+2]
+            body << r[index+2].phase[:title]
+        else
+          body << 'не должен был выполнять'
+        end
+      end
+      sheet.add_row body
+    end
+end

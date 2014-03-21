@@ -12,6 +12,8 @@ class Curator::Task < ActiveRecord::Base
 
   scope :publications, -> {where(status: STATUS_ACTIVE)}
   scope :drafts, -> {where(status: STATUS_DRAFT)}
+
+  scope :without_drafts, -> {where(status: [ STATUS_ACTIVE, STATUS_CLOSED])}
   scope :from_name, -> name { where('name LIKE :prefix', prefix: "%#{name}%")}
 
   validates :name, presence: true

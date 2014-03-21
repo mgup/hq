@@ -43,9 +43,9 @@
   <p class="alert alert-danger" id="curatorAlert">Вы не указали ни одного куратора</p>
 
   <h2>Кураторы</h2>
-  <p><label><%= check_box_tag :allcurators, 1, (@task ? (User.curators.collect{|c| c.id}.sort == @task.users.collect{|c| c.id}.sort) : false), id: 'checkAllCurators' %>
+  <p><label><%= check_box_tag :allcurators, 1, (@task ? (User.curators_for_today.collect{|c| c.id}.sort == @task.users.collect{|c| c.id}.sort) : false), id: 'checkAllCurators' %>
     Задание для всех кураторов</label></p>
-  <% User.curators.each do |curator| %>
+  <% User.curators_for_today.each do |curator| %>
     <label><%= check_box_tag 'curators[]', curator.id, (@task ? (@task.users.include? curator) : false),  id: "curator_#{curator.id}", class: 'curatorCheckbox' %>     <%= curator.full_name %> (<%= !curator.current_groups.empty? ? curator.current_groups.collect{|g| g.group.name}.join(', ') : '-' %>)</label>
     <br>
   <% end %>
