@@ -5,7 +5,7 @@ class Salary::Salary201403 < ActiveRecord::Base
 
   self.table_name = 'salary201403'
 
-  attr_accessor :final_credit
+  attr_accessor :final_credit, :final_premium
 
   belongs_to :user
   belongs_to :department
