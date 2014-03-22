@@ -121,26 +121,26 @@ SimpleNavigation::Configuration.run do |navigation|
           a.item :achievements, 'Отчёт за период', achievements_path
         end
 
-        if can? :validate, Achievement
-          primary.item :validate_achievements, 'Подтверждение показателей эффективности (кафедра)',
-                       validate_achievements_path, icon: 'check'
-        end
+        # if can? :validate, Achievement
+        #   primary.item :validate_achievements, 'Подтверждение показателей эффективности (кафедра)',
+        #                validate_achievements_path, icon: 'check'
+        # end
 
-        if can? :validate_selection, Achievement
-          primary.item :validate_selection_achievements, 'Подтверждение показателей эффективности (профориентационная работа, работа по привлечению контингента и работа в приёмной комиссии)',
-                       validate_selection_achievements_path, icon: 'check'
-        end
+        # if can? :validate_selection, Achievement
+        #   primary.item :validate_selection_achievements, 'Подтверждение показателей эффективности (профориентационная работа, работа по привлечению контингента и работа в приёмной комиссии)',
+        #                validate_selection_achievements_path, icon: 'check'
+        # end
 
-        if can? :validate_social, Achievement
-          primary.item :validate_social_achievements, 'Подтверждение показателей эффективности (работа куратором)',
-                       validate_social_achievements_path, icon: 'check'
-        end
+        # if can? :validate_social, Achievement
+        #   primary.item :validate_social_achievements, 'Подтверждение показателей эффективности (работа куратором)',
+        #                validate_social_achievements_path, icon: 'check'
+        # end
 
-        if can? :validate_additional, Achievement
-        #if current_user.is?(:dean)
-          primary.item :validate_additional_achievements, 'Подтверждение показателей эффективности (поручения директора)',
-                       validate_additional_achievements_path, icon: 'check'
-        end
+        # if can? :validate_additional, Achievement
+        # #if current_user.is?(:dean)
+        #   primary.item :validate_additional_achievements, 'Подтверждение показателей эффективности (поручения директора)',
+        #                validate_additional_achievements_path, icon: 'check'
+        # end
       end
 
       #if can? :manage, Student
@@ -224,7 +224,7 @@ SimpleNavigation::Configuration.run do |navigation|
     #           :method - Specifies the http-method for the generated link - default is :get.
     #           :highlights_on - if autohighlighting is turned off and/or you want to explicitly specify
     #                            when the item should be highlighted, you can set a regexp which is matched
-    #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>. 
+    #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>.
     #
     #primary.item :key_1, 'name', url, options
 
