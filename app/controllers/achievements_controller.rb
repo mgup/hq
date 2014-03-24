@@ -214,20 +214,26 @@ class AchievementsController < ApplicationController
       credits_fund -= salary.final_premium
     end
 
-    minimal_credit = @salaries.map(&:final_credit).min
+    minimal_credit = @salaries.map(&:final_credit).reject { |i| 0 == i }.min
     @b = Math.log(params[:e].to_f) / (minimal_credit - @second_median)
 
     fund_to_normalize = 0.0
     @salaries.find_all { |s| s.new_premium.nil? }.each do |salary|
-      f = 1.0 + vvv(salary.final_credit - @second_median, @b)
-      fund_to_normalize += @lower * salary.previous_premium.to_f * f
+      unless 0 == salary.final_credit
+        f = 1.0 + vvv(salary.final_credit - @second_median, @b)
+        fund_to_normalize += @lower * salary.previous_premium.to_f * f
+      end
     end
 
     @alpha = credits_fund / fund_to_normalize
 
     @salaries.find_all { |s| s.new_premium.nil? }.each do |salary|
-      f = 1.0 + vvv(salary.final_credit - @second_median, @b)
-      salary.final_premium = @alpha * @lower * salary.previous_premium.to_f * f
+      if 0 == salary.final_credit
+        salary.final_premium = 0
+      else
+        f = 1.0 + vvv(salary.final_credit - @second_median, @b)
+        salary.final_premium = @alpha * @lower * salary.previous_premium.to_f * f
+      end
     end
   end
 
