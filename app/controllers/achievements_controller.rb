@@ -198,7 +198,7 @@ class AchievementsController < ApplicationController
       avg = credits.sum / credits.length
 
       department.find_all { |s| s.king? }.each do |s|
-        s.final_credit = 0.5 * ((s.credits || @sums[s.user.id] || 0.0) + avg)
+        s.final_credit = 0.5 * ((s.credits || @sums[s.user.id] || @first_median) + avg)
       end
     end
 
