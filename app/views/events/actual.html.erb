@@ -48,6 +48,9 @@
         <% end %>
         <%= render partial: 'leave_claim_modal', locals: {event: event, claim: EventDateClaim.new} %>
       <% end %>
+      <div class="yashare-auto-init" data-yashareL10n="ru"
+           data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter"
+           data-yashareLink="<%= more_event_url(event)%>" data-yashareTitle="<%= event.name %>"></div>
       <hr>
       <br>
     <% end %>
