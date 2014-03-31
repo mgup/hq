@@ -73,4 +73,13 @@ module Nameable
     result += patronym(form)[0, 1] + '. ' unless patronym(form).nil?
     result + last_name(form)
   end
+
+  # Пытается вывести имя в указанном падеже, откатываясь к другим вариантам, если ничего
+  # не получается. Этим методом лучше всего никогда не пользоваться.
+  def any_possible_full_name(form = :ip)
+    name = full_name(form)
+    name = full_name(:ip) if name.empty? && :ip != form
+    name = send(:name) if name.empty? && respond_to?(:name)
+    name
+  end
 end
