@@ -130,6 +130,8 @@ class Ability
   end
 
   def pro_rector_social(user)
+    can :update, Achievement
+    can :manage, My::Support
     # can :update, Achievement
     # can :validate_social, Achievement
     can :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY

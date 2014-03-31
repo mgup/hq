@@ -59,6 +59,8 @@ SimpleNavigation::Configuration.run do |navigation|
 
       if can? :manage, My::Support
         primary.item :social_applications, 'Заявления на мат. помощь', social_applications_path, icon: 'file'
+        primary.item :support, 'СПИСКИ по заявлениям'.html_safe,  lists_social_applications_path, icon: 'list'
+        primary.item :support_form, 'Оставить заявление на мат. помощь', 'http://matrix3.mgup.ru/my/support', icon: 'ok'
       end
 
       if can? :actual, :curator_tasks
@@ -169,10 +171,6 @@ SimpleNavigation::Configuration.run do |navigation|
       if can? :manage, :all
         primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
         primary.item :npr, 'Заполненение НПР'.html_safe, print_achievements_path, icon: 'list'
-      end
-
-      if can? :manage, :all
-        primary.item :support, 'СПИСКИ по заявлениям'.html_safe,  lists_social_applications_path, icon: 'list'
       end
     end
 
