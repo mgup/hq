@@ -1,0 +1,20 @@
+<div class="page-header">
+  <h2>Показатели эффективности</h2>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Результаты работы рейтинговой комиссии</h3>
+  </div>
+  <div class="panel-body">
+    <% @ratings.each do |rating| %>
+      <p><strong><%= rating.user.any_possible_full_name(:ip) %></strong></p>
+      <p>
+        В&nbsp;соответствии с&nbsp;протоколом заседания рейтинговой комиссии №&nbsp;___
+        от&nbsp;___ ________ ____&nbsp;г., утвердить на&nbsp;<%= rating.year %> календарный
+        год значение рейтинга, равное <strong><%= rating.rating %>
+        <%= Russian.p(rating.rating, 'баллу', 'баллам', 'баллам', 'баллам') %></strong>.
+      </p>
+    <% end %>
+  </div>
+</div>

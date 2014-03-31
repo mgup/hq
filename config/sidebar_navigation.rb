@@ -114,12 +114,16 @@ SimpleNavigation::Configuration.run do |navigation|
         end
       end
 
+      if can? :index, Rating
+        primary.item :ratings, 'Показатели эффективности', ratings_path, icon: 'stats'
+      end
+
       if can? :manage, Achievement
-        primary.item :periods_achievements, 'Показатели эффективности',
-                     periods_achievements_path, icon: 'stats' do |a|
-          a.dom_class = 'hidden'
-          a.item :achievements, 'Отчёт за период', achievements_path
-        end
+        # primary.item :periods_achievements, 'Показатели эффективности',
+        #              periods_achievements_path, icon: 'stats' do |a|
+        #   a.dom_class = 'hidden'
+        #   a.item :achievements, 'Отчёт за период', achievements_path
+        # end
 
         # if can? :validate, Achievement
         #   primary.item :validate_achievements, 'Подтверждение показателей эффективности (кафедра)',

@@ -178,6 +178,7 @@ HQ::Application.routes.draw do
   resources :activity_credit_types
   resources :activities
 
+  resources :ratings
   resources :achievement_periods
   resources :achievements do
     get 'test',  on: :collection

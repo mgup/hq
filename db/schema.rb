@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140331071130) do
+ActiveRecord::Schema.define(version: 20140331074140) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -1017,7 +1017,7 @@ ActiveRecord::Schema.define(version: 20140331071130) do
     t.timestamp "post_time",              null: false
   end
 
-  create_table "rating", force: true do |t|
+  create_table "ratings", force: true do |t|
     t.integer  "year"
     t.integer  "user_id"
     t.decimal  "rating",     precision: 10, scale: 3

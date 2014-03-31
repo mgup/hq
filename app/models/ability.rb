@@ -5,7 +5,7 @@ class Ability
 
     user ||= User.new
 
-    cannot :salary_igrik, Achievement
+    cannot :manage, Rating
 
     #can :manage, Student
     #can :manage, :student
@@ -97,6 +97,8 @@ class Ability
     cannot :validate_social, Achievement
     cannot :validate_selection, Achievement
     cannot :validate_additional, Achievement
+
+    can :index, Rating, user_id: user.id
   end
 
   def subdepartment_assistant(user)
