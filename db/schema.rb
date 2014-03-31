@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321063919) do
+ActiveRecord::Schema.define(version: 20140331071130) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -841,7 +841,7 @@ ActiveRecord::Schema.define(version: 20140321063919) do
     t.string   "name"
     t.integer  "kind"
     t.integer  "hours"
-    t.decimal  "zet",         precision: 19, scale: 2
+    t.integer  "zet"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -877,12 +877,11 @@ ActiveRecord::Schema.define(version: 20140321063919) do
   end
 
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer   "hostel_payment_type",                 null: false
-    t.integer   "hostel_payment_student",              null: false
-    t.timestamp "hostel_payment_date",                 null: false
-    t.integer   "hostel_payment_sum",      default: 0, null: false
-    t.integer   "hostel_payment_year",                 null: false
-    t.integer   "hostel_payment_semester",             null: false
+    t.integer   "hostel_payment_type",                null: false
+    t.integer   "hostel_payment_student",             null: false
+    t.timestamp "hostel_payment_date",                null: false
+    t.integer   "hostel_payment_sum",     default: 0, null: false
+    t.integer   "hostel_payment_year",                null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -1016,6 +1015,14 @@ ActiveRecord::Schema.define(version: 20140321063919) do
     t.string    "post_title", limit: 100, null: false
     t.text      "post_text",              null: false
     t.timestamp "post_time",              null: false
+  end
+
+  create_table "rating", force: true do |t|
+    t.integer  "year"
+    t.integer  "user_id"
+    t.decimal  "rating",     precision: 10, scale: 3
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "recalc", primary_key: "recalc_id", force: true do |t|
