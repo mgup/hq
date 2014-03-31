@@ -12,7 +12,7 @@
       <p>
         В&nbsp;соответствии с&nbsp;протоколом заседания рейтинговой комиссии №&nbsp;___
         от&nbsp;___ ________ ____&nbsp;г., утвердить на&nbsp;<%= rating.year %> календарный
-        год значение рейтинга, равное <strong><%= rating.rating %>
+        год значение рейтинга, равное <strong><%= number_with_precision(rating.rating) %>
         <%= Russian.p(rating.rating, 'баллу', 'баллам', 'баллам', 'баллам') %></strong>.
       </p>
     <% end %>

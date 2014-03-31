@@ -5,6 +5,7 @@ class Ability
 
     user ||= User.new
 
+    cannot :manage, Achievement
     cannot :manage, Rating
 
     #can :manage, Student
@@ -91,12 +92,12 @@ class Ability
     can :manage, Study::Checkpoint
     can :manage, Study::Mark
     can :manage, Study::Exam
-    can :manage, [Achievement, AchievementReport], user_id: user.id
+    # can :manage, [Achievement, AchievementReport], user_id: user.id
 
-    cannot :validate, Achievement
-    cannot :validate_social, Achievement
-    cannot :validate_selection, Achievement
-    cannot :validate_additional, Achievement
+    # cannot :validate, Achievement
+    # cannot :validate_social, Achievement
+    # cannot :validate_selection, Achievement
+    # cannot :validate_additional, Achievement
 
     can :index, Rating, user_id: user.id
   end
@@ -109,7 +110,7 @@ class Ability
   def subdepartment(user)
     lecturer(user)
 
-    can :validate, Achievement
+    # can :validate, Achievement
   end
 
   # Проректор по научно-исследовательской работе
@@ -119,18 +120,18 @@ class Ability
   end
 
   def executive_secretary(user)
-    can :update, Achievement
-    can :validate_selection, Achievement
+    # can :update, Achievement
+    # can :validate_selection, Achievement
   end
 
   def dean(user)
-    can :update, Achievement
-    can :validate_additional, Achievement
+    # can :update, Achievement
+    # can :validate_additional, Achievement
   end
 
   def pro_rector_social(user)
-    can :update, Achievement
-    can :validate_social, Achievement
+    # can :update, Achievement
+    # can :validate_social, Achievement
     can :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
     can :manage, EventDateClaim
     cannot :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
