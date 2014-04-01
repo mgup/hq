@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< Updated upstream
 ActiveRecord::Schema.define(version: 20140331074140) do
-=======
-ActiveRecord::Schema.define(version: 20140324082332) do
->>>>>>> Stashed changes
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -827,8 +823,6 @@ ActiveRecord::Schema.define(version: 20140324082332) do
 
   add_index "flat", ["flat_hostel"], name: "flatHostel", using: :btree
 
-<<<<<<< Updated upstream
-=======
   create_table "graduate_choice_subject", force: true do |t|
     t.string  "name"
     t.integer "graduate_subjects_id"
@@ -836,7 +830,6 @@ ActiveRecord::Schema.define(version: 20140324082332) do
 
   add_index "graduate_choice_subject", ["graduate_subjects_id"], name: "index_graduate_choice_subject_on_graduate_subjects_id", using: :btree
 
->>>>>>> Stashed changes
   create_table "graduate_choice_subject_student", force: true do |t|
     t.integer "graduate_choice_subject_id"
     t.integer "graduate_student_id"
