@@ -21,6 +21,10 @@ class GraduateSubject < ActiveRecord::Base
   has_many :graduate_students
   has_many :graduate_marks, dependent: :destroy
 
+  has_many :choices, class_name: GraduateChoice, foreign_key: :graduate_subjects_id, dependent: :destroy
+  accepts_nested_attributes_for :choices, allow_destroy: true, reject_if: proc { |attrs| attrs[:name].blank? }
+  has_many :choice_students, class_name: GraduateChoiceStudent, through: :choices
+
   scope :only_subjects, -> { where(kind: TYPE_SUBJECT) }
   scope :only_papers, -> { where(kind: TYPE_PAPER) }
   scope :only_works, -> { where('kind NOT IN (?)', [TYPE_SUBJECT, TYPE_PAPER]) }
@@ -28,7 +32,7 @@ class GraduateSubject < ActiveRecord::Base
   def text_kind
     case kind
       when TYPE_SUBJECT
-        'дисициплина'
+        'дисциплина'
       when TYPE_PAPER
         'курсовая'
       when TYPE_WORK3

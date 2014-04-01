@@ -14,4 +14,5 @@ class Hostel::Room < ActiveRecord::Base
   def description
     "Комната на #{seats} (#{residents.collect{|resident| resident.short_name}.join(', ')})"
   end
+
 end

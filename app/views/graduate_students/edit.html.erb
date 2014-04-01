@@ -65,9 +65,21 @@
         <label class="col-sm-2 control-label" style="font-weight: normal;">
           <%= sf.object.graduate_subject.text_kind %>
         </label>
+        <% if sf.object.graduate_subject.choosingly %>
+          <% subj = sf.object.graduate_subject.choice_students.from_student(@graduate_student).last %>
+          <% subj = sf.object.graduate_subject.choice_students.build if !subj %>
+          <%= f.fields_for :choice_students, subj do |cs| %>
+            <%= cs.hidden_field :id %>
+            <div class="col-sm-7">
+            <%= cs.select :graduate_choice_subject_id, options_from_collection_for_select(sf.object.graduate_subject.choices, :id, :name, selected: cs.object.graduate_choice_subject_id),
+                { prompt: 'выберите дисциплину по выбору' }, class: 'form-control input-sm' %>
+            </div>
+          <% end %>
+        <% else %>
         <label class="col-sm-7 control-label" style="text-align: left;">
           <%= sf.object.graduate_subject.name %>
         </label>
+        <% end %>
         <div class="col-sm-3">
           <%= sf.select :mark, options_for_select([['отлично', 5], ['хорошо', 4], ['удовлетворительно', 3], ['зачтено', 6]], selected: sf.object.mark),
                         { prompt: 'оценка' }, class: 'form-control input-sm' %>

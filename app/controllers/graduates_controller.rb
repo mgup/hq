@@ -42,7 +42,8 @@ class GraduatesController < ApplicationController
     params.fetch(:graduate, {}).permit(:group_id, :year, :chairman, :secretary,
                                        graduate_subjects_attributes: [
                                            :id, :kind, :name, :hours,
-                                           :zet, :_destroy
+                                           :zet, :choosingly, :_destroy,
+                                           choices_attributes: [:id, :name, :_destroy]
                                        ])
   end
 end

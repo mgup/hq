@@ -22,6 +22,9 @@ class GraduateStudentsController < ApplicationController
     subjects = @graduate.graduate_subjects.only_subjects
     subjects.each do |s|
       @graduate_student.graduate_marks.build(graduate_subject: s) unless s.graduate_marks.where(graduate_student_id: @graduate_student.id).any?
+      if s.choosingly
+        @graduate_student.choice_students.build unless @graduate_student.choices.where(graduate_subjects_id: s.id).any?
+      end
     end
 
     papers = @graduate.graduate_subjects.only_papers
@@ -45,6 +48,7 @@ class GraduateStudentsController < ApplicationController
 
   def resource_params
     params.fetch(:graduate_student, {}).permit(:thesis, :mark, :registration, :education,
-                                               graduate_marks_attributes: [:id, :mark, :graduate_subject_id])
+                                               graduate_marks_attributes: [:id, :mark, :graduate_subject_id],
+                                              choice_students_attributes: [:id, :graduate_choice_subject_id])
   end
 end
