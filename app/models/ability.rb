@@ -140,11 +140,13 @@ class Ability
     can :manage, Curator::TaskUser
     can :manage, Curator::Task
     can :manage, Curator::TaskType
+    can :manage, Hostel::Offense
   end
 
   def curator(user)
     can :actual, :curator_tasks
     can :manage, Curator::TaskUser, user_id: user.id
+    can :manage, Hostel::Report
   end
 
   def soc_support_boss(user)

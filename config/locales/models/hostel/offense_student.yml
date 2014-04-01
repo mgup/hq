@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+     hostel/offense_student: 'связь между студентом и нарушением'
+    attributes:
+      hostel/offense_student:
+        offense_report_id: 'нарушение'
+        student_id: 'студент'

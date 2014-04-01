@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+     hostel/offense_room: 'связь между комнатой и нарушением'
+    attributes:
+      hostel/offense_room:
+        offense_report_id: 'нарушение'
+        room_id: 'комната'

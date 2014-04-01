@@ -312,6 +312,13 @@ ActiveRecord::Schema.define(version: 20140331074140) do
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
   add_index "checkpoint_mark", ["checkpoint_mark_student"], name: "checkpoint_mark_student", using: :btree
 
+  create_table "choice_subject", force: true do |t|
+    t.string  "name",                 limit: 200
+    t.integer "graduate_subjects_id"
+  end
+
+  add_index "choice_subject", ["graduate_subjects_id"], name: "index_choice_subject_on_graduate_subjects_id", using: :btree
+
   create_table "curator_group", force: true do |t|
     t.date    "start_date"
     t.date    "end_date"
@@ -816,6 +823,11 @@ ActiveRecord::Schema.define(version: 20140331074140) do
 
   add_index "flat", ["flat_hostel"], name: "flatHostel", using: :btree
 
+  create_table "graduate_choice_subject_student", force: true do |t|
+    t.integer "graduate_choice_subject_id"
+    t.integer "graduate_student_id"
+  end
+
   create_table "graduate_marks", force: true do |t|
     t.integer  "graduate_student_id"
     t.integer  "graduate_subject_id"
@@ -841,9 +853,10 @@ ActiveRecord::Schema.define(version: 20140331074140) do
     t.string   "name"
     t.integer  "kind"
     t.integer  "hours"
-    t.integer  "zet"
+    t.decimal  "zet",         precision: 19, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "choosingly",                           default: false, null: false
   end
 
   create_table "graduates", force: true do |t|
@@ -876,12 +889,20 @@ ActiveRecord::Schema.define(version: 20140331074140) do
     t.string "hostel_address",    limit: 200, null: false
   end
 
+  create_table "hostel_offense", force: true do |t|
+    t.integer  "kind"
+    t.text     "description", limit: 2147483647
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer   "hostel_payment_type",                null: false
-    t.integer   "hostel_payment_student",             null: false
-    t.timestamp "hostel_payment_date",                null: false
-    t.integer   "hostel_payment_sum",     default: 0, null: false
-    t.integer   "hostel_payment_year",                null: false
+    t.integer   "hostel_payment_type",                 null: false
+    t.integer   "hostel_payment_student",              null: false
+    t.timestamp "hostel_payment_date",                 null: false
+    t.integer   "hostel_payment_sum",      default: 0, null: false
+    t.integer   "hostel_payment_year",                 null: false
+    t.integer   "hostel_payment_semester",             null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -899,6 +920,42 @@ ActiveRecord::Schema.define(version: 20140331074140) do
 
   add_index "hostel_payment_type", ["hostel_payment_type_status"], name: "hostel_payment_type_status", using: :btree
   add_index "hostel_payment_type", ["hostel_payment_type_tax"], name: "hostel_payment_type_tax", using: :btree
+
+  create_table "hostel_report", force: true do |t|
+    t.date     "date"
+    t.time     "time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "flat_id"
+  end
+
+  add_index "hostel_report", ["flat_id"], name: "index_hostel_report_on_flat_id", using: :btree
+  add_index "hostel_report", ["user_id"], name: "index_hostel_report_on_user_id", using: :btree
+
+  create_table "hostel_report_offense", force: true do |t|
+    t.integer "hostel_report_id"
+    t.integer "hostel_offense_id"
+  end
+
+  add_index "hostel_report_offense", ["hostel_offense_id"], name: "index_hostel_report_offense_on_hostel_offense_id", using: :btree
+  add_index "hostel_report_offense", ["hostel_report_id"], name: "index_hostel_report_offense_on_hostel_report_id", using: :btree
+
+  create_table "hostel_report_offense_room", force: true do |t|
+    t.integer "hostel_report_offense_id"
+    t.integer "room_id"
+  end
+
+  add_index "hostel_report_offense_room", ["hostel_report_offense_id"], name: "index_hostel_report_offense_room_on_hostel_report_offense_id", using: :btree
+  add_index "hostel_report_offense_room", ["room_id"], name: "index_hostel_report_offense_room_on_room_id", using: :btree
+
+  create_table "hostel_report_offense_student", force: true do |t|
+    t.integer "hostel_report_offense_id"
+    t.integer "student_id"
+  end
+
+  add_index "hostel_report_offense_student", ["hostel_report_offense_id"], name: "index_hostel_report_offense_student_on_hostel_report_offense_id", using: :btree
+  add_index "hostel_report_offense_student", ["student_id"], name: "index_hostel_report_offense_student_on_student_id", using: :btree
 
   create_table "log", primary_key: "log_id", force: true do |t|
     t.timestamp "log_timestamp",                          null: false

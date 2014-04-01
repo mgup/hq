@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+     hostel/report: 'акт проверки'
+    attributes:
+      hostel/report:
+        date: 'дата проверки'
+        time: 'время проверки'
+        flat_id: 'квартира'
+        user_id: 'проверяющий'

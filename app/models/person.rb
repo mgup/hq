@@ -55,6 +55,10 @@ class Person < ActiveRecord::Base
   belongs_to :room, class_name: Hostel::Room, primary_key: :room_id,
            foreign_key: :student_room
 
+  has_many :students, primary_key: :student_id, foreign_key: :student_group_student
+
+  scope :from_flat, -> flat { joins(:room).where(room: {room_flat: flat})}
+
   def male?
     MALE == gender
   end

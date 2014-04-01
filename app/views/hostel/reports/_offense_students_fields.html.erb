@@ -1,0 +1,18 @@
+<div class="rooms_fields">
+  <%= f.hidden_field :id %>
+  <div class="form-group">
+    <%= f.label :student_id, class: 'control-label col-sm-2' %>
+    <div class='col-sm-8'>
+      <% if f.object.person %>
+        <%= f.select :student_id, options_from_collection_for_select(f.object.person.room.flat.residents, :id, :full_name, f.object.student_id), {}, { class: 'form-control ajax-student' } %>
+      <% else %>
+        <%= f.select :student_id, [], {}, { class: 'form-control ajax-student' } %>
+      <% end %>
+    </div>
+    <div class="col-sm-1">
+      <%= f.link_to_remove class: 'btn btn-danger btn-sm' do %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </div>
+  </div>
+</div>

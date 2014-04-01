@@ -81,6 +81,22 @@ SimpleNavigation::Configuration.run do |navigation|
         end
       end
 
+      if can? :manage, Hostel::Offense
+        primary.item :offenses, 'Типы нарушений (общежитие)', hostel_offenses_path, icon: 'inbox' do |d|
+          d.dom_class = 'hidden'
+          d.item :edit, 'Редактирование', edit_hostel_offense_path(params[:id] || 1)
+          d.item :new, 'Создание', new_hostel_offense_path
+        end
+      end
+
+      if can? :manage, Hostel::Report
+        primary.item :hostel_reports, 'Акты проверки состояния квартиры', hostel_reports_path, icon: 'list' do |d|
+          d.dom_class = 'hidden'
+          d.item :edit, 'Редактирование', edit_hostel_report_path(params[:id] || 1)
+          d.item :new, 'Создание', new_hostel_report_path
+        end
+      end
+
       if can? :index, :selection_contracts
         primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
       end

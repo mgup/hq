@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+     hostel/offense: 'нарушение'
+    attributes:
+      hostel/offense:
+        description: 'шаблон-описание'
+        kind: 'тип нарушения'

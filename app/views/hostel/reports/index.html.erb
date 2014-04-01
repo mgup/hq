@@ -1,0 +1,45 @@
+<div class="page-header">
+  <h1>Акты проверки состояния квартир общежитий</h1>
+</div>
+
+<%= link_to 'Добавить новый отчёт', new_hostel_report_path, class: 'btn btn-default' %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Квартира</th>
+    <th>Проверяющий</th>
+    <th>Время проверки</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @reports.each do |report| %>
+    <tr>
+      <td><%= report.id %></td>
+      <td>№<%= report.flat.number %>
+        <br>
+          <%= report.flat.hostel.address %>
+      </td>
+      <td><%= report.user.full_name %></td>
+      <td><%= l report.date %> (<%= l report.time, format: '%H:%M' %>)</td>
+      <td>
+        <%= link_to edit_hostel_report_path(report), class: 'btn btn-default', title: 'Редактировать' do %>
+          <span class="glyphicon glyphicon-edit"></span>
+        <% end %>
+        <br>
+        <%= link_to hostel_report_path(report), method: :delete, class: 'btn btn-danger', title: 'Удалить', confirm: 'Вы уверены?', style: 'margin-top: 5px;' do %>
+          <span class="glyphicon glyphicon-remove"></span>
+        <% end %>
+        <br>
+        <%= link_to "#hostelReportModal_#{report.id}", class: 'btn btn-success', title: 'Распечатать', style: 'margin-top: 5px;',
+              data: {toggle: 'modal'} do %>
+          <span class="glyphicon glyphicon-print"></span>
+        <% end %>
+        <%= render partial: 'print_modal', locals: {report: report} %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

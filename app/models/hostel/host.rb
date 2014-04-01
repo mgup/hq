@@ -8,4 +8,6 @@ class Hostel::Host < ActiveRecord::Base
 
   has_many :flats, class_name: Hostel::Flat, primary_key: :hostel_id,
            foreign_key: :flat_hostel
+
+  scope :for_students, -> {where(hostel_id:  [2,3])}
 end

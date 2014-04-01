@@ -1,0 +1,65 @@
+<%= nested_form_for @report, html: { class: 'form-horizontal', role: 'form' } do |f| %>
+  <%= f.hidden_field :user_id, value: current_user.id %>
+  <div class="form-group">
+    <%= label_tag :hostel, 'Общежитие', class: 'control-label col-sm-2' %>
+    <div class="col-sm-9">
+      <%= select_tag :hostel, options_from_collection_for_select(Hostel::Host.for_students, :id, :address, @hostel ? @hostel.id : nil), prompt: 'Выберите общежитие', class: 'form-control ajax-hostel' %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @report.errors.include?(:flat_id) %>">
+    <%= f.label :flat_id, class: 'control-label col-sm-2' %>
+    <div class='col-sm-9'>
+      <% if @hostel %>
+        <%= f.select :flat_id, options_from_collection_for_select(@hostel.flats, :id, :number, @report.flat.id), {}, { class: 'form-control ajax-flat' } %>
+      <% else %>
+        <%= f.select :flat_id, [], {}, { class: 'form-control ajax-flat' } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @report.errors.include?(:date) %>">
+    <%= f.label :date, class: 'control-label col-sm-2' %>
+    <div class="col-sm-9">
+      <%= f.text_field :date, class: 'form-control', placeholder: 'дд.мм.гггг', pattern: '\d{1,2}.\d{1,2}.\d{4}', value: (@report.date ? (l @report.date) : nil) %>
+    </div>
+  </div>
+
+  <div class="form-group <%= 'has-error' if @report.errors.include?(:time) %>">
+    <%= f.label :time, class: 'control-label col-sm-2' %>
+    <div class="col-sm-9">
+      <%= f.text_field :time, class: 'form-control', placeholder: 'чч:мм:сс', pattern: '\d{1,2}.\d{1,2}.\d{1,2}', value: (@report.time ? (l @report.time, format: '%H:%M:%S') : nil) %>
+    </div>
+  </div>
+  <br>
+  <p class="lead">В ходе проверки выявлены следующие нарушения:</p>
+  <% Hostel::Offense.all.each do |o| %>
+    <div class="offense">
+    <label><%= check_box_tag 'offenses[]', o.id, (@report ? (@report.report_offenses.collect{|o| o.offense}.include? o) : false),  id: "offense_#{o.id}",
+                             class: 'hostel_offenses', data: {type: o.kind} %>     <%= o.description %></label>
+    <div class="for_offense"></div>
+    </div>
+  <% end %>
+
+  <%= f.fields_for :report_offenses do |offense_form| %>
+    <%= render 'report_offenses_fields', f: offense_form %>
+  <% end %>
+  <%= f.link_to_add 'Добавить нарушение',
+                    :report_offenses, style: 'display: none;' %>
+
+
+  <br>
+  <%= f.submit class: 'btn btn-primary' %> или <%= link_to 'Вернуться назад', hostel_reports_path %>
+
+<% end %>
+
+<script>
+  $('.hostel_offenses').each(function(){
+      var $this = $(this);
+    if ($this.prop('checked')){
+      $('.fields .offense[value="' +  $this.val() + '"]').parents('.fields').appendTo($this.parents('.offense').find('.for_offense'));
+      if ($this.data('type') == 2) $this.parents('.offense').find('.rooms_fields_btn').show();
+      if ($this.data('type') == 3) $this.parents('.offense').find('.students_fields_btn').show();
+    }
+  })
+</script>

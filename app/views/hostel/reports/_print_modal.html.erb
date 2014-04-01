@@ -1,0 +1,27 @@
+<div class="modal fade hostel_reports_modal" id="hostelReportModal_<%= report.id %>" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Печать акта проверки</h4>
+      </div>
+      <div class="modal-body">
+        <h4>Квартира (блок) №<%= report.flat.number %></h4>
+        <p>Адрес: <%= report.flat.hostel.address %></p>
+        <%= form_for report, url: print_hostel_report_path(report), method: :get, class: 'form-horizontal' do |f| %>
+          <div class="row">
+            <div class="thumbnail">
+              <h5><strong>Если у вас есть приложения, выберите их количество:</strong></h5>
+              <%= select_tag :applications, options_for_select([['у меня нет приложений', 0], ['1', 1], ['2', 2], ['3', 3]]),
+                             class: 'form-control'%>
+            </div>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+            <%= f.submit 'Распечатать', class: 'btn btn-primary' %>
+        <% end %>
+        </div>
+        </div>
+  </div>
+</div>

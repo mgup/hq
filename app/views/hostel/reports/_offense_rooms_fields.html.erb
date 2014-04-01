@@ -1,0 +1,18 @@
+<div class="rooms_fields">
+  <%= f.hidden_field :id %>
+  <div class="form-group">
+    <%= f.label :room_id, class: 'control-label col-sm-2' %>
+    <div class='col-sm-8'>
+      <% if f.object.room %>
+        <%= f.select :room_id, options_from_collection_for_select(f.object.room.flat.rooms, :id, :description, f.object.room_id), {}, { class: 'form-control ajax-room' } %>
+      <% else %>
+        <%= f.select :room_id, [], {}, { class: 'form-control ajax-room' } %>
+      <% end %>
+    </div>
+    <div class="col-sm-1">
+      <%= f.link_to_remove class: 'btn btn-danger btn-sm' do %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -12,4 +12,7 @@ class Hostel::Flat < ActiveRecord::Base
            foreign_key: :flat_hostel
   has_many :rooms, class_name: Hostel::Room, primary_key: :flat_id,
            foreign_key: :room_flat
+  has_many :residents, class_name: Person, through: :rooms
+
+  scope :from_hostel, -> host {where(flat_hostel:  host)}
 end

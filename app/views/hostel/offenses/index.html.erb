@@ -1,0 +1,33 @@
+<div class="page-header">
+  <h1>Нарушения <small>общежитие</small></h1>
+</div>
+
+<%= link_to 'Добавить новый тип', new_hostel_offense_path, class: 'btn btn-default' %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Описание</th>
+    <th>Тип</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @offenses.each do |offense| %>
+    <tr>
+      <td><%= offense.id %></td>
+      <td><%= offense.description %></td>
+      <td><%= offense.type %></td>
+      <td>
+        <%= link_to edit_hostel_offense_path(offense), class: 'btn btn-default', title: 'Редактировать' do %>
+          <span class="glyphicon glyphicon-edit"></span>
+        <% end %>
+        <%= link_to hostel_offense_path(offense), method: :delete, class: 'btn btn-danger', title: 'Удалить', confirm: 'Вы уверены?' do %>
+          <span class="glyphicon glyphicon-remove"></span>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

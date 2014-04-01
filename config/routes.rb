@@ -62,6 +62,13 @@ HQ::Application.routes.draw do
     get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
   end
 
+  namespace :hostel do
+    resources :offenses
+    resources :reports do
+      get 'report.pdf', to: 'reports#print', on: :member, defaults: { format: :pdf }, as: :print
+    end
+  end
+
   resources :students do
     get 'documents' => 'students#documents'
     get 'orders' => 'students#orders'
@@ -206,6 +213,9 @@ HQ::Application.routes.draw do
 
   get 'study/ajax/subjects' => 'ajax#subjects'
   get 'study/ajax/disciplines' => 'ajax#disciplines'
+  get 'hostel/ajax/flats' => 'ajax#flats'
+  get 'hostel/ajax/rooms' => 'ajax#rooms'
+  get 'hostel/ajax/students' => 'ajax#flat_students'
   get '/study/disciplines/ajax/groups' => 'ajax#groups'
   get '/study/disciplines/ajax/specialities' => 'ajax#specialities'
   get 'my/ajax/students' => 'ajax#students'

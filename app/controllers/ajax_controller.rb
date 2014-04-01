@@ -7,6 +7,27 @@ class AjaxController < ApplicationController
     end })
   end
 
+  def flats
+    render({ json: Hostel::Flat.from_hostel(params[:hostel]).inject([]) do |flats, flat|
+      flats << { id: flat.id, number: flat.number }
+      flats
+    end })
+  end
+
+  def rooms
+    render({ json: Hostel::Room.from_flat(params[:flat]).inject([]) do |rooms, room|
+      rooms << { id: room.id, seats: room.description }
+      rooms
+    end })
+  end
+
+  def flat_students
+    render({ json: Person.from_flat(params[:flat]).inject([]) do |students, student|
+      students << { id: student.id, name: student.full_name }
+      students
+    end })
+  end
+
   def groups
     render({ json: Group.filter(params).inject([]) do |groups, group|
       groups << { id: group.id, name: group.name }

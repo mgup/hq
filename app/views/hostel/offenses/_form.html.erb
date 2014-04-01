@@ -1,0 +1,24 @@
+<%= form_for @offense, html: { class: 'form-horizontal' } do |f| %>
+  <div class="form-group <%= 'has-error' if @offense.errors.include?(:description) %>">
+    <%= f.label :description, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+      <%= f.text_area :description, class: 'form-control', rows: 5 %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :kind, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-5">
+      <%= f.select :kind, options_for_select([['общее', Hostel::Offense::TYPE_DEFAULT],
+                                               ['комнаты', Hostel::Offense::TYPE_ROOM],
+                                               ['студенты', Hostel::Offense::TYPE_STUDENT]]),
+                    {}, class: 'form-control input-sm' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Сохранить', class: 'btn btn-primary' %> или <%= link_to 'Отмена', hostel_offenses_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+<% end %>

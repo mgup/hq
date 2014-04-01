@@ -1,0 +1,4 @@
+ru:
+  activerecord:
+    models:
+     hostel/report_offense: 'нарушение'
