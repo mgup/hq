@@ -14,7 +14,7 @@ class Hostel::ReportsController < ApplicationController
     if @report.save
       redirect_to hostel_reports_path, notice: 'Запись успешно создана.'
     else
-      @hostel = Hostel::Host.find(params[:hostel])
+      @hostel = Hostel::Host.find(params[:hostel]) if params[:hostel] != ''
       render action: :new
     end
   end

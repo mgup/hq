@@ -23,30 +23,43 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.move_down 20
   pdf.text "Настоящий акт (справка) составлен(а) по результатам проверки квартиры (блока) № <u>#{@report.flat.number}</u> общежития МГУП имени Ивана Федорова, расположенного по адресу: ", inline_format: true
   pdf.move_down 5
-  pdf.text @report.flat.hostel.address
+  pdf.text "г. Москва, #{@report.flat.hostel.address}"
   pdf.move_down 10
-  pdf.text "<strong>Проверка проведена</strong>  в соответствии с Уставом федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (п. 6.7, п.6.12), Положением о студенческом общежитии федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (п. 12, п. 16) и Правилами внутреннего распорядка в студенческом общежитии Московского государственного университета печати имени Ивана Федорова (п. 4.3).", inline_format: true
+  pdf.text "<strong>Проверка проведена</strong> в соответствии с Уставом федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (п. 6.7, п.6.12), Положением о студенческом общежитии федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (п. 12, п. 16) и Правилами внутреннего распорядка в студенческом общежитии Московского государственного университета печати имени Ивана Федорова (п. 4.3).", inline_format: true
   pdf.move_down 20
   if @report.offenses.empty?
      pdf.text "<strong><u>В ходе проверки нарушений не обнаружено.</u></strong>", inline_format: true
   else
-    pdf.text "<strong><u>В ходе проверки выявлены следующие нарушения</u></strong>", inline_format: true
+    pdf.text "<strong><u>В ходе проверки выявлены нарушения</u></strong>", inline_format: true
     pdf.move_down 5
     @report.report_offenses.each_with_index do |ro, index|
-      pdf.text "#{index + 1}. #{ro.offense.description}."
-      if ro.offense.type_room?
+     if ro.persons.empty?
+      pdf.text "#{index + 1}. #{ro.offense.description} #{(ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении')}."
+      unless ro.rooms.empty?
+        pdf.text 'Комнаты, в которых зафиксирован факт нарушения:'
+      end
+     else
+     pdf.text "#{index + 1}. #{ro.offense.description}, а именно:"
+     pdf.line_width = 0.7
+     pdf.stroke do
+       pdf.move_down 10
+       pdf.horizontal_rule
+       pdf.move_down 15
+       pdf.horizontal_rule
+     end
+     pdf.move_down 5
+     pdf.text 'Установлены следующие нарушители:'
+     end
         ro.rooms.each do |room|
           pdf.indent 50 do
             pdf.text room.description
           end
         end
-      elsif ro.offense.type_student?
         ro.persons.each do |person|
           pdf.indent 50 do
             pdf.text "#{person.short_name}, #{person.students.first.group.name}"
           end
         end
-      end
       pdf.move_down 5
     end
   end
@@ -55,31 +68,27 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.text "Настоящий акт составлен в двух экземплярах, имеющих равную юридическую силу."
   pdf.move_down 20
   unless params[:applications] == '0'
-    pdf.text 'Приложения: 1.                                                                                                                                                               на ____ л.'
-    pdf.move_down 5
-    index = 2
-    (params[:applications].to_i - 1).times do
-      pdf.indent 66 do
-        pdf.text "#{index}.                                                                                                                                                               на ____ л."
-        pdf.move_down 5
-      end
+    index = 1
+    params[:applications].to_i.times do
+      pdf.text "Приложение #{index}.                                                                                                                                                               на ____ л."
+      pdf.move_down 5
       index+=1
     end
   end
   pdf.move_down 20
-  pdf.text "<strong>Члены комиссии</strong>                                                                                                                                  _______________ (Ф.И.О.)", inline_format: true
+  pdf.text "<strong>Члены комиссии</strong>                                                                                                                     _______________ (_______________)", inline_format: true
   pdf.font 'PT', size: 7 do
-     pdf.indent 420 do
-       pdf.text '(подпись)'
+     pdf.indent 385 do
+       pdf.text 'подпись                   расшифровка'
      end
   end
   pdf.move_down 10
-  pdf.indent 400 do
-    pdf.text '_______________ (Ф.И.О.)'
+  pdf.indent 370 do
+    pdf.text '_______________ (_______________)'
   end
   pdf.font 'PT', size: 7 do
-    pdf.indent 420 do
-      pdf.text '(подпись)'
+    pdf.indent 385 do
+      pdf.text 'подпись                   расшифровка'
     end
   end
   pdf.move_down 20

@@ -11,6 +11,7 @@
         <%= form_for report, url: print_hostel_report_path(report), method: :get, class: 'form-horizontal' do |f| %>
           <div class="row">
             <div class="thumbnail">
+              <p class="lead">Приложения должны содержать информацию, связанную с выявленными нарушениями. Например, в Приложении 1 - фотографии нарушения, в Приложении 2 - объяснительные записки проживающих в квартире (блоке), в Приложении 3 - прочее.</p>
               <h5><strong>Если у вас есть приложения, выберите их количество:</strong></h5>
               <%= select_tag :applications, options_for_select([['у меня нет приложений', 0], ['1', 1], ['2', 2], ['3', 3]]),
                              class: 'form-control'%>

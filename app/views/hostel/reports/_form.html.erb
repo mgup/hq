@@ -28,17 +28,30 @@
   <div class="form-group <%= 'has-error' if @report.errors.include?(:time) %>">
     <%= f.label :time, class: 'control-label col-sm-2' %>
     <div class="col-sm-9">
-      <%= f.text_field :time, class: 'form-control', placeholder: 'чч:мм:сс', pattern: '\d{1,2}.\d{1,2}.\d{1,2}', value: (@report.time ? (l @report.time, format: '%H:%M:%S') : nil) %>
+      <%= f.text_field :time, class: 'form-control', placeholder: 'чч:мм', pattern: '\d{1,2}:\d{1,2}', value: (@report.time ? (l @report.time, format: '%H:%M') : nil) %>
     </div>
   </div>
   <br>
   <p class="lead">В ходе проверки выявлены следующие нарушения:</p>
   <% Hostel::Offense.all.each do |o| %>
-    <div class="offense">
-    <label><%= check_box_tag 'offenses[]', o.id, (@report ? (@report.report_offenses.collect{|o| o.offense}.include? o) : false),  id: "offense_#{o.id}",
-                             class: 'hostel_offenses', data: {type: o.kind} %>     <%= o.description %></label>
-    <div class="for_offense"></div>
+    <div class="offense_check">
+      <% if o.type_student? %>
+          <label><%= check_box_tag 'offenses[]', o.id, (@report ? (@report.report_offenses.collect{|o| o.offense}.include? o) : false),
+                                   class: 'hostel_offenses', data: {type: 3} %>     <%= o.description %></label>
+          <div data-type="3" class="for_offense"></div>
+      <% else %>
+        <label><%= check_box_tag 'offense_groups[]', o.id, (@report ?(@report.report_offenses.collect{|o| o.offense}.include? o) : false),  id: "offense_#{o.id}",
+                                 class: 'hostel_offense_group', data: {type: 1} %>     <%= o.description %></label>
+      <div class="offense_group col-sm-offset-1" style="display: none;">
+        <label><%= check_box_tag 'offenses[]', o.id, (@report ?(@report.report_offenses.collect{|o| "#{o.offense.id}_#{(!o.offense_students.empty? ? 3 : (!o.offense_rooms.empty? ? 2 : 1))}"}.include? "#{o.id}_1") : false),  id: "offense_#{o.id}_1",
+                                   class: 'hostel_offenses', data: {type: 1} %>     в местах общего пользования (кухня, коридор, ванная комната, туалет)</label>
+        <div data-type="1" class="for_offense"></div>
+        <label><%= check_box_tag 'offenses[]', o.id, (@report ? (@report.report_offenses.collect{|o| "#{o.offense.id}_#{(!o.offense_students.empty? ? 3 : (!o.offense_rooms.empty? ? 2 : 1))}"}.include? "#{o.id}_2") : false),  id: "offense_#{o.id}_2",
+                                   class: 'hostel_offenses', data: {type: 2} %>     в жилом помещении</label>
+        <div data-type="2" class="for_offense"></div>
+      </div>
     </div>
+    <% end %>
   <% end %>
 
   <%= f.fields_for :report_offenses do |offense_form| %>
@@ -57,9 +70,15 @@
   $('.hostel_offenses').each(function(){
       var $this = $(this);
     if ($this.prop('checked')){
-      $('.fields .offense[value="' +  $this.val() + '"]').parents('.fields').appendTo($this.parents('.offense').find('.for_offense'));
+      $('.fields .offense[value="' +  $this.val() + '"][data-type="' + $this.data('type') + '"]').parents('.fields').appendTo($this.parent().next('.for_offense[data-type="' + $this.data('type') + '"]'));
       if ($this.data('type') == 2) $this.parents('.offense').find('.rooms_fields_btn').show();
       if ($this.data('type') == 3) $this.parents('.offense').find('.students_fields_btn').show();
+    }
+  })
+  $('.hostel_offense_group').each(function(){
+    var $this = $(this);
+    if ($this.prop('checked')){
+      $this.closest('.offense_check').find('.offense_group').show();
     }
   })
 </script>

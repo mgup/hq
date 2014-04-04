@@ -10,7 +10,6 @@
     <%= f.label :kind, class: 'col-sm-2 control-label' %>
     <div class="col-sm-5">
       <%= f.select :kind, options_for_select([['общее', Hostel::Offense::TYPE_DEFAULT],
-                                               ['комнаты', Hostel::Offense::TYPE_ROOM],
                                                ['студенты', Hostel::Offense::TYPE_STUDENT]]),
                     {}, class: 'form-control input-sm' %>
     </div>

@@ -12,6 +12,6 @@ class Hostel::Room < ActiveRecord::Base
   scope :from_flat, -> flat {where(room_flat: flat)}
 
   def description
-    "Комната на #{seats} (#{residents.collect{|resident| resident.short_name}.join(', ')})"
+    "Комната на #{seats} (#{residents.collect{|resident| "#{resident.short_name}, #{resident.students.first.group.name}"}.join('; ')})"
   end
 end

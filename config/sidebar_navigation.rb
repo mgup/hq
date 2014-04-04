@@ -64,7 +64,14 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       if can? :actual, :curator_tasks
-        primary.item :actual_tasks, 'Текущие задания', actual_curator_tasks_path, icon: 'tags'
+        primary.item :curator, 'Работа куратора <b class="caret"></b>'.html_safe, '#', icon: 'tags', link: { :'data-toggle' => 'dropdown', class: 'dropdown-toggle'} do |curator|
+          curator.dom_class = 'dropdown-menu'
+          curator.item :tasks, 'Задания', actual_curator_tasks_path
+          curator.item :divider, '', nil, class: 'divider'
+          curator.item :hostel, 'Проверка общежития', hostel_reports_path
+          curator.item :edit, 'Редактирование', edit_hostel_report_path(params[:id] || 1), class: 'hidden'
+          curator.item :new, 'Создание', new_hostel_report_path, class: 'hidden'
+        end
       end
 
       if can? :manage, Curator::Task
@@ -89,13 +96,13 @@ SimpleNavigation::Configuration.run do |navigation|
         end
       end
 
-      if can? :manage, Hostel::Report
-        primary.item :hostel_reports, 'Акты проверки состояния квартиры', hostel_reports_path, icon: 'list' do |d|
-          d.dom_class = 'hidden'
-          d.item :edit, 'Редактирование', edit_hostel_report_path(params[:id] || 1)
-          d.item :new, 'Создание', new_hostel_report_path
-        end
-      end
+      #if can? :manage, Hostel::Report
+      #  primary.item :hostel_reports, 'Акты проверки состояния квартиры', hostel_reports_path, icon: 'list' do |d|
+      #    d.dom_class = 'hidden'
+      #    d.item :edit, 'Редактирование', edit_hostel_report_path(params[:id] || 1)
+      #    d.item :new, 'Создание', new_hostel_report_path
+      #  end
+      #end
 
       if can? :index, :selection_contracts
         primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }

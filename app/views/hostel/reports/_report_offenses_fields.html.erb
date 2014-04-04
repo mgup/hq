@@ -2,7 +2,7 @@
   <%= f.hidden_field :id %>
   <%= f.hidden_field :hostel_offense_id,
                      value: f.object.hostel_offense_id ? f.object.hostel_offense_id : nil,
-                     class: 'offense' %>
+                     class: 'offense', data: {type: (!f.object.offense_students.empty? ? 3 : (!f.object.offense_rooms.empty? ? 2 : 1))} %>
   <%= f.link_to_remove 'Удалить нарушение',
                        style: 'display: none;' %>
 

@@ -59,8 +59,8 @@ $ ->
 
   $(document).on 'nested:fieldAdded:report_offenses', (event) ->
     offense_field = event.field.find('.offense')
-    offense_field.val($(event.link).attr('data-offense'))
     type = $(event.link).attr('data-type')
+    offense_field.val($(event.link).attr('data-offense')).attr('data-type', type)
     if type == '2'
       offense_field.parents('.report_offenses_fields').find('.rooms_fields_btn').show()
     if type == '3'
@@ -78,11 +78,22 @@ $ ->
       $link = $($('a[data-blueprint-id="report_offenses_fields_blueprint"]')[0])
       $link.attr('data-offense', $this.val()).attr('data-type', $this.data('type'))
       $link.click()
-      $('.fields .offense[value="' +  $this.val() + '"]').parents('.fields').appendTo($this.parents('.offense').find('.for_offense'))
+      $('.fields .offense[value="' +  $this.val() + '"][data-type="' + $this.data('type') + '"]').parents('.fields').appendTo($this.parent().next('.for_offense[data-type="' + $this.data('type') + '"]'))
     else
       offense = $this.val()
-      $field = $('.fields .offense[value="' + offense + '"]')
+      $field = $('.fields .offense[value="' + offense + '"][data-type="' + $this.data('type') + '"]')
       $field.parents('.report_offenses_fields').children('.remove_nested_fields').click()
 
   $('.edit_hostel_report').submit ->
     $('.hostel_reports_modal').modal('hide')
+
+  $('.hostel_offense_group').click ->
+    $this = $(this)
+    $this.closest('.offense_check').find('.offense_group').toggle()
+    if !$this.prop('checked')
+      offense = $this.val()
+      $('.hostel_offenses[value="' + offense + '"]').prop('checked', false)
+      $field_1 = $('.fields .offense[value="' + offense + '"][data-type="' + 1 + '"]')
+      $field_1.parents('.report_offenses_fields').children('.remove_nested_fields').click()
+      $field_2 = $('.fields .offense[value="' + offense + '"][data-type="' + 2 + '"]')
+      $field_2.parents('.report_offenses_fields').children('.remove_nested_fields').click()

@@ -28,7 +28,8 @@ class Hostel::OffensesController < ApplicationController
   end
 
   def destroy
-
+    @offense.destroy
+    redirect_to hostel_offenses_path
   end
 
   def resource_params
