@@ -1,0 +1,18 @@
+<div class="applications_fields">
+  <div class="form-group">
+  <%= f.hidden_field :id %>
+  <%= f.label :name, class: 'col-sm-2 control-label' %>
+  <div class="col-sm-5">
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+  <%= f.label :papers, class: 'col-sm-2' %>
+  <div class="col-sm-2">
+    <%= f.text_field :papers, class: 'form-control' %>
+  </div>
+  <div class="col-sm-1">
+    <%= f.link_to_remove class: 'btn btn-danger btn-sm', title: 'Удалить' do %>
+      <span class="glyphicon glyphicon-remove"></span>
+    <% end %>
+  </div>
+  </div>
+</div>

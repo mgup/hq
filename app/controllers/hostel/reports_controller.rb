@@ -2,10 +2,15 @@ class Hostel::ReportsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @reports = @reports.from_curator(current_user)
+    @reports = @reports.from_curator(current_user) if current_user.is?(:curator)
+    @reports = @reports.group_by {|report| report.flat.hostel.address}
   end
 
   def new
+  end
+
+  def show
+
   end
 
   def create
@@ -44,6 +49,7 @@ class Hostel::ReportsController < ApplicationController
 
   def resource_params
     params.fetch(:hostel_report, {}).permit(:user_id, :flat_id, :date, :time,
+                applications_attributes: [:id, :name, :papers],
                 report_offenses_attributes: [:id, :hostel_offense_id, :_destroy,
                 offense_rooms_attributes: [:id, :room_id, :_destroy],
                 offense_students_attributes: [:id, :student_id, :_destroy]])

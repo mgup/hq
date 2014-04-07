@@ -70,6 +70,7 @@ SimpleNavigation::Configuration.run do |navigation|
           curator.item :divider, '', nil, class: 'divider'
           curator.item :hostel, 'Проверка общежития', hostel_reports_path
           curator.item :edit, 'Редактирование', edit_hostel_report_path(params[:id] || 1), class: 'hidden'
+          curator.item :edit, 'Просмотр', hostel_report_path(params[:id] || 1), class: 'hidden'
           curator.item :new, 'Создание', new_hostel_report_path, class: 'hidden'
         end
       end

@@ -1,0 +1,96 @@
+<div class="page-header">
+  <h1>Акт проверки <small>квартира(блок) №<%= @report.flat.number %></small></h1>
+  <h2 style="height: 8px;"><small class="pull-right"><%= link_to 'Редактировать', edit_hostel_report_path(@report) %></small></h2>
+</div>
+
+<div class="col-sm-offset-5">
+  <%= link_to "#hostelReportModal_#{@report.id}", class: 'btn btn-primary',
+              data: {toggle: 'modal'} do %>
+    <span class="glyphicon glyphicon-print"></span> Распечатать акт
+  <% end %>
+</div>
+<%= render partial: 'print_modal', locals: {report: @report} %>
+
+<div style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
+  <p>от «___» _________________   2014 г.</p>
+  <p>Место составления: г. Москва, ул. _____________________________</p>
+  <p>Время составления: ______________</p>
+  <p style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 0; margin-top: 30px;">АКТ ПРОВЕРКИ</p>
+  <p style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 0;">состояния квартиры в общежитии МГУП имени Ивана Федорова</p>
+  <p style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 0;">(СПРАВКА О РЕЗУЛЬТАТАХ ПРОВЕРКИ)</p>
+  <p style="margin-top: 30px;"><strong>Дата проверки:</strong> «<span style="text-decoration: underline;"><%= l @report.date, format: '%d' %></span>» <span style="text-decoration: underline;"><%= l @report.date, format: '%B' %></span> <%= l @report.date, format: '%Y' %> г.</p>
+  <p><strong>Время проверки:</strong> «<span style="text-decoration: underline;"><%= l @report.time, format: '%H:%M' %></span>».</p>
+  <p style="margin-top: 30px; text-align: justify;">Настоящий акт (справка) составлен(а) по результатам проверки квартиры (блока) № <span style="text-decoration: underline;"><%= @report.flat.number %></span> общежития МГУП имени Ивана Федорова, расположенного по адресу: </p>
+  <p>гор. Москва, <%= @report.flat.hostel.address %></p>
+  <p style="text-align: justify;"><strong>Проверка проведена</strong>  в соответствии с Уставом федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (п. 6.7, п.6.12),
+    Положением о студенческом общежитии федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (п. 12, п. 16) и Правилами
+    внутреннего распорядка в студенческом общежитии Московского государственного университета печати имени Ивана Федорова (п. 4.3).</p>
+  <% if @report.offenses.empty? %>
+    <p style="margin-top: 30px; text-decoration: underline; font-weight: bold;">В ходе проверки нарушений не обнаружено.</p>
+  <% else %>
+    <p style="margin-top: 30px; text-decoration: underline; font-weight: bold;">В ходе проверки выявлены нарушения.</p>
+    <ol>
+    <% @report.report_offenses.each do |ro| %>
+      <% if ro.persons.empty? %>
+      <li>
+        <p><%= ro.offense.description %> <%= (ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении') %>.</p>
+        <% unless ro.rooms.empty? %>
+          <p>Комнаты, в которых зафиксирован факт нарушения:</p>
+          <%= ro.rooms.each do |room| %>
+            <p style="margin: 0 0 0 30px;"><%= room.description %></p>
+          <% end %>
+          <p style="margin-top: -10px" class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не забудьте взять объяснительные записки с проживающих в комнат<%= ro.rooms.length > 1 ? 'ах' : 'е' %></p>
+        <% else %>
+          <p style="margin-top: -10px" class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не забудьте взять объяснительные записки с проживающих в квартире</p>
+        <% end %>
+      </li>
+      <% else %>
+      <li>
+        <p style="margin: 0;"><%= ro.offense.description %>, а именно:</p>
+        <hr style="margin-top: 15px;">
+        <hr style="margin-bottom: 5px;">
+        <p style="margin: 0;">Установлены следующие нарушители:</p>
+        <% ro.persons.each do |person| %>
+          <p style="margin: 0 0 0 30px;"><%= person.short_name %>, <%= person.students.first.group.name %></p>
+        <% end %>
+        <p class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не забудьте взять объяснительн<%= ro.persons.length > 1 ? 'ые' : 'ую' %> записк<%= ro.persons.length > 1 ? 'и' : 'у' %> с <%= ro.persons.length > 1 ? 'этих' : 'этого' %> студент<%= ro.persons.length > 1 ? 'ов' : 'а' %></p>
+      </li>
+      <% end %>
+    <% end %>
+    </ol>
+  <% end %>
+
+  <p style="margin-top: 30px;">Настоящий акт составлен в двух экземплярах, имеющих равную юридическую силу.</p>
+  <% unless @report.applications.empty? %>
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 110px;" rowspan="<%= @report.applications.length %>">Приложения:</td>
+      <td>1. <%= @report.applications.first.name %></td>
+      <td class="text-right">на <span style="text-decoration: underline;"><%= @report.applications.first.papers ? @report.applications.first.papers : '_' %></span> л.</td>
+    </tr>
+    <% @report.applications.drop(1).each_with_index do |ap, index| %>
+      <tr>
+        <td><%= index+2 %>. <%= ap.name %></td>
+        <td class="text-right">на <span style="text-decoration: underline;"><%= ap.papers ? ap.papers : '_' %></span> л.</td>
+      </tr>
+    <% end %>
+  </table>
+  <% end %>
+  <table style="width: 100%; margin-top: 20px;">
+    <tr>
+      <td style="width: 150px;" rowspan="2"><strong>Члены комиссии:</strong></td>
+      <td class="text-right">_______________ (_______________)</td>
+    </tr>
+    <tr>
+      <td class="text-right">_______________ (_______________)</td>
+    </tr>
+  </table>
+  <p style="margin-top: 20px;"><strong>С актом проверки ознакомлен:</strong></p>
+</div>
+
+<div class="col-sm-offset-5">
+  <%= link_to "#hostelReportModal_#{@report.id}", class: 'btn btn-primary',
+              data: {toggle: 'modal'} do %>
+    <span class="glyphicon glyphicon-print"></span> Распечатать акт
+  <% end %>
+</div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140331074140) do
+ActiveRecord::Schema.define(version: 20140407054142) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -932,6 +932,14 @@ ActiveRecord::Schema.define(version: 20140331074140) do
 
   add_index "hostel_report", ["flat_id"], name: "index_hostel_report_on_flat_id", using: :btree
   add_index "hostel_report", ["user_id"], name: "index_hostel_report_on_user_id", using: :btree
+
+  create_table "hostel_report_application", force: true do |t|
+    t.string  "name"
+    t.integer "papers"
+    t.integer "hostel_report_id"
+  end
+
+  add_index "hostel_report_application", ["hostel_report_id"], name: "index_hostel_report_application_on_hostel_report_id", using: :btree
 
   create_table "hostel_report_offense", force: true do |t|
     t.integer "hostel_report_id"

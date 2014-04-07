@@ -67,12 +67,12 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.move_down 30
   pdf.text "Настоящий акт составлен в двух экземплярах, имеющих равную юридическую силу."
   pdf.move_down 20
-  unless params[:applications] == '0'
-    index = 1
-    params[:applications].to_i.times do
-      pdf.text "Приложение #{index}.                                                                                                                                                               на ____ л."
-      pdf.move_down 5
-      index+=1
+  unless @report.applications.empty?
+    pdf.text "Приложения: 1. #{@report.applications.first.name}#{' '*(160 - pdf.font.compute_width_of(@report.applications.first.name)/pdf.font.compute_width_of(' ')) } на <u>#{@report.applications.first.papers ? @report.applications.first.papers : '__'}</u> л.", inline_format: true
+    @report.applications.drop(1).each_with_index do |ap, index|
+      pdf.indent 66 do
+        pdf.text "#{index+2}. #{ap.name}#{' '*(160 - pdf.font.compute_width_of(ap.name)/pdf.font.compute_width_of(' ')) } на <u>#{ap.papers ? ap.papers : '__'}</u> л.", inline_format: true
+      end
     end
   end
   pdf.move_down 20

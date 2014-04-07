@@ -31,6 +31,16 @@
       <%= f.text_field :time, class: 'form-control', placeholder: 'чч:мм', pattern: '\d{1,2}:\d{1,2}', value: (@report.time ? (l @report.time, format: '%H:%M') : nil) %>
     </div>
   </div>
+  <div class="form-group" style="margin-top: 30px;">
+    <label class="control-label col-sm-2">ПРИЛОЖЕНИЯ</label>
+    <div class="col-sm-9">
+    <%= f.fields_for :applications do |application_form| %>
+      <%= render 'applications_fields', f: application_form %>
+    <% end %>
+    <%= f.link_to_add 'Добавить приложение',
+                    :applications, class: 'btn btn-default' %>
+    </div>
+  </div>
   <br>
   <p class="lead">В ходе проверки выявлены следующие нарушения:</p>
   <% Hostel::Offense.all.each do |o| %>
@@ -71,8 +81,8 @@
       var $this = $(this);
     if ($this.prop('checked')){
       $('.fields .offense[value="' +  $this.val() + '"][data-type="' + $this.data('type') + '"]').parents('.fields').appendTo($this.parent().next('.for_offense[data-type="' + $this.data('type') + '"]'));
-      if ($this.data('type') == 2) $this.parents('.offense').find('.rooms_fields_btn').show();
-      if ($this.data('type') == 3) $this.parents('.offense').find('.students_fields_btn').show();
+      if ($this.data('type') == 2) $this.closest('.offense_check').find('.rooms_fields_btn').show();
+      if ($this.data('type') == 3) $this.closest('.offense_check').find('.students_fields_btn').show();
     }
   })
   $('.hostel_offense_group').each(function(){

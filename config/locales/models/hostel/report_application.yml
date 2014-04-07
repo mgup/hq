@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+     hostel/report_application: 'приложение'
+    attributes:
+      hostel/report_application:
+        name: 'название'
+        papers: 'количество листов'

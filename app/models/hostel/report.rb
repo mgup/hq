@@ -8,6 +8,8 @@ class Hostel::Report < ActiveRecord::Base
   has_many :report_offenses, class_name: Hostel::ReportOffense, foreign_key: :hostel_report_id, dependent: :destroy
   accepts_nested_attributes_for :report_offenses, allow_destroy: true
   has_many :offenses, class_name: Hostel::Offense, through: :report_offenses
+  has_many :applications, class_name: Hostel::ReportApplication, foreign_key: :hostel_report_id, dependent: :destroy
+  accepts_nested_attributes_for :applications, allow_destroy: true, reject_if: proc { |attrs| attrs[:name].blank? }
 
   scope :from_curator, -> curator {where(user_id: curator.id)}
 

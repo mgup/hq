@@ -84,7 +84,7 @@ $ ->
       $field = $('.fields .offense[value="' + offense + '"][data-type="' + $this.data('type') + '"]')
       $field.parents('.report_offenses_fields').children('.remove_nested_fields').click()
 
-  $('.edit_hostel_report').submit ->
+  $('#print_hostel_report_btn').click ->
     $('.hostel_reports_modal').modal('hide')
 
   $('.hostel_offense_group').click ->
