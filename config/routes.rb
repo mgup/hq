@@ -66,6 +66,7 @@ HQ::Application.routes.draw do
     resources :offenses
     resources :reports do
       get 'report.pdf', to: 'reports#print', on: :member, defaults: { format: :pdf }, as: :print
+      get '/ready', to: 'reports#ready', on: :collection
     end
   end
 

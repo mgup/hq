@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h1>Готовые акты проверки состояния квартир общежитий</h1>
+</div>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Квартира</th>
+    <th>Проверяющий</th>
+    <th>Время проверки</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @reports.each do |hostel| %>
+    <tr><td colspan="5"><p class="lead text-center">гор. Москва, <%= hostel[0] %></p></td></tr>
+    <% hostel[1].each do |report| %>
+      <tr>
+        <td><%= report.id %></td>
+        <td><strong>№ <%= report.flat.number %></strong>
+        </td>
+        <td>
+            <%= report.user.full_name %>
+            <p class="help-block"><%= !report.user.current_groups.empty? ? report.user.current_groups.collect{|g| g.group.name}.join(', ') : '-' %></p>
+        </td>
+        <td><%= l report.date %> (<%= l report.time, format: '%H:%M' %>)</td>
+        <td>
+          <%= link_to hostel_report_path(report), class: 'btn btn-info pull-right' do %>
+            <span class="glyphicon glyphicon-search"></span> Посмотреть акт
+          <% end %>
+          <br><br>
+          <%= link_to edit_hostel_report_path(report), class: 'btn btn-default pull-right', style: 'margin-top: 5px;' do %>
+              <span class="glyphicon glyphicon-edit"></span>  Редактировать
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>

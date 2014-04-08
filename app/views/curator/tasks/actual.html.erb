@@ -51,6 +51,11 @@
           <h4 style="margin: 0;"><%= task.name %> <small><%= task.type.name %></small></h4>
           <p class="help-block"><%= task.description %></p>
           <p><strong>Форма отчётности:</strong> <%= task.report %></p>
+          <% if task.type.id == Curator::TaskType::HOSTEL_TYPE %>
+            <%= link_to  hostel_reports_path, class: 'btn btn-info' do %>
+              <span class="glyphicon glyphicon-file"></span> Создать акт проверки общежития
+            <% end %>
+          <% end %>
         </td>
         <td>
         <% case tu.status %>

@@ -67,8 +67,8 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :curator, 'Работа куратора <b class="caret"></b>'.html_safe, '#', icon: 'tags', link: { :'data-toggle' => 'dropdown', class: 'dropdown-toggle'} do |curator|
           curator.dom_class = 'dropdown-menu'
           curator.item :tasks, 'Задания', actual_curator_tasks_path
-          curator.item :divider, '', nil, class: 'divider'
-          curator.item :hostel, 'Проверка общежития', hostel_reports_path
+          #curator.item :divider, '', nil, class: 'divider'
+          curator.item :hostel, 'Проверка общежития', hostel_reports_path, class: 'hidden'
           curator.item :edit, 'Редактирование', edit_hostel_report_path(params[:id] || 1), class: 'hidden'
           curator.item :edit, 'Просмотр', hostel_report_path(params[:id] || 1), class: 'hidden'
           curator.item :new, 'Создание', new_hostel_report_path, class: 'hidden'
@@ -86,6 +86,12 @@ SimpleNavigation::Configuration.run do |navigation|
           d.item :edit, 'Редактирование', edit_curator_task_path(params[:id] || 1)
           d.item :show, 'Просмотр', curator_task_path(params[:id] || 1)
           d.item :new, 'Создание', new_curator_task_path
+        end
+
+        primary.item :hostel_reports, 'Акты проверки общежитий', ready_hostel_reports_path, icon: 'inbox' do |d|
+          d.dom_class = 'hidden'
+          d.item :edit, 'Редактирование', edit_hostel_report_path(params[:id] || 1)
+          d.item :new, 'Просмотр', hostel_report_path(params[:id] || 1)
         end
       end
 

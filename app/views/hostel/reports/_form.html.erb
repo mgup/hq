@@ -1,5 +1,6 @@
 <%= nested_form_for @report, html: { class: 'form-horizontal', role: 'form' } do |f| %>
-  <%= f.hidden_field :user_id, value: current_user.id %>
+  <%= f.hidden_field :user_id, value: (@report.user_id ? @report.user_id : current_user.id) %>
+  <%= f.hidden_field :status, value: (@report.status ? @report.status : 1) %>
   <div class="form-group">
     <%= label_tag :hostel, 'Общежитие', class: 'control-label col-sm-2' %>
     <div class="col-sm-9">

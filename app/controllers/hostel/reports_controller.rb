@@ -6,6 +6,10 @@ class Hostel::ReportsController < ApplicationController
     @reports = @reports.group_by {|report| report.flat.hostel.address}
   end
 
+  def ready
+    @reports = @reports.ready.group_by {|report| report.flat.hostel.address}
+  end
+
   def new
   end
 
@@ -36,7 +40,12 @@ class Hostel::ReportsController < ApplicationController
 
   def update
     if @report.update(resource_params)
-      redirect_to hostel_reports_path, notice: 'Изменения сохранены.'
+      if params[:hostel_report][:status] == '2'
+        redirect_to hostel_report_path(@report)
+      else
+        path = (current_user.is?(:curator) ? hostel_reports_path : ready_hostel_reports_path)
+        redirect_to path, notice: 'Изменения сохранены.'
+      end
     else
       render action: :edit
     end
@@ -48,7 +57,7 @@ class Hostel::ReportsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:hostel_report, {}).permit(:user_id, :flat_id, :date, :time,
+    params.fetch(:hostel_report, {}).permit(:user_id, :flat_id, :date, :time, :status,
                 applications_attributes: [:id, :name, :papers],
                 report_offenses_attributes: [:id, :hostel_offense_id, :_destroy,
                 offense_rooms_attributes: [:id, :room_id, :_destroy],

@@ -1,4 +1,6 @@
 class Hostel::Report < ActiveRecord::Base
+  STATUS_DRAFT = 1
+  STATUS_REPORT = 2
   self.table_name = 'hostel_report'
 
   belongs_to :flat, class_name: Hostel::Flat, primary_key: :flat_id,
@@ -12,8 +14,13 @@ class Hostel::Report < ActiveRecord::Base
   accepts_nested_attributes_for :applications, allow_destroy: true, reject_if: proc { |attrs| attrs[:name].blank? }
 
   scope :from_curator, -> curator {where(user_id: curator.id)}
+  scope :ready, -> {where(status: STATUS_REPORT)}
 
   validates :flat_id, presence: true
   validates :date, presence: true
   validates :time, presence: true
+
+  def draft?
+    STATUS_DRAFT == status
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407054142) do
+ActiveRecord::Schema.define(version: 20140408065143) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -928,6 +928,7 @@ ActiveRecord::Schema.define(version: 20140407054142) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "flat_id"
+    t.integer  "status"
   end
 
   add_index "hostel_report", ["flat_id"], name: "index_hostel_report_on_flat_id", using: :btree

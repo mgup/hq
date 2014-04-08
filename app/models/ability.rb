@@ -141,6 +141,7 @@ class Ability
     can :manage, Curator::Task
     can :manage, Curator::TaskType
     can :manage, Hostel::Offense
+    can :manage, Hostel::Report
   end
 
   def curator(user)

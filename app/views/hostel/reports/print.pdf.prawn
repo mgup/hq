@@ -36,7 +36,9 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
      if ro.persons.empty?
       pdf.text "#{index + 1}. #{ro.offense.description} #{(ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении')}."
       unless ro.rooms.empty?
-        pdf.text 'Комнаты, в которых зафиксирован факт нарушения:'
+        pdf.text "Комнат#{ro.rooms.length > 1 ? 'ы' : 'а'}, в котор#{ro.rooms.length > 1 ? 'ых' : 'ой'} зафиксирован факт нарушения:"
+      else
+        pdf.text 'Нарушители не установлены.'
       end
      else
      pdf.text "#{index + 1}. #{ro.offense.description}, а именно:"
@@ -48,7 +50,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
        pdf.horizontal_rule
      end
      pdf.move_down 5
-     pdf.text 'Установлены следующие нарушители:'
+     pdf.text "и установлен#{ro.persons.length > 1 ? 'ы' : ''} следующи#{ro.persons.length > 1 ? 'е' : 'й'} нарушител#{ro.persons.length > 1 ? 'и' : 'ь'}:"
      end
         ro.rooms.each do |room|
           pdf.indent 50 do
@@ -91,6 +93,15 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       pdf.text 'подпись                   расшифровка'
     end
   end
+  pdf.move_down 10
+    pdf.indent 370 do
+      pdf.text '_______________ (_______________)'
+    end
+    pdf.font 'PT', size: 7 do
+      pdf.indent 385 do
+        pdf.text 'подпись                   расшифровка'
+      end
+    end
   pdf.move_down 20
   pdf.text "<strong>С актом проверки ознакомлен:</strong>", inline_format: true
 end

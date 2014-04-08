@@ -1,12 +1,16 @@
 <div class="page-header">
   <h1>Акт проверки <small>квартира(блок) №<%= @report.flat.number %></small></h1>
-  <h2 style="height: 8px;"><small class="pull-right"><%= link_to 'Редактировать', edit_hostel_report_path(@report) %></small></h2>
+  <% if @report.draft? %>
+    <h2 style="height: 8px;"><small class="pull-right"><%= link_to 'Редактировать', edit_hostel_report_path(@report) %></small></h2>
+  <% end %>
 </div>
 
 <div class="col-sm-offset-5">
-  <%= link_to "#hostelReportModal_#{@report.id}", class: 'btn btn-primary',
-              data: {toggle: 'modal'} do %>
-    <span class="glyphicon glyphicon-print"></span> Распечатать акт
+  <% unless @report.draft? %>
+    <%= link_to "#hostelReportModal_#{@report.id}", class: 'btn btn-primary',
+                data: {toggle: 'modal'} do %>
+      <span class="glyphicon glyphicon-print"></span> Распечатать акт
+    <% end %>
   <% end %>
 </div>
 <%= render partial: 'print_modal', locals: {report: @report} %>
@@ -33,15 +37,15 @@
     <% @report.report_offenses.each do |ro| %>
       <% if ro.persons.empty? %>
       <li>
-        <p><%= ro.offense.description %> <%= (ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении') %>.</p>
+        <p style="margin: 0;"><%= ro.offense.description %> <%= (ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении') %>.</p>
         <% unless ro.rooms.empty? %>
-          <p>Комнаты, в которых зафиксирован факт нарушения:</p>
-          <%= ro.rooms.each do |room| %>
+          <p style="margin: 0;">Комнат<%= ro.rooms.length > 1 ? 'ы' : 'а' %>, в котор<%= ro.rooms.length > 1 ? 'ых' : 'ой' %> зафиксирован факт нарушения:</p>
+          <% ro.rooms.each do |room| %>
             <p style="margin: 0 0 0 30px;"><%= room.description %></p>
           <% end %>
-          <p style="margin-top: -10px" class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не забудьте взять объяснительные записки с проживающих в комнат<%= ro.rooms.length > 1 ? 'ах' : 'е' %></p>
+          <p class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не забудьте взять объяснительные записки с проживающих в комнат<%= ro.rooms.length > 1 ? 'ах' : 'е' %></p>
         <% else %>
-          <p style="margin-top: -10px" class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не забудьте взять объяснительные записки с проживающих в квартире</p>
+          <p class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не забудьте взять объяснительные записки с проживающих в квартире</p>
         <% end %>
       </li>
       <% else %>
@@ -49,7 +53,7 @@
         <p style="margin: 0;"><%= ro.offense.description %>, а именно:</p>
         <hr style="margin-top: 15px;">
         <hr style="margin-bottom: 5px;">
-        <p style="margin: 0;">Установлены следующие нарушители:</p>
+        <p style="margin: 0;">и установлен<%= ro.persons.length > 1 ? 'ы' : '' %> следующи<%= ro.persons.length > 1 ? 'е' : 'й' %> нарушител<%= ro.persons.length > 1 ? 'и' : 'ь' %>:</p>
         <% ro.persons.each do |person| %>
           <p style="margin: 0 0 0 30px;"><%= person.short_name %>, <%= person.students.first.group.name %></p>
         <% end %>
@@ -78,7 +82,10 @@
   <% end %>
   <table style="width: 100%; margin-top: 20px;">
     <tr>
-      <td style="width: 150px;" rowspan="2"><strong>Члены комиссии:</strong></td>
+      <td style="width: 150px;" rowspan="3"><strong>Члены комиссии:</strong></td>
+      <td class="text-right">_______________ (_______________)</td>
+    </tr>
+    <tr>
       <td class="text-right">_______________ (_______________)</td>
     </tr>
     <tr>
@@ -89,8 +96,16 @@
 </div>
 
 <div class="col-sm-offset-5">
-  <%= link_to "#hostelReportModal_#{@report.id}", class: 'btn btn-primary',
-              data: {toggle: 'modal'} do %>
-    <span class="glyphicon glyphicon-print"></span> Распечатать акт
+  <% if @report.draft? %>
+    <%= form_for @report, url: hostel_report_path(@report) do |f| %>
+      <%= f.hidden_field :status, value: Hostel::Report::STATUS_REPORT %>
+      <%= hidden_field_tag :curator_key, 1 %>
+      <%= f.submit 'Акт готов', class: 'btn btn-success', confirm: 'Редактирование будет невозможно. Вы уверены, что акт проверки готов?' %>
+    <% end %>
+  <% else %>
+    <%= link_to "#hostelReportModal_#{@report.id}", class: 'btn btn-primary',
+                data: {toggle: 'modal'} do %>
+      <span class="glyphicon glyphicon-print"></span> Распечатать акт
+    <% end %>
   <% end %>
 </div>
