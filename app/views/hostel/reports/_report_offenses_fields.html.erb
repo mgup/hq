@@ -6,14 +6,22 @@
   <%= f.link_to_remove 'Удалить нарушение',
                        style: 'display: none;' %>
 
+  <div class="form-group">
+    <%= f.label :details, 'а именно:', class: 'col-sm-1', style: 'font-weight: normal; width: 100px;' %>
+    <div class='col-sm-7'>
+     <%= f.text_area :details, class: 'form-control', rows: 2 %>
+      <p class="help-block">Укажите, что именно вы обнаружили, если требуется уточнение</p>
+    </div>
+  </div>
+
   <%= f.fields_for :offense_rooms do |rf| %>
     <%= render 'offense_rooms_fields', f: rf %>
   <% end %>
-  <%= f.link_to_add 'Добавить комнату',
+  <%= f.link_to_add 'Указать комнату',
                     :offense_rooms, class: 'btn btn-default rooms_fields_btn', style: 'display: none; margin-left: 150px;' %>
   <%= f.fields_for :offense_students do |sf| %>
     <%= render 'offense_students_fields', f: sf %>
   <% end %>
-  <%= f.link_to_add 'Добавить студента',
+  <%= f.link_to_add 'Указать студента',
                     :offense_students, class: 'btn btn-default students_fields_btn', style: 'display: none; margin-left: 150px;' %>
 </div>

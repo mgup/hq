@@ -66,11 +66,24 @@ $ ->
     if type == '3'
       offense_field.parents('.report_offenses_fields').find('.students_fields_btn').show()
 
-  $(document).on 'nested:fieldAdded:offense_rooms', ->
+  $(document).on 'nested:fieldAdded:offense_rooms', (e) ->
     updateRooms($('.ajax-flat').val(), 2)
+    e.field.closest('.fields').next('.rooms_fields_btn').text('Добавить комнату')
 
-  $(document).on 'nested:fieldAdded:offense_students', ->
+  $(document).on 'nested:fieldAdded:offense_students', (e) ->
     updateStudents($('.ajax-flat').val(), 2)
+    e.field.closest('.fields').next('.students_fields_btn').text('Добавить студента')
+
+  $(document).on 'nested:fieldRemoved:offense_rooms', (e) ->
+    if e.field.closest('.report_offenses_fields').find('.fields:visible').length < 1
+      e.field.closest('.fields').next('.rooms_fields_btn').text('Указать комнату')
+
+  $(document).on 'nested:fieldRemoved:offense_students', (e) ->
+    if e.field.closest('.report_offenses_fields').find('.fields:visible').length < 1
+      e.field.closest('.fields').next('.students_fields_btn').text('Указать студента')
+
+  $(document).on 'nested:fieldAdded:applications', ->
+    $('#warning-report').show()
 
   $('.hostel_offenses').click ->
     $this = $(this)

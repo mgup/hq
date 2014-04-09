@@ -26,13 +26,14 @@
     </div>
   </div>
 
-  <div class="form-group <%= 'has-error' if @report.errors.include?(:time) %>">
+  <div style="margin-bottom: 30px;" class="form-group <%= 'has-error' if @report.errors.include?(:time) %>">
     <%= f.label :time, class: 'control-label col-sm-2' %>
     <div class="col-sm-9">
       <%= f.text_field :time, class: 'form-control', placeholder: 'чч:мм', pattern: '\d{1,2}:\d{1,2}', value: (@report.time ? (l @report.time, format: '%H:%M') : nil) %>
     </div>
   </div>
-  <div class="form-group" style="margin-top: 30px;">
+  <p id="warning-report" class="alert alert-info">Обратите внимание, что приложения должны содержать информацию, связанную с выявленными нарушениями. Например, в Приложении 1 - фотографии нарушения, в Приложении 2 - объяснительные записки проживающих в квартире (блоке), в Приложении 3 - прочее.</p>
+  <div class="form-group">
     <label class="control-label col-sm-2">ПРИЛОЖЕНИЯ</label>
     <div class="col-sm-9">
     <%= f.fields_for :applications do |application_form| %>
@@ -82,10 +83,13 @@
       var $this = $(this);
     if ($this.prop('checked')){
       $('.fields .offense[value="' +  $this.val() + '"][data-type="' + $this.data('type') + '"]').parents('.fields').appendTo($this.parent().next('.for_offense[data-type="' + $this.data('type') + '"]'));
-      if ($this.data('type') == 2) $this.closest('.offense_check').find('.rooms_fields_btn').show();
+      if ($this.data('type') == 2) $this.closest('.offense_check').find('.for_offense[data-type="' + $this.data('type') + '"]').find('.rooms_fields_btn').show();
       if ($this.data('type') == 3) $this.closest('.offense_check').find('.students_fields_btn').show();
     }
   })
+  $('#warning-report').hide();
+  $('.rooms_fields_btn:visible').text('Добавить комнату');
+  $('.students_fields_btn:visible').text('Добавить студента');
   $('.hostel_offense_group').each(function(){
     var $this = $(this);
     if ($this.prop('checked')){

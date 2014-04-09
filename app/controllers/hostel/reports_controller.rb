@@ -59,7 +59,7 @@ class Hostel::ReportsController < ApplicationController
   def resource_params
     params.fetch(:hostel_report, {}).permit(:user_id, :flat_id, :date, :time, :status,
                 applications_attributes: [:id, :name, :papers],
-                report_offenses_attributes: [:id, :hostel_offense_id, :_destroy,
+                report_offenses_attributes: [:id, :hostel_offense_id, :details, :_destroy,
                 offense_rooms_attributes: [:id, :room_id, :_destroy],
                 offense_students_attributes: [:id, :student_id, :_destroy]])
   end

@@ -37,7 +37,7 @@
     <% @report.report_offenses.each do |ro| %>
       <% if ro.persons.empty? %>
       <li>
-        <p style="margin: 0;"><%= ro.offense.description %> <%= (ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении') %>.</p>
+        <p style="margin: 0;"><%= ro.offense.description %> <%= (ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении') %><%= ", а именно: <span style='text-decoration: underline;'>#{ro.details}</span>".html_safe if ro.details %>.</p>
         <% unless ro.rooms.empty? %>
           <p style="margin: 0;">Комнат<%= ro.rooms.length > 1 ? 'ы' : 'а' %>, в котор<%= ro.rooms.length > 1 ? 'ых' : 'ой' %> зафиксирован факт нарушения:</p>
           <% ro.rooms.each do |room| %>
@@ -50,10 +50,8 @@
       </li>
       <% else %>
       <li>
-        <p style="margin: 0;"><%= ro.offense.description %>, а именно:</p>
-        <hr style="margin-top: 15px;">
-        <hr style="margin-bottom: 5px;">
-        <p style="margin: 0;">и установлен<%= ro.persons.length > 1 ? 'ы' : '' %> следующи<%= ro.persons.length > 1 ? 'е' : 'й' %> нарушител<%= ro.persons.length > 1 ? 'и' : 'ь' %>:</p>
+        <p style="margin: 0;"><%= ro.offense.description %><%= ", а именно: <span style='text-decoration: underline;'>#{ro.details}</span>,".html_safe if ro.details? %>
+        и установлен<%= ro.persons.length > 1 ? 'ы' : '' %> следующи<%= ro.persons.length > 1 ? 'е' : 'й' %> нарушител<%= ro.persons.length > 1 ? 'и' : 'ь' %>:</p>
         <% ro.persons.each do |person| %>
           <p style="margin: 0 0 0 30px;"><%= person.short_name %>, <%= person.students.first.group.name %></p>
         <% end %>

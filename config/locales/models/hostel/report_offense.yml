@@ -2,3 +2,6 @@ ru:
   activerecord:
     models:
      hostel/report_offense: 'нарушение'
+     attributes:
+           hostel/report_offense:
+             details: 'а именно:'
