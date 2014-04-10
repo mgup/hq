@@ -95,5 +95,13 @@
     if ($this.prop('checked')){
       $this.closest('.offense_check').find('.offense_group').show();
     }
+
+    $('.application-label:visible').each(function(index){
+      $(this).text('Приложение ' + (index+1));
+      $(this).parent().find('.name-application').text('Название приложения ' + (index+1));
+      $(this).parent().find('.papers-application').text('Кол-во страниц в пр-и ' + (index+1));
+      var name = $('.application-label:visible').length > 0 ? 'Добавить приложение ' + ($('.application-label:visible').length+1) : 'Добавить приложение';
+      $(this).closest('.fields').parent().find('.add-application-btn').text(name);
+    })
   })
 </script>
