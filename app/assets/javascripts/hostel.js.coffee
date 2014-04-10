@@ -50,6 +50,14 @@ $ ->
             new Option("#{student.name}", student.id)
           ) for student in students
 
+  updateApplications = ->
+    $('.application-label:visible').each (index) ->
+      $(this).text("Приложение #{index+1}")
+      $(this).parent().find('.name-application').text("Название приложения #{index+1}")
+      $(this).parent().find('.papers-application').text("Кол-во страниц в пр-и #{index+1}")
+      $name = if $('.application-label:visible').length > 0 then "Добавить приложение #{$('.application-label:visible').length+1}" else 'Добавить приложение'
+      $(this).closest('.fields').parent().find('.add-application-btn').text($name)
+
   $('.ajax-hostel').change ->
     updateFlats($(this).val())
 
@@ -84,6 +92,10 @@ $ ->
 
   $(document).on 'nested:fieldAdded:applications', ->
     $('#warning-report').show()
+    updateApplications()
+
+  $(document).on 'nested:fieldRemoved:applications', ->
+    updateApplications()
 
   $('.hostel_offenses').click ->
     $this = $(this)

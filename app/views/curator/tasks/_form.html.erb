@@ -16,7 +16,7 @@
   <div class="form-group <%= 'has-error' if @task.errors.include?(:type) %>">
     <%= f.label :curator_task_type_id, class: 'col col-sm-2 control-label' %>
     <div class="col col-sm-10">
-      <%= f.select :curator_task_type_id, options_from_collection_for_select(Curator::TaskType.all, :id, :name), {prompt: 'Выберите тип задания'}, { class: 'form-control'} %>
+      <%= f.select :curator_task_type_id, options_from_collection_for_select(Curator::TaskType.all, :id, :name, @task.curator_task_type_id), {prompt: 'Выберите тип задания'}, { class: 'form-control'} %>
     </div>
   </div>
 

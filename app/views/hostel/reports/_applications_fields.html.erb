@@ -1,14 +1,14 @@
 <div class="applications_fields">
   <div class="form-group">
   <%= f.hidden_field :id %>
-  <%= f.label :name, class: 'col-sm-2 control-label' %>
+  <label class="col-sm-3 control-label application-label">Приложение</label>
   <div class="col-sm-5">
     <%= f.text_field :name, class: 'form-control' %>
-    <p style="font-size: 10pt;" class="help-block">Например, "Объяснительные записки"</p>
+    <p style="font-size: 8pt;" class="text-center help-block name-application">Название приложения</p>
   </div>
-  <%= f.label :papers, class: 'col-sm-2' %>
-  <div class="col-sm-2">
+  <div class="col-sm-3">
     <%= f.text_field :papers, class: 'form-control' %>
+    <p style="font-size: 8pt;" class="text-center help-block papers-application">Кол-во страниц</p>
   </div>
   <div class="col-sm-1">
     <%= f.link_to_remove class: 'btn btn-danger btn-sm', title: 'Удалить' do %>

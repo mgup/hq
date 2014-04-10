@@ -5,14 +5,16 @@
   <% end %>
 </div>
 
-<div class="col-sm-offset-5">
-  <% unless @report.draft? %>
+  <% if @report.draft? %>
+    <p class="alert alert-info">После ознакомления с актом, если всё верно, нажмите на кнопку "Акт готов" внизу страницы.<br>В ином случае вы можете его отредактировать.</p>
+  <% else %>
+  <div class="col-sm-offset-5">
     <%= link_to "#hostelReportModal_#{@report.id}", class: 'btn btn-primary',
                 data: {toggle: 'modal'} do %>
       <span class="glyphicon glyphicon-print"></span> Распечатать акт
     <% end %>
+  </div>
   <% end %>
-</div>
 <%= render partial: 'print_modal', locals: {report: @report} %>
 
 <div style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
@@ -98,7 +100,7 @@
     <%= form_for @report, url: hostel_report_path(@report) do |f| %>
       <%= f.hidden_field :status, value: Hostel::Report::STATUS_REPORT %>
       <%= hidden_field_tag :curator_key, 1 %>
-      <%= f.submit 'Акт готов', class: 'btn btn-success', confirm: 'Редактирование будет невозможно. Вы уверены, что акт проверки готов?' %>
+      <%= f.submit 'Акт готов', class: 'btn btn-success btn-lg', confirm: 'Редактирование будет невозможно. Вы уверены, что акт проверки готов?' %>
     <% end %>
   <% else %>
     <%= link_to "#hostelReportModal_#{@report.id}", class: 'btn btn-primary',
