@@ -1,0 +1,210 @@
+<%= form_for @person, url: (@person.id ? @person : persons_path),  html: { class: 'form-horizontal' } do |f| %>
+  <legend>Персональная информация</legend>
+  <div class="row">
+    <div class="col col-lg-12">
+      <div class='row'>
+        <div class='col-sm-3'>
+          <%=label_tag :student_name, 'Ф.И.О', class: 'control-label' %>
+        </div>
+        <div class='col-sm-8'>
+          <a data-toggle="modal" id="personNameBtn" data-target="#studentnameModal" class="btn btn-default"><%= @person.id ? @person.full_name : 'Требуется ввести ФИО' %></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :birthday, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :birthday, class: 'form-control datepicker', placeholder: 'дд.мм.гггг' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :birthplace, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :birthplace, class: 'form-control' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class='col-sm-3'>
+          <%= label_tag :student_gender, 'Пол студента' %>
+        </div>
+        <div class='col-sm-8'>
+          <label class="radio" for="student-gender-1">
+            <%= f.radio_button :gender, true, id: 'student-gender-1'%> Мужской
+          </label>
+          <label class="radio" for="student-gender-0">
+            <%= f.radio_button :gender, false, id: 'student-gender-0' %> Женский
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :homeless, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.check_box :homeless %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <legend>Паспортные данные</legend>
+  <div class="row">
+    <div class="col col-lg-12">
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :passport_series, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :passport_series, class: 'form-control', placeholder: '4510' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :passport_number, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :passport_number, class: 'form-control', placeholder: '123456' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :passport_date, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :passport_date, class: 'col col-lg-2 col-offset-1 datepicker form-control', placeholder: 'дд.мм.гггг' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :passport_department, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :passport_department, class: 'form-control', placeholder: 'Отделением по УФМС России г. Москвы' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :passport_code, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :passport_code, class: 'form-control', placeholder: '123-456' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <legend>Контактная информация</legend>
+  <div class="row">
+    <div class="col col-lg-12">
+      <div class='row'>
+        <div class='col-lg-3'><%= f.label :email, class: 'control-label' %></div>
+        <div class='col-lg-9'>
+          <%= f.email_field :email, class: 'form-control', placeholder: 'example@example.com' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :phone_home, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :phone_home, class: 'form-control', placeholder: '+74991234567' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :phone_mobile, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :phone_mobile, class: 'form-control', placeholder: '+79161234567' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <%= f.label :residence_address, class: 'control-label' %><br>
+          <%= f.label :residence_zip %>
+        </div>
+        <div class="col-sm-6">
+          <%= f.text_field :residence_address, class: 'form-control' %>
+        </div>
+        <div class="col-sm-3">
+          <%= f.text_field :residence_zip, class: 'form-control' %>
+          <p class="help-block text-center">индекс</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <%= f.label :registration_address, class: 'control-label' %><br>
+          <%= f.label :registration_zip %>
+        </div>
+        <div class="col-sm-6">
+          <%= f.text_field :registration_address, placeholder: 'Не заполнять, если совпадает с фактическим',
+                           class: 'form-control' %>
+        </div>
+        <div class="col-sm-3">
+          <%= f.text_field :registration_zip, class: 'form-control' %>
+          <p class="help-block text-center">индекс</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <legend>Воинская обязанность</legend>
+    <div class="row">
+      <div class="col col-lg-12">
+        <div class="row">
+          <div class="col-sm-3"><%= f.label :army, class: 'control-label' %></div>
+          <%= f.hidden_field :army %>
+          <div class="col-sm-9">
+            <%= f.select :army, options_for_select([['невоеннообязанный', Person::ARMY_NOT_RESERVIST],
+                                                    ['призывник', Person::ARMY_INDUCTEE],
+                                                    ['в запасе', Person::ARMY_RESERVIST],
+                                                    ['военнослужащий', Person::ARMY_SOLDIER],
+                                                    ['неизвестно', Person::ARMY_OTHER]]), {}, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3"><%= f.label :army_voenkom, class: 'control-label' %></div>
+          <div class="col-sm-9">
+            <%= f.text_field :army_voenkom, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <%= f.submit class: 'btn btn-primary'%>
+
+<!-- Имя -->
+<div class="modal fade in" id="studentnameModal">
+  <div class="modal-dialog">
+    <div class="modal-content" style='width: 700px; padding: 20px; right: 14%;'>
+      <div class="modal-header">
+        <button type="button" class="close btn btn-default" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">ФИО</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col col-lg-10 col-lg-offset-2">
+            <div class="form-group">
+              <div class="col col-lg-4 text-center">
+                <label class="control-label" for="user_last_name_ip">Фамилия</label>
+              </div>
+              <div class="col col-lg-4 text-center">
+                <label class="control-label" for="user_first_name_ip">Имя</label>
+              </div>
+              <div class="col col-lg-4 text-center">
+                <label class="control-label" for="user_patronym_ip">Отчество</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="form-student-fio">
+        <% [[:ip, 'Кто? Что?'], [:rp, 'Кого? Чего?'], [:dp, 'Кому? Чему?'],
+            [:vp, 'Кого? Что?'], [:tp, 'Кем? Чем?'], [:pp, 'О ком? О чём?']].each do |p| %>
+          <div class="form-group">
+            <label class="col col-lg-2 control-label" for="person_last_name_<%= p[0] %>"><%= p[1] %></label>
+            <div class="col col-lg-10">
+              <div class="form-group">
+                <% [:fname, :iname, :oname].each do |name| %>
+                  <div class="col col-lg-4 <%= 'has-error' if @person.errors.include?(name) %>">
+                    <%= f.fields_for name do |sub_f| %>
+                      <%= sub_f.text_field p[0], required: true, class: 'form-control' %>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <%= link_to 'Сохранить', '#', class: 'btn btn-primary', id: 'modalForName' %>
+        <a href="#" class="btn btn-default" data-dismiss="modal">Закрыть</a>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

@@ -8,6 +8,7 @@ ru:
         passport_number: 'номер паспорта'
         passport_date: 'когда выдан паспорт'
         passport_department: 'кем выдан паспорт'
+        passport_code: 'код подразделения'
         birthday: 'день рождения'
         birthplace: 'место рождения'
         gender: 'пол'

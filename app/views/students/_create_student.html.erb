@@ -1,4 +1,4 @@
-<%= form_for @student do |f| %>
+<%= form_for @person, url: persons_path do |f| %>
   <h3>Шаг 1: ФИО студента и персональные данные</h3>
   <fieldset>
     <legend>Персональная информация</legend>
@@ -7,7 +7,7 @@
         <%=label_tag :student_name, 'Ф.И.О' %>
       </div>
       <div class='col-lg-8'>
-        <a data-toggle="modal" data-target="#studentnameModal" class="btn btn-default"><%= @student.person.full_name != nil ? @student.person.full_name : 'Требуется ввести ФИО' %></a>
+        <a data-toggle="modal" data-target="#studentnameModal" class="btn btn-default"><%= @person ? @person.full_name : 'Требуется ввести ФИО' %></a>
       </div>
     </div>
     <div class='row'>

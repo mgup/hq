@@ -320,4 +320,44 @@ $(document).ready(function() {
             $('#user_oname_attributes_pp').val(procFio.middleName(procFio.gcasePred));
         }
     });
+
+
+    /**
+     * Проверяем на заполненность ФИО в именительном падеже.
+     */
+    function checkStudentFill() {
+        return (
+            $('#person_fname_attributes_ip').val() &&
+                $('#person_iname_attributes_ip').val() &&
+                $('#person_oname_attributes_ip').val()
+            );
+    }
+
+    $('#form-student-fio input').on('blur', function() {
+        if (checkStudentFill()) {
+            var fio =
+                $('#person_fname_attributes_ip').val()
+                    + ' ' + $('#person_iname_attributes_ip').val()
+                    + ' ' + $('#person_oname_attributes_ip').val();
+            var procFio = new RussianName(fio);
+            $('#person_iname_attributes_rp').val(procFio.firstName(procFio.gcaseRod));
+            $('#person_iname_attributes_dp').val(procFio.firstName(procFio.gcaseDat));
+            $('#person_iname_attributes_vp').val(procFio.firstName(procFio.gcaseVin));
+            $('#person_iname_attributes_tp').val(procFio.firstName(procFio.gcaseTvor));
+            $('#person_iname_attributes_pp').val(procFio.firstName(procFio.gcasePred));
+
+            $('#person_fname_attributes_rp').val(procFio.lastName(procFio.gcaseRod));
+            $('#person_fname_attributes_dp').val(procFio.lastName(procFio.gcaseDat));
+            $('#person_fname_attributes_vp').val(procFio.lastName(procFio.gcaseVin));
+            $('#person_fname_attributes_tp').val(procFio.lastName(procFio.gcaseTvor));
+            $('#person_fname_attributes_pp').val(procFio.lastName(procFio.gcasePred));
+
+            $('#person_oname_attributes_rp').val(procFio.middleName(procFio.gcaseRod));
+            $('#person_oname_attributes_dp').val(procFio.middleName(procFio.gcaseDat));
+            $('#person_oname_attributes_vp').val(procFio.middleName(procFio.gcaseVin));
+            $('#person_oname_attributes_tp').val(procFio.middleName(procFio.gcaseTvor));
+            $('#person_oname_attributes_pp').val(procFio.middleName(procFio.gcasePred));
+        }
+    });
+
 });

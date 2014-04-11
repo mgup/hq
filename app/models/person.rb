@@ -25,6 +25,14 @@ class Person < ActiveRecord::Base
    BENEFITS_POOR = 9 # Малоимущие
    BENEFITS_OTHER = 10 # Другие льготы
 
+  # Воинская обязанность
+   ARMY_NOT_RESERVIST = 0
+   ARMY_INDUCTEE = 1
+   ARMY_RESERVIST = 2
+   ARMY_SOLDIER = 3
+   ARMY_OTHER = 4
+
+
   self.table_name = 'student'
 
   alias_attribute :id, :student_id
@@ -36,7 +44,7 @@ class Person < ActiveRecord::Base
   alias_attribute :passport_number,     :student_pnumber
   alias_attribute :passport_date,       :student_pdate
   alias_attribute :passport_department, :student_pdepartment
-  alias_attribute :passport_department_code, :student_pcode
+  alias_attribute :passport_code, :student_pcode
   alias_attribute :registration_address, :student_registration_address
   alias_attribute :registration_zip, :student_registration_zip
   alias_attribute :residence_address, :student_residence_address
@@ -50,8 +58,12 @@ class Person < ActiveRecord::Base
 
 
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname
+  accepts_nested_attributes_for :fname
   belongs_to :iname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_iname
+  accepts_nested_attributes_for :iname
   belongs_to :oname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_oname
+  accepts_nested_attributes_for :oname
+
   belongs_to :room, class_name: Hostel::Room, primary_key: :room_id,
            foreign_key: :student_room
 
@@ -124,15 +136,15 @@ class Person < ActiveRecord::Base
 
   def army_status
     case army
-      when 0
+      when ARMY_NOT_RESERVIST
         'невоеннообязанный'
-      when 1
+      when ARMY_INDUCTEE
         'призывник'
-      when 2
+      when ARMY_RESERVIST
         'в запасе'
-      when 3
+      when ARMY_SOLDIER
         'военнослужащий'
-      when 4
+      when ARMY_OTHER
         'неизвестно'
     end
   end

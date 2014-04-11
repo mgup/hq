@@ -12,6 +12,7 @@ class StudentsController < ApplicationController
   end
 
   def show
+    @person = @student.person
   end
 
   def documents
@@ -32,21 +33,26 @@ class StudentsController < ApplicationController
   end
 
   def new
-
+    @person = Person.new
+    @person.build_fname
+    @person.build_iname
+    @person.build_oname
   end
 
   def update
+    raise params.inspect
     if params[:student][:ciot_password]
       @student.ciot_password =  params[:student][:ciot_password]
       @student.ciot_login =  params[:student][:ciot_login]
       @student.save
       redirect_to @student
+    else
+      if @student.update_attributes(resource_params)
+        redirect_to @student
+      else
+        render action: :show
+      end
     end
-    #if @student.update_attributes(resource_params)
-    #  redirect_to @student
-    #else
-    #  render action: :show
-    #end
   end
 
   def reference
@@ -69,7 +75,8 @@ class StudentsController < ApplicationController
   end
 
   def resource_params
-    params.require(:students)
+    params.fetch(:student, {}).permit(
+    )
   end
 
   private

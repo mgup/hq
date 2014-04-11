@@ -70,6 +70,7 @@ HQ::Application.routes.draw do
     end
   end
 
+  resources :persons
   resources :students do
     get 'documents' => 'students#documents'
     get 'orders' => 'students#orders'
