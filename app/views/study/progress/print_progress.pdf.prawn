@@ -1,4 +1,4 @@
-prawn_document margin: [28.34645669291339, 28.34645669291339,
+                            prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
                filename: "Успеваемость #{@group.name} на #{l Date.today}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|

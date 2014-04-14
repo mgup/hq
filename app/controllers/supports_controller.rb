@@ -1,25 +1,24 @@
 class SupportsController < ApplicationController
   load_resource class: 'My::Support', except: [:update]
 
-  authorize_resource class: 'My::Support', except: [:new, :create, :options, :download_pdf]
+  authorize_resource class: 'My::Support' #, except: [:new, :create, :options, :download_pdf]
 
-  #before_filter :find_student
-  skip_before_filter :authenticate_user!, only: [:new, :create, :options]
-
-  before_filter :authenticate_student!, only: [:new, :create, :options]
+  skip_before_filter :authenticate_user!, only: [:new, :create, :options, :index, :download_pdf]
+  #
+  #before_filter :authenticate_student!, only: [:new, :create, :options]
 
   # проблема: нужно и для студентов, и для сотрудников..
 
   def index ; end
 
   def new
-    authorize! :manage, Student
+    #authorize! :manage, Student
     @support = My::Support.new
     find_student
   end
 
   def options
-    authorize! :manage, Student
+    #authorize! :manage, Student
     find_student
     causes = My::SupportCause.find(params[:causes].split(','))
     reasons = []
@@ -38,7 +37,7 @@ class SupportsController < ApplicationController
   end
 
   def create
-    authorize! :manage,  Student
+    #authorize! :manage,  Student
     find_student
     @support = My::Support.new(resource_params)
     if @support.save

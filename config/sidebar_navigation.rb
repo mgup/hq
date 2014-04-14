@@ -13,6 +13,11 @@ SimpleNavigation::Configuration.run do |navigation|
       d.item :student_discipline, 'Студент', study_group_progress_discipline_path(params[:group_id] || 1, params[:id] || 1, params[:discipline] || 1)
     end
 
+    primary.item :soc_support, 'Заявление на материальную помощь'.html_safe, supports_students_path, icon: 'file' do |d|
+      d.dom_class = 'hidden'
+      d.item :new, 'Создание', new_student_support_path(params[:student_id] || 1)
+    end
+
     primary.item :actual_events, 'Актуальные события', actual_events_path, icon: 'calendar'
 
     if user_signed_in?

@@ -11,7 +11,7 @@
 
    <div class='row'>
     <div class='col col-lg-2'>
-      <%= f.label :series, 'Серия паспорта' %>
+      <%= f.label :series, 'Серия паспорта', class: 'control-label' %>
     </div>
     <div class='col col-lg-2'>
       <%= f.text_field :series, class: 'form-control', required: 'required'%>
@@ -19,7 +19,7 @@
    </div>
     <div class='row'>
       <div class='col col-lg-2'>
-        <%= f.label :number, 'Номер паспорта' %>
+        <%= f.label :number, 'Номер паспорта', class: 'control-label' %>
       </div>
       <div class='col col-lg-3'>
         <%= f.text_field :number, class: 'form-control', required: 'required'%>
@@ -27,7 +27,7 @@
     </div>
     <div class='row'>
       <div class='col col-lg-2'>
-        <%= f.label :date, 'Дата выдачи' %>
+        <%= f.label :date, 'Дата выдачи', class: 'control-label' %>
       </div>
       <div class='col col-lg-3'>
         <%= f.text_field :date, class: 'form-control datepicker', pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]', required: 'required'%>
@@ -35,7 +35,7 @@
     </div>
     <div class='row'>
       <div class='col col-lg-2'>
-        <%= f.label :department, 'Кем выдан' %>
+        <%= f.label :department, 'Кем выдан', class: 'control-label' %>
       </div>
       <div class='col col-lg-6'>
         <%= f.text_field :department, class: 'form-control', required: 'required'%>
@@ -43,7 +43,7 @@
     </div>
     <div class='row'>
       <div class='col col-lg-2'>
-        <%= f.label :birthday, 'Дата рождения' %>
+        <%= f.label :birthday, 'Дата рождения', class: 'control-label' %>
       </div>
       <div class='col col-lg-3'>
         <%= f.text_field :birthday, class: 'form-control datepicker', pattern: '[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9][0-9][0-9]', required: 'required'%>
@@ -51,7 +51,7 @@
     </div>
     <div class='row'>
       <div class='col col-lg-2'>
-        <%= f.label :phone, 'Мобильный телефон' %>
+        <%= f.label :phone, 'Мобильный телефон', class: 'control-label' %>
       </div>
       <div class='col col-lg-6'>
         <%= f.text_field :phone, class: 'form-control', required: 'required'%>
@@ -59,7 +59,7 @@
     </div>
   <div class='row'>
     <div class='col col-lg-2'>
-      <%= f.label :address, 'Адрес регистрации по месту проживания (по паспорту)' %>
+      <%= f.label :address, 'Адрес регистрации по месту проживания (по паспорту)', class: 'control-label' %>
     </div>
     <div class='col col-lg-6'>
       <%= f.text_area :address, rows: '4', class: 'form-control', required: 'required'%>

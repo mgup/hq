@@ -58,7 +58,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.horizontal_rule
   end
   pdf.move_down 10
-  pdf.text "«__» _______________ #{Study::Discipline::CURRENT_STUDY_YEAR}г.                                                                                                 ___________________ / __________________"
+  pdf.text "«__» _______________ #{Study::Discipline::CURRENT_STUDY_TERM == 1 ? Study::Discipline::CURRENT_STUDY_YEAR : (Study::Discipline::CURRENT_STUDY_YEAR+1)}г.                                                                                                 ___________________ / __________________"
   pdf.move_down 30
   pdf.text 'Резолюция дирекции института:'
   pdf.stroke do
@@ -66,7 +66,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.horizontal_rule
   end
   pdf.move_down 10
-  pdf.text "«__» _______________ #{Study::Discipline::CURRENT_STUDY_YEAR}г.                                                                                                 ___________________ / __________________"
+  pdf.text "«__» _______________ #{Study::Discipline::CURRENT_STUDY_TERM == 1 ? Study::Discipline::CURRENT_STUDY_YEAR : (Study::Discipline::CURRENT_STUDY_YEAR+1)}г.                                                                                                 ___________________ / __________________"
 
   pdf.bounding_box [-60, pdf.bounds.bottom + 60], width: pdf.bounds.width + 200 do
      pdf.line_width = 1.8
@@ -78,7 +78,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   end
   pdf.bounding_box [pdf.bounds.left, pdf.bounds.bottom + 50], width: pdf.bounds.width + 15 do
     pdf.move_down 10
-    pdf.text "Заявление №#{support.id} на мат. помощь от #{@student.person.short_name(:rp)}, #{@student.group.name} принято «___» ________________ #{Study::Discipline::CURRENT_STUDY_YEAR}г."
+    pdf.text "Заявление №#{support.id} на мат. помощь от #{@student.person.short_name(:rp)}, #{@student.group.name} принято «___» ________________ #{Study::Discipline::CURRENT_STUDY_TERM == 1 ? Study::Discipline::CURRENT_STUDY_YEAR : (Study::Discipline::CURRENT_STUDY_YEAR+1)}г."
     pdf.move_down 15
     pdf.text '__________________ / __________________', align: :right
   end

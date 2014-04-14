@@ -77,6 +77,7 @@ HQ::Application.routes.draw do
     get 'study' => 'students#study'
     get 'hostel' => 'students#hostel'
     get 'grants' => 'students#grants'
+    get 'supports', to: 'supports#index', on: :collection
     resources :supports do
       get 'download_pdf.pdf', to: 'supports#download_pdf', defaults: { format: 'pdf' }, as: :student_support
       get 'options', to: 'supports#options', on: :collection

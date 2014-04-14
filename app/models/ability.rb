@@ -81,6 +81,8 @@ class Ability
     can :show, [:student_progress, :student_discipline_progress]
     can :manage, :progress_group
 
+    can [:index, :new, :create, :options, :download_pdf], My::Support
+
     can :manage, EventDate
     can :actual, :events
     can :create, EventDateClaim
