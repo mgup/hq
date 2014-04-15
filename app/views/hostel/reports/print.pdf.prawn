@@ -34,14 +34,18 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.move_down 5
     @report.report_offenses.each_with_index do |ro, index|
      if ro.persons.empty?
-      pdf.text "#{index + 1}. #{ro.offense.description} #{(ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении')}#{ (', а именно: <u>' + ro.details + '</u>') if ro.details? }.", inline_format: true
+       x = ro.offense.description
+       x.slice! ' (для случая, если нарушитель не установлен)'
+      pdf.text "#{index + 1}. #{x} #{(ro.rooms.empty? ? 'в местах общего пользования' : 'в жилом помещении')}#{ (', а именно: <u>' + ro.details + '</u>') if ro.details? }.", inline_format: true
       unless ro.rooms.empty?
         pdf.text "Комнат#{ro.rooms.length > 1 ? 'ы' : 'а'}, в котор#{ro.rooms.length > 1 ? 'ых' : 'ой'} зафиксирован факт нарушения:"
       else
         pdf.text 'Нарушители не установлены.'
       end
      else
-     pdf.text "#{index + 1}. #{ro.offense.description}#{ (', а именно: <u>' + ro.details + '</u>,') if ro.details? } и установлен#{ro.persons.length > 1 ? 'ы' : ''} следующи#{ro.persons.length > 1 ? 'е' : 'й'} нарушител#{ro.persons.length > 1 ? 'и' : 'ь'}:", inline_format: true
+       x = ro.offense.description
+       x.slice! ' (для случая, если нарушитель установлен)'
+     pdf.text "#{index + 1}. #{x}#{ (', а именно: <u>' + ro.details + '</u>,') if ro.details? } и установлен#{ro.persons.length > 1 ? 'ы' : ''} следующи#{ro.persons.length > 1 ? 'е' : 'й'} нарушител#{ro.persons.length > 1 ? 'и' : 'ь'}:", inline_format: true
      end
         ro.rooms.each do |room|
           pdf.indent 50 do
