@@ -2,22 +2,93 @@
   <h1>Учебные планы</h1>
 </div>
 
-<form class='form-horizontal' action='' method='post'>
-  <%= render 'groups/group' %>
+<%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
+  <div class='row'>
+    <div class='col col-lg-10'>
+      <%= hidden_field_tag :faculty, params[:faculty],  class: 'ajax-faculty hidden-pill-values' %>
+      <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='col col-lg-6'>
+      <%= select_tag 'speciality',
+                     options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name, params[:speciality]),
+                     prompt: 'все специальности', class: 'ajax-speciality form-control' %>
+    </div>
+
+    <div class='col col-lg-2'>
+      <%= select_tag :course, options_for_select([1,2,3,4,5,6]), selected: params[:course], class: 'ajax-course form-control' %>
+    </div>
+
+    <div class='col col-lg-4'>
+      <%= select_tag :form, options_for_select([['очная', '101'], ['очно-заочная', '102'], ['заочная', '103'],
+                                                ['дистанционная', '105']]), selected: params[:form], class: 'ajax-form form-control' %>
+    </div>
+  </div>
   <div class="row">
     <div class="col-sm-3">
       <%= select_tag :group,
-                     options_from_collection_for_select(Group.includes(:speciality), :id, :name),
-                     prompt: 'все группы', class: 'ajax-group form-control', id: 'groupforexams' %>
+                     options_from_collection_for_select(Group.includes(:speciality), :id, :name, params[:group]),
+                     prompt: 'все группы', class: 'ajax-group form-control' %>
+    </div>
+    <div class="col col-sm-2 pull-right">
+      <%= submit_tag 'Найти группу', class: 'btn btn-primary' %>
     </div>
   </div>
-</form>
+<% end %>
 
 <div id="msg" class="alert alert-info" style="display: none;">
   <p></p>
 </div>
 
 <div id="examsByGroups">
+  <% if @group %>
+   <% @group.disciplines.now.each do |d| %>
+   <dl>
+     <br><dt><%= d.name %>
+     <%= link_to '#editDisciplineModal', class: 'btn btn-default btn-xs', data: {toggle: 'modal'} do %>
+       <span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину
+     <% end %>
+     <%= render partial: 'edit_discipline_modal', locals: { group: @group, discipline: d } %>
+      </dt><br>
+     <dd>
+     <table style="width: 100%">
+      <% d.exams.originals.each do |exam| %>
+      <tr>
+        <td><%= exam.id %></td>
+        <td><%= exam.name %></td>
+        <%= form_for exam, url: updatedate_study_discipline_exam_path(d,exam) do |p| %>
+          <td><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil) %></td>
+          <td><%= p.submit 'Сохранить дату', class: 'btn btn-default', style: 'margin-left: 5px;' %></td>
+        <% end %>
+
+        <td><%= link_to study_discipline_exam_print_path(d, exam), class: 'btn btn-info', title: 'Распечатать ведомость' do %>
+            <span class="glyphicon glyphicon-print"></span>
+            <% end %>
+        </td>
+        <td>
+          <%= link_to '#repeatModal', class: 'btn btn-default', title: 'Перезачёты/пересдачи', data: {toggle: 'modal'} do %>
+            <span class="glyphicon glyphicon-retweet"></span>
+          <% end %>
+          <%= render partial: 'repeat_modal',
+                      locals: { group: @group, parent_exam: exam, exam: Study::Exam.new, discipline: d } %>
+        </td>
+        <td><%= link_to  study_discipline_exam_path(d, exam), method: :delete, class: 'delete btn btn-danger', title: 'Удалить предмет из учебного плана' do %>
+            <span class='glyphicon glyphicon-remove'></span>
+            <% end %>
+        </td>
+      </tr>
+
+    </table>
+    </dd>
+    <% end %>
+   <% end %>
+  </dl>
+  <%= link_to 'Добавить предмет для группы', '#addDisciplineModal', class: 'btn btn-default', data: {toggle: 'modal'} %>
+  <%= render partial: 'discipline_modal',
+                   locals: { group: @group, discipline: Study::Discipline.new } %>
+  <% end %>
 </div>
 
 <div id="for_new"></div>

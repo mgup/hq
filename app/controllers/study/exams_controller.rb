@@ -19,6 +19,15 @@ class Study::ExamsController < ApplicationController
     end
   end
 
+  def updatedate
+    @exam.update(resource_params)
+    redirect_to study_plans_path(faculty: @exam.discipline.group.speciality.faculty.id,
+                                 speciality: @exam.discipline.group.speciality.id,
+                                 course: @exam.discipline.group.course,
+                                 form: @exam.discipline.group.form,
+                                 group: @exam.discipline.group.id)
+  end
+
   def destroy ; end
 
   def create
@@ -45,7 +54,7 @@ class Study::ExamsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:study_exam, {}).permit( :id, final_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_final],
+    params.fetch(:study_exam, {}).permit( :id, :date, final_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_final],
                                           rating_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_rating, :mark_final]
     )
   end
