@@ -46,12 +46,14 @@
   <% if @group %>
    <% @group.disciplines.now.each do |d| %>
    <dl>
-     <br><dt><%= d.name %>
+     <br>
+     <dt><%= d.name %>
      <%= link_to '#editDisciplineModal', class: 'btn btn-default btn-xs', data: {toggle: 'modal'} do %>
        <span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину
      <% end %>
      <%= render partial: 'edit_discipline_modal', locals: { group: @group, discipline: d } %>
-      </dt><br>
+      </dt>
+     <br>
      <dd>
      <table style="width: 100%">
       <% d.exams.originals.each do |exam| %>
@@ -59,7 +61,7 @@
         <td><%= exam.id %></td>
         <td><%= exam.name %></td>
         <%= form_for exam, url: updatedate_study_discipline_exam_path(d,exam) do |p| %>
-          <td><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil) %></td>
+          <td style="padding: 2px;"><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil) %></td>
           <td><%= p.submit 'Сохранить дату', class: 'btn btn-default', style: 'margin-left: 5px;' %></td>
         <% end %>
 
@@ -79,10 +81,9 @@
             <% end %>
         </td>
       </tr>
-
+      <% end %>
     </table>
     </dd>
-    <% end %>
    <% end %>
   </dl>
   <%= link_to 'Добавить предмет для группы', '#addDisciplineModal', class: 'btn btn-default', data: {toggle: 'modal'} %>

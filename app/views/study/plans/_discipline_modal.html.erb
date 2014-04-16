@@ -6,7 +6,7 @@
         <h4 class="modal-title">Добавить экзамен/зачёт для группы <%= group.name %></h4>
       </div>
       <div class="modal-body">
-        <%= form_for discipline, class: 'form-horizontal' do |f| %>
+        <%= nested_form_for discipline, class: 'form-horizontal' do |f| %>
           <%= f.hidden_field :subject_year, value: Study::Discipline::CURRENT_STUDY_YEAR %>
           <%= f.hidden_field :subject_semester, value: Study::Discipline::CURRENT_STUDY_TERM %>
           <%= f.hidden_field :subject_group, value: group.id %>
@@ -19,17 +19,43 @@
           <br>
           <%= f.select :subject_teacher,
                        options_from_collection_for_select(User.teachers, :id, :full_name), {}, { class: 'form-control ajax-teacher' } %>
-          <% exams = [['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9], ['курсовая работа', 2], ['курсовой проект', 3],
-                      ['практика', 4], ['ГЭК-1', 7], ['ГЭК-2', 8]] %>
-          <% exams << ['преддипломная практика', 5] << ['итоговый гос. экзамен', 6] if @group.course == @group.study_length %>
-          <% exams.each do |e| %>
-            <br>
-            <label><%= check_box_tag 'exam[]', e[1] %> <%= e[0] %></label>
+          <br>
+          <% discipline.build_final_exam %>
+          <%= f.fields_for :final_exam do |exam| %>
+            <%= exam.hidden_field :id %>
+            <div class="row">
+              <%= exam.label :exam_type, 'Форма испытания',class: 'control-label col-sm-3' %>
+              <div class="col-sm-9">
+                <%= exam.select :exam_type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]], exam.object.exam_type), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
+              </div>
+            </div>
+            <div class="row">
+              <%= exam.label :exam_weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
+              <div class="col-sm-9">
+              <%= exam.number_field :exam_weight, class: 'form-control' %>
+                <span class="help-block">Рекомендуемое значение — 50%.</span>
+              </div>
+            </div>
           <% end %>
+          <br>
+          <label>Дополнительные испытания</label>
+          <br>
+          <% exams = [['курсовая работа', 2, 2], ['курсовой проект', 3, 2],
+                      ['практика', 4, 2], ['ГЭК-1', 7, 2], ['ГЭК-2', 8, 2]] %>
+          <% exams << ['преддипломная практика', 5, 2] << ['итоговый гос. экзамен', 6, 2] if @group.course == @group.study_length %>
+          <% exams.each do |e| %>
+            <label><%= check_box_tag 'exam[]', e[1], (discipline ? (discipline.exams.collect{|exam| exam.type}.include? e[1]) : false), class: 'discipline_exams_variants', data: {type: e[2]} %> <%= e[0] %></label>
+            <div class="for-exam"></div>
+          <% end %>
+          <%= f.fields_for :exams do |exam_form| %>
+            <%= render 'discipline_exams_fields', f: exam_form %>
+          <% end %>
+          <%= f.link_to_add 'Добавить форму контроля',
+                            :exams, style: 'display: none;' %>
       </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-            <%= submit_tag 'Добавить испытание в учебный план', class: 'btn btn-primary' %>
+            <%= f.submit 'Добавить испытание в учебный план', class: 'btn btn-primary' %>
         <% end %>
         </div>
         </div>
@@ -37,8 +63,7 @@
 </div>
 <script>
   $(document).ready(function(){
-    updateTeachers = function(teachers){
-      var select = $('.ajax-teacher')[0];
+    updateTeachers = function(teachers, select){
       $(select).empty();
        $(teachers).each(function(){
             $(select).append('<option value="' + this.id + '">' +  this.name + '</option>');
@@ -46,10 +71,11 @@
        $(select).trigger("liszt:updated");
     }
     $('.ajax-subdepartment').change(function(){
+      select = $(this).closest('form').find('.ajax-teacher')
       $.getJSON ($('#matrixHQ').attr('href')+'ajax/teachers', {
         'subdepartment':  $(this).val()
       }, function(teachers){
-          updateTeachers(teachers)
+          updateTeachers(teachers, select);
       })
     })
   })
