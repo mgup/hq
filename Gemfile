@@ -47,6 +47,7 @@ gem 'spreadsheet'
 gem 'morpher', github: 'mgup/morpher', branch: :master
 
 gem 'airbrake'
+gem 'dotenv-rails'
 
 group :development do
   gem 'thin'
@@ -76,7 +77,6 @@ group :test do
 end
 
 group :development, :test do
-  gem 'dotenv-rails'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end

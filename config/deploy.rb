@@ -1,6 +1,7 @@
 # set :rvm_type, :system
 require 'rvm/capistrano'
 require 'bundler/capistrano'
+require 'dotenv/capistrano'
 
 set :application, 'matrix'
 set :repository,  'git@github.com:mgup/hq.git'
