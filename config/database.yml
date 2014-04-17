@@ -14,10 +14,10 @@ test:
   username: root
 
 production:
-  adapter: mysql2
+  adapter:  mysql2
   encoding: utf8
   database: <%= ENV['MATRIX_DB_DATABASE'] %>
-  username: <%= ENV['MATRIX_DB_USER'] %>
+  username: <%= ENV['MATRIX_DB_USERNAME'] %>
   password: <%= ENV['MATRIX_DB_PASSWORD'] %>
   pool: 5
   host: localhost
