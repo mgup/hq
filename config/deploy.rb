@@ -1,34 +1,40 @@
-set :rvm_type, :system
+# set :rvm_type, :system
 require 'rvm/capistrano'
-
 require 'bundler/capistrano'
 
-set :application, 'Matrix-HQ'
-set :deploy_to,   "/var/www/#{application}"
-set :deploy_via,  :remote_cache
-set :user, 'root'
-
-set :scm, :git
+set :application, 'matrix'
 set :repository,  'git@github.com:mgup/hq.git'
-set :ssh_options, { forward_agent: true }
-set :repository_cache, 'git_cache'
+set :user,        'matrix'
+set :use_sudo,    false
+set :deploy_to,   "/home/#{user}/webapps/#{application}"
+set :scm, :git
 
-role :web, 'matrix2.mgup.ru'
-role :app, 'matrix2.mgup.ru'
-role :db,  'matrix2.mgup.ru', :primary => true
+# set :deploy_via,  :remote_cache
 
-set :normalize_asset_timestamps, false
+# set :ssh_options, { forward_agent: true }
+# set :repository_cache, 'git_cache'
+
+role :web, '192.168.200.109'
+role :app, '192.168.200.109'
+role :db,  '192.168.200.109', :primary => true
+
+# set :normalize_asset_timestamps, false
 #set :asset_env, "#{asset_env} RAILS_RELATIVE_URL_ROOT=/"
 
 before 'deploy:restart', 'deploy:migrate'
 after 'deploy:restart', 'deploy:cleanup'
 
 namespace :deploy do
-  task :start do ; end
+  task :start do
+    run "touch #{current_release}/tmp/restart.txt"
+  end
+
   task :stop do ; end
-  task :restart, roles: :app, except: { no_release: true } do
-    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+
+  task :restart, roles: :app do
+    run "touch #{current_release}/tmp/restart.txt"
   end
 end
-        require './config/boot'
-        require 'airbrake/capistrano'
+
+# require './config/boot'
+# require 'airbrake/capistrano'
