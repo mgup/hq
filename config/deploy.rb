@@ -7,22 +7,21 @@ set :repository,  'git@github.com:mgup/hq.git'
 set :user,        'matrix'
 set :use_sudo,    false
 set :deploy_to,   "/home/#{user}/webapps/#{application}"
-set :scm, :git
+set :scm,         :git
 
-# set :deploy_via,  :remote_cache
-
-# set :ssh_options, { forward_agent: true }
-# set :repository_cache, 'git_cache'
+set :deploy_via,       :remote_cache
+set :ssh_options,      { forward_agent: true }
+set :repository_cache, 'git_cache'
 
 role :web, '192.168.200.109'
 role :app, '192.168.200.109'
-role :db,  '192.168.200.109', :primary => true
+role :db,  '192.168.200.109', primary: true
 
 # set :normalize_asset_timestamps, false
 #set :asset_env, "#{asset_env} RAILS_RELATIVE_URL_ROOT=/"
 
 before 'deploy:restart', 'deploy:migrate'
-after 'deploy:restart', 'deploy:cleanup'
+after  'deploy:restart', 'deploy:cleanup'
 
 namespace :deploy do
   task :start do

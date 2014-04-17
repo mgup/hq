@@ -20,4 +20,4 @@ production:
   username: <%= ENV['MATRIX_DB_USERNAME'] %>
   password: <%= ENV['MATRIX_DB_PASSWORD'] %>
   pool: 5
-  host: localhost
+  host: 127.0.0.1
