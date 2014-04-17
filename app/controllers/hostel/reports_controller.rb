@@ -6,6 +6,9 @@ class Hostel::ReportsController < ApplicationController
     @reports = @reports.group_by {|report| report.flat.hostel.address}
   end
 
+  def example
+  end
+
   def ready
     @reports = @reports.ready.group_by {|report| report.flat.hostel.address}
   end

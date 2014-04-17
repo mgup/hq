@@ -4,7 +4,7 @@ $ ->
     if $(this).prop('checked')
       $(this).closest('form').find('.discipline_exams_variants[data-type="1"]').prop('disabled', true)
       $(this).prop('disabled', false)
-      $(this).closest('form').find('.fields .exam-type[value="' +  $(this).val() + '"]').parents('.fields').appendTo($(this).parent().next('.for-exam'))
+      $(this).closest('form').find('.fields .exam-type[value="' +  $(this).val() + '"][data-parent="0"]').parents('.fields').appendTo($(this).parent().next('.for-exam'))
       if $(this).data('type') == 1
         $(this).parent().next('.for-exam').find('.exam-weight').show()
 
@@ -21,9 +21,9 @@ $ ->
       $link = $(this).closest('form').find('a[data-blueprint-id="exams_fields_blueprint"]')
       $link.attr('data-value', $this.val()).attr('data-type', $this.data('type'))
       $link.click()
-      $(this).closest('form').find('.fields .exam-type[value="' +  $this.val() + '"]').closest('.fields').appendTo($this.parent().next('.for-exam'))
+      $(this).closest('form').find('.fields .exam-type[value="' +  $this.val() + '"][data-parent="0"]').closest('.fields').appendTo($this.parent().next('.for-exam'))
     else
-      $field = $(this).closest('form').find('.fields .exam-type[value="' + $this.val() + '"]')
+      $field = $(this).closest('form').find('.fields .exam-type[value="' + $this.val() + '"][data-parent="0"]')
       $field.parents('.discipline_exams_fields').children('.remove_nested_fields').click()
 
   $(document).on 'nested:fieldAdded:exams', (event) ->

@@ -48,14 +48,14 @@
    <dl>
      <br>
      <dt><%= d.name %>
-     <%= link_to '#editDisciplineModal', class: 'btn btn-default btn-xs', data: {toggle: 'modal'} do %>
+     <%= link_to "#editDisciplineModal_#{d.id}", class: 'btn btn-default btn-xs', data: {toggle: 'modal'} do %>
        <span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину
      <% end %>
      <%= render partial: 'edit_discipline_modal', locals: { group: @group, discipline: d } %>
       </dt>
      <br>
      <dd>
-     <table style="width: 100%">
+     <table style="width: 100%; margin-bottom: 20px;">
       <% d.exams.originals.each do |exam| %>
       <tr>
         <td><%= exam.id %></td>
@@ -65,7 +65,7 @@
           <td><%= p.submit 'Сохранить дату', class: 'btn btn-default', style: 'margin-left: 5px;' %></td>
         <% end %>
 
-        <td><%= link_to study_discipline_exam_print_path(d, exam), class: 'btn btn-info', title: 'Распечатать ведомость' do %>
+        <td><%= link_to study_discipline_exam_print_path(d, exam), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: !exam.date do %>
             <span class="glyphicon glyphicon-print"></span>
             <% end %>
         </td>
@@ -76,7 +76,9 @@
           <%= render partial: 'repeat_modal',
                       locals: { group: @group, parent_exam: exam, exam: Study::Exam.new, discipline: d } %>
         </td>
-        <td><%= link_to  study_discipline_exam_path(d, exam), method: :delete, class: 'delete btn btn-danger', title: 'Удалить предмет из учебного плана' do %>
+        <td><%= link_to  study_discipline_exam_path(d, exam), method: :delete,
+                         class: 'delete btn btn-danger', title: 'Удалить предмет из учебного плана',
+                         confirm: 'Вы уверены?' do %>
             <span class='glyphicon glyphicon-remove'></span>
             <% end %>
         </td>

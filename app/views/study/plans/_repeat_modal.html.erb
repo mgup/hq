@@ -21,7 +21,7 @@
                                                         ['Уважительная', 5]]), {}, class: 'form-control'%>
             </div>
             <div class="col-sm-4">
-              <%= f.text_field :date, value: Date.today, class: 'form-control datepicker' %>
+              <%= f.text_field :date, value: (l Date.today), class: 'form-control datepicker', required: true %>
             </div>
             <div class="col-sm-2">
               <%= f.submit 'Добавить', class: 'btn btn-primary' %>
@@ -29,7 +29,7 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-            <% mass_repeats = discipline.exams.mass.repeats(parent_exam) %>
+            <% mass_repeats = parent_exam.repeats.mass %>
             <% unless mass_repeats==[] %>
               <p><strong>Назначены групповые пересдачи</strong></p>
               <table class="table table-striped">
@@ -40,6 +40,13 @@
                   <td><%= l r.date %></td>
                   <td><%= link_to '#', class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
                       <span class='glyphicon glyphicon-print'></span>
+                      <% end %>
+                      <% if false %>
+                      <%= link_to  study_discipline_exam_path(discipline, r), method: :delete,
+                                     class: 'delete btn btn-danger', title: 'Удалить пересдачу из учебного плана',
+                                     confirm: 'Вы уверены?' do %>
+                        <span class='glyphicon glyphicon-remove'></span>
+                      <% end %>
                       <% end %>
                   </td>
                   <% if r.date.past? %>
@@ -72,7 +79,7 @@
                                                             ['Уважительная', 5]]), {}, class: 'form-control'%>
                 </div>
                 <div class="col-sm-4">
-                  <%= f.text_field :date, value: Date.today, class: 'form-control datepicker' %>
+                  <%= f.text_field :date, value: (l Date.today), class: 'form-control datepicker', required: true %>
                 </div>
                 <div class="col-sm-2">
                   <%= f.submit 'Добавить', class: 'btn btn-primary' %>
@@ -81,7 +88,7 @@
             <% end %>
             <div class="row">
               <div class="col-sm-12">
-                <% individual_repeats = discipline.exams.individual.repeats(parent_exam).by_student(student) %>
+                <% individual_repeats = parent_exam.repeats.individual.by_student(student) %>
                 <% unless individual_repeats==[] %>
                   <p>Назначены пересдачи</p>
                   <table class="table table-striped">

@@ -28,7 +28,14 @@ class Study::ExamsController < ApplicationController
                                  group: @exam.discipline.group.id)
   end
 
-  def destroy ; end
+  def destroy
+    @exam.destroy
+    redirect_to study_plans_path(faculty: @exam.discipline.group.speciality.faculty.id,
+                                 speciality: @exam.discipline.group.speciality.id,
+                                 course: @exam.discipline.group.course,
+                                 form: @exam.discipline.group.form,
+                                 group: @exam.discipline.group.id)
+  end
 
   def create
     exam = params[:study_exam]
@@ -43,6 +50,11 @@ class Study::ExamsController < ApplicationController
                                  weight: exam[:weight], exam_student: exam[:exam_student], exam_student_group: exam[:exam_student_group],
                                  repeat: exam[:repeat], date: exam[:date]
     end
+    redirect_to study_plans_path(faculty: @exam.discipline.group.speciality.faculty.id,
+                                 speciality: @exam.discipline.group.speciality.id,
+                                 course: @exam.discipline.group.course,
+                                 form: @exam.discipline.group.form,
+                                 group: @exam.discipline.group.id)
   end
 
   def print

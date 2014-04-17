@@ -2,7 +2,7 @@
   <%= f.hidden_field :id %>
   <%= f.hidden_field :exam_type,
                      value:( f.object.exam_type ? f.object.exam_type : nil),
-                     class: 'exam-type' %>
+                     class: 'exam-type', data: {parent: f.object.exam_parent ? f.object.exam_parent : '0' } %>
   <div class="exam-weight row" style="display: none;">
     <%= f.label :exam_weight, class: 'col-sm-1 control-label' %>
     <div class="col-sm-5">

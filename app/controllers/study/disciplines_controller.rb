@@ -29,6 +29,7 @@ class Study::DisciplinesController < ApplicationController
 
       redirect_to study_disciplines_path, notice: 'Дисциплина успешно добавлена.'
     else
+      raise @discipline.errors.inspect
       # В случае ошибки необходимо вручную инициализировать поля для выбора
       # группы в том случае, если пользователь уже сделал свой выбор и ошибка
       # в каких-то других полях формы.

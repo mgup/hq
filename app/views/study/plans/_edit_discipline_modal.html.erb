@@ -1,4 +1,4 @@
-<div class="modal fade" id="editDisciplineModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="editDisciplineModal_<%= discipline.id %>" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -25,7 +25,7 @@
 
           <% exams.each do |e| %>
             <br>
-            <label><%= check_box_tag 'exam[]', e[1], (discipline ? (discipline.exams.collect{|exam| exam.type}.include? e[1]) : false), class: 'discipline_exams_variants', data: {type: e[2]} %> <%= e[0] %></label>
+            <label><%= check_box_tag 'exam[]', e[1], (discipline ? (discipline.exams.originals.collect{|exam| exam.type}.include? e[1]) : false), class: 'discipline_exams_variants', data: {type: e[2]} %> <%= e[0] %></label>
             <div class="for-exam"></div>
           <% end %>
           <%= f.fields_for :exams do |exam_form| %>

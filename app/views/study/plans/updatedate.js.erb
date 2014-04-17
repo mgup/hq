@@ -1,6 +1,0 @@
-$('.saveDate[data-value="<%= @exam.id %>"]').parents('tr').find('.datepicker').val("<%= l @exam.date %>");
-$('#msg p').text('Дата успешно сохранена.');
-$('#msg').show();
-$('body').animate({
-  scrollTop: $(this).offset().top
-}, 2000)
