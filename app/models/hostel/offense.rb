@@ -7,6 +7,8 @@ class Hostel::Offense < ActiveRecord::Base
   has_many :report_offenses, class_name: Hostel::ReportOffense, foreign_key: :hostel_offense_id
   has_many :reports, class_name: Hostel::Report, through: :report_offenses
 
+  scope :default, -> {where(kind: TYPE_DEFAULT)}
+  scope :for_student, -> {where(kind: TYPE_STUDENT)}
   def type
     case kind
       when TYPE_DEFAULT

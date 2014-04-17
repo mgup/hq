@@ -6,6 +6,12 @@ class Study::Exam < ActiveRecord::Base
   TYPE_SEMESTER_WORK    = 2
   TYPE_SEMESTER_PROJECT = 3
 
+  TYPE_PRACTICE = 4
+  TYPE_DIPLOMA_PRACTICE = 5
+  TUPE_FINAL_EXAM = 6
+  TYPE_EXAM_COMMISSION_1 = 7
+  TYPE_EXAM_COMMISSION_2 = 8
+
   FIRST_REPEAT = 2
   SECOND_REPEAT = 3
   COMMISSION_REPEAT = 4
@@ -23,23 +29,32 @@ class Study::Exam < ActiveRecord::Base
 
   belongs_to :discipline, class_name: Study::Discipline, primary_key: :subject_id, foreign_key: :exam_subject
   belongs_to :group, primary_key: :group_id, foreign_key: :exam_group
-  belongs_to :student, primary_key: :student_group_id, foreign_key: :exam_student_group
+  has_many :students, class_name: Study::ExamStudent, foreign_key: :exam_student_exam, dependent: :destroy
   has_many :marks, class_name: Study::ExamMark, foreign_key: :mark_exam
   has_many :final_marks, -> { where(mark_final: true)}, class_name: Study::ExamMark, foreign_key: :mark_exam
   accepts_nested_attributes_for :final_marks
   has_many :rating_marks, -> { where(mark_rating: true)}, class_name: Study::ExamMark, foreign_key: :mark_exam
   accepts_nested_attributes_for :rating_marks
 
+  has_many :repeats, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_parent
+  belongs_to :paret_exam, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_parent
+
   validates :type, presence: true, inclusion: { in: [0,
                                                      1,
                                                      self::TYPE_SEMESTER_WORK,
                                                      self::TYPE_SEMESTER_PROJECT,
+                                                     TYPE_PRACTICE,
+                                                     TYPE_DIPLOMA_PRACTICE,
+                                                     TUPE_FINAL_EXAM,
+                                                     TYPE_EXAM_COMMISSION_1,
+                                                     TYPE_EXAM_COMMISSION_2,
                                                      9] }
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
                                                      less_than_or_equal_to: 80 }
 
   scope :originals, -> {where(exam_parent: nil)}
-  scope :repeats, -> exam {where(exam_parent: exam.id)}
+  #scope :repeats, -> exam {where(exam_parent: exam.id)}
+  scope :repeat, -> {where('exam_parent IS NOT NULL')}
   scope :mass, -> {where(exam_student_group: nil)}
   scope :individual, -> {where('exam_student_group IS NOT NULL')}
   scope :by_student, -> student {where(exam_student_group: student.id)}
@@ -63,6 +78,16 @@ class Study::Exam < ActiveRecord::Base
         'курсовая работа'
       when TYPE_SEMESTER_PROJECT
         'курсовой проект'
+      when TYPE_PRACTICE
+        'практика'
+      when TYPE_DIPLOMA_PRACTICE
+        'преддипломная практика'
+      when TUPE_FINAL_EXAM
+        'итоговый гос. экзамен'
+      when TYPE_EXAM_COMMISSION_1
+        'ГЭК-1'
+      when TYPE_EXAM_COMMISSION_2
+        'ГЭК-2'
     end
   end
 

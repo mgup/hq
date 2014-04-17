@@ -67,6 +67,7 @@ HQ::Application.routes.draw do
     resources :reports do
       get 'report.pdf', to: 'reports#print', on: :member, defaults: { format: :pdf }, as: :print
       get '/ready', to: 'reports#ready', on: :collection
+      get '/example', to: 'reports#example', on: :collection
     end
   end
 
@@ -104,6 +105,7 @@ HQ::Application.routes.draw do
       end
       resources :exams do
         get '/print.pdf', to: 'exams#print', defaults: { format: 'pdf' }, as: :print
+        patch '/updatedate', to: 'exams#updatedate', on: :member
       end
     end
 
@@ -123,10 +125,7 @@ HQ::Application.routes.draw do
     end
 
     get '/plans' => 'plans#index'
-    get '/plans/add_discipline' => 'plans#add_discipline'
-    get '/plans/edit_discipline' => 'plans#edit_discipline'
-    get '/plans/repeat' => 'plans#repeat'
-    get '/plans/:exam_id/updatedate' => 'plans#updatedate'
+    #get '/plans/:exam_id/updatedate' => 'plans#updatedate'
     get '/plans/updatediscipline' => 'plans#updatediscipline'
   end
 

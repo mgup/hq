@@ -1,9 +1,13 @@
 <div class="page-header">
   <h1>Акты проверки состояния квартир общежитий</h1>
+  <h3 style="margin: 0;" class="text-right"><%= link_to 'Образец', example_hostel_reports_path %></h3>
 </div>
 
 <%= link_to 'Добавить новый акт', new_hostel_report_path, class: 'btn btn-default' %>
 <br>
+<% if @reports.empty? %>
+  <p style="margin-top: 20px;" class="lead">Вы пока не создали ни одного акта. Вы можете посмотреть <%= link_to 'образец', example_hostel_reports_path %>.</p>
+<% else %>
 <table class="table">
   <thead>
   <tr>
@@ -44,3 +48,4 @@
   <% end %>
   </tbody>
 </table>
+<% end %>

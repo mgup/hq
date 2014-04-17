@@ -1,4 +1,4 @@
-<div class="modal fade" id="editDisciplineModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="editDisciplineModal_<%= discipline.id %>" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -6,8 +6,7 @@
         <h4 class="modal-title">Редактирование дисциплины</h4>
       </div>
       <div class="modal-body">
-        <%= form_for discipline, class: 'form-horizontal' do |f| %>
-          <%= hidden_field_tag :plan, 1 %>
+        <%= nested_form_for discipline, class: 'form-horizontal' do |f| %>
           <%= f.hidden_field :subject_group %>
           <%= f.label :subject_name %>
           <%= f.text_field :subject_name, class: 'form-control' %>
@@ -18,10 +17,26 @@
           <br>
           <%= f.select :subject_teacher,
                        options_from_collection_for_select(User.teachers, :id, :full_name, discipline.lead_teacher.id), {}, { class: 'form-control ajax-teacher' } %>
+          <br>
+          <label>Формы контроля</label>
+          <% exams = [['экзамен', 1, 1], ['зачёт', 0, 1], ['дифференцированный зачёт', 9, 1], ['курсовая работа', 2, 2], ['курсовой проект', 3, 2],
+                      ['практика', 4, 2], ['ГЭК-1', 7, 2], ['ГЭК-2', 8, 2]] %>
+          <% exams << ['преддипломная практика', 5, 2] << ['итоговый гос. экзамен', 6, 2] if @group.course == @group.study_length %>
+
+          <% exams.each do |e| %>
+            <br>
+            <label><%= check_box_tag 'exam[]', e[1], (discipline ? (discipline.exams.originals.collect{|exam| exam.type}.include? e[1]) : false), class: 'discipline_exams_variants', data: {type: e[2]} %> <%= e[0] %></label>
+            <div class="for-exam"></div>
+          <% end %>
+          <%= f.fields_for :exams do |exam_form| %>
+            <%= render 'discipline_exams_fields', f: exam_form %>
+          <% end %>
+          <%= f.link_to_add 'Добавить форму контроля',
+                            :exams, style: 'display: none;' %>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-            <%= submit_tag 'Сохранить изменения', class: 'btn btn-primary' %>
+            <%= f.submit 'Сохранить изменения', class: 'btn btn-primary' %>
         <% end %>
         </div>
         </div>
@@ -29,8 +44,7 @@
 </div>
 <script>
   $(document).ready(function(){
-    updateTeachers = function(teachers){
-      var select = $('.ajax-teacher')[0];
+    updateTeachers = function(teachers, select){
       $(select).empty();
       $(teachers).each(function(){
         $(select).append('<option value="' + this.id + '">' +  this.name + '</option>');
@@ -38,10 +52,11 @@
       $(select).trigger("liszt:updated");
     }
     $('.ajax-subdepartment').change(function(){
+      select = $(this).closest('form').find('.ajax-teacher')
       $.getJSON ($('#matrixHQ').attr('href')+'ajax/teachers', {
         'subdepartment':  $(this).val()
       }, function(teachers){
-        updateTeachers(teachers)
+        updateTeachers(teachers, select);
       })
     })
   })
