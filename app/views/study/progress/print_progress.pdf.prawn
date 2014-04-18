@@ -7,7 +7,8 @@
   if params[:discipline]
     y_pos = 558
     discipline = Study::Discipline.find(params[:discipline])
-    headData = [["Семестр: #{Study::Discipline::CURRENT_STUDY_TERM}, #{Study::Discipline::CURRENT_STUDY_YEAR}-#{Study::Discipline::CURRENT_STUDY_YEAR+1} учебного года", 'Дата проведения: неизвестно' ],
+    headData = [["Семестр: #{Study::Discipline::CURRENT_STUDY_TERM}, #{Study::Discipline::CURRENT_STUDY_YEAR}-#{Study::Discipline::CURRENT_STUDY_YEAR+1} учебного года",
+                "Дата проведения: #{discipline.validation.date? ? (l discipline.validation.date) : 'неизвестно'}" ],
                     ['Форма контроля: аттестация', "Группа: #{@group.name}"],
                     ["Дисциплина: #{discipline.name}", ''],
                     ["Преподаватель: #{discipline.lead_teacher.full_name}", '']]
@@ -45,8 +46,16 @@
             pdf.text_box('Результат прописью', at: [x_pos + 365, y_pos+30],  size: size, width: 50, height: 100),
             pdf.text_box('Подпись экзаменатора', at: [x_pos + 425, y_pos+30], size: size, width: 60, height: 100)
   ]]
+
+  position_y = y_pos
   @group.students.each_with_index do |student, index|
+     position_x = x_pos
      data << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', student.ball(discipline).round, student.result(discipline)[:short], '']
+     8.times do
+      pdf.rectangle [position_x + 205, position_y - 7], 9, 9
+      position_x += 15
+     end
+     position_y -= 14.37
   end
 
   pdf.font_size 8 do

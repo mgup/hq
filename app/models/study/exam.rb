@@ -12,6 +12,8 @@ class Study::Exam < ActiveRecord::Base
   TYPE_EXAM_COMMISSION_1 = 7
   TYPE_EXAM_COMMISSION_2 = 8
 
+  TYPE_VALIDATION = 10
+
   FIRST_REPEAT = 2
   SECOND_REPEAT = 3
   COMMISSION_REPEAT = 4
@@ -48,6 +50,7 @@ class Study::Exam < ActiveRecord::Base
                                                      TUPE_FINAL_EXAM,
                                                      TYPE_EXAM_COMMISSION_1,
                                                      TYPE_EXAM_COMMISSION_2,
+                                                     TYPE_VALIDATION,
                                                      9] }
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
                                                      less_than_or_equal_to: 80 }
@@ -64,6 +67,10 @@ class Study::Exam < ActiveRecord::Base
 
   def exam?
     TYPE_EXAMINATION == type
+  end
+
+  def validation?
+    TYPE_VALIDATION == type
   end
 
   def name
@@ -88,6 +95,8 @@ class Study::Exam < ActiveRecord::Base
         'ГЭК-1'
       when TYPE_EXAM_COMMISSION_2
         'ГЭК-2'
+      when TYPE_VALIDATION
+        'промежуточная аттестация'
     end
   end
 

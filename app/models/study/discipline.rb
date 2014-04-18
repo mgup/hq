@@ -34,6 +34,8 @@ class Study::Discipline < ActiveRecord::Base
   has_many :exams, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
   accepts_nested_attributes_for :exams, allow_destroy: true
 
+  has_one :validation, -> { where(exam_type: Study::Exam::TYPE_VALIDATION)}, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
+
   has_one :final_exam, -> { where(exam_type: [Study::Exam::TYPE_TEST, Study::Exam::TYPE_GRADED_TEST, Study::Exam::TYPE_EXAMINATION]) }, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
   accepts_nested_attributes_for :final_exam
 
