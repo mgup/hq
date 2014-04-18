@@ -30,7 +30,7 @@ gem 'kaminari'
 gem 'prawn', git: 'git://github.com/prawnpdf/prawn', branch: 'master'
 gem 'prawn_rails'
 gem 'rqrcode'
-gem 'squeel'
+# gem 'squeel'
 gem 'nested_form', github: 'ryanb/nested_form'
 gem 'hairtrigger', '~> 0.2.5'
 gem 'axlsx_rails'
@@ -47,6 +47,7 @@ gem 'spreadsheet'
 gem 'morpher', github: 'mgup/morpher', branch: :master
 
 gem 'airbrake'
+gem 'dotenv-rails'
 
 group :development do
   gem 'thin'
@@ -76,7 +77,6 @@ group :test do
 end
 
 group :development, :test do
-  gem 'dotenv-rails'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
 end
