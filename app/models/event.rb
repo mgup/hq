@@ -16,8 +16,8 @@ class Event < ActiveRecord::Base
   scope :from_name, -> name { where('name LIKE :prefix', prefix: "%#{name}%")}
   scope :no_booking, -> {where(booking: false)}
   scope :publications, -> {where(status: STATUS_PUBLICATION, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY)}
-  scope :past, -> {where("event_date.date < '#{Date.today.strftime('%Y-%m-%d')}'").includes(:dates)}
-  scope :future, -> {where("event_date.date >= '#{Date.today.strftime('%Y-%m-%d')}'").includes(:dates)}
+  scope :past, -> {where("event_date.date < '#{Date.today.strftime('%Y-%m-%d')}'").includes(:dates).references(:dates)}
+  scope :future, -> {where("event_date.date >= '#{Date.today.strftime('%Y-%m-%d')}'").includes(:dates).references(:dates)}
   scope :without_date, -> {where("event.id NOT IN (SELECT DISTINCT event.id FROM event
                                 JOIN event_date ON event.id = event_date.event_id)")}
 

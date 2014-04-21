@@ -70,17 +70,17 @@ class Study::Discipline < ActiveRecord::Base
       users = User.in_department(dep_ids).with_role(Role.select(:acl_role_id).where(acl_role_name: ['lecturer', 'subdepartment']))
       ids = users.map { |u| u.id }.push(user.id)
 
-      includes(:assistant_teachers)
+      includes(:assistant_teachers).references(:assistant_teachers)
       .where('subject_teacher IN (?) OR subject_teacher.teacher_id IN (?)', ids, ids).references(:subject_teacher)
     elsif user.is?(:subdepartment)
       # Определяем его кафедру.
       dep_ids = user.positions.from_role(:subdepartment.to_s).map { |p| p.department.id }
       users = User.in_department(dep_ids).with_role(Role.select(:acl_role_id).where(acl_role_name: ['lecturer', 'subdepartment']))
       ids = users.map { |u| u.id }.push(user.id)
-      includes(:assistant_teachers)
+      includes(:assistant_teachers).references(:assistant_teachers)
       .where('subject_teacher IN (?) OR subject_teacher.teacher_id IN (?)', ids, ids).references(:subject_teacher)
     else
-      includes(:assistant_teachers)
+      includes(:assistant_teachers).references(:assistant_teachers)
       .where('subject_teacher = ? OR subject_teacher.teacher_id = ?', user.id, user.id).references(:subject_teacher)
     end
   }

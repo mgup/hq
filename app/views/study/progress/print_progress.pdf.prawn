@@ -51,6 +51,45 @@
   @group.students.each_with_index do |student, index|
      position_x = x_pos
      data << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', student.ball(discipline).round, student.result(discipline)[:short], '']
+     ball = student.result(discipline)[:width]
+     if discipline.final_exam and discipline.final_exam.test?
+       case ball.round
+         when 0..54
+            pdf.move_to [position_x + 220, position_y - 7]
+            pdf.line_to [position_x + 229, position_y - 16]
+            pdf.move_to [position_x + 229, position_y - 7]
+            pdf.line_to [position_x + 220, position_y - 16]
+         when 55..Float::INFINITY
+            pdf.move_to [position_x + 205, position_y - 7]
+            pdf.line_to [position_x + 214, position_y - 16]
+            pdf.move_to [position_x + 214, position_y - 7]
+            pdf.line_to [position_x + 205, position_y - 16]
+       end
+     else
+       case ball.round
+         when 0..54
+           pdf.move_to [position_x + 295, position_y - 7]
+           pdf.line_to [position_x + 304, position_y - 16]
+           pdf.move_to [position_x + 304, position_y - 7]
+           pdf.line_to [position_x + 295, position_y - 16]
+         when  55..69
+            pdf.move_to [position_x + 265, position_y - 7]
+            pdf.line_to [position_x + 274, position_y - 16]
+            pdf.move_to [position_x + 274, position_y - 7]
+            pdf.line_to [position_x + 265, position_y - 16]
+         when 70..85
+            pdf.move_to [position_x + 250, position_y - 7]
+            pdf.line_to [position_x + 259, position_y - 16]
+            pdf.move_to [position_x + 259, position_y - 7]
+            pdf.line_to [position_x + 250, position_y - 16]
+         when 86..Float::INFINITY
+            pdf.move_to [position_x + 235, position_y - 7]
+            pdf.line_to [position_x + 244, position_y - 16]
+            pdf.move_to [position_x + 244, position_y - 7]
+            pdf.line_to [position_x + 235, position_y - 16]
+       end
+     end
+
      8.times do
       pdf.rectangle [position_x + 205, position_y - 7], 9, 9
       position_x += 15

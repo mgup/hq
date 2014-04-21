@@ -13,7 +13,7 @@
   <div class='row'>
     <div class='col col-lg-6'>
       <%= select_tag 'speciality',
-                     options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name, params[:speciality]),
+                     options_from_collection_for_select(@group ? Department.find(params[:faculty]).specialities : Speciality.includes(:faculty), :id, :full_name, params[:speciality]),
                      prompt: 'все специальности', class: 'ajax-speciality form-control' %>
     </div>
 
@@ -29,7 +29,7 @@
   <div class="row">
     <div class="col-sm-3">
       <%= select_tag :group,
-                     options_from_collection_for_select(Group.includes(:speciality), :id, :name, params[:group]),
+                     options_from_collection_for_select(@group ? Group.filter(course: params[:course], speciality: params[:speciality], form: params[:form]) : Group.includes(:speciality), :id, :name, params[:group]),
                      prompt: 'все группы', class: 'ajax-group form-control' %>
     </div>
     <div class="col col-sm-2 pull-right">

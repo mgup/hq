@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   has_many :visitor_event_dates, as: :visitor, primary_key: :id
   has_many :dates, through: :visitor_event_dates
 
-  has_many :task_users, -> { includes(:task).where(curator_task: {status: Curator::Task::STATUS_ACTIVE})}, class_name: Curator::TaskUser
+  has_many :task_users, -> { includes(:task).references(:task).where(curator_task: {status: Curator::Task::STATUS_ACTIVE})}, class_name: Curator::TaskUser
   has_many :tasks, through: :task_users
 
   has_many :curator_groups, class_name: Curator::Group, foreign_key: :user_id
@@ -161,18 +161,18 @@ class User < ActiveRecord::Base
     cond
   }
 
-  scope :except, -> ids { where("user_id NOT IN (#{ids.join(', ')})") }
+  scope :without, -> ids { where("user_id NOT IN (#{ids.join(', ')})") }
 
   scope :from_name, -> name { with_name.where('dictionary.dictionary_ip LIKE :prefix OR user.user_name LIKE :prefix', prefix: "%#{name}%")}
   scope :from_department, -> department { where("#{department.split(',').collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
-                                                                      " OR #{department.split(',').collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
+                                                                      " OR #{department.split(',').collect{|d| 'user.user_department = ' + d.to_s}.join(' OR ')}").includes(:positions).references(:positions)  }
   scope :from_subdepartment, -> subdepartment { where("#{subdepartment .split(',').collect{|d| 'acl_position.acl_position_department = ' + d.to_s}.join(' OR ')}" +
-                                                    " OR #{subdepartment .split(',').collect{|d| 'user.user_subdepartment = ' + d.to_s}.join(' OR ')}").includes(:positions)  }
+                                                    " OR #{subdepartment .split(',').collect{|d| 'user.user_subdepartment = ' + d.to_s}.join(' OR ')}").includes(:positions).references(:positions)  }
   scope :from_position, -> position { where('acl_position.acl_position_title LIKE :posprefix OR user.user_position LIKE :posprefix', posprefix: "%#{position}%")
-                                      .includes(:positions) }
-  scope :from_appointment, -> appointment { where("acl_position.appointment_id IN (#{appointment.join(',')})").includes(:positions) }
+                                      .includes(:positions).references(:positions) }
+  scope :from_appointment, -> appointment { where("acl_position.appointment_id IN (#{appointment.join(',')})").includes(:positions).references(:positions) }
   scope :from_role, -> role { where("acl_position.acl_position_role = (SELECT acl_role.acl_role_id FROM acl_role WHERE acl_role.acl_role_name = '#{role}')")
-  .includes(:positions) }
+  .includes(:positions).references(:positions) }
 
 
   scope :filter, -> filters {
