@@ -80,7 +80,7 @@
         </td>
         <td>
           <% unless exam.validation? %>
-            <%= link_to '#repeatModal', class: 'btn btn-default', title: 'Перезачёты/пересдачи', data: {toggle: 'modal'} do %>
+            <%= link_to "#repeatModal#{exam.id}", class: 'btn btn-default', title: 'Перезачёты/пересдачи', data: {toggle: 'modal'} do %>
               <span class="glyphicon glyphicon-retweet"></span>
             <% end %>
             <%= render partial: 'repeat_modal',

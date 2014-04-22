@@ -40,11 +40,8 @@ class Study::ExamsController < ApplicationController
   def create
     exam = params[:study_exam]
     if exam.include?(:exam_group)
-      @exam = Study::Exam.create exam_subject: exam[:exam_subject], parent: exam[:parent], exam_type: exam[:exam_type],
-                                 weight: exam[:exam_weight], exam_group: exam[:exam_group], repeat: exam[:repeat], date: exam[:date]
-      Group.find(exam[:exam_group]).students.each do |s|
-       Study::ExamStudent.create person: s.person, student: s, exam: @exam
-      end
+      #raise resource_params.inspect
+      @exam = Study::Exam.create(resource_params)
     elsif exam.include?(:exam_student_group)
       @exam = Study::Exam.create exam_subject: exam[:exam_subject], parent: exam[:parent], exam_type: exam[:exam_type],
                                  weight: exam[:weight], exam_student: exam[:exam_student], exam_student_group: exam[:exam_student_group],
@@ -66,8 +63,10 @@ class Study::ExamsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:study_exam, {}).permit( :id, :date, final_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_final],
-                                          rating_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_rating, :mark_final]
+    params.fetch(:study_exam, {}).permit( :id, :date, :exam_subject, :parent, :exam_type, :weight, :exam_group, :exam_student, :exam_student_group, :repeat,
+                                          final_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_final],
+                                          rating_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_rating, :mark_final],
+                                          students_attributes: [:id, :exam_student_student, :exam_student_student_group, :'_destroy']
     )
   end
 

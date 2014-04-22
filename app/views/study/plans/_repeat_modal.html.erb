@@ -1,4 +1,4 @@
-<div class="modal fade" id="repeatModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="repeatModal<%= parent_exam.id %>" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -8,7 +8,7 @@
       <div class="modal-body">
         <div>
           <h4>Групповые ведомости</h4>
-        <%= form_for exam, url: study_discipline_exams_path(discipline), class: 'form-horizontal' do |f| %>
+        <%= nested_form_for exam, url: study_discipline_exams_path(discipline), class: 'form-horizontal' do |f| %>
           <%= f.hidden_field :exam_subject, value: discipline.id %>
           <%= f.hidden_field :parent, value: parent_exam.id %>
           <%= f.hidden_field :exam_type, value: parent_exam.type %>
@@ -24,8 +24,26 @@
               <%= f.text_field :date, value: (l Date.today), class: 'form-control datepicker', required: true %>
             </div>
             <div class="col-sm-2">
-              <%= f.submit 'Добавить', class: 'btn btn-primary' %>
+              <%= link_to 'Добавить', '#', class: 'btn btn-default add-repeat-students' %>
             </div>
+          </div>
+          <div class="row students-for-repeat" style="display: none;">
+            <div class="col-sm-offset-1">
+              <label>Добавьте студентов в ведомость</label>
+              <br>
+              <% group.students.each do |student| %>
+                <label><%= check_box_tag 'students[]', student.id, (exam.students.include? student), class: 'repeat_exam_students', data: {person: student.person.id} %> <%= student.person.full_name %></label>
+                <div class="for-student"></div>
+              <% end %>
+              <%= f.fields_for :students do |student_form| %>
+                <%= render 'students_fields', f: student_form %>
+              <% end %>
+              <%= f.link_to_add 'Добавить студента',
+                                :students, style: 'display: none;' %>
+            </div>
+              <div class="col-sm-offset-2">
+                <%= f.submit 'Сохранить', class: 'btn btn-primary' %>
+              </div>
           </div>
           <div class="row">
             <div class="col-sm-12">
@@ -38,8 +56,8 @@
                   <td><%= r.id %></td>
                   <td><%= r.repeat_type %></td>
                   <td><%= l r.date %></td>
-                  <td><%= link_to '#', class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
-                      <span class='glyphicon glyphicon-print'></span>
+                  <td><%= link_to study_discipline_exam_print_path(discipline, r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
+                        <span class="glyphicon glyphicon-print"></span>
                       <% end %>
                       <% if false %>
                       <%= link_to  study_discipline_exam_path(discipline, r), method: :delete,
@@ -97,9 +115,9 @@
                         <td><%= r.id %></td>
                         <td><%= r.repeat_type %></td>
                         <td><%= l r.date %></td>
-                        <td><%= link_to '#', class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
-                            <span class='glyphicon glyphicon-print'></span>
-                          <% end %>
+                        <td><%= link_to study_discipline_exam_print_path(discipline, r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
+                              <span class="glyphicon glyphicon-print"></span>
+                            <% end %>
                         </td>
                         <% if r.date.past? %>
                           <td>Прошёл</td>

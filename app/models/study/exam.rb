@@ -31,7 +31,9 @@ class Study::Exam < ActiveRecord::Base
 
   belongs_to :discipline, class_name: Study::Discipline, primary_key: :subject_id, foreign_key: :exam_subject
   belongs_to :group, primary_key: :group_id, foreign_key: :exam_group
+  belongs_to :student, primary_key: :student_group_id, foreign_key: :exam_student_group
   has_many :students, class_name: Study::ExamStudent, foreign_key: :exam_student_exam, dependent: :destroy
+  accepts_nested_attributes_for :students, allow_destroy: true
   has_many :marks, class_name: Study::ExamMark, foreign_key: :mark_exam
   has_many :final_marks, -> { where(mark_final: true)}, class_name: Study::ExamMark, foreign_key: :mark_exam
   accepts_nested_attributes_for :final_marks
@@ -58,9 +60,22 @@ class Study::Exam < ActiveRecord::Base
   scope :originals, -> {where(exam_parent: nil)}
   #scope :repeats, -> exam {where(exam_parent: exam.id)}
   scope :repeat, -> {where('exam_parent IS NOT NULL')}
-  scope :mass, -> {where(exam_student_group: nil)}
+  scope :mass, -> {where('exam_group IS NOT NULL')}
   scope :individual, -> {where('exam_student_group IS NOT NULL')}
   scope :by_student, -> student {where(exam_student_group: student.id)}
+
+  def is_repeat?
+    parent?
+  end
+
+  def is_individual_repeat?
+    exam_student_group?
+  end
+
+  def is_mass_repeat?
+    exam_group?
+  end
+
   def test?
     TYPE_TEST == type
   end
@@ -103,15 +118,15 @@ class Study::Exam < ActiveRecord::Base
   def repeat_type
     case repeat
       when FIRST_REPEAT
-        'Первичный'
+        'первичный'
       when SECOND_REPEAT
-        'Повторный'
+        'повторный'
       when COMMISSION_REPEAT
-        'Комиссия'
+        'комиссия'
       when EARLY_REPEAT
-        'Досрочный'
+        'досрочный'
       when RESPECTFUL_REPEAT
-        'Уважительная'
+        'уважительная'
     end
   end
 

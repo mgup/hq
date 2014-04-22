@@ -32,3 +32,25 @@ $ ->
     exam_field.val($(event.link).attr('data-value'))
     if type == '1'
       exam_field.parents('.discipline_exams_fields').find('.exam-weight').show()
+
+
+  $('.repeat_exam_students').click  ->
+    $this = $(this)
+    if $this.prop('checked')
+      $link = $(this).closest('form').find('a[data-blueprint-id="students_fields_blueprint"]')
+      $link.attr('data-value', $this.val()).attr('data-person', $this.attr('data-person'))
+      $link.click()
+      $(this).closest('form').find('.fields .student[value="' +  $this.val() + '"]').closest('.fields').appendTo($this.parent().next('.for-student'))
+    else
+      $field = $(this).closest('form').find('.fields .student[value="' + $this.val() + '"]')
+      $field.parents('.students_fields').children('.remove_nested_fields').click()
+
+  $(document).on 'nested:fieldAdded:students', (event) ->
+    event.field.find('.student').val($(event.link).attr('data-value'))
+    event.field.find('.person').val($(event.link).attr('data-person'))
+
+
+  $('.add-repeat-students').click (e) ->
+    e.preventDefault()
+    $('.students-for-repeat').show()
+    $(this).hide()
