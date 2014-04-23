@@ -85,8 +85,22 @@ prawn_document margin: [28, 28, 28, 28],
         position_y = y_pos
         if @exam.is_mass_repeat?
           @exam.students.each_with_index do |student, index|
-          position_x = x_pos
-            tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', student.student.ball(@discipline).round, '', '']
+            position_x = x_pos
+            if @exam.test?
+              if student.student.ball(@discipline) < 55
+                tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
+              else
+                tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', student.student.ball(@discipline), 'зачтено', '']
+                pdf.move_to [position_x + 242, position_y - 5.4]
+                pdf.line_to [position_x + 249, position_y - 12.4]
+                pdf.move_to [position_x + 249, position_y - 5.4]
+                pdf.line_to [position_x + 242, position_y - 12.4]
+              end
+            elsif @exam.exam?
+              tableData << [1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', '', '', '']
+            else
+             tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
+            end
             8.times do
               pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
               position_x += 15
@@ -95,7 +109,21 @@ prawn_document margin: [28, 28, 28, 28],
           end
         elsif @exam.is_individual_repeat?
           position_x = x_pos
-          tableData << [1, @exam.student.person.full_name,  @exam.student.id, '', '', '', '', '', '', '', '',  @exam.student.ball(@discipline).round, '', '']
+          if @exam.test?
+            if @exam.student.ball(@discipline) < 55
+              tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', "#{@exam.student.ball(@discipline)}+", '', '']
+            else
+              tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', @exam.student.ball(@discipline), 'зачтено', '']
+              pdf.move_to [position_x + 242, position_y - 5.4]
+              pdf.line_to [position_x + 249, position_y - 12.4]
+              pdf.move_to [position_x + 249, position_y - 5.4]
+              pdf.line_to [position_x + 242, position_y - 12.4]
+            end
+          elsif @exam.exam?
+            tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', '', '', '']
+          else
+           tableData << [index+1, @exam.student.person.full_name,  @exam.student.id, '', '', '', '', '', '', '', '', "#{ @exam.student.ball(@discipline)}+", '', '']
+          end
           8.times do
             pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
             position_x += 15
@@ -103,7 +131,21 @@ prawn_document margin: [28, 28, 28, 28],
         else
           @discipline.group.students.each_with_index do |student, index|
             position_x = x_pos
-            tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', student.ball(@discipline).round, '', '']
+            if @exam.test?
+              if student.ball(@discipline) < 55
+                tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
+              else
+                tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', student.ball(@discipline), 'зачтено', '']
+                pdf.move_to [position_x + 242, position_y - 5.4]
+                pdf.line_to [position_x + 249, position_y - 12.4]
+                pdf.move_to [position_x + 249, position_y - 5.4]
+                pdf.line_to [position_x + 242, position_y - 12.4]
+              end
+            elsif @exam.exam?
+              tableData << [1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
+            else
+             tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
+            end
             8.times do
               pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
               position_x += 15
@@ -169,67 +211,159 @@ prawn_document margin: [28, 28, 28, 28],
         pdf.text "#{@exam.repeat == Study::Exam::COMMISSION_REPEAT ? 'Подписи членов комиссии' : 'Подпись преподавателя(лей)'} _____________________________           Директор института _____________________________", align: :center
       end
   end
-  pdf.start_new_page
-  pdf.font_size 9 do
-    pdf.text 'Федеральное государственное бюджетное образовательное учреждение высшего профессионального образования', align: :center
-  end
-  pdf.text '«МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА»', align: :center
-  pdf.move_down 10
-  pdf.text "ПРИЛОЖЕНИЕ К ЭКЗАМЕНАЦИОННОЙ ВЕДОМОСТИ № #{@exam.id}", align: :center
-  pdf.font_size 10 do
-    pdf.text_box 'Семестр:', at: [0, 750 - 25]
-    pdf.text_box 'Форма контроля:', at: [0, 750 - 40]
-    pdf.text_box 'Дисциплина:', at: [0, 750 - 55]
-    pdf.text_box 'Фамилия, имя, отчество преподавателя(лей):', at: [0, 750 - 70]
-    if @exam.is_repeat?
-        pdf.text_box 'Дата выдачи:', at: [370, 750 - 25]
+  if @discipline.brs?
+    if @exam.exam?
+      pdf.start_new_page
     else
-        pdf.text_box 'Дата проведения:', at: [370, 750 - 25]
+      pdf.start_new_page layout: :landscape
     end
-    pdf.text_box 'Группа:', at: [370, 750 - 40]
 
-    pdf.text_box "#{@exam.discipline.semester}, #{@exam.discipline.year}-#{@exam.discipline.year+1} учебного года", at: [42, 750 - 25]
-    pdf.text_box "#{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [(@exam.is_repeat? ? 431 : 450), 750 - 25]
-     if @exam.is_repeat?
-        pdf.text_box " #{@exam.repeat_type}", at: [77, 750 - 40]
-     else
-       pdf.text_box " #{@exam.name}", at: [77, 750 - 40]
-     end
-
-    pdf.text_box "#{@discipline.name}", at: [59, 750 - 55]
-    pdf.text_box "#{group.name}", at: [405, 750 - 40]
-    pdf.text_box "#{@discipline.lead_teacher.full_name}", at: [199, 750 - 70]
-  end
-  if @exam.exam?
-
-    applicationTable = [[{content: '№', rowspan: 2}, {content: 'Фамилия, имя, отчество', rowspan: 2},
-                        {content: 'Номер', rowspan: 2}, {content: 'Баллы за семестр', rowspan: 2}, {content: 'Нужно набрать на экзамене в баллах', colspan: 4}],
-                        ['«Отлично»', '«Хорошо»', '«Удовл.»', '«Неуд.»']]
-    pdf.font_size 10 do
-      if @exam.is_mass_repeat?
-        @exam.students.each_with_index do |student, index|
-          result_5 = @discipline.final_exam.predication(5, student.student.ball(@discipline))
-          result_4 = @discipline.final_exam.predication(4, student.student.ball(@discipline))
-          result_3 = @discipline.final_exam.predication(3, student.student.ball(@discipline))
-          result_2 = @discipline.final_exam.predication(2, student.student.ball(@discipline))
-          applicationTable << [index+1, student.person.full_name, student.student.id, student.student.ball(@discipline).round, "#{result_5[:min]} — #{result_5[:max]}", '']
+    pdf.font_size 9 do
+      pdf.text 'Федеральное государственное бюджетное образовательное учреждение высшего профессионального образования', align: :center
+    end
+    pdf.text '«МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА»', align: :center
+    pdf.move_down 10
+    pdf.text "ПРИЛОЖЕНИЕ К ЭКЗАМЕНАЦИОННОЙ ВЕДОМОСТИ № #{@exam.id}", align: :center
+    if @exam.exam?
+      pdf.font_size 10 do
+        pdf.text_box 'Семестр:', at: [0, 750 - 25]
+        pdf.text_box 'Форма контроля:', at: [0, 750 - 40]
+        pdf.text_box 'Дисциплина:', at: [0, 750 - 55]
+        pdf.text_box 'Фамилия, имя, отчество преподавателя(лей):', at: [0, 750 - 70]
+        if @exam.is_repeat?
+            pdf.text_box 'Дата выдачи:', at: [370, 750 - 25]
+        else
+            pdf.text_box 'Дата проведения:', at: [370, 750 - 25]
         end
-      elsif @exam.is_individual_repeat?
-        applicationTable << [1, @exam.student.person.full_name,  @exam.student.id, @exam.student.ball(@discipline).round, '', '']
-      else
-        @discipline.group.students.each_with_index do |student, index|
-          result_5 = @discipline.final_exam.predication(5, student.ball(@discipline))
-          result_4 = @discipline.final_exam.predication(4, student.ball(@discipline))
-          result_3 = @discipline.final_exam.predication(3, student.ball(@discipline))
-          result_2 = @discipline.final_exam.predication(2, student.ball(@discipline))
-          applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline).round, "#{result_5[:min]} — #{result_5[:max]}", '']
+        pdf.text_box 'Группа:', at: [370, 750 - 40]
+
+        pdf.text_box "#{@exam.discipline.semester}, #{@exam.discipline.year}-#{@exam.discipline.year+1} учебного года", at: [42, 750 - 25]
+        pdf.text_box "#{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [(@exam.is_repeat? ? 431 : 450), 750 - 25]
+         if @exam.is_repeat?
+            pdf.text_box " #{@exam.repeat_type}", at: [77, 750 - 40]
+         else
+           pdf.text_box " #{@exam.name}", at: [77, 750 - 40]
+         end
+
+        pdf.text_box "#{@discipline.name}", at: [59, 750 - 55]
+        pdf.text_box "#{group.name}", at: [405, 750 - 40]
+        pdf.text_box "#{@discipline.lead_teacher.full_name}", at: [199, 750 - 70]
+      end
+
+      applicationTable = [[{content: '№', rowspan: 2}, {content: 'Фамилия, имя, отчество', rowspan: 2},
+                          {content: 'Номер', rowspan: 2}, {content: 'Баллы за семестр', rowspan: 2}, {content: 'Нужно набрать на экзамене в баллах', colspan: 4}],
+                          ['«Отлично»', '«Хорошо»', '«Удовл.»', '«Неуд.»']]
+      pdf.font_size 10 do
+        if @exam.is_mass_repeat?
+          @exam.students.each_with_index do |student, index|
+            result_5 = @discipline.final_exam.predication(5, student.student.ball(@discipline))
+            result_4 = @discipline.final_exam.predication(4, student.student.ball(@discipline))
+            result_3 = @discipline.final_exam.predication(3, student.student.ball(@discipline))
+            result_2 = @discipline.final_exam.predication(2, student.student.ball(@discipline))
+            applicationTable << [index+1, student.person.full_name, student.student.id, student.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+          end
+        elsif @exam.is_individual_repeat?
+          result_5 = @discipline.final_exam.predication(5, @exam.student.ball(@discipline))
+          result_4 = @discipline.final_exam.predication(4, @exam.student.ball(@discipline))
+          result_3 = @discipline.final_exam.predication(3, @exam.student.ball(@discipline))
+          result_2 = @discipline.final_exam.predication(2, @exam.student.ball(@discipline))
+          applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+        else
+          @discipline.group.students.each_with_index do |student, index|
+            result_5 = @discipline.final_exam.predication(5, student.ball(@discipline))
+            result_4 = @discipline.final_exam.predication(4, student.ball(@discipline))
+            result_3 = @discipline.final_exam.predication(3, student.ball(@discipline))
+            result_2 = @discipline.final_exam.predication(2, student.ball(@discipline))
+            applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+          end
+        end
+        pdf.move_down 80
+        pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2}
+      end
+
+    else
+      pdf.font_size 10 do
+        pdf.text_box 'Семестр:', at: [0, 500 - 25]
+        pdf.text_box 'Форма контроля:', at: [0, 500 - 40]
+        pdf.text_box 'Дисциплина:', at: [0, 500 - 55]
+        pdf.text_box 'Фамилия, имя, отчество преподавателя(лей):', at: [0, 500 - 70]
+        if @exam.is_repeat?
+            pdf.text_box 'Дата выдачи:', at: [570, 500 - 25]
+        else
+            pdf.text_box 'Дата проведения:', at: [570, 500 - 25]
+        end
+        pdf.text_box 'Группа:', at: [570, 500 - 40]
+
+        pdf.text_box "#{@exam.discipline.semester}, #{@exam.discipline.year}-#{@exam.discipline.year+1} учебного года", at: [42, 500 - 25]
+        pdf.text_box "#{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [(@exam.is_repeat? ? 631 : 650), 500 - 25]
+         if @exam.is_repeat?
+            pdf.text_box " #{@exam.repeat_type}", at: [77, 500 - 40]
+         else
+           pdf.text_box " #{@exam.name}", at: [77, 500 - 40]
+         end
+
+        pdf.text_box "#{@discipline.name}", at: [59, 500 - 55]
+        pdf.text_box "#{group.name}", at: [605, 500 - 40]
+        pdf.text_box "#{@discipline.lead_teacher.full_name}", at: [199, 500 - 70]
+      end
+
+      applicationTable = [[{content: '№', rowspan: 2}, {content: 'Фамилия, имя, отчество', rowspan: 2},
+                                {content: 'Номер', rowspan: 2}, {content: 'Аудиторн. баллы', rowspan: 2}], []]
+      @discipline.checkpoints.length.times do |i|
+        applicationTable[0] << {content: "К. т. #{i+1}", colspan: 3, align: :center}
+        applicationTable[1] << {content: 'Всего'}
+        applicationTable[1] << {content: 'Есть'}
+        applicationTable[1] << {content: 'Досдал'}
+
+      end
+      pdf.font_size 10 do
+        if @exam.is_mass_repeat?
+          index = 1
+          @exam.students.each do |student|
+            if (!(student.student.ball(@discipline) < 55) && @exam.test?)
+              next
+            end
+            applicationTable << [index, student.person.full_name, student.student.id, student.student.ball(@discipline)]
+            @discipline.checkpoints.each do |checkpoint|
+              applicationTable[applicationTable.length - 1] << "#{checkpoint.min}/#{checkpoint.max}"
+              applicationTable[applicationTable.length - 1] << "#{checkpoint.marks.by_student(student.student).last ? checkpoint.marks.by_student(student).last.mark : 0}"
+              applicationTable[applicationTable.length - 1] << ''
+            end
+            index+=1
+          end
+        elsif @exam.is_individual_repeat?
+          applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline)]
+          @discipline.checkpoints.each do |checkpoint|
+            applicationTable[applicationTable.length - 1] << "#{checkpoint.min}/#{checkpoint.max}"
+            applicationTable[applicationTable.length - 1] << "#{checkpoint.marks.by_student(@exam.student).last ? checkpoint.marks.by_student(student).last.mark : 0}"
+            applicationTable[applicationTable.length - 1] << ''
+          end
+        else
+          index = 1
+          @discipline.group.students.each do |student|
+            if (!(student.ball(@discipline) < 55) && @exam.test?)
+              next
+            end
+            applicationTable << [index, student.person.full_name, student.id, student.ball(@discipline)]
+            @discipline.checkpoints.each do |checkpoint|
+              applicationTable[applicationTable.length - 1] << "#{checkpoint.min}/#{checkpoint.max}"
+              applicationTable[applicationTable.length - 1] << "#{checkpoint.marks.by_student(student).last ? checkpoint.marks.by_student(student).last.mark : 0}"
+              applicationTable[applicationTable.length - 1] << ''
+            end
+            index+=1
+          end
+        end
+        pdf.move_down 80
+        pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2} do
+          column(3).width = 50
+        end
+
+        if @exam.graded_test?
+           pdf.move_down 20
+           pdf.text 'Перевод баллов (Х) в итоговую оценку:'
+           pdf.table [['неудовлетворительно', 'удовлетворительно', 'хорошо', 'отлично'],['Х < 55', '55 >= X < 70', '70 >= X < 85', 'X >= 85']], width: pdf.bounds.width, cell_style: { padding: 2}
         end
       end
-      pdf.move_down 80
-      pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2}
     end
-
-  elsif @exam.test?
-  else
   end
 end

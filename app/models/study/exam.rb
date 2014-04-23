@@ -80,6 +80,10 @@ class Study::Exam < ActiveRecord::Base
     TYPE_TEST == type
   end
 
+  def graded_test?
+    TYPE_GRADED_TEST == type
+  end
+
   def exam?
     TYPE_EXAMINATION == type
   end

@@ -61,7 +61,11 @@
       <% d.exams.originals.each do |exam| %>
       <tr>
         <td><%= exam.id %></td>
-        <td><%= exam.name %></td>
+        <td><%= exam.name %>
+          <% unless exam.repeats.empty? %>
+            <span class="badge repeat-tips" title="Групповые пересдачи: <%= exam.repeats.mass.length %> Индивидуальные пересдачи: <%= exam.repeats.individual.length %>"><%= exam.repeats.mass.length %>/<%= exam.repeats.individual.length %></span>
+          <% end %>
+        </td>
         <%= form_for exam, url: updatedate_study_discipline_exam_path(d,exam) do |p| %>
           <td style="padding: 2px;"><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil) %></td>
           <td><%= p.submit 'Сохранить дату', class: 'btn btn-default', style: 'margin-left: 5px;' %></td>
