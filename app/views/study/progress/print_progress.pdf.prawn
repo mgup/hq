@@ -7,11 +7,13 @@
   if params[:discipline]
     y_pos = 558
     discipline = Study::Discipline.find(params[:discipline])
-    headData = [["#{Study::Discipline::CURRENT_STUDY_TERM == 1 ? 'I' : 'II'} семестер, #{Study::Discipline::CURRENT_STUDY_YEAR}/#{Study::Discipline::CURRENT_STUDY_YEAR+1} учебного года",
-                "Контрольная дата: #{discipline.validation.date? ? (l discipline.validation.date) : 'неизвестно'}" ],
-                    ['Форма контроля: текущая аттестация', "Группа: #{@group.name}"],
-                    ["Дисциплина: #{discipline.name}", ''],
-                    ["Преподаватель: #{discipline.lead_teacher.full_name}", '']]
+    headData = [["Учебный год: #{Study::Discipline::CURRENT_STUDY_YEAR}/#{Study::Discipline::CURRENT_STUDY_YEAR+1}",
+                "Семестр: #{Study::Discipline::CURRENT_STUDY_TERM == 1 ? 'I' : 'II'}"],
+                 ['Форма контроля: текущая аттестация',
+                  "Контрольная дата: #{discipline.validation.date? ? (l discipline.validation.date) : 'неизвестно'}" ],
+                 ["Дисциплина: #{discipline.name}",
+                  "Группа: #{@group.name}"],
+                 ["Преподаватель: #{discipline.lead_teacher.full_name}", '']]
   else
     y_pos = 572
     headData = [["Семестр: #{Study::Discipline::CURRENT_STUDY_TERM}, #{Study::Discipline::CURRENT_STUDY_YEAR}-#{Study::Discipline::CURRENT_STUDY_YEAR+1} учебного года", 'Дата проведения: неизвестно' ],

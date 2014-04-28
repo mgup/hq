@@ -61,10 +61,16 @@
       <% d.exams.originals.each do |exam| %>
       <tr>
         <td><%= exam.id %></td>
-        <td><%= exam.name %>
+        <td>
+          <% if exam.validation? and !d.classes.not_full(d).empty? %>
+            <span class="control text-danger" title="В некоторых занятиях не введены результаты оценки студентов."><%= exam.name %></span>
+          <% else %>
+            <%= exam.name %>
+          <% end %>
           <% unless exam.repeats.empty? %>
             <span class="badge repeat-tips" title="Групповые пересдачи: <%= exam.repeats.mass.length %> Индивидуальные пересдачи: <%= exam.repeats.individual.length %>"><%= exam.repeats.mass.length %>/<%= exam.repeats.individual.length %></span>
           <% end %>
+
         </td>
         <%= form_for exam, url: updatedate_study_discipline_exam_path(d,exam) do |p| %>
           <td style="padding: 2px;"><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil) %></td>
@@ -73,7 +79,7 @@
 
         <td>
           <% if exam.validation? %>
-            <%= link_to study_group_print_progress_path(@group, discipline: d.id), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: !exam.date do %>
+            <%= link_to study_group_print_progress_path(@group, discipline: d.id), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: (!exam.date || !d.classes.not_full(d).empty?) do %>
               <span class="glyphicon glyphicon-print"></span>
             <% end %>
           <% else %>
