@@ -52,8 +52,8 @@
           <p class="help-block"><%= task.description %></p>
           <p><strong>Форма отчётности:</strong> <%= task.report %></p>
           <% if task.type.id == Curator::TaskType::HOSTEL_TYPE %>
-            <%= link_to  hostel_reports_path, class: 'btn btn-info' do %>
-              <span class="glyphicon glyphicon-file"></span> Создать акт проверки общежития
+            <%= link_to  example_hostel_reports_path, class: 'btn btn-block btn-success', style: 'font-weight: bold;' do %>
+              <span class="glyphicon glyphicon-search"></span> ПОСМОТРЕТЬ ОБРАЗЕЦ
             <% end %>
           <% end %>
         </td>
@@ -97,6 +97,12 @@
                 <%= hidden_field_tag :curator_key, 1 %>
                 <%= f.submit 'Завершить', class: 'btn btn-default', confirm: 'Для завершения задания необходимо предоставить отчётные документы. Вы уверены, что все отчётные документы сданы?' %>
               <% end %>
+          <% end %>
+          <% if task.type.id == Curator::TaskType::HOSTEL_TYPE %>
+            <br>
+            <%= link_to  hostel_reports_path, class: 'btn btn-info' do %>
+              <span class="glyphicon glyphicon-file"></span> Создать акт проверки общежития
+            <% end %>
           <% end %>
         </td>
       </tr>

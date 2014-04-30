@@ -13,7 +13,7 @@
   <div class='row'>
     <div class='col col-lg-6'>
       <%= select_tag 'speciality',
-                     options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name, params[:speciality]),
+                     options_from_collection_for_select(@group ? Department.find(params[:faculty]).specialities : Speciality.includes(:faculty), :id, :full_name, params[:speciality]),
                      prompt: 'все специальности', class: 'ajax-speciality form-control' %>
     </div>
 
@@ -29,7 +29,7 @@
   <div class="row">
     <div class="col-sm-3">
       <%= select_tag :group,
-                     options_from_collection_for_select(Group.includes(:speciality), :id, :name, params[:group]),
+                     options_from_collection_for_select(@group ? Group.filter(course: params[:course], speciality: params[:speciality], form: params[:form]) : Group.includes(:speciality), :id, :name, params[:group]),
                      prompt: 'все группы', class: 'ajax-group form-control' %>
     </div>
     <div class="col col-sm-2 pull-right">
@@ -51,6 +51,8 @@
      <%= link_to "#editDisciplineModal_#{d.id}", class: 'btn btn-default btn-xs', data: {toggle: 'modal'} do %>
        <span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину
      <% end %>
+      <br>
+      <span style="font-weight: normal;"><%= d.lead_teacher.full_name %></span>
      <%= render partial: 'edit_discipline_modal', locals: { group: @group, discipline: d } %>
       </dt>
      <br>
@@ -59,36 +61,58 @@
       <% d.exams.originals.each do |exam| %>
       <tr>
         <td><%= exam.id %></td>
-        <td><%= exam.name %></td>
+        <td>
+          <% if exam.validation? and !d.classes.not_full(d).empty? %>
+            <span class="control text-danger" title="В некоторых занятиях не введены результаты оценки студентов."><%= exam.name %></span>
+          <% else %>
+            <%= exam.name %>
+          <% end %>
+          <% unless exam.repeats.empty? %>
+            <span class="badge repeat-tips" title="Групповые пересдачи: <%= exam.repeats.mass.length %> Индивидуальные пересдачи: <%= exam.repeats.individual.length %>"><%= exam.repeats.mass.length %>/<%= exam.repeats.individual.length %></span>
+          <% end %>
+
+        </td>
         <%= form_for exam, url: updatedate_study_discipline_exam_path(d,exam) do |p| %>
           <td style="padding: 2px;"><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil) %></td>
           <td><%= p.submit 'Сохранить дату', class: 'btn btn-default', style: 'margin-left: 5px;' %></td>
         <% end %>
 
-        <td><%= link_to study_discipline_exam_print_path(d, exam), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: !exam.date do %>
+        <td>
+          <% if exam.validation? %>
+            <%= link_to study_group_print_progress_path(@group, discipline: d.id), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: (!exam.date || !d.classes.not_full(d).empty?) do %>
+              <span class="glyphicon glyphicon-print"></span>
+            <% end %>
+          <% else %>
+          <%= link_to study_discipline_exam_print_path(d, exam), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: !exam.date do %>
             <span class="glyphicon glyphicon-print"></span>
             <% end %>
+          <% end %>
         </td>
         <td>
-          <%= link_to '#repeatModal', class: 'btn btn-default', title: 'Перезачёты/пересдачи', data: {toggle: 'modal'} do %>
-            <span class="glyphicon glyphicon-retweet"></span>
-          <% end %>
-          <%= render partial: 'repeat_modal',
-                      locals: { group: @group, parent_exam: exam, exam: Study::Exam.new, discipline: d } %>
-        </td>
-        <td><%= link_to  study_discipline_exam_path(d, exam), method: :delete,
-                         class: 'delete btn btn-danger', title: 'Удалить предмет из учебного плана',
-                         confirm: 'Вы уверены?' do %>
-            <span class='glyphicon glyphicon-remove'></span>
+          <% unless exam.validation? %>
+            <%= link_to "#repeatModal#{exam.id}", class: 'btn btn-default', title: 'Перезачёты/пересдачи', data: {toggle: 'modal'} do %>
+              <span class="glyphicon glyphicon-retweet"></span>
             <% end %>
+            <%= render partial: 'repeat_modal',
+                      locals: { group: @group, parent_exam: exam, exam: Study::Exam.new, discipline: d } %>
+          <% end %>
         </td>
+        <% if current_user.is?(:developer) %>
+          <td><%= link_to  study_discipline_exam_path(d, exam), method: :delete,
+                           class: 'delete btn btn-danger', title: 'Удалить предмет из учебного плана',
+                           confirm: 'Вы уверены?' do %>
+              <span class='glyphicon glyphicon-remove'></span>
+              <% end %>
+          </td>
+        <% end %>
       </tr>
       <% end %>
     </table>
     </dd>
    <% end %>
   </dl>
-  <%= link_to 'Добавить предмет для группы', '#addDisciplineModal', class: 'btn btn-default', data: {toggle: 'modal'} %>
+  <%= link_to 'Добавить предмет для группы', '#addDisciplineModal', class: 'btn btn-default',
+              data: {toggle: 'modal'}, style: 'margin-top: 20px;' %>
   <%= render partial: 'discipline_modal',
                    locals: { group: @group, discipline: Study::Discipline.new } %>
   <% end %>

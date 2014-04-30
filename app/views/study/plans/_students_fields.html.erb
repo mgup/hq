@@ -1,0 +1,10 @@
+<div class="students_fields">
+  <%= f.hidden_field :id %>
+  <%= f.hidden_field :exam_student_student,
+                     value: (f.object.exam_student_student ? f.object.exam_student_student : nil), class: 'person' %>
+  <%= f.hidden_field :exam_student_student_group,
+                     value: (f.object.exam_student_student_group ? f.object.exam_student_student_group : nil), class: 'student' %>
+  <%= f.link_to_remove 'Удалить студента',
+                       style: 'display: none;' %>
+
+</div>

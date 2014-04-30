@@ -16,7 +16,7 @@ class Position < ActiveRecord::Base
   #  obj.save
   #end
 
-  scope :from_role, -> role { joins(:role).where(role: { acl_role_name: role })}
+  scope :from_role, -> role { joins(:role).where(acl_role: { acl_role_name: role })}
 
   def info
     "#{appointment.title}, #{department.abbreviation}" unless appointment.nil?

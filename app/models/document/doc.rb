@@ -29,7 +29,7 @@ class Document::Doc < ActiveRecord::Base
 
   has_many :metas, class_name: Document::Meta, primary_key: :document_id, foreign_key: :document_meta_document
 
-  scope :references, -> { where(document_type: TYPE_UNIVERSITY_REFERENCE) }
+  scope :doc_references, -> { where(document_type: TYPE_UNIVERSITY_REFERENCE) }
 
   scope :socials, -> { where(document_type: TYPE_SOCIAL_SCHOLARSHIP) }
 
