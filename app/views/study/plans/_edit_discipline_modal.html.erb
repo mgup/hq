@@ -21,8 +21,9 @@
           <label>Формы контроля</label>
           <br>
           <% exams = [['экзамен', 1, 1], ['зачёт', 0, 1], ['дифференцированный зачёт', 9, 1], ['курсовая работа', 2, 2], ['курсовой проект', 3, 2],
-                      ['практика', 4, 2], ['ГЭК-1', 7, 2], ['ГЭК-2', 8, 2], ['промежуточная аттестация', 10, 2]] %>
+                      ['практика', 4, 2], ['ГЭК-1', 7, 2], ['ГЭК-2', 8, 2]] %>
           <% exams << ['преддипломная практика', 5, 2] << ['итоговый гос. экзамен', 6, 2] if @group.course == @group.study_length %>
+          <% exams << ['промежуточная аттестация', 10, 2] if discipline.brs? %>
 
           <% exams.each do |e| %>
             <label><%= check_box_tag 'exam[]', e[1], (discipline ? (discipline.exams.originals.collect{|exam| exam.type}.include? e[1]) : false), class: 'discipline_exams_variants', data: {type: e[2]} %> <%= e[0] %></label>

@@ -17,6 +17,7 @@ class Speciality < ActiveRecord::Base
   end
 
   scope :from_faculty, -> faculty { where(speciality_faculty: faculty) }
+  scope :active, -> { where('speciality_id NOT IN (1,27)')}
     
 
   def bachelor?

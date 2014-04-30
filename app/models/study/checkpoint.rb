@@ -38,6 +38,7 @@ class Study::Checkpoint < ActiveRecord::Base
   scope :practicals, -> {where(checkpoint_type: TYPE_SEMINAR)}
   scope :not_future, -> {where("checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}'")}
   scope :not_full, -> discipline {where("checkpoint_subject = #{discipline.id} AND checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}' AND (SELECT COUNT(DISTINCT checkpoint_mark_student) FROM checkpoint_mark JOIN student_group ON student_group_id = checkpoint_mark_student WHERE checkpoint_mark_checkpoint = checkpoint_id AND student_group_group = #{discipline.group.id} AND student_group_status IN ('101', '107')) < (SELECT COUNT(*) FROM student_group WHERE student_group_group = #{discipline.group.id} AND student_group_status IN ('101', '107'))")}
+  scope :not_full_final, -> discipline {where("checkpoint_subject = #{discipline.id} AND (SELECT COUNT(DISTINCT checkpoint_mark_student) FROM checkpoint_mark JOIN student_group ON student_group_id = checkpoint_mark_student WHERE checkpoint_mark_checkpoint = checkpoint_id AND student_group_group = #{discipline.group.id} AND student_group_status IN ('101', '107')) < (SELECT COUNT(*) FROM student_group WHERE student_group_group = #{discipline.group.id} AND student_group_status IN ('101', '107'))")}
 
   def lesson
     case type
