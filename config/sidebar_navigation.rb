@@ -29,8 +29,6 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :departments,  'Структура'.html_safe, departments_path, icon: 'list', highlights_on: -> { 'departments' == params[:controller] }
         primary.item :users,        'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
 
-        primary.item :plans,        'Сессия'.html_safe, study_plans_path, icon: 'bell'
-
         primary.item :activity_group, 'Группы показателей эффективности НПР',
                      activity_groups_path, icon: 'list'
         primary.item :activity_type, 'Типы показателей эффективности НПР',
@@ -193,6 +191,10 @@ SimpleNavigation::Configuration.run do |navigation|
 
       if can? :manage, Graduate
         primary.item :graduates, 'Выпускники', graduates_path, icon: 'folder-open'
+      end
+
+      if can? :manage, :plans
+        primary.item :plans, 'Учебные планы'.html_safe, study_plans_path, icon: 'bell'
       end
 
       #if can? :index, :groups

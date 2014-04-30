@@ -3,10 +3,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Добавить экзамен/зачёт для группы <%= group.name %></h4>
+        <h4 class="modal-title">Добавить дисциплину для группы <%= group.name %></h4>
       </div>
       <div class="modal-body">
         <%= nested_form_for discipline, class: 'form-horizontal' do |f| %>
+          <%= hidden_field_tag :plans, 1 %>
           <%= f.hidden_field :subject_year, value: Study::Discipline::CURRENT_STUDY_YEAR %>
           <%= f.hidden_field :subject_semester, value: Study::Discipline::CURRENT_STUDY_TERM %>
           <%= f.hidden_field :subject_group, value: group.id %>
@@ -15,7 +16,7 @@
           <br>
           <label>Кафедра и преподаватель</label>
           <%= select_tag :subdepartment,
-                       options_from_collection_for_select(Department.academic, :id, :name), { class: 'form-control ajax-subdepartment' } %>
+                       options_from_collection_for_select(@faculties.collect{|faculty| faculty.subdepartments.academic}[0], :id, :name), { class: 'form-control ajax-subdepartment' } %>
           <br>
           <%= f.select :subject_teacher,
                        options_from_collection_for_select(User.teachers, :id, :full_name), {}, { class: 'form-control ajax-teacher' } %>
@@ -78,5 +79,6 @@
           updateTeachers(teachers, select);
       })
     })
+    $('.ajax-subdepartment').change()
   })
 </script>

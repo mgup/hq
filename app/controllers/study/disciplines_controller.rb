@@ -27,7 +27,15 @@ class Study::DisciplinesController < ApplicationController
       @discipline.add_semester_work    if '1' == params[:has_semester_work]
       @discipline.add_semester_project if '1' == params[:has_semester_project]
 
-      redirect_to study_disciplines_path, notice: 'Дисциплина успешно добавлена.'
+      if params[:plans] == '1'
+        redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
+                                     speciality: @discipline.group.speciality.id,
+                                     course: @discipline.group.course,
+                                     form: @discipline.group.form,
+                                     group: @discipline.group.id)
+      else
+        redirect_to study_disciplines_path, notice: 'Дисциплина успешно добавлена.'
+      end
     else
       raise @discipline.errors.inspect
       # В случае ошибки необходимо вручную инициализировать поля для выбора

@@ -5,15 +5,15 @@
 <%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
   <div class='row'>
     <div class='col col-lg-10'>
-      <%= hidden_field_tag :faculty, params[:faculty],  class: 'ajax-faculty hidden-pill-values' %>
-      <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
+      <%= hidden_field_tag :faculty, params[:faculty] || @faculties.first.id,  class: 'ajax-faculty hidden-pill-values' %>
+      <%= pill_tabs('faculty', @faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
     </div>
   </div>
 
   <div class='row'>
     <div class='col col-lg-6'>
       <%= select_tag 'speciality',
-                     options_from_collection_for_select(@group ? Department.find(params[:faculty]).specialities : Speciality.includes(:faculty), :id, :full_name, params[:speciality]),
+                     options_from_collection_for_select(@group ? Department.find(params[:faculty]).specialities : @specialities, :id, :full_name, params[:speciality]),
                      prompt: 'все специальности', class: 'ajax-speciality form-control' %>
     </div>
 
@@ -29,7 +29,7 @@
   <div class="row">
     <div class="col-sm-3">
       <%= select_tag :group,
-                     options_from_collection_for_select(@group ? Group.filter(course: params[:course], speciality: params[:speciality], form: params[:form]) : Group.includes(:speciality), :id, :name, params[:group]),
+                     options_from_collection_for_select(@group ? Group.filter(course: params[:course], speciality: params[:speciality], form: params[:form]) : @groups, :id, :name, params[:group]),
                      prompt: 'все группы', class: 'ajax-group form-control' %>
     </div>
     <div class="col col-sm-2 pull-right">
@@ -62,7 +62,7 @@
       <tr>
         <td><%= exam.id %></td>
         <td>
-          <% if exam.validation? and !d.classes.not_full(d).empty? %>
+          <% if (exam.validation? and !d.classes.not_full(d).empty?) or (!exam.validation? and !d.classes.not_full_final(d).empty?) %>
             <span class="control text-danger" title="В некоторых занятиях не введены результаты оценки студентов."><%= exam.name %></span>
           <% else %>
             <%= exam.name %>
@@ -73,7 +73,7 @@
 
         </td>
         <%= form_for exam, url: updatedate_study_discipline_exam_path(d,exam) do |p| %>
-          <td style="padding: 2px;"><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil) %></td>
+          <td style="padding: 2px;"><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil), pattern: '\d{1,2}.\d{1,2}.\d{4}' %></td>
           <td><%= p.submit 'Сохранить дату', class: 'btn btn-default', style: 'margin-left: 5px;' %></td>
         <% end %>
 
@@ -83,7 +83,7 @@
               <span class="glyphicon glyphicon-print"></span>
             <% end %>
           <% else %>
-          <%= link_to study_discipline_exam_print_path(d, exam), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: !exam.date do %>
+          <%= link_to study_discipline_exam_print_path(d, exam), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: (!exam.date || !d.classes.not_full_final(d).empty?) do %>
             <span class="glyphicon glyphicon-print"></span>
             <% end %>
           <% end %>
