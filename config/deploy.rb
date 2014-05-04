@@ -14,9 +14,9 @@ set :deploy_via,       :remote_cache
 set :ssh_options,      { forward_agent: true }
 set :repository_cache, 'git_cache'
 
-role :web, '192.168.200.109'
-role :app, '192.168.200.109'
-role :db,  '192.168.200.109', primary: true
+role :web, 'matrix2.mgup.ru'
+role :app, 'matrix2.mgup.ru'
+role :db,  'matrix2.mgup.ru', primary: true
 
 # set :normalize_asset_timestamps, false
 #set :asset_env, "#{asset_env} RAILS_RELATIVE_URL_ROOT=/"
