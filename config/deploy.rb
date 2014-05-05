@@ -1,7 +1,8 @@
-# set :rvm_type, :system
+set :rvm_type, :system
 require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'dotenv/capistrano'
+require 'airbrake/capistrano'
 
 set :application, 'matrix'
 set :repository,  'git@github.com:mgup/hq.git'
@@ -37,4 +38,3 @@ namespace :deploy do
 end
 
 # require './config/boot'
-# require 'airbrake/capistrano'
