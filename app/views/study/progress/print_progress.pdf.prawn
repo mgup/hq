@@ -20,10 +20,13 @@
                         ['Форма контроля: аттестация', "Группа: #{@group.name}"],
                         ['Успеваемость по всем предметам', '']]
   end
-
+  plus =  pdf.font.compute_width_of(discipline.name) > 200 ? 12 : 0
+  y_pos -= plus
     pdf.font_size 9 do
         pdf.table headData, header: true, width: pdf.bounds.width,
-                  cell_style: { padding: 2, border_color: "ffffff" }
+                  cell_style: { padding: 2, border_color: "ffffff" } do
+                   column(0).width = 350
+        end
     end
 
   pdf.move_down 13

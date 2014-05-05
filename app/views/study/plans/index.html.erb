@@ -18,12 +18,12 @@
     </div>
 
     <div class='col col-lg-2'>
-      <%= select_tag :course, options_for_select([1,2,3,4,5,6]), selected: params[:course], class: 'ajax-course form-control' %>
+      <%= select_tag :course, options_for_select([1,2,3,4,5,6], params[:course]), class: 'ajax-course form-control' %>
     </div>
 
     <div class='col col-lg-4'>
       <%= select_tag :form, options_for_select([['очная', '101'], ['очно-заочная', '102'], ['заочная', '103'],
-                                                ['дистанционная', '105']]), selected: params[:form], class: 'ajax-form form-control' %>
+                                                ['дистанционная', '105']], params[:form]), class: 'ajax-form form-control' %>
     </div>
   </div>
   <div class="row">

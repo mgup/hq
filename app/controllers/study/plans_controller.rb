@@ -3,7 +3,7 @@ class Study::PlansController < ApplicationController
     user_departments = current_user.departments_ids
 
     if current_user.is?(:developer)
-      @faculties = Department.all
+      @faculties = Department.faculties
       @specialities = Speciality.all
       @groups = Group.all
       @group = Group.find(params[:group]) if params[:group]
