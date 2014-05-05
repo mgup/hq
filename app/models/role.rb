@@ -2,6 +2,7 @@ class Role < ActiveRecord::Base
   self.table_name = 'acl_role'
 
   ROLE_CURATOR = 34
+  ROLE_LECTURER = 8
 
   alias_attribute :id,    :acl_role_id
   alias_attribute :name,  :acl_role_name

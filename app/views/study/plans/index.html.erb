@@ -97,7 +97,7 @@
                       locals: { group: @group, parent_exam: exam, exam: Study::Exam.new, discipline: d } %>
           <% end %>
         </td>
-        <% if current_user.is?(:developer) %>
+        <% if current_user.is?(:developer) or !d.brs? or d.checkpoints.empty? %>
           <td><%= link_to  study_discipline_exam_path(d, exam), method: :delete,
                            class: 'delete btn btn-danger', title: 'Удалить предмет из учебного плана',
                            confirm: 'Вы уверены?' do %>
