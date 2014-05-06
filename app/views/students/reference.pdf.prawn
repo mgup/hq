@@ -6,7 +6,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   render 'pdf/header', pdf: pdf, title: ''
 
   pdf.move_down 15
-  pdf.font 'PT', size: 10 do
+  pdf.font_size 10 do
     pdf.text '127550, Москва, Прянишникова, 2а'
     pdf.text 'Тел.: (499) 976-39-73, факс: (499) 976-06-35'
     pdf.text 'e-mail: info@mgup.ru    www.mgup.ru'
@@ -16,8 +16,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   pdf.move_down 30
 
-  pdf.font 'PT', size: 16, style: :bold do
-    pdf.text "СПРАВКА № #{@reference.number} от «__» __________ 20____г.", align: :center
+  pdf.font_size 16 do
+    pdf.text "СПРАВКА № #{@reference.number} от «__» __________ 20____г.", align: :center, style: :bold
   end
 
 
@@ -28,7 +28,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   tax = params[:addTax] ? ", на #{@student.budget? ? 'бюджетной' : 'договорной'} основе обучения" : ''
 
-  pdf.font 'PT', size: 12 do
+  pdf.font_size 12 do
     pdf.move_down 40
     pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} действительно является студентом <u>#{@student.group.course}</u> курса <u>#{@student.group.support}</u> формы обучения <u>#{institute.join(' ')}</u> по #{@student.group.speciality.specialist? ? 'специальности' : 'направлению'} <u>#{@student.group.speciality.code}</u> - «<u>#{@student.group.speciality.name}»</u> ФГБОУ ВПО «Московский государственный университет печати имени Ивана Федорова»#{tax}.", inline_format: true
     pdf.move_down 25
@@ -77,7 +77,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
 
   pdf.bounding_box [pdf.bounds.left, pdf.bounds.bottom + 50], width: pdf.bounds.width do
-      pdf.font 'PT', size: 10 do
+      pdf.font_size 10 do
             pdf.text 'Исполнитель:'
             pdf.text "#{current_user.full_name}"
             pdf.text "Тел.: #{(current_user.is?(:student_hr) || current_user.is?(:student_hr_boss)) ? '+7 (499) 976-37-77' : current_user.phone}"

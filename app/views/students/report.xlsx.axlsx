@@ -1,0 +1,50 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
+style_spec = wb.styles.add_style sz: 12, alignment: { horizontal: :center, vertical: :center }
+[['очная', '101'], ['очно-заочная', '102'], ['заочная', '103']].each do |form|
+  wb.add_worksheet(name: "#{form[0]}") do |sheet|
+    line_1 = ['Курс', '']
+    line_2 = ['', '']
+    lines = []
+    Department.faculties.each do |f|
+      line_1 << f.abbreviation
+      f.specialities.each do |s|
+        line_2 << s.full_name
+      end
+    end
+
+  #last_line_1 = ['Всего', 'б']
+  #last_line_2 = ['Всего', 'к']
+  [1,2,3,4,5,6].each do |course|
+    [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
+      line = [course, budget[1]]
+      #index = 0
+      Department.faculties.each do |f|
+        f.specialities.each do |s|
+          x = Student.valid_student.filter(speciality: s, course: course, finance: budget[0], form: form).length
+          line << x
+          #if budget[0] == Student::PAYMENT_BUDGET
+          #  last_line_1[index+2] += x
+          #else
+          #  last_line_2[index+2] += x
+          #end
+          #index += 1
+        end
+      end
+      lines << line
+    end
+  end
+
+    sheet.add_row line_1
+    sheet.merge_cells("A1:A2")
+    sheet.merge_cells("B1:B2")
+    sheet.add_row line_2
+    lines.each do |l|
+      sheet.add_row l
+    end
+    #sheet["A1:J3"].each do |cell|
+    #  cell.style = style_shout
+    #end
+
+  end
+end

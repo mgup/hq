@@ -68,6 +68,10 @@ class StudentsController < ApplicationController
     end
   end
 
+  def report
+
+  end
+
   def petition
     respond_to do |format|
       format.pdf

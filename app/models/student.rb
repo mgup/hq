@@ -92,7 +92,7 @@ class Student < ActiveRecord::Base
   end
 
   scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_DEBTOR]) }
-
+  scope :valid_student, -> { where(student_group_status: STATUS_STUDENT)}
   scope :with_group, -> { joins(:group) }
 
   scope :off_budget, -> { where(student_group_tax: PAYMENT_OFF_BUDGET) }
