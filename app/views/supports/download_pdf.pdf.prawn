@@ -14,7 +14,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.text 'К. В. Антипову'
     pdf.text "от студента #{@student.group.course} курса #{@student.group.support} формы обучения"
     pdf.text "#{@student.group.speciality.faculty.abbreviation}, группы #{@student.group.name}"
-    pdf.font 'PT', size: 11, style: :bold do
+    pdf.font 'PTSerif', size: 11, style: :bold do
       pdf.text "#{@student.person.full_name(:rp)},"
     end
     pdf.text "#{support.birthday}"
@@ -45,7 +45,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   end
   pdf.move_down 30
   pdf.text "#{l(Date.today, format: '%d.%m.%Y')}                                                                                                                         ___________________ / ___________________"
-  pdf.font 'PT', size: 8 do
+  pdf.font 'PTSerif', size: 8 do
     pdf.indent 370 do
       pdf.text 'подпись                     расшифровка'
     end

@@ -74,7 +74,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   end
   pdf.move_down 20
   pdf.text "<strong>Члены комиссии</strong>                                                                                                                     _______________ (_______________)", inline_format: true
-  pdf.font 'PT', size: 7 do
+  pdf.font_size 7 do
      pdf.indent 385 do
        pdf.text 'подпись                   расшифровка'
      end
@@ -83,7 +83,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.indent 370 do
     pdf.text '_______________ (_______________)'
   end
-  pdf.font 'PT', size: 7 do
+  pdf.font_size 7 do
     pdf.indent 385 do
       pdf.text 'подпись                   расшифровка'
     end
@@ -92,7 +92,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.indent 370 do
       pdf.text '_______________ (_______________)'
     end
-    pdf.font 'PT', size: 7 do
+    pdf.font_size 7 do
       pdf.indent 385 do
         pdf.text 'подпись                   расшифровка'
       end
