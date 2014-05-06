@@ -1,4 +1,4 @@
-set :rvm_type, :system
+set :rvm_type, :user
 require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'dotenv/capistrano'

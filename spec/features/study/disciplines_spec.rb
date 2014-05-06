@@ -9,6 +9,7 @@ feature 'Просмотр дисциплин' do
     @user = create(:user, :lecturer)
     as_user(@user)
   end
+
   scenario 'Просмотр списка дисциплин' do
     discipline = create(:discipline, lead_teacher: @user, group: @group)
     visit study_disciplines_path
