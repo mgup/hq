@@ -32,7 +32,7 @@ gem 'prawn_rails'
 gem 'rqrcode'
 # gem 'squeel'
 gem 'nested_form', github: 'ryanb/nested_form'
-gem 'hairtrigger', '~> 0.2.5'
+# gem 'hairtrigger', '~> 0.2.5'
 gem 'axlsx_rails'
 gem 'acts_as_xlsx'
 gem 'ace-rails-ap'
@@ -73,7 +73,7 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  gem 'fuubar'
+  # gem 'fuubar'
 end
 
 group :development, :test do
