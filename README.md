@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/mgup/hq/badge.png?branch=master)](https://coveralls.io/r/mgup/hq?branch=master)
+
 == README
 
 This README would normally document whatever steps are necessary to get the
