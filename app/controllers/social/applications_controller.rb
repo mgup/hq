@@ -2,8 +2,8 @@ class Social::ApplicationsController < ApplicationController
   load_and_authorize_resource class: My::Support
 
   def index
-    params[:year]  ||= Date.today.year
-    params[:month] ||= Date.today.month
+    params[:year]  ||= 2014
+    params[:month] ||= 4
     params[:accepted] ||= 0
     params[:deferred] ||= 0
     params[:empty] ||= 0
@@ -44,8 +44,8 @@ class Social::ApplicationsController < ApplicationController
   end
 
   def lists
-    params[:year]  ||= Date.today.year
-    params[:month] ||= Date.today.month
+    params[:year]  ||= 2014
+    params[:month] ||= 4
     params[:accepted] ||= 0
     params[:deferred] ||= 0
 
@@ -63,19 +63,19 @@ class Social::ApplicationsController < ApplicationController
     params[:causes] ||= []
     params[:strict] ||= 0
 
-    unless params[:causes].empty?
+    unless params[:causes].empty? || params[:causes] == ['']
       @applications = @applications.with_causes(params[:causes], !params[:strict].to_i.zero?)
     end
 
     params[:lists] ||= []
-    unless params[:lists].empty?
+    unless params[:lists].empty? || params[:lists] == ['']
       @applications = @applications.send("list_#{params[:lists]}")
     end
   end
 
   def close_receipt
-    params[:year]  ||= Date.today.year
-    params[:month] ||= Date.today.month
+    params[:year]  ||= 2014
+    params[:month] ||= 4
     applications = @applications.where(support_year:  params[:year])
     applications = applications.where(support_month: params[:month])
     applications = applications.where(accepted: false)
@@ -89,8 +89,8 @@ class Social::ApplicationsController < ApplicationController
   end
 
   def print_list
-    params[:year]  ||= Date.today.year
-    params[:month] ||= Date.today.month
+    params[:year]  ||= 2014
+    params[:month] ||= 4
     params[:accepted] ||= 0
     params[:deferred] ||= 0
 
@@ -108,12 +108,12 @@ class Social::ApplicationsController < ApplicationController
     params[:causes] ||= []
     params[:strict] ||= 0
 
-    unless params[:causes].empty?
+    unless params[:causes].empty? || params[:causes] == ['']
       @applications = @applications.with_causes(params[:causes], !params[:strict].to_i.zero?)
     end
 
     params[:lists] ||= []
-    unless params[:lists].empty?
+    unless params[:lists].empty? || params[:lists] == ['']
       @applications = @applications.send("list_#{params[:lists]}")
     end
   end

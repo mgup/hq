@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140409055015) do
+ActiveRecord::Schema.define(version: 20140507091056) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -311,6 +311,13 @@ ActiveRecord::Schema.define(version: 20140409055015) do
 
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
   add_index "checkpoint_mark", ["checkpoint_mark_student"], name: "checkpoint_mark_student", using: :btree
+
+  create_table "choice_subject", force: true do |t|
+    t.string  "name",                 limit: 200
+    t.integer "graduate_subjects_id"
+  end
+
+  add_index "choice_subject", ["graduate_subjects_id"], name: "index_choice_subject_on_graduate_subjects_id", using: :btree
 
   create_table "curator_group", force: true do |t|
     t.date    "start_date"
@@ -816,6 +823,11 @@ ActiveRecord::Schema.define(version: 20140409055015) do
 
   add_index "flat", ["flat_hostel"], name: "flatHostel", using: :btree
 
+  create_table "graduate_choice_subject_student", force: true do |t|
+    t.integer "graduate_choice_subject_id"
+    t.integer "graduate_student_id"
+  end
+
   create_table "graduate_marks", force: true do |t|
     t.integer  "graduate_student_id"
     t.integer  "graduate_subject_id"
@@ -841,9 +853,10 @@ ActiveRecord::Schema.define(version: 20140409055015) do
     t.string   "name"
     t.integer  "kind"
     t.integer  "hours"
-    t.integer  "zet"
+    t.decimal  "zet",         precision: 19, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "choosingly",                           default: false, null: false
   end
 
   create_table "graduates", force: true do |t|
@@ -878,17 +891,18 @@ ActiveRecord::Schema.define(version: 20140409055015) do
 
   create_table "hostel_offense", force: true do |t|
     t.integer  "kind"
-    t.text     "description"
+    t.text     "description", limit: 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer   "hostel_payment_type",                null: false
-    t.integer   "hostel_payment_student",             null: false
-    t.timestamp "hostel_payment_date",                null: false
-    t.integer   "hostel_payment_sum",     default: 0, null: false
-    t.integer   "hostel_payment_year",                null: false
+    t.integer   "hostel_payment_type",                 null: false
+    t.integer   "hostel_payment_student",              null: false
+    t.timestamp "hostel_payment_date",                 null: false
+    t.integer   "hostel_payment_sum",      default: 0, null: false
+    t.integer   "hostel_payment_year",                 null: false
+    t.integer   "hostel_payment_semester",             null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -931,7 +945,7 @@ ActiveRecord::Schema.define(version: 20140409055015) do
   create_table "hostel_report_offense", force: true do |t|
     t.integer "hostel_report_id"
     t.integer "hostel_offense_id"
-    t.text    "details"
+    t.text    "details",           limit: 2147483647
   end
 
   add_index "hostel_report_offense", ["hostel_offense_id"], name: "index_hostel_report_offense_on_hostel_offense_id", using: :btree
@@ -1465,18 +1479,20 @@ ActiveRecord::Schema.define(version: 20140409055015) do
   add_index "subject_teacher", ["teacher_id"], name: "teacher_id", using: :btree
 
   create_table "support", primary_key: "support_id", force: true do |t|
-    t.integer "support_student",                                null: false
-    t.integer "support_year",                                   null: false
-    t.integer "support_month",                                  null: false
-    t.string  "support_pseries",     limit: 11, default: "",    null: false
-    t.string  "support_pnumber",     limit: 11, default: "",    null: false
-    t.text    "support_pdate",                                  null: false
-    t.text    "support_pdepartment",                            null: false
-    t.text    "support_pbirthday",                              null: false
-    t.text    "support_paddress",                               null: false
-    t.text    "support_pphone",                                 null: false
-    t.boolean "accepted",                       default: false
-    t.boolean "deferred",                       default: false
+    t.integer  "support_student",                                null: false
+    t.integer  "support_year",                                   null: false
+    t.integer  "support_month",                                  null: false
+    t.string   "support_pseries",     limit: 11, default: "",    null: false
+    t.string   "support_pnumber",     limit: 11, default: "",    null: false
+    t.text     "support_pdate",                                  null: false
+    t.text     "support_pdepartment",                            null: false
+    t.text     "support_pbirthday",                              null: false
+    t.text     "support_paddress",                               null: false
+    t.text     "support_pphone",                                 null: false
+    t.boolean  "accepted",                       default: false
+    t.boolean  "deferred",                       default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "support_cause", primary_key: "support_cause_id", force: true do |t|
@@ -1667,7 +1683,7 @@ ActiveRecord::Schema.define(version: 20140409055015) do
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
+CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1681,7 +1697,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
+CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1695,7 +1711,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
+CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1709,7 +1725,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
+CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(OLD.mark_student_group, OLD.mark_exam);
@@ -1718,7 +1734,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
+CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
@@ -1727,7 +1743,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
+CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
@@ -1736,7 +1752,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
+CREATE DEFINER = root@localhost TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
 FOR EACH ROW
 BEGIN
     
@@ -1758,7 +1774,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER student_before_update_row_tr BEFORE UPDATE ON student
+CREATE DEFINER = root@localhost TRIGGER student_before_update_row_tr BEFORE UPDATE ON student
 FOR EACH ROW
 BEGIN
     IF NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
@@ -1783,7 +1799,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
+CREATE DEFINER = root@localhost TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
 FOR EACH ROW
 BEGIN
     
@@ -1805,7 +1821,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
+CREATE DEFINER = root@localhost TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
 FOR EACH ROW
 BEGIN
     IF NEW.user_fname <> OLD.user_fname OR NEW.user_iname <> OLD.user_iname OR
