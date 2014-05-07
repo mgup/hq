@@ -38,7 +38,7 @@ feature 'Вывод списка группы для ввода оценок' do
   end
 
   scenario 'если практика, должна быть форма под практику' do
-    visit study_discipline_checkpoint_marks_path(@discipline, @lecture)
+    visit study_discipline_checkpoint_marks_path(@discipline, @practical)
     page.should have_css "input[value='#{Study::Mark::MARK_PRACTICAL_BAD}']"
     page.should have_css "input[value='#{Study::Mark::MARK_PRACTICAL_FAIR}']"
     page.should have_css "input[value='#{Study::Mark::MARK_PRACTICAL_GOOD}']"

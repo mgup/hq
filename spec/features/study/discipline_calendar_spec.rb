@@ -2,16 +2,8 @@ require 'spec_helper'
 
 feature 'Вывод списка группы для ввода оценок' do
   background 'Преподаватель' do
-    # понять, куда это перенести
-    @fd = create(:department, name: 'First Department', abbreviation: 'FD', department_role: 'faculty')
-    ffs = create(:speciality, name: 'Empty', suffix: 'fdf', faculty: @fd)
-    @fss = create(:speciality, name: 'First department second speciality', faculty: @fd)
-    @group = create(:group, speciality: @fss)
-
-    @user = create(:user, :lecturer)
-    as_user(@user)
-    @discipline = create(:discipline, semester: 2, year: 2013, lead_teacher: @user, group: @group)
-    create(:exam, :final, discipline: @discipline)
+    @discipline = create(:discipline, semester: 2, year: 2013)
+    as_user(@discipline.lead_teacher)
   end
 
   scenario 'если нет контрольных точек, должен перенаправлять на календарь' do
@@ -20,20 +12,20 @@ feature 'Вывод списка группы для ввода оценок' do
     within 'h1' do
       page.should have_content 'Расписание занятий и контрольных точек'
     end
-    page.should have_content @group.name
+    page.should have_content @discipline.group.name
     page.should have_content @discipline.name
     page.should have_css '.semester-calendar'
   end
 
   scenario 'если осенний семестр, должен выводить календарь с сентября по декабрь' do
-    autumn_discipline = create(:discipline, semester: 1, lead_teacher: @user, group: @group)
+    autumn_discipline = create(:discipline, semester: 1)
     visit study_discipline_checkpoints_path(autumn_discipline)
     page.should have_content 'сент.'
     page.should have_content 'дек.'
   end
 
   scenario 'если весенний семестр, должен выводить календарь с января по июнь' do
-    spring_discipline = create(:discipline, semester: 2, lead_teacher: @user, group: @group)
+    spring_discipline = create(:discipline, semester: 2)
     visit study_discipline_checkpoints_path(spring_discipline)
     page.should have_content 'янв.'
     page.should have_content 'июня'

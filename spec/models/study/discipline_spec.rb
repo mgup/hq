@@ -63,8 +63,6 @@ describe Study::Discipline do
     it 'обязательное присутствие ведущего преподавателя' do
       should validate_presence_of(:lead_teacher)
     end
-    it 'обязательное присутствие главной финальной формы контроля' do
-      should validate_presence_of(:final_exam)
-    end
+
   end
 end
