@@ -207,17 +207,6 @@ describe Study::DisciplinesController do
       end
     end
 
-    describe 'при сохранении изменений в чужую дисциплину' do
-      it 'должен получать ошибку ActiveRecord::RecordNotFound' do
-        discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
-        attrs = discipline.attributes
-        attrs[:subject_name] = 'Новое название'
-        expect {
-          put :update, id: discipline.id, study_discipline: attrs
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
     describe 'при удалении своей дисциплины' do
       before :each do
         @discipline = create(:discipline, lead_teacher: @user)
