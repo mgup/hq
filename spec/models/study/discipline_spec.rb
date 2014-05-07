@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Study::Discipline do
-  it 'должен обладать валидной фабрикой' do
+  it 'должен обладать валидной фабрикой (через финальный экзамен)' do
     build(:discipline).should be_valid
   end
 
@@ -60,11 +60,9 @@ describe Study::Discipline do
     it 'обязательное присутствие группы' do
       should validate_presence_of(:group)
     end
+
     it 'обязательное присутствие ведущего преподавателя' do
       should validate_presence_of(:lead_teacher)
-    end
-    it 'обязательное присутствие главной финальной формы контроля' do
-      should validate_presence_of(:final_exam)
     end
   end
 end

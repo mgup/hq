@@ -9,6 +9,11 @@ FactoryGirl.define do
     association :group
     association :lead_teacher, factory: [:user, :lecturer]
 
+    # before(:create) do |discipline|
+    #   # raise discipline.final_exam.inspect
+    #   discipline.final_exam = create(:exam, :final) if discipline.final_exam.nil?
+    # end
+
     # association :final_exam,   factory: [:exam, :final]
 
     # after(:create) do |discipline|
