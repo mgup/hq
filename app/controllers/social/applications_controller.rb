@@ -2,10 +2,8 @@ class Social::ApplicationsController < ApplicationController
   load_and_authorize_resource class: My::Support
 
   def index
-    #params[:year]  ||= Date.today.year
-    #params[:month] ||= Date.today.month
-    params[:year]  ||= 2013
-    params[:month] ||= 12
+    params[:year]  ||= Date.today.year
+    params[:month] ||= Date.today.month
     params[:accepted] ||= 0
     params[:deferred] ||= 0
     params[:empty] ||= 0
@@ -34,7 +32,7 @@ class Social::ApplicationsController < ApplicationController
     params[:causes] ||= []
     params[:strict] ||= 0
 
-    unless params[:causes].empty?
+    unless params[:causes].empty? || params[:causes] == ['']
       @applications = @applications.with_causes(params[:causes], !params[:strict].to_i.zero?)
     end
 

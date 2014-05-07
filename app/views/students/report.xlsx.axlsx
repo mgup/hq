@@ -1,45 +1,180 @@
 wb = xlsx_package.workbook
 style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
 style_spec = wb.styles.add_style sz: 12, alignment: { horizontal: :center, vertical: :center }
-[['очная', '101'], ['очно-заочная', '102'], ['заочная', '103']].each do |form|
-  wb.add_worksheet(name: "#{form[0]}") do |sheet|
-    line_1 = ['Курс', '']
-    line_2 = ['', '']
-    lines = []
-    Department.faculties.each do |f|
-      line_1 << f.abbreviation
-      f.specialities.each do |s|
-        line_2 << s.full_name
-      end
-    end
 
-  #last_line_1 = ['Всего', 'б']
-  #last_line_2 = ['Всего', 'к']
-  [1,2,3,4,5,6].each do |course|
-    [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
-      line = [course, budget[1]]
-      #index = 0
-      Department.faculties.each do |f|
-        f.specialities.each do |s|
-          x = Student.valid_student.filter(speciality: s, course: course, finance: budget[0], form: form).length
-          line << x
-          #if budget[0] == Student::PAYMENT_BUDGET
-          #  last_line_1[index+2] += x
-          #else
-          #  last_line_2[index+2] += x
-          #end
-          #index += 1
-        end
-      end
-      lines << line
+# Эксперименты с отчётами по контингенту
+
+# очная, очно-заочная, заочная формы
+  #  line_1 = ['Курс', '']
+  #  line_2 = ['', '']
+  #  lines = []
+  #  Department.includes(:specialities).faculties.each do |f|
+  #    line_1 << f.abbreviation
+  #    f.specialities.each do |s|
+  #      line_2 << s.full_name
+  #    end
+  #  end
+  #
+  #  worksheets = []
+  #    lines = []
+  #  [['очная', '101'], ['очно-заочная', '102'], ['заочная', '103']].each_with_index do |form, index|
+  #    lines[index] = []
+  #    [1,2,3,4,5,6].each do |course|
+  #      ['б', 'к'].each do |budget|
+  #        lines[index] << [course, budget]
+  #      end
+  #    end
+  #  end
+  #  Department.includes(:specialities).faculties.each do |f|
+  #    f.specialities.each_with_index do |s, index|
+  #      [1,2,3,4,5,6].each do |course|
+  #        [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
+  #          [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
+  #            lines[i][(course-1)*2+(budget[0]%2)] << Student.unscoped.valid_student.filter(speciality: s, course: course, finance: budget[0], form: form[1]).length
+  #          end
+  #        end
+  #      end
+  #    end
+  #  end
+  #
+  #[['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
+  #  worksheets << [form[0], lines[i]]
+  #end
+  #
+  #
+  #worksheets.each do |wh|
+  #  wb.add_worksheet(name: "#{wh[0]}") do |sheet|
+  #    sheet.add_row line_1
+  #    sheet.merge_cells("A1:A2")
+  #    sheet.merge_cells("B1:B2")
+  #    sheet.add_row line_2
+  #    wh[1].each do |l|
+  #      sheet.add_row l
+  #    end
+  #    #sheet["A1:J3"].each do |cell|
+  #    #  cell.style = style_shout
+  #    #end
+  #
+  #  end
+  #end
+
+
+# Магистратура
+#line_1 = ['Курс', '']
+#line_2 = ['', '']
+#lines = []
+#Department.includes(:specialities).faculties.each do |f|
+#  line_1 << f.abbreviation
+#  f.specialities.masters.each do |s|
+#    line_2 << s.full_name
+#  end
+#end
+#
+#lines = []
+#[1,2].each do |course|
+#  ['б', 'к'].each do |budget|
+#    lines << [course, budget]
+#  end
+#end
+#
+#Department.includes(:specialities).faculties.each do |f|
+#  f.specialities.masters.each_with_index do |s, index|
+#    [1,2].each do |course|
+#      [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
+#        lines[(course-1)*2+(budget[0]%2)] << Student.unscoped.valid_student.filter(speciality: s, course: course, finance: budget[0]).length
+#      end
+#    end
+#  end
+#end
+#
+#wb.add_worksheet(name: 'магистры') do |sheet|
+#  sheet.add_row line_1
+#  sheet.merge_cells("A1:A2")
+#  sheet.merge_cells("B1:B2")
+#  sheet.add_row line_2
+#  lines.each do |line|
+#    sheet.add_row line
+#  end
+#end
+
+# Дистанционное
+#line_1 = ['Курс', '']
+#line_2 = ['', '']
+#lines = []
+#Department.includes(:specialities).faculties.each do |f|
+#  line_1 << f.abbreviation
+#  f.specialities.each do |s|
+#    line_2 << s.full_name
+#  end
+#end
+#
+#lines = []
+#[1,2,3,4,5,6].each do |course|
+#  lines << [course, '']
+#end
+#
+#Department.includes(:specialities).faculties.each do |f|
+#  f.specialities.each do |s|
+#    [1,2,3,4,5,6].each do |course|
+#      lines[(course-1)] << Student.unscoped.valid_student.filter(speciality: s, course: course, form: Group::FORM_DISTANCE).length
+#    end
+#  end
+#end
+#
+#wb.add_worksheet(name: 'дистанционное') do |sheet|
+#  sheet.add_row line_1
+#  sheet.merge_cells("A1:A2")
+#  sheet.merge_cells("B1:B2")
+#  sheet.add_row line_2
+#  lines.each do |line|
+#    sheet.add_row line
+#  end
+#end
+
+# Второе высшее
+  line_1 = ['Курс', '']
+  line_2 = ['', '']
+  Department.includes(:specialities).faculties.each do |f|
+    line_1 << f.abbreviation
+    f.specialities.each do |s|
+      line_2 << s.full_name
     end
   end
 
+  worksheets = []
+  lines = []
+  [['очная', '101'], ['очно-заочная', '102'], ['заочная', '103']].each_with_index do |form, index|
+    lines[index] = []
+    [1,2,3,4,5,6].each do |course|
+      ['б', 'к'].each do |budget|
+        lines[index] << [course, budget]
+      end
+    end
+  end
+  Department.includes(:specialities).faculties.each do |f|
+    f.specialities.each_with_index do |s, index|
+      [1,2,3,4,5,6].each do |course|
+        [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
+          [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
+            lines[i][(course-1)*2+(budget[0]%2)] << Student.unscoped.second_higher.valid_student.filter(speciality: s, course: course, finance: budget[0], form: form[1]).length
+          end
+        end
+      end
+    end
+  end
+
+[['очная (второе высшее)', 101], ['очно-заочная (второе высшее)', 102], ['заочная (второе высшее)', 103]].each_with_index do |form, i|
+  worksheets << [form[0], lines[i]]
+end
+
+
+worksheets.each do |wh|
+  wb.add_worksheet(name: "#{wh[0]}") do |sheet|
     sheet.add_row line_1
     sheet.merge_cells("A1:A2")
     sheet.merge_cells("B1:B2")
     sheet.add_row line_2
-    lines.each do |l|
+    wh[1].each do |l|
       sheet.add_row l
     end
     #sheet["A1:J3"].each do |cell|
@@ -48,3 +183,4 @@ style_spec = wb.styles.add_style sz: 12, alignment: { horizontal: :center, verti
 
   end
 end
+

@@ -98,6 +98,8 @@ class Student < ActiveRecord::Base
   scope :off_budget, -> { where(student_group_tax: PAYMENT_OFF_BUDGET) }
   scope :entrants, -> { where(student_group_status: 100) }
 
+  scope :second_higher, -> { where(student_group_group: Group.second_higher) }
+
   scope :filter, -> filters {
     cond = all
 

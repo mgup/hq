@@ -39,7 +39,8 @@
   <div class="form-group">
     <div class="col-sm-12">
       <%= multiselect_tag :causes, title: 'Причины', collection: My::SupportCause.all,
-                          value: :id, text: :title, current: params[:causes].map(&:to_i),
+                          value: :id, text: :title,
+                          current: (params[:causes].map(&:to_i) == [0] ? [] : params[:causes].map(&:to_i)),
                           pl1: 'Выбрана %c причина',
                           pl2: 'Выбраны %c причины',
                           pl5: 'Выбрано %c причин' %>

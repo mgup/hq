@@ -35,6 +35,8 @@ class Group < ActiveRecord::Base
     joins(:speciality).where(speciality: { speciality_faculty: faculty })
   }
 
+  scope :second_higher, -> {where(group_second_higher: true)}
+
   scope :filter, -> filters {
     [:speciality, :course, :form, :faculty].inject(all) do |cond, field|
       if filters.include?(field) && !filters[field].empty?
