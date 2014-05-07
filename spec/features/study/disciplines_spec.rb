@@ -37,7 +37,7 @@ feature 'Просмотр дисциплин' do
   end
   scenario 'Внесение данных для дисциплины с контрольными точками' do
     discipline = create(:discipline, lead_teacher: @user, group: @group)
-    control = create(:checkpoint, :checkpoint_control, discipline: discipline)
+    control = create(:checkpoint, :control, discipline: discipline)
     visit study_disciplines_path
     page.should have_selector '.add_marks .glyphicon-list-alt'
     click_link 'Внести данные'
@@ -61,7 +61,7 @@ feature 'Просмотр дисциплин' do
   end
   scenario 'Нельзя удалить дисциплину с контрольными точками' do
     discipline = create(:discipline, lead_teacher: @user, group: @group)
-    create(:checkpoint, :checkpoint_control, discipline: discipline)
+    create(:checkpoint, :control, discipline: discipline)
     visit study_disciplines_path
     page.should_not have_selector '.delete_empty_discipline'
   end
