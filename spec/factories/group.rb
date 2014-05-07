@@ -10,5 +10,10 @@ FactoryGirl.define do
    	form           { 101 + rand(3) }
     group_active { true }
     association :speciality, factory: :speciality, strategy: :build
+    #students {
+    #  Array(5..10).sample.times.map do
+    #    FactoryGirl.create(:student)
+    #  end
+    #}
    end
 end

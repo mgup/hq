@@ -24,7 +24,7 @@ class Group < ActiveRecord::Base
   #has_one :current_curator, through: :current_curator_group, class_name: User, foreign_key: :user_id
 
   default_scope do
-    includes(speciality: :faculty).where('group_speciality != 1')
+    includes(speciality: :faculty)
     .order('group_name ASC, group_course ASC, group_number ASC')
   end
 

@@ -15,7 +15,7 @@ describe Study::MarksController do
       before :each do
         @mark = create(:mark, :checkpoint_mark,  student: @student,
                                          checkpoint: @checkpoint)
-        get :index, discipline_id: @discipline, checkpoint_id: @checkpoint
+        get :index, discipline_id: @discipline.id, checkpoint_id: @checkpoint.id
       end
 
       it 'должен выполняться успешно' do
