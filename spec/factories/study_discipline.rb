@@ -7,7 +7,7 @@ FactoryGirl.define do
     subject_name      { Faker::Lorem.sentence }
     subject_brs { true }
     association :group
-    association :lead_teacher, factory: :user
+    association :lead_teacher, factory: [:user, :lecturer]
 
     # association :final_exam,   factory: [:exam, :final]
 

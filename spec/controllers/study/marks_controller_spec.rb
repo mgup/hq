@@ -33,7 +33,8 @@ describe Study::MarksController do
       context 'если переданы параметры,' do
         before :each do
           post :create, discipline_id: @discipline, checkpoint_id: @checkpoint,
-               marks: [{mark: 2001, student: @other_student.id}, {mark: 2004, student: @student.id}]
+               marks: [{mark: 2001, student: @other_student.id},
+                       {mark: 2004, student: @student.id}]
         end
 
         it 'оценки должны сохраняться' do

@@ -6,15 +6,15 @@ FactoryGirl.define do
     student
     checkpoint_mark_submitted { DateTime.now }
 
-    trait :lecture_mark do
+    trait :lecture do
       mark { 1001 + rand(1) }
     end
 
-    trait :practical_mark do
+    trait :practical do
       mark { 2001 + rand(1) }
     end
 
-    trait :checkpoint_mark do
+    trait :checkpoint do
       mark { rand(80) }
     end
   end

@@ -13,13 +13,13 @@ feature 'Ввод оценок за занятия' do
     as_user(@user)
     @discipline = create(:discipline, lead_teacher: @user, group: @group)
     create(:exam, :final, discipline: @discipline)
-    @checkpoint =  create(:checkpoint, :checkpoint_control, discipline: @discipline)
+    @checkpoint =  create(:checkpoint, :control, discipline: @discipline)
     @lecture = create(:checkpoint, :lecture, discipline: @discipline)
     @practical = create(:checkpoint, :practical, discipline: @discipline)
   end
 
   scenario 'если лекция, должна отображаться правильная оценка' do
-    mark = create(:mark, :lecture_mark, student: @student, checkpoint: @lecture)
+    mark = create(:mark, :lecture, student: @student, checkpoint: @lecture)
     visit study_discipline_checkpoint_marks_path(@discipline, @lecture)
     within "span.label-#{mark.result[:color]}" do
       page.should have_content mark.result[:mark]
@@ -27,7 +27,7 @@ feature 'Ввод оценок за занятия' do
   end
 
   scenario 'если практика, должна отображаться правильная оценка' do
-    mark = create(:mark, :practical_mark, student: @student, checkpoint: @practical)
+    mark = create(:mark, :practical, student: @student, checkpoint: @practical)
     visit study_discipline_checkpoint_marks_path(@discipline, @practical)
     within "span.label-#{mark.result[:color]}" do
       page.should have_content mark.result[:mark]
@@ -35,7 +35,7 @@ feature 'Ввод оценок за занятия' do
   end
 
   scenario 'если контрольная точка, должна отображаться правильная оценка' do
-    mark = create(:mark, :checkpoint_mark, student: @student, checkpoint: @checkpoint)
+    mark = create(:mark, :checkpoint, student: @student, checkpoint: @checkpoint)
     visit study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
     within 'span.label' do
       page.should have_content "#{mark.mark} из #{@checkpoint.max}"
@@ -43,13 +43,13 @@ feature 'Ввод оценок за занятия' do
   end
 
   scenario 'форма должна быть спрятана', js: true, driver: :webkit do
-    create(:mark, :lecture_mark, student: @student, checkpoint: @lecture)
+    create(:mark, :lecture, student: @student, checkpoint: @lecture)
     visit study_discipline_checkpoint_marks_path(@discipline, @lecture)
     page.should have_css('.editMarkField', visible: false)
   end
 
   scenario 'при нажатии на "Редактировать" должна появляться форма', js: true, driver: :webkit do
-    create(:mark, :lecture_mark, student: @student, checkpoint: @lecture)
+    create(:mark, :lecture, student: @student, checkpoint: @lecture)
     visit study_discipline_checkpoint_marks_path(@discipline, @lecture)
     click_button 'Редактировать'
     within '.editMarkButton' do
@@ -59,7 +59,7 @@ feature 'Ввод оценок за занятия' do
   end
 
   scenario 'при редактировании должна сохраняться новая оценка с полем retake', js: true, driver: :webkit do
-    mark = create(:mark, :checkpoint_mark, student: @student, checkpoint: @checkpoint)
+    mark = create(:mark, :checkpoint, student: @student, checkpoint: @checkpoint)
     visit study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
     fill_in 'study_checkpoint[marks_attributes][1][mark]', with: 60
     click_button 'Сохранить'
@@ -69,7 +69,7 @@ feature 'Ввод оценок за занятия' do
   end
 
   scenario 'при вводе некорректных данных должно появляться предупреждение', js: true, driver: :webkit do
-    mark = create(:mark, :checkpoint_mark, student: @student, checkpoint: @checkpoint)
+    mark = create(:mark, :checkpoint, student: @student, checkpoint: @checkpoint)
     visit study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
     click_button 'Редактировать'
     fill_in 'study_checkpoint[marks_attributes][0][mark]', with: 160
@@ -78,7 +78,7 @@ feature 'Ввод оценок за занятия' do
   end
 
   scenario 'при редактировании должна сохраняться новая оценка с полем retake', js: true, driver: :webkit do
-    mark = create(:mark, :checkpoint_mark, student: @student, checkpoint: @checkpoint)
+    mark = create(:mark, :checkpoint, student: @student, checkpoint: @checkpoint)
     @other_student = create(:student, group: @group)
     visit study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
     fill_in 'study_checkpoint[marks_attributes][1][mark]', with: 60
