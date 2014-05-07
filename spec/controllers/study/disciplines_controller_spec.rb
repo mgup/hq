@@ -140,15 +140,6 @@ describe Study::DisciplinesController do
       end
     end
 
-    describe 'при редактировании чужой дисциплины' do
-      it 'должен получать ошибку ActiveRecord::RecordNotFound' do
-        discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
-        expect {
-          get :edit, id: discipline.id
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
     describe 'при сохранении изменений в дисциплину' do
       context 'при отсутствии ошибок в данных дисциплины' do
         before :each do
@@ -213,17 +204,6 @@ describe Study::DisciplinesController do
           #put :update, id: @discipline, study_discipline: @discipline_attrs
           #should render_template 'study/checkpoints/new'
         end
-      end
-    end
-
-    describe 'при сохранении изменений в чужую дисциплину' do
-      it 'должен получать ошибку ActiveRecord::RecordNotFound' do
-        discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
-        attrs = discipline.attributes
-        attrs[:subject_name] = 'Новое название'
-        expect {
-          put :update, id: discipline.id, study_discipline: attrs
-        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 

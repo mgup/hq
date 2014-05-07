@@ -277,8 +277,8 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.string   "checkpoint_name",    limit: 200,  default: ""
     t.string   "checkpoint_details", limit: 1000
     t.date     "checkpoint_date",                              null: false
-    t.integer  "checkpoint_min",                  default: 0
-    t.integer  "checkpoint_max",                  default: 0
+    t.integer  "checkpoint_min",                  default: 0,  null: false
+    t.integer  "checkpoint_max",                  default: 0,  null: false
     t.integer  "checkpoint_closed",               default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -300,13 +300,13 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "checkpoint_bck", ["checkpoint_subject"], name: "checkpoint_subject", using: :btree
 
   create_table "checkpoint_mark", primary_key: "checkpoint_mark_id", force: true do |t|
-    t.integer  "checkpoint_mark_checkpoint",                 null: false
-    t.integer  "checkpoint_mark_student",                    null: false
-    t.integer  "checkpoint_mark_mark",                       null: false
-    t.datetime "checkpoint_mark_submitted",                  null: false
-    t.boolean  "checkpoint_mark_retake",     default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer   "checkpoint_mark_checkpoint",                 null: false
+    t.integer   "checkpoint_mark_student",                    null: false
+    t.integer   "checkpoint_mark_mark",                       null: false
+    t.timestamp "checkpoint_mark_submitted",                  null: false
+    t.boolean   "checkpoint_mark_retake",     default: false, null: false
+    t.datetime  "created_at"
+    t.datetime  "updated_at"
   end
 
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
@@ -400,16 +400,16 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "document", primary_key: "document_id", force: true do |t|
-    t.integer  "document_type",                                     null: false
-    t.text     "document_number",      limit: 16777215,             null: false
-    t.integer  "document_signed",      limit: 1
-    t.datetime "document_create_date",                              null: false
-    t.date     "document_expire_date",                              null: false
-    t.integer  "document_juridical",   limit: 1,        default: 0, null: false
-    t.string   "document_department",  limit: 400
-    t.date     "document_start_date"
-    t.string   "document_name",        limit: 400
-    t.integer  "document_eternal",                      default: 0
+    t.integer   "document_type",                                     null: false
+    t.text      "document_number",      limit: 16777215,             null: false
+    t.integer   "document_signed",      limit: 1
+    t.timestamp "document_create_date",                              null: false
+    t.date      "document_start_date"
+    t.date      "document_expire_date",                              null: false
+    t.integer   "document_juridical",   limit: 1,        default: 0, null: false
+    t.string    "document_department",  limit: 400
+    t.string    "document_name",        limit: 400
+    t.integer   "document_eternal",                      default: 0
   end
 
   create_table "document_meta", primary_key: "document_meta_id", force: true do |t|
@@ -762,13 +762,13 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "finance_payment", primary_key: "finance_payment_id", force: true do |t|
-    t.integer  "finance_payment_type",                                                               null: false
-    t.integer  "finance_payment_student_group",                                                      null: false
-    t.datetime "finance_payment_date",                                                               null: false
-    t.decimal  "finance_payment_sum",                        precision: 9, scale: 2
-    t.boolean  "finance_payment_deleted",                                            default: false, null: false
-    t.integer  "finance_payment_user"
-    t.string   "finance_payment_comment",       limit: 1000
+    t.integer   "finance_payment_type",                                                               null: false
+    t.integer   "finance_payment_student_group",                                                      null: false
+    t.timestamp "finance_payment_date",                                                               null: false
+    t.decimal   "finance_payment_sum",                        precision: 9, scale: 2
+    t.boolean   "finance_payment_deleted",                                            default: false, null: false
+    t.integer   "finance_payment_user"
+    t.string    "finance_payment_comment",       limit: 1000
   end
 
   add_index "finance_payment", ["finance_payment_student_group"], name: "speciality_payment_student_group", using: :btree
@@ -884,11 +884,11 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer  "hostel_payment_type",                null: false
-    t.integer  "hostel_payment_student",             null: false
-    t.datetime "hostel_payment_date",                null: false
-    t.integer  "hostel_payment_sum",     default: 0, null: false
-    t.integer  "hostel_payment_year",                null: false
+    t.integer   "hostel_payment_type",                null: false
+    t.integer   "hostel_payment_student",             null: false
+    t.timestamp "hostel_payment_date",                null: false
+    t.integer   "hostel_payment_sum",     default: 0, null: false
+    t.integer   "hostel_payment_year",                null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -954,12 +954,12 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "hostel_report_offense_student", ["student_id"], name: "index_hostel_report_offense_student_on_student_id", using: :btree
 
   create_table "log", primary_key: "log_id", force: true do |t|
-    t.datetime "log_timestamp",                          null: false
-    t.integer  "log_priority",  limit: 1,                null: false
-    t.integer  "log_user"
-    t.string   "log_message",   limit: 500, default: "", null: false
-    t.integer  "log_type"
-    t.integer  "log_object"
+    t.timestamp "log_timestamp",                          null: false
+    t.integer   "log_priority",  limit: 1,                null: false
+    t.integer   "log_user"
+    t.string    "log_message",   limit: 500, default: "", null: false
+    t.integer   "log_type"
+    t.integer   "log_object"
   end
 
   add_index "log", ["log_user"], name: "log_user", using: :btree
@@ -1005,20 +1005,20 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "optional_select", ["optional_select_student"], name: "optional_select_student", using: :btree
 
   create_table "order", primary_key: "order_id", force: true do |t|
-    t.string   "order_number",       limit: 200
-    t.integer  "order_revision",                 default: 1, null: false
-    t.integer  "order_department"
-    t.integer  "order_responsible"
-    t.datetime "order_editing",                              null: false
-    t.datetime "order_signing"
-    t.integer  "order_status",                   default: 1, null: false
-    t.text     "order_xsl_content"
-    t.integer  "order_xsl_template"
-    t.integer  "order_template",                             null: false
-    t.integer  "order_cfaculty",                 default: 1, null: false
-    t.integer  "order_sign"
-    t.integer  "order_introduce"
-    t.string   "order_endorsement",  limit: 300
+    t.string    "order_number",       limit: 200
+    t.integer   "order_revision",                 default: 1, null: false
+    t.integer   "order_department"
+    t.integer   "order_responsible"
+    t.timestamp "order_editing",                              null: false
+    t.datetime  "order_signing"
+    t.integer   "order_status",                   default: 1, null: false
+    t.text      "order_xsl_content"
+    t.integer   "order_xsl_template"
+    t.integer   "order_template",                             null: false
+    t.integer   "order_cfaculty",                 default: 1, null: false
+    t.integer   "order_sign"
+    t.integer   "order_introduce"
+    t.string    "order_endorsement",  limit: 300
   end
 
   add_index "order", ["order_template"], name: "order_template", using: :btree
@@ -1053,9 +1053,9 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "order_student", ["order_student_student_group_id"], name: "order_student_student_group_id", using: :btree
 
   create_table "order_xsl", primary_key: "order_xsl_id", force: true do |t|
-    t.integer  "order_xsl_template", null: false
-    t.text     "order_xsl_content",  null: false
-    t.datetime "order_xsl_time",     null: false
+    t.integer   "order_xsl_template", null: false
+    t.text      "order_xsl_content",  null: false
+    t.timestamp "order_xsl_time",     null: false
   end
 
   add_index "order_xsl", ["order_xsl_template"], name: "order_xsl_template", using: :btree
@@ -1065,9 +1065,9 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "post", primary_key: "post_id", force: true do |t|
-    t.string   "post_title", limit: 100, null: false
-    t.text     "post_text",              null: false
-    t.datetime "post_time",              null: false
+    t.string    "post_title", limit: 100, null: false
+    t.text      "post_text",              null: false
+    t.timestamp "post_time",              null: false
   end
 
   create_table "ratings", force: true do |t|
@@ -1103,6 +1103,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.integer  "user_id"
     t.decimal  "wage_rate",        precision: 10, scale: 2
     t.boolean  "untouchable",                               default: false
+    t.boolean  "subdepartment",                             default: false
     t.boolean  "has_report"
     t.decimal  "credits",          precision: 10, scale: 0
     t.decimal  "previous_premium", precision: 10, scale: 0
@@ -1225,13 +1226,13 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "speciality", ["speciality_faculty"], name: "specialityFaculty", using: :btree
 
   create_table "speciality_payment", primary_key: "speciality_payment_id", force: true do |t|
-    t.integer  "speciality_payment_type",                                                               null: false
-    t.integer  "speciality_payment_student_group",                                                      null: false
-    t.datetime "speciality_payment_date",                                                               null: false
-    t.decimal  "speciality_payment_sum",                        precision: 9, scale: 2
-    t.boolean  "speciality_payment_deleted",                                            default: false, null: false
-    t.integer  "speciality_payment_user"
-    t.string   "speciality_payment_comment",       limit: 1000
+    t.integer   "speciality_payment_type",                                                               null: false
+    t.integer   "speciality_payment_student_group",                                                      null: false
+    t.timestamp "speciality_payment_date",                                                               null: false
+    t.decimal   "speciality_payment_sum",                        precision: 9, scale: 2
+    t.boolean   "speciality_payment_deleted",                                            default: false, null: false
+    t.integer   "speciality_payment_user"
+    t.string    "speciality_payment_comment",       limit: 1000
   end
 
   add_index "speciality_payment", ["speciality_payment_student_group"], name: "speciality_payment_student_group", using: :btree
@@ -1519,10 +1520,10 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "sushnevo_payment", primary_key: "sushnevo_payment_id", force: true do |t|
-    t.integer  "sushnevo_payment_type",                                           null: false
-    t.integer  "sushnevo_payment_resident",                                       null: false
-    t.datetime "sushnevo_payment_date",                                           null: false
-    t.decimal  "sushnevo_payment_sum",      precision: 9, scale: 2, default: 0.0, null: false
+    t.integer   "sushnevo_payment_type",                                           null: false
+    t.integer   "sushnevo_payment_resident",                                       null: false
+    t.timestamp "sushnevo_payment_date",                                           null: false
+    t.decimal   "sushnevo_payment_sum",      precision: 9, scale: 2, default: 0.0, null: false
   end
 
   create_table "sushnevo_payment_type", primary_key: "sushnevo_payment_type_id", force: true do |t|
@@ -1551,19 +1552,19 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "sushnevo_resident", primary_key: "sushnevo_resident_id", force: true do |t|
-    t.integer  "sushnevo_resident_person_id",                                                    null: false
-    t.integer  "sushnevo_resident_room",                                                         null: false
-    t.integer  "sushnevo_resident_status",                                           default: 1, null: false
-    t.datetime "sushnevo_resident_startdate"
-    t.integer  "sushnevo_resident_startpart",                                                    null: false
-    t.datetime "sushnevo_resident_enddate"
-    t.integer  "sushnevo_resident_endpart",                                                      null: false
-    t.integer  "sushnevo_resident_flag_group",                                       default: 0, null: false
-    t.integer  "sushnevo_resident_parent_group"
-    t.string   "sushnevo_resident_permit_series",  limit: 1
-    t.integer  "sushnevo_resident_permit_number"
-    t.datetime "sushnevo_resident_statement_time",                                               null: false
-    t.decimal  "sushnevo_resident_balance",                  precision: 9, scale: 2,             null: false
+    t.integer   "sushnevo_resident_person_id",                                                    null: false
+    t.integer   "sushnevo_resident_room",                                                         null: false
+    t.integer   "sushnevo_resident_status",                                           default: 1, null: false
+    t.datetime  "sushnevo_resident_startdate"
+    t.integer   "sushnevo_resident_startpart",                                                    null: false
+    t.datetime  "sushnevo_resident_enddate"
+    t.integer   "sushnevo_resident_endpart",                                                      null: false
+    t.integer   "sushnevo_resident_flag_group",                                       default: 0, null: false
+    t.integer   "sushnevo_resident_parent_group"
+    t.string    "sushnevo_resident_permit_series",  limit: 1
+    t.integer   "sushnevo_resident_permit_number"
+    t.timestamp "sushnevo_resident_statement_time",                                               null: false
+    t.decimal   "sushnevo_resident_balance",                  precision: 9, scale: 2,             null: false
   end
 
   create_table "sushnevo_room", primary_key: "sushnevo_room_id", force: true do |t|
@@ -1665,5 +1666,168 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   add_index "visitor_event_date", ["event_date_id"], name: "index_visitor_event_date_on_event_date_id", using: :btree
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
+FOR EACH ROW
+BEGIN
+	SELECT subject_year, subject_semester INTO @year, @term
+	FROM `subject`
+	JOIN exam ON exam_subject = subject_id
+	WHERE exam_id = OLD.mark_final_exam;
+
+	CALL calculate_student_quality(OLD.mark_final_student, @year, @term);
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
+FOR EACH ROW
+BEGIN
+	SELECT subject_year, subject_semester INTO @year, @term
+	FROM `subject`
+	JOIN exam ON exam_subject = subject_id
+	WHERE exam_id = NEW.mark_final_exam;
+
+	CALL calculate_student_quality(NEW.mark_final_student, @year, @term);
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
+FOR EACH ROW
+BEGIN
+	SELECT subject_year, subject_semester INTO @year, @term
+	FROM `subject`
+	JOIN exam ON exam_subject = subject_id
+	WHERE exam_id = NEW.mark_final_exam;
+
+	CALL calculate_student_quality(NEW.mark_final_student, @year, @term);
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
+FOR EACH ROW
+BEGIN
+	CALL calculate_students_mark(OLD.mark_student_group, OLD.mark_exam);
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
+FOR EACH ROW
+BEGIN
+	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
+FOR EACH ROW
+BEGIN
+	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@localhost TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
+FOR EACH ROW
+BEGIN
+    
+             SET
+                NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN student ON NEW.student_fname = dictionary.dictionary_id
+                                      LIMIT 1),
+                NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN student ON NEW.student_iname = dictionary.dictionary_id
+                                      LIMIT 1),
+                NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN student ON NEW.student_oname = dictionary.dictionary_id
+                                      LIMIT 1);
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@localhost TRIGGER student_before_update_row_tr BEFORE UPDATE ON student
+FOR EACH ROW
+BEGIN
+    IF NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
+                 NEW.student_oname <> OLD.student_oname THEN
+        
+                 SET
+                    NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN student ON NEW.student_fname = dictionary.dictionary_id
+                                          LIMIT 1),
+                    NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN student ON NEW.student_iname = dictionary.dictionary_id
+                                          LIMIT 1),
+                    NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN student ON NEW.student_oname = dictionary.dictionary_id
+                                          LIMIT 1);
+    END IF;
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@localhost TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
+FOR EACH ROW
+BEGIN
+    
+             SET
+                NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN user ON NEW.user_fname = dictionary.dictionary_id
+                                      LIMIT 1),
+                NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN user ON NEW.user_iname = dictionary.dictionary_id
+                                      LIMIT 1),
+                NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                      FROM dictionary
+                                      JOIN user ON NEW.user_oname = dictionary.dictionary_id
+                                      LIMIT 1);
+END
+  TRIGGERSQL
+
+  # no candidate create_trigger statement could be found, creating an adapter-specific one
+  execute(<<-TRIGGERSQL)
+CREATE DEFINER = root@localhost TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
+FOR EACH ROW
+BEGIN
+    IF NEW.user_fname <> OLD.user_fname OR NEW.user_iname <> OLD.user_iname OR
+                 NEW.user_oname <> OLD.user_oname THEN
+        
+                 SET
+                    NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN user ON NEW.user_fname = dictionary.dictionary_id
+                                          LIMIT 1),
+                    NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN user ON NEW.user_iname = dictionary.dictionary_id
+                                          LIMIT 1),
+                    NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+                                          FROM dictionary
+                                          JOIN user ON NEW.user_oname = dictionary.dictionary_id
+                                          LIMIT 1);
+    END IF;
+END
+  TRIGGERSQL
 
 end
