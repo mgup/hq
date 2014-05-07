@@ -4,7 +4,7 @@ describe Study::MarksController do
   context 'для авторизованных преподавателей' do
     before do
       @discipline = create(:exam, :final).discipline
-      @checkpoint = create(:checkpoint, :checkpoint_control, discipline: @discipline)
+      @checkpoint = create(:checkpoint, :control, discipline: @discipline)
       @student = create(:student, group: @discipline.group)
       @other_student = create(:student, group: @discipline.group)
       sign_in @discipline.lead_teacher
@@ -12,8 +12,7 @@ describe Study::MarksController do
 
     describe 'GET "index"' do
       before :each do
-        @mark = create(:mark, :checkpoint_mark,  student: @student,
-                                         checkpoint: @checkpoint)
+        @mark = create(:mark, :checkpoint,  student: @student, checkpoint: @checkpoint)
         get :index, discipline_id: @discipline.id, checkpoint_id: @checkpoint.id
       end
 
@@ -76,7 +75,7 @@ describe Study::MarksController do
     it 'должен быть переход на страницу авторизации' do
       sign_out :user
       @discipline = create(:discipline)
-      @checkpoint = create(:checkpoint, :checkpoint_control, discipline: @discipline)
+      @checkpoint = create(:checkpoint, :control, discipline: @discipline)
 
       get :index, discipline_id: @discipline, checkpoint_id: @checkpoint
       response.should redirect_to(new_user_session_path)
