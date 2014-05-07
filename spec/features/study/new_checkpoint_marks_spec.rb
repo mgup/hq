@@ -13,7 +13,7 @@ feature 'Ввод оценок за занятия' do
     as_user(@user)
     @discipline = create(:discipline, lead_teacher: @user, group: @group)
     create(:exam, :final, discipline: @discipline)
-    @checkpoint =  create(:checkpoint, :checkpoint_control, discipline: @discipline)
+    @checkpoint =  create(:checkpoint, :control, discipline: @discipline)
     @lecture = create(:checkpoint, :lecture, discipline: @discipline)
     @practical = create(:checkpoint, :practical, discipline: @discipline)
   end

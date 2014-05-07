@@ -198,9 +198,9 @@ describe Study::DisciplinesController do
         before :each do
           @discipline = create(:discipline, lead_teacher: @user)
           @old = @discipline
-          @checkpoint = create(:checkpoint, :checkpoint_control, discipline: @discipline)
+          @checkpoint = create(:checkpoint, :control, discipline: @discipline)
           @discipline_attrs = @discipline.attributes
-          @discipline_attrs[:checkpoints_attributes] = {2 => build(:checkpoint, :checkpoint_control,
+          @discipline_attrs[:checkpoints_attributes] = {2 => build(:checkpoint, :control,
                                                              checkpoint_subject: @discipline.id,
                                                              checkpoint_max: 90).attributes}
         end
@@ -248,7 +248,7 @@ describe Study::DisciplinesController do
       context 'при наличии у неё контрольных точек' do
         before :each do
           @discipline = create(:discipline, lead_teacher: @user)
-          create(:checkpoint, :checkpoint_control, discipline: @discipline)
+          create(:checkpoint, :control, discipline: @discipline)
         end
 
         it 'не должен удалить дисциплину' do
@@ -285,7 +285,7 @@ describe Study::DisciplinesController do
 
       context 'при наличии у неё контрольных точек' do
         before :each do
-          create(:checkpoint, :checkpoint_control, discipline: @discipline)
+          create(:checkpoint, :control, discipline: @discipline)
         end
 
         it 'не должен удалить дисциплину' do

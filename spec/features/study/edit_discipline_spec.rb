@@ -77,7 +77,7 @@ feature 'Редактирование дисциплины' do
   #end
 
   scenario 'должен редактировать дисциплину при корректных данных' do
-    create(:checkpoint, :checkpoint_control, discipline: @discipline)
+    create(:checkpoint, :control, discipline: @discipline)
     visit edit_study_discipline_path(@discipline)
     fill_in 'study_discipline[subject_name]', with: 'Example name'
     click_button('Сохранить дисциплину')
