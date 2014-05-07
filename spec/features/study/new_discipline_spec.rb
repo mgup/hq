@@ -18,7 +18,7 @@ feature 'Добавление новой дисциплины' do
 
   scenario 'с корректными данными', js: true, driver: :webkit do
     visit new_study_discipline_path
-    find_field('study_discipline[subject_year]').find('option[selected]').text.should eql "#{Study::Discipline::CURRENT_STUDY_YEAR}"
+    find_field('study_discipline[subject_year]').find('option[selected]').text.should eql "#{Study::Discipline::CURRENT_STUDY_YEAR}/#{Study::Discipline::CURRENT_STUDY_YEAR + 1}"
     select('FD', from: 'faculty')
     expect { select("#{@sfs.code} #{@sfs.name}", from: 'speciality') }.to raise_error
     select("#{@fss.code} #{@fss.name}", from: 'speciality')
@@ -35,14 +35,21 @@ feature 'Добавление новой дисциплины' do
 
   scenario 'с некорректными данными', js: true, driver: :webkit do
     visit new_study_discipline_path
-    find_field('study_discipline[subject_year]').find('option[selected]').text.should eql "#{Study::Discipline::CURRENT_STUDY_YEAR}"
+    find_field('study_discipline[subject_year]').find('option[selected]').text.should eql "#{Study::Discipline::CURRENT_STUDY_YEAR}/#{Study::Discipline::CURRENT_STUDY_YEAR + 1}"
     select('FD', from: 'faculty')
-    expect { select("#{@sfs.code} #{@sfs.name}", from: 'speciality') }.to raise_error
+    expect {
+      select("#{@sfs.code} #{@sfs.name}", from: 'speciality')
+    }.to raise_error
+
     select("#{@fss.code} #{@fss.name}", from: 'speciality')
-    expect { select(@other_group.name, from: 'study_discipline[subject_group]') }.to raise_error
+    expect {
+      select(@other_group.name, from: 'study_discipline[subject_group]')
+    }.to raise_error
+
     select(@group.name, from: 'study_discipline[subject_group]')
     select('экзамен', from: 'study_discipline[final_exam_attributes][exam_type]')
     click_button('Сохранить дисциплину')
+
     page.should have_css '.has-error'
   end
 
