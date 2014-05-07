@@ -30,6 +30,8 @@ class Study::Exam < ActiveRecord::Base
   alias_attribute :repeat,   :exam_repeat
 
   belongs_to :discipline, class_name: Study::Discipline, primary_key: :subject_id, foreign_key: :exam_subject
+  validates :discipline, presence: true
+
   belongs_to :group, primary_key: :group_id, foreign_key: :exam_group
   belongs_to :student, primary_key: :student_group_id, foreign_key: :exam_student_group
   has_many :students, class_name: Study::ExamStudent, foreign_key: :exam_student_exam, dependent: :destroy

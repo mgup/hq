@@ -36,7 +36,7 @@ class Study::Discipline < ActiveRecord::Base
 
   has_one :validation, -> { where(exam_type: Study::Exam::TYPE_VALIDATION)}, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
 
-  has_one :final_exam, -> { where(exam_type: [Study::Exam::TYPE_TEST, Study::Exam::TYPE_GRADED_TEST, Study::Exam::TYPE_EXAMINATION]) }, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy
+  has_one :final_exam, -> { where(exam_type: [Study::Exam::TYPE_TEST, Study::Exam::TYPE_GRADED_TEST, Study::Exam::TYPE_EXAMINATION]) }, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy, inverse_of: :discipline
   accepts_nested_attributes_for :final_exam
 
   has_one :semester_work, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_WORK)}, 
@@ -50,7 +50,6 @@ class Study::Discipline < ActiveRecord::Base
   validates :semester, presence: true, inclusion: { in: [1,2] }
   validates :lead_teacher, presence: true
   validates :group, presence: true
-  validates :final_exam, presence: true
   validate  :sum_of_checkpoints_max_values_should_be_80
   validate  :sum_of_checkpoints_min_values_should_be_44
 

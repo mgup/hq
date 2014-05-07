@@ -3,12 +3,11 @@ require 'spec_helper'
 describe Study::MarksController do
   context 'для авторизованных преподавателей' do
     before do
-      @user = create(:user, :lecturer)
-      @discipline = create(:discipline, lead_teacher: @user)
+      @discipline = create(:exam, :final).discipline
       @checkpoint = create(:checkpoint, :checkpoint_control, discipline: @discipline)
       @student = create(:student, group: @discipline.group)
       @other_student = create(:student, group: @discipline.group)
-      sign_in @user
+      sign_in @discipline.lead_teacher
     end
 
     describe 'GET "index"' do

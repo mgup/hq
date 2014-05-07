@@ -5,6 +5,8 @@ FactoryGirl.define do
     date     { Date.today }
     weight   { 50 }
 
+    association :discipline
+
     trait :final do
       type   { [Study::Exam::TYPE_TEST, Study::Exam::TYPE_GRADED_TEST, Study::Exam::TYPE_EXAMINATION][rand(2)] }
     end
