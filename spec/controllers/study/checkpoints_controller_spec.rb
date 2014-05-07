@@ -18,7 +18,7 @@ describe Study::CheckpointsController do
 
       context 'при наличии у дисциплины контрольных точек' do
         before :each do
-          @discipline.classes << create(:checkpoint, :checkpoint_control, discipline: @discipline)
+          @discipline.classes << create(:checkpoint, :control, discipline: @discipline)
           @checkpoint = create(:checkpoint, discipline: @discipline)
           get :index, discipline_id: @discipline
         end
