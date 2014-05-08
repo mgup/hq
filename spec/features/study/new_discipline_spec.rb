@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require_relative '../../../app/controllers/ajax_controller'
+
 feature 'Добавление новой дисциплины' do
   background 'Преподаватель' do
 
