@@ -1669,7 +1669,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
+CREATE TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1683,7 +1683,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
+CREATE TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1697,7 +1697,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
+CREATE TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1711,7 +1711,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
+CREATE TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(OLD.mark_student_group, OLD.mark_exam);
@@ -1720,7 +1720,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
+CREATE TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
@@ -1729,7 +1729,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@% TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
+CREATE TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
@@ -1738,7 +1738,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
+CREATE TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
 FOR EACH ROW
 BEGIN
     
@@ -1760,7 +1760,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER student_before_update_row_tr BEFORE UPDATE ON student
+CREATE TRIGGER student_before_update_row_tr BEFORE UPDATE ON student
 FOR EACH ROW
 BEGIN
     IF NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
@@ -1785,7 +1785,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
+CREATE TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
 FOR EACH ROW
 BEGIN
     
@@ -1807,7 +1807,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE DEFINER = root@localhost TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
+CREATE TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
 FOR EACH ROW
 BEGIN
     IF NEW.user_fname <> OLD.user_fname OR NEW.user_iname <> OLD.user_iname OR
