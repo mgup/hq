@@ -8,7 +8,7 @@
   });
 </script>
 
-<%= render partial: 'create', locals: {discipline: @discipline, checkpoint: Study::Checkpoint.new} %>
+<%= render partial: 'study/checkpoints/create', locals: {discipline: @discipline, checkpoint: Study::Checkpoint.new} %>
 
 <%= nested_form_for @discipline, url: study_discipline_path(@discipline), method: :patch, html: { class: 'form-horizontal', role: 'form' } do |f| %>
   <div class="form-group">

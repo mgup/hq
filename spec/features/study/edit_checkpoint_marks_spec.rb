@@ -3,16 +3,12 @@ require 'spec_helper'
 feature 'Ввод оценок за занятия' do
   background 'Преподаватель' do
     # понять, куда это перенести
-    @fd = create(:department, name: 'First Department', abbreviation: 'FD', department_role: 'faculty')
-    ffs = create(:speciality, name: 'Empty', suffix: 'fdf', faculty: @fd)
-    @fss = create(:speciality, name: 'First department second speciality', faculty: @fd)
-    @group = create(:group, speciality: @fss)
+    @discipline = create(:exam, :final).discipline
+    @group = @discipline.group
     @student = create(:student, group: @group)
 
-    @user = create(:user, :lecturer)
-    as_user(@user)
-    @discipline = create(:discipline, lead_teacher: @user, group: @group)
-    create(:exam, :final, discipline: @discipline)
+    as_user(@discipline.lead_teacher)
+
     @checkpoint =  create(:checkpoint, :control, discipline: @discipline)
     @lecture = create(:checkpoint, :lecture, discipline: @discipline)
     @practical = create(:checkpoint, :practical, discipline: @discipline)
@@ -61,7 +57,8 @@ feature 'Ввод оценок за занятия' do
   scenario 'при редактировании должна сохраняться новая оценка с полем retake', js: true, driver: :webkit do
     mark = create(:mark, :checkpoint, student: @student, checkpoint: @checkpoint)
     visit study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
-    fill_in 'study_checkpoint[marks_attributes][1][mark]', with: 60
+    click_button 'Редактировать'
+    fill_in 'study_checkpoint[marks_attributes][0][mark]', with: 60
     click_button 'Сохранить'
     within 'span.label' do
       page.should have_content "60 из #{@checkpoint.max}"
@@ -75,16 +72,6 @@ feature 'Ввод оценок за занятия' do
     fill_in 'study_checkpoint[marks_attributes][0][mark]', with: 160
     click_button 'Сохранить'
     page.should have_content 'Вы пытались ввести некорректное значение'
-  end
-
-  scenario 'при редактировании должна сохраняться новая оценка с полем retake', js: true, driver: :webkit do
-    mark = create(:mark, :checkpoint, student: @student, checkpoint: @checkpoint)
-    @other_student = create(:student, group: @group)
-    visit study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
-    fill_in 'study_checkpoint[marks_attributes][1][mark]', with: 60
-    expect{
-      click_button 'Внести результаты'
-    }.to change { @other_student.marks.count }.by(1)
   end
 
 end
