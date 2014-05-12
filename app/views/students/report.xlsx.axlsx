@@ -1,6 +1,18 @@
 wb = xlsx_package.workbook
-style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
-style_spec = wb.styles.add_style sz: 12, alignment: { horizontal: :center, vertical: :center }
+style_shout = wb.styles.add_style sz: 10, b: true, alignment: { horizontal: :center, vertical: :center }
+style_center = wb.styles.add_style sz: 10, alignment: { horizontal: :center, vertical: :center }
+style_vertical = wb.styles.add_style sz: 8, alignment: { text_rotation: 90, horizontal: :center, vertical: :bottom, wrap_text: true }
+def num_to_letter(num)
+  return 'a' if num.zero? || num == 1
+  num -= 1
+  array = num.divmod 26
+  unless array[0].zero?
+    column = num_to_letter(array[0])
+  else
+    column = ''
+  end
+  column << (97 + array[1]).chr.capitalize
+end
 
 # Эксперименты с отчётами по контингенту
 
@@ -135,8 +147,8 @@ style_spec = wb.styles.add_style sz: 12, alignment: { horizontal: :center, verti
   line_1 = ['Курс', '']
   line_2 = ['', '']
   Department.includes(:specialities).faculties.each do |f|
-    line_1 << f.abbreviation
     f.specialities.each do |s|
+      line_1 << (s == f.specialities.first ? f.abbreviation : '')
       line_2 << s.full_name
     end
   end
@@ -145,20 +157,35 @@ style_spec = wb.styles.add_style sz: 12, alignment: { horizontal: :center, verti
   lines = []
   [['очная', '101'], ['очно-заочная', '102'], ['заочная', '103']].each_with_index do |form, index|
     lines[index] = []
-    [1,2,3,4,5,6].each do |course|
+    [1,2,3,4,5,6,'Всего'].each do |course|
       ['б', 'к'].each do |budget|
         lines[index] << [course, budget]
       end
     end
+    lines[index] << ['Итого', '']
+    lines[index] << ['По ф-ту', 'б']
+    lines[index] << ['По ф-ту', 'к']
+    lines[index] << ['Итого', '']
   end
   Department.includes(:specialities).faculties.each do |f|
     f.specialities.each_with_index do |s, index|
-      [1,2,3,4,5,6].each do |course|
+      [1,2,3,4,5,6,'all'].each do |course|
         [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
           [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
-            lines[i][(course-1)*2+(budget[0]%2)] << Student.unscoped.second_higher.valid_student.filter(speciality: s, course: course, finance: budget[0], form: form[1]).length
+            if course == 'all'
+              lines[i][12+(budget[0]%2)] << Student.unscoped.second_higher.valid_student.filter(speciality: s, finance: budget[0], form: form[1]).length
+            else
+              lines[i][(course-1)*2+(budget[0]%2)] << Student.unscoped.second_higher.valid_student.filter(speciality: s, course: course, finance: budget[0], form: form[1]).length
+            end
           end
         end
+      end
+      [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
+        lines[i][14] << Student.unscoped.second_higher.valid_student.filter(speciality: s, form: form[1]).length
+        [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
+          lines[i][15 + (budget[0]%2)] << (s == f.specialities.first ? Student.unscoped.second_higher.valid_student.filter(faculty: f, finance: budget[0], form: form[1]).length : '')
+        end
+        lines[i][17] << (s == f.specialities.first ? Student.unscoped.second_higher.valid_student.filter(faculty: f, form: form[1]).length : '')
       end
     end
   end
@@ -170,13 +197,29 @@ end
 
 worksheets.each do |wh|
   wb.add_worksheet(name: "#{wh[0]}") do |sheet|
-    sheet.add_row line_1
-    sheet.merge_cells("A1:A2")
-    sheet.merge_cells("B1:B2")
-    sheet.add_row line_2
+    sheet.add_row line_1, style: style_shout
+    sheet.merge_cells('A1:A2')
+    sheet.merge_cells('B1:B2')
+    sheet.add_row line_2, style: style_vertical, height: 350
+    sheet.column_widths 3,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+    #sheet["C2:#{num_to_letter(all_specialities-1)}2"].each do |cell|
+    #  cell.style = style_vertical
+    #end
     wh[1].each do |l|
-      sheet.add_row l
+      sheet.add_row l, style: style_center
     end
+    start = 3
+    all_specialities = 0
+    Department.faculties.each_with_index do |faculty, index|
+      specialities = faculty.specialities.length
+      all_specialities += specialities
+      sheet.merge_cells("#{num_to_letter(start)}1:#{num_to_letter(start+specialities-1)}1")
+      sheet.merge_cells("#{num_to_letter(start)}18:#{num_to_letter(start+specialities-1)}18")
+      sheet.merge_cells("#{num_to_letter(start)}19:#{num_to_letter(start+specialities-1)}19")
+      sheet.merge_cells("#{num_to_letter(start)}20:#{num_to_letter(start+specialities-1)}20")
+      start += specialities
+    end
+
     #sheet["A1:J3"].each do |cell|
     #  cell.style = style_shout
     #end

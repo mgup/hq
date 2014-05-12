@@ -52,7 +52,7 @@ prawn_document margin: [28, 28, 28, 28],
   pdf.font_size 10 do
 
 
-      y_pos = 625
+      y_pos = 615
       x_pos = 26
       size = 10
 
@@ -62,7 +62,7 @@ prawn_document margin: [28, 28, 28, 28],
       pdf.fill_and_stroke_rectangle [595 - 56 - 14, 842 - 28 - 14], 14, 14
       pdf.fill_and_stroke_rectangle [595 - 56 - 14, 750 - 15 * 3], 14, 14
 
-      pdf.move_down 110
+      pdf.move_down 120
 
       if @discipline.brs?
         height = 53
@@ -157,14 +157,14 @@ prawn_document margin: [28, 28, 28, 28],
       else
         height = 35
         tableData = [[{content: '№', rowspan: 2}, {content: 'Фамилия, имя, отчество', rowspan: 2},
-                      {content: 'Номер', rowspan: 2}, {content:  pdf.text_box('Зачтено', at: [x_pos + 240, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Не зачтено', at: [x_pos + 255, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Отлично', at: [x_pos + 270, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Хорошо',at: [x_pos + 285, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Удовл.', at: [x_pos + 300, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Неуд.', at: [x_pos + 315, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Недопущ.', at: [x_pos + 330, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Неявка', at: [x_pos + 345, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: 'Номер', rowspan: 2}, {content:  pdf.text_box('Зачтено', at: [x_pos + 233 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Не зачтено', at: [x_pos + 248 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Отлично', at: [x_pos + 263 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Хорошо',at: [x_pos + 278 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Удовл.', at: [x_pos + 293 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Неуд.', at: [x_pos + 308 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Недопущ.', at: [x_pos + 323 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Неявка', at: [x_pos + 338 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
                       {content: 'Экзамен', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], ['Цифрой', 'Прописью']]
 
         position_y = y_pos
@@ -172,7 +172,7 @@ prawn_document margin: [28, 28, 28, 28],
           position_x = x_pos
           tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
           8.times do
-            pdf.rectangle [position_x + 242, position_y - 5], 7, 7
+            pdf.rectangle [position_x + 236 - 20, position_y - 5], 7, 7
             position_x += 15
           end
           position_y -= 15
@@ -183,8 +183,8 @@ prawn_document margin: [28, 28, 28, 28],
         pdf.table tableData, header: true, cell_style: { padding: [0, 0, 2, 2] } do
          row(0).height = height
          column(0).width = 24
-         column(1).width = 194.28 #157
-         column(2).width = 46 #35
+         column(1).width = 174.28 #157
+         column(2).width = 40 #35
          8.times.each do |i|
            column(i+3).width = 15
          end
