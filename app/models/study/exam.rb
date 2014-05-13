@@ -20,6 +20,20 @@ class Study::Exam < ActiveRecord::Base
   EARLY_REPEAT = 1
   RESPECTFUL_REPEAT = 5
 
+  EXAMS_TYPES = [
+    ['экзамен',                  TYPE_EXAMINATION],
+    ['зачёт',                    TYPE_TEST],
+    ['дифференцированный зачёт', TYPE_GRADED_TEST]
+  ]
+
+  ADDITIONAL_EXAMS_TYPES = [
+    ['курсовая работа', TYPE_SEMESTER_WORK],
+    ['курсовой проект', TYPE_SEMESTER_PROJECT],
+    ['практика',        TYPE_PRACTICE],
+    ['ГЭК-1',           TYPE_EXAM_COMMISSION_1],
+    ['ГЭК-2',           TYPE_EXAM_COMMISSION_2]
+  ]
+
   self.table_name = 'exam'
 
   alias_attribute :id,       :exam_id

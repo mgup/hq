@@ -92,6 +92,12 @@ HQ::Application.routes.draw do
   resources :specialities
 
   namespace :study do
+    scope ':year-:term', defaults: { year: Study::Discipline::CURRENT_STUDY_YEAR,
+                                     term: Study::Discipline::CURRENT_STUDY_TERM } do
+      # Учебные планы.
+      get 'plans', to: 'plans#index'
+    end
+
     get 'exammarks/:id/ajax_update' => 'exam_marks#ajax_update'
     resources :disciplines do
       get 'print_group.pdf', to: 'disciplines#print_group', defaults: { format: 'pdf' }, as: :print_group
@@ -168,7 +174,8 @@ HQ::Application.routes.draw do
   namespace :finance do
     resources :payment_types, path:  '/price'
     get '/prices_filter' => 'payment_types#prices_filter'
-    get 'print_prices.xlsx', to: 'payment_types#print_prices', defaults: { format: 'xlsx' }, as: :print_prices
+    get 'print_prices.xlsx', to: 'payment_types#print_prices',
+        defaults: { format: 'xlsx' }, as: :print_prices
   end
 
   namespace :curator do

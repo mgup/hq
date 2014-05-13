@@ -2,41 +2,9 @@
   <h1>Учебные планы</h1>
 </div>
 
-<%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
-  <div class='row'>
-    <div class='col col-lg-10'>
-      <%= hidden_field_tag :faculty, params[:faculty] || @faculties.first.id,  class: 'ajax-faculty hidden-pill-values' %>
-      <%= pill_tabs('faculty', @faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
-    </div>
-  </div>
+<%= render 'filters' %>
 
-  <div class='row'>
-    <div class='col col-lg-6'>
-      <%= select_tag 'speciality',
-                     options_from_collection_for_select(@group ? Department.find(params[:faculty]).specialities : @specialities, :id, :full_name, params[:speciality]),
-                     prompt: 'все специальности', class: 'ajax-speciality form-control' %>
-    </div>
-
-    <div class='col col-lg-2'>
-      <%= select_tag :course, options_for_select([1,2,3,4,5,6], params[:course]), class: 'ajax-course form-control' %>
-    </div>
-
-    <div class='col col-lg-4'>
-      <%= select_tag :form, options_for_select([['очная', '101'], ['очно-заочная', '102'], ['заочная', '103'],
-                                                ['дистанционная', '105']], params[:form]), class: 'ajax-form form-control' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3">
-      <%= select_tag :group,
-                     options_from_collection_for_select(@group ? Group.filter(course: params[:course], speciality: params[:speciality], form: params[:form]) : @groups, :id, :name, params[:group]),
-                     prompt: 'все группы', class: 'ajax-group form-control' %>
-    </div>
-    <div class="col col-sm-2 pull-right">
-      <%= submit_tag 'Найти группу', class: 'btn btn-primary' %>
-    </div>
-  </div>
-<% end %>
+<%= render partial: 'discipline', collection: @group.disciplines if @group %>
 
 <div id="msg" class="alert alert-info" style="display: none;">
   <p></p>
@@ -53,7 +21,7 @@
      <% end %>
       <br>
       <span style="font-weight: normal;"><%= d.lead_teacher.full_name %></span>
-     <%= render partial: 'edit_discipline_modal', locals: { group: @group, discipline: d } %>
+     <%= render partial: 'edit_modal', locals: { group: @group, discipline: d } %>
       </dt>
      <br>
      <dd>

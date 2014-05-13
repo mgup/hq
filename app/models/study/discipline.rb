@@ -39,6 +39,14 @@ class Study::Discipline < ActiveRecord::Base
   has_one :final_exam, -> { where(exam_type: [Study::Exam::TYPE_TEST, Study::Exam::TYPE_GRADED_TEST, Study::Exam::TYPE_EXAMINATION]) }, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy, inverse_of: :discipline
   accepts_nested_attributes_for :final_exam
 
+  has_many :additional_exams, -> { where('exam_type NOT IN (?)',
+                                         [Study::Exam::TYPE_VALIDATION,
+                                          Study::Exam::TYPE_TEST,
+                                          Study::Exam::TYPE_GRADED_TEST,
+                                          Study::Exam::TYPE_EXAMINATION]) },
+           class_name: 'Study::Exam', foreign_key: :exam_subject, dependent: :destroy
+  accepts_nested_attributes_for :additional_exams, allow_destroy: true
+
   has_one :semester_work, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_WORK)}, 
           class_name: Study::Exam, foreign_key: :exam_subject
   has_one :semester_project, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)}, 
