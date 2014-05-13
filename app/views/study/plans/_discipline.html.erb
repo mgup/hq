@@ -31,9 +31,21 @@
             <% end %>
           <% end %>
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>
+
+        </td>
+        <td>
+
+        </td>
+        <td>
+          <% if current_user.is?(:developer) or discipline.not_brs? %>
+            <%= link_to study_discipline_exam_path(discipline, exam), method: :delete,
+                        class: 'delete btn btn-danger', confirm: 'Вы уверены?',
+                        title: 'Удалить предмет из учебного плана' do %>
+              <span class='glyphicon glyphicon-remove'></span>
+            <% end %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </table>
