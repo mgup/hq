@@ -12,7 +12,7 @@
     <%= f.label :flat_id, class: 'control-label col-sm-2' %>
     <div class='col-sm-9'>
       <% if @hostel %>
-        <%= f.select :flat_id, options_from_collection_for_select(@hostel.flats, :id, :number, @report.flat.id), {}, { class: 'form-control ajax-flat' } %>
+        <%= f.select :flat_id, options_from_collection_for_select(@hostel.flats.sort_by{|x| x.number}, :id, :number, @report.flat.id), {}, { class: 'form-control ajax-flat' } %>
       <% else %>
         <%= f.select :flat_id, [], {}, { class: 'form-control ajax-flat' } %>
       <% end %>

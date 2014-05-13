@@ -14,6 +14,16 @@ def num_to_letter(num)
   column << (97 + array[1]).chr.capitalize
 end
 
+def fetch_group(form, faculty, course = nil)
+  groups = Group.joins(:students).where("student_group.student_group_status = #{Student::STATUS_STUDENT} AND group_active = 1").group(:group_speciality)
+                .order('group_form ASC, group_name ASC, group_course ASC, group_number ASC').where(form: form)
+                .joins(:speciality).where("speciality_faculty = #{faculty}")
+  if course
+    groups = groups.where("group_course = #{course}")
+  end
+  return [groups.where('student_group.student_group_tax = 1').count, groups.where('student_group.student_group_tax = 2').count]
+end
+
 # Эксперименты с отчётами по контингенту
 
 # очная, очно-заочная, заочная формы
@@ -153,50 +163,51 @@ end
     end
   end
 
-  worksheets = []
-  lines = []
-  [['очная', '101'], ['очно-заочная', '102'], ['заочная', '103']].each_with_index do |form, index|
-    lines[index] = []
-    [1,2,3,4,5,6,'Всего'].each do |course|
-      ['б', 'к'].each do |budget|
-        lines[index] << [course, budget]
-      end
-    end
-    lines[index] << ['Итого', '']
-    lines[index] << ['По ф-ту', 'б']
-    lines[index] << ['По ф-ту', 'к']
-    lines[index] << ['Итого', '']
-  end
-  Department.includes(:specialities).faculties.each do |f|
-    f.specialities.each_with_index do |s, index|
-      [1,2,3,4,5,6,'all'].each do |course|
-        [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
-          [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
-            if course == 'all'
-              lines[i][12+(budget[0]%2)] << Student.unscoped.second_higher.valid_student.filter(speciality: s, finance: budget[0], form: form[1]).length
-            else
-              lines[i][(course-1)*2+(budget[0]%2)] << Student.unscoped.second_higher.valid_student.filter(speciality: s, course: course, finance: budget[0], form: form[1]).length
-            end
-          end
-        end
-      end
-      [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
-        lines[i][14] << Student.unscoped.second_higher.valid_student.filter(speciality: s, form: form[1]).length
-        [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
-          lines[i][15 + (budget[0]%2)] << (s == f.specialities.first ? Student.unscoped.second_higher.valid_student.filter(faculty: f, finance: budget[0], form: form[1]).length : '')
-        end
-        lines[i][17] << (s == f.specialities.first ? Student.unscoped.second_higher.valid_student.filter(faculty: f, form: form[1]).length : '')
-      end
-    end
-  end
+  #worksheets = []
+  #lines = []
+  #[['очная', '101'], ['очно-заочная', '102'], ['заочная', '103']].each_with_index do |form, index|
+  #  lines[index] = []
+  #  [1,2,3,4,5,6,'Всего'].each do |course|
+  #    ['б', 'к'].each do |budget|
+  #      lines[index] << [course, budget]
+  #    end
+  #  end
+  #  lines[index] << ['Итого', '']
+  #  lines[index] << ['По ф-ту', 'б']
+  #  lines[index] << ['По ф-ту', 'к']
+  #  lines[index] << ['Итого', '']
+  #end
+  #Department.includes(:specialities).faculties.each do |f|
+  #  f.specialities.each_with_index do |s, index|
+  #    [1,2,3,4,5,6,'all'].each do |course|
+  #      [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
+  #        [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
+  #          if course == 'all'
+  #            lines[i][12+(budget[0]%2)] << Student.unscoped.second_higher.valid_student.filter(speciality: s, finance: budget[0], form: form[1]).length
+  #          else
+  #            lines[i][(course-1)*2+(budget[0]%2)] << Student.unscoped.second_higher.valid_student.filter(speciality: s, course: course, finance: budget[0], form: form[1]).length
+  #          end
+  #        end
+  #      end
+  #    end
+  #    [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each_with_index do |form, i|
+  #      lines[i][14] << Student.unscoped.second_higher.valid_student.filter(speciality: s, form: form[1]).length
+  #      [[Student::PAYMENT_BUDGET, 'б'], [Student::PAYMENT_OFF_BUDGET, 'к']].each do |budget|
+  #        lines[i][15 + (budget[0]%2)] << (s == f.specialities.first ? Student.unscoped.second_higher.valid_student.filter(faculty: f, finance: budget[0], form: form[1]).length : '')
+  #      end
+  #      lines[i][17] << (s == f.specialities.first ? Student.unscoped.second_higher.valid_student.filter(faculty: f, form: form[1]).length : '')
+  #    end
+  #  end
+  #end
 
-[['очная (второе высшее)', 101], ['очно-заочная (второе высшее)', 102], ['заочная (второе высшее)', 103]].each_with_index do |form, i|
-  worksheets << [form[0], lines[i]]
-end
+#[['очная (второе высшее)', 101], ['очно-заочная (второе высшее)', 102], ['заочная (второе высшее)', 103]].each_with_index do |form, i|
+#  worksheets << [form[0], lines[i]]
+#end
 
 
-worksheets.each do |wh|
-  wb.add_worksheet(name: "#{wh[0]}") do |sheet|
+# Новая версия
+[['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each do |form|
+  wb.add_worksheet(name: "#{form[0]}") do |sheet|
     sheet.add_row line_1, style: style_shout
     sheet.merge_cells('A1:A2')
     sheet.merge_cells('B1:B2')
@@ -205,8 +216,42 @@ worksheets.each do |wh|
     #sheet["C2:#{num_to_letter(all_specialities-1)}2"].each do |cell|
     #  cell.style = style_vertical
     #end
-    wh[1].each do |l|
-      sheet.add_row l, style: style_center
+    #wh[1].each do |l|
+    #  sheet.add_row l, style: style_center
+    #end
+    array_all_b = [0,0,0,0]
+    array_all_k = [0,0,0,0]
+    [1,2,3,4,5,6,'all'].each do |course|
+      row_b = [course, 'б']
+      row_u = [course, 'к']
+      row_all = ['всего', '']
+      row_all_b = ['', '']
+      row_all_k = ['', '']
+      Department.faculties.each_with_index do |f, index|
+        if course == 'all'
+          number = fetch_group(form[1], f.id)
+        else
+          number = fetch_group(form[1], f.id, course)
+        end
+        f.specialities.each do |s|
+          row_b << (number[0][s.id] ? number[0][s.id] : 0)
+          array_all_b[index] += (number[0][s.id] ? number[0][s.id] : 0)
+          row_u << (number[1][s.id] ?  number[1][s.id] : 0)
+          array_all_k[index] += (number[1][s.id] ? number[1][s.id] : 0)
+          if course == 'all'
+            row_all_b << (s == f.specialities.first ? array_all_b[index] : 0 )
+            row_all_k << (s == f.specialities.first ? array_all_k[index] : 0 )
+          end
+        end
+      end
+      sheet.add_row row_b, style: style_center
+      sheet.add_row row_u, style: style_center
+      if course == 'all'
+        sheet.add_row [row_b, row_u].transpose.map{|a| a.sum}, style: style_center
+        sheet.add_row row_all_b, style: style_center
+        sheet.add_row row_all_k, style: style_center
+        sheet.add_row [row_all_b, row_all_k].transpose.map{|a| a.sum}, style: style_center
+      end
     end
     start = 3
     all_specialities = 0
@@ -219,6 +264,7 @@ worksheets.each do |wh|
       sheet.merge_cells("#{num_to_letter(start)}20:#{num_to_letter(start+specialities-1)}20")
       start += specialities
     end
+
 
     #sheet["A1:J3"].each do |cell|
     #  cell.style = style_shout
