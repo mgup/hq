@@ -73,7 +73,7 @@ class Study::Exam < ActiveRecord::Base
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
                                                      less_than_or_equal_to: 80 }
 
-  scope :originals, -> {where(exam_parent: nil)}
+  scope :originals, -> { where(exam_parent: nil) }
   #scope :repeats, -> exam {where(exam_parent: exam.id)}
   scope :repeat, -> {where('exam_parent IS NOT NULL')}
   scope :mass, -> {where('exam_group IS NOT NULL')}
