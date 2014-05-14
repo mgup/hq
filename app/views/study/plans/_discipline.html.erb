@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div id="<%= dom_id(discipline) %>" class="panel panel-default">
   <div class="panel-heading">
     <%= link_to '#' + dom_id(discipline, 'modal'), class: 'btn btn-xs pull-right',
                 data: { toggle: 'modal' } do %>
@@ -20,9 +20,9 @@
           <%= form_for exam, url: study_discipline_exam_path(discipline, exam),
                        remote: true, html: { class: 'form-inline' } do |f| %>
             <div class="form-group">
-              <%= f.text_field :exam_date, value: (exam.date ? (l exam.date) : nil),
-                               class: 'form-control datepicker',
-                               pattern: '\d{1,2}.\d{1,2}.\d{4}', style: 'width: 80px;' %>
+              <%= f.text_field :exam_date, value: (exam.date ? l(exam.date) : nil),
+                               pattern: '\d{1,2}.\d{1,2}.\d{4}',
+                               class: 'form-control datepicker', style: 'width: 80px;' %>
             </div>
 
             <%= f.button type: :submit, class: 'btn btn-default',
@@ -32,13 +32,18 @@
           <% end %>
         </td>
         <td>
-
+          <%= render partial: 'validation', locals: { exam: exam } %>
         </td>
         <td>
-
+          <% if exam.can_print_register? %>
+            <%= link_to print_study_discipline_exam_path(discipline, exam),
+                        class: 'btn btn-default', title: 'Распечатать ведомость' do %>
+              <span class="glyphicon glyphicon-print"></span>
+            <% end %>
+          <% end %>
         </td>
         <td>
-          <% if current_user.is?(:developer) or discipline.not_brs? %>
+          <% if can?(:manage, :all) or discipline.not_brs? %>
             <%= link_to study_discipline_exam_path(discipline, exam), method: :delete,
                         class: 'delete btn btn-danger', confirm: 'Вы уверены?',
                         title: 'Удалить предмет из учебного плана' do %>

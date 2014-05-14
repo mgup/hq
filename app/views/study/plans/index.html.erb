@@ -40,22 +40,6 @@
           <% end %>
 
         </td>
-        <%= form_for exam, url: updatedate_study_discipline_exam_path(d,exam) do |p| %>
-          <td style="padding: 2px;"><%= p.text_field :date, class: 'datepicker form-control', value: (exam.date ? (l exam.date) : nil), pattern: '\d{1,2}.\d{1,2}.\d{4}' %></td>
-          <td><%= p.submit 'Сохранить дату', class: 'btn btn-default', style: 'margin-left: 5px;' %></td>
-        <% end %>
-
-        <td>
-          <% if exam.validation? %>
-            <%= link_to study_group_print_progress_path(@group, discipline: d.id), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: (!exam.date || !d.classes.not_full(d).empty?) do %>
-              <span class="glyphicon glyphicon-print"></span>
-            <% end %>
-          <% else %>
-          <%= link_to study_discipline_exam_print_path(d, exam), class: 'btn btn-info', title: 'Распечатать ведомость', disabled: (!exam.date || !d.classes.not_full_final(d).empty?) do %>
-            <span class="glyphicon glyphicon-print"></span>
-            <% end %>
-          <% end %>
-        </td>
         <td>
           <% unless exam.validation? %>
             <%= link_to "#repeatModal#{exam.id}", class: 'btn btn-default', title: 'Перезачёты/пересдачи', data: {toggle: 'modal'} do %>

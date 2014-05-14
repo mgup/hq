@@ -220,4 +220,9 @@ class Study::Exam < ActiveRecord::Base
     end
     return {max: max, min: min}
   end
+
+  # Можно ли распечатывать ведомость для данного испытания?
+  def can_print_register?
+    date?
+  end
 end

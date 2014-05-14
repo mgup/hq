@@ -110,8 +110,10 @@ HQ::Application.routes.draw do
           get 'ajax_update', to: 'marks#ajax_update', on: :member
         end
       end
+
       resources :exams do
-        get '/print.pdf', to: 'exams#print', defaults: { format: 'pdf' }, as: :print
+        get 'print', on: :member, defaults: { format: 'pdf' }
+
         patch '/updatedate', to: 'exams#updatedate', on: :member
       end
     end
