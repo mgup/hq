@@ -9,7 +9,7 @@ class AjaxController < ApplicationController
   end
 
   def flats
-    render({ json: Hostel::Flat.from_hostel(params[:hostel]).inject([]) do |flats, flat|
+    render({ json: Hostel::Flat.from_hostel(params[:hostel]).sort_by{|x| x.number}.inject([]) do |flats, flat|
       flats << { id: flat.id, number: flat.number }
       flats
     end })

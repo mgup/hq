@@ -7,6 +7,7 @@ class Hostel::ReportsController < ApplicationController
   end
 
   def example
+    params[:empty] ||= '2'
   end
 
   def ready
