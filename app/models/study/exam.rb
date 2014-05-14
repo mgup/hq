@@ -59,6 +59,10 @@ class Study::Exam < ActiveRecord::Base
   has_many :repeats, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_parent
   belongs_to :paret_exam, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_parent
 
+  has_many :mass_repeats, -> { where('exam_group IS NOT NULL') },
+           class_name: 'Study::Exam', foreign_key: :exam_parent
+  accepts_nested_attributes_for :mass_repeats
+
   validates :type, presence: true, inclusion: { in: [0,
                                                      1,
                                                      self::TYPE_SEMESTER_WORK,

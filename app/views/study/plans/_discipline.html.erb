@@ -31,9 +31,7 @@
             <% end %>
           <% end %>
         </td>
-        <td>
-          <%= render partial: 'validation', locals: { exam: exam } %>
-        </td>
+        <td><%= render partial: 'validation', locals: { exam: exam } %></td>
         <td>
           <% if exam.can_print_register? %>
             <%= link_to print_study_discipline_exam_path(discipline, exam),
@@ -41,6 +39,14 @@
               <span class="glyphicon glyphicon-print"></span>
             <% end %>
           <% end %>
+        </td>
+        <td>
+          <%= link_to '#' + dom_id(exam, 'repeat_modal'), class: 'btn btn-default',
+                      title: 'Пересдачи и индивидуальные ведомости',
+                      data: { toggle: 'modal' } do %>
+            <span class="glyphicon glyphicon-retweet"></span>
+          <% end %>
+          <%= render partial: 'repeat_modal', locals: { group: @group, exam: exam } %>
         </td>
         <td>
           <% if can?(:manage, :all) or discipline.not_brs? %>

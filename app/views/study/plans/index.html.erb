@@ -6,24 +6,10 @@
 
 <%= render partial: 'discipline', collection: @group.disciplines if @group %>
 
-<div id="msg" class="alert alert-info" style="display: none;">
-  <p></p>
-</div>
-
 <div id="examsByGroups">
   <% if @group %>
    <% @group.disciplines.now.each do |d| %>
    <dl>
-     <br>
-     <dt><%= d.name %>
-     <%= link_to "#editDisciplineModal_#{d.id}", class: 'btn btn-default btn-xs', data: {toggle: 'modal'} do %>
-       <span class='glyphicon glyphicon-edit'></span> Редактировать дисциплину
-     <% end %>
-      <br>
-      <span style="font-weight: normal;"><%= d.lead_teacher.full_name %></span>
-     <%= render partial: 'edit_modal', locals: { group: @group, discipline: d } %>
-      </dt>
-     <br>
      <dd>
      <table style="width: 100%; margin-bottom: 20px;">
       <% d.exams.originals.each do |exam| %>
@@ -41,28 +27,15 @@
 
         </td>
         <td>
-          <% unless exam.validation? %>
-            <%= link_to "#repeatModal#{exam.id}", class: 'btn btn-default', title: 'Перезачёты/пересдачи', data: {toggle: 'modal'} do %>
-              <span class="glyphicon glyphicon-retweet"></span>
-            <% end %>
-            <%= render partial: 'repeat_modal',
-                      locals: { group: @group, parent_exam: exam, exam: Study::Exam.new, discipline: d } %>
-          <% end %>
         </td>
-        <% if current_user.is?(:developer) or !d.brs? or d.checkpoints.empty? %>
-          <td><%= link_to  study_discipline_exam_path(d, exam), method: :delete,
-                           class: 'delete btn btn-danger', title: 'Удалить предмет из учебного плана',
-                           confirm: 'Вы уверены?' do %>
-              <span class='glyphicon glyphicon-remove'></span>
-              <% end %>
-          </td>
-        <% end %>
       </tr>
       <% end %>
     </table>
     </dd>
    <% end %>
   </dl>
+
+
   <%= link_to 'Добавить предмет для группы', '#addDisciplineModal', class: 'btn btn-default',
               data: {toggle: 'modal'}, style: 'margin-top: 20px;' %>
   <%= render partial: 'discipline_modal',

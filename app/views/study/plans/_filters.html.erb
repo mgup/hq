@@ -31,14 +31,18 @@
 
       <div class="col-sm-2">
           <%= select_tag :group,
-                         options_from_collection_for_select(@group ? Group.filter(course: params[:course], speciality: params[:speciality], form: params[:form]) : @groups, :id, :name, params[:group]),
-                         prompt: 'все группы', class: 'ajax-group form-control' %>
+                         options_from_collection_for_select(
+                             @group ? Group.filter(course: params[:course],
+                                                   speciality: params[:speciality],
+                                                   form: params[:form]) : @groups,
+                             :id, :name, params[:group]
+                         ), prompt: 'все группы', class: 'ajax-group form-control' %>
       </div>
   </div>
 
   <div class="row">
-      <div class="col col-sm-2 col-sm-offset-10">
-          <%= submit_tag 'Найти группу', class: 'btn btn-primary' %>
-      </div>
+    <div class="col-sm-12">
+      <%= submit_tag 'Найти группу', class: 'btn btn-primary pull-right' %>
+    </div>
   </div>
 <% end %>
