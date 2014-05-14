@@ -127,7 +127,8 @@ class Ability
   end
 
   def dean(user)
-    can :update, Achievement
+    can :manage, Achievement
+    # can :update, Achievement
     can :validate_additional, Achievement
   end
 
