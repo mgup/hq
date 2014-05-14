@@ -19,7 +19,7 @@ class Speciality < ActiveRecord::Base
   scope :from_faculty, -> faculty { where(speciality_faculty: faculty) }
   scope :active, -> { where('speciality_id NOT IN (1,27)')}
   scope :masters, -> { where(speciality_ntype: 2) }
-    
+  scope :not_masters, -> {where(speciality_ntype: [0,1])}
 
   def bachelor?
     1 == type

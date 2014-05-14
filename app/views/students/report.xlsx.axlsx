@@ -154,14 +154,7 @@ end
 #end
 
 # Второе высшее
-  line_1 = ['Курс', '']
-  line_2 = ['', '']
-  Department.includes(:specialities).faculties.each do |f|
-    f.specialities.each do |s|
-      line_1 << (s == f.specialities.first ? f.abbreviation : '')
-      line_2 << s.full_name
-    end
-  end
+
 
   #worksheets = []
   #lines = []
@@ -206,6 +199,15 @@ end
 
 
 # Новая версия
+line_1 = ['Курс', '']
+line_2 = ['', '']
+Department.includes(:specialities).faculties.each do |f|
+  f.specialities.not_masters.each do |s|
+    line_1 << (s == f.specialities.not_masters.first ? f.abbreviation : '')
+    line_2 << s.full_name
+  end
+end
+
 [['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each do |form|
   wb.add_worksheet(name: "#{form[0]}") do |sheet|
     sheet.add_row line_1, style: style_shout
@@ -233,14 +235,14 @@ end
         else
           number = fetch_group(form[1], f.id, course)
         end
-        f.specialities.each do |s|
+        f.specialities.not_masters.each do |s|
           row_b << (number[0][s.id] ? number[0][s.id] : 0)
-          array_all_b[index] += (number[0][s.id] ? number[0][s.id] : 0)
+          array_all_b[index] += (number[0][s.id] ? number[0][s.id] : 0) if course != 'all'
           row_u << (number[1][s.id] ?  number[1][s.id] : 0)
-          array_all_k[index] += (number[1][s.id] ? number[1][s.id] : 0)
+          array_all_k[index] += (number[1][s.id] ? number[1][s.id] : 0) if course != 'all'
           if course == 'all'
-            row_all_b << (s == f.specialities.first ? array_all_b[index] : 0 )
-            row_all_k << (s == f.specialities.first ? array_all_k[index] : 0 )
+            row_all_b << (s == f.specialities.not_masters.first ? array_all_b[index] : 0 )
+            row_all_k << (s == f.specialities.not_masters.first ? array_all_k[index] : 0 )
           end
         end
       end
@@ -256,7 +258,7 @@ end
     start = 3
     all_specialities = 0
     Department.faculties.each_with_index do |faculty, index|
-      specialities = faculty.specialities.length
+      specialities = faculty.specialities.not_masters.length
       all_specialities += specialities
       sheet.merge_cells("#{num_to_letter(start)}1:#{num_to_letter(start+specialities-1)}1")
       sheet.merge_cells("#{num_to_letter(start)}18:#{num_to_letter(start+specialities-1)}18")
@@ -272,4 +274,6 @@ end
 
   end
 end
+
+
 
