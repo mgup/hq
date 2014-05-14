@@ -61,9 +61,9 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     end
   end
 
-  pdf.move_down 30
-  pdf.text "Настоящий акт составлен в двух экземплярах, имеющих равную юридическую силу."
-  pdf.move_down 20
+  pdf.move_down 40
+  #pdf.text "Настоящий акт составлен в двух экземплярах, имеющих равную юридическую силу."
+  #pdf.move_down 20
   unless @report.applications.empty?
     pdf.text "Приложения: 1. #{@report.applications.first.name}#{' '*(160 - pdf.font.compute_width_of(@report.applications.first.name)/pdf.font.compute_width_of(' ')) } на <u>#{@report.applications.first.papers ? @report.applications.first.papers : '__'}</u> л.", inline_format: true
     @report.applications.drop(1).each_with_index do |ap, index|
@@ -98,5 +98,5 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       end
     end
   pdf.move_down 20
-  pdf.text "<strong>С актом проверки ознакомлен:</strong>", inline_format: true
+  #pdf.text "<strong>С актом проверки ознакомлен:</strong>", inline_format: true
 end
