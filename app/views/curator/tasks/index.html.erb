@@ -67,14 +67,15 @@
         </td>
         <td>
           <% unless task.draft? %>
-            <%= link_to curator_task_path(task), class: 'btn btn-default pull-right', title: 'Подробнее' do %>
+            <%= link_to curator_task_path(task), class: 'btn btn-info pull-right', title: 'Подробнее' do %>
               <span class="glyphicon glyphicon-search"></span>
             <% end %>
+            <br><br>
+          <% end %>
+          <%= link_to edit_curator_task_path(task), class: 'btn btn-default pull-right', title: 'Редактировать' do %>
+            <span class="glyphicon glyphicon-pencil"></span>
           <% end %>
           <% if task.draft? %>
-            <%= link_to edit_curator_task_path(task), class: 'btn btn-default pull-right', title: 'Редактировать' do %>
-              <span class="glyphicon glyphicon-pencil"></span>
-            <% end %>
             <br><br>
             <%= link_to curator_task_path(task), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', confirm: 'Вы уверены?' do %>
               <span class="glyphicon glyphicon-remove"></span>

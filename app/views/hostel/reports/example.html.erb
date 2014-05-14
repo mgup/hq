@@ -14,17 +14,30 @@
 <% end %>
 
 <div style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
-  <p>от «___» _________________   2014 г.</p>
-  <p>Место составления: г. Москва, ул. _____________________________</p>
-  <p>Время составления: ______________</p>
+  <% if params[:empty] == '2' %>
+    <p>от «<span style="text-decoration: underline;">10</span>» <span style="text-decoration: underline;">апреля</span> 2014 г.</p>
+    <p>Место составления: <span style="text-decoration: underline;">г. Москва, ул. Прянишникова д.2а, ауд. 1301</span></p>
+    <p>Время составления: <span style="text-decoration: underline;">13:20</span></p>
+  <% elsif params[:empty] == '1' %>
+  <p>от «<span style="text-decoration: underline;">10</span>» <span style="text-decoration: underline;">апреля</span> 2014 г.</p>
+  <p>Место составления: <span style="text-decoration: underline;">г. Москва, ул. Прянишникова, д.2а, ауд. 1301</span></p>
+  <p>Время составления: <span style="text-decoration: underline;">16:20</span></p>
+  <% end %>
   <p style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 0; margin-top: 30px;">АКТ ПРОВЕРКИ</p>
   <p style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 0;">состояния квартиры в общежитии МГУП имени Ивана Федорова</p>
   <p style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 0;">(СПРАВКА О РЕЗУЛЬТАТАХ ПРОВЕРКИ)</p>
-  <p style="margin-top: 30px;"><strong>Дата проверки:</strong> «<span style="text-decoration: underline;"><%= l Date.today, format: '%d' %></span>» <span style="text-decoration: underline;"><%= l Date.today, format: '%B' %></span> <%= l Date.today, format: '%Y' %> г.</p>
-  <p><strong>Время проверки:</strong> «<span style="text-decoration: underline;"><%= l DateTime.now, format: '%H:%M' %></span>».</p>
-  <p style="margin-top: 30px; text-align: justify;">Настоящий акт (справка) составлен(а) по результатам проверки квартиры (блока) № <span style="text-decoration: underline;">n</span> общежития МГУП имени Ивана Федорова, расположенного по адресу: </p>
-  <p>гор. Москва, ул. Михалковская, д.7, корп.3</p>
-  <p>гор. Москва ул. 800-летия Москвы, д. 28, корп. 1</p>
+  <p style="margin-top: 30px;"><strong>Дата проверки:</strong> «<span style="text-decoration: underline;">08</span>» <span style="text-decoration: underline;">апреля</span> 2014 г.</p>
+  <% if params[:empty] == '2' %>
+    <p><strong>Время проверки:</strong> «<span style="text-decoration: underline;">22:12</span>».</p>
+  <% elsif params[:empty] == '1' %>
+    <p><strong>Время проверки:</strong> «<span style="text-decoration: underline;">21:35</span>».</p>
+  <% end %>
+  <% if params[:empty] == '2' %>
+    <p style="margin-top: 30px; text-align: justify;">Настоящий акт (справка) составлен(а) по результатам проверки квартиры (блока) № <span style="text-decoration: underline;">160</span> общежития МГУП имени Ивана Федорова, расположенного по адресу: </p>
+  <% elsif params[:empty] == '1' %>
+    <p style="margin-top: 30px; text-align: justify;">Настоящий акт (справка) составлен(а) по результатам проверки квартиры (блока) № <span style="text-decoration: underline;">13</span> общежития МГУП имени Ивана Федорова, расположенного по адресу: </p>
+  <% end %>
+  <p>гор. Москва, ул. 800-летия Москвы, д.28</p>
   <p style="text-align: justify;"><strong>Проверка проведена</strong>  в соответствии с Уставом федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (п. 6.7, п.6.12),
     Положением о студенческом общежитии федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (п. 12, п. 16) и Правилами
     внутреннего распорядка в студенческом общежитии Московского государственного университета печати имени Ивана Федорова (п. 4.3).</p>
@@ -33,26 +46,12 @@
     <p style="margin-top: 30px; text-decoration: underline; font-weight: bold;">В ходе проверки выявлены нарушения.</p>
     <ol>
       <li>
-        <% x = Hostel::Offense.default.first.description %>
-        <% x.slice! '(для случая, если нарушитель не установлен)' %>
-        <p style="margin: 0;"><%= x %> в местах общего пользования, а именно: _______________________________________________________________________.</p>
+        <p style="margin: 0;">Антисанитарное состояние в местах общего пользования, а именно: <span style="text-decoration: underline;">мешки с мусором, разбросанные вещи, грязные полы</span>.</p>
       </li>
       <li>
-        <% x = Hostel::Offense.default.last.description %>
-        <% x.slice! '(для случая, если нарушитель не установлен)' %>
-        <p style="margin: 0;"><%= x %> в жилом помещении, а именно: _______________________________________________________________________.</p>
+        <p style="margin: 0;">Антисанитарное состояние в жилом помещении, а именно: <span style="text-decoration: underline;">разбросанные вещи, грязные полы</span>.</p>
         <p style="margin: 0;">Комнаты, в которых зафиксирован факт нарушения:</p>
-            <p style="margin: 0 0 0 30px;">Комната на 2 (ФИО студента, группа; ФИО студента, группа)</p>
-            <p style="margin: 0 0 0 30px;">Комната на 3 (ФИО студента, группа; ФИО студента, группа; ФИО студента, группа)</p>
-      </li>
-      <li>
-        <% x = Hostel::Offense.for_student.first.description %>
-        <% x.slice! ' (для случая, если нарушитель установлен)' %>
-        <p style="margin: 0;"><%= x %>, а именно: _______________________________________________________________________</p>
-          и установлены следующие нарушители:</p>
-          <p style="margin: 0 0 0 30px;">ФИО студента, группа</p>
-          <p style="margin: 0 0 0 30px;">ФИО студента, группа</p>
-          <p style="margin: 0 0 0 30px;">ФИО студента, группа</p>
+            <p style="margin: 0 0 0 30px;">Комната на 4 (Мамбетов Р. В., ДТмт-4-1; Пучков К. А., ДТукБ-3-1; Меркулов К. П., ДТпп-4-1; Сиваченко Д. А., ДЦисБ-2-1)</p>
       </li>
     </ol>
   <% elsif params[:empty] == '1' %>
@@ -64,11 +63,11 @@
   <table style="width: 100%;">
     <tr>
       <td style="width: 110px;" rowspan="2">Приложения:</td>
-      <td>1. Приложение 1</td>
-      <td class="text-right">на <span style="text-decoration: underline;">3</span> л.</td>
+      <td>1. Фото</td>
+      <td class="text-right">на <span style="text-decoration: underline;">2</span> л.</td>
     </tr>
     <tr>
-      <td>2. Приложение 2</td>
+      <td>2. Объяснительные записки</td>
       <td class="text-right">на <span style="text-decoration: underline;">5</span> л.</td>
     </tr>
   </table>
@@ -77,13 +76,13 @@
   <table style="width: 100%; margin-top: 20px;">
     <tr>
       <td style="width: 150px;" rowspan="3"><strong>Члены комиссии:</strong></td>
-      <td class="text-right">_______________ (_______________)</td>
+      <td style="padding-left: 200px;">_______________ (<span style="text-decoration: underline;">Зеленская М.В.</span>)</td>
     </tr>
     <tr>
-      <td class="text-right">_______________ (_______________)</td>
+      <td style="padding-left: 200px;">_______________ (<span style="text-decoration: underline;">Рекус И.Г</span>)</td>
     </tr>
     <tr>
-      <td class="text-right">_______________ (_______________)</td>
+      <td style="padding-left: 200px;">_______________ (____________)</td>
     </tr>
   </table>
   <p style="margin-top: 20px;"><strong>С актом проверки ознакомлен:</strong></p>
