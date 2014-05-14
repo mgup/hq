@@ -8,7 +8,7 @@
 
     <h3 class="panel-title">
       <%= discipline.name %>
-      <small><%= discipline.lead_teacher.full_name %></small>
+      <small><%= discipline.lead_teacher.full_name if discipline.lead_teacher %></small>
     </h3>
   </div>
   <table class="table">

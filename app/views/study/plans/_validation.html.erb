@@ -7,3 +7,13 @@
         data-toggle="tooltip" data-placement="top"
         title="Отсутствует дата контроля"></span>
 <% end %>
+
+<% if exam.discipline.subject_teacher? && (User.teachers.include? exam.discipline.lead_teacher) %>
+  <span class="exam-status-success glyphicon glyphicon-ok"
+        data-toggle="tooltip" data-placement="top"
+        title="Ведущий преподаватель указан"></span>
+<% else %>
+  <span class="exam-status-danger glyphicon glyphicon-remove"
+        data-toggle="tooltip" data-placement="top"
+        title="Не указан ведущий преподаватель"></span>
+<% end %>

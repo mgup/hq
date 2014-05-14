@@ -17,6 +17,8 @@ prawn_document margin: [28, 28, 28, 28],
   pdf.line [0, 842 - 56 - 10], [595 - 56, 842 - 56 - 10]
   if @exam.is_repeat?
     pdf.text_box "ДОПОЛНИТЕЛЬНАЯ ЭКЗАМЕНАЦИОННАЯ (ЗАЧЕТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [68, 842 - 70]
+  elsif @exam.validation?
+    pdf.text_box "Ведомость контроля успеваемости", at: [125, 842 - 70]
   else
      pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [120, 842 - 70]
   end
@@ -64,6 +66,7 @@ prawn_document margin: [28, 28, 28, 28],
 
       pdf.move_down 120
 
+      # Для дисциплин, создаваемых преподавателями (БРС)
       if @discipline.brs?
         height = 53
         tableData = [[
@@ -78,15 +81,15 @@ prawn_document margin: [28, 28, 28, 28],
           pdf.text_box('Неуд.', at: [x_pos + 315, y_pos], rotate: 90, size: size, width: 110),
           pdf.text_box('Недопущ.', at: [x_pos + 330, y_pos], rotate: 90, size: size, width: 110),
           pdf.text_box('Неявка', at: [x_pos + 345, y_pos], rotate: 90, size: size, width: 110),
-          pdf.text_box('Набранный балл за семестр', at: [x_pos + 360, y_pos], rotate: 90, size: size, width: 53),
+          pdf.text_box('Набранный балл', at: [x_pos + 360, y_pos], rotate: 90, size: size, width: 53),
           pdf.text_box('Результат прописью', at: [x_pos + 401, y_pos+40],  size: size, width: 50, height: 110),
           pdf.text_box('Подпись экзаменатора', at: [x_pos + 450, y_pos+40], size: size, width: 65, height: 110)
         ]]
         position_y = y_pos
-        if @exam.is_mass_repeat?
+        if @exam.is_mass_repeat? #групповая пересдача
           @exam.students.each_with_index do |student, index|
             position_x = x_pos
-            if @exam.test?
+            if @exam.test? #зачёт
               if student.student.ball(@discipline) < 55
                 tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
               else
@@ -96,9 +99,9 @@ prawn_document margin: [28, 28, 28, 28],
                 pdf.move_to [position_x + 249, position_y - 5.4]
                 pdf.line_to [position_x + 242, position_y - 12.4]
               end
-            elsif @exam.exam?
+            elsif @exam.exam? #экзамен
               tableData << [1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', '', '', '']
-            else
+            else #дифференцированный зачёт
              tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
             end
             8.times do
@@ -107,9 +110,9 @@ prawn_document margin: [28, 28, 28, 28],
             end
             position_y -= 15
           end
-        elsif @exam.is_individual_repeat?
+        elsif @exam.is_individual_repeat? #индивидуальная пересдача
           position_x = x_pos
-          if @exam.test?
+          if @exam.test? #зачёт
             if @exam.student.ball(@discipline) < 55
               tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', "#{@exam.student.ball(@discipline)}+", '', '']
             else
@@ -119,19 +122,65 @@ prawn_document margin: [28, 28, 28, 28],
               pdf.move_to [position_x + 249, position_y - 5.4]
               pdf.line_to [position_x + 242, position_y - 12.4]
             end
-          elsif @exam.exam?
+          elsif @exam.exam? #экзамен
             tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', '', '', '']
-          else
+          else  #дифференцированный зачёт
            tableData << [index+1, @exam.student.person.full_name,  @exam.student.id, '', '', '', '', '', '', '', '', "#{ @exam.student.ball(@discipline)}+", '', '']
           end
           8.times do
             pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
             position_x += 15
           end
-        else
+        elsif @exam.validation? #промежуточная аттестация
+           excellent = 0
+           good = 0
+           fair = 0
+           bad = 0
+           @group.students.each_with_index do |student, index|
+              position_x = x_pos
+               ball = student.result(discipline)[:width]
+               case ball.round
+                  when 0..54
+                    pdf.move_to [position_x + 280, position_y - 7]
+                    pdf.line_to [position_x + 289, position_y - 16]
+                    pdf.move_to [position_x + 289, position_y - 7]
+                    pdf.line_to [position_x + 280, position_y - 16]
+                    result = 'неудовл.'
+                    bad += 1
+                  when  55..69
+                     pdf.move_to [position_x + 265, position_y - 7]
+                     pdf.line_to [position_x + 274, position_y - 16]
+                     pdf.move_to [position_x + 274, position_y - 7]
+                     pdf.line_to [position_x + 265, position_y - 16]
+                     result = 'удовл.'
+                     fair += 1
+                  when 70..85
+                     pdf.move_to [position_x + 250, position_y - 7]
+                     pdf.line_to [position_x + 259, position_y - 16]
+                     pdf.move_to [position_x + 259, position_y - 7]
+                     pdf.line_to [position_x + 250, position_y - 16]
+                     result = 'хорошо'
+                     good += 1
+                  when 86..Float::INFINITY
+                     pdf.move_to [position_x + 235, position_y - 7]
+                     pdf.line_to [position_x + 244, position_y - 16]
+                     pdf.move_to [position_x + 244, position_y - 7]
+                     pdf.line_to [position_x + 235, position_y - 16]
+                     result = 'отлично'
+                     excellent += 1
+                end
+               tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', ball.round, result, '']
+
+              8.times do
+                pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
+                position_x += 15
+              end
+              position_y -= 15
+           end
+        else #оригинальная форма контроля
           @discipline.group.students.each_with_index do |student, index|
             position_x = x_pos
-            if @exam.test?
+            if @exam.test? #зачёт
               if student.ball(@discipline) < 55
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
               else
@@ -141,9 +190,9 @@ prawn_document margin: [28, 28, 28, 28],
                 pdf.move_to [position_x + 249, position_y - 5.4]
                 pdf.line_to [position_x + 242, position_y - 12.4]
               end
-            elsif @exam.exam?
+            elsif @exam.exam? #экзамен
               tableData << [1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
-            else
+            else #дифференцированный зачёт
              tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
             end
             8.times do
@@ -154,6 +203,7 @@ prawn_document margin: [28, 28, 28, 28],
           end
         end
 
+      # Для дисциплин, создаваемых дирекциями
       else
         height = 35
         tableData = [[{content: '№', rowspan: 2}, {content: 'Фамилия, имя, отчество', rowspan: 2},
@@ -215,7 +265,7 @@ prawn_document margin: [28, 28, 28, 28],
     if @exam.exam?
       pdf.start_new_page
     else
-      pdf.start_new_page layout: :landscape
+      pdf.start_new_page layout: :landscape #если зачёты, альбомная ориентация
     end
 
     pdf.font_size 9 do

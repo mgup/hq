@@ -8,6 +8,7 @@
 
       <div class="modal-body">
         <%= nested_form_for discipline, html: { class: 'form-horizontal' } do |f| %>
+          <%= hidden_field_tag :plan, 1 %>
           <%= f.hidden_field :subject_group %>
 
           <div class="form-group">
@@ -19,22 +20,23 @@
 
           <div class="form-group">
             <%= label_tag :subdepartment, 'Кафедра', class: 'col-sm-3 control-label' %>
+            <% academic = discipline.lead_teacher ? (discipline.lead_teacher.departments.academic.first ? discipline.lead_teacher.departments.academic.first.id : nil) : nil %>
             <div class="col-sm-9">
               <%= select_tag :subdepartment,
                              options_from_collection_for_select(
-                                 Department.academic, :id, :name,
-                                 discipline.lead_teacher.departments.academic.first.id
-                             ), { class: 'form-control ajax-subdepartment' } %>
+                                 Department.academic, :id, :name, academic),
+                             { class: 'form-control ajax-subdepartment' } %>
             </div>
           </div>
 
           <div class="form-group">
             <%= f.label :subject_teacher, class: 'col-sm-3 control-label' %>
+            <% teacher = discipline.lead_teacher ? discipline.lead_teacher.id : nil %>
             <div class="col-sm-9">
               <%= f.select :subject_teacher,
                            options_from_collection_for_select(
                                User.teachers, :id, :full_name,
-                               discipline.lead_teacher.id
+                               teacher
                            ), {}, { class: 'form-control ajax-teacher' } %>
             </div>
           </div>
@@ -64,7 +66,8 @@
               <div class="col-sm-8">
                 <%= exams.select :exam_type,
                                  options_for_select(
-                                     Study::Exam::ADDITIONAL_EXAMS_TYPES
+                                     Study::Exam::ADDITIONAL_EXAMS_TYPES,
+                                     exams.object.exam_type
                                  ), {}, { class: 'form-control' } %>
               </div>
               <div class="col-sm-1">
@@ -76,10 +79,10 @@
             </div>
           <% end %>
           <div class="form-group">
-            <div class="col-sm-offset-3">
+            <!--<div class="col-sm-offset-3">-->
               <%= f.link_to_add 'Добавить дополнительную форму контроля',
-                                :additional_exams, style: 'margin-left: 20px;' %>
-            </div>
+                                :additional_exams, style: 'margin-left: 240px;' %>
+            <!--</div>-->
           </div>
 
           <div class="modal-footer">
@@ -98,7 +101,7 @@
 
 <script>
   $(document).ready(function(){
-    var updateTeachers = function(teachers, select) {
+    function updateTeachers(teachers, select) {
       $(select).empty();
       $(teachers).each(function(){
         $(select).append('<option value="' + this.id + '">' +  this.name + '</option>');
@@ -106,12 +109,14 @@
       $(select).trigger("liszt:updated");
     };
 
-    $('.ajax-subdepartment').change(function(){
-      var select = $(this).closest('form').find('.ajax-teacher')
-      $.getJSON ($('#matrixHQ').attr('href')+'ajax/teachers', {
-        'subdepartment':  $(this).val()
-      }, function(teachers){
-        updateTeachers(teachers, select);
+    $('.ajax-subdepartment').click(function(){
+      $('.ajax-subdepartment').change(function(){
+        var select = $(this).closest('form').find('.ajax-teacher')
+        $.getJSON ($('#matrixHQ').attr('href')+'ajax/teachers', {
+          'subdepartment':  $(this).val()
+        }, function(teachers){
+          updateTeachers(teachers, select);
+        })
       })
     });
   })

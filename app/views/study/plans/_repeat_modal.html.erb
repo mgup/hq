@@ -94,7 +94,7 @@
                   <td><%= r.id %></td>
                   <td><%= r.repeat_type %></td>
                   <td><%= l r.date %></td>
-                  <td><%= link_to study_discipline_exam_print_path(exam.discipline, r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
+                  <td><%= link_to print_study_discipline_exam_path(exam.discipline, r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
                         <span class="glyphicon glyphicon-print"></span>
                       <% end %>
                       <% if false %>
@@ -154,7 +154,7 @@
                         <td><%= r.id %></td>
                         <td><%= r.repeat_type %></td>
                         <td><%= l r.date %></td>
-                        <td><%= link_to study_discipline_exam_print_path(exam.discipline,
+                        <td><%= link_to print_study_discipline_exam_path(exam.discipline,
                                                                          r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
                               <span class="glyphicon glyphicon-print"></span>
                             <% end %>

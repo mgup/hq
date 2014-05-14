@@ -27,11 +27,12 @@ class Study::Exam < ActiveRecord::Base
   ]
 
   ADDITIONAL_EXAMS_TYPES = [
-    ['курсовая работа', TYPE_SEMESTER_WORK],
-    ['курсовой проект', TYPE_SEMESTER_PROJECT],
-    ['практика',        TYPE_PRACTICE],
-    ['ГЭК-1',           TYPE_EXAM_COMMISSION_1],
-    ['ГЭК-2',           TYPE_EXAM_COMMISSION_2]
+    ['курсовая работа',          TYPE_SEMESTER_WORK],
+    ['курсовой проект',          TYPE_SEMESTER_PROJECT],
+    ['практика',                 TYPE_PRACTICE],
+    ['ГЭК-1',                    TYPE_EXAM_COMMISSION_1],
+    ['ГЭК-2',                    TYPE_EXAM_COMMISSION_2],
+    ['промежуточная аттестация', TYPE_VALIDATION]
   ]
 
   self.table_name = 'exam'
@@ -227,6 +228,6 @@ class Study::Exam < ActiveRecord::Base
 
   # Можно ли распечатывать ведомость для данного испытания?
   def can_print_register?
-    date?
+    date? && discipline.subject_teacher? && (User.teachers.include? discipline.lead_teacher)
   end
 end

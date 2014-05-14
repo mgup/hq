@@ -55,7 +55,6 @@ class Study::ExamsController < ApplicationController
   end
 
   def print
-    @exam = Study::Exam.find(params[:exam_id])
     load_discipline
     respond_to do |format|
       format.pdf

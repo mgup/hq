@@ -40,8 +40,7 @@ class Study::Discipline < ActiveRecord::Base
   accepts_nested_attributes_for :final_exam
 
   has_many :additional_exams, -> { where('exam_type NOT IN (?)',
-                                         [Study::Exam::TYPE_VALIDATION,
-                                          Study::Exam::TYPE_TEST,
+                                         [Study::Exam::TYPE_TEST,
                                           Study::Exam::TYPE_GRADED_TEST,
                                           Study::Exam::TYPE_EXAMINATION]) },
            class_name: 'Study::Exam', foreign_key: :exam_subject, dependent: :destroy
@@ -54,7 +53,7 @@ class Study::Discipline < ActiveRecord::Base
   
 
   validates :name, presence: true
-  validates :year, presence: true, numericality: { greater_than: 2012, less_than: 2020 }
+  validates :year, presence: true, numericality: { greater_than: 2010, less_than: 2020 }
   validates :semester, presence: true, inclusion: { in: [1,2] }
   validates :lead_teacher, presence: true
   validates :group, presence: true
