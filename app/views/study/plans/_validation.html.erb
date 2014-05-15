@@ -17,3 +17,15 @@
         data-toggle="tooltip" data-placement="top"
         title="Не указан ведущий преподаватель"></span>
 <% end %>
+
+<% if exam.discipline.brs? %>
+  <% if (exam.validation? ? exam.discipline.classes.not_full(exam.discipline).empty? : exam.discipline.classes.not_full_final(exam.discipline).empty?) %>
+    <span class="exam-status-success glyphicon glyphicon-ok"
+          data-toggle="tooltip" data-placement="top"
+          title="Внесены результаты оценки студентов по всем занятиям"></span>
+  <% else %>
+    <span class="exam-status-danger glyphicon glyphicon-remove"
+          data-toggle="tooltip" data-placement="top"
+          title="В некоторых занятиях не введены результаты оценки студентов"></span>
+  <% end %>
+<% end %>

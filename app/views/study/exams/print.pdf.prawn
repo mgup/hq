@@ -1,5 +1,5 @@
 prawn_document margin: [28, 28, 28, 28],
-               filename: "Экзаменационная ведомость № #{@exam.id}.pdf",
+               filename: "Ведомость № #{@exam.id}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
 
   pdf.font_families.update(
@@ -18,7 +18,7 @@ prawn_document margin: [28, 28, 28, 28],
   if @exam.is_repeat?
     pdf.text_box "ДОПОЛНИТЕЛЬНАЯ ЭКЗАМЕНАЦИОННАЯ (ЗАЧЕТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [68, 842 - 70]
   elsif @exam.validation?
-    pdf.text_box "Ведомость контроля успеваемости", at: [125, 842 - 70]
+    pdf.text_box "ВЕДОМОСТЬ КОНТРОЛЯ УСПЕВАЕМОСТИ", at: [160, 842 - 70]
   else
      pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [120, 842 - 70]
   end
@@ -26,28 +26,23 @@ prawn_document margin: [28, 28, 28, 28],
   group = @exam.discipline.group
 
   pdf.font_size 10 do
-    pdf.text_box 'Семестр:', at: [0, 750]
-    pdf.text_box 'Форма контроля:', at: [0, 750 - 15]
-    pdf.text_box 'Дисциплина:', at: [0, 750 - 30]
-    pdf.text_box 'Фамилия, имя, отчество преподавателя(лей):', at: [0, 750 - 45]
+    pdf.text_box "Учебный год: #{@exam.discipline.year}/#{@exam.discipline.year+1}", at: [0, 750]
     if @exam.is_repeat?
-        pdf.text_box 'Дата выдачи:', at: [370, 750]
+      pdf.text_box "Форма контроля: #{@exam.repeat_type}", at: [0, 750 - 15]
     else
-        pdf.text_box 'Дата проведения:', at: [370, 750]
+      pdf.text_box "Форма контроля: #{@exam.name}", at: [0, 750 - 15]
     end
-    pdf.text_box 'Группа:', at: [370, 750 - 15]
-
-    pdf.text_box "#{@exam.discipline.semester}, #{@exam.discipline.year}-#{@exam.discipline.year+1} учебного года", at: [42, 750]
-    pdf.text_box "#{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [(@exam.is_repeat? ? 431 : 450), 750]
-     if @exam.is_repeat?
-        pdf.text_box " #{@exam.repeat_type}", at: [77, 750 - 15]
-     else
-       pdf.text_box " #{@exam.name}", at: [77, 750 - 15]
-     end
-
-    pdf.text_box "#{@discipline.name}", at: [59, 750 - 15 * 2]
-    pdf.text_box "#{group.name}", at: [405, 750 - 15]
-    pdf.text_box "#{@discipline.lead_teacher.full_name}", at: [199, 750 - 45]
+    pdf.text_box "Дисциплина: #{@discipline.name}", at: [0, 750 - 30]
+    pdf.text_box "Фамилия, имя, отчество преподавателя(лей): #{@discipline.lead_teacher.full_name}", at: [0, 750 - 45]
+    pdf.text_box "Семестр: #{@exam.discipline.semester == 1 ? 'I' : 'II'}", at: [370, 750]
+    if @exam.is_repeat?
+      pdf.text_box "Дата выдачи: #{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [370, 750 - 15]
+    elsif @exam.validation?
+      pdf.text_box "Контрольная дата: #{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [370, 750 - 15]
+    else
+      pdf.text_box "Дата проведения: #{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [370, 750 - 15]
+    end
+    pdf.text_box "Группа: #{group.name}", at: [370, 750 - 30]
   end
 
 
@@ -55,7 +50,7 @@ prawn_document margin: [28, 28, 28, 28],
 
 
       y_pos = 615
-      x_pos = 26
+      x_pos = 0
       size = 10
 
       pdf.fill_and_stroke_rectangle [0, 14], 14, 14
@@ -69,10 +64,7 @@ prawn_document margin: [28, 28, 28, 28],
       # Для дисциплин, создаваемых преподавателями (БРС)
       if @discipline.brs?
         height = 53
-        tableData = [[
-          pdf.text_box('№', at: [x_pos - 21, y_pos+40], size: size, height: 110),
-          pdf.text_box('Фамилия, имя, отчество', at: [x_pos + 3, y_pos+40], size: size, height: 110),
-          pdf.text_box('Номер', at: [x_pos + 198, y_pos+40], size: size, height: 110),
+        tableData = [['№', 'Фамилия, имя, отчество', 'Номер',
           pdf.text_box('Зачтено', at: [x_pos + 240, y_pos], rotate: 90, size: size, width: 110),
           pdf.text_box('Не зачтено', at: [x_pos + 255, y_pos], rotate: 90, size: size, width: 110),
           pdf.text_box('Отлично', at: [x_pos + 270, y_pos], rotate: 90, size: size, width: 110),
@@ -82,8 +74,7 @@ prawn_document margin: [28, 28, 28, 28],
           pdf.text_box('Недопущ.', at: [x_pos + 330, y_pos], rotate: 90, size: size, width: 110),
           pdf.text_box('Неявка', at: [x_pos + 345, y_pos], rotate: 90, size: size, width: 110),
           pdf.text_box('Набранный балл', at: [x_pos + 360, y_pos], rotate: 90, size: size, width: 53),
-          pdf.text_box('Результат прописью', at: [x_pos + 401, y_pos+40],  size: size, width: 50, height: 110),
-          pdf.text_box('Подпись экзаменатора', at: [x_pos + 450, y_pos+40], size: size, width: 65, height: 110)
+          'Результат прописью', 'Подпись экзаменатора'
         ]]
         position_y = y_pos
         if @exam.is_mass_repeat? #групповая пересдача
@@ -136,40 +127,40 @@ prawn_document margin: [28, 28, 28, 28],
            good = 0
            fair = 0
            bad = 0
-           @group.students.each_with_index do |student, index|
-              position_x = x_pos
-               ball = student.result(discipline)[:width]
-               case ball.round
-                  when 0..54
-                    pdf.move_to [position_x + 280, position_y - 7]
-                    pdf.line_to [position_x + 289, position_y - 16]
-                    pdf.move_to [position_x + 289, position_y - 7]
-                    pdf.line_to [position_x + 280, position_y - 16]
-                    result = 'неудовл.'
-                    bad += 1
-                  when  55..69
-                     pdf.move_to [position_x + 265, position_y - 7]
-                     pdf.line_to [position_x + 274, position_y - 16]
-                     pdf.move_to [position_x + 274, position_y - 7]
-                     pdf.line_to [position_x + 265, position_y - 16]
-                     result = 'удовл.'
-                     fair += 1
-                  when 70..85
-                     pdf.move_to [position_x + 250, position_y - 7]
-                     pdf.line_to [position_x + 259, position_y - 16]
-                     pdf.move_to [position_x + 259, position_y - 7]
-                     pdf.line_to [position_x + 250, position_y - 16]
-                     result = 'хорошо'
-                     good += 1
-                  when 86..Float::INFINITY
-                     pdf.move_to [position_x + 235, position_y - 7]
-                     pdf.line_to [position_x + 244, position_y - 16]
-                     pdf.move_to [position_x + 244, position_y - 7]
-                     pdf.line_to [position_x + 235, position_y - 16]
-                     result = 'отлично'
-                     excellent += 1
-                end
-               tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', ball.round, result, '']
+           @discipline.group.students.each_with_index do |student, index|
+             position_x = x_pos
+             ball = student.result(@discipline)
+             case ball[:width].round
+                when 0..54
+                  pdf.move_to [position_x + 317, position_y - 5.4]
+                  pdf.line_to [position_x + 324, position_y - 12.4]
+                  pdf.move_to [position_x + 324, position_y - 5.4]
+                  pdf.line_to [position_x + 317, position_y - 12.4]
+                  result = 'неудовл.'
+                  bad += 1
+                when  55..69
+                   pdf.move_to [position_x + 302, position_y - 5.4]
+                   pdf.line_to [position_x + 309, position_y - 12.4]
+                   pdf.move_to [position_x + 309, position_y - 5.4]
+                   pdf.line_to [position_x + 302, position_y - 12.4]
+                   result = 'удовл.'
+                   fair += 1
+                when 70..85
+                   pdf.move_to [position_x + 287, position_y - 5.4]
+                   pdf.line_to [position_x + 294, position_y - 12.4]
+                   pdf.move_to [position_x + 294, position_y - 5.4]
+                   pdf.line_to [position_x + 287, position_y - 12.4]
+                   result = 'хорошо'
+                   good += 1
+                when 86..Float::INFINITY
+                   pdf.move_to [position_x + 272, position_y - 5.4]
+                   pdf.line_to [position_x + 279, position_y - 12.4]
+                   pdf.move_to [position_x + 279, position_y - 5.4]
+                   pdf.line_to [position_x + 272, position_y - 12.4]
+                   result = 'отлично'
+                   excellent += 1
+              end
+             tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', ball[:ball], result, '']
 
               8.times do
                 pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
@@ -207,14 +198,14 @@ prawn_document margin: [28, 28, 28, 28],
       else
         height = 35
         tableData = [[{content: '№', rowspan: 2}, {content: 'Фамилия, имя, отчество', rowspan: 2},
-                      {content: 'Номер', rowspan: 2}, {content:  pdf.text_box('Зачтено', at: [x_pos + 233 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Не зачтено', at: [x_pos + 248 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Отлично', at: [x_pos + 263 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Хорошо',at: [x_pos + 278 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Удовл.', at: [x_pos + 293 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Неуд.', at: [x_pos + 308 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Недопущ.', at: [x_pos + 323 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: pdf.text_box('Неявка', at: [x_pos + 338 - 20, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: 'Номер', rowspan: 2}, {content:  pdf.text_box('Зачтено', at: [x_pos + 239, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Не зачтено', at: [x_pos + 254, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Отлично', at: [x_pos + 269, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Хорошо',at: [x_pos + 284, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Удовл.', at: [x_pos + 299, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Неуд.', at: [x_pos + 314, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Недопущ.', at: [x_pos + 329, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
+                      {content: pdf.text_box('Неявка', at: [x_pos + 344, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
                       {content: 'Экзамен', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], ['Цифрой', 'Прописью']]
 
         position_y = y_pos
@@ -222,7 +213,7 @@ prawn_document margin: [28, 28, 28, 28],
           position_x = x_pos
           tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
           8.times do
-            pdf.rectangle [position_x + 236 - 20, position_y - 5], 7, 7
+            pdf.rectangle [position_x + 242, position_y - 5], 7, 7
             position_x += 15
           end
           position_y -= 15
@@ -252,8 +243,13 @@ prawn_document margin: [28, 28, 28, 28],
            end
            pdf.move_down 18
         else
-          footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
+          if @exam.validation?
+            footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
+                              [@discipline.group.students.length, excellent, good, fair, bad, '—', '—', '—', '—', (5*excellent + 4*good + 3*fair + 2*bad)/@discipline.group.students.length]]
+          else
+            footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+          end
           pdf.table footData, width: pdf.bounds.width,
                           cell_style: { padding: 2}
           pdf.move_down 12
@@ -261,7 +257,7 @@ prawn_document margin: [28, 28, 28, 28],
         pdf.text "#{@exam.repeat == Study::Exam::COMMISSION_REPEAT ? 'Подписи членов комиссии' : 'Подпись преподавателя(лей)'} _____________________________           Директор института _____________________________", align: :center
       end
   end
-  if @discipline.brs?
+  if @discipline.brs? && @exam == @discipline.final_exam
     if @exam.exam?
       pdf.start_new_page
     else
