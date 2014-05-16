@@ -1,4 +1,4 @@
-prawn_document margin: [28, 28, 28, 28],
+prawn_document margin: [28, 20, 28, 28],
                filename: "Ведомость № #{@exam.id}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
 
@@ -28,7 +28,7 @@ prawn_document margin: [28, 28, 28, 28],
   pdf.font_size 10 do
     pdf.text_box "Учебный год: #{@exam.discipline.year}/#{@exam.discipline.year+1}", at: [0, 750]
     if @exam.is_repeat?
-      pdf.text_box "Форма контроля: #{@exam.repeat_type}", at: [0, 750 - 15]
+      pdf.text_box "Форма контроля: #{@exam.name}, #{@exam.repeat_type}", at: [0, 750 - 15]
     else
       pdf.text_box "Форма контроля: #{@exam.name}", at: [0, 750 - 15]
     end
@@ -49,7 +49,7 @@ prawn_document margin: [28, 28, 28, 28],
   pdf.font_size 10 do
 
       y_pos = 615 + 10
-      x_pos = 0 + 20
+      x_pos = 0 + 26
       size = 10
 
       pdf.fill_and_stroke_rectangle [0, 14 + 14], 14, 14
@@ -247,13 +247,13 @@ prawn_document margin: [28, 28, 28, 28],
         pdf.table tableData, header: true, cell_style: { padding: [0, 0, 2, 2] } do
          row(0).height = height
          column(0).width = 24
-         column(1).width = 174.28 + 20 #157
+         column(1).width = 174.28 + 26 #157
          column(2).width = 40 #35
          8.times.each do |i|
            column(i+3).width = 15
          end
-         column(11).width = 40 + 5
-         column(12).width = 50 #60
+         column(11).width = 40 + 7
+         column(12).width = 48 #60
          column(13).width = 65 #80
         end
       end
