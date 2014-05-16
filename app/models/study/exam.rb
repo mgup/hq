@@ -65,6 +65,7 @@ class Study::Exam < ActiveRecord::Base
   scope :mass, -> {where('exam_group IS NOT NULL')}
   scope :individual, -> {where('exam_student_group IS NOT NULL')}
   scope :by_student, -> student {where(exam_student_group: student.id)}
+  scope :finals, -> {where(type: EXAMS_TYPES.collect{|x| x[1]})}
 
   def is_repeat?
     parent?
