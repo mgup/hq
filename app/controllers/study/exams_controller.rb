@@ -55,7 +55,6 @@ class Study::ExamsController < ApplicationController
   end
 
   def print
-    @exam = Study::Exam.find(params[:exam_id])
     load_discipline
     respond_to do |format|
       format.pdf
@@ -63,10 +62,15 @@ class Study::ExamsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:study_exam, {}).permit( :id, :date, :exam_subject, :parent, :exam_type, :weight, :exam_group, :exam_student, :exam_student_group, :repeat,
-                                          final_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_final],
-                                          rating_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value, :mark_rating, :mark_final],
-                                          students_attributes: [:id, :exam_student_student, :exam_student_student_group, :'_destroy']
+    params.fetch(:study_exam, {}).permit(
+      :id, :date, :exam_subject, :parent, :exam_type, :weight, :exam_group, :exam_student,
+      :exam_student_group, :repeat, :exam_date,
+      final_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value,
+                               :mark_final],
+      rating_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value,
+                                :mark_rating, :mark_final],
+      students_attributes: [:id, :exam_student_student, :exam_student_student_group,
+                            :'_destroy']
     )
   end
 

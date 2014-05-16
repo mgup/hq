@@ -127,8 +127,9 @@ class Ability
   end
 
   def dean(user)
+    can :manage, Achievement
     # can :update, Achievement
-    # can :validate_additional, Achievement
+    can :validate_additional, Achievement
   end
 
   def pro_rector_social(user)
@@ -175,6 +176,7 @@ class Ability
     #can :manage, GraduateMark
 
     can :manage, :plans
+
     # Подумать, как совместить это с тем, что Дирекция не преподаватель!!!
     can :create, Study::Discipline
     can :update, Study::Discipline

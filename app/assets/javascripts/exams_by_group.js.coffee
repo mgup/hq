@@ -55,11 +55,11 @@ $ ->
     $('.students-for-repeat').show()
     $(this).hide()
 
-  $('.submit-plan-discipline').click (e) ->
-    key = false
-    $(this).parent().parent().find('.discipline_exams_variants[data-type="1"]').each ->
-      if $(this).prop('checked')
-        key = true
-    unless key
-      e.preventDefault()
-      $(this).parent().parent().find('.alert').show()
+#  $('.submit-plan-discipline').click (e) ->
+#    key = false
+#    $(this).parent().parent().find('.discipline_exams_variants[data-type="1"]').each ->
+#      if $(this).prop('checked')
+#        key = true
+#    unless key
+#      e.preventDefault()
+#      $(this).parent().parent().find('.alert').show()

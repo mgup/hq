@@ -1,18 +1,56 @@
-<div class="modal fade" id="repeatModal<%= parent_exam.id %>" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="<%= dom_id(exam, 'repeat_modal') %>" >
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><%= group.name %> — <%= discipline.name %> <small><%= parent_exam.name %></small></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">
+          <%= exam.discipline.name %>
+          <small><%= group.name %>, <%= exam.name %></small>
+        </h4>
       </div>
+
       <div class="modal-body">
+        <h4>Ведомости на несколько человек</h4>
+        <%= nested_form_for exam, url: study_discipline_exam_path(exam.discipline, exam),
+                            html: { class: 'form-horizontal' } do |f| %>
+          <%= f.fields_for :mass_repeats do |repeats| %>
+            <%= repeats.hidden_field :id %>
+            <%= repeats.hidden_field :exam_subject, value: exam.discipline.id %>
+            <%= repeats.hidden_field :exam_parent,  value: exam.id %>
+            <%= repeats.hidden_field :exam_type,    value: exam.type %>
+            <%= repeats.hidden_field :exam_group,   value: group.id %>
+
+            <div class="form-group">
+              <%= repeats.label :exam_repeat, class: 'col-sm-3 control-label' %>
+              <div class="col-sm-8">
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= repeats.label :exam_date, class: 'col-sm-3 control-label' %>
+              <div class="col-sm-8">
+
+              </div>
+            </div>
+          <% end %>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3">
+              <%= f.link_to_add 'Создать ведомость на нескольких человек', :mass_repeats,
+                                style: 'margin-left: 20px;' %>
+            </div>
+          </div>
+        <% end %>
+
+
+
         <div>
-          <h4>Групповые ведомости</h4>
-        <%= nested_form_for exam, url: study_discipline_exams_path(discipline), class: 'form-horizontal' do |f| %>
-          <%= f.hidden_field :exam_subject, value: discipline.id %>
-          <%= f.hidden_field :parent, value: parent_exam.id %>
-          <%= f.hidden_field :exam_type, value: parent_exam.type %>
-          <%= f.hidden_field :exam_weight, value: parent_exam.weight %>
+        <%= nested_form_for exam, url: study_discipline_exams_path(exam.discipline), class: 'form-horizontal' do |f| %>
+          <%= f.hidden_field :exam_subject, value: exam.discipline.id %>
+          <%= f.hidden_field :parent, value: exam.id %>
+          <%= f.hidden_field :exam_type, value: exam.type %>
+          <%= f.hidden_field :exam_weight, value: exam.weight %>
           <%= f.hidden_field :exam_group, value: group.id %>
           <div class="row">
             <div class="col-sm-5">
@@ -47,7 +85,7 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-            <% mass_repeats = parent_exam.repeats.mass %>
+            <% mass_repeats = exam.repeats.mass %>
             <% unless mass_repeats==[] %>
               <p><strong>Назначены групповые пересдачи</strong></p>
               <table class="table table-striped">
@@ -56,11 +94,12 @@
                   <td><%= r.id %></td>
                   <td><%= r.repeat_type %></td>
                   <td><%= l r.date %></td>
-                  <td><%= link_to study_discipline_exam_print_path(discipline, r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
+                  <td><%= link_to print_study_discipline_exam_path(exam.discipline, r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
                         <span class="glyphicon glyphicon-print"></span>
                       <% end %>
                       <% if false %>
-                      <%= link_to  study_discipline_exam_path(discipline, r), method: :delete,
+                      <%= link_to  study_discipline_exam_path(exam.discipline, r),
+                                   method: :delete,
                                      class: 'delete btn btn-danger', title: 'Удалить пересдачу из учебного плана',
                                      confirm: 'Вы уверены?' do %>
                         <span class='glyphicon glyphicon-remove'></span>
@@ -83,11 +122,11 @@
           <h4>Индивидуальные ведомости</h4>
           <% group.students.each do |student| %>
             <p class="text-center"><strong><%= student.person.full_name %></strong></p>
-            <%= form_for exam, url: study_discipline_exams_path(parent_exam.discipline), class: 'form-horizontal' do |f| %>
-              <%= f.hidden_field :exam_subject, value: parent_exam.discipline.id %>
-              <%= f.hidden_field :parent, value: parent_exam.id %>
-              <%= f.hidden_field :exam_type, value: parent_exam.type %>
-              <%= f.hidden_field :weight, value: parent_exam.weight %>
+            <%= form_for exam, url: study_discipline_exams_path(exam.discipline), class: 'form-horizontal' do |f| %>
+              <%= f.hidden_field :exam_subject, value: exam.discipline.id %>
+              <%= f.hidden_field :parent, value: exam.id %>
+              <%= f.hidden_field :exam_type, value: exam.type %>
+              <%= f.hidden_field :weight, value: exam.weight %>
               <%= f.hidden_field :exam_student, value: student.person.id %>
               <%= f.hidden_field :exam_student_group, value: student.id %>
               <div class="row">
@@ -106,7 +145,7 @@
             <% end %>
             <div class="row">
               <div class="col-sm-12">
-                <% individual_repeats = parent_exam.repeats.individual.by_student(student) %>
+                <% individual_repeats = exam.repeats.individual.by_student(student) %>
                 <% unless individual_repeats==[] %>
                   <p>Назначены пересдачи</p>
                   <table class="table table-striped">
@@ -115,7 +154,8 @@
                         <td><%= r.id %></td>
                         <td><%= r.repeat_type %></td>
                         <td><%= l r.date %></td>
-                        <td><%= link_to study_discipline_exam_print_path(discipline, r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
+                        <td><%= link_to print_study_discipline_exam_path(exam.discipline,
+                                                                         r), class: "btn btn-default#{ ' disabled' if r.date.past? }", title: 'Распечатать ведомость' do %>
                               <span class="glyphicon glyphicon-print"></span>
                             <% end %>
                         </td>

@@ -1,24 +1,19 @@
 class Study::PlansController < ApplicationController
   def index
-    user_departments = current_user.departments_ids
+    authorize! :index, :plans
+
+    @faculties = Department.faculties
+    unless current_user.is?(:developer)
+      user_departments = current_user.departments_ids
+      @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
+    end
+
+    @specialities = Speciality.where(speciality_faculty: @faculties.map { |f| f.id })
+    @groups = Group.where(group_speciality: @specialities.map { |s| s.id })
 
     if current_user.is?(:developer)
-      @faculties = Department.faculties
-      @specialities = Speciality.all
-      @groups = Group.all
       @group = Group.find(params[:group]) if params[:group]
     else
-      @faculties = Department.faculties.find_all do |f|
-        user_departments.include?(f.id)
-      end
-
-      @specialities = Speciality.active.find_all do |s|
-        user_departments.include?(s.faculty.id)
-      end
-
-      @groups = Group.all.find_all do |g|
-        user_departments.include?(g.speciality.faculty.id)
-      end
       if params[:group]
         @group = Group.find(params[:group])
         unless user_departments.include?(@group.speciality.faculty.id)

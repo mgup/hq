@@ -220,11 +220,11 @@ SimpleNavigation::Configuration.run do |navigation|
         #                validate_social_achievements_path, icon: 'check'
         # end
 
-        # if can? :validate_additional, Achievement
-        # #if current_user.is?(:dean)
-        #   primary.item :validate_additional_achievements, 'Подтверждение показателей эффективности (поручения директора)',
-        #                validate_additional_achievements_path, icon: 'check'
-        # end
+        if can? :validate_additional, Achievement
+        #if current_user.is?(:dean)
+          primary.item :validate_additional_achievements, 'Подтверждение показателей эффективности (поручения директора)',
+                       validate_additional_achievements_path, icon: 'check'
+        end
       end
       if can? :manage, :all
         primary.item :npr, 'Заполненение НПР'.html_safe, print_achievements_path, icon: 'list'

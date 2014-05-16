@@ -20,6 +20,21 @@ class Study::Exam < ActiveRecord::Base
   EARLY_REPEAT = 1
   RESPECTFUL_REPEAT = 5
 
+  EXAMS_TYPES = [
+    ['экзамен',                  TYPE_EXAMINATION],
+    ['зачёт',                    TYPE_TEST],
+    ['дифференцированный зачёт', TYPE_GRADED_TEST]
+  ]
+
+  ADDITIONAL_EXAMS_TYPES = [
+    ['курсовая работа',          TYPE_SEMESTER_WORK],
+    ['курсовой проект',          TYPE_SEMESTER_PROJECT],
+    ['практика',                 TYPE_PRACTICE],
+    ['ГЭК-1',                    TYPE_EXAM_COMMISSION_1],
+    ['ГЭК-2',                    TYPE_EXAM_COMMISSION_2],
+    ['промежуточная аттестация', TYPE_VALIDATION]
+  ]
+
   self.table_name = 'exam'
 
   alias_attribute :id,       :exam_id
@@ -45,6 +60,10 @@ class Study::Exam < ActiveRecord::Base
   has_many :repeats, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_parent
   belongs_to :paret_exam, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_parent
 
+  has_many :mass_repeats, -> { where('exam_group IS NOT NULL') },
+           class_name: 'Study::Exam', foreign_key: :exam_parent
+  accepts_nested_attributes_for :mass_repeats
+
   validates :type, presence: true, inclusion: { in: [0,
                                                      1,
                                                      self::TYPE_SEMESTER_WORK,
@@ -59,7 +78,7 @@ class Study::Exam < ActiveRecord::Base
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
                                                      less_than_or_equal_to: 80 }
 
-  scope :originals, -> {where(exam_parent: nil)}
+  scope :originals, -> { where(exam_parent: nil) }
   #scope :repeats, -> exam {where(exam_parent: exam.id)}
   scope :repeat, -> {where('exam_parent IS NOT NULL')}
   scope :mass, -> {where('exam_group IS NOT NULL')}
@@ -206,5 +225,14 @@ class Study::Exam < ActiveRecord::Base
         end
     end
     return {max: max, min: min}
+  end
+
+  # Можно ли распечатывать ведомость для данного испытания?
+  def can_print_register?
+    condition = date? && discipline.subject_teacher? && (User.teachers.include? discipline.lead_teacher)
+    if discipline.brs?
+      condition &&= (validation? ? discipline.classes.not_full(discipline).empty? : discipline.classes.not_full_final(discipline).empty?)
+    end
+    condition
   end
 end

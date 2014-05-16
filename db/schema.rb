@@ -50,16 +50,12 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "achievements", ["user_id"], name: "index_achievements_on_user_id", using: :btree
 
   create_table "acl_position", primary_key: "acl_position_id", force: true do |t|
-    t.integer  "acl_position_user",                                   null: false
-    t.integer  "acl_position_role",                                   null: false
-    t.integer  "acl_position_department",                             null: false
-    t.string   "acl_position_title",      limit: 300
-    t.datetime "started_at"
+    t.integer  "acl_position_user",                    null: false
+    t.integer  "acl_position_role",                    null: false
+    t.integer  "acl_position_department",              null: false
+    t.string   "acl_position_title",       limit: 300
+    t.datetime "acl_position_appointment"
     t.datetime "acl_position_dismission"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "appointment_id"
-    t.boolean  "acl_position_primary",                default: false
   end
 
   create_table "acl_role", primary_key: "acl_role_id", force: true do |t|
@@ -144,7 +140,6 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.integer "student_married"
     t.integer "student_army"
     t.string  "student_army_voenkom",                  limit: 300
-    t.string  "student_army_card",                     limit: 300
     t.integer "student_benefits"
     t.string  "student_registration_region",           limit: 200
     t.string  "student_registration_zip",              limit: 10
@@ -176,89 +171,61 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.integer "student_hostel_temp"
     t.text    "student_commentary",                    limit: 16777215
     t.integer "student_balance_temp"
-    t.string  "last_name_hint"
-    t.string  "first_name_hint"
-    t.string  "patronym_hint"
-    t.string  "region",                                limit: 200
-    t.string  "okrug",                                 limit: 200
-    t.string  "city",                                  limit: 200
-    t.string  "settlement",                            limit: 200
-    t.string  "street",                                limit: 200
-    t.string  "house",                                 limit: 10
-    t.string  "building",                              limit: 100
-    t.integer "flat"
-    t.string  "birth_region",                          limit: 200
-    t.string  "birth_okrug",                           limit: 200
-    t.string  "birth_city",                            limit: 200
-    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
 
   create_table "archive_student_group", primary_key: "archive_student_group_id", force: true do |t|
-    t.integer  "archive_student_group_order",                                                         null: false
-    t.integer  "student_group_id",                                                                    null: false
-    t.integer  "student_group_student",                                                               null: false
-    t.integer  "student_group_infin"
-    t.integer  "student_group_oldstudent",                                                            null: false
-    t.integer  "student_group_group",                                                                 null: false
-    t.integer  "student_group_yearin"
-    t.integer  "student_group_oldgroup",                                                              null: false
-    t.string   "student_group_record",              limit: 11
-    t.integer  "student_group_tax",                                                     default: 1,   null: false
-    t.text     "student_group_contract_customer"
-    t.integer  "student_group_status",                                                  default: 1,   null: false
-    t.integer  "student_group_speciality"
-    t.integer  "student_group_form"
-    t.string   "student_group_abit",                limit: 100
-    t.string   "student_group_abit_contract"
-    t.date     "student_group_abitdate"
-    t.integer  "student_group_abitpoints"
-    t.string   "student_group_a_school"
-    t.integer  "student_group_a_abit_id"
-    t.integer  "student_group_a_human_id"
-    t.integer  "student_group_a_naprav"
-    t.integer  "student_group_a_region_id"
-    t.integer  "student_group_a_state_line"
-    t.integer  "student_group_a_profile_mark"
-    t.integer  "student_group_a_contract_number"
-    t.integer  "student_group_a_accept"
-    t.integer  "student_group_a_accept_type"
-    t.integer  "student_group_a_stags"
-    t.integer  "student_group_a_olymp"
-    t.integer  "student_group_a_school_id"
-    t.integer  "student_group_a_dr_gos"
-    t.integer  "student_group_a_finish_year"
-    t.string   "student_group_a_att_num",           limit: 25
-    t.date     "student_group_a_att_date"
-    t.integer  "student_group_a_flang_id"
-    t.integer  "student_group_a_kurs"
-    t.string   "student_group_a_kurs_num",          limit: 50
-    t.integer  "student_group_a_stago"
-    t.integer  "student_group_a_right_id"
-    t.integer  "student_group_a_marks"
-    t.string   "student_group_a_sert_nums"
-    t.integer  "student_group_a_exam_types"
-    t.integer  "student_group_a_subjects"
-    t.integer  "student_group_p_author"
-    t.integer  "student_group_p_controller"
-    t.text     "student_group_rejected"
-    t.integer  "student_group_rejected_department"
-    t.decimal  "student_group_vbalance",                        precision: 9, scale: 2, default: 0.0, null: false
-    t.decimal  "student_group_balance",                         precision: 9, scale: 2, default: 0.0, null: false
-    t.string   "encrypted_password"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count"
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.string   "ciot_login"
-    t.string   "ciot_password"
+    t.integer "archive_student_group_order",                                                         null: false
+    t.integer "student_group_id",                                                                    null: false
+    t.integer "student_group_student",                                                               null: false
+    t.integer "student_group_infin"
+    t.integer "student_group_oldstudent",                                                            null: false
+    t.integer "student_group_group",                                                                 null: false
+    t.integer "student_group_yearin"
+    t.integer "student_group_oldgroup",                                                              null: false
+    t.string  "student_group_record",              limit: 11
+    t.integer "student_group_tax",                                                     default: 1,   null: false
+    t.text    "student_group_contract_customer"
+    t.integer "student_group_status",                                                  default: 1,   null: false
+    t.integer "student_group_speciality"
+    t.integer "student_group_form"
+    t.string  "student_group_abit",                limit: 100
+    t.string  "student_group_abit_contract"
+    t.date    "student_group_abitdate"
+    t.integer "student_group_abitpoints"
+    t.string  "student_group_a_school"
+    t.integer "student_group_a_abit_id"
+    t.integer "student_group_a_human_id"
+    t.integer "student_group_a_naprav"
+    t.integer "student_group_a_region_id"
+    t.integer "student_group_a_state_line"
+    t.integer "student_group_a_profile_mark"
+    t.integer "student_group_a_contract_number"
+    t.integer "student_group_a_accept"
+    t.integer "student_group_a_accept_type"
+    t.integer "student_group_a_stags"
+    t.integer "student_group_a_olymp"
+    t.integer "student_group_a_school_id"
+    t.integer "student_group_a_dr_gos"
+    t.integer "student_group_a_finish_year"
+    t.string  "student_group_a_att_num",           limit: 25
+    t.date    "student_group_a_att_date"
+    t.integer "student_group_a_flang_id"
+    t.integer "student_group_a_kurs"
+    t.string  "student_group_a_kurs_num",          limit: 50
+    t.integer "student_group_a_stago"
+    t.integer "student_group_a_right_id"
+    t.integer "student_group_a_marks"
+    t.string  "student_group_a_sert_nums"
+    t.integer "student_group_a_exam_types"
+    t.integer "student_group_a_subjects"
+    t.integer "student_group_p_author"
+    t.integer "student_group_p_controller"
+    t.text    "student_group_rejected"
+    t.integer "student_group_rejected_department"
+    t.decimal "student_group_vbalance",                        precision: 9, scale: 2, default: 0.0, null: false
+    t.decimal "student_group_balance",                         precision: 9, scale: 2, default: 0.0, null: false
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
@@ -272,16 +239,14 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "checkpoint", primary_key: "checkpoint_id", force: true do |t|
-    t.integer  "checkpoint_subject",                           null: false
-    t.integer  "checkpoint_type",                 default: 1,  null: false
-    t.string   "checkpoint_name",    limit: 200,  default: ""
-    t.string   "checkpoint_details", limit: 1000
-    t.date     "checkpoint_date",                              null: false
-    t.integer  "checkpoint_min",                  default: 0,  null: false
-    t.integer  "checkpoint_max",                  default: 0,  null: false
-    t.integer  "checkpoint_closed",               default: 0,  null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "checkpoint_subject",                           null: false
+    t.integer "checkpoint_type",                 default: 1,  null: false
+    t.string  "checkpoint_name",    limit: 200,  default: ""
+    t.string  "checkpoint_details", limit: 1000
+    t.date    "checkpoint_date",                              null: false
+    t.integer "checkpoint_min",                  default: 0
+    t.integer "checkpoint_max",                  default: 0
+    t.integer "checkpoint_closed",               default: 0,  null: false
   end
 
   add_index "checkpoint", ["checkpoint_subject"], name: "checkpoint_subject", using: :btree
@@ -300,13 +265,11 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "checkpoint_bck", ["checkpoint_subject"], name: "checkpoint_subject", using: :btree
 
   create_table "checkpoint_mark", primary_key: "checkpoint_mark_id", force: true do |t|
-    t.integer   "checkpoint_mark_checkpoint",                 null: false
-    t.integer   "checkpoint_mark_student",                    null: false
-    t.integer   "checkpoint_mark_mark",                       null: false
-    t.timestamp "checkpoint_mark_submitted",                  null: false
-    t.boolean   "checkpoint_mark_retake",     default: false, null: false
-    t.datetime  "created_at"
-    t.datetime  "updated_at"
+    t.integer  "checkpoint_mark_checkpoint",                 null: false
+    t.integer  "checkpoint_mark_student",                    null: false
+    t.integer  "checkpoint_mark_mark",                       null: false
+    t.datetime "checkpoint_mark_submitted",                  null: false
+    t.boolean  "checkpoint_mark_retake",     default: false, null: false
   end
 
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
@@ -359,7 +322,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.string  "department_sname",   limit: 200,                      null: false
     t.integer "department_prename"
     t.string  "department_alias",   limit: 45
-    t.string  "department_role",    limit: 200, default: "students"
+    t.string  "department_role",    limit: 200, default: "students", null: false
     t.boolean "department_active",              default: true,       null: false
     t.integer "department_parent"
   end
@@ -400,16 +363,12 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "document", primary_key: "document_id", force: true do |t|
-    t.integer   "document_type",                                     null: false
-    t.text      "document_number",      limit: 16777215,             null: false
-    t.integer   "document_signed",      limit: 1
-    t.timestamp "document_create_date",                              null: false
-    t.date      "document_start_date"
-    t.date      "document_expire_date",                              null: false
-    t.integer   "document_juridical",   limit: 1,        default: 0, null: false
-    t.string    "document_department",  limit: 400
-    t.string    "document_name",        limit: 400
-    t.integer   "document_eternal",                      default: 0
+    t.integer  "document_type",                                     null: false
+    t.text     "document_number",      limit: 16777215,             null: false
+    t.integer  "document_signed",      limit: 1
+    t.datetime "document_create_date",                              null: false
+    t.date     "document_expire_date",                              null: false
+    t.integer  "document_juridical",   limit: 1,        default: 0, null: false
   end
 
   create_table "document_meta", primary_key: "document_meta_id", force: true do |t|
@@ -443,7 +402,6 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.string  "student_pforeign",                      limit: 200
     t.integer "student_married"
     t.string  "student_army_voenkom",                  limit: 300
-    t.string  "student_army_card",                     limit: 300
     t.integer "student_army"
     t.integer "student_benefits"
     t.string  "student_registration_region",           limit: 200
@@ -476,90 +434,62 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.integer "student_hostel_temp"
     t.text    "student_commentary",                    limit: 16777215
     t.integer "student_balance_temp"
-    t.string  "last_name_hint"
-    t.string  "first_name_hint"
-    t.string  "patronym_hint"
-    t.string  "region",                                limit: 200
-    t.string  "okrug",                                 limit: 200
-    t.string  "city",                                  limit: 200
-    t.string  "settlement",                            limit: 200
-    t.string  "street",                                limit: 200
-    t.string  "house",                                 limit: 10
-    t.string  "building",                              limit: 100
-    t.integer "flat"
-    t.string  "birth_region",                          limit: 200
-    t.string  "birth_okrug",                           limit: 200
-    t.string  "birth_city",                            limit: 200
-    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
   add_index "document_student", ["student_id"], name: "student_id", using: :btree
 
   create_table "document_student_group", primary_key: "document_student_group_id", force: true do |t|
-    t.integer  "document_student_group_document",                                                     null: false
-    t.integer  "student_group_id",                                                                    null: false
-    t.integer  "student_group_student",                                                               null: false
-    t.integer  "student_group_infin"
-    t.integer  "student_group_oldstudent",                                                            null: false
-    t.integer  "student_group_group",                                                                 null: false
-    t.integer  "student_group_yearin"
-    t.integer  "student_group_oldgroup",                                                              null: false
-    t.string   "student_group_record",              limit: 11
-    t.integer  "student_group_tax",                                                     default: 1,   null: false
-    t.text     "student_group_contract_customer"
-    t.integer  "student_group_status",                                                  default: 1,   null: false
-    t.integer  "student_group_speciality"
-    t.integer  "student_group_form"
-    t.string   "student_group_abit",                limit: 100
-    t.string   "student_group_abit_contract"
-    t.date     "student_group_abitdate"
-    t.integer  "student_group_abitpoints"
-    t.string   "student_group_a_school"
-    t.integer  "student_group_a_abit_id"
-    t.integer  "student_group_a_human_id"
-    t.integer  "student_group_a_naprav"
-    t.integer  "student_group_a_region_id"
-    t.integer  "student_group_a_state_line"
-    t.integer  "student_group_a_profile_mark"
-    t.integer  "student_group_a_contract_number"
-    t.integer  "student_group_a_accept"
-    t.integer  "student_group_a_accept_type"
-    t.integer  "student_group_a_stags"
-    t.integer  "student_group_a_olymp"
-    t.integer  "student_group_a_school_id"
-    t.integer  "student_group_a_dr_gos"
-    t.integer  "student_group_a_finish_year"
-    t.string   "student_group_a_att_num",           limit: 25
-    t.date     "student_group_a_att_date"
-    t.integer  "student_group_a_flang_id"
-    t.integer  "student_group_a_kurs"
-    t.string   "student_group_a_kurs_num",          limit: 50
-    t.integer  "student_group_a_stago"
-    t.integer  "student_group_a_right_id"
-    t.integer  "student_group_a_marks"
-    t.string   "student_group_a_sert_nums"
-    t.integer  "student_group_a_exam_types"
-    t.integer  "student_group_a_subjects"
-    t.integer  "student_group_p_author"
-    t.integer  "student_group_p_controller"
-    t.text     "student_group_rejected"
-    t.integer  "student_group_rejected_department"
-    t.decimal  "student_group_vbalance",                        precision: 9, scale: 2, default: 0.0, null: false
-    t.decimal  "student_group_balance",                         precision: 9, scale: 2, default: 0.0, null: false
-    t.string   "encrypted_password"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count"
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.string   "ciot_login"
-    t.string   "ciot_password"
+    t.integer "document_student_group_document",                                                     null: false
+    t.integer "student_group_id",                                                                    null: false
+    t.integer "student_group_student",                                                               null: false
+    t.integer "student_group_infin"
+    t.integer "student_group_oldstudent",                                                            null: false
+    t.integer "student_group_group",                                                                 null: false
+    t.integer "student_group_yearin"
+    t.integer "student_group_oldgroup",                                                              null: false
+    t.string  "student_group_record",              limit: 11
+    t.integer "student_group_tax",                                                     default: 1,   null: false
+    t.text    "student_group_contract_customer"
+    t.integer "student_group_status",                                                  default: 1,   null: false
+    t.integer "student_group_speciality"
+    t.integer "student_group_form"
+    t.string  "student_group_abit",                limit: 100
+    t.string  "student_group_abit_contract"
+    t.date    "student_group_abitdate"
+    t.integer "student_group_abitpoints"
+    t.string  "student_group_a_school"
+    t.integer "student_group_a_abit_id"
+    t.integer "student_group_a_human_id"
+    t.integer "student_group_a_naprav"
+    t.integer "student_group_a_region_id"
+    t.integer "student_group_a_state_line"
+    t.integer "student_group_a_profile_mark"
+    t.integer "student_group_a_contract_number"
+    t.integer "student_group_a_accept"
+    t.integer "student_group_a_accept_type"
+    t.integer "student_group_a_stags"
+    t.integer "student_group_a_olymp"
+    t.integer "student_group_a_school_id"
+    t.integer "student_group_a_dr_gos"
+    t.integer "student_group_a_finish_year"
+    t.string  "student_group_a_att_num",           limit: 25
+    t.date    "student_group_a_att_date"
+    t.integer "student_group_a_flang_id"
+    t.integer "student_group_a_kurs"
+    t.string  "student_group_a_kurs_num",          limit: 50
+    t.integer "student_group_a_stago"
+    t.integer "student_group_a_right_id"
+    t.integer "student_group_a_marks"
+    t.string  "student_group_a_sert_nums"
+    t.integer "student_group_a_exam_types"
+    t.integer "student_group_a_subjects"
+    t.integer "student_group_p_author"
+    t.integer "student_group_p_controller"
+    t.text    "student_group_rejected"
+    t.integer "student_group_rejected_department"
+    t.decimal "student_group_vbalance",                        precision: 9, scale: 2, default: 0.0, null: false
+    t.decimal "student_group_balance",                         precision: 9, scale: 2, default: 0.0, null: false
   end
 
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
@@ -762,13 +692,13 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "finance_payment", primary_key: "finance_payment_id", force: true do |t|
-    t.integer   "finance_payment_type",                                                               null: false
-    t.integer   "finance_payment_student_group",                                                      null: false
-    t.timestamp "finance_payment_date",                                                               null: false
-    t.decimal   "finance_payment_sum",                        precision: 9, scale: 2
-    t.boolean   "finance_payment_deleted",                                            default: false, null: false
-    t.integer   "finance_payment_user"
-    t.string    "finance_payment_comment",       limit: 1000
+    t.integer  "finance_payment_type",                                                               null: false
+    t.integer  "finance_payment_student_group",                                                      null: false
+    t.datetime "finance_payment_date",                                                               null: false
+    t.decimal  "finance_payment_sum",                        precision: 9, scale: 2
+    t.boolean  "finance_payment_deleted",                                            default: false, null: false
+    t.integer  "finance_payment_user"
+    t.string   "finance_payment_comment",       limit: 1000
   end
 
   add_index "finance_payment", ["finance_payment_student_group"], name: "speciality_payment_student_group", using: :btree
@@ -884,11 +814,11 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer   "hostel_payment_type",                null: false
-    t.integer   "hostel_payment_student",             null: false
-    t.timestamp "hostel_payment_date",                null: false
-    t.integer   "hostel_payment_sum",     default: 0, null: false
-    t.integer   "hostel_payment_year",                null: false
+    t.integer  "hostel_payment_type",                null: false
+    t.integer  "hostel_payment_student",             null: false
+    t.datetime "hostel_payment_date",                null: false
+    t.integer  "hostel_payment_sum",     default: 0, null: false
+    t.integer  "hostel_payment_year",                null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -901,7 +831,6 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.integer "hostel_payment_type_sum",                 null: false
     t.integer "hostel_payment_type_yearsum",             null: false
     t.integer "hostel_payment_type_active",  limit: 1,   null: false
-    t.date    "hostel_payment_type_date",                null: false
   end
 
   add_index "hostel_payment_type", ["hostel_payment_type_status"], name: "hostel_payment_type_status", using: :btree
@@ -954,12 +883,12 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "hostel_report_offense_student", ["student_id"], name: "index_hostel_report_offense_student_on_student_id", using: :btree
 
   create_table "log", primary_key: "log_id", force: true do |t|
-    t.timestamp "log_timestamp",                          null: false
-    t.integer   "log_priority",  limit: 1,                null: false
-    t.integer   "log_user"
-    t.string    "log_message",   limit: 500, default: "", null: false
-    t.integer   "log_type"
-    t.integer   "log_object"
+    t.datetime "log_timestamp",                          null: false
+    t.integer  "log_priority",  limit: 1,                null: false
+    t.integer  "log_user"
+    t.string   "log_message",   limit: 500, default: "", null: false
+    t.integer  "log_type"
+    t.integer  "log_object"
   end
 
   add_index "log", ["log_user"], name: "log_user", using: :btree
@@ -1005,20 +934,20 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "optional_select", ["optional_select_student"], name: "optional_select_student", using: :btree
 
   create_table "order", primary_key: "order_id", force: true do |t|
-    t.string    "order_number",       limit: 200
-    t.integer   "order_revision",                 default: 1, null: false
-    t.integer   "order_department"
-    t.integer   "order_responsible"
-    t.timestamp "order_editing",                              null: false
-    t.datetime  "order_signing"
-    t.integer   "order_status",                   default: 1, null: false
-    t.text      "order_xsl_content"
-    t.integer   "order_xsl_template"
-    t.integer   "order_template",                             null: false
-    t.integer   "order_cfaculty",                 default: 1, null: false
-    t.integer   "order_sign"
-    t.integer   "order_introduce"
-    t.string    "order_endorsement",  limit: 300
+    t.string   "order_number",       limit: 200
+    t.integer  "order_revision",                 default: 1, null: false
+    t.integer  "order_department"
+    t.integer  "order_responsible"
+    t.datetime "order_editing",                              null: false
+    t.datetime "order_signing"
+    t.integer  "order_status",                   default: 1, null: false
+    t.text     "order_xsl_content"
+    t.integer  "order_xsl_template"
+    t.integer  "order_template",                             null: false
+    t.integer  "order_cfaculty",                 default: 1, null: false
+    t.integer  "order_sign"
+    t.integer  "order_introduce"
+    t.string   "order_endorsement",  limit: 300
   end
 
   add_index "order", ["order_template"], name: "order_template", using: :btree
@@ -1053,9 +982,9 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "order_student", ["order_student_student_group_id"], name: "order_student_student_group_id", using: :btree
 
   create_table "order_xsl", primary_key: "order_xsl_id", force: true do |t|
-    t.integer   "order_xsl_template", null: false
-    t.text      "order_xsl_content",  null: false
-    t.timestamp "order_xsl_time",     null: false
+    t.integer  "order_xsl_template", null: false
+    t.text     "order_xsl_content",  null: false
+    t.datetime "order_xsl_time",     null: false
   end
 
   add_index "order_xsl", ["order_xsl_template"], name: "order_xsl_template", using: :btree
@@ -1065,9 +994,9 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "post", primary_key: "post_id", force: true do |t|
-    t.string    "post_title", limit: 100, null: false
-    t.text      "post_text",              null: false
-    t.timestamp "post_time",              null: false
+    t.string   "post_title", limit: 100, null: false
+    t.text     "post_text",              null: false
+    t.datetime "post_time",              null: false
   end
 
   create_table "ratings", force: true do |t|
@@ -1103,7 +1032,6 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.integer  "user_id"
     t.decimal  "wage_rate",        precision: 10, scale: 2
     t.boolean  "untouchable",                               default: false
-    t.boolean  "subdepartment",                             default: false
     t.boolean  "has_report"
     t.decimal  "credits",          precision: 10, scale: 0
     t.decimal  "previous_premium", precision: 10, scale: 0
@@ -1226,13 +1154,13 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "speciality", ["speciality_faculty"], name: "specialityFaculty", using: :btree
 
   create_table "speciality_payment", primary_key: "speciality_payment_id", force: true do |t|
-    t.integer   "speciality_payment_type",                                                               null: false
-    t.integer   "speciality_payment_student_group",                                                      null: false
-    t.timestamp "speciality_payment_date",                                                               null: false
-    t.decimal   "speciality_payment_sum",                        precision: 9, scale: 2
-    t.boolean   "speciality_payment_deleted",                                            default: false, null: false
-    t.integer   "speciality_payment_user"
-    t.string    "speciality_payment_comment",       limit: 1000
+    t.integer  "speciality_payment_type",                                                               null: false
+    t.integer  "speciality_payment_student_group",                                                      null: false
+    t.datetime "speciality_payment_date",                                                               null: false
+    t.decimal  "speciality_payment_sum",                        precision: 9, scale: 2
+    t.boolean  "speciality_payment_deleted",                                            default: false, null: false
+    t.integer  "speciality_payment_user"
+    t.string   "speciality_payment_comment",       limit: 1000
   end
 
   add_index "speciality_payment", ["speciality_payment_student_group"], name: "speciality_payment_student_group", using: :btree
@@ -1282,7 +1210,6 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.integer "student_married"
     t.integer "student_army"
     t.string  "student_army_voenkom",                  limit: 300
-    t.string  "student_army_card",                     limit: 300
     t.integer "student_benefits"
     t.string  "student_ticket",                        limit: 200
     t.string  "student_profkom",                       limit: 200
@@ -1316,18 +1243,6 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.string  "last_name_hint"
     t.string  "first_name_hint"
     t.string  "patronym_hint"
-    t.string  "region",                                limit: 200
-    t.string  "okrug",                                 limit: 200
-    t.string  "city",                                  limit: 200
-    t.string  "settlement",                            limit: 200
-    t.string  "street",                                limit: 200
-    t.string  "house",                                 limit: 10
-    t.string  "building",                              limit: 100
-    t.integer "flat"
-    t.string  "birth_region",                          limit: 200
-    t.string  "birth_okrug",                           limit: 200
-    t.string  "birth_city",                            limit: 200
-    t.string  "birth_settlement",                      limit: 200
   end
 
   add_index "student", ["student_fname"], name: "studentFname", using: :btree
@@ -1395,8 +1310,6 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "ciot_login"
-    t.string   "ciot_password"
   end
 
   add_index "student_group", ["student_group_group"], name: "studentGroupGroup", using: :btree
@@ -1423,20 +1336,18 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "study_marks", ["user_id"], name: "index_study_marks_on_user_id", using: :btree
 
   create_table "study_subjects", force: true do |t|
-    t.integer "year",     null: false
-    t.integer "semester", null: false
-    t.integer "group_id", null: false
-    t.string  "title",    null: false
-    t.integer "kind",     null: false
-    t.integer "user_id",  null: false
+    t.integer  "year",       null: false
+    t.integer  "semester",   null: false
+    t.integer  "group_id",   null: false
+    t.string   "title",      null: false
+    t.integer  "kind",       null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "study_subjects", ["group_id"], name: "index_study_subjects_on_group_id", using: :btree
-  add_index "study_subjects", ["kind"], name: "kind", using: :btree
-  add_index "study_subjects", ["semester"], name: "semester", using: :btree
-  add_index "study_subjects", ["title"], name: "title", using: :btree
   add_index "study_subjects", ["user_id"], name: "index_study_subjects_on_user_id", using: :btree
-  add_index "study_subjects", ["year"], name: "year", using: :btree
 
   create_table "subdepartment", primary_key: "subdepartment_id", force: true do |t|
     t.string  "subdepartment_name",       limit: 400, null: false
@@ -1457,7 +1368,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
 
   add_index "subject", ["subject_group"], name: "subject_group", using: :btree
 
-  create_table "subject_teacher", force: true do |t|
+  create_table "subject_teacher", id: false, force: true do |t|
     t.integer "subject_id", null: false
     t.integer "teacher_id", null: false
   end
@@ -1465,18 +1376,16 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   add_index "subject_teacher", ["teacher_id"], name: "teacher_id", using: :btree
 
   create_table "support", primary_key: "support_id", force: true do |t|
-    t.integer  "support_student",                                null: false
-    t.integer  "support_year",                                   null: false
-    t.integer  "support_month",                                  null: false
-    t.string   "support_pseries",     limit: 11, default: "",    null: false
-    t.string   "support_pnumber",     limit: 11, default: "",    null: false
-    t.text     "support_pdate",                                  null: false
-    t.text     "support_pdepartment",                            null: false
-    t.text     "support_pbirthday",                              null: false
-    t.text     "support_paddress",                               null: false
-    t.text     "support_pphone",                                 null: false
-    t.boolean  "accepted",                       default: false
-    t.boolean  "deferred",                       default: false
+    t.integer  "support_student",     null: false
+    t.integer  "support_year",        null: false
+    t.integer  "support_month",       null: false
+    t.integer  "support_pseries",     null: false
+    t.integer  "support_pnumber",     null: false
+    t.text     "support_pdate",       null: false
+    t.text     "support_pdepartment", null: false
+    t.text     "support_pbirthday",   null: false
+    t.text     "support_paddress",    null: false
+    t.text     "support_pphone",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1669,7 +1578,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
+CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1683,7 +1592,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
+CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1697,7 +1606,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
+CREATE DEFINER = root@localhost TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
 FOR EACH ROW
 BEGIN
 	SELECT subject_year, subject_semester INTO @year, @term
@@ -1711,7 +1620,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
+CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(OLD.mark_student_group, OLD.mark_exam);
@@ -1720,7 +1629,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
+CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
@@ -1729,7 +1638,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
+CREATE DEFINER = root@localhost TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
 FOR EACH ROW
 BEGIN
 	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
@@ -1738,7 +1647,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
+CREATE DEFINER = root@localhost TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
 FOR EACH ROW
 BEGIN
     
@@ -1760,7 +1669,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER student_before_update_row_tr BEFORE UPDATE ON student
+CREATE DEFINER = root@localhost TRIGGER student_before_update_row_tr BEFORE UPDATE ON student
 FOR EACH ROW
 BEGIN
     IF NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
@@ -1785,7 +1694,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
+CREATE DEFINER = root@localhost TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
 FOR EACH ROW
 BEGIN
     
@@ -1807,7 +1716,7 @@ END
 
   # no candidate create_trigger statement could be found, creating an adapter-specific one
   execute(<<-TRIGGERSQL)
-CREATE TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
+CREATE DEFINER = root@localhost TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
 FOR EACH ROW
 BEGIN
     IF NEW.user_fname <> OLD.user_fname OR NEW.user_iname <> OLD.user_iname OR
