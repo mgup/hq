@@ -39,6 +39,13 @@ class Study::Discipline < ActiveRecord::Base
   has_one :final_exam, -> { where(exam_type: [Study::Exam::TYPE_TEST, Study::Exam::TYPE_GRADED_TEST, Study::Exam::TYPE_EXAMINATION]) }, class_name: Study::Exam, foreign_key: :exam_subject, dependent: :destroy, inverse_of: :discipline
   accepts_nested_attributes_for :final_exam
 
+  has_many :additional_exams, -> { where('exam_type NOT IN (?)',
+                                         [Study::Exam::TYPE_TEST,
+                                          Study::Exam::TYPE_GRADED_TEST,
+                                          Study::Exam::TYPE_EXAMINATION]) },
+           class_name: 'Study::Exam', foreign_key: :exam_subject, dependent: :destroy
+  accepts_nested_attributes_for :additional_exams, allow_destroy: true
+
   has_one :semester_work, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_WORK)}, 
           class_name: Study::Exam, foreign_key: :exam_subject
   has_one :semester_project, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)}, 
@@ -46,7 +53,7 @@ class Study::Discipline < ActiveRecord::Base
   
 
   validates :name, presence: true
-  validates :year, presence: true, numericality: { greater_than: 2012, less_than: 2020 }
+  validates :year, presence: true, numericality: { greater_than: 2010, less_than: 2020 }
   validates :semester, presence: true, inclusion: { in: [1,2] }
   validates :lead_teacher, presence: true
   validates :group, presence: true
@@ -60,7 +67,11 @@ class Study::Discipline < ActiveRecord::Base
   scope :from_name, -> name { where('subject_name LIKE :prefix', prefix: "#{name}%")}
   scope :from_student, -> student {where(subject_group:  student.group)}
   scope :from_group, -> group {where(subject_group: group)}
-  scope :now, -> {where(subject_year: CURRENT_STUDY_YEAR, subject_semester: CURRENT_STUDY_TERM)}
+
+  scope :by_term, -> year, term {
+    where(subject_year: year, subject_semester: term)
+  }
+  scope :now, -> { by_term(CURRENT_STUDY_YEAR, CURRENT_STUDY_TERM) }
 
   scope :include_teacher, -> user {
     if user.is?(:subdepartment_assistant)
@@ -132,7 +143,11 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   def brs?
-    classes != []
+    classes.any?
+  end
+
+  def not_brs?
+    classes.empty?
   end
 
   def add_semester_work

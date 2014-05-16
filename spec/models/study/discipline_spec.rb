@@ -46,8 +46,8 @@ describe Study::Discipline do
     it 'обязательное присутствие года' do
       should validate_presence_of(:year)
     end
-    it 'год должен быть целым числом больше 2012 и меньше 2020' do
-      should validate_numericality_of(:year).is_greater_than(2012).is_less_than(2020)
+    it 'год должен быть целым числом больше 2010 и меньше 2020' do
+      should validate_numericality_of(:year).is_greater_than(2010).is_less_than(2020)
     end
 
     it 'обязательное присутствие семестра' do

@@ -64,13 +64,10 @@ class Study::DisciplinesController < ApplicationController
 
   def update
     authorize! :update, Study::Discipline
-    #raise resource_params.inspect
+    #raise params.inspect
     if @discipline.update(resource_params)
-      #if params.include?(:plan)
-      #  redirect_to study_plans_updatediscipline_path
-      #else
-        if resource_params.include?(:exams_attributes)
-          # Идёт редактирование учбного плана.
+        if params[:plan] == '1'
+          # Идёт редактирование учебного плана.
           redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
                                        speciality: @discipline.group.speciality.id,
                                        course: @discipline.group.course,
@@ -128,7 +125,7 @@ class Study::DisciplinesController < ApplicationController
         checkpoints_attributes: [:id, :checkpoint_date,
                                  :checkpoint_name, :checkpoint_details,
                                  :checkpoint_max, :checkpoint_min, :'_destroy'],
-        exams_attributes: [:id, :exam_type, :exam_weight, :'_destroy']
+        additional_exams_attributes: [:id, :exam_type, :'_destroy']
     )
   end
 

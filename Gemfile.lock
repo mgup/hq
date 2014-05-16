@@ -6,21 +6,6 @@ GIT
     morpher (0.0.1)
       httparty
 
-GIT
-  remote: git://github.com/prawnpdf/prawn
-  revision: 4d1afa9f5c37f6622fa86944a8d35c4ea310772b
-  branch: master
-  specs:
-    prawn (1.1.0)
-      pdf-core (~> 0.2.5)
-      ttfunk (~> 1.1.1)
-
-GIT
-  remote: git://github.com/ryanb/nested_form.git
-  revision: 1b0689dfb4d230ceabd278eba159fcb02f23c68a
-  specs:
-    nested_form (0.3.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -200,6 +185,7 @@ GEM
     multi_json (1.10.0)
     multi_xml (0.5.5)
     mysql2 (0.3.15)
+    nested_form (0.3.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -207,11 +193,14 @@ GEM
     net-ssh (2.9.0)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
-    nokogiri (1.6.1)
-      mini_portile (~> 0.5.0)
+    nokogiri (1.6.2)
+      mini_portile (~> 0.5.2)
     orm_adapter (0.5.0)
     pdf-core (0.2.5)
     polyglot (0.3.4)
+    prawn (1.0.0)
+      pdf-core (~> 0.2.2)
+      ttfunk (~> 1.1.1)
     prawn_rails (0.0.11)
       prawn (>= 0.11.1)
       railties (>= 3.0.0)
@@ -329,7 +318,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.3)
     tilt (1.4.1)
-    tins (1.1.0)
+    tins (1.2.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -386,8 +375,8 @@ DEPENDENCIES
   meta_request
   morpher!
   mysql2
-  nested_form!
-  prawn!
+  nested_form
+  prawn
   prawn_rails
   pry-rails
   quiet_assets
