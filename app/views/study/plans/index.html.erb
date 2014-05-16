@@ -8,41 +8,4 @@
            collection: @group.disciplines.by_term(params[:year],
                                                   params[:term]) if @group %>
 
-<div id="examsByGroups">
-  <% if @group %>
-   <% @group.disciplines.by_term(params[:year], params[:term]).each do |d| %>
-   <dl>
-     <dd>
-     <table style="width: 100%; margin-bottom: 20px;">
-      <% d.exams.originals.each do |exam| %>
-      <tr>
-        <td><%= exam.id %></td>
-        <td>
-          <% if (exam.validation? and !d.classes.not_full(d).empty?) or (!exam.validation? and !d.classes.not_full_final(d).empty?) %>
-            <span class="control text-danger" title="В некоторых занятиях не введены результаты оценки студентов."><%= exam.name %></span>
-          <% else %>
-            <%= exam.name %>
-          <% end %>
-          <% unless exam.repeats.empty? %>
-            <span class="badge repeat-tips" title="Групповые пересдачи: <%= exam.repeats.mass.length %> Индивидуальные пересдачи: <%= exam.repeats.individual.length %>"><%= exam.repeats.mass.length %>/<%= exam.repeats.individual.length %></span>
-          <% end %>
-
-        </td>
-        <td>
-        </td>
-      </tr>
-      <% end %>
-    </table>
-    </dd>
-   <% end %>
-  </dl>
-
-
-  <%= link_to 'Добавить предмет для группы', '#addDisciplineModal', class: 'btn btn-default',
-              data: {toggle: 'modal'}, style: 'margin-top: 20px;' %>
-  <%= render partial: 'discipline_modal',
-                   locals: { group: @group, discipline: Study::Discipline.new } %>
-  <% end %>
-</div>
-
 <div id="for_new"></div>
