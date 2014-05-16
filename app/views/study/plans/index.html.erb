@@ -4,11 +4,13 @@
 
 <%= render 'filters' %>
 
-<%= render partial: 'discipline', collection: @group.disciplines if @group %>
+<%= render partial: 'discipline',
+           collection: @group.disciplines.by_term(params[:year],
+                                                  params[:term]) if @group %>
 
 <div id="examsByGroups">
   <% if @group %>
-   <% @group.disciplines.now.each do |d| %>
+   <% @group.disciplines.by_term(params[:year], params[:term]).each do |d| %>
    <dl>
      <dd>
      <table style="width: 100%; margin-bottom: 20px;">

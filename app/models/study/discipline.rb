@@ -67,7 +67,11 @@ class Study::Discipline < ActiveRecord::Base
   scope :from_name, -> name { where('subject_name LIKE :prefix', prefix: "#{name}%")}
   scope :from_student, -> student {where(subject_group:  student.group)}
   scope :from_group, -> group {where(subject_group: group)}
-  scope :now, -> {where(subject_year: CURRENT_STUDY_YEAR, subject_semester: CURRENT_STUDY_TERM)}
+
+  scope :by_term, -> year, term {
+    where(subject_year: year, subject_semester: term)
+  }
+  scope :now, -> { by_term(CURRENT_STUDY_YEAR, CURRENT_STUDY_TERM) }
 
   scope :include_teacher, -> user {
     if user.is?(:subdepartment_assistant)

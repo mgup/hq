@@ -1,6 +1,15 @@
 <%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
   <div class='row'>
-      <div class='col col-lg-10'>
+      <div class="col col-sm-6">
+        <%= select_tag :year_term,
+                       options_for_select(
+                           [['2013/2014, 2-й семестр', '2013-2'],
+                            ['2013/2014, 1-й семестр', '2013-1']],
+                           "#{params[:year]}-#{params[:term]}"),
+                       class: 'form-control',
+                       onchange: %q(document.location = '/study/' + $(this).val() + '/plans';) %>
+      </div>
+      <div class='col col-sm-6'>
           <%= hidden_field_tag :faculty, params[:faculty] || @faculties.first.id,
                                class: 'ajax-faculty hidden-pill-values' %>
           <%= pill_tabs('faculty', @faculties.collect { |f| [f.id, f.abbreviation] },
