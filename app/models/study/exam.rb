@@ -8,7 +8,7 @@ class Study::Exam < ActiveRecord::Base
 
   TYPE_PRACTICE = 4
   TYPE_DIPLOMA_PRACTICE = 5
-  TUPE_FINAL_EXAM = 6
+  TYPE_FINAL_EXAM = 6
   TYPE_EXAM_COMMISSION_1 = 7
   TYPE_EXAM_COMMISSION_2 = 8
 
@@ -23,16 +23,18 @@ class Study::Exam < ActiveRecord::Base
   EXAMS_TYPES = [
     ['экзамен',                  TYPE_EXAMINATION],
     ['зачёт',                    TYPE_TEST],
-    ['дифференцированный зачёт', TYPE_GRADED_TEST]
+    ['дифференцированный зачёт', TYPE_GRADED_TEST],
+    ['практика',                 TYPE_PRACTICE],
+    ['ГЭК-1',                    TYPE_EXAM_COMMISSION_1],
+    ['ГЭК-2',                    TYPE_EXAM_COMMISSION_2],
+    ['промежуточная аттестация', TYPE_VALIDATION],
+    ['преддипломная практика', TYPE_DIPLOMA_PRACTICE],
+    ['итоговый гос. экзамен', TYPE_FINAL_EXAM]
   ]
 
   ADDITIONAL_EXAMS_TYPES = [
     ['курсовая работа',          TYPE_SEMESTER_WORK],
     ['курсовой проект',          TYPE_SEMESTER_PROJECT],
-    ['практика',                 TYPE_PRACTICE],
-    ['ГЭК-1',                    TYPE_EXAM_COMMISSION_1],
-    ['ГЭК-2',                    TYPE_EXAM_COMMISSION_2],
-    ['промежуточная аттестация', TYPE_VALIDATION]
   ]
 
   self.table_name = 'exam'
@@ -70,7 +72,7 @@ class Study::Exam < ActiveRecord::Base
                                                      self::TYPE_SEMESTER_PROJECT,
                                                      TYPE_PRACTICE,
                                                      TYPE_DIPLOMA_PRACTICE,
-                                                     TUPE_FINAL_EXAM,
+                                                     TYPE_FINAL_EXAM,
                                                      TYPE_EXAM_COMMISSION_1,
                                                      TYPE_EXAM_COMMISSION_2,
                                                      TYPE_VALIDATION,

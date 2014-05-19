@@ -40,7 +40,7 @@
                            ), {}, { class: 'form-control ajax-teacher' } %>
             </div>
           </div>
-
+          <% discipline.build_final_exam unless discipline.final_exam %>
           <%= f.fields_for :final_exam do |exam| %>
             <%= exam.hidden_field :id %>
 
@@ -49,7 +49,7 @@
               <div class="col-sm-9">
                 <%= exam.select :exam_type,
                                 options_for_select(Study::Exam::EXAMS_TYPES,
-                                                   exam.object.exam_type),
+                                                   selected: exam.object.exam_type),
                                 { prompt: 'выберите форму итогового контроля',
                                   include_blank: 'выберите форму итогового контроля' },
                                 { class: 'form-control' } %>

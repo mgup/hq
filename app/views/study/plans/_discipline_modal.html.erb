@@ -27,7 +27,7 @@
             <div class="row">
               <%= exam.label :exam_type, 'Форма испытания',class: 'control-label col-sm-3' %>
               <div class="col-sm-9">
-                <%= exam.select :exam_type, options_for_select([['экзамен', 1], ['зачёт', 0], ['дифференцированный зачёт', 9]], exam.object.exam_type), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
+                <%= exam.select :exam_type, options_for_select(Study::Exam::EXAMS_TYPES, exam.object.exam_type), { prompt: 'выберите форму итогового контроля' }, { class: 'form-control' } %>
               </div>
             </div>
             <div class="row">
@@ -41,9 +41,7 @@
           <br>
           <label>Дополнительные испытания</label>
           <br>
-          <% exams = [['курсовая работа', 2, 2], ['курсовой проект', 3, 2],
-                      ['практика', 4, 2], ['ГЭК-1', 7, 2], ['ГЭК-2', 8, 2]] %>
-          <% exams << ['преддипломная практика', 5, 2] << ['итоговый гос. экзамен', 6, 2] if @group.course == @group.study_length %>
+          <% exams = [['курсовая работа', 2, 2], ['курсовой проект', 3, 2]] %>
           <% exams.each do |e| %>
             <label><%= check_box_tag 'exam[]', e[1], (discipline ? (discipline.exams.collect{|exam| exam.type}.include? e[1]) : false), class: 'discipline_exams_variants', data: {type: e[2]} %> <%= e[0] %></label>
             <div class="for-exam"></div>

@@ -1,19 +1,19 @@
 $ ->
 
-  $('.discipline_exams_variants[data-type="1"]').each ->
-    if $(this).prop('checked')
-      $(this).closest('form').find('.discipline_exams_variants[data-type="1"]').prop('disabled', true)
-      $(this).prop('disabled', false)
-      $(this).closest('form').find('.fields .exam-type[value="' +  $(this).val() + '"][data-parent="0"]').parents('.fields').appendTo($(this).parent().next('.for-exam'))
-      if $(this).data('type') == 1
-        $(this).parent().next('.for-exam').find('.exam-weight').show()
-
-  $('.discipline_exams_variants[data-type="1"]').click ->
-    if $(this).prop('checked')
-      $(this).closest('form').find('.discipline_exams_variants[data-type="1"]').prop('disabled', true)
-      $(this).prop('disabled', false)
-    else
-      $(this).closest('form').find('.discipline_exams_variants[data-type="1"]').prop('disabled', false)
+#  $('.discipline_exams_variants[data-type="1"]').each ->
+#    if $(this).prop('checked')
+#      $(this).closest('form').find('.discipline_exams_variants[data-type="1"]').prop('disabled', true)
+#      $(this).prop('disabled', false)
+#      $(this).closest('form').find('.fields .exam-type[value="' +  $(this).val() + '"][data-parent="0"]').parents('.fields').appendTo($(this).parent().next('.for-exam'))
+#      if $(this).data('type') == 1
+#        $(this).parent().next('.for-exam').find('.exam-weight').show()
+#
+#  $('.discipline_exams_variants[data-type="1"]').click ->
+#    if $(this).prop('checked')
+#      $(this).closest('form').find('.discipline_exams_variants[data-type="1"]').prop('disabled', true)
+#      $(this).prop('disabled', false)
+#    else
+#      $(this).closest('form').find('.discipline_exams_variants[data-type="1"]').prop('disabled', false)
 
   $('.discipline_exams_variants').click ->
     $this = $(this)
