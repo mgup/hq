@@ -7,5 +7,13 @@
 <%= render partial: 'discipline',
            collection: @group.disciplines.by_term(params[:year],
                                                   params[:term]) if @group %>
+<div id="examsByGroups">
+  <% if @group %>
+    <%= link_to 'Добавить предмет для группы', '#addDisciplineModal', class: 'btn btn-default',
+                data: {toggle: 'modal'}, style: 'margin-top: 20px;' %>
+    <%= render partial: 'discipline_modal',
+                     locals: { group: @group, discipline: Study::Discipline.new } %>
+  <% end %>
+</div>
 
 <div id="for_new"></div>
