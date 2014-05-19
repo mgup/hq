@@ -19,6 +19,7 @@
 
 # RubyMine
 .idea
+hq.iml
 
 coverage
 erd.pdf
