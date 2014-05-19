@@ -69,7 +69,7 @@
             <div class="col-sm-offset-1">
               <label>Добавьте студентов в ведомость</label>
               <br>
-              <% group.students.each do |student| %>
+              <% group.students.valid_for_today.each do |student| %>
                 <label><%= check_box_tag 'students[]', student.id, (exam.students.include? student), class: 'repeat_exam_students', data: {person: student.person.id} %> <%= student.person.full_name %></label>
                 <div class="for-student"></div>
               <% end %>
@@ -120,7 +120,7 @@
           <br>
         <div>
           <h4>Индивидуальные ведомости</h4>
-          <% group.students.each do |student| %>
+          <% group.students.valid_for_today.each do |student| %>
             <p class="text-center"><strong><%= student.person.full_name %></strong></p>
             <%= form_for exam, url: study_discipline_exams_path(exam.discipline), class: 'form-horizontal' do |f| %>
               <%= f.hidden_field :exam_subject, value: exam.discipline.id %>

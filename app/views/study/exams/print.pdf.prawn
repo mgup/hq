@@ -142,7 +142,7 @@ prawn_document margin: [28, 20, 28, 28],
            good = 0
            fair = 0
            bad = 0
-           @discipline.group.students.each_with_index do |student, index|
+           @discipline.group.students.valid_for_today.each_with_index do |student, index|
              position_x = x_pos
              ball = student.result(@discipline)
              case ball[:width].round
@@ -184,7 +184,7 @@ prawn_document margin: [28, 20, 28, 28],
               position_y -= 15
            end
         else #оригинальная форма контроля
-          @discipline.group.students.each_with_index do |student, index|
+          @discipline.group.students.valid_for_today.each_with_index do |student, index|
             position_x = x_pos
             if @exam.test? #зачёт
               if student.ball(@discipline) < 55
@@ -232,7 +232,7 @@ prawn_document margin: [28, 20, 28, 28],
                       {content: 'Экзамен', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], ['Цифрой', 'Прописью']]
 
         position_y = y_pos
-        @discipline.group.students.each_with_index do |student, index|
+        @discipline.group.students.valid_for_today.each_with_index do |student, index|
           position_x = x_pos
           tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
           8.times do
@@ -268,7 +268,7 @@ prawn_document margin: [28, 20, 28, 28],
         else
           if @exam.validation?
             footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
-                              [@discipline.group.students.length, excellent, good, fair, bad, '—', '—', '—', '—', (5*excellent + 4*good + 3*fair + 2*bad)/@discipline.group.students.length]]
+                              [@discipline.group.students.valid_for_today.length, excellent, good, fair, bad, '—', '—', '—', '—', (5*excellent + 4*good + 3*fair + 2*bad)/@discipline.group.students.valid_for_today.length]]
           else
             footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']]
@@ -339,7 +339,7 @@ prawn_document margin: [28, 20, 28, 28],
           result_2 = @discipline.final_exam.predication(2, @exam.student.ball(@discipline))
           applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
         else
-          @discipline.group.students.each_with_index do |student, index|
+          @discipline.group.students.valid_for_today.each_with_index do |student, index|
             result_5 = @discipline.final_exam.predication(5, student.ball(@discipline))
             result_4 = @discipline.final_exam.predication(4, student.ball(@discipline))
             result_3 = @discipline.final_exam.predication(3, student.ball(@discipline))
@@ -410,7 +410,7 @@ prawn_document margin: [28, 20, 28, 28],
           end
         else
           index = 1
-          @discipline.group.students.each do |student|
+          @discipline.group.students.valid_for_today.each do |student|
             if (!(student.ball(@discipline) < 55) && @exam.test?) || (!(student.ball(@discipline) < 85) && @exam.graded_test?)
               next
             end
