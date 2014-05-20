@@ -50,4 +50,3 @@ describe ClaimsController do
         end
       end
     end
-end
