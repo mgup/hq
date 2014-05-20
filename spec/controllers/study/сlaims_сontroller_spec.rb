@@ -2,23 +2,28 @@ require 'spec_helper'
 
 describe ClaimsController do
 
-     describe 'GET "index"' do
-      before :each do
-        @event = FactoryGirl.create(:event)
-        get :index
+   describe 'POST #create' do
+      context 'в случае успешного создания' do
+        before :each do
+          EventDateClaim.any_instance.should_receive(:save).and_return(true)
+          post :create, event: {}
+        end
+
+        it 'должен создавать новую заявку' do
+          flash[:notice].should_not be_nil
+        end
+
+        it 'должно происходить перенаправление на страницу со структурой университета' do
+          response.should redirect_to actual_events_path
+        end
       end
 
-      it 'должен выполняться успешно' do
-        response.should be_success
-      end
-
-      it 'должен выводить правильное представление' do
-        response.should render_template(:index)
-      end
-
-      it 'в выводе должна присутствовать заявка' do
-        assigns(:events).should include(@event)
+      context 'в случае ошибки' do
+        it 'должен перенаправить на создание' do
+          EventDateClaim.any_instance.should_receive(:save).and_return(false)
+          post :create, event: {}
+          response.should render_template :new
+        end
       end
     end
   end
-
