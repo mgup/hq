@@ -20,6 +20,7 @@ describe ClaimsController do
 
       
     end
+  end
 
       context 'для пользователей, не являющихся разработчиками,' do
     it 'должен быть переход на главную страницу' do
