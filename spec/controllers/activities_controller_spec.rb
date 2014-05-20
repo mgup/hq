@@ -8,7 +8,6 @@ end
 
 	describe 'GET "index"' do
 		before :each do
-			# @activity = FactoryGirl.create(:activity)
 			get :index
 		end
 		it 'должен выполняться успешно' do
@@ -41,11 +40,11 @@ end
           post :create, activity: {}
         end
 
-        it 'должен создавать новый департамент' do
+        it 'должен создавать новый Activity' do
           flash[:notice].should_not be_nil
         end
 
-        it 'должно происходить перенаправление на страницу со структурой университета' do
+        it 'должно происходить перенаправление на страницу со структурой Activity' do
           response.should redirect_to activities_path
         end
       end
