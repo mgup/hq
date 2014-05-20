@@ -96,6 +96,7 @@ HQ::Application.routes.draw do
                                      term: Study::Discipline::CURRENT_STUDY_TERM } do
       # Учебные планы.
       get 'plans', to: 'plans#index'
+      get 'control', to: 'exams#control'
     end
 
     get 'exammarks/:id/ajax_update' => 'exam_marks#ajax_update'
@@ -113,7 +114,6 @@ HQ::Application.routes.draw do
 
       resources :exams do
         get 'print', on: :member, defaults: { format: 'pdf' }
-
         patch '/updatedate', to: 'exams#updatedate', on: :member
       end
     end

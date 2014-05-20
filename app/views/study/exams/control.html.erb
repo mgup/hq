@@ -1,0 +1,20 @@
+<%= @exams.collect{|e| e.id} %>
+ <br>
+<br>
+<br>
+<%= @exams_with_form.collect{|e| e.id}.uniq %>
+ <br>
+<br>
+<br>
+<%= @exams_without_form.collect{|e| e.id}.uniq %>
+<br>
+<br>
+<%= @exams.collect{|e| e.id}.length %>
+<br>
+<br>
+<br>
+<%= @exams_with_form.collect{|e| e.id}.uniq.length %>
+<br>
+<br>
+<br>
+<%= @exams_without_form.collect{|e| e.id}.uniq.length %>

@@ -1,7 +1,7 @@
 class Study::ExamsController < ApplicationController
-  before_filter :load_discipline
-  load_and_authorize_resource :discipline
-  load_and_authorize_resource through: :discipline, except: :create
+  before_filter :load_discipline, except: :control
+  load_and_authorize_resource :discipline, except: :control
+  load_and_authorize_resource through: :discipline, except: [:create, :control]
 
   def index ; end
 
@@ -52,6 +52,12 @@ class Study::ExamsController < ApplicationController
                                  course: @exam.discipline.group.course,
                                  form: @exam.discipline.group.form,
                                  group: @exam.discipline.group.id)
+  end
+
+  def control
+    @exams = Group.find(27).exams
+    @exams_with_form = Group.find(27).exams.with_form
+    @exams_without_form = Group.find(27).exams.where("exam_id NOT IN (#{@exams_with_form.collect{|e| e.id}.uniq.join(', ')})")
   end
 
   def print

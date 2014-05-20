@@ -66,6 +66,9 @@ class Study::Exam < ActiveRecord::Base
            class_name: 'Study::Exam', foreign_key: :exam_parent
   accepts_nested_attributes_for :mass_repeats
 
+
+  has_one :formreader, class_name: Study::ExamFormreader, foreign_key: :DocNumber
+
   validates :type, presence: true, inclusion: { in: [0,
                                                      1,
                                                      self::TYPE_SEMESTER_WORK,
@@ -87,6 +90,11 @@ class Study::Exam < ActiveRecord::Base
   scope :individual, -> {where('exam_student_group IS NOT NULL')}
   scope :by_student, -> student {where(exam_student_group: student.id)}
   scope :finals, -> {where(type: EXAMS_TYPES.collect{|x| x[1]})}
+#  scope :without_form, -> {where('exam.exam_id NOT IN (SELECT exam.exam_id FROM exam
+#  JOIN exam_formreader ON exam_formreader.DocNumber = exam.exam_id
+#WHERE exam_formreader.exam_formreader_parsed IS TRUE and exam.exam_id > 18981)
+#      AND exam.exam_type IN (0,9,1)')}
+  scope :with_form, -> {joins(:formreader).where('exam_formreader.exam_formreader_parsed IS TRUE')}
 
   def is_repeat?
     parent?

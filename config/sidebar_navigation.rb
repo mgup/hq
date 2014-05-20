@@ -91,6 +91,9 @@ SimpleNavigation::Configuration.run do |navigation|
       if can? :manage, :plans
         primary.item :plans, 'Учебные планы'.html_safe, study_plans_path, icon: 'bell'
       end
+      if can? :manage, :all
+        primary.item :control, 'Контроль ведомостей'.html_safe, study_control_path, icon: 'warning-sign'
+      end
       if can? :manage, Graduate
         primary.item :graduates, 'Выпускники', graduates_path, icon: 'folder-open'
       end
