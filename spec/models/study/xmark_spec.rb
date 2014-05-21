@@ -6,8 +6,8 @@ describe Study::Xmark do
   end
 
   describe 'обладает связями с другими моделями:' do
-    it 'с дисциплиной' do
-      should belong_to(:discipline)
+    it 'с предметом' do
+      should belong_to(:subject)
     end
     it 'со студентом' do
       should belong_to(:student)
