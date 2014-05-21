@@ -38,7 +38,7 @@ describe Study::SubjectsController do
       describe 'POST #create' do
       context 'в случае успешного создания' do
         before :each do
-          Subject.any_instance.should_receive(:save).and_return(true)
+         Study::Subject.any_instance.should_receive(:save).and_return(true)
           post :create, subject: {}
         end
 
@@ -53,7 +53,7 @@ describe Study::SubjectsController do
 
       context 'в случае ошибки' do
         it 'должен перенаправить на создание' do
-          Subject.any_instance.should_receive(:save).and_return(false)
+          Study::Subject.any_instance.should_receive(:save).and_return(false)
           post :create, subject: {}
           response.should render_template :new
         end
