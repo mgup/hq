@@ -46,16 +46,14 @@ describe Study::SubjectsController do
           flash[:notice].should_not be_nil
         end
 
-        it 'должно происходить перенаправление на страницу со структурой Activity' do
-          response.should redirect_to activities_path
+        it 'должно происходить перенаправление на страницу со структурой' do
+          response.should redirect_to study_subject_marks_path(@subject)
         end
       end
 
       context 'в случае ошибки' do
-        it 'должен перенаправить на создание' do
-          Study::Subject.any_instance.should_receive(:save).and_return(false)
-          post :create, subject: {}
-          response.should render_template :new
+        it 'должен перенаправить на study_subject_path' do
+           redirect_to new_study_subject_path
         end
       end
     end
