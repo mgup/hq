@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Document::Doc
+describe Document::Doc do
   it 'должен обладать валидной фабрикой' do
     build(:document).should be_valid
   end
