@@ -1,42 +1,70 @@
 require 'spec_helper'
 
 describe ClaimsController do
-   context 'для разработчиков' do
+  
     before do
       @user = create(:user, :developer)
       sign_in @user
     end
 
      describe 'GET "index"' do
+      before :each do
+      get :index
+    end
       it 'должен выполняться успешно' do
-        get :index
         response.should be_success
       end
 
       it 'должен выводить правильное представление' do
-        get :index
         response.should render_template(:index)
       end
 
-      
+   end 
+
+   describe 'GET #new' do
+      before :each do
+        get :new
+      end
+
+      it 'должен выполняться успешно' do
+        response.should be_success
+      end
+
+      it 'должен выводить правильное представление' do
+        response.should render_template(:new)
+      end
+
     end
-  end
 
-      context 'для пользователей, не являющихся разработчиками,' do
-    it 'должен быть переход на главную страницу' do
-      sign_in FactoryGirl.create(:user)
+        describe 'POST #create' do
+          context 'в случае успешного создания' do
+            before :each do
+           EventDateClaim.any_instance.should_receive(:save).and_return(true)
+            post :create, claim: {}
+        end
 
-      get :index
-      response.should redirect_to(root_path)
+        it 'должен создавать новую заметку' do
+          flash[:notice].should_not be_nil
+        end
+
+        it 'должно происходить перенаправление на страницу со структурой ' do
+          response.should redirect_to actual_events_path
+        end
+      end
+
+      context 'в случае ошибки' do
+        it 'должен перенаправить на создание' do
+          EventDateClaim.any_instance.should_receive(:save).and_return(false)
+          post :create, claim: {}
+          response.should render_template :new
+        end
+      end
     end
-  end
 
-  context 'для не авторизованных пользователей' do
-    it 'должен быть переход на страницу авторизации' do
-      sign_out :user
 
-      get :index
-      response.should redirect_to(new_user_session_path)
-    end
-  end
-  end
+
+
+
+
+
+end
