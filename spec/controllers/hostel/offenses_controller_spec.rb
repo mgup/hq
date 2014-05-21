@@ -46,11 +46,11 @@ describe Hostel::OffensesController do
           post :create, hostel_offense: {}
         end
 
-        it 'должен создавать новый департамент' do
+        it 'должен создавать новую запись' do
           flash[:notice].should_not be_nil
         end
 
-        it 'должно происходить перенаправление на страницу со структурой университета' do
+        it 'должно происходить перенаправление на страницу со структурой Hostel' do
           response.should redirect_to hostel_offenses_path
         end
       end
@@ -66,7 +66,7 @@ describe Hostel::OffensesController do
 
     describe 'PUT #update' do
       before :each do
-        @offense = FactoryGirl.create(:hostel_offense)
+        @updated = FactoryGirl.create(:hostel_offense)
       end
       context 'в случае успешного изменения' do
         before :each do
@@ -78,7 +78,7 @@ describe Hostel::OffensesController do
           assigns(:hostel_offense).should eq(@updated)
         end
 
-        it 'должен переходить на страницу со структурой университета' do
+        it 'должен переходить на страницу со структурой Hostel' do
           flash[:notice].should_not be_nil
           response.should redirect_to hostel_offenses_path
         end
