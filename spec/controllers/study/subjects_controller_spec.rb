@@ -20,49 +20,6 @@ describe Study::SubjectsController do
 
   	end
 
-  	 describe 'GET #new' do
-      before :each do
-        get :new
-      end
-
-      it 'должен выполняться успешно' do
-        response.should be_success
-      end
-
-      it 'должен выводить правильное представление' do
-        response.should render_template(:new)
-      end
-
-    end
-
-      describe 'POST #create' do
-      context 'в случае успешного создания' do
-        before :each do
-         Study::Subject.any_instance.should_receive(:save).and_return(true)
-          post :create, subject: {}
-        end
-
-        it 'должен создавать новый Subject' do
-          flash[:notice].should_not be_nil
-        end
-
-        it 'должно происходить перенаправление на страницу со структурой' do
-          response.should redirect_to study_subject_marks_path(@subject)
-        end
-      end
-
-      context 'в случае ошибки' do
-        it 'должен перенаправить на study_subject_path' do
-           redirect_to new_study_subject_path
-        end
-      end
-    end
-
-
-
-
-
-
 
 
 
