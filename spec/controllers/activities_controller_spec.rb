@@ -40,7 +40,7 @@ end
           post :create, activity: {}
         end
 
-        it 'должен создавать новый Activity' do
+        it 'должен создавать новый активити' do
           flash[:notice].should_not be_nil
         end
 
