@@ -10,7 +10,7 @@ describe Study::DisciplineTeacher do
       should belong_to(:assistant_teacher)
     end
     it 'с дисциплиной' do
-      should have_many(:discipline)
+      should belong_to(:discipline)
     end
   end
 
