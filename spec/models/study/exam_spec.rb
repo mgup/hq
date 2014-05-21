@@ -14,10 +14,9 @@ describe Study::Exam  do
       should belong_to(:group)
     end
 
- it 'со студентом' do
+    it 'со студентом' do
       should belong_to(:student)
     end
-
 
     it 'со студентами' do
       should have_many(:students)
@@ -43,14 +42,9 @@ describe Study::Exam  do
       should have_many(:mass_repeats)
     end
 
-
-     it 'с paret_exam' do
+    it 'с paret_exam' do
       should belong_to(:paret_exam)
     end
-
-
-
-
 
   end
 
