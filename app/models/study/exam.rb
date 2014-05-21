@@ -50,7 +50,10 @@ class Study::Exam < ActiveRecord::Base
   validates :discipline, presence: true
 
   belongs_to :group, primary_key: :group_id, foreign_key: :exam_group
-  belongs_to :student, primary_key: :student_group_id, foreign_key: :exam_student_group
+
+  belongs_to :student, class_name: 'Student', primary_key: :student_group_id,
+             foreign_key: :exam_student_group
+
   has_many :students, class_name: Study::ExamStudent, foreign_key: :exam_student_exam, dependent: :destroy
   accepts_nested_attributes_for :students, allow_destroy: true
   has_many :marks, class_name: Study::ExamMark, foreign_key: :mark_exam
