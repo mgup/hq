@@ -97,3 +97,4 @@ describe Hostel::OffensesController do
     end
   end
 end
+end
