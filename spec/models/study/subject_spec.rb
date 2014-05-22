@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe Study::Subject do
   it 'должен обладать валидной фабрикой' do
     build(:study_subjects).should be_valid
