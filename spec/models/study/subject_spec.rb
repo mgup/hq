@@ -4,7 +4,7 @@ describe Study::Subject do
     build(:study_subjects).should be_valid
   end
   describe 'обладает связями с другими моделями:' do
-    it 'с дополнительными преподавателями' do
+    it 'с групой' do
       should belong_to(:group)
     end
      it 'с пользователем' do
