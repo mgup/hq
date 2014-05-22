@@ -6,7 +6,7 @@ describe Office::OrderReason do
 	end
 
 	describe 'обладает связями с другими моделями' do
-		it 'с порядком' do
+		it 'с порядком ' do
 			should belong_to(:order)
 		end
 
