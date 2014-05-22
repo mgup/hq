@@ -15,7 +15,7 @@ class Group < ActiveRecord::Base
 
   has_many :students, foreign_key: :student_group_group
   #has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_group
-  has_many :exams, class_name: Study::Exam, primary_key: :exam_id, through: :disciplines
+  has_many :exams, -> { joins(:discipline).where("subject.subject_year = #{Study::Discipline::CURRENT_STUDY_YEAR} AND exam_date IS NOT NULL") }, class_name: Study::Exam, primary_key: :exam_id, through: :disciplines
   has_many :subjects, foreign_key: :subject_group
   has_many :disciplines, class_name: Study::Discipline, foreign_key: :subject_group
 
