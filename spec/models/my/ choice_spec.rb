@@ -5,7 +5,7 @@ describe My::Choice do
 		build(:optional).should be_valid
 	end
 
-	describe 'обладает подразделами' do
+	describe 'обладает разделами' do
 		it 'с пользователем' do
 			should have_many(:selections).class_name('Study::Discipline')
 		end
