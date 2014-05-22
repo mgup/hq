@@ -7,6 +7,6 @@ require 'spec_helper'
     it 'со студентом' do
       should belong_to(:student)
     end
-    it 'с экзаменом' do
+    it 'с person' do
       should belong_to(:person)
     end
