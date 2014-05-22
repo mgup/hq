@@ -24,6 +24,7 @@ class Department < ActiveRecord::Base
            foreign_key: :department_parent
 
   has_many :specialities, class_name: Speciality, foreign_key: :speciality_faculty
+  has_many :groups, through: :specialities
 
   # Главное подразделение текущего подразделение.
   belongs_to :main_department, class_name: Department,

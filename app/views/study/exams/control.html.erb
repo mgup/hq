@@ -1,20 +1,54 @@
-<%= @exams.collect{|e| e.id} %>
- <br>
-<br>
-<br>
-<%= @exams_with_form.collect{|e| e.id}.uniq %>
- <br>
-<br>
-<br>
-<%= @exams_without_form.collect{|e| e.id}.uniq %>
-<br>
-<br>
-<%= @exams.collect{|e| e.id}.length %>
-<br>
-<br>
-<br>
-<%= @exams_with_form.collect{|e| e.id}.uniq.length %>
-<br>
-<br>
-<br>
-<%= @exams_without_form.collect{|e| e.id}.uniq.length %>
+<div class="page-header">
+    <h1>Контроль ведомостей - необработанные ведомости</h1>
+</div>
+
+<p class="help-block">Результаты этих ведомостей не обработаны в Матрице. Возможно, их еще не отсканировали или не распознали и не передали в Матрицу. Необходимо уточнить где они, что с ними и после этого передать их роботу обработки ведомостей.</p>
+
+<h2>Сводные данные по необработанным ведомостям</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Базовые ведомости</th>
+            <th>Групповые пересдачи</th>
+            <th>Индивидуальные пересдачи</th>
+            <th>Всего необработано</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @exams_without_form.each do |faculty| %>
+        <tr>
+            <th><%= faculty[:faculty].abbreviation %></th>
+            <td><%= faculty[:control][:basic] %> из <%= faculty[:all][:basic] %></td>
+            <td><%= faculty[:control][:mass] %> из <%= faculty[:all][:mass] %></td>
+            <td><%= faculty[:control][:individual] %> из <%= faculty[:all][:individual] %></td>
+            <td><%= 100*(faculty[:control][:basic]+faculty[:control][:mass]+faculty[:control][:individual])/(faculty[:all][:basic]+faculty[:all][:mass]+faculty[:all][:individual]) %>%</td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+<br><br>
+<div class="panel-group" id="examsWithoutFormreader">
+<% @exams_without_form.each do |faculty| %>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#examsWithoutFormreader" href="#faculty_<%= faculty[:faculty].id%>"><%= faculty[:faculty].abbreviation %></a>
+            </h4>
+        </div>
+        <div id="faculty_<%= faculty[:faculty].id%>" class="panel-collapse collapse">
+            <div class="panel-body">
+                <% faculty[:groups].each do |group| %>
+                    <h3><%= group[:group].name %></h3>
+                    <ul>
+                    <% group[:exams].each do |exam| %>
+                        <li><%= l exam.date %> — <%= exam.id %> — <%= exam.discipline.name %> <%= exam.is_individual_repeat? ? "(#{exam.student.person.full_name})" : (exam.is_mass_repeat? ? '<span style="color: red;">(ведомость на несколько человек)</span>'.html_safe : '') %> </li>
+                    <% end %>
+                    </ul>
+                <% end %>
+            </div>
+        </div>
+    </div>
+<% end %>
+</div>
+

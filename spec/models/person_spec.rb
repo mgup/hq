@@ -22,7 +22,7 @@ describe Person do
 			should belong_to(:room)
 		end
 
-		it 'с студентами' do
+		it 'со студентами' do
 			should have_many(:students)
 		end
 	end
