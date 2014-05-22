@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Office::OrderReason do
 	it 'должен обладать валидной фабрикой' do
-		build(:position).should be_valid
+		build(:order_reason).should be_valid
 	end
 
 	describe 'обладает связями с другими моделями' do
