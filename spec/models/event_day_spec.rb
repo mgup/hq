@@ -18,7 +18,7 @@ describe EventDate do
 			should has_many(:visitor_event_dates)
 		end
 
-		it 'с назначениями' do
+		it 'с пользователями' do
 			should has_many(:users)
 		end
 
