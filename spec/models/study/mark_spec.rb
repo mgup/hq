@@ -10,10 +10,8 @@ describe Study::Mark do
       should belong_to(:student)
     end
 
-     it 'со выбранной точкой' do
+    it 'с занятием (точкой)' do
       should belong_to(:checkpoint)
     end
-     
   end
-
 end
