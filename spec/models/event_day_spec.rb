@@ -14,7 +14,7 @@ describe EventDate do
 			should belong_to(:visitor_event_dates)
 		end
 	end
-	describe 'иметь много' do
+	describe 'имеет много' do
 		it 'пользователей' do
 			should has_many(:users)
 		end
