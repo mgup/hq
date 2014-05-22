@@ -45,7 +45,5 @@ describe Study::Exam  do
     it 'с paret_exam' do
       should belong_to(:paret_exam)
     end
-
   end
-
 end
