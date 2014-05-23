@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe My::Choice do
   it 'должен обладать валидной фабрикой' do
-    build(:optional).should be_valid
+    build(:choice).should be_valid
   end
 
   describe 'обладает связями с другими моделями:' do
@@ -11,7 +11,7 @@ describe My::Choice do
     end
 
     it 'со студентами' do
-      should have_many(:students).though(:selections)
+      should have_many(:students).through(:selections)
     end
   end
 end
