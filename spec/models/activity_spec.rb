@@ -10,7 +10,7 @@ describe Activity do
 	      should belong_to(:group)
 	    end
 
-	  	it 'с активным типом' do
+	  it 'с активным типом' do
 	      should belong_to(:activity_type)
 	    end
 
@@ -18,10 +18,6 @@ describe Activity do
 	      should belong_to(:activity_credit_type)
 	    end
 
-	    it 'с активным кредитным типом' do
-	      should belong_to(:validator)
-	    end
-	    
   		it 'с достижениями' do
 	      should have_many(:achievements)
 	    end
