@@ -84,8 +84,11 @@ class Study::Exam < ActiveRecord::Base
                                                      TYPE_VALIDATION,
                                                      9] }
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
-                                                     less_than_or_equal_to: 80 }
 
+                                                     less_than_or_equal_to: 80 }
+  scope :by_term, -> year, term {
+    joins(:discipline).where(subject: {subject_year: year, subject_semester: term})
+  }
   scope :originals, -> { where(exam_parent: nil) }
   #scope :repeats, -> exam {where(exam_parent: exam.id)}
   scope :repeat, -> {where('exam_parent IS NOT NULL')}
@@ -98,6 +101,14 @@ class Study::Exam < ActiveRecord::Base
 #WHERE exam_formreader.exam_formreader_parsed IS TRUE and exam.exam_id > 18981)
 #      AND exam.exam_type IN (0,9,1)')}
   scope :with_form, -> {joins(:formreader).where('exam_formreader.exam_formreader_parsed IS TRUE')}
+  scope :by_group, -> group_id {
+    joins(:discipline).where(subject: {subject_group: group_id})
+  }
+  scope :not_processed, -> {
+    joins('LEFT JOIN exam_formreader ON DocNumber = exam_id')
+    .select('exam.*, exam_formreader.DocNumber, exam_formreader.exam_formreader_id, exam_formreader.exam_formreader_parsed')
+    .where('exam_formreader_id = NULL OR exam_formreader_parsed IS NOT TRUE')
+  }
 
   def is_repeat?
     parent?

@@ -16,7 +16,7 @@
           <br>
           <label>Кафедра и преподаватель</label>
           <%= select_tag :subdepartment,
-                       options_from_collection_for_select(@faculties.collect{|faculty| faculty.subdepartments.academic}[0], :id, :name), { class: 'form-control ajax-subdepartment' } %>
+                       options_from_collection_for_select(@faculties.collect{|faculty| faculty.subdepartments.academic}.sum, :id, :name), { class: 'form-control ajax-subdepartment' } %>
           <br>
           <%= f.select :subject_teacher,
                        options_from_collection_for_select(User.teachers, :id, :full_name), {}, { class: 'form-control ajax-teacher' } %>
@@ -31,11 +31,7 @@
               </div>
             </div>
             <div class="row">
-              <%= exam.label :exam_weight, 'Вес экзамена',class: 'control-label col-sm-3' %>
-              <div class="col-sm-9">
-              <%= exam.number_field :exam_weight, class: 'form-control' %>
-                <span class="help-block">Рекомендуемое значение — 50%.</span>
-              </div>
+              <%= exam.hidden_field :exam_weight, value: 60, class: 'form-control' %>
             </div>
           <% end %>
           <br>

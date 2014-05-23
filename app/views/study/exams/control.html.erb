@@ -4,6 +4,20 @@
 
 <p class="help-block">Результаты этих ведомостей не обработаны в Матрице. Возможно, их еще не отсканировали или не распознали и не передали в Матрицу. Необходимо уточнить где они, что с ними и после этого передать их роботу обработки ведомостей.</p>
 
+<%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
+    <div class='row'>
+        <div class="col col-sm-6">
+            <%= select_tag :year_term,
+                           options_for_select(
+                                   [['2013/2014, 2-й семестр', '2013-2'],
+                                    ['2013/2014, 1-й семестр', '2013-1']],
+                                   "#{params[:year]}-#{params[:term]}"),
+                           class: 'form-control',
+                           onchange: %q(document.location = '/study/' + $(this).val() + '/control';) %>
+        </div>
+    </div>
+<% end %>
+
 <h2>Сводные данные по необработанным ведомостям</h2>
 <table class="table">
     <thead>
@@ -22,7 +36,7 @@
             <td><%= faculty[:control][:basic] %> из <%= faculty[:all][:basic] %></td>
             <td><%= faculty[:control][:mass] %> из <%= faculty[:all][:mass] %></td>
             <td><%= faculty[:control][:individual] %> из <%= faculty[:all][:individual] %></td>
-            <td><%= 100*(faculty[:control][:basic]+faculty[:control][:mass]+faculty[:control][:individual])/(faculty[:all][:basic]+faculty[:all][:mass]+faculty[:all][:individual]) %>%</td>
+            <td><%= (faculty[:all][:basic]+faculty[:all][:mass]+faculty[:all][:individual]) == 0 ? 0 : 100*(faculty[:control][:basic]+faculty[:control][:mass]+faculty[:control][:individual])/(faculty[:all][:basic]+faculty[:all][:mass]+faculty[:all][:individual]) %>%</td>
         </tr>
         <% end %>
     </tbody>
