@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Task do
+describe Curator do
 
 	it 'должен обладать валидной фабрикой' do
 		build(:curator_task).should be_valid
