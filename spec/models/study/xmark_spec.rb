@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Study::Xmark do
   it 'должен обладать валидной фабрикой' do
-    build(:study_marks).should be_valid
+    build(:marks).should be_valid
   end
 
   describe 'обладает связями с другими моделями:' do
