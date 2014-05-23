@@ -4,19 +4,19 @@ describe Person do
   
   describe 'обладает связями с другими моделями:' do
     it 'с фамилией' do
-      should  belongs_to(:fname)
+      should  belong_to(:fname)
     end
     
     it 'с именем' do
-      should  belongs_to(:iname)
+      should  belong_to(:iname)
     end
     
     it 'с отчеством' do
-      should  belongs_to(:oname)
+      should  belong_to(:oname)
     end
     
     it 'с комнатой' do
-      should  belongs_to(:room)
+      should  belong_to(:room)
     end
     
     it 'со студентами' do
