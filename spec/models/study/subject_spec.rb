@@ -1,10 +1,7 @@
-require 'spec_helper'
+﻿require 'spec_helper'
 
 describe Study::Subject do
-  it 'должен обладать валидной фабрикой' do
-    build(:study_subjects).should be_valid
-  end
-
+  
   describe 'обладает связями с другими моделями:' do
     it 'с группой' do
       should belong_to(:group)
