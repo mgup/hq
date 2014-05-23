@@ -1,8 +1,5 @@
 require 'spec_helper'
 describe Graduate do
-  it 'должен обладать валидной фабрикой' do
-    build(:graduate).should be_valid
-  end
   
   describe 'обладает связями с другими моделями:' do
     it 'с групой' do
