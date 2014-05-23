@@ -51,7 +51,7 @@ describe Student do
 		it 'с порядком' do
 			should have_many(:orders).class_name('Office::Order')
 		end
-		it 'с посетителяит мероприятия' do
+		it 'с посетителями мероприятия' do
 			should have_many(:visitor_event_dates)
 		end
 		it 'с датой' do
