@@ -20,7 +20,7 @@ describe Person do
     end
     
     it 'со студентами' do
-      should has_many(:students)
+      should have_many(:students)
     end
   end
 end
