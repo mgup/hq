@@ -2,12 +2,12 @@ require 'spec_helper'
 describe Graduate do
   
   describe 'обладает связями с другими моделями:' do
-    it 'с групой' do
-      should belongs_to(:group)
+     it 'с выпускными предметами' do
+      should has_many(:graduate_subjects)
     end
     
-    it 'с выпускными предметами' do
-      should has_many(:graduate_subjects)
+    it 'с групой' do
+      should belongs_to(:group)
     end
     
     it 'с аспирантами' do
