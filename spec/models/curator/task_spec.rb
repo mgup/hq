@@ -1,9 +1,7 @@
 ﻿require 'spec_helper'
 
 describe Curator::Task do
-	it 'должен обладать валидной фабрикой' do
-		build(:curator_task).should be_valid
-	end
+	
 
 	describe 'обладает связями с другими моделями:' do 
 		it 'с типом задания' do
