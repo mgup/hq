@@ -82,21 +82,21 @@ describe Study::CheckpointsController do
     end
   end
 
-  #context 'для пользователей, не являющихся разработчиками,' do
-  #  it 'должен быть переход на страницу авторизации' do
-  #    sign_in FactoryGirl.create(:user)
-  #
-  #    get :index
-  #    response.should redirect_to(new_user_session_path)
-  #  end
-  #end
+  context 'для пользователей, не являющихся разработчиками,' do
+    it 'должен быть переход на страницу авторизации' do
+      sign_in FactoryGirl.create(:user)
+  
+      get :index
+    response.should redirect_to(new_user_session_path)
+    end
+  end
 
-  #context 'для не авторизованных пользователей' do
-  #  it 'должен быть переход на страницу авторизации' do
-  #    sign_out :user
-  #
-  #    get :index
-  #    response.should redirect_to(new_user_session_path)
-  #  end
-  #end
+  context 'для не авторизованных пользователей' do
+    it 'должен быть переход на страницу авторизации' do
+      sign_out :user
+  
+      get :index
+      response.should redirect_to(new_user_session_path)
+    end
+  end
 end
