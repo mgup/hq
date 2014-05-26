@@ -6,8 +6,7 @@ describe Office::Reason do
 		it 'с шаблоном' do
 			should belong_to(:template)
 		end
-  end
-  describe 'имеет много' do
+  
 		it 'видов причин' do
 			should have_many(:order_reasons)
 		end
