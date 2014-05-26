@@ -15,7 +15,7 @@ class Group < ActiveRecord::Base
 
   has_many :students, foreign_key: :student_group_group
   #has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_group
-  has_many :exams, class_name: Study::Exam, primary_key: :exam_id, through: :disciplines
+  has_many :exams, -> { joins(:discipline).where('exam_date IS NOT NULL') }, class_name: Study::Exam, primary_key: :exam_id, through: :disciplines
   has_many :subjects, foreign_key: :subject_group
   has_many :disciplines, class_name: Study::Discipline, foreign_key: :subject_group
 
@@ -35,6 +35,7 @@ class Group < ActiveRecord::Base
   scope :from_faculty, -> faculty {
     joins(:speciality).where(speciality: { speciality_faculty: faculty })
   }
+
 
   scope :second_higher, -> {where(group_second_higher: true)}
 

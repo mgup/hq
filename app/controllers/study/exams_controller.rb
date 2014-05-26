@@ -55,9 +55,26 @@ class Study::ExamsController < ApplicationController
   end
 
   def control
-    @exams = Group.find(27).exams
-    @exams_with_form = Group.find(27).exams.with_form
-    @exams_without_form = Group.find(27).exams.where("exam_id NOT IN (#{@exams_with_form.collect{|e| e.id}.uniq.join(', ')})")
+    @exams_without_form = []
+    not_processed = Study::Exam.not_processed
+    Department.faculties.each do |faculty|
+      groups = []
+      originals, mass, individual, originals_c, mass_c, individual_c = 0, 0, 0, 0, 0, 0
+      #not_processed = Study::Exam.from_faculty(faculty.id).not_processed
+      faculty.groups.each do |group|
+        all_exams = group.exams.by_term(params[:year],params[:term])
+        exams = not_processed.by_group(group.id).by_term(params[:year],params[:term])
+        groups << {group: group, exams: exams} unless exams.empty?
+        originals += all_exams.originals.length
+        mass += all_exams.mass.length
+        individual += all_exams.individual.length
+        originals_c += exams.originals.length
+        mass_c += exams.mass.length
+        individual_c += exams.individual.length
+      end
+      @exams_without_form << {faculty: faculty, groups: groups, all: {basic: originals, mass: mass, individual: individual},
+                                                                control: {basic: originals_c, mass: mass_c, individual: individual_c}}
+    end
   end
 
   def print

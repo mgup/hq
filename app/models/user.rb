@@ -147,7 +147,7 @@ class User < ActiveRecord::Base
   }
   end
 
-  scope :teachers, ->  {joins(:positions).where("acl_position_role = #{Role::ROLE_LECTURER} OR user_role = 'lecturer'")}
+  scope :teachers, ->  {joins(:positions).where("acl_position_role IN (#{Role::ROLE_LECTURER}, #{Role::ROLE_SUBDEPARTMENT}) OR user_role IN ('lecturer', 'subdepartment')")}
   scope :curators, ->  {joins(:positions).where('acl_position_role = (?)', Role::ROLE_CURATOR)}
   scope :curators_for_today, -> {joins(:positions).where('acl_position_role = (?)', Role::ROLE_CURATOR).joins(:curator_groups).where("start_date <= '#{Date.today}' AND end_date >= '#{Date.today}'").group(:user_id)}
 
