@@ -7,16 +7,7 @@ describe Hostel::Offense do
 			should have_many(:report_offenses)
 		end		
 		it 'с правонарушениями' do
-			should belong_to(:reports)
+			should have_many(:reports)
 		end
 	end	
-
-	describe 'содержит типы:' do
-		it 'по умолчанию' do
-			should scopes(:default)
-		end
-		it 'для студентов' do
-			should scopes(:for_student)
-		end
-	end
  end
