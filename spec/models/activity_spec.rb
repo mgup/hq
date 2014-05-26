@@ -18,7 +18,8 @@ require 'spec_helper'
      should belong_to(:activity_type)
    end
    
-   
+  end 
+end
 end
     
   
