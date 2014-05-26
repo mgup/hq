@@ -10,8 +10,7 @@ describe EventDate do
 		it 'с посетителями события' do
 			should belong_to(:visitor_event_dates)
 		end
-	end
-	describe 'имеет много' do
+
 		it 'пользователей' do
 			should have_many(:users)
 		end
