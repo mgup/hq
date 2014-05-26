@@ -27,7 +27,7 @@ describe DashboardController do
   #    get :index
   #    response.should redirect_to(root_path)
   #  end
-  end
+  #end
 
   context 'для не авторизованных пользователей' do
     it 'должен быть переход на страницу авторизации' do
