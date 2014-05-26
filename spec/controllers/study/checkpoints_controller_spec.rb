@@ -55,31 +55,31 @@ describe Study::CheckpointsController do
       end
 
     end
-
-    #describe 'GET #show' do
-    #  before :each do
-    #    @checkpoint = @discipline.checkpoints.first
-    #
-    #  end
-    #
-    #  context 'if params[:study_checkpoint]' do
-    #    before :each do
-    #      get :show, discipline_id: @discipline, id: @checkpoint,
-    #          params: {study_checkpoint: {checkpoint_type: 3, date: Date.today,
-    #                                      name: 'aaa', details: 'gfg shjb sh',
-    #                                      max: 20, min: 11}}
-    #      Study::Discipline.any_instance.should_receive(:update).and_return(true)
-    #    end
-    #
-    #    it 'должен находить правильную контрольную точку' do
-    #      assigns(:checkpoint).should eq(@checkpoint)
-    #    end
-    #
-    #    it 'должен переходить на представление с занятиями' do
-    #      response.should redirect_to study_discipline_checkpoints_path(@discipline)
-    #    end
-    #  end
-    #end
+################################################
+    describe 'GET #show' do
+     before :each do
+        @checkpoint = @discipline.checkpoints.first
+    
+      end
+    
+      context 'if params[:study_checkpoint]' do
+        before :each do
+          get :show, discipline_id: @discipline, id: @checkpoint,
+              params: {study_checkpoint: {checkpoint_type: 3, date: Date.today,
+                                          name: 'aaa', details: 'gfg shjb sh',
+                                         max: 20, min: 11}}
+          Study::Discipline.any_instance.should_receive(:update).and_return(true)
+        end
+    
+        it 'должен находить правильную контрольную точку' do
+          assigns(:checkpoint).should eq(@checkpoint)
+        end
+    
+        it 'должен переходить на представление с занятиями' do
+          response.should redirect_to study_discipline_checkpoints_path(@discipline)
+        end
+      end
+    end
   end
 
   #context 'для пользователей, не являющихся разработчиками,' do
