@@ -16,7 +16,7 @@
           <br>
           <label>Кафедра и преподаватель</label>
           <%= select_tag :subdepartment,
-                       options_from_collection_for_select(@faculties.collect{|faculty| faculty.subdepartments.academic}.sum, :id, :name), { class: 'form-control ajax-subdepartment' } %>
+                       options_from_collection_for_select(Department.faculties.collect{|faculty| faculty.subdepartments.academic}.sum, :id, :name), { class: 'form-control ajax-subdepartment' } %>
           <br>
           <%= f.select :subject_teacher,
                        options_from_collection_for_select(User.teachers, :id, :full_name), {}, { class: 'form-control ajax-teacher' } %>
@@ -37,16 +37,19 @@
           <br>
           <label>Дополнительные испытания</label>
           <br>
-          <% exams = [['курсовая работа', 2, 2], ['курсовой проект', 3, 2]] %>
-          <% exams.each do |e| %>
-            <label><%= check_box_tag 'exam[]', e[1], (discipline ? (discipline.exams.collect{|exam| exam.type}.include? e[1]) : false), class: 'discipline_exams_variants', data: {type: e[2]} %> <%= e[0] %></label>
-            <div class="for-exam"></div>
-          <% end %>
-          <%= f.fields_for :exams do |exam_form| %>
-            <%= render 'discipline_exams_fields', f: exam_form %>
-          <% end %>
-          <%= f.link_to_add 'Добавить форму контроля',
-                            :exams, style: 'display: none;' %>
+          <div class="checkbox">
+              <label>
+                  <%= hidden_field_tag :has_semester_work %>
+                  <%= check_box_tag :has_semester_work, 1 %> Курсовая работа
+              </label>
+          </div>
+
+          <div class="checkbox">
+              <label>
+                  <%= hidden_field_tag :has_semester_project %>
+                  <%= check_box_tag :has_semester_project, 1 %> Курсовой проект
+              </label>
+          </div>
       </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
