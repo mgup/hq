@@ -1,6 +1,6 @@
 #require 'spec_helper'
 
- # describe Activity do
+  describe Activity do
 #   it 'должен обладать валидной фабрикой' do
 #    build(:activity).should be_valid
 #  end
