@@ -4,7 +4,7 @@ describe Curator::TaskType do
 
 	describe 'обладает связями с другими моделями:' do 	
 		it 'с заданиями' do
-			should have_many(:tasks)
+			should have_many(:task)
 		end		
 	end	
 

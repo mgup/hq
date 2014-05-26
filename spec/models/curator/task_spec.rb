@@ -14,4 +14,16 @@ describe Curator::Task do
 			should have_many(:users)
 		end		
     end
+
+    describe 'обладает ограничениями на поля' do
+		it 'обязательное поле присутствия названия' do	
+			should validate_presence_of(:name)
+		end
+		it 'обязательное поле присутствия статуса' do
+			should validate_presence_of(:status)
+		end
+		it 'обязательное поле присутствия типа' do
+			should validate_presence_of(:type)
+		end
+    end
 end
