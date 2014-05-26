@@ -55,7 +55,7 @@ describe Study::CheckpointsController do
       end
 
     end
-################################################
+    
   #  describe 'GET #show' do
   #   before :each do
   #      @checkpoint = @discipline.checkpoints.first
@@ -99,4 +99,4 @@ describe Study::CheckpointsController do
   #    response.should redirect_to(new_user_session_path)
   #  end
   #end
-end
+  #end
