@@ -60,6 +60,7 @@ class Study::ExamsController < ApplicationController
     Department.faculties.each do |faculty|
       groups = []
       originals, mass, individual, originals_c, mass_c, individual_c = 0, 0, 0, 0, 0, 0
+      #not_processed = Study::Exam.from_faculty(faculty.id).not_processed
       faculty.groups.each do |group|
         all_exams = group.exams.by_term(params[:year],params[:term])
         exams = not_processed.by_group(group.id).by_term(params[:year],params[:term])
