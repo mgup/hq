@@ -15,7 +15,6 @@ describe VisitorEventDate do
          it 'со студентом' do
       should belong_to(:student)
     end
-
   end
-
 end
+
