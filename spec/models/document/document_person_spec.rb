@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe Document::DocumentPerson do
   describe 'обладает связями с другими моделями:' do
-    it 'документами' do
+    it 'с документами' do
       should belong_to(:document)   
     end
 
-    it 'человеком' do
+    it 'с человеком' do
       should belong_to(:person)   
     end
   end
