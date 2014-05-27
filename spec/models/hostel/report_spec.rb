@@ -21,8 +21,8 @@ describe Hostel::Report do
     it 'заявками' do
       should have_many(:applications)
     end
-
-  end	
+  end
+  
   describe 'обладает ограничениями на поля:' do
     it 'обязательное поле присутствия номера квартиры' do	
       should validate_presence_of(:flat_id)
@@ -36,6 +36,7 @@ describe Hostel::Report do
       should validate_presence_of(:time)
     end
   end
+  
   describe 'принимает вложенные аттрибуты для моделей' do
     it 'отчетов правонарушений' do
       should accept_nested_attributes_for(:report_offenses)
