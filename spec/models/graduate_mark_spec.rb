@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe GraduateMark do
-
   describe 'обладает связями с другими моделями:' do
     it 'со студентом-выпускником' do
       should belong_to(:graduate_student)
