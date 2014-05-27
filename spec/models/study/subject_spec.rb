@@ -1,7 +1,6 @@
 ﻿require 'spec_helper'
 
 describe Study::Subject do
-  
   describe 'обладает связями с другими моделями:' do
     it 'с группой' do
       should belong_to(:group)
