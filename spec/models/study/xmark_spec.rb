@@ -13,5 +13,5 @@ describe Study::Xmark do
       should belong_to(:student)
     end
   end
-
 end
+
