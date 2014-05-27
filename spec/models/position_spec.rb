@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Position do
-
   describe 'обладает связями с другими моделями:' do
     it 'с событиями' do
       should belong_to(:user)
@@ -18,7 +17,6 @@ describe Position do
     it 'с назначением' do
       should belong_to(:appointment)
     end
-    
   end
 end
 
