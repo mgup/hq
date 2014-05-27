@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Activity do
-  
   describe 'обладает связями с другими моделями:' do
     it 'с активной группой' do
       should belong_to(:activity_group)
@@ -22,7 +21,6 @@ describe Activity do
     it 'с достижениями' do
       should have_many(:achievements)
     end
-    
   end
 end
 
