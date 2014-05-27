@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe Document::DocumentStudent do
   describe 'обладает связями с другими моделями:' do
     it 'с документами' do
