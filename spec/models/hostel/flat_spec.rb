@@ -10,7 +10,7 @@ describe Hostel::Flat do
       should belong_to(:person)   
     end
 
-     t 'с комнатами' do
+    it 'с комнатами' do
       should have_many(:rooms)
     end
     
