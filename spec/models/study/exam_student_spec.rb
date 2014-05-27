@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe Study::ExamStudent do
   describe 'обладает связями с другими моделями:' do
     it 'с экзаменом' do
