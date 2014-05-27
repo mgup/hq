@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe Activity do
   describe 'обладает ограничениями на поля' do
     it 'обязательное поле присутствия названия' do 
@@ -11,7 +12,6 @@ describe Activity do
       should validate_presence_of(:activity_type_id)
     end	
   end 	
-	
   describe 'обладает связями с другими моделями:' do
     it 'с активной группой' do
       should belong_to(:activity_group)
