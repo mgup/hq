@@ -9,7 +9,6 @@ describe Salary::Salary201403 do
     it 'с департаментом' do
       should belong_to(:department)
     end
-    
   end
 end
 
