@@ -1,18 +1,12 @@
 require 'spec_helper'
 
-describe VisitorEventDate do 
-  # Нужен visitor_event_date.rb в ./factories
-  
-  # it 'должен обладать валидной фабрикой' do
-  #   build(:visitors_count).should be_valid    
-  # end
-
-  describe 'обладает связями с другими моделями' do
+describe VisitorEventDate do
+  describe 'обладает связями с другими моделями:' do
     it 'с датой' do
       should belong_to(:date)
     end
 
-    it 'с посетителем (polymorphic)' do
+    it 'с посетителем' do
       should belong_to(:visitor)
     end
 
