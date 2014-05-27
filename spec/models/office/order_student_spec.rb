@@ -6,8 +6,11 @@ describe Office::OrderStudent do
     it 'с порядком' do
       should belong_to(:order)
     end
+    
     it 'со студентом' do
       should belong_to(:student)
     end
+
   end
 end
+
