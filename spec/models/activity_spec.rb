@@ -22,5 +22,7 @@ describe Activity do
     it 'с достижениями' do
       should have_many(:achievements)
     end
+    
   end
 end
+
