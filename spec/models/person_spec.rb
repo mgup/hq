@@ -4,11 +4,10 @@ describe Person do
   it 'должен обладать валидной фабрикой' do
     build(:student).should be_valid
   end
-
   describe 'обладает связями с другими моделями:' do
     it 'с фамилией' do
       should belong_to(:fname)
-      end
+    end
 
     it 'с именем' do
       should belong_to(:iname)
