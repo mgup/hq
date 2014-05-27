@@ -6,18 +6,17 @@ describe VisitorEventDate do
       should belong_to(:date)
     end
     
-     it 'с посетитель' do
+    it 'с посетитель' do
       should belong_to(:visitor)
     end
     
-         it 'с пользователь' do
+    it 'с пользователь' do
       should belong_to(:user)
     end
     
-         it 'со студентом' do
+    it 'со студентом' do
       should belong_to(:student)
     end
-    
   end
 end
 
