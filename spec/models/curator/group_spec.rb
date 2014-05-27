@@ -5,6 +5,7 @@ describe Curator::Group do
     it 'с куратором' do
        should belong_to(:curator)
     end		
+    
     it 'с группой' do
       should belong_to(:group)
     end
