@@ -11,3 +11,4 @@ describe Document::DocumentPerson do
     end
   end
 end
+
