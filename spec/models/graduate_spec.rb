@@ -17,3 +17,4 @@ describe Graduate do
     
   end
 end
+
