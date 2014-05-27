@@ -11,5 +11,6 @@ describe Salary::Salary201403 do
     end
     
   end
+  
 end
 
