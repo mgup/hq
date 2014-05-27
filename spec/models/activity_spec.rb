@@ -14,6 +14,7 @@ describe Activity do
       should validate_presence_of(:activity_type_id)
     end	
   end 	
+  
   describe 'обладает связями с другими моделями:' do
     it 'с активной группой' do
       should belong_to(:activity_group)
