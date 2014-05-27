@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe Office::OrderXsl do
   describe 'обладает связями с другими моделями' do
     it 'с порядком шаблона' do
