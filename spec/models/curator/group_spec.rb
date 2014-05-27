@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe Curator::Group do
   describe 'обладает связями с другими моделями:' do 	
     it 'с куратором' do
