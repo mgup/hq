@@ -6,9 +6,9 @@ describe AchievementPeriod do
       should have_many(:achievements)
     end
     
-    it 'отчетами о достижениях' do
-      should have_many(:achievement_reports)
-    end
+#    it 'отчетами о достижениях' do
+#      should have_many(:achievement_reports)
+#    end
   end
 end
       
