@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Exam do
   it 'должен обладать валидной фабрикой' do
-    build(:mark).should be_valid
+    build(:exam).should be_valid
   end
 
   describe 'обладает связями с другими моделями:' do
