@@ -84,8 +84,11 @@ class Study::Exam < ActiveRecord::Base
                                                      TYPE_VALIDATION,
                                                      9] }
   validates :weight, presence: true, numericality: { greater_than_or_equal_to: 20,
-                                                     less_than_or_equal_to: 80 }
 
+                                                     less_than_or_equal_to: 80 }
+  scope :by_term, -> year, term {
+    joins(:discipline).where(subject: {subject_year: year, subject_semester: term})
+  }
   scope :originals, -> { where(exam_parent: nil) }
   #scope :repeats, -> exam {where(exam_parent: exam.id)}
   scope :repeat, -> {where('exam_parent IS NOT NULL')}
@@ -93,11 +96,21 @@ class Study::Exam < ActiveRecord::Base
   scope :individual, -> {where('exam_student_group IS NOT NULL')}
   scope :by_student, -> student {where(exam_student_group: student.id)}
   scope :finals, -> {where(type: EXAMS_TYPES.collect{|x| x[1]})}
-#  scope :without_form, -> {where('exam.exam_id NOT IN (SELECT exam.exam_id FROM exam
-#  JOIN exam_formreader ON exam_formreader.DocNumber = exam.exam_id
-#WHERE exam_formreader.exam_formreader_parsed IS TRUE and exam.exam_id > 18981)
-#      AND exam.exam_type IN (0,9,1)')}
   scope :with_form, -> {joins(:formreader).where('exam_formreader.exam_formreader_parsed IS TRUE')}
+  scope :by_group, -> group_id {
+    joins(:discipline).where(subject: {subject_group: group_id})
+  }
+  scope :not_processed, -> {
+    joins('LEFT JOIN (SELECT DocNumber FROM `exam_formreader` WHERE `exam_formreader`.exam_formreader_id > 10000 GROUP BY DocNumber) AS `formreader` ON `exam_id` = `formreader`.`DocNumber`')
+    .where('`DocNumber` IS NULL and exam_date IS NOT NULL')
+  }
+  scope :from_faculty, -> faculty_id {
+    joins('JOIN `subject` ON `subject`.subject_id = exam_subject
+    JOIN `group` ON `group`.group_id = `subject`.subject_group
+    JOIN `speciality` ON `speciality`.speciality_id = `group`.group_speciality
+    JOIN `department` ON `department`.department_id = `speciality`.speciality_faculty')
+    .where("`department`.department_id = #{faculty_id}")
+  }
 
   def is_repeat?
     parent?

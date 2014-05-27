@@ -3,6 +3,7 @@ class Role < ActiveRecord::Base
 
   ROLE_CURATOR = 34
   ROLE_LECTURER = 8
+  ROLE_SUBDEPARTMENT = 7
 
   alias_attribute :id,    :acl_role_id
   alias_attribute :name,  :acl_role_name
