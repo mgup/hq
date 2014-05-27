@@ -22,4 +22,5 @@ describe Exam do
       should have_many(:exam_students)
     end
   end
+  
 end
