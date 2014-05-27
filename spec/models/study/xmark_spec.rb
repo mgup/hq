@@ -10,10 +10,9 @@ describe Study::Xmark do
       should belong_to(:user)
     end
     
-     it 'со студентом' do
+    it 'со студентом' do
       should belong_to(:student)
     end
-    
   end
 end
 
