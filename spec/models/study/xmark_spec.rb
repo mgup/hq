@@ -1,7 +1,6 @@
 ﻿require 'spec_helper'
 
 describe Study::Xmark do
-  
   describe 'обладает связями с другими моделями:' do
     it 'с дисциплиной' do
       should belong_to(:subject)
