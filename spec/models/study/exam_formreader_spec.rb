@@ -7,5 +7,4 @@ describe Study::ExamFormreader do
       should belong_to(:exam)
     end
   end
-
 end
