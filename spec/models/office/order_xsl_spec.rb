@@ -6,5 +6,7 @@ describe Office::OrderXsl do
     it 'с порядком шаблона' do
       should belong_to(:order_template)
     end
+    
   end
 end
+
