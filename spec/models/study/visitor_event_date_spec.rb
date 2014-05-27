@@ -1,7 +1,6 @@
 ﻿require 'spec_helper'
 
 describe VisitorEventDate do
-  
   describe 'обладает связями с другими моделями:' do
     it 'с датой' do
       should belong_to(:date)
