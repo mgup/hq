@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe Achievement do
   describe 'обладает связями с другими моделями:' do
     it 'с периодом' do
