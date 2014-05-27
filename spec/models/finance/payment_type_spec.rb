@@ -5,6 +5,7 @@ describe Finance::PaymentType do
     it 'со специальностью' do
       should belong_to(:speciality)
     end
+    
     it 'с ценами' do
       should have_many(:prices)
     end
