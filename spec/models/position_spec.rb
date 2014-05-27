@@ -18,5 +18,7 @@ describe Position do
     it 'с назначением' do
       should belong_to(:appointment)
     end
+    
   end
 end
+
