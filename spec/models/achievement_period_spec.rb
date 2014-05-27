@@ -7,7 +7,7 @@ describe Activity do
     end
     
     it 'отчетами о достижениях' do
-      should have_many(achievement_reports)
+      should have_many(:achievement_reports)
     end
   end
 end
