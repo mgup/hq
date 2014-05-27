@@ -12,6 +12,7 @@ describe Study::Subject do
     it 'с оценками' do
       should have_many(:marks)
     end
+    
   end
-
 end
+
