@@ -6,7 +6,7 @@ describe Hostel::Offense do
       should have_many(:report_offenses)
     end
 		
-    it 'с правонарушениями' do
+    it 'с отчетами' do
       should have_many(:reports)
     end
   end
