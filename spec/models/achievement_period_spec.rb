@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Activity do
+describe AchievementPeriod do
   describe 'должен обладать' do
     it 'достижениями' do 
       should have_many(:achievements)
