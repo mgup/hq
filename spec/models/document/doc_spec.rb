@@ -15,3 +15,4 @@ describe Document::Doc do
     end
   end
 end
+
