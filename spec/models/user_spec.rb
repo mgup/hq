@@ -25,5 +25,6 @@ describe User do
     it 'с дисциплинами' do
       should have_many(:disciplines).through(:discipline_teachers)
     end
+    
   end
 end

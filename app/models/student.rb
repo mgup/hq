@@ -65,7 +65,7 @@ class Student < ActiveRecord::Base
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
 
-  has_many :payments, class_name: Finance::Payment, primary_key: :student_group_id, foreign_key: :finance_payment_student
+  has_many :payments, class_name: Finance::Payment, primary_key: :student_group_id, foreign_key: :finance_payment_student_group
 
   has_many :supports, class_name: My::Support, primary_key: :student_group_id,
            foreign_key: :support_student
