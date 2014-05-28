@@ -27,7 +27,6 @@ class Study::Exam < ActiveRecord::Base
     ['практика',                 TYPE_PRACTICE],
     ['ГЭК-1',                    TYPE_EXAM_COMMISSION_1],
     ['ГЭК-2',                    TYPE_EXAM_COMMISSION_2],
-    ['промежуточная аттестация', TYPE_VALIDATION],
     ['преддипломная практика', TYPE_DIPLOMA_PRACTICE],
     ['итоговый гос. экзамен', TYPE_FINAL_EXAM]
   ]
@@ -35,6 +34,7 @@ class Study::Exam < ActiveRecord::Base
   ADDITIONAL_EXAMS_TYPES = [
     ['курсовая работа',          TYPE_SEMESTER_WORK],
     ['курсовой проект',          TYPE_SEMESTER_PROJECT],
+    ['промежуточная аттестация', TYPE_VALIDATION]
   ]
 
   self.table_name = 'exam'
@@ -156,7 +156,7 @@ class Study::Exam < ActiveRecord::Base
         'практика'
       when TYPE_DIPLOMA_PRACTICE
         'преддипломная практика'
-      when TUPE_FINAL_EXAM
+      when TYPE_FINAL_EXAM
         'итоговый гос. экзамен'
       when TYPE_EXAM_COMMISSION_1
         'ГЭК-1'
