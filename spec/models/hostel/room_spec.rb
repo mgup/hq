@@ -11,3 +11,4 @@ describe Hostel::Room do
     end	
   end
 end
+
