@@ -254,6 +254,10 @@ GROUP BY `group`
     dmarks
   end
 
+  def full_name
+    person.full_name
+  end
+
   def ball(discipline = nil)
     if discipline
       l1, p1, n1 = 0.0, 0.0, 0.0

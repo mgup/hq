@@ -58,6 +58,11 @@ HQ::Application.routes.draw do
     get 'transfer_protocols', on: :collection
   end
 
+  namespace :library do
+    get '/cards', to: 'cards#index', as: :cards
+    get '/cards/:student/create', to: 'cards#create', as: :create_card
+  end
+
   resources :groups do
     get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
   end

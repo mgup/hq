@@ -19,10 +19,30 @@ $ ->
         select.options.add(
           new Option(group.name, group.id)
         ) for group in groups
-        $(select).val(groups[0].id).change() if groups[0]
+        $(select).val(groups[0].id).change()
+
+
+  updateStudents = (group_id) ->
+    if group_id != null
+      $.getJSON root+'my/ajax/students', {
+        'group': group_id
+      }, (students) ->
+        select = $('.ajax-student')[0]
+        if select
+          select.options.length = 0
+          select.options.add(
+            new Option("#{student.name}", student.id)
+          ) for student in students
+    else
+      $('.ajax-student')[0].empty()
 
   $('.ajax-faculty').change ->
     updateSpecialities($(this).val())
+
+
+  $('.ajax-group').change ->
+    updateStudents($(this).val())
+
   $('.ajax-speciality').change ->
     $.getJSON root+'study/disciplines/ajax/groups', {
       'speciality':  $(this).val(),

@@ -98,6 +98,17 @@ class Group < ActiveRecord::Base
     end
   end
 
+  def library_form
+    case form
+      when 101
+        1
+      when 102
+        2
+      else
+        3
+    end
+  end
+
   def name
     n = []
 

@@ -1,0 +1,71 @@
+<div class="page-header">
+    <h1>Библиотека <small>Создание читательских билетов</small></h1>
+</div>
+
+<%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
+    <div class='row'>
+        <div class='col col-sm-6'>
+            <%= hidden_field_tag :faculty, params[:faculty],
+                                 class: 'ajax-faculty hidden-pill-values' %>
+            <%= pill_tabs('faculty', Department.faculties.collect { |f| [f.id, f.abbreviation] },
+                          'faculty') %>
+        </div>
+        <div class='col col-sm-6'>
+            <%= select_tag 'speciality',
+                           options_from_collection_for_select(@student ? Department.find(params[:faculty]).specialities : Speciality.all,
+                                                              :id, :full_name, params[:speciality]),
+                           prompt: 'все специальности', class: 'ajax-speciality form-control' %>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col col-sm-2'>
+            <%= select_tag :course,
+                           options_for_select((1..6).map { |i| ["#{i} курс", i] }, params[:course]),
+                           class: 'ajax-course form-control' %>
+        </div>
+
+        <div class='col col-sm-2'>
+            <%= select_tag :form,
+                           options_for_select([%w(очная 101), %w(очно-заочная 102),
+                                               %w(заочная 103), %w(дистанционная 105)], params[:form]),
+                           class: 'ajax-form form-control' %>
+        </div>
+
+        <div class="col-sm-2">
+            <%= select_tag :group,
+                           options_from_collection_for_select(
+                                   @student ? Group.filter(course: params[:course],
+                                                         speciality: params[:speciality],
+                                                         form: params[:form]) : Group.all,
+                                   :id, :name, params[:group]
+                           ), prompt: 'все группы', class: 'ajax-group form-control' %>
+        </div>
+        <div class='col col-sm-6'>
+            <%= select_tag 'student',
+                           (@student ? options_from_collection_for_select(@student.group.students, :id, :full_name, params[:student]) : nil),
+                            prompt: 'все студенты', class: 'ajax-student form-control' %>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <%= submit_tag 'Найти студента', class: 'btn btn-primary pull-right' %>
+        </div>
+    </div>
+<% end %>
+
+<% if @student %>
+    <div class="thumbnail">
+        <div class="caption">
+            <h3><%= @student.full_name %></h3>
+            <% if @client.execute(@query).each{|x| x}.first['count'] > 0 %>
+              <p> У студента уже есть читательский билет</p>
+            <% else %>
+              <p>Чтобы создать читательский билет нажмите на кнопку</p>
+              <p><a href="<%= library_create_card_path(student: @student.id) %>" class="btn btn-primary" role="button">Создать читательский билет</a></p>
+            <% end %>
+        </div>
+    </div>
+<% end %>
+
