@@ -7,4 +7,3 @@ describe Hostel::ReportApplication do
     end
   end
 end
-
