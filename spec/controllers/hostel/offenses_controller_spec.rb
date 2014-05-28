@@ -58,13 +58,13 @@ describe Hostel::OffensesController do
  #  end
  # end
     
-      context 'в случае ошибки' do
-        it 'должен перенаправить на создание' do
-          post :create, speciality: {}
-          Hostel::Offense.any_instance.should_receive(:save).and_return(false)
-          response.should render_template :new
-        end
-    end
-  end
+ #     context 'в случае ошибки' do
+ #       it 'должен перенаправить на создание' do
+ #        post :create, speciality: {}
+ #        Hostel::Offense.any_instance.should_receive(:save).and_return(false)
+ #       response.should render_template :new
+ #    end
+ # end
+ # end
 end
 
