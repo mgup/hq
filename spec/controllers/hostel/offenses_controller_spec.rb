@@ -11,7 +11,7 @@ end
 	 before :each do
 	 get :index
     end
-    end
+
      
      it 'должен выполняться успешно' do
         response.should be_success
