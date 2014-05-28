@@ -15,7 +15,7 @@ describe Hostel::Flat do
     end
     
      it 'с жителями' do
-      should have_many(:achievements)
+      should have_many(:residents)
     end
   end
 end
