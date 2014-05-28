@@ -7,7 +7,7 @@ describe My::Select do
     end
     
     it 'со студентами' do
-      should belong_to(:students)
+      should belong_to(:student)
     end
   end
 end
