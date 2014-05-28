@@ -25,11 +25,7 @@ describe User do
     it 'с дисциплинами' do
       should have_many(:disciplines).through(:discipline_teachers)
     end
-    
-    it 'с оценками' do
-      should have_many(:marks).class_name('Study::Mark')
-    end
-    
+
     it 'с предетами' do
       should have_many(:subjects).class_name('Study::Subject')
     end
@@ -41,11 +37,7 @@ describe User do
     it 'с отчетами о достижениях' do
       should have_many(:achievement_reports)
     end
-    
-    it 'с датами событий' do
-      should have_many(:visitor_event_dates).as(:visitor)
-    end
-    
+
     it 'с датами' do
       should have_many(:dates).through(:visitor_event_dates)
     end
