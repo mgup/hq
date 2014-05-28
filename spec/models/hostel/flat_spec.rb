@@ -6,10 +6,6 @@ describe Hostel::Flat do
       should belong_to(:hostel)   
     end
 
-  #  it 'с человеком' do
-  #   should belong_to(:person)   
-  # end
-
     it 'с комнатами' do
       should have_many(:rooms)
     end
