@@ -19,4 +19,3 @@ describe Hostel::Flat do
     end
   end
 end
-
