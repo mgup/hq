@@ -73,6 +73,5 @@ feature 'Ввод оценок за занятия' do
     click_button 'Сохранить'
     page.should have_content 'Вы пытались ввести некорректное значение'
   end
-
 end
 
