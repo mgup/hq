@@ -84,6 +84,10 @@ class Study::ExamsController < ApplicationController
     end
   end
 
+  def repeats
+
+  end
+
   def resource_params
     params.fetch(:study_exam, {}).permit(
       :id, :date, :exam_subject, :parent, :exam_type, :weight, :exam_group, :exam_student,

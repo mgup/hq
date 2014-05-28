@@ -113,7 +113,9 @@ HQ::Application.routes.draw do
       end
 
       resources :exams do
-        get 'print', on: :member, defaults: { format: 'pdf' }
+        get 'print',   on: :member, defaults: { format: 'pdf' }
+        get 'repeats', on: :member
+
         patch '/updatedate', to: 'exams#updatedate', on: :member
       end
     end

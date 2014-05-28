@@ -4,16 +4,17 @@
 
 <%= render 'filters' %>
 
-<%= render partial: 'discipline',
-           collection: @group.disciplines.by_term(params[:year],
-                                                  params[:term]) if @group %>
-<div id="examsByGroups">
-  <% if @group %>
-    <%= link_to 'Добавить предмет для группы', '#addDisciplineModal', class: 'btn btn-default',
-                data: {toggle: 'modal'}, style: 'margin-top: 20px;' %>
-    <%= render partial: 'discipline_modal',
-                     locals: { group: @group, discipline: Study::Discipline.new } %>
-  <% end %>
-</div>
+<% if @group %>
+  <%= render partial: 'discipline',
+             collection: @group.disciplines.by_term(params[:year], params[:term]) %>
 
-<div id="for_new"></div>
+  <div id="examsByGroups">
+    <%= link_to 'Добавить предмет для группы', '#addDisciplineModal',
+                class: 'btn btn-default', data: {toggle: 'modal'},
+                style: 'margin-top: 20px;' %>
+    <%= render partial: 'discipline_modal',
+               locals: { group: @group, discipline: Study::Discipline.new } %>
+  </div>
+
+  <div id="for_new"></div>
+<% end %>
