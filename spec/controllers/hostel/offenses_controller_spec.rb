@@ -6,7 +6,7 @@ describe Hostel::OffensesController do
       @user = create(:user, :developer)
       sign_in @user
     end
-
+end
     describe 'GET "index"' do
 	 before :each do
 	 get :index
