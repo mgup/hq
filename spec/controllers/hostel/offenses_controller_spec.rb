@@ -45,8 +45,9 @@ end
           post :create, offense: {  name "MyString"
     			type 1
    			penalty "MyString"
+   			}
    			Hostel::Offense.any_instance.should_receive(:save).and_return(true)
-   		}
+   	
         end
         
         it 'должен создавать новое нарушение' do
