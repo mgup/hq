@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Hostel::Report_application do
+describe Hostel::ReportApplication do
   describe 'обладает связями с другими моделями:' do
-    it 'с отчетами' do
+    it 'с отчетом' do
       should belong_to(Hostel::Report)
     end
   end
