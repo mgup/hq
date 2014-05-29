@@ -33,7 +33,7 @@ prawn_document margin: [28, 20, 28, 28],
       pdf.text_box "Форма контроля: #{@exam.name}", at: [0, 750 - 15]
     end
     pdf.text_box "Дисциплина: #{@discipline.name}", at: [0, 750 - 30]
-    pdf.text_box "Фамилия, имя, отчество преподавателя(лей): #{@discipline.lead_teacher.full_name}", at: [0, 750 - 45]
+    pdf.text_box "Фамилия, имя, отчество преподавателя(лей): #{@discipline.lead_teacher ? @discipline.lead_teacher.full_name : ''}", at: [0, 750 - 45]
     pdf.text_box "Семестр: #{@exam.discipline.semester == 1 ? 'I' : 'II'}", at: [370, 750]
     if @exam.is_repeat?
       pdf.text_box "Дата выдачи: #{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [370, 750 - 15]
@@ -241,18 +241,19 @@ prawn_document margin: [28, 20, 28, 28],
             @exam.students.each { |s| st << s }
           end
         else
-          @disipline.group.students.valid_for_today.each { |s| st << s }
+          @discipline.group.students.valid_for_today.each { |s| st << s }
         end
 
         st.each_with_index do |student, index|
-          position_x = x_pos
-          tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
-          8.times do
-            pdf.rectangle [position_x + 242, position_y - 5], 7, 7
-            position_x += 15
-          end
-          position_y -= 15
+            position_x = x_pos
+            tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
+            8.times do
+              pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
+              position_x += 15
+            end
+            position_y -= 15
         end
+
       end
 
       pdf.font_size 10 do
