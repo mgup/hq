@@ -21,8 +21,6 @@ class Study::PlansController < ApplicationController
         end
       end
     end
-
-
   end
 
   def updatedate

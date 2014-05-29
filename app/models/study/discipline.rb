@@ -58,7 +58,7 @@ class Study::Discipline < ActiveRecord::Base
   validate  :sum_of_checkpoints_min_values_should_be_44
 
   default_scope do
-    order(subject_year: :desc, subject_semester: :desc)
+    order(subject_year: :desc, subject_semester: :desc, subject_name: :asc)
   end
 
   scope :from_name, -> name { where('subject_name LIKE :prefix', prefix: "#{name}%")}
