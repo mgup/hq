@@ -69,6 +69,7 @@
                 </ul>
               <% else %>
                 <p> У студента уже есть читательский билет: <strong><%= @client.execute(@query).each{|x| x}.first['RDR_ID'] %></strong></p>
+                <p><%= link_to 'Распечатать читательский билет', '#', class: 'btn btn-primary' %></p>
               <% end %>
             <% else %>
               <p>Чтобы создать читательский билет нажмите на кнопку</p>
