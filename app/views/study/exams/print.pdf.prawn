@@ -232,7 +232,19 @@ prawn_document margin: [28, 20, 28, 28],
                       {content: 'Результат', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], ['Цифрой', 'Прописью']]
 
         position_y = y_pos
-        @discipline.group.students.valid_for_today.each_with_index do |student, index|
+
+        st = []
+        if @exam.is_repeat?
+          if @exam.is_individual_repeat?
+            st << @exam.student
+          else
+            @exam.students.each { |s| st << s }
+          end
+        else
+          @disipline.group.students.valid_for_today.each { |s| st << s }
+        end
+
+        st.each_with_index do |student, index|
           position_x = x_pos
           tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
           8.times do
