@@ -4,5 +4,8 @@ $ ->
   # или через data-remote загружать содержимое окна заново, а не пользоваться
   # закэшированной версией.
   # Отсюда: http://stackoverflow.com/questions/12286332
-  $('body').on 'hidden.bs.modal', '.modal', ->
+  $('.modal').on 'hide.bs.modal', ->
     $(this).removeData 'bs.modal'
+
+#  $('body').on 'hidden', '.modal', ->
+#    $(this).removeData('modal')

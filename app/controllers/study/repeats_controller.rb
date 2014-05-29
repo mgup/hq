@@ -4,6 +4,6 @@ class Study::RepeatsController < ApplicationController
   load_and_authorize_resource :repeat, through: :exam, class: 'Study::Repeat'
 
   def index
-    render layout: false
+    render layout: 'modal'
   end
 end

@@ -63,15 +63,11 @@
                           class: 'btn btn-default',
                           title: 'Пересдачи и индивидуальные ведомости',
                           data: { toggle: 'modal',
-                                  target: '#' + dom_id(exam, 'repeat_modal') } do %>
+                                  target: '#' + dom_id(exam, 'repeats'),
+                                  remote: study_discipline_exam_repeats_path(discipline, exam) } do %>
                 <span class="glyphicon glyphicon-retweet"></span>
               <% end %>
-              <div id="<%= dom_id(exam, 'repeat_modal') %>" class="modal fade">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content"></div>
-                </div>
-              </div>
-
+              <%= modal_placeholder(dom_id(exam, 'repeats')) %>
               <%#= render partial: 'repeat_modal', locals: { group: @group,
               exam: exam } %>
             </div>
