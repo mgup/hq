@@ -14,10 +14,13 @@ def num_to_letter(num)
   column << (97 + array[1]).chr.capitalize
 end
 
-def fetch_group(form, faculty, course = nil)
+def fetch_group(faculty, form =  nil, course = nil)
   groups = Group.joins(:students).where("student_group.student_group_status = #{Student::STATUS_STUDENT} AND group_active = 1").group(:group_speciality)
-                .order('group_form ASC, group_name ASC, group_course ASC, group_number ASC').where(form: form)
+                .order('group_form ASC, group_name ASC, group_course ASC, group_number ASC')
                 .joins(:speciality).where("speciality_faculty = #{faculty}")
+  if form
+    groups = groups.where(form: form)
+  end
   if course
     groups = groups.where("group_course = #{course}")
   end
@@ -208,7 +211,7 @@ Department.includes(:specialities).faculties.each do |f|
   end
 end
 
-[['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each do |form|
+[['все формы', 0],['очная', 101], ['очно-заочная', 102], ['заочная', 103]].each do |form|
   wb.add_worksheet(name: "#{form[0]}") do |sheet|
     sheet.add_row line_1, style: style_shout
     sheet.merge_cells('A1:A2')
@@ -231,9 +234,17 @@ end
       row_all_k = ['', '']
       Department.faculties.each_with_index do |f, index|
         if course == 'all'
-          number = fetch_group(form[1], f.id)
+          if form[1] == 0
+          number = fetch_group(f.id)
+          else
+            number = fetch_group(f.id, form[1])
+          end
         else
-          number = fetch_group(form[1], f.id, course)
+          if form[1] == 0
+            number = fetch_group(f.id, nil, course)
+          else
+            number = fetch_group(f.id, form[1])
+          end
         end
         f.specialities.not_masters.each do |s|
           row_b << (number[0][s.id] ? number[0][s.id] : 0)

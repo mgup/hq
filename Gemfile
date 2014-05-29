@@ -48,6 +48,8 @@ gem 'morpher', github: 'mgup/morpher', branch: :master
 
 gem 'airbrake'
 gem 'dotenv-rails'
+# gem 'tiny_tds'
+#gem 'activerecord-sqlserver-adapter'
 
 group :development do
   gem 'thin'
