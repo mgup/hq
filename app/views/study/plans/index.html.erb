@@ -8,13 +8,15 @@
   <%= render partial: 'discipline',
              collection: @group.disciplines.by_term(params[:year], params[:term]) %>
 
-  <div id="examsByGroups">
-    <%= link_to 'Добавить предмет для группы', '#addDisciplineModal',
-                class: 'btn btn-default', data: {toggle: 'modal'},
-                style: 'margin-top: 20px;' %>
-    <%= render partial: 'discipline_modal',
-               locals: { group: @group, discipline: Study::Discipline.new } %>
+  <%= link_to new_study_discipline_path, class: 'btn btn-default',
+              data: { toggle: 'modal', target: '#new_discipline_modal' } do %>
+    <span class="glyphicon glyphicon-plus"></span> Добавить ещё одну дисциплину
+  <% end %>
+  <div id="new_discipline_modal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content"></div>
+    </div>
   </div>
-
-  <div id="for_new"></div>
+  <%#= render partial: 'discipline_modal',
+             locals: { group: @group, discipline: Study::Discipline.new } %>
 <% end %>

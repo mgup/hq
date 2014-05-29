@@ -1,13 +1,21 @@
 <div id="<%= dom_id(discipline) %>" class="panel panel-default">
   <div class="panel-heading">
-    <%= link_to '#' + dom_id(discipline, 'modal'), class: 'btn btn-xs pull-right',
-                data: { toggle: 'modal' } do %>
+    <%= link_to edit_study_discipline_path(discipline), class: 'btn btn-xs pull-right',
+                data: { toggle: 'modal',
+                        target: '#' + dom_id(discipline, 'edit_modal') } do %>
       <span class="glyphicon glyphicon-edit"></span> Редактировать
     <% end %>
-    <%= render partial: 'edit_modal', locals: { group: @group, discipline: discipline } %>
+    <div id="<%= dom_id(discipline, 'edit_modal') %>" class="modal fade">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+    <%#= render partial: 'edit_modal', locals: { group: @group,
+    discipline: discipline } %>
 
     <h3 class="panel-title">
       <%= discipline.name %>
+      <br>
       <small><%= discipline.lead_teacher.full_name if discipline.lead_teacher %></small>
     </h3>
   </div>
@@ -38,7 +46,7 @@
             </div>
 
             <div class="col-sm-2">
-              <%= render partial: 'validation', locals: { exam: exam } %>
+              <%#= render partial: 'validation', locals: { exam: exam } %>
             </div>
 
             <div class="col-sm-1">
@@ -51,12 +59,21 @@
             </div>
 
             <div class="col-sm-1">
-              <%= link_to '#' + dom_id(exam, 'repeat_modal'), class: 'btn btn-default',
+              <%= link_to study_discipline_exam_repeats_path(discipline, exam),
+                          class: 'btn btn-default',
                           title: 'Пересдачи и индивидуальные ведомости',
-                          data: { toggle: 'modal' } do %>
+                          data: { toggle: 'modal',
+                                  target: '#' + dom_id(exam, 'repeat_modal') } do %>
                 <span class="glyphicon glyphicon-retweet"></span>
               <% end %>
-              <%= render partial: 'repeat_modal', locals: { group: @group, exam: exam } %>
+              <div id="<%= dom_id(exam, 'repeat_modal') %>" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content"></div>
+                </div>
+              </div>
+
+              <%#= render partial: 'repeat_modal', locals: { group: @group,
+              exam: exam } %>
             </div>
 
             <div class="col-sm-1">
