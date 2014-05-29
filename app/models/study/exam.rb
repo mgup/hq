@@ -121,7 +121,7 @@ class Study::Exam < ActiveRecord::Base
   end
 
   def is_mass_repeat?
-    exam_group?
+    !exam_group.nil?
   end
 
   def test?
