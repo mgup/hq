@@ -18,7 +18,7 @@
         title="Не указан ведущий преподаватель"></span>
 <% end %>
 
-<% if exam.discipline.brs? %>
+<% if exam.discipline.brs? && (exam.graded_test? || exam.test? || exam.exam? || exam.validation?) %>
   <% if (exam.validation? ? exam.discipline.classes.not_full(exam.discipline).empty? : exam.discipline.classes.not_full_final(exam.discipline).empty?) %>
     <span class="exam-status-success glyphicon glyphicon-ok"
           data-toggle="tooltip" data-placement="top"

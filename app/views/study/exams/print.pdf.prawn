@@ -61,7 +61,7 @@ prawn_document margin: [28, 20, 28, 28],
       pdf.move_down 110
 
       # Для дисциплин, создаваемых преподавателями (БРС)
-      if @discipline.brs?
+      if @discipline.brs? && (@exam.graded_test? || @exam.test? || @exam.exam? || @exam.validation?)
         height = 53
         tableData = [['№', 'Фамилия, имя, отчество', 'Номер',
           pdf.text_box('Зачтено', at: [x_pos + 240, y_pos], rotate: 90, size: size, width: 110),
@@ -229,7 +229,7 @@ prawn_document margin: [28, 20, 28, 28],
                       {content: pdf.text_box('Неуд.', at: [x_pos + 314, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
                       {content: pdf.text_box('Недопущ.', at: [x_pos + 329, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
                       {content: pdf.text_box('Неявка', at: [x_pos + 344, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: 'Экзамен', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], ['Цифрой', 'Прописью']]
+                      {content: 'Результат', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], ['Цифрой', 'Прописью']]
 
         position_y = y_pos
         @discipline.group.students.valid_for_today.each_with_index do |student, index|

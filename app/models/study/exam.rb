@@ -256,7 +256,7 @@ class Study::Exam < ActiveRecord::Base
   # Можно ли распечатывать ведомость для данного испытания?
   def can_print_register?
     condition = date? && discipline.subject_teacher? && (User.teachers.include? discipline.lead_teacher)
-    if discipline.brs?
+    if discipline.brs? && (graded_test? || test? || exam? || validation?)
       condition &&= (validation? ? discipline.classes.not_full(discipline).empty? : discipline.classes.not_full_final(discipline).empty?)
     end
     condition
