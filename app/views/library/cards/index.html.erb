@@ -60,7 +60,7 @@
         <div class="caption">
             <h3><%= @student.full_name %> <small><%= @student.id %></small></h3>
             <% if @client.execute(@query).collect{|x| x}.length > 0 %>
-              <% if @student.admission_year < 2013 %>
+              <% if @student.admission_year < 2012 %>
                 <p>Возможно, у студента уже есть читательский билет:</p>
                 <ul>
                 <% @client.execute(@query).each do |row| %>
@@ -69,7 +69,7 @@
                 </ul>
               <% else %>
                 <p> У студента уже есть читательский билет: <strong><%= @client.execute(@query).each{|x| x}.first['RDR_ID'] %></strong></p>
-                <p><%= link_to 'Распечатать читательский билет', '#', class: 'btn btn-primary' %></p>
+                <p><%= link_to 'Распечатать читательский билет', library_print_card_path(student: @student.id), class: 'btn btn-primary' %></p>
               <% end %>
             <% else %>
               <p>Чтобы создать читательский билет нажмите на кнопку</p>

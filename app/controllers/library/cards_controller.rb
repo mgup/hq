@@ -6,7 +6,7 @@ class Library::CardsController < ApplicationController
     if params[:student]
       @student = Student.find(params[:student])
       @client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'], dataserver: '192.168.200.36:1433', database: '[marc 1.11]')
-      if @student.admission_year < 2013
+      if @student.admission_year < 2012
         # strange_num = @client.execute("SELECT * FROM dbo.SPEC WHERE spec = #{@student.speciality.code.to_s[0,6]}").first['num']
         # rdr = "99%#{strange_num < 10 ? strange_num : strange_num - 9}1#{@student.admission_year.to_s[2,2]}#{@student.group.library_form}"
         @query = "SELECT RDR_ID FROM dbo.READERS WHERE NAME = '#{@student.full_name}'"
@@ -27,6 +27,19 @@ class Library::CardsController < ApplicationController
     client.execute("INSERT INTO dbo.READERS (RDR_ID, NAME, CODE, MATRIX_STUDENT_ID, MATRIX_STUDENT_GROUP_ID) VALUES ('#{rdr_id}', '#{@student.full_name}, 'Студент', #{@student.person.id}, #{@student.id})").insert
     redirect_to library_cards_path faculty: @student.group.speciality.faculty.id, speciality: @student.group.speciality.id, course: @student.group.course,
                                    form: @student.group.form, group: @student.group.id, student: @student.id
+  end
+
+  def print
+    @student = Student.find(params[:student])
+    client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'], dataserver: '192.168.200.36:1433', database: '[marc 1.11]')
+    if @student.admission_year < 2012
+      strange_num = @client.execute("SELECT * FROM dbo.SPEC WHERE spec = #{@student.speciality.code.to_s[0,6]}").first['num']
+      rdr = "99%#{strange_num < 10 ? strange_num : strange_num - 9}1#{@student.admission_year.to_s[2,2]}#{@student.group.library_form}"
+      query = "SELECT RDR_ID FROM dbo.READERS WHERE NAME = '#{@student.full_name}' AND RDR_ID IS LIKE '#{rdr}%'"
+    else
+      query = "SELECT RDR_ID FROM dbo.READERS WHERE MATRIX_STUDENT_GROUP_ID = #{@student.id}"
+    end
+    @rdr_id = client.execute(query).first['RDR_ID']
   end
 
 end
