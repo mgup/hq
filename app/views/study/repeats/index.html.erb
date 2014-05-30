@@ -4,4 +4,6 @@
   <small><%= @discipline.group.name %></small>
 <% end %>
 
-<%= @repeats.inspect %>
+<%= render 'group', locals: { repeats: @repeats.find_all { |r| r.is_group? } } %>
+
+<%= render 'personal', locals: { repeats: @repeats.find_all { |r| r.is_personal? } } %>
