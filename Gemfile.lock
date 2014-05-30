@@ -321,6 +321,7 @@ GEM
     thread_safe (0.3.3)
     tilt (1.4.1)
     tins (1.2.0)
+    tiny_tds (0.6.2)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -398,6 +399,7 @@ DEPENDENCIES
   spreadsheet
   therubyracer
   thin
+  tiny_tds
   turbolinks
   uglifier
   unicode
