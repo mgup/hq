@@ -6,6 +6,14 @@ class Study::RepeatsController < ApplicationController
   def index
     @repeats = @repeats.order(exam_date: :desc)
 
-    render layout: 'modal', locals: { modal_sm: true, skip_save_button: true }
+    render layout: 'modal', locals: { skip_save_button: true }
+  end
+
+  def create
+    @repeat.save
+  end
+
+  def resource_params
+    params.fetch(:study_repeat, {}).permit(:exam_date, :exam_type, student_ids: [])
   end
 end

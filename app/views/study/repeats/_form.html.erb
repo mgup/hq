@@ -1,7 +1,8 @@
 <h4>Создать дополнительную ведомость</h4>
 
 <%= nested_form_for Study::Repeat.new,
-                    url: study_discipline_exam_repeats_path(@discipline, @exam) do |f| %>
+                    url: study_discipline_exam_repeats_path(@discipline, @exam),
+                    remote: false do |f| %>
   <div class="form-group">
     <%= f.label :exam_date %>
     <%= f.text_field :exam_date, value: l(Date.today),
@@ -10,13 +11,13 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :exam_type %>
-    <%= f.select :exam_type, options_for_select(Study::Repeat::TYPE_OPTIONS), {},
+    <%= f.label :exam_repeat %>
+    <%= f.select :exam_repeat, options_for_select(Study::Repeat::TYPE_OPTIONS), {},
                  class: 'form-control' %>
   </div>
 
   <label>Включённые студенты</label>
-  <%= f.collection_check_boxes :students, @discipline.group.students.valid,
+  <%= f.collection_check_boxes :student_ids, @discipline.group.students.valid,
                                :id, :full_name do |builder| %>
     <div class="checkbox">
       <%= builder.label do %>

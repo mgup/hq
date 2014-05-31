@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140507091056) do
+ActiveRecord::Schema.define(version: 20140531123729) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -730,7 +730,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
 
   create_table "exam_student", primary_key: "exam_student_id", force: true do |t|
     t.integer "exam_student_exam",          null: false
-    t.integer "exam_student_student",       null: false
+    t.integer "exam_student_student"
     t.integer "exam_student_student_group", null: false
   end
 
@@ -841,7 +841,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.string   "name"
     t.integer  "kind"
     t.integer  "hours"
-    t.integer  "zet"
+    t.decimal  "zet",         precision: 19, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -884,11 +884,12 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   create_table "hostel_payment", primary_key: "hostel_payment_id", force: true do |t|
-    t.integer   "hostel_payment_type",                null: false
-    t.integer   "hostel_payment_student",             null: false
-    t.timestamp "hostel_payment_date",                null: false
-    t.integer   "hostel_payment_sum",     default: 0, null: false
-    t.integer   "hostel_payment_year",                null: false
+    t.integer   "hostel_payment_type",                 null: false
+    t.integer   "hostel_payment_student",              null: false
+    t.timestamp "hostel_payment_date",                 null: false
+    t.integer   "hostel_payment_sum",      default: 0, null: false
+    t.integer   "hostel_payment_year",                 null: false
+    t.integer   "hostel_payment_semester",             null: false
   end
 
   add_index "hostel_payment", ["hostel_payment_student"], name: "hostel_payment_student", using: :btree
@@ -1105,7 +1106,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.boolean  "untouchable",                               default: false
     t.boolean  "subdepartment",                             default: false
     t.boolean  "has_report"
-    t.decimal  "credits",          precision: 10, scale: 0
+    t.decimal  "credits",          precision: 10, scale: 2
     t.decimal  "previous_premium", precision: 10, scale: 0
     t.decimal  "new_premium",      precision: 10, scale: 0
     t.datetime "created_at"
@@ -1616,12 +1617,6 @@ ActiveRecord::Schema.define(version: 20140507091056) do
 
   add_index "template_reason", ["template_reason_template"], name: "template_reason_template", using: :btree
 
-  create_table "timeline", id: false, force: true do |t|
-    t.integer  "student",     default: 0, null: false
-    t.integer  "group",       default: 0, null: false
-    t.datetime "change_date"
-  end
-
   create_table "user", primary_key: "user_id", force: true do |t|
     t.boolean  "user_active",                        default: true,   null: false
     t.boolean  "user_enabled",                       default: true,   null: false
@@ -1666,168 +1661,5 @@ ActiveRecord::Schema.define(version: 20140507091056) do
   end
 
   add_index "visitor_event_date", ["event_date_id"], name: "index_visitor_event_date_on_event_date_id", using: :btree
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_delete AFTER DELETE ON mark_final
-FOR EACH ROW
-BEGIN
-	SELECT subject_year, subject_semester INTO @year, @term
-	FROM `subject`
-	JOIN exam ON exam_subject = subject_id
-	WHERE exam_id = OLD.mark_final_exam;
-
-	CALL calculate_student_quality(OLD.mark_final_student, @year, @term);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_insert AFTER INSERT ON mark_final
-FOR EACH ROW
-BEGIN
-	SELECT subject_year, subject_semester INTO @year, @term
-	FROM `subject`
-	JOIN exam ON exam_subject = subject_id
-	WHERE exam_id = NEW.mark_final_exam;
-
-	CALL calculate_student_quality(NEW.mark_final_student, @year, @term);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_student_quality_after_update AFTER UPDATE ON mark_final
-FOR EACH ROW
-BEGIN
-	SELECT subject_year, subject_semester INTO @year, @term
-	FROM `subject`
-	JOIN exam ON exam_subject = subject_id
-	WHERE exam_id = NEW.mark_final_exam;
-
-	CALL calculate_student_quality(NEW.mark_final_student, @year, @term);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_delete AFTER DELETE ON mark
-FOR EACH ROW
-BEGIN
-	CALL calculate_students_mark(OLD.mark_student_group, OLD.mark_exam);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_insert AFTER INSERT ON mark
-FOR EACH ROW
-BEGIN
-	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER calculate_students_mark_after_update AFTER UPDATE ON mark
-FOR EACH ROW
-BEGIN
-	CALL calculate_students_mark(NEW.mark_student_group, NEW.mark_exam);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER student_before_insert_row_tr BEFORE INSERT ON student
-FOR EACH ROW
-BEGIN
-    
-             SET
-                NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN student ON NEW.student_fname = dictionary.dictionary_id
-                                      LIMIT 1),
-                NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN student ON NEW.student_iname = dictionary.dictionary_id
-                                      LIMIT 1),
-                NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN student ON NEW.student_oname = dictionary.dictionary_id
-                                      LIMIT 1);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER student_before_update_row_tr BEFORE UPDATE ON student
-FOR EACH ROW
-BEGIN
-    IF NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
-                 NEW.student_oname <> OLD.student_oname THEN
-        
-                 SET
-                    NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                          FROM dictionary
-                                          JOIN student ON NEW.student_fname = dictionary.dictionary_id
-                                          LIMIT 1),
-                    NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                          FROM dictionary
-                                          JOIN student ON NEW.student_iname = dictionary.dictionary_id
-                                          LIMIT 1),
-                    NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                          FROM dictionary
-                                          JOIN student ON NEW.student_oname = dictionary.dictionary_id
-                                          LIMIT 1);
-    END IF;
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER user_before_insert_row_tr BEFORE INSERT ON user
-FOR EACH ROW
-BEGIN
-    
-             SET
-                NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN user ON NEW.user_fname = dictionary.dictionary_id
-                                      LIMIT 1),
-                NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN user ON NEW.user_iname = dictionary.dictionary_id
-                                      LIMIT 1),
-                NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                      FROM dictionary
-                                      JOIN user ON NEW.user_oname = dictionary.dictionary_id
-                                      LIMIT 1);
-END
-  TRIGGERSQL
-
-  # no candidate create_trigger statement could be found, creating an adapter-specific one
-  execute(<<-TRIGGERSQL)
-CREATE TRIGGER user_before_update_row_tr BEFORE UPDATE ON user
-FOR EACH ROW
-BEGIN
-    IF NEW.user_fname <> OLD.user_fname OR NEW.user_iname <> OLD.user_iname OR
-                 NEW.user_oname <> OLD.user_oname THEN
-        
-                 SET
-                    NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                          FROM dictionary
-                                          JOIN user ON NEW.user_fname = dictionary.dictionary_id
-                                          LIMIT 1),
-                    NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                          FROM dictionary
-                                          JOIN user ON NEW.user_iname = dictionary.dictionary_id
-                                          LIMIT 1),
-                    NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                          FROM dictionary
-                                          JOIN user ON NEW.user_oname = dictionary.dictionary_id
-                                          LIMIT 1);
-    END IF;
-END
-  TRIGGERSQL
 
 end

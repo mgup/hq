@@ -32,6 +32,10 @@ class Study::Repeat < ActiveRecord::Base
   # «групповыми». Просто в них может быть не несколько студентов, а только один.
   belongs_to :deprecated_student, class_name: Student, foreign_key: :exam_student_group
 
+  before_validation do |repeat|
+    repeat.exam_subject = repeat.exam.exam_subject
+  end
+
   def is_group?
     exam_group.present?
   end
