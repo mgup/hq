@@ -61,11 +61,11 @@
             <div class="col-sm-1">
               <%= link_to study_discipline_exam_repeats_path(discipline, exam),
                           class: 'btn btn-default',
-                          title: 'Пересдачи и индивидуальные ведомости',
+                          title: 'Дополнительные ведомости',
                           data: { toggle: 'modal',
                                   target: '#' + dom_id(exam, 'repeats'),
                                   remote: study_discipline_exam_repeats_path(discipline, exam) } do %>
-                <span class="glyphicon glyphicon-retweet"></span>
+                <span class="glyphicons more_items"></span>
               <% end %>
               <%= modal_placeholder(dom_id(exam, 'repeats'), size: 'modal-lg') %>
               <%#= render partial: 'repeat_modal', locals: { group: @group,

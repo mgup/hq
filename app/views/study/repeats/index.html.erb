@@ -1,11 +1,21 @@
 <% content_for :modal_title do %>
-  Пересдачи по дисциплине «<%= @discipline.name %>»
+  <%= @discipline.name %>
   <br>
   <small><%= @discipline.group.name %></small>
 <% end %>
 
 <div class="row">
   <div class="col-sm-6">
+    <h4>Дополнительные ведомости</h4>
+
+    <% if @repeats.empty? %>
+      <p>
+        <em>
+          На данный момент для этой дисциплины нет ни одной дополнительной ведомости.
+        </em>
+      </p>
+    <% end %>
+
     <dl>
       <% @repeats.each do |repeat| %>
         <dt>#<%= repeat.id %> <%= l repeat.date %>, <%= repeat_type(repeat) %></dt>
@@ -27,8 +37,24 @@
   </div>
 
   <div class="col-sm-6">
+    <h4>Создать дополнительную ведомость</h4>
+
     <%= nested_form_for Study::Repeat.new,
                  url: study_discipline_exam_repeats_path(@discipline, @exam) do |f| %>
+      <div class="form-group">
+        <%= f.label :exam_date %>
+        <%= f.text_field :exam_date, value: l(Date.today),
+                         class: 'form-control datepicker',
+                         pattern: '\d{1,2}.\d{1,2}.\d{4}' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :exam_type %>
+        <%= f.select :exam_type, options_for_select(Study::Repeat::TYPE_OPTIONS), {},
+                     class: 'form-control' %>
+      </div>
+
+      <label>Включённые студенты</label>
       <%= f.collection_check_boxes :students, @discipline.group.students.valid,
                                    :id, :full_name do |builder| %>
         <div class="checkbox">
@@ -37,6 +63,8 @@
           <% end %>
         </div>
       <% end %>
+
+      <%= f.submit 'Создать дополнительную ведомость', class: 'btn btn-primary' %>
     <% end %>
   </div>
 </div>
