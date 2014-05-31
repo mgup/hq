@@ -4,16 +4,20 @@ class Study::RepeatsController < ApplicationController
   load_and_authorize_resource :repeat, through: :exam, class: 'Study::Repeat'
 
   def index
-    @repeats = @repeats.order(exam_date: :desc)
-
     render layout: 'modal', locals: { skip_save_button: true }
   end
 
   def create
-    @repeat.save
+    if @repeat.save
+      @repeats = @exam.repeats
+
+      respond_to do |format|
+        format.js
+      end
+    end
   end
 
   def resource_params
-    params.fetch(:study_repeat, {}).permit(:exam_date, :exam_type, student_ids: [])
+    params.fetch(:study_repeat, {}).permit(:exam_date, :exam_repeat, student_ids: [])
   end
 end

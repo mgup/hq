@@ -33,7 +33,15 @@ class Study::Repeat < ActiveRecord::Base
   belongs_to :deprecated_student, class_name: Student, foreign_key: :exam_student_group
 
   before_validation do |repeat|
-    repeat.exam_subject = repeat.exam.exam_subject
+    [:type, :subject].each do |field|
+      if repeat.send("exam_#{field}").nil?
+        repeat.send("exam_#{field}=", repeat.exam.send("exam_#{field}"))
+      end
+    end
+  end
+
+  default_scope do
+    order(exam_date: :desc, exam_id: :desc)
   end
 
   def is_group?

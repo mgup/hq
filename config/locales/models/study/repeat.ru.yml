@@ -8,5 +8,5 @@ ru:
         discipline: 'дисциплина'
         exam_date: 'дата проведения'
         type: 'тип ведомости'
-        exam_type: 'тип ведомости'
+        exam_repeat: 'тип ведомости'
         exam_weight: 'вес'

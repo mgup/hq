@@ -2,7 +2,7 @@
 
 <%= nested_form_for Study::Repeat.new,
                     url: study_discipline_exam_repeats_path(@discipline, @exam),
-                    remote: false do |f| %>
+                    remote: true do |f| %>
   <div class="form-group">
     <%= f.label :exam_date %>
     <%= f.text_field :exam_date, value: l(Date.today),

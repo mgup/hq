@@ -6,51 +6,9 @@
 
 <div class="row">
   <div class="col-sm-6">
-    <h4>Дополнительные ведомости</h4>
-
-    <% if @repeats.empty? %>
-      <p>
-        <em>
-          На данный момент для этой дисциплины нет ни одной дополнительной ведомости.
-        </em>
-      </p>
-    <% end %>
-
-    <dl>
-      <% @repeats.each do |repeat| %>
-        <dt>
-          #<%= repeat.id %> <%= l repeat.date %>, <%= repeat_type(repeat) %>
-        </dt>
-        <dd>
-          <ul>
-            <li style="list-style-type: none;">
-              <%= link_to print_study_discipline_exam_path(@discipline, repeat),
-                          class: 'btn btn-xs btn-default',
-                          title: 'Распечатать ведомость' do %>
-                Распечатать <span class="glyphicons print"></span>
-              <% end %>
-
-              <%= link_to study_discipline_exam_repeat_path(@discipline, @exam, repeat),
-                          method: :delete, class: 'btn btn-xs btn-danger',
-                          data: {
-                              confirm: 'Вы уверены, что нужно удалить эту ведомость?'
-                          } do %>
-                Удалить <span class="glyphicons white remove_2"></span>
-              <% end %>
-            </li>
-            <% repeat.students.each do |student| %>
-              <li><%= student.full_name %></li>
-            <% end %>
-
-            <%# Обрабатываем персональные ведомости на пересдачу. Больше их делать
-            нельзя, но старые всё равно нужно показывать. %>
-            <% if repeat.students.empty? %>
-              <li><%= repeat.deprecated_student.full_name %></li>
-            <% end %>
-          </ul>
-        </dd>
-      <% end %>
-    </dl>
+    <div id="repeats">
+      <%= render 'repeats' %>
+    </div>
   </div>
 
   <div class="col-sm-6">
