@@ -4,6 +4,43 @@
   <small><%= @discipline.group.name %></small>
 <% end %>
 
-<%= render 'group', locals: { repeats: @repeats.find_all { |r| r.is_group? } } %>
+<div class="row">
+  <div class="col-sm-6">
+    <dl>
+      <% @repeats.each do |repeat| %>
+        <dt>#<%= repeat.id %> <%= l repeat.date %>, <%= repeat_type(repeat) %></dt>
+        <dd>
+          <ul>
+            <% repeat.students.each do |student| %>
+              <li><%= student.full_name %></li>
+            <% end %>
 
-<%= render 'personal', locals: { repeats: @repeats.find_all { |r| r.is_personal? } } %>
+            <%# Обрабатываем персональные ведомости на пересдачу. Больше их делать
+            не надо, но старые всё равно нужно показывать. %>
+            <% if repeat.students.empty? %>
+              <li><%= repeat.deprecated_student.full_name %></li>
+            <% end %>
+          </ul>
+        </dd>
+      <% end %>
+    </dl>
+  </div>
+
+  <div class="col-sm-6">
+    <%= nested_form_for Study::Repeat.new,
+                 url: study_discipline_exam_repeats_path(@discipline, @exam) do |f| %>
+      <%= f.collection_check_boxes :students, @discipline.group.students.valid,
+                                   :id, :full_name do |builder| %>
+        <div class="checkbox">
+          <%= builder.label do %>
+            <%= builder.check_box %> <%= builder.text %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<%#= render 'group', locals: { repeats: @repeats.find_all { |r| r.is_group? } } %>
+
+<%#= render 'personal', locals: { repeats: @repeats.find_all { |r| r.is_personal? } } %>

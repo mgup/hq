@@ -4,6 +4,8 @@ class Study::RepeatsController < ApplicationController
   load_and_authorize_resource :repeat, through: :exam, class: 'Study::Repeat'
 
   def index
-    render layout: 'modal'
+    @repeats = @repeats.order(exam_date: :desc)
+
+    render layout: 'modal', locals: { modal_sm: true, skip_save_button: true }
   end
 end

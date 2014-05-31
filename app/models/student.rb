@@ -81,6 +81,8 @@ class Student < ActiveRecord::Base
 
   has_one :graduate_student
 
+  has_and_belongs_to_many :study_repeats, class_name: 'Study::Repeat'
+
   default_scope do
     joins(:person)
     .order('last_name_hint, first_name_hint, patronym_hint')

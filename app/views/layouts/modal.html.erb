@@ -13,5 +13,8 @@
 
 <div class="modal-footer">
   <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-  <button type="button" class="btn btn-primary">Сохранить</button>
+
+  <% unless local_assigns.has_key?(:skip_save_button) %>
+    <button type="button" class="btn btn-primary">Сохранить</button>
+  <% end %>
 </div>
