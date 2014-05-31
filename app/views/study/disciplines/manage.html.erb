@@ -1,0 +1,66 @@
+<% content_for :modal_title do %>
+  <%= @discipline.name %>
+  <br>
+  <small><%= @discipline.group.name %></small>
+<% end %>
+
+<% content_for :modal_save do %>
+  <%= button_tag 'Сохранить', class: 'btn btn-primary',
+                 onclick: %Q($('##{dom_id(@discipline, 'edit')}').submit();) %>
+<% end %>
+
+<%= nested_form_for @discipline, html: { class: 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :subject_name, class: 'col-sm-3 control-label' %>
+    <div class="col-sm-9">
+      <%= f.text_field :subject_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :department_id, class: 'col-sm-3 control-label' %>
+    <div class="col-sm-9">
+      <%= f.select :department_id, options_from_collection_for_select(
+          Department.academic, :id, :name), {}, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :subject_teacher, class: 'col-sm-3 control-label' %>
+    <div class="col-sm-9">
+      <%= f.select :subject_teacher,
+                   @discipline.department.present? ?
+                     options_from_collection_for_select(
+                         @discipline.department.users, :id, :full_name
+                     ) :
+                     options_from_collection_for_select(
+                         User.teachers, :id, :full_name
+                     ),
+                   {}, class: 'form-control' %>
+    </div>
+  </div>
+
+  <%= f.fields_for :additional_exams do |exams| %>
+    <%= exams.hidden_field :id %>
+
+    <div class="form-group">
+      <%= exams.label :exam_type, 'Дополнительно',
+                      class: 'col-sm-3 control-label' %>
+      <div class="col-sm-7">
+        <%= exams.select :exam_type,
+                         options_for_select(
+                             Study::Exam::ADDITIONAL_EXAMS_TYPES,
+                             exams.object.exam_type
+                         ), {}, { class: 'form-control' } %>
+      </div>
+      <div class="col-sm-2">
+        <%= exams.link_to_remove class: 'btn btn-danger', title: 'Удалить' do %>
+          <span class="glyphicon glyphicon-remove"></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.link_to_add 'Добавить дополнительную форму контроля', :additional_exams,
+                    style: 'margin-left: 240px;' %>
+<% end %>

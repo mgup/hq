@@ -6,7 +6,8 @@
 
 <% if @group %>
   <%= render partial: 'discipline',
-             collection: @group.disciplines.by_term(params[:year], params[:term]) %>
+             collection: @group.disciplines.includes(:lead_teacher)
+                             .by_term(params[:year], params[:term]) %>
 
   <%= link_to new_study_discipline_path, class: 'btn btn-default',
               data: { toggle: 'modal', target: '#new_discipline_modal' } do %>

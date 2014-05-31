@@ -4,7 +4,7 @@ class Study::RepeatsController < ApplicationController
   load_and_authorize_resource :repeat, through: :exam, class: 'Study::Repeat'
 
   def index
-    render layout: 'modal', locals: { skip_save_button: true }
+    render layout: 'modal'
   end
 
   def create
