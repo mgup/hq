@@ -10,10 +10,18 @@ class Study::RepeatsController < ApplicationController
   def create
     if @repeat.save
       @repeats = @exam.repeats
-
       respond_to do |format|
         format.js
       end
+    end
+  end
+
+  def destroy
+    @repeat.destroy
+
+    @repeats = @exam.repeats
+    respond_to do |format|
+      format.js
     end
   end
 

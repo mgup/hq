@@ -23,7 +23,7 @@
           <% end %>
 
           <%= link_to study_discipline_exam_repeat_path(@discipline, @exam, repeat),
-                      method: :delete, class: 'btn btn-xs btn-danger',
+                      method: :delete, remote: true, class: 'btn btn-xs btn-danger',
                       data: {
                           confirm: 'Вы уверены, что нужно удалить эту ведомость?'
                       } do %>
