@@ -1,5 +1,6 @@
 class Library::CardsController < ApplicationController
-   # require 'tiny_tds'
+  require 'barby/barcode/code_128'
+  require 'barby/outputter/png_outputter'
 
   # ЗАМЕНИТЬ ТАБЛИЦУ READERS_old на READERS и добавить при INSERT поля MATRIX_STUDENT_ID, MATRIX_STUDENT_GROUP_ID
   def index
@@ -40,6 +41,9 @@ class Library::CardsController < ApplicationController
       query = "SELECT RDR_ID FROM dbo.READERS WHERE MATRIX_STUDENT_GROUP_ID = #{@student.id}"
     end
     @rdr_id = client.execute(query).first['RDR_ID']
+    barcode = Barby::Code128B.new(@rdr_id)
+    @blob = Barby::PngOutputter.new(barcode).to_png(height: 80, margin: 0)
+    File.open('app/assets/images/library/barcode.png', 'w'){|f| f.write @blob }
   end
 
 end

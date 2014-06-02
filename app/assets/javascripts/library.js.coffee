@@ -18,11 +18,11 @@ $ ->
 			context.fillText(fio[1], 210, 105)
 			context.fillText(fio[2], 210, 122)
 		readers2.onload = ->
-			context.drawImage(readers2, 370, 2)
-	# 	barcodes = new Image()
-	# 	barcodes.src = '/library/card/barcode/id/' + rdr_id
-	# 	barcodes.onload = ->
-	#		context.drawImage(barcodes, 150, 150)
+		  context.drawImage(readers2, 370, 2)
+    barcodes = new Image()
+    barcodes.src = '/assets/library/barcode.png'
+    barcodes.onload = ->
+      context.drawImage(barcodes, 165, 140)
 
 
 #  $('#name').ajaxChosen({
