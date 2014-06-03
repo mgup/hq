@@ -6,8 +6,12 @@ describe Study::Repeat do
       should belong_to(:exam)
     end
 
-    it 'со студентом' do
-      should have_belong_to_many(:students)
+    it 'со студентами' do
+      should have_many(:students)
+    end
+    
+    it 'со студентами' do
+      should belong_to(:students)
     end
     
     it 'с протестующим студентом' do
