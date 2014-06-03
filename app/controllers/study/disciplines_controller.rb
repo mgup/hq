@@ -70,40 +70,46 @@ class Study::DisciplinesController < ApplicationController
 
   def update
     authorize! :update, Study::Discipline
-    #raise params.inspect
-    if @discipline.update(resource_params)
-        if params[:plan] == '1'
-          # Идёт редактирование учебного плана.
-          redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
-                                       speciality: @discipline.group.speciality.id,
-                                       course: @discipline.group.course,
-                                       form: @discipline.group.form,
-                                       group: @discipline.group.id)
+
+    respond_to do |format|
+      format.js
+      format.html do
+        if @discipline.update(resource_params)
+          if params[:plan] == '1'
+            # Идёт редактирование учебного плана.
+            redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
+                                         speciality: @discipline.group.speciality.id,
+                                         course: @discipline.group.course,
+                                         form: @discipline.group.form,
+                                         group: @discipline.group.id)
+          else
+            @discipline.add_semester_work    if ('1' == params[:has_semester_work] and !@discipline.semester_work)
+            @discipline.add_semester_project if ('1' == params[:has_semester_project] and !@discipline.semester_project)
+
+            @discipline.destroy_semester_work    if ('1' != params[:has_semester_work] and @discipline.semester_work)
+            @discipline.destroy_semester_project if ('1' != params[:has_semester_project] and @discipline.semester_project)
+            redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+          end
         else
-          @discipline.add_semester_work    if ('1' == params[:has_semester_work] and !@discipline.semester_work)
-          @discipline.add_semester_project if ('1' == params[:has_semester_project] and !@discipline.semester_project)
+          if resource_params.include?(:checkpoints_attributes)
+            # Идёт редактирование контрольных точек — возвращаем туда.
+            render template: 'study/checkpoints/new'
+            return
+          else
+            detect_lead_teacher
+            load_user_colleagues
 
-          @discipline.destroy_semester_work    if ('1' != params[:has_semester_work] and @discipline.semester_work)
-          @discipline.destroy_semester_project if ('1' != params[:has_semester_project] and @discipline.semester_project)
-          redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+            if @discipline && @discipline.group
+              @faculty = @discipline.group.speciality.faculty
+              @speciality = @discipline.group.speciality
+            end
+
+            render action: :edit
+          end
         end
-    else
-      if resource_params.include?(:checkpoints_attributes)
-        # Идёт редактирование контрольных точек — возвращаем туда.
-        render template: 'study/checkpoints/new'
-        return
-      else
-        detect_lead_teacher
-        load_user_colleagues
-
-        if @discipline && @discipline.group
-          @faculty = @discipline.group.speciality.faculty
-          @speciality = @discipline.group.speciality
-        end
-
-        render action: :edit
       end
     end
+    #raise params.inspect
   end
 
   def destroy

@@ -18,7 +18,8 @@ class Study::Discipline < ActiveRecord::Base
 
   has_many :discipline_teachers, class_name: Study::DisciplineTeacher,
            primary_key: :subject_id, foreign_key: :subject_id, dependent: :destroy
-  accepts_nested_attributes_for :discipline_teachers, allow_destroy: true, reject_if: proc { |attrs| attrs[:teacher_id].blank? }
+  accepts_nested_attributes_for :discipline_teachers, allow_destroy: true,
+                                reject_if: proc { |attrs| attrs[:teacher_id].blank? }
 
   has_many :assistant_teachers, through: :discipline_teachers
 

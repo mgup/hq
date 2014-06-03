@@ -40,6 +40,22 @@
     </div>
   </div>
 
+  <%= f.fields_for :final_exam do |exam| %>
+    <%= exam.hidden_field :id %>
+
+    <div class="form-group">
+      <%= exam.label :exam_type, 'Итог. контроль', class: 'control-label col-sm-3' %>
+      <div class="col-sm-9">
+        <%= exam.select :exam_type,
+                        options_for_select(
+                            Study::Exam::EXAMS_TYPES, selected: exam.object.exam_type
+                        ),
+                        { },
+                        { class: 'form-control' } %>
+      </div>
+    </div>
+  <% end %>
+
   <%= f.fields_for :additional_exams do |exams| %>
     <%= exams.hidden_field :id %>
 
