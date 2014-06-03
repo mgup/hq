@@ -11,4 +11,3 @@ describe GraduateMark do
 		end
 	end
 end
-1
