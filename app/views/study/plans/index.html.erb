@@ -21,3 +21,11 @@
   <%#= render partial: 'discipline_modal',
              locals: { group: @group, discipline: Study::Discipline.new } %>
 <% end %>
+
+<script>
+  $(function() {
+    $(document).on('matrix.study.discipline.update', function(event, id) {
+      $('.modal-backdrop').remove();
+    });
+  });
+</script>

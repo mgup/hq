@@ -9,7 +9,11 @@
                  onclick: %Q($('##{dom_id(@discipline, 'edit')}').submit();) %>
 <% end %>
 
-<%= nested_form_for @discipline, html: { class: 'form-horizontal' } do |f| %>
+<%= nested_form_for @discipline, remote: true,
+                    html: { id: dom_id(@discipline, 'edit'),
+                            class: 'form-horizontal' } do |f| %>
+  <%= hidden_field_tag :partial, 'study/plans/discipline' %>
+
   <div class="form-group">
     <%= f.label :subject_name, class: 'col-sm-3 control-label' %>
     <div class="col-sm-9">

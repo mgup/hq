@@ -71,10 +71,10 @@ class Study::DisciplinesController < ApplicationController
   def update
     authorize! :update, Study::Discipline
 
-    respond_to do |format|
-      format.js
-      format.html do
-        if @discipline.update(resource_params)
+    if @discipline.update(resource_params)
+      respond_to do |format|
+        format.js
+        format.html do
           if params[:plan] == '1'
             # Идёт редактирование учебного плана.
             redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
@@ -90,23 +90,23 @@ class Study::DisciplinesController < ApplicationController
             @discipline.destroy_semester_project if ('1' != params[:has_semester_project] and @discipline.semester_project)
             redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
           end
-        else
-          if resource_params.include?(:checkpoints_attributes)
-            # Идёт редактирование контрольных точек — возвращаем туда.
-            render template: 'study/checkpoints/new'
-            return
-          else
-            detect_lead_teacher
-            load_user_colleagues
-
-            if @discipline && @discipline.group
-              @faculty = @discipline.group.speciality.faculty
-              @speciality = @discipline.group.speciality
-            end
-
-            render action: :edit
-          end
         end
+      end
+    else
+      if resource_params.include?(:checkpoints_attributes)
+        # Идёт редактирование контрольных точек — возвращаем туда.
+        render template: 'study/checkpoints/new'
+        return
+      else
+        detect_lead_teacher
+        load_user_colleagues
+
+        if @discipline && @discipline.group
+          @faculty = @discipline.group.speciality.faculty
+          @speciality = @discipline.group.speciality
+        end
+
+        render action: :edit
       end
     end
     #raise params.inspect
