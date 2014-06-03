@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140507091056) do
+ActiveRecord::Schema.define(version: 20140531155024) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -647,7 +647,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
 
   create_table "exam_student", primary_key: "exam_student_id", force: true do |t|
     t.integer "exam_student_exam",          null: false
-    t.integer "exam_student_student",       null: false
+    t.integer "exam_student_student"
     t.integer "exam_student_student_group", null: false
   end
 
@@ -1371,6 +1371,7 @@ ActiveRecord::Schema.define(version: 20140507091056) do
     t.integer "subject_year",                                 null: false
     t.integer "subject_group",                                null: false
     t.boolean "subject_brs",                  default: false
+    t.integer "department_id"
   end
 
   add_index "subject", ["subject_group"], name: "subject_group", using: :btree

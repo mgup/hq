@@ -62,42 +62,54 @@ class Study::DisciplinesController < ApplicationController
     @speciality = @discipline.group.speciality
   end
 
+  def manage
+    authorize! :manage, :plans
+
+    render layout: 'modal'
+  end
+
   def update
     authorize! :update, Study::Discipline
-    #raise params.inspect
-    if @discipline.update(resource_params)
-        if params[:plan] == '1'
-          # Идёт редактирование учебного плана.
-          redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
-                                       speciality: @discipline.group.speciality.id,
-                                       course: @discipline.group.course,
-                                       form: @discipline.group.form,
-                                       group: @discipline.group.id)
+
+    respond_to do |format|
+      format.js
+      format.html do
+        if @discipline.update(resource_params)
+          if params[:plan] == '1'
+            # Идёт редактирование учебного плана.
+            redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
+                                         speciality: @discipline.group.speciality.id,
+                                         course: @discipline.group.course,
+                                         form: @discipline.group.form,
+                                         group: @discipline.group.id)
+          else
+            @discipline.add_semester_work    if ('1' == params[:has_semester_work] and !@discipline.semester_work)
+            @discipline.add_semester_project if ('1' == params[:has_semester_project] and !@discipline.semester_project)
+
+            @discipline.destroy_semester_work    if ('1' != params[:has_semester_work] and @discipline.semester_work)
+            @discipline.destroy_semester_project if ('1' != params[:has_semester_project] and @discipline.semester_project)
+            redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+          end
         else
-          @discipline.add_semester_work    if ('1' == params[:has_semester_work] and !@discipline.semester_work)
-          @discipline.add_semester_project if ('1' == params[:has_semester_project] and !@discipline.semester_project)
+          if resource_params.include?(:checkpoints_attributes)
+            # Идёт редактирование контрольных точек — возвращаем туда.
+            render template: 'study/checkpoints/new'
+            return
+          else
+            detect_lead_teacher
+            load_user_colleagues
 
-          @discipline.destroy_semester_work    if ('1' != params[:has_semester_work] and @discipline.semester_work)
-          @discipline.destroy_semester_project if ('1' != params[:has_semester_project] and @discipline.semester_project)
-          redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
+            if @discipline && @discipline.group
+              @faculty = @discipline.group.speciality.faculty
+              @speciality = @discipline.group.speciality
+            end
+
+            render action: :edit
+          end
         end
-    else
-      if resource_params.include?(:checkpoints_attributes)
-        # Идёт редактирование контрольных точек — возвращаем туда.
-        render template: 'study/checkpoints/new'
-        return
-      else
-        detect_lead_teacher
-        load_user_colleagues
-
-        if @discipline && @discipline.group
-          @faculty = @discipline.group.speciality.faculty
-          @speciality = @discipline.group.speciality
-        end
-
-        render action: :edit
       end
     end
+    #raise params.inspect
   end
 
   def destroy
@@ -118,7 +130,8 @@ class Study::DisciplinesController < ApplicationController
   def resource_params
     params.fetch(:study_discipline, {}).permit(
         :subject_year, :subject_brs, :subject_semester, :group, :subject_group, :subject_name,
-        :subject_teacher, final_exam_attributes: [:id, :exam_type, :exam_weight],
+        :subject_teacher, :department_id,
+        final_exam_attributes: [:id, :exam_type, :exam_weight],
         discipline_teachers_attributes: [:id, :teacher_id, :'_destroy'],
         lectures_attributes: [:id, :checkpoint_date, :'_destroy'],
         seminars_attributes: [:id, :checkpoint_date, :'_destroy'],
@@ -155,7 +168,9 @@ class Study::DisciplinesController < ApplicationController
   private
 
   def load_user_discipline
-    @discipline = Study::Discipline.include_teacher(current_user).find(params[:id])
+    @discipline = Study::Discipline.find(params[:id])
+
+    @discipline = @discipline.include_teacher(current_user) unless can?(:manage, :plans)
   end
 
   def load_user_disciplines

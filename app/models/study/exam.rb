@@ -62,12 +62,23 @@ class Study::Exam < ActiveRecord::Base
   has_many :rating_marks, -> { where(mark_rating: true)}, class_name: Study::ExamMark, foreign_key: :mark_exam
   accepts_nested_attributes_for :rating_marks
 
-  has_many :repeats, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_parent
+  # Все ведомости на пересдачу.
+  has_many :repeats, class_name: 'Study::Repeat',
+           primary_key: :exam_id, foreign_key: :exam_parent
+
+  # Индивидуальные ведомости на пересдачу.
+  has_many :personal_repeats, -> { where('exam_group IS NULL') },
+           class_name: 'Study::Repeat',
+           primary_key: :exam_id, foreign_key: :exam_parent
+  accepts_nested_attributes_for :personal_repeats
+
+  # Групповые ведомости на пересдачу.
+  has_many :group_repeats, -> { where('exam_group IS NOT NULL') },
+           class_name: 'Study::Repeat', foreign_key: :exam_parent
+  accepts_nested_attributes_for :group_repeats
+
   belongs_to :paret_exam, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_parent
 
-  has_many :mass_repeats, -> { where('exam_group IS NOT NULL') },
-           class_name: 'Study::Exam', foreign_key: :exam_parent
-  accepts_nested_attributes_for :mass_repeats
 
 
   has_one :formreader, class_name: Study::ExamFormreader, foreign_key: :DocNumber

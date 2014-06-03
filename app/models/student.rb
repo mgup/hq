@@ -81,6 +81,8 @@ class Student < ActiveRecord::Base
 
   has_one :graduate_student
 
+  has_and_belongs_to_many :study_repeats, class_name: 'Study::Repeat'
+
   default_scope do
     joins(:person)
     .order('last_name_hint, first_name_hint, patronym_hint')
@@ -90,6 +92,9 @@ class Student < ActiveRecord::Base
   def readonly?
     false
   end
+
+  scope :valid, -> { where(student_group_status: [self::STATUS_STUDENT,
+                                                  self::STATUS_DEBTOR]) }
 
   scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_DEBTOR]) }
   scope :valid_student, -> { where(student_group_status: STATUS_STUDENT)}

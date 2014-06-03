@@ -13,7 +13,7 @@ class Speciality < ActiveRecord::Base
   has_many :payment_types, class_name: 'Finance::PaymentType', primary_key: :speciality_id, foreign_key: :finance_payment_type_speciality
 
   default_scope do
-    includes(:faculty).order(:speciality_name, :speciality_code)
+    order(:speciality_name, :speciality_code)
   end
 
   scope :from_faculty, -> faculty { where(speciality_faculty: faculty) }
