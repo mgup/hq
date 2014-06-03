@@ -5,9 +5,11 @@ describe GraduateStudent do
     it 'с выпускником' do
       should belong_to(:graduate)
     end
+    
     it 'со студентом' do
       should belong_to(:student)
     end
+    
     it 'с выпускными оценками' do
       should have_many(:graduate_marks)
     end
