@@ -34,16 +34,19 @@ class Library::CardsController < ApplicationController
     @student = Student.find(params[:student])
     client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'], dataserver: '192.168.200.36:1433', database: '[marc 1.11]')
     if @student.admission_year < 2012
-      strange_num = @client.execute("SELECT * FROM dbo.SPEC WHERE spec = #{@student.speciality.code.to_s[0,6]}").first['num']
-      rdr = "99%#{strange_num < 10 ? strange_num : strange_num - 9}1#{@student.admission_year.to_s[2,2]}#{@student.group.library_form}"
-      query = "SELECT RDR_ID FROM dbo.READERS WHERE NAME = '#{@student.full_name}' AND RDR_ID IS LIKE '#{rdr}%'"
+      rdr = "99%1#{@student.admission_year.to_s[2,2]}#{@student.group.library_form}"
+      query = "SELECT RDR_ID FROM dbo.READERS WHERE NAME = '#{@student.full_name}' AND RDR_ID LIKE '#{rdr}%'"
     else
       query = "SELECT RDR_ID FROM dbo.READERS WHERE MATRIX_STUDENT_GROUP_ID = #{@student.id}"
     end
     @rdr_id = client.execute(query).first['RDR_ID']
     barcode = Barby::Code128B.new(@rdr_id)
-    @blob = Barby::PngOutputter.new(barcode).to_png(height: 80, margin: 0)
+    @blob = Barby::PngOutputter.new(barcode).to_png(height: 65, margin: 0)
     File.open('app/assets/images/library/barcode.png', 'w'){|f| f.write @blob }
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
   end
 
 end

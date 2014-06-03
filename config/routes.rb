@@ -62,6 +62,7 @@ HQ::Application.routes.draw do
     get '/cards', to: 'cards#index', as: :cards
     get '/cards/:student/create', to: 'cards#create', as: :create_card
     get '/cards/:student/print', to: 'cards#print', as: :print_card
+    get '/cards/:student/print.pdf', to: 'cards#print', defaults: { format: 'pdf' }
   end
 
   resources :groups do

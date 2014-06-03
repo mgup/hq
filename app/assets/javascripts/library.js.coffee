@@ -25,25 +25,6 @@ $ ->
       context.drawImage(barcodes, 165, 140)
 
 
-#  $('#name').ajaxChosen({
-#      no_results_text: "Результатов не найдено",
-#      method: 'POST',
-#      url: '/library/card/findforprint',
-#      dataType: 'json'
-#    }, (data) ->
-#      terms = {}
-#      data.each (i,val) ->
-#        terms[i] = val
-#        readers[i] = val
-#      return terms
-#  )
-
 	if $('#canvas_for_library_card').length > 0
     	showCards($('#library_student').data('name'), $('#library_student').data('value'))
-#
-#  $('#print_library_card').submit (e) ->
-#    img = c.toDataURL("image/png")
-#    document.write('<img src="'+img+'"/>')
-#    window.print()
-#    location.href = '/library/card/print'
-#    return false
+
