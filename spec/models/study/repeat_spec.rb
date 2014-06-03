@@ -9,11 +9,7 @@ describe Study::Repeat do
     it 'со студентами' do
       should have_many(:students)
     end
-    
-    it 'со студентами' do
-      should belong_to(:students)
-    end
-    
+
     it 'с протестующим студентом' do
       should belong_to(:deprecated_student)
     end
