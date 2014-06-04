@@ -74,4 +74,3 @@ feature 'Ввод оценок за занятия' do
     page.should have_content 'Вы пытались ввести некорректное значение'
   end
 end
-
