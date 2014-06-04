@@ -11,35 +11,6 @@
           <%= hidden_field_tag :plan, 1 %>
           <%= f.hidden_field :subject_group %>
 
-          <div class="form-group">
-            <%= f.label :subject_name, class: 'col-sm-3 control-label' %>
-            <div class="col-sm-9">
-              <%= f.text_field :subject_name, class: 'form-control' %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <%= label_tag :subdepartment, 'Кафедра', class: 'col-sm-3 control-label' %>
-            <% academic = discipline.lead_teacher ? (discipline.lead_teacher.departments.academic.first ? discipline.lead_teacher.departments.academic.first.id : nil) : nil %>
-            <div class="col-sm-9">
-              <%= select_tag :subdepartment,
-                             options_from_collection_for_select(
-                                 Department.academic, :id, :name, academic),
-                             { class: 'form-control ajax-subdepartment' } %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <%= f.label :subject_teacher, class: 'col-sm-3 control-label' %>
-            <% teacher = discipline.lead_teacher ? discipline.lead_teacher.id : nil %>
-            <div class="col-sm-9">
-              <%= f.select :subject_teacher,
-                           options_from_collection_for_select(
-                               User.teachers, :id, :full_name,
-                               teacher
-                           ), {}, { class: 'form-control ajax-teacher' } %>
-            </div>
-          </div>
           <% discipline.build_final_exam unless discipline.final_exam %>
           <%= f.fields_for :final_exam do |exam| %>
             <%= exam.hidden_field :id %>
@@ -56,34 +27,6 @@
               </div>
             </div>
           <% end %>
-
-          <%= f.fields_for :additional_exams do |exams| %>
-            <%= exams.hidden_field :id %>
-
-            <div class="form-group">
-              <%= exams.label :exam_type, 'Дополнительно',
-                              class: 'col-sm-3 control-label' %>
-              <div class="col-sm-8">
-                <%= exams.select :exam_type,
-                                 options_for_select(
-                                     Study::Exam::ADDITIONAL_EXAMS_TYPES,
-                                     exams.object.exam_type
-                                 ), {}, { class: 'form-control' } %>
-              </div>
-              <div class="col-sm-1">
-                <%= exams.link_to_remove class: 'btn btn-danger', title: 'Удалить' do %>
-                  <span class="glyphicon glyphicon-remove"></span>
-                <% end %>
-
-              </div>
-            </div>
-          <% end %>
-          <div class="form-group">
-            <!--<div class="col-sm-offset-3">-->
-              <%= f.link_to_add 'Добавить дополнительную форму контроля',
-                                :additional_exams, style: 'margin-left: 240px;' %>
-            <!--</div>-->
-          </div>
 
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">

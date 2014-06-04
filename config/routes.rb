@@ -108,6 +108,8 @@ HQ::Application.routes.draw do
 
     get 'exammarks/:id/ajax_update' => 'exam_marks#ajax_update'
     resources :disciplines do
+      get 'manage', on: :member
+
       get 'print_group.pdf', to: 'disciplines#print_group', defaults: { format: 'pdf' }, as: :print_group
       get 'print_disciplines.xlsx', to: 'disciplines#print_disciplines', on: :collection, defaults: { format: 'xlsx' }, as: :print_disciplines
       match 'download_group',  to: 'checkpoints#download_pdf', via: [:get, :post]
@@ -121,9 +123,10 @@ HQ::Application.routes.draw do
 
       resources :exams do
         get 'print',   on: :member, defaults: { format: 'pdf' }
-        get 'repeats', on: :member
 
         patch '/updatedate', to: 'exams#updatedate', on: :member
+
+        resources :repeats
       end
     end
 

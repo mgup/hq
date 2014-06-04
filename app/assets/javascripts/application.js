@@ -12,8 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-// require turbolinks
 //= require jquery.turbolinks
+//= require jquery.ui.effect-highlight
 //
 //= require bootstrap
 //
@@ -25,8 +25,6 @@
 //
 //= require chosen.jquery
 //= require jquery_nested_form
-// require jquery.ui.all
-// require jquery.multiselect
 //
 //= require ace/ace
 //

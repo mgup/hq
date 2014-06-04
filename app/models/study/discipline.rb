@@ -18,7 +18,8 @@ class Study::Discipline < ActiveRecord::Base
 
   has_many :discipline_teachers, class_name: Study::DisciplineTeacher,
            primary_key: :subject_id, foreign_key: :subject_id, dependent: :destroy
-  accepts_nested_attributes_for :discipline_teachers, allow_destroy: true, reject_if: proc { |attrs| attrs[:teacher_id].blank? }
+  accepts_nested_attributes_for :discipline_teachers, allow_destroy: true,
+                                reject_if: proc { |attrs| attrs[:teacher_id].blank? }
 
   has_many :assistant_teachers, through: :discipline_teachers
 
@@ -47,7 +48,8 @@ class Study::Discipline < ActiveRecord::Base
           class_name: Study::Exam, foreign_key: :exam_subject
   has_one :semester_project, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)}, 
           class_name: Study::Exam, foreign_key: :exam_subject
-  
+
+  belongs_to :department
 
   validates :name, presence: true
   validates :year, presence: true, numericality: { greater_than: 2010, less_than: 2020 }

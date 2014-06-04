@@ -1,13 +1,21 @@
 <div id="<%= dom_id(discipline) %>" class="panel panel-default">
   <div class="panel-heading">
-    <%= link_to '#' + dom_id(discipline, 'modal'), class: 'btn btn-xs pull-right',
-                data: { toggle: 'modal' } do %>
+    <%= link_to manage_study_discipline_path(discipline), class: 'pull-right',
+                data: {
+                    toggle: 'modal',
+                    target: '#' + dom_id(discipline, 'edit_modal'),
+                    remote: manage_study_discipline_path(discipline)
+                } do %>
       <span class="glyphicon glyphicon-edit"></span> Редактировать
     <% end %>
-    <%= render partial: 'edit_modal', locals: { group: @group, discipline: discipline } %>
+    <%= modal_placeholder(dom_id(discipline, 'edit_modal')) %>
+
+    <%#= render partial: 'edit_modal', locals: { group: @group,
+    discipline: discipline } %>
 
     <h3 class="panel-title">
       <%= discipline.name %>
+      <br>
       <small><%= discipline.lead_teacher.full_name if discipline.lead_teacher %></small>
     </h3>
   </div>
@@ -38,7 +46,7 @@
             </div>
 
             <div class="col-sm-2">
-              <%= render partial: 'validation', locals: { exam: exam } %>
+              <%#= render partial: 'validation', locals: { exam: exam } %>
             </div>
 
             <div class="col-sm-1">
@@ -51,12 +59,15 @@
             </div>
 
             <div class="col-sm-1">
-              <%= link_to '#' + dom_id(exam, 'repeat_modal'), class: 'btn btn-default',
-                          title: 'Пересдачи и индивидуальные ведомости',
-                          data: { toggle: 'modal' } do %>
-                <span class="glyphicon glyphicon-retweet"></span>
+              <%= link_to study_discipline_exam_repeats_path(discipline, exam),
+                          class: 'btn btn-default',
+                          title: 'Дополнительные ведомости',
+                          data: { toggle: 'modal',
+                                  target: '#' + dom_id(exam, 'repeats'),
+                                  remote: study_discipline_exam_repeats_path(discipline, exam) } do %>
+                <span class="glyphicons more_items"></span>
               <% end %>
-              <%= render partial: 'repeat_modal', locals: { group: @group, exam: exam } %>
+              <%= modal_placeholder(dom_id(exam, 'repeats'), size: 'modal-lg') %>
             </div>
 
             <div class="col-sm-1">
