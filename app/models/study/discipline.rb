@@ -49,7 +49,7 @@ class Study::Discipline < ActiveRecord::Base
   has_one :semester_project, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)}, 
           class_name: Study::Exam, foreign_key: :exam_subject
 
-  belongs_to :department
+  belongs_to :department, primary_key: :department_id, foreign_key: :department_id
 
   validates :name, presence: true
   validates :year, presence: true, numericality: { greater_than: 2010, less_than: 2020 }
