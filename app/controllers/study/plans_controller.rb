@@ -21,6 +21,10 @@ class Study::PlansController < ApplicationController
         end
       end
     end
+
+    @new_discipline = Study::Discipline.new(group: @group, year: params[:year],
+                                            semester: params[:term])
+    @new_discipline.build_final_exam
   end
 
   def updatedate

@@ -14,11 +14,7 @@
   </button>
   <%= modal_placeholder('new_discipline_modal') do %>
     <%= render partial: 'study/disciplines/manage', layout: 'layouts/modal',
-               locals: {
-                   discipline: Study::Discipline.new(group: @group,
-                                                     year: params[:year],
-                                                     semester: params[:term])
-               } %>
+               locals: { discipline: @new_discipline } %>
   <% end %>
 <% end %>
 
@@ -30,6 +26,7 @@
 
     $(document).on('matrix.study.discipline.update', function() {
       $('.modal-backdrop').remove();
+      $(document.body).removeClass('modal-open');
     });
   });
 </script>
