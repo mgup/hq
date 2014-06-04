@@ -45,4 +45,17 @@ module AchievementHelper
       '&#x2654;'.html_safe
     end
   end
+
+  def achievement_status(achievement = @achievement)
+    case achievement.status
+      when Achievement::STATUS_NEW
+        'не подтверждено'
+      when Achievement::STATUS_REFUSED
+        'отказано в подтверждении'
+      when Achievement::STATUS_ACCEPTED
+        'подтверждено'
+      when Achievement::STATUS_ACCEPTED_FINAL
+        'подтверждено'
+    end
+  end
 end

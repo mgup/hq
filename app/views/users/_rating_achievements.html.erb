@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-sm-5">
+    Описание достижения
+  </div>
+  <div class="col-sm-2">
+    Балл
+  </div>
+  <div class="col-sm-2">
+    Статус
+  </div>
+  <div class="col-sm-3">
+    Макс. возможный балл за&nbsp;1&nbsp;отчётную единицу
+  </div>
+</div>
+
+<% achievements.group_by { |a| a.activity.group }.each do |group, as| %>
+  <div class="row">
+    <div class="col-sm-12">
+      <strong><%= group.name %></strong>
+    </div>
+  </div>
+  <% as.each do |a| %>
+    <div class="row <%= 'danger' if a.refused? || a.new? %>
+                    <%= 'success' if a.accepted? || a.accepted_final? %>">
+      <div class="col-sm-5">
+        <%= a.description %>
+      </div>
+      <div class="col-sm-2">
+        <%= a.cost %>
+      </div>
+      <div class="col-sm-2">
+        <%= achievement_status(a) %>
+      </div>
+      <div class="col-sm-3">
+        <small><%= a.activity.credit %></small>
+      </div>
+    </div>
+  <% end %>
+  <hr>
+<% end %>

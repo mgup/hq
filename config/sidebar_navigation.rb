@@ -10,6 +10,10 @@ SimpleNavigation::Configuration.run do |navigation|
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
       end
+
+      primary.item :users_rating,
+        '<span class="glyphicons podium"></span> Отчёт об эффективности'.html_safe,
+        rating_user_path(current_user)
     end
     primary.item :actual_events, 'Актуальные события', actual_events_path, icon: 'calendar'
 

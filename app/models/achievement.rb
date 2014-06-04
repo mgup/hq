@@ -15,6 +15,8 @@ class Achievement < ActiveRecord::Base
 
   scope :by, -> (user = current_user) { where(user_id: user.id) }
 
+  scope :for, -> (period) { where(achievement_period_id: period.id) }
+
   scope :not_refused, -> { where('status != ?', STATUS_REFUSED) }
 
   scope :validatable_by, -> (user = current_user) {

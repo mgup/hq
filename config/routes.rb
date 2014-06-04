@@ -25,6 +25,8 @@ HQ::Application.routes.draw do
 
   resources :roles
   resources :users do
+    get 'rating', on: :member
+
     get 'without_med.xlsx', to: 'users#without_med', on: :collection, defaults: { format: 'xlsx' }, as: :without_med
     get 'see_with_eyes' => 'users#see_with_eyes', as: :see_with_eyes
     get 'medical_requests.pdf', to: 'users#medical_requests', on: :collection, defaults: { format: 'pdf' }
