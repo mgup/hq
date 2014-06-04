@@ -1,0 +1,24 @@
+<div class="page-header">
+  <h1>Структура вашего подразделения</h1>
+</div>
+
+<% if current_user.is?(:dean) %>
+  <% current_user.departments_with_role(:dean).each do |department| %>
+    <%# Институты %>
+    <h2><%= department.name %></h2>
+
+    <%# Кафедры %>
+    <% department.subdepartments.each do |subdepartment| %>
+      <h3><%= subdepartment.name %></h3>
+      <%= render partial: 'subdepartment_users',
+                 locals: { users: subdepartment.users } %>
+    <% end %>
+  <% end %>
+<% elsif current_user.is?(:subdepartment) %>
+  <%# Кафедры %>
+  <% current_user.departments_with_role(:subdepartment).each do |department| %>
+    <h3><%= department.name %></h3>
+    <%= render partial: 'subdepartment_users',
+               locals: { users: department.users } %>
+  <% end %>
+<% end %>

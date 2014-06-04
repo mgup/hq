@@ -1,0 +1,9 @@
+<% users.each do |user| %>
+  <div class="row">
+    <div class="col-sm-1"><%= user.id %></div>
+    <div class="col-sm-5"><%= user.full_name %></div>
+    <div class="col-sm-3">
+      <%= link_to 'Отчёт об эффективности', rating_user_path(user) %>
+    </div>
+  </div>
+<% end %>

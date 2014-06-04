@@ -2,11 +2,15 @@
   <h1>Отчёт об эффективности</h1>
 </div>
 
-<% if @user.is?(:subdepartment) %>
+<% if @user.is?(:subdepartment) && @user == current_user %>
   <p>
     Так как вы являетесь заведующим кафедрой, то ваш итоговый балл является средним между
-    вашим фактическим баллом (см. ниже) и средним баллов остальных НПР кафедры.
+    вашим фактическим баллом (см.&nbsp;ниже) и средним баллов остальных НПР кафедры.
   </p>
+<% end %>
+
+<% if @user != current_user %>
+  <p class="lead"><%= @user.full_name %></p>
 <% end %>
 
 <div id="accordion" class="panel-group">

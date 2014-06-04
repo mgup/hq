@@ -49,6 +49,10 @@ class User < ActiveRecord::Base
   has_many :current_groups, -> { where("start_date <= '#{Date.today}' AND end_date >= '#{Date.today}'") }, class_name: Curator::Group, foreign_key: :user_id
   #has_one :current_group, through: :current_curator_group
 
+  default_scope do
+    order(:last_name_hint, :first_name_hint, :patronym_hint)
+  end
+
   scope :with_name, -> { includes(:iname, :fname, :oname) }
 
   scope :by_name, -> (name) {
@@ -96,6 +100,11 @@ class User < ActiveRecord::Base
 
   def departments_ids
     positions.map { |p| p.department.id }
+  end
+
+  # Находит идентификаторы подразделений, в которых пользователь выполняет указанную роль.
+  def departments_with_role(role)
+    positions.from_role(role.to_s).map { |p| p.department }
   end
 
   def primary_position_should_be_one

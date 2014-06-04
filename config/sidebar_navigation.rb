@@ -11,9 +11,15 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
       end
 
-      primary.item :users_rating,
+      primary.item :user_rating,
         '<span class="glyphicons podium"></span> Отчёт об эффективности'.html_safe,
         rating_user_path(current_user)
+
+      if current_user.is?(:subdepartment) || current_user.is?(:dean)
+        primary.item :users_department,
+          '<span class="glyphicons group"></span> Подразделение'.html_safe,
+          department_users_path
+      end
     end
     primary.item :actual_events, 'Актуальные события', actual_events_path, icon: 'calendar'
 

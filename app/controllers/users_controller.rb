@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource
+  load_resource
+  authorize_resource except: [:rating]
 
   def index
     params[:page] ||= 1
@@ -94,6 +95,32 @@ class UsersController < ApplicationController
   end
 
   def rating
+    authorized = false
+    # Проверка пользователя на право доступа к информации.
+    if current_user != @user
+      if current_user.is?(:subdepartment)
+        if @user.departments.include?(
+          current_user.departments_with_role(:subdepartment).first
+        )
+          authorized = true
+        end
+      end
+
+      if current_user.is?(:dean)
+        current_user.departments_with_role(:dean).each do |department|
+          department.subdepartments.each do |subdepartment|
+            authorized = true if @user.departments.include?(subdepartment)
+          end
+        end
+      end
+    else
+      authorized = true
+    end
+
+    redirect_to root_path unless authorized
+  end
+
+  def department
 
   end
 
