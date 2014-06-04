@@ -23,7 +23,10 @@
     <div class="row <%= 'danger' if a.refused? || a.new? %>
                     <%= 'success' if a.accepted? || a.accepted_final? %>">
       <div class="col-sm-5">
-        <%= a.description %>
+        <span class="fake-link" data-toggle="tooltip" data-placemenet="top"
+              title="<%= a.activity.name %>">
+          <%= a.description %>
+        </span>
       </div>
       <div class="col-sm-2">
         <%= a.cost %>

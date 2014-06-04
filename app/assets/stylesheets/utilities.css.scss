@@ -5,3 +5,8 @@
 .no-border-top {
   border-top: none !important;
 }
+
+.fake-link {
+  border-bottom: 1px dashed lightgray;
+  cursor: pointer;
+}
