@@ -47,7 +47,7 @@ gem 'spreadsheet'
 # В терминале: bundle config local.ui /Users/storkvist/Sites/mgup/ui
 # gem 'ui', github: 'mgup/ui', branch: :master
 # В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
-gem 'morpher', github: 'mgup/morpher', branch: :master
+# gem 'morpher', github: 'mgup/morpher', branch: :master
 
 gem 'airbrake'
 gem 'dotenv-rails'

@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/mgup/morpher.git
-  revision: a37bc2f3d63c94e997e2e8ce7786a82047cea6a9
-  branch: master
-  specs:
-    morpher (0.0.1)
-      httparty
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -151,9 +143,6 @@ GEM
     highline (1.6.21)
     hike (1.2.3)
     htmlentities (4.3.2)
-    httparty (0.13.1)
-      json (~> 1.8)
-      multi_xml (>= 0.5.2)
     i18n (0.6.9)
     jbuilder (2.0.7)
       activesupport (>= 3.0.0, < 5)
@@ -187,7 +176,6 @@ GEM
     mini_portile (0.6.0)
     minitest (5.3.4)
     multi_json (1.10.1)
-    multi_xml (0.5.5)
     mysql2 (0.3.16)
     nested_form (0.3.2)
     net-scp (1.2.1)
@@ -385,7 +373,6 @@ DEPENDENCIES
   kaminari
   letter_opener
   meta_request
-  morpher!
   mysql2
   nested_form
   prawn
