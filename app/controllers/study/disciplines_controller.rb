@@ -19,22 +19,27 @@ class Study::DisciplinesController < ApplicationController
   #def show ; end
 
   def create
-    #raise params.inspect
+    # raise params.inspect
     authorize! :create, Study::Discipline
     @discipline = Study::Discipline.new(resource_params)
     if @discipline.save
-      # При необходимости, создаём записи о курсовой работе и курсовом проекте.
-      @discipline.add_semester_work    if '1' == params[:has_semester_work]
-      @discipline.add_semester_project if '1' == params[:has_semester_project]
+      respond_to do |format|
+        format.js
+        format.html do
+          # При необходимости, создаём записи о курсовой работе и курсовом проекте.
+          @discipline.add_semester_work    if '1' == params[:has_semester_work]
+          @discipline.add_semester_project if '1' == params[:has_semester_project]
 
-      if params[:plans] == '1'
-        redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
-                                     speciality: @discipline.group.speciality.id,
-                                     course: @discipline.group.course,
-                                     form: @discipline.group.form,
-                                     group: @discipline.group.id)
-      else
-        redirect_to study_disciplines_path, notice: 'Дисциплина успешно добавлена.'
+          if params[:plans] == '1'
+            redirect_to study_plans_path(faculty: @discipline.group.speciality.faculty.id,
+                                         speciality: @discipline.group.speciality.id,
+                                         course: @discipline.group.course,
+                                         form: @discipline.group.form,
+                                         group: @discipline.group.id)
+          else
+            redirect_to study_disciplines_path, notice: 'Дисциплина успешно добавлена.'
+          end
+        end
       end
     else
       # raise @discipline.errors.inspect

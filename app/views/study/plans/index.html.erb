@@ -9,22 +9,26 @@
              collection: @group.disciplines.includes(:lead_teacher)
                              .by_term(params[:year], params[:term]) %>
 
-  <%= link_to new_study_discipline_path, class: 'btn btn-default',
-              data: { toggle: 'modal', target: '#new_discipline_modal' } do %>
+  <button class="btn btn-default" data-toggle="modal" data-target="#new_discipline_modal">
     <span class="glyphicon glyphicon-plus"></span> Добавить ещё одну дисциплину
+  </button>
+  <%= modal_placeholder('new_discipline_modal') do %>
+    <%= render partial: 'study/disciplines/manage', layout: 'layouts/modal',
+               locals: {
+                   discipline: Study::Discipline.new(group: @group,
+                                                     year: params[:year],
+                                                     semester: params[:term])
+               } %>
   <% end %>
-  <div id="new_discipline_modal" class="modal fade">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content"></div>
-    </div>
-  </div>
-  <%#= render partial: 'discipline_modal',
-             locals: { group: @group, discipline: Study::Discipline.new } %>
 <% end %>
 
 <script>
   $(function() {
-    $(document).on('matrix.study.discipline.update', function(event, id) {
+    $(document).on('matrix.study.discipline.create', function() {
+      document.location = document.location;
+    });
+
+    $(document).on('matrix.study.discipline.update', function() {
       $('.modal-backdrop').remove();
     });
   });

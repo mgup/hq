@@ -1,0 +1,7 @@
+$(document).trigger('matrix.study.discipline.create', [<%= @discipline.id %>]);
+
+<% if params[:partial] %>
+$(document.getElementById('<%= dom_id(@discipline) %>')).replaceWith(
+    '<%=j raw(render partial: params[:partial], locals: { discipline: @discipline }) %>'
+);
+<% end %>
