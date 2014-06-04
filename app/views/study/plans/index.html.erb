@@ -28,5 +28,22 @@
       $('.modal-backdrop').remove();
       $(document.body).removeClass('modal-open');
     });
+
+      updateTeachers = function(teachers, select){
+          $(select).empty();
+          $(teachers).each(function(){
+              $(select).append('<option value="' + this.id + '">' +  this.name + '</option>');
+          })
+          $(select).trigger("liszt:updated");
+      }
+      $('.ajax-subdepartment').change(function(){
+          select = $(this).closest('form').find('.ajax-teacher')
+          $.getJSON ($('#matrixHQ').attr('href')+'ajax/teachers', {
+              'subdepartment':  $(this).val()
+          }, function(teachers){
+              updateTeachers(teachers, select);
+          })
+      })
+
   });
 </script>

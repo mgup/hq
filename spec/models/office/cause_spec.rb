@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Hostel::ReportApplication do
+describe Office::Cause do
   describe 'обладает связями с другими моделями:' do
-    it 'с отчетом' do
-      should belong_to(:report)
-    end		
+    it 'с шаблонами' do
+      should belong_to(:template)   
+    end
   end
 end
 
