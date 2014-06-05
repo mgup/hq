@@ -1,4 +1,6 @@
 class AchievementPeriod < ActiveRecord::Base
+  RATIOS = { 1 => 1, 2 => 0.8, 3 => 0.4, 4 => 0.2 }
+
   has_many :achievements
   has_many :achievement_reports
 
@@ -13,5 +15,15 @@ class AchievementPeriod < ActiveRecord::Base
 
   def active?
     active
+  end
+
+  # Коэффициент, с которым учитываются достижения отчёта.
+  def ratio
+    diff = Date.today.year - year
+
+    # Если отчёту больше учитываемого количества лет, то он не учитывается.
+    return 0 unless RATIOS.key?(diff)
+
+    RATIOS[diff]
   end
 end

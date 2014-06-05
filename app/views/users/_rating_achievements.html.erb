@@ -41,3 +41,28 @@
   <% end %>
   <hr>
 <% end %>
+
+<div class="row">
+  <div class="col-sm-5 text-right lead">
+    Итого за отчётный период:
+  </div>
+  <div class="col-sm-2 lead">
+    <%= achievements.find_all { |a| a.accepted? || a.accepted_final? }.inject(0) {
+        |res, a| res += a.cost ; res } %>
+  </div>
+  <div class="col-sm-5">
+    Из них:
+    <ul>
+      <li>
+        основные показатели — <%= achievements.find_all { |a|
+          (a.accepted? || a.accepted_final?) && a.activity.group.id != 8 }.inject(0) {
+          |res, a| res += a.cost ; res } %>
+      </li>
+      <li>
+        дополнительные показатели — <%= achievements.find_all { |a|
+          (a.accepted? || a.accepted_final?) && a.activity.group.id == 8 }.inject(0) {
+          |res, a| res += a.cost ; res } %>
+      </li>
+    </ul>
+  </div>
+</div>
