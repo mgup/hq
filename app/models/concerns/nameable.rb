@@ -19,11 +19,7 @@ module Nameable
   # Если у человека не известна или не заполнена фамилия в указанном падеже —
   # возвращаем именительный падеж.
   def last_name(form = :ip)
-    if form == :ip
-      send(:last_name_hint) rescue (fname.send(form) unless fname.nil?)
-    else
-      fname.send(form) unless fname.nil?
-    end
+    form == :ip ? send(:last_name_hint) || fname.send(form) : fname.send(form)
   end
 
   # Имя человека в определённом падеже (ip, rp, dp, vp, tp, pp).
@@ -31,11 +27,7 @@ module Nameable
   # Если у человека не известно или не заполнено имя в указанном падеже —
   # возвращаем именительный падеж.
   def first_name(form = :ip)
-    if form == :ip
-      send(:first_name_hint) rescue  (iname.send(form) unless iname.nil?)
-    else
-      iname.send(form) unless iname.nil?
-    end
+    form == :ip ? send(:first_name_hint) || iname.send(form) : iname.send(form)
   end
 
   # Отчество человека в определённом падеже (ip, rp, dp, vp, tp, pp).
@@ -43,11 +35,7 @@ module Nameable
   # Если у человека не известно или не заполнено отчество в указанном падеже —
   # возвращаем именительный падеж.
   def patronym(form = :ip)
-    if form == :ip
-      send(:patronym_hint) rescue (oname.send(form) unless oname.nil?)
-    else
-      oname.send(form) unless oname.nil?
-    end
+    form == :ip ? send(:patronym_hint) || oname.send(form) : oname.send(form)
   end
 
   # Полное имя человека в формате «Иванов Иван Иванович» в определённом падеже
@@ -74,8 +62,8 @@ module Nameable
     result + last_name(form)
   end
 
-  # Пытается вывести имя в указанном падеже, откатываясь к другим вариантам, если ничего
-  # не получается. Этим методом лучше всего никогда не пользоваться.
+  # Пытается вывести имя в указанном падеже, откатываясь к другим вариантам,
+  # если ничего не получается. Этим методом лучше всего никогда не пользоваться.
   def any_possible_full_name(form = :ip)
     name = full_name(form)
     name = full_name(:ip) if name.empty? && :ip != form

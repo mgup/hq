@@ -1,37 +1,30 @@
+# Генератор хлебных крошек. Реализует создание хлебных крошек
+# с помощью синтаксиса Bootstrap.
 class BreadcrumbsRenderer < SimpleNavigation::Renderer::Breadcrumbs
   def render(item_container)
-    content_tag :ol, items(item_container).join, { class: 'breadcrumb' }
+    content_tag :ol, items(item_container).join, class: 'breadcrumb'
   end
 
   protected
 
   def items(item_container)
-    item_container.items.inject([]) do |list, item|
+    item_container.items.each_with_object([]) do |item, list|
+      next unless item.selected?
       item_name = item.name.sub(' <span class="caret"></span>', '')
-
-      if item.selected?
-        if item.selected? && !include_sub_navigation?(item)
-          list << content_tag(:li, item_name, class: 'active')
-        else
-          list << content_tag(:li, link_to(item_name, item.url))
-          if include_sub_navigation?(item)
-            list.concat items(item.sub_navigation)
-          end
-        end
+      if include_sub_navigation?(item)
+        list + [content_tag(:li, link_to(item_name, item.url)),
+                items(item.sub_navigation)]
+      else
+        list << content_tag(:li, item_name, class: 'active')
       end
-      list
     end
   end
 
   def li_tags(item_container)
-    item_container.items.inject([]) do |list, item|
-      if item.selected?
-        list << tag_for(item)
-        if include_sub_navigation?(item)
-          list.concat a_tags(item.sub_navigation)
-        end
-      end
-      list
+    item_container.items.each_with_object([]) do |item, list|
+      next unless item.selected?
+      list << tag_for(item)
+      list << a_tags(item.sub_navigation) if include_sub_navigation?(item)
     end
   end
 

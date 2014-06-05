@@ -1,2 +1,7 @@
 AllCops:
+  Exclude:
+    - 'db/schema.rb'
   RunRailsCops: true
+
+Style/AsciiComments:
+  Enabled: false

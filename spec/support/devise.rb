@@ -10,11 +10,11 @@ def as_user(user = nil, &block)
   current_user = user || FactoryGirl.create(:user)
   login_as(current_user, scope: :user)
   block.call if block.present?
-  return self
+  self
 end
 
 def as_guest(&block)
   logout(:user)
   block.call if block.present?
-  return self
+  self
 end
