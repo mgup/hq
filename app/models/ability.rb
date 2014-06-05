@@ -180,5 +180,6 @@ class Ability
     # Подумать, как совместить это с тем, что Дирекция не преподаватель!!!
     can :manage, Study::Discipline
     can :manage, Study::Exam
+    can :manage, Study::Repeat
   end
 end
