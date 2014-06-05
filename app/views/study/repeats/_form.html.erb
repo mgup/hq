@@ -3,6 +3,8 @@
 <%= nested_form_for Study::Repeat.new,
                     url: study_discipline_exam_repeats_path(@discipline, @exam),
                     remote: true do |f| %>
+  <%= hidden_field_tag :exam_group, @discipline.group.id %>
+
   <div class="form-group">
     <%= f.label :exam_date %>
     <%= f.text_field :exam_date, value: l(Date.today),

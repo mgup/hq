@@ -81,21 +81,21 @@ prawn_document margin: [28, 20, 28, 28],
             position_x = x_pos
             if @exam.test? #зачёт
               if student.student.ball(@discipline) < 55
-                tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
+                tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
               else
-                tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', student.student.ball(@discipline), 'зачтено', '']
+                tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', student.student.ball(@discipline), 'зачтено', '']
                 pdf.move_to [position_x + 242, position_y - 5.4]
                 pdf.line_to [position_x + 249, position_y - 12.4]
                 pdf.move_to [position_x + 249, position_y - 5.4]
                 pdf.line_to [position_x + 242, position_y - 12.4]
               end
             elsif @exam.exam? #экзамен
-              tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', '', '', '']
+              tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', '', '', '']
             else #дифференцированный зачёт
               if student.student.ball(@discipline) < 85
-                tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
+                tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
               else
-                tableData << [index+1, student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', student.student.ball(@discipline), 'отлично', '']
+                tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', student.student.ball(@discipline), 'отлично', '']
                 pdf.move_to [position_x + 272, position_y - 5.4]
                 pdf.line_to [position_x + 279, position_y - 12.4]
                 pdf.move_to [position_x + 279, position_y - 5.4]
@@ -343,7 +343,7 @@ prawn_document margin: [28, 20, 28, 28],
             result_4 = @discipline.final_exam.predication(4, student.student.ball(@discipline))
             result_3 = @discipline.final_exam.predication(3, student.student.ball(@discipline))
             result_2 = @discipline.final_exam.predication(2, student.student.ball(@discipline))
-            applicationTable << [index+1, student.person.full_name, student.student.id, student.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+            applicationTable << [index+1, student.student.person.full_name, student.student.id, student.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
           end
         elsif @exam.is_individual_repeat?
           result_5 = @discipline.final_exam.predication(5, @exam.student.ball(@discipline))
