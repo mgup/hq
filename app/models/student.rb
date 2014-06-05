@@ -263,6 +263,19 @@ GROUP BY `group`
     person.full_name
   end
 
+  def last_name
+    person.last_name
+  end
+
+  def first_name
+    person.first_name
+  end
+
+  def patronym
+    person.patronym
+  end
+
+
   def ball(discipline = nil)
     if discipline
       l1, p1, n1 = 0.0, 0.0, 0.0

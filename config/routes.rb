@@ -64,9 +64,11 @@ HQ::Application.routes.draw do
 
   namespace :library do
     get '/cards', to: 'cards#index', as: :cards
-    get '/cards/:student/create', to: 'cards#create', as: :create_card
-    get '/cards/:student/print', to: 'cards#print', as: :print_card
-    get '/cards/:student/print.pdf', to: 'cards#print', defaults: { format: 'pdf' }
+    get '/cards/students/:student/create', to: 'cards#create', as: :create_student_card
+    get '/cards/students/:student/print', to: 'cards#print', as: :print_student_card
+    get '/cards/users/:user/create', to: 'cards#create', as: :create_user_card
+    get '/cards/users/:user/print', to: 'cards#print', as: :print_user_card
+    get '/cards/print_card.pdf', to: 'cards#print_card', defaults: { format: 'pdf' }, as: :print_card
   end
 
   resources :groups do

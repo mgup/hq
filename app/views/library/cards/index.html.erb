@@ -13,6 +13,7 @@
 
 <% if params[:reader] == '1' %>
     <%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
+        <%= hidden_field_tag :reader, 1 %>
         <div class='row'>
             <div class='col col-sm-6'>
                 <%= hidden_field_tag :faculty, params[:faculty],
@@ -73,22 +74,58 @@
                   <% if @student.admission_year < 2012 %>
                     <p>Возможно, у студента уже есть читательский билет:</p>
                     <ul>
-                    <% @client.execute(@query).each do |row| %>
-                        <li><strong><%= row['RDR_ID'] %></strong> - <%= link_to 'Распечатать читательский билет', library_print_card_path(student: @student.id), class: 'btn btn-primary btn-sm' %></li>
+                    <% @client.execute(@query).each_with_index do |row, index| %>
+                        <li><strong><%= row['RDR_ID'] %></strong> - <%= link_to 'Распечатать читательский билет', library_print_student_card_path(student: @student.id, index: index), class: 'btn btn-primary btn-sm' %></li>
                     <% end %>
                     </ul>
                   <% else %>
                     <p> У студента уже есть читательский билет: <strong><%= @client.execute(@query).each{|x| x}.first['RDR_ID'] %></strong></p>
-                    <p><%= link_to 'Распечатать читательский билет', library_print_card_path(student: @student.id), class: 'btn btn-primary' %></p>
+                    <p><%= link_to 'Распечатать читательский билет', library_print_student_card_path(student: @student.id), class: 'btn btn-primary' %></p>
                   <% end %>
                 <% else %>
                   <p>Чтобы создать читательский билет нажмите на кнопку</p>
-                  <p><a href="<%= library_create_card_path(student: @student.id) %>" class="btn btn-primary" role="button">Создать читательский билет</a></p>
+                  <p><a href="<%= library_create_student_card_path(student: @student.id) %>" class="btn btn-primary" role="button">Создать читательский билет</a></p>
                 <% end %>
             </div>
         </div>
     <% end %>
-<% else %>
+<% elsif params[:reader] == '2' %>
+    <%= form_tag nil, method: :get do %>
+        <div class="row">
+            <%= hidden_field_tag :reader, 2 %>
+            <div class="col-sm-8">
+                <%= text_field_tag :user_name, params[:user_name], placeholder: 'Фамилия, имя, отчество', class: 'form-control' %>
+            </div>
+            <div class="col col-sm-2">
+                <%= submit_tag 'Искать', class: 'btn btn-primary' %>
+            </div>
+        </div>
+    <% end %>
+    <% if @users %>
+        <% unless @users.empty? %>
+        <div class="thumbnail">
+        <% @users.each do |user| %>
+            <div class="caption">
+                <h3><%= user[:name] %> <small><%= user[:id] %></small></h3>
+                <h4><%= user[:department] %></h4>
+                <% if user[:variants].length > 0 %>
+                    <p>Возможно, у сотрудника уже есть читательский билет:</p>
+                    <ul>
+                        <% user[:variants].each_with_index do |rdr_id, index| %>
+                            <li><strong><%= rdr_id %></strong> - <%= link_to 'Распечатать читательский билет', library_print_user_card_path(user: user[:id], index: index), class: 'btn btn-primary btn-sm' %></li>
+                        <% end %>
+                    </ul>
+                <% else %>
+                    <p>Чтобы создать читательский билет нажмите на кнопку</p>
+                    <p><a href="<%= library_create_user_card_path(user: user[:id]) %>" class="btn btn-primary" role="button">Создать читательский билет</a></p>
+                <% end %>
+            </div>
+        <% end %>
+        </div>
+        <% else %>
+            <p class="lead">Ни одного пользователя не было найдено - попробуйте изменить параметры поиска.</p>
+        <% end %>
+    <% end %>
 <% end %>
 
 <script>

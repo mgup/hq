@@ -22,9 +22,10 @@ $ ->
     barcodes = new Image()
     barcodes.src = '/assets/library/barcode.png'
     barcodes.onload = ->
-      context.drawImage(barcodes, 165, 140)
+      context.drawImage(barcodes, 147, 140, barcodes.width/1.6, barcodes.height/1.2)
+      context.fillText(rdr_id, 215, 210)
 
 
 	if $('#canvas_for_library_card').length > 0
-    	showCards($('#library_student').data('name'), $('#library_student').data('value'))
+    	showCards($('#library_reader').data('name'), $('#library_reader').data('value'))
 
