@@ -2,28 +2,28 @@ require 'spec_helper'
 
 describe Person do
   it 'должен обладать валидной фабрикой' do
-		build(:student).should be_valid
+		expect(build(:student)).to be_valid
 	end
 
 	describe 'обладает связями с другими моделями:' do
 		it 'с фамилией' do
-			should belong_to(:fname)
+			expect belong_to(:fname)
 		end
 
 		it 'с именем' do
-			should belong_to(:iname)
+			expect belong_to(:iname)
 		end
 
 		it 'с отчеством' do
-			should belong_to(:oname)
+			expect belong_to(:oname)
 		end
 
 		it 'с комнатой' do
-			should belong_to(:room)
+			expect belong_to(:room)
 		end
 
 		it 'со студентами' do
-			should have_many(:students)
+			expect have_many(:students)
 		end
 	end
 end

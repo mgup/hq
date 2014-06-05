@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RolesController do
+describe RolesController, type: :controller do
   context 'для разработчиков' do
     before do
       @user = create(:user, :developer)
@@ -10,19 +10,19 @@ describe RolesController do
     describe 'GET "index"' do
       it 'должен выполняться успешно' do
         get :index
-        response.should be_success
+        expect(response).to be_success
       end
 
       it 'должен выводить правильное представление' do
         get :index
-        response.should render_template(:index)
+        expect(response).to render_template(:index)
       end
 
       it 'должен инициировать массив с ролями' do
         developer_role = Role.first
 
         get :index
-        assigns(:roles).should eq([developer_role])
+        expect(assigns(:roles)).to eq([developer_role])
       end
 
       context 'при оторажении ролей' do
@@ -31,7 +31,7 @@ describe RolesController do
           role = FactoryGirl.create(:role, title: '1', active: false)
 
           get :index
-          assigns(:roles).should eq([role, developer_role])
+          expect(assigns(:roles)).to eq([role, developer_role])
         end
 
         it 'должна быть сортировка по названию роли' do
@@ -39,7 +39,7 @@ describe RolesController do
           role = FactoryGirl.create(:role, title: '1')
 
           get :index
-          assigns(:roles).should eq([role, developer_role])
+          expect(assigns(:roles)).to eq([role, developer_role])
         end
       end
     end
@@ -56,7 +56,7 @@ describe RolesController do
       sign_in FactoryGirl.create(:user)
 
       get :index
-      response.should redirect_to(root_path)
+      expect(response).to redirect_to(root_path)
     end
   end
 
@@ -65,7 +65,7 @@ describe RolesController do
       sign_out :user
 
       get :index
-      response.should redirect_to(new_user_session_path)
+      expect(response).to redirect_to(new_user_session_path)
     end
   end
 end

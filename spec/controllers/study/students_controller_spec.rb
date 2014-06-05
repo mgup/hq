@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Study::StudentsController do
+describe Study::StudentsController, type: :controller do
   before  do
     @group = FactoryGirl.create(:group)
     @student = FactoryGirl.create(:student, person: FactoryGirl.create(:person, fname: FactoryGirl.create(:dictionary),
@@ -13,15 +13,15 @@ describe Study::StudentsController do
     end
 
     it 'должен выполняться успешно' do
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'должен выводить правильное представление' do
-      response.should render_template(:show)
+      expect(response).to render_template(:show)
     end
 
     it 'должен находить правильного студента' do
-      assigns(:student).should == @student
+      expect(assigns(:student)).to eql(@student)
     end
 
   end
@@ -35,11 +35,11 @@ describe Study::StudentsController do
     end
 
     it 'должен выполняться успешно' do
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'должен выводить правильное представление' do
-      response.should render_template(:discipline)
+      expect(response).to render_template(:discipline)
     end
 
   end

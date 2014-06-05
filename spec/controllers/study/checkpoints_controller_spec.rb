@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Study::CheckpointsController do
+describe Study::CheckpointsController, type: :controller do
   context 'для авторизованных преподавателей' do
     before do
       @user = create(:user, :lecturer)
@@ -12,7 +12,8 @@ describe Study::CheckpointsController do
       context 'при отсутствии у дисциплины контрольных точек' do
         it 'должен перейти на страницу с контрольными точками' do
           get :index, discipline_id: @discipline
-          response.should redirect_to new_study_discipline_checkpoint_path(@discipline)
+          expect(response).to redirect_to(
+                                new_study_discipline_checkpoint_path(@discipline))
         end
       end
 
@@ -24,15 +25,15 @@ describe Study::CheckpointsController do
         end
 
         it 'должен выполняться успешно' do
-          response.should be_success
+          expect(response).to be_success
         end
 
         it 'должен выводить правильное представление' do
-          response.should render_template(:index)
+          expect(response).to render_template(:index)
         end
 
         it 'должен содержать тестовую точку' do
-          assigns(:classes).should include(@checkpoint)
+          expect(assigns(:classes)).to include(@checkpoint)
         end
       end
     end
@@ -43,60 +44,17 @@ describe Study::CheckpointsController do
       end
 
       it 'должен выполняться успешно' do
-        response.should be_success
+        expect(response).to be_success
       end
 
       it 'должен выводить правильное представление' do
-        response.should render_template(:new)
+        expect(response).to render_template(:new)
       end
 
       it 'должна генерироваться форма для дисциплины' do
-        assigns(:discipline).should eq(@discipline)
+        expect(assigns(:discipline)).to eq(@discipline)
       end
 
     end
-
-    #describe 'GET #show' do
-    #  before :each do
-    #    @checkpoint = @discipline.checkpoints.first
-    #
-    #  end
-    #
-    #  context 'if params[:study_checkpoint]' do
-    #    before :each do
-    #      get :show, discipline_id: @discipline, id: @checkpoint,
-    #          params: {study_checkpoint: {checkpoint_type: 3, date: Date.today,
-    #                                      name: 'aaa', details: 'gfg shjb sh',
-    #                                      max: 20, min: 11}}
-    #      Study::Discipline.any_instance.should_receive(:update).and_return(true)
-    #    end
-    #
-    #    it 'должен находить правильную контрольную точку' do
-    #      assigns(:checkpoint).should eq(@checkpoint)
-    #    end
-    #
-    #    it 'должен переходить на представление с занятиями' do
-    #      response.should redirect_to study_discipline_checkpoints_path(@discipline)
-    #    end
-    #  end
-    #end
   end
-
-  #context 'для пользователей, не являющихся разработчиками,' do
-  #  it 'должен быть переход на страницу авторизации' do
-  #    sign_in FactoryGirl.create(:user)
-  #
-  #    get :index
-  #    response.should redirect_to(new_user_session_path)
-  #  end
-  #end
-
-  #context 'для не авторизованных пользователей' do
-  #  it 'должен быть переход на страницу авторизации' do
-  #    sign_out :user
-  #
-  #    get :index
-  #    response.should redirect_to(new_user_session_path)
-  #  end
-  #end
 end

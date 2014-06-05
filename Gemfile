@@ -54,7 +54,9 @@ gem 'dotenv-rails'
 # gem 'tiny_tds'
 #gem 'activerecord-sqlserver-adapter'
 
-gem 'skylight'
+group :production do
+  gem 'skylight'
+end
 
 group :development do
   gem 'thin'

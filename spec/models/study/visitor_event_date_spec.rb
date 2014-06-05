@@ -3,19 +3,19 @@
 describe VisitorEventDate do
   describe 'обладает связями с другими моделями:' do
     it 'с датой' do
-      should belong_to(:date)
+      expect belong_to(:date)
     end
     
     it 'с посетитель' do
-      should belong_to(:visitor)
+      expect belong_to(:visitor)
     end
     
     it 'с пользователь' do
-      should belong_to(:user)
+      expect belong_to(:user)
     end
     
     it 'со студентом' do
-      should belong_to(:student)
+      expect belong_to(:student)
     end
   end
 end

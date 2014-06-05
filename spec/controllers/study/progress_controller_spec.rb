@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Study::ProgressController do
+describe Study::ProgressController, type: :controller do
   before  do
     @group = FactoryGirl.create(
         :group, speciality: FactoryGirl.create(:speciality, id: 2 + rand(7)))
@@ -14,11 +14,11 @@ describe Study::ProgressController do
     end
 
     it 'должен выполняться успешно' do
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'должен выводить правильное представление' do
-      response.should render_template(:index)
+      expect(response).to render_template(:index)
     end
   end
 
@@ -30,11 +30,11 @@ describe Study::ProgressController do
     end
 
     it 'должен выполняться успешно' do
-      response.should be_success
+      expect(response).to be_success
     end
 
     it 'должен выводить правильное представление' do
-      response.should render_template(:discipline)
+      expect(response).to render_template(:discipline)
     end
 
     it 'должен содержать список студентов в @students' do

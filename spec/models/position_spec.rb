@@ -2,24 +2,24 @@ require 'spec_helper'
 
 describe Position do
 	it 'должен обладать валидной фабрикой' do
-		build(:position).should be_valid
+		expect(build(:position)).to be_valid
 	end
 
 	describe 'обладает связями с другими моделями' do
 		it 'с пользователем' do
-			should belong_to(:user)
+			expect belong_to(:user)
 		end
 
 		it 'с ролями' do
-			should belong_to(:role)
+			expect belong_to(:role)
 		end
 
 		it 'с подразделениями' do
-			should belong_to(:department)
+			expect belong_to(:department)
 		end
 
 		it 'с назначениями' do
-			should belong_to(:appointment)
+			expect belong_to(:appointment)
 		end
 	end
 end

@@ -1,14 +1,6 @@
 require 'spec_helper'
 
-describe Study::DisciplinesController do
-  context 'неавторизованный пользователь' do
-
-  end
-
-  context 'авторизованный пользователь без прав преподавателя' do
-
-  end
-
+describe Study::DisciplinesController, type: :controller do
   context 'авторизованный преподаватель' do
     before :each do
       @user = create(:user, :lecturer)
@@ -21,11 +13,11 @@ describe Study::DisciplinesController do
       end
 
       it 'должен получить ответ' do
-        should respond_with(:success)
+        expect respond_with(:success)
       end
 
       it 'должен видеть страницу со списком дисциплин' do
-        should render_template(:index)
+        expect render_template(:index)
       end
 
       context 'получая дисциплины' do
@@ -38,13 +30,15 @@ describe Study::DisciplinesController do
         end
 
         it 'должен получить дисциплины, в которых он ведущий преподаватель' do
-          assigns(:disciplines).should include(@my_lead)
+          expect(assigns(:disciplines)).to include(@my_lead)
         end
+
         it 'должен получить дисциплины, в которых он дополнительный преподаватель' do
-          assigns(:disciplines).should include(@my_assistant)
+          expect(assigns(:disciplines)).to include(@my_assistant)
         end
+
         it 'не должен получить чужие дисциплины' do
-          assigns(:disciplines).should_not include(@other)
+          expect(assigns(:disciplines)).not_to include(@other)
         end
       end
     end
@@ -55,15 +49,15 @@ describe Study::DisciplinesController do
       end
 
       it 'должен получить ответ' do
-        should respond_with(:success)
+        expect respond_with(:success)
       end
 
       it 'должен видеть страницу создания дисциплины' do
-        should render_template(:new)
+        expect render_template(:new)
       end
 
       it 'должен получить заготовку для дисциплины' do
-        assigns(:discipline).should be_a_new(Study::Discipline)
+        expect(assigns(:discipline)).to be_a_new(Study::Discipline)
       end
     end
 
@@ -84,7 +78,7 @@ describe Study::DisciplinesController do
 
         it 'должен переходить на страницу редактирования занятий' do
           post :create, study_discipline: @discipline_attrs
-          response.should redirect_to(study_disciplines_path)
+          expect(response).to redirect_to(study_disciplines_path)
         end
       end
 
@@ -92,11 +86,11 @@ describe Study::DisciplinesController do
         it 'не должен вызывать создание дисциплины' do
           expect {
             post :create, study_discipline: attributes_for(:discipline)
-          }.to_not change { Study::Discipline.count }.by(1)
+          }.not_to change { Study::Discipline.count }
         end
         it 'должен видеть форму создания дисциплины' do
           post :create, study_discipline: attributes_for(:discipline)
-          should render_template(:new)
+          expect render_template(:new)
         end
       end
     end
@@ -108,15 +102,15 @@ describe Study::DisciplinesController do
       end
 
       it 'должен получить ответ' do
-        should respond_with(:success)
+        expect respond_with(:success)
       end
 
       it 'должен видеть страницу редактировании дисциплины' do
-        should render_template(:edit)
+        expect render_template(:edit)
       end
 
       it 'должен получать нужную запись' do
-        assigns(:discipline).should eql(@discipline)
+        expect(assigns(:discipline)).to eql(@discipline)
       end
     end
 
@@ -124,19 +118,20 @@ describe Study::DisciplinesController do
       before :each do
         @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
         @discipline.assistant_teachers << @user
+
         get :edit, id: @discipline.id
       end
 
       it 'должен получить ответ' do
-        should respond_with(:success)
+        expect respond_with(:success)
       end
 
       it 'должен видеть страницу редактировании дисциплины' do
-        should render_template(:edit)
+        expect render_template(:edit)
       end
 
       it 'должен получать нужную запись' do
-        assigns(:discipline).should eql(@discipline)
+        expect(assigns(:discipline)).to eql(@discipline)
       end
     end
 
@@ -151,18 +146,18 @@ describe Study::DisciplinesController do
 
         it 'должен вызывать редактирование правильной дисциплины' do
           put :update, id: @discipline, study_discipline: @discipline_attrs
-          assigns(:discipline).should eq(@discipline)
+          expect(assigns(:discipline)).to eq(@discipline)
         end
 
         it 'должен вносить изменения в дисциплину' do
           put :update, id: @discipline, study_discipline: @discipline_attrs
           @discipline.reload
-          @discipline.name.should eq('Some name')
+          expect(@discipline.name).to eq('Some name')
         end
 
         it 'должен перейти на страницу с занятиями' do
           put :update, id: @discipline, study_discipline: @discipline_attrs
-          response.should redirect_to study_discipline_checkpoints_path(@discipline)
+          expect(response).to redirect_to study_discipline_checkpoints_path(@discipline)
         end
       end
 
@@ -174,14 +169,16 @@ describe Study::DisciplinesController do
                                     lead_teacher: @user, subject_name: '').attributes
           @discipline_attrs[:final_exam_attributes] = build(:exam, :final).attributes
         end
+
         it 'не должен вызывать изменение дисциплины' do
           put :update, id: @discipline, study_discipline: @discipline_attrs
           @discipline.reload
-          @discipline.name.should eq(@name)
+          expect(@discipline.name).to eq(@name)
         end
+
         it 'должен видеть форму создания дисциплины' do
           put :update, id: @discipline, study_discipline: @discipline_attrs
-          should render_template(:edit)
+          expect render_template(:edit)
         end
       end
 
@@ -195,14 +192,11 @@ describe Study::DisciplinesController do
                                                              checkpoint_subject: @discipline.id,
                                                              checkpoint_max: 90).attributes}
         end
+
         it 'не должен вызывать изменение дисциплины и контрольных точек' do
           put :update, id: @discipline, study_discipline: @discipline_attrs
           @discipline.reload
-          @discipline.should eq(@old)
-        end
-        it 'должен видеть форму создания контрольных точек' do
-          #put :update, id: @discipline, study_discipline: @discipline_attrs
-          #should render_template 'study/checkpoints/new'
+          expect(@discipline).to eq(@old)
         end
       end
     end
@@ -221,7 +215,7 @@ describe Study::DisciplinesController do
 
         it 'должен перейти на страницу со списком дисциплин' do
           delete :destroy, id: @discipline
-          response.should redirect_to(study_disciplines_path)
+          expect(response).to redirect_to(study_disciplines_path)
         end
       end
 
@@ -234,12 +228,12 @@ describe Study::DisciplinesController do
         it 'не должен удалить дисциплину' do
           expect {
             delete :destroy, id: @discipline
-          }.not_to change { Study::Discipline.count }.by(-1)
+          }.not_to change { Study::Discipline.count }
         end
 
         it 'должен перейти на страницу со списком дисциплин' do
           delete :destroy, id: @discipline
-          response.should redirect_to(study_disciplines_path)
+          expect(response).to redirect_to(study_disciplines_path)
         end
       end
     end
@@ -259,7 +253,7 @@ describe Study::DisciplinesController do
 
         it 'должен перейти на страницу со списком дисциплин' do
           delete :destroy, id: @discipline
-          response.should redirect_to(study_disciplines_path)
+          expect(response).to redirect_to(study_disciplines_path)
         end
       end
 
@@ -271,12 +265,12 @@ describe Study::DisciplinesController do
         it 'не должен удалить дисциплину' do
           expect {
             delete :destroy, id: @discipline
-          }.not_to change { Study::Discipline.count }.by(-1)
+          }.not_to change { Study::Discipline.count }
         end
 
         it 'должен перейти на страницу со списокм дисциплин' do
           delete :destroy, id: @discipline
-          response.should redirect_to(study_disciplines_path)
+          expect(response).to redirect_to(study_disciplines_path)
         end
       end
     end

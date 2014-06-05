@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Study::MarksController do
+describe Study::MarksController, type: :controller do
   context 'для авторизованных преподавателей' do
     before do
       @discipline = create(:exam, :final).discipline
@@ -17,15 +17,15 @@ describe Study::MarksController do
       end
 
       it 'должен выполняться успешно' do
-        response.should be_success
+        expect(response).to be_success
       end
 
       it 'должен выводить правильное представление' do
-        response.should render_template(:index)
+        expect(response).to render_template(:index)
       end
 
       it 'в выводе должна присутствовать тестовая оценка' do
-        assigns(:marks).should include(@mark)
+        expect(assigns(:marks)).to include(@mark)
       end
     end
 
@@ -38,13 +38,16 @@ describe Study::MarksController do
         end
 
         it 'оценки должны сохраняться' do
-          @checkpoint.marks.should_not be_blank
+          expect(@checkpoint.marks).not_to be_blank
         end
 
         it 'должно происходить перенаправление на оценки' do
-          response.should redirect_to study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
+          expect(response).to redirect_to(
+              study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
+          )
         end
       end
+
       context 'если переданы параметры,' do
         before :each do
           post :create, discipline_id: @discipline, checkpoint_id: @checkpoint,
@@ -52,25 +55,18 @@ describe Study::MarksController do
         end
 
         it 'не должен сохранять оценки' do
-          @checkpoint.marks.should be_blank
+          expect(@checkpoint.marks).to be_blank
         end
 
         it 'должно происходить перенаправление на оценки' do
-          response.should redirect_to study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
+          expect(response).to redirect_to(
+              study_discipline_checkpoint_marks_path(@discipline, @checkpoint)
+          )
         end
       end
     end
 
   end
-
-  #context 'для пользователей, не являющихся разработчиками,' do
-  #  it 'должен быть переход на страницу авторизации' do
-  #    sign_in FactoryGirl.create(:user)
-  #
-  #    get :index
-  #    response.should redirect_to(new_user_session_path)
-  #  end
-  #end
 
   context 'для не авторизованных пользователей' do
     it 'должен быть переход на страницу авторизации' do
@@ -79,7 +75,7 @@ describe Study::MarksController do
       @checkpoint = create(:checkpoint, :control, discipline: @discipline)
 
       get :index, discipline_id: @discipline, checkpoint_id: @checkpoint
-      response.should redirect_to(new_user_session_path)
+      expect(response).to redirect_to(new_user_session_path)
     end
   end
 end

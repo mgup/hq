@@ -173,9 +173,11 @@ class Study::DisciplinesController < ApplicationController
   private
 
   def load_user_discipline
-    @discipline = Study::Discipline.find(params[:id])
-
-    @discipline = @discipline.include_teacher(current_user) unless can?(:manage, :plans)
+    if can?(:manage, :plans)
+      @discipline = Study::Discipline.find(params[:id])
+    else
+      @discipline = Study::Discipline.include_teacher(current_user).find(params[:id])
+    end
   end
 
   def load_user_disciplines

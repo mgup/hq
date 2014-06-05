@@ -2,16 +2,16 @@ require 'spec_helper'
 
 describe Study::DisciplineTeacher do
   it 'должен обладать валидной фабрикой' do
-    build(:discipline).should be_valid
+    expect(build(:discipline)).to be_valid
   end
 
   describe 'обладает связями с другими моделями:' do
     it 'с дополнительными преподавателями' do
-      should belong_to(:assistant_teacher)
+      expect belong_to(:assistant_teacher)
     end
     
     it 'с дисциплиной' do
-      should belong_to(:discipline)
+      expect belong_to(:discipline)
     end
   end
 end
