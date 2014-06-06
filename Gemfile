@@ -82,7 +82,7 @@ group :test do
   gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  gem 'codeclimate-test-reporter', require: false
+  gem 'codeclimate-test-reporter', require: nil
 end
 
 group :development, :test do
