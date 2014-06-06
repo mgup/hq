@@ -22,10 +22,6 @@ describe Student do
       expect have_many(:exams).class_name('Study::Exam')
     end
 
-    it 'с оценками (сессии)' do
-      expect have_many(:xmarks).class_name('Study::Xmark')
-    end
-
     it 'с таблицей, обеспечивающей связь с документами' do
       expect have_many(:document_students).class_name('Document::DocumentStudent')
     end
