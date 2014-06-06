@@ -13,8 +13,6 @@ class Study::Subject < ActiveRecord::Base
   belongs_to :group
   belongs_to :user
 
-  # has_many :marks, class_name: Study::Xmark
-
   validates_presence_of :year, :semester, :title, :kind
 
   scope :find_subjects, -> subject {where(year: subject.year, 

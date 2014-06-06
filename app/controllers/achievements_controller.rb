@@ -1,44 +1,34 @@
+# Контроллер, отвечающий за работу с отчётами об эффективности НПР.
 class AchievementsController < ApplicationController
   load_resource except: [:update, :destroy, :validate, :validate_selection, :validate_social, :validate_additional]
   authorize_resource
 
-  def periods
-    @periods = AchievementPeriod.all
-  end
+  def periods ; end
 
   def index
     @period = AchievementPeriod.where(year: params[:year],
-                                      semester: params[:semester])
-                               .first
+                                      semester: params[:semester]).first
 
     if @period.nil?
       redirect_to periods_achievements_path
       return
     end
 
-    #unless @period.active?
-    #  redirect_to periods_achievements_path, notice: 'Приём данных по указанному периоду завершён.'
-    #end
-
     @achievements = @period.achievements.by(current_user)
 
-    a = Activity.all.includes(:activity_group, :activity_type, :activity_credit_type)
+    a = Activity.all.includes(:activity_group, :activity_type,
+                              :activity_credit_type)
     @groups = a.group_by { |activ| activ.activity_group.name }
 
-    @already_closed = @period.achievement_reports.by_user(current_user).only_relevant.any?
+    @already_closed = @period.achievement_reports.by_user(current_user)
+      .only_relevant.any?
   end
 
-  def show
+  def show ; end
 
-  end
+  def new ; end
 
-  def new
-
-  end
-
-  def test
-
-  end
+  def test ; end
 
   def create
     @achievement.user_id = current_user.id
@@ -61,9 +51,7 @@ class AchievementsController < ApplicationController
     end
   end
 
-  def edit
-
-  end
+  def edit ; end
 
   def update
     @achievement = Achievement.unscoped.find(params[:id])
@@ -87,7 +75,8 @@ class AchievementsController < ApplicationController
     @achievement.destroy
 
     @period = AchievementPeriod.find(params[:period])
-    redirect_to achievements_path(year: @period.year, semester: @period.semester)
+    redirect_to achievements_path(year: @period.year,
+                                  semester: @period.semester)
   end
 
   def validate
@@ -95,14 +84,6 @@ class AchievementsController < ApplicationController
 
     if current_user.is?(:subdepartment)
       @subdepartment_achievements = Achievement.for_subdepartment(current_user).group_by { |a| [a.user, a.period] }
-
-      #@subdepartment_achievements.reject! do |user, period|
-      #
-      #end
-      #
-      #@subdepartment_achievements.reject! do |a|
-      #  !AchievementReport.where(user_id: a[0].id, achievement_period_id: a[1].id).order('id DESC').first.relevant?
-      #end
     end
   end
 
@@ -129,17 +110,21 @@ class AchievementsController < ApplicationController
       @current_department = d if deps.include?(d)
     end
 
-    @achievements = Achievement.in_additional(current_user, @current_department, params[:subdepartment], @year)
+    @achievements = Achievement.in_additional(current_user, @current_department,
+                                              params[:subdepartment], @year)
   end
 
   def calculate
-    @departments = [Department::IGRIK, Department::IPIT, Department::IIDIZH, Department::IKIM]
+    @departments = [Department::IGRIK, Department::IPIT,
+                    Department::IIDIZH, Department::IKIM]
     params[:department] ||= @departments[0]
 
     @department = Department.find(params[:department] || @departments[0])
 
     @sums = Mgup::Achievements.sums(params[:department])
-    @sums_without_additional = Mgup::Achievements.sums_without_additional(params[:department])
+    @sums_without_additional = Mgup::Achievements.sums_without_additional(
+      params[:department]
+    )
   end
 
   def calculate_salary
@@ -303,204 +288,6 @@ class AchievementsController < ApplicationController
     @alpha = right_fund / current_fund
   end
 
-  def salary_iidizh
-    redirect_to root_path unless can?(:manage, :all)
-
-    @salaries = Salary::Salary201403.where(faculty_id: Department::IIDIZH).joins(:user)
-    .order('department_id, last_name_hint, first_name_hint, patronym_hint')
-
-    draft_sums = Mgup::Achievements.sums(Department::IIDIZH)
-    @sums = []
-    @sums_without_untouchables = []
-    @salaries.each do |salary|
-      pair = draft_sums.find { |p| salary.user_id == p[0] }
-      if pair
-        credit = pair[1]
-        @sums << pair
-      else
-        credit = 0
-        @sums << [salary.user_id, 0]
-      end
-
-      unless salary.untouchable? || 0 == credit
-        @sums_without_untouchables << pair
-      end
-    end
-
-    @lower = 0.48613
-
-    @prev_fund = 1481719.0
-    @curr_fund = @lower * @prev_fund
-
-    @credits = @sums.map { |p| p[1] }
-    @credits_min = @sums_without_untouchables.map { |p| p[1] }.min
-    @credits_max = @sums_without_untouchables.map { |p| p[1] }.max
-    #@median = median(@credits)
-    @median = median(@sums_without_untouchables.map { |p| p[1] })
-
-    @e = params[:e] ? params[:e].to_f : 0.05
-    @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
-
-    untouchables_fund = 0.0
-    @salaries.each do |salary|
-      if salary.untouchable?
-        if salary.new_premium != nil
-          untouchables_fund += salary.new_premium
-        else
-          untouchables_fund += @lower * salary.previous_premium
-        end
-      end
-    end
-
-    right_fund = @curr_fund - untouchables_fund
-
-    current_fund = 0.0
-    @salaries.each do |salary|
-      unless salary.untouchable? || 0 == @sums.find { |p| salary.user_id == p[0] }[1]
-        s = @sums.find { |p| p[0] == salary.user.id }
-        credit = s ? s[1] : 0
-        credit = credit.round(5)
-
-        current_premium = @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
-        current_fund += current_premium
-      end
-    end
-
-    @alpha = right_fund / current_fund
-  end
-
-  def salary_ikim
-    redirect_to root_path unless can?(:manage, :all)
-
-    @salaries = Salary::Salary201403.where(faculty_id: Department::IKIM).joins(:user)
-    .order('department_id, last_name_hint, first_name_hint, patronym_hint')
-
-    draft_sums = Mgup::Achievements.sums(Department::IKIM)
-    @sums = []
-    @sums_without_untouchables = []
-    @salaries.each do |salary|
-      pair = draft_sums.find { |p| salary.user_id == p[0] }
-      if pair
-        credit = pair[1]
-        @sums << pair
-      else
-        credit = 0
-        @sums << [salary.user_id, 0]
-      end
-
-      unless salary.untouchable? || 0 == credit
-        @sums_without_untouchables << pair
-      end
-    end
-
-    @lower = 0.48613
-
-    @prev_fund = 2125790.0
-    @curr_fund = @lower * @prev_fund
-
-    @credits = @sums.map { |p| p[1] }
-    @credits_min = @sums_without_untouchables.map { |p| p[1] }.min
-    @credits_max = @sums_without_untouchables.map { |p| p[1] }.max
-    #@median = median(@credits)
-    @median = median(@sums_without_untouchables.map { |p| p[1] })
-
-    @e = params[:e] ? params[:e].to_f : 0.05
-    @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
-
-    untouchables_fund = 0.0
-    @salaries.each do |salary|
-      if salary.untouchable?
-        if salary.new_premium != nil
-          untouchables_fund += salary.new_premium
-        else
-          untouchables_fund += @lower * salary.previous_premium
-        end
-      end
-    end
-
-    right_fund = @curr_fund - untouchables_fund
-
-    current_fund = 0.0
-    @salaries.each do |salary|
-      unless salary.untouchable? || 0 == @sums.find { |p| salary.user_id == p[0] }[1]
-        s = @sums.find { |p| p[0] == salary.user.id }
-        credit = s ? s[1] : 0
-        credit = credit.round(5)
-
-        current_premium = @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
-        current_fund += current_premium
-      end
-    end
-
-    @alpha = right_fund / current_fund
-  end
-
-  def salary_ipit
-    redirect_to root_path unless can?(:manage, :all)
-
-    @salaries = Salary::Salary201403.where(faculty_id: Department::IPIT).joins(:user)
-    .order('department_id, last_name_hint, first_name_hint, patronym_hint')
-
-    draft_sums = Mgup::Achievements.sums(Department::IPIT)
-    @sums = []
-    @sums_without_untouchables = []
-    @salaries.each do |salary|
-      pair = draft_sums.find { |p| salary.user_id == p[0] }
-      if pair
-        credit = pair[1]
-        @sums << pair
-      else
-        credit = 0
-        @sums << [salary.user_id, 0]
-      end
-
-      unless salary.untouchable? || 0 == credit
-        @sums_without_untouchables << pair
-      end
-    end
-
-    @lower = 0.48613
-
-    @prev_fund = 3048000.0
-    @curr_fund = @lower * @prev_fund
-
-    @credits = @sums.map { |p| p[1] }
-    @credits_min = @sums_without_untouchables.map { |p| p[1] }.min
-    @credits_max = @sums_without_untouchables.map { |p| p[1] }.max
-    #@median = median(@credits)
-    @median = median(@sums_without_untouchables.map { |p| p[1] })
-
-    @e = params[:e] ? params[:e].to_f : 0.2
-    @b = Math.log(@e) / (@credits_min.to_f - @median.to_f)
-
-    untouchables_fund = 0.0
-    @salaries.each do |salary|
-      if salary.untouchable?
-        if salary.new_premium != nil
-          untouchables_fund += salary.new_premium
-        else
-          untouchables_fund += @lower * salary.previous_premium
-        end
-      end
-    end
-
-    right_fund = @curr_fund - untouchables_fund
-
-    current_fund = 0.0
-    @salaries.each do |salary|
-      unless salary.untouchable? || 0 == @sums.find { |p| salary.user_id == p[0] }[1]
-        s = @sums.find { |p| p[0] == salary.user.id }
-        credit = s ? s[1] : 0
-        credit = credit.round(5)
-
-        current_premium = @lower * salary.previous_premium.to_f * (1.0 + vvv(credit.to_f - @median.to_f, @b))
-        current_fund += current_premium
-      end
-    end
-
-    @alpha = right_fund / current_fund
-  end
-
   def median(array)
     sorted = array.sort
     len = sorted.length
@@ -534,37 +321,53 @@ class AchievementsController < ApplicationController
                                 WHERE achievement_reports.relevant IS TRUE)
       AND acl_position.acl_position_role IN (7,8) ORDER BY department_sname;
     ")
-    @count_reports = ActiveRecord::Base.connection.execute("
-      SELECT department_sname AS `Кафедра`,
-      COUNT(CASE WHEN achievement_reports.achievement_period_id = 1 THEN achievement_reports.id END) AS `Количество`,
-      COUNT(CASE WHEN achievement_reports.achievement_period_id = 2 THEN achievement_reports.id END) AS `Количество2`
-      FROM achievement_reports JOIN user ON user.user_id = achievement_reports.user_id
-        JOIN department ON department_id = user.user_department
-      WHERE achievement_reports.relevant IS TRUE
-      GROUP BY  department_sname ORDER BY COUNT(achievement_reports.id) ASC;
-    ")
-    @all_by_activity = ActiveRecord::Base.connection.execute("
-    SELECT name AS `Название`, COUNT(achievements.id) AS `Количество`
-    FROM `achievements`
-      JOIN activities ON achievements.activity_id = activities.id
-    GROUP BY activities.id ORDER BY  COUNT(achievements.id);
-    ")
-    @all_by_activity_group = ActiveRecord::Base.connection.execute("
-      SELECT activity_groups.name AS `Название`, COUNT(achievements.id) AS `Количество`
-      FROM `achievements`
-        JOIN activities ON achievements.activity_id = activities.id
-        JOIN activity_groups on activity_groups.id = activity_group_id
-      GROUP BY activity_groups.id
-      ORDER BY  COUNT(achievements.id);
-    ")
-    @count_by_academic = ActiveRecord::Base.connection.execute("
-      SELECT department_sname AS `Кафедра`, COUNT(achievements.id) AS `Количество`,
-      COUNT(DISTINCT user.user_id) AS `2`,
-      (SELECT COUNT(user_id) from user WHERE user_department = department_id) as `4`
-      FROM `achievements` JOIN user ON user.user_id = achievements.user_id
-            JOIN department ON department_id = user.user_department
-      GROUP BY department_id ORDER BY COUNT(achievements.id) ASC;
-    ")
+    @count_reports = ActiveRecord::Base.connection.execute('
+SELECT department_sname AS `Кафедра`,
+       COUNT(
+         CASE
+           WHEN achievement_reports.achievement_period_id = 1
+           THEN achievement_reports.id
+         END
+       ) AS `Количество`,
+       COUNT(
+         CASE
+           WHEN achievement_reports.achievement_period_id = 2
+           THEN achievement_reports.id
+         END
+       ) AS `Количество2`
+FROM achievement_reports
+JOIN user ON user.user_id = achievement_reports.user_id
+JOIN department ON department_id = user.user_department
+WHERE achievement_reports.relevant IS TRUE
+GROUP BY  department_sname ORDER BY COUNT(achievement_reports.id) ASC;
+    ')
+    @all_by_activity = ActiveRecord::Base.connection.execute('
+SELECT name AS `Название`, COUNT(achievements.id) AS `Количество`
+FROM `achievements`
+JOIN activities ON achievements.activity_id = activities.id
+GROUP BY activities.id ORDER BY  COUNT(achievements.id);
+    ')
+    @all_by_activity_group = ActiveRecord::Base.connection.execute('
+SELECT activity_groups.name AS `Название`, COUNT(achievements.id) AS `Количество`
+FROM `achievements`
+JOIN activities ON achievements.activity_id = activities.id
+JOIN activity_groups on activity_groups.id = activity_group_id
+GROUP BY activity_groups.id
+ORDER BY COUNT(achievements.id);
+    ')
+    @count_by_academic = ActiveRecord::Base.connection.execute('
+SELECT department_sname AS `Кафедра`, COUNT(achievements.id) AS `Количество`,
+       COUNT(DISTINCT user.user_id) AS `2`,
+       (
+         SELECT COUNT(user_id) from user
+         WHERE user_department = department_id
+       ) as `4`
+FROM `achievements`
+JOIN user ON user.user_id = achievements.user_id
+JOIN department ON department_id = user.user_department
+GROUP BY department_id
+ORDER BY COUNT(achievements.id) ASC;
+    ')
     @count_by_teacher = ActiveRecord::Base.connection.execute("
       SELECT department_sname AS `Кафедра`,
       CASE WHEN user_name IS NULL or user_name = '' THEN CONCAT_WS(' ',
@@ -580,7 +383,8 @@ class AchievementsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:achievement, {}).permit(:description, :achievement_period_id,
-                                          :activity_id, :value, :cost, :status, :comment)
+    params.fetch(:achievement, {})
+      .permit(:description, :achievement_period_id, :activity_id, :value, :cost,
+              :status, :comment)
   end
 end
