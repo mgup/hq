@@ -132,7 +132,7 @@ class Study::Exam < ActiveRecord::Base
   end
 
   def is_mass_repeat?
-    !exam_group.nil?
+    students.length > 1 && parent?
   end
 
   def test?

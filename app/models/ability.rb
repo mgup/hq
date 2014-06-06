@@ -66,6 +66,10 @@ class Ability
         can :manage, :ciot
       end
 
+      if user.is?(:library)
+        can :manage, :library
+      end
+
       if user.is?(:student_hr) || user.is?(:student_hr_boss)
         can :manage, Student
         can :manage, Office::Order

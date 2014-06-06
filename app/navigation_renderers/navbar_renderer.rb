@@ -16,7 +16,8 @@ class NavbarRenderer < SimpleNavigation::Renderer::Base
   end
 
   def render_sub_navigation_for(item)
-    item.sub_navigation.render(options.merge(is_subnavigation: true))
+    # пришлось добавить условие, без него не работает =(
+    item.sub_navigation.render(options.merge(is_subnavigation: true)) unless item.sub_navigation.nil?
   end
 
   protected

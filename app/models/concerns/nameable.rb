@@ -19,7 +19,7 @@ module Nameable
   # Если у человека не известна или не заполнена фамилия в указанном падеже —
   # возвращаем именительный падеж.
   def last_name(form = :ip)
-    form == :ip ? send(:last_name_hint) || fname.send(form) : fname.send(form)
+    form == :ip ? send(:last_name_hint) || (fname.send(form) unless fname.nil?) : (fname.send(form) unless fname.nil?)
   end
 
   # Имя человека в определённом падеже (ip, rp, dp, vp, tp, pp).

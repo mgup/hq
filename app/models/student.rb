@@ -60,7 +60,7 @@ class Student < ActiveRecord::Base
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_student
   has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_student_group
 
-  has_many :xmarks, class_name: Study::Xmark, foreign_key: :student_id
+  # has_many :xmarks, class_name: Study::Xmark, foreign_key: :student_id
 
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
