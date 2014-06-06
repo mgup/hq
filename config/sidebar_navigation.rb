@@ -109,6 +109,14 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     end
 
+    # ======================================
+    if user_signed_in?
+      if can? :manage, :library
+        primary.item :library, 'Библиотека', class: 'nav-header disabled'
+        primary.item :library_cards, 'Создать читательский билет'.html_safe, library_cards_path, icon: 'book', highlights_on: -> { params[:controller].include?('library') }
+      end
+    end
+
 
     # ======================================
     if user_signed_in?

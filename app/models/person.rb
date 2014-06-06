@@ -72,6 +72,13 @@ class Person < ActiveRecord::Base
 
   scope :from_flat, -> flat { joins(:room).where(room: {room_flat: flat})}
 
+  scope :by_name, -> (name) {
+    joins('LEFT JOIN dictionary AS fname ON fname.dictionary_id = student_fname')
+    .joins('LEFT JOIN dictionary AS iname ON iname.dictionary_id = student_iname')
+    .joins('LEFT JOIN dictionary AS oname ON oname.dictionary_id = student_oname')
+    .where('last_name_hint LIKE ? OR first_name_hint LIKE ? OR patronym_hint LIKE ? OR fname.dictionary_ip LIKE ? OR iname.dictionary_ip LIKE ? OR oname.dictionary_ip LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%", "%#{name}%")
+  }
+
   def male?
     MALE == gender
   end
