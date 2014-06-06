@@ -1,3 +1,4 @@
+# Контроллер, отвечающий за работу с отчётами об эффективности НПР.
 class AchievementsController < ApplicationController
   load_resource except: [:update, :destroy, :validate, :validate_selection, :validate_social, :validate_additional]
   authorize_resource
