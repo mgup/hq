@@ -406,7 +406,7 @@ prawn_document margin: [28, 20, 28, 28],
             if (!(student.student.ball(@discipline) < 55) && @exam.test?)
               next
             end
-            applicationTable << [index, student.person.full_name, student.student.id, student.student.ball(@discipline)]
+            applicationTable << [index, student.student.person.full_name, student.student.id, student.student.ball(@discipline)]
             @discipline.checkpoints.each do |checkpoint|
               applicationTable[applicationTable.length - 1] << "#{checkpoint.min}/#{checkpoint.max}"
               applicationTable[applicationTable.length - 1] << "#{checkpoint.marks.by_student(student.student).last ? checkpoint.marks.by_student(student.student).last.mark : 0}"
