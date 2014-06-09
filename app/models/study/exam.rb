@@ -128,7 +128,7 @@ class Study::Exam < ActiveRecord::Base
   end
 
   def is_individual_repeat?
-    exam_student_group?
+    students.length == 1 && parent?
   end
 
   def is_mass_repeat?
