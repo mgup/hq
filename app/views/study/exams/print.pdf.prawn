@@ -246,7 +246,7 @@ prawn_document margin: [28, 20, 28, 28],
 
         st.each_with_index do |student, index|
             position_x = x_pos
-            tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
+            tableData << [index+1, student.student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
             8.times do
               pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
               position_x += 15
@@ -406,7 +406,7 @@ prawn_document margin: [28, 20, 28, 28],
             if (!(student.student.ball(@discipline) < 55) && @exam.test?)
               next
             end
-            applicationTable << [index, student.person.full_name, student.student.id, student.student.ball(@discipline)]
+            applicationTable << [index, student.student.person.full_name, student.student.id, student.student.ball(@discipline)]
             @discipline.checkpoints.each do |checkpoint|
               applicationTable[applicationTable.length - 1] << "#{checkpoint.min}/#{checkpoint.max}"
               applicationTable[applicationTable.length - 1] << "#{checkpoint.marks.by_student(student.student).last ? checkpoint.marks.by_student(student.student).last.mark : 0}"
