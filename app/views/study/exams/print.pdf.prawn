@@ -275,7 +275,7 @@ prawn_document margin: [28, 20, 28, 28],
         if @exam.is_repeat?
            pdf.move_down 15
            pdf.indent (@exam.repeat == Study::Exam::COMMISSION_REPEAT ? 32 : 28)  do
-            pdf.text "Дата сдачи: ______________________                                                          Ведомость действительна до #{@exam.date.sunday? ? (l @exam.date.next) : (@exam.date.saturday? ? (l @exam.date.next_day(2)) : (l @exam.date))}"
+            pdf.text "Дата сдачи: ______________________                                                          Ведомость действительна до #{(@exam.date+3.days).sunday? ? (l (@exam.date+3.days).next) : ((@exam.date+3.days).saturday? ? (l (@exam.date+3.days).next_day(2)) : (l (@exam.date+3.days)))}"
            end
            pdf.move_down 18
         else
