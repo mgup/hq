@@ -238,7 +238,7 @@ prawn_document margin: [28, 20, 28, 28],
           if @exam.student
             st << @exam.student
           else
-            @exam.students.each { |s| st << s }
+            @exam.students.each { |s| st << s.student }
           end
         else
           @discipline.group.students.valid_for_today.each { |s| st << s }
