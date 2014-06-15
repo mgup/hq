@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140531155024) do
+ActiveRecord::Schema.define(version: 20140611123751) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -644,6 +644,89 @@ ActiveRecord::Schema.define(version: 20140531155024) do
   end
 
   add_index "exam", ["exam_subject"], name: "exam_subject", using: :btree
+
+  create_table "exam_formreader", primary_key: "exam_formreader_id", force: true do |t|
+    t.boolean "exam_formreader_parsed",                  default: false, null: false
+    t.string  "DocNumber",              limit: 16
+    t.string  "S1Id",                   limit: 16
+    t.float   "S1Result"
+    t.string  "S2Id",                   limit: 16
+    t.float   "S2Result"
+    t.string  "S3Id",                   limit: 16
+    t.float   "S3Result"
+    t.string  "S4Id",                   limit: 16
+    t.float   "S4Result"
+    t.string  "S5Id",                   limit: 16
+    t.float   "S5Result"
+    t.string  "S6Id",                   limit: 16
+    t.float   "S6Result"
+    t.string  "S7Id",                   limit: 16
+    t.float   "S7Result"
+    t.string  "S8Id",                   limit: 16
+    t.float   "S8Result"
+    t.string  "S9Id",                   limit: 16
+    t.float   "S9Result"
+    t.string  "S10Id",                  limit: 16
+    t.float   "S10Result"
+    t.string  "S11Id",                  limit: 16
+    t.float   "S11Result"
+    t.string  "S12Id",                  limit: 16
+    t.float   "S12Result"
+    t.string  "S13Id",                  limit: 16
+    t.float   "S13Result"
+    t.string  "S14Id",                  limit: 16
+    t.float   "S14Result"
+    t.string  "S15Id",                  limit: 16
+    t.float   "S15Result"
+    t.string  "S16Id",                  limit: 16
+    t.float   "S16Result"
+    t.string  "S17Id",                  limit: 16
+    t.float   "S17Result"
+    t.string  "S18Id",                  limit: 16
+    t.float   "S18Result"
+    t.string  "S19Id",                  limit: 16
+    t.float   "S19Result"
+    t.string  "S20Id",                  limit: 16
+    t.float   "S20Result"
+    t.string  "S21Id",                  limit: 16
+    t.float   "S21Result"
+    t.string  "S22Id",                  limit: 16
+    t.float   "S22Result"
+    t.string  "S23Id",                  limit: 16
+    t.float   "S23Result"
+    t.string  "S24Id",                  limit: 16
+    t.float   "S24Result"
+    t.string  "S25Id",                  limit: 16
+    t.float   "S25Result"
+    t.string  "S26Id",                  limit: 16
+    t.float   "S26Result"
+    t.string  "S27Id",                  limit: 16
+    t.float   "S27Result"
+    t.string  "S28Id",                  limit: 16
+    t.float   "S28Result"
+    t.string  "S29Id",                  limit: 16
+    t.float   "S29Result"
+    t.string  "S30Id",                  limit: 16
+    t.float   "S30Result"
+    t.string  "S31Id",                  limit: 16
+    t.float   "S31Result"
+    t.string  "S32Id",                  limit: 16
+    t.float   "S32Result"
+    t.string  "S33Id",                  limit: 16
+    t.float   "S33Result"
+    t.string  "S34Id",                  limit: 16
+    t.float   "S34Result"
+    t.string  "S35Id",                  limit: 16
+    t.float   "S35Result"
+    t.string  "S36Id",                  limit: 16
+    t.float   "S36Result"
+    t.binary  "ImageData",              limit: 16777215
+    t.string  "Created",                limit: 32
+    t.string  "Recognized",             limit: 32
+    t.string  "Verified",               limit: 32
+  end
+
+  add_index "exam_formreader", ["DocNumber"], name: "DocNumber", using: :btree
 
   create_table "exam_student", primary_key: "exam_student_id", force: true do |t|
     t.integer "exam_student_exam",          null: false
@@ -1534,6 +1617,12 @@ ActiveRecord::Schema.define(version: 20140531155024) do
   end
 
   add_index "template_reason", ["template_reason_template"], name: "template_reason_template", using: :btree
+
+  create_table "use_subjects", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "user", primary_key: "user_id", force: true do |t|
     t.boolean  "user_active",                        default: true,   null: false

@@ -19,4 +19,4 @@ env:
   - secure: G1oS+ZXo5Ogrj0vsUd/UG2mZ5anPr7oELeTYRML42UdtE34aCuLwiWCOgMkCWZpcp9OIgPzHOG8IEfqrFJUQbA7oTYHib4C2WQTkz18hyqcvsMnHTv2WBIrW0RIMrPhx3gsYiXE3f5eYJAxWGqj9L9LFa7XBToBxRRISA/fZiys=
 script:
 - bundle exec rspec
-- bundle exec rubocop
+#- bundle exec rubocop

@@ -13,13 +13,15 @@ describe Study::CheckpointsController, type: :controller do
         it 'должен перейти на страницу с контрольными точками' do
           get :index, discipline_id: @discipline
           expect(response).to redirect_to(
-                                new_study_discipline_checkpoint_path(@discipline))
+            new_study_discipline_checkpoint_path(@discipline)
+          )
         end
       end
 
       context 'при наличии у дисциплины контрольных точек' do
         before :each do
-          @discipline.classes << create(:checkpoint, :control, discipline: @discipline)
+          @discipline.classes << create(:checkpoint, :control,
+                                        discipline: @discipline)
           @checkpoint = create(:checkpoint, discipline: @discipline)
           get :index, discipline_id: @discipline
         end

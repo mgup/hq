@@ -100,9 +100,8 @@ describe DepartmentsController, type: :controller do
     describe 'DELETE #destroy' do
       before :each do
         @deleted = FactoryGirl.create(:department)
-        expect {
-          delete :destroy, id: @deleted
-        }.to change { Department.count }.by(-1)
+        expect { delete :destroy, id: @deleted }
+          .to change { Department.count }.by(-1)
       end
 
       it 'должен находить правильный департамент' do

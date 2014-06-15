@@ -12,7 +12,8 @@ describe Study::MarksController, type: :controller do
 
     describe 'GET "index"' do
       before :each do
-        @mark = create(:mark, :checkpoint,  student: @student, checkpoint: @checkpoint)
+        @mark = create(:mark, :checkpoint, student: @student,
+                                           checkpoint: @checkpoint)
         get :index, discipline_id: @discipline.id, checkpoint_id: @checkpoint.id
       end
 
@@ -32,9 +33,11 @@ describe Study::MarksController, type: :controller do
     describe 'POST #create' do
       context 'если переданы параметры,' do
         before :each do
-          post :create, discipline_id: @discipline, checkpoint_id: @checkpoint,
-               marks: [{mark: 2001, student: @other_student.id},
-                       {mark: 2004, student: @student.id}]
+          post :create,
+               discipline_id: @discipline,
+               checkpoint_id: @checkpoint,
+               marks: [{ mark: 2001, student: @other_student.id },
+                       { mark: 2004, student: @student.id }]
         end
 
         it 'оценки должны сохраняться' do
@@ -50,8 +53,9 @@ describe Study::MarksController, type: :controller do
 
       context 'если переданы параметры,' do
         before :each do
-          post :create, discipline_id: @discipline, checkpoint_id: @checkpoint,
-               marks: []
+          post :create, discipline_id: @discipline,
+                        checkpoint_id: @checkpoint,
+                        marks: []
         end
 
         it 'не должен сохранять оценки' do
