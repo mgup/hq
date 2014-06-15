@@ -76,7 +76,7 @@ prawn_document margin: [28, 20, 28, 28],
           'Результат прописью', 'Подпись экзаменатора'
         ]]
         position_y = y_pos
-        if @exam.is_mass_repeat? #групповая пересдача
+        if @exam.is_mass_repeat? || @exam.is_individual_repeat? #групповая пересдача
           @exam.students.each_with_index do |student, index|
             position_x = x_pos
             if @exam.test? #зачёт
@@ -108,7 +108,7 @@ prawn_document margin: [28, 20, 28, 28],
             end
             position_y -= 15
           end
-        elsif @exam.is_individual_repeat? #индивидуальная пересдача
+        elsif @exam.student #индивидуальная пересдача
           position_x = x_pos
           if @exam.test? #зачёт
             if @exam.student.ball(@discipline) < 55
@@ -235,10 +235,10 @@ prawn_document margin: [28, 20, 28, 28],
 
         st = []
         if @exam.is_repeat?
-          if @exam.is_individual_repeat?
+          if @exam.student
             st << @exam.student
           else
-            @exam.students.each { |s| st << s }
+            @exam.students.each { |s| st << s.student }
           end
         else
           @discipline.group.students.valid_for_today.each { |s| st << s }
@@ -275,7 +275,7 @@ prawn_document margin: [28, 20, 28, 28],
         if @exam.is_repeat?
            pdf.move_down 15
            pdf.indent (@exam.repeat == Study::Exam::COMMISSION_REPEAT ? 32 : 28)  do
-            pdf.text "Дата сдачи: ______________________                                                          Ведомость действительна до #{@exam.date.sunday? ? (l @exam.date.next) : (@exam.date.saturday? ? (l @exam.date.next_day(2)) : (l @exam.date))}"
+            pdf.text "Дата сдачи: ______________________                                                          Ведомость действительна до #{(@exam.date+3.days).sunday? ? (l (@exam.date+3.days).next) : ((@exam.date+3.days).saturday? ? (l (@exam.date+3.days).next_day(2)) : (l (@exam.date+3.days)))}"
            end
            pdf.move_down 18
         else
@@ -337,7 +337,7 @@ prawn_document margin: [28, 20, 28, 28],
                           {content: 'Номер', rowspan: 2}, {content: 'Баллы за семестр', rowspan: 2}, {content: 'Нужно набрать на экзамене в баллах', colspan: 4}],
                           ['«Отлично»', '«Хорошо»', '«Удовл.»', '«Неуд.»']]
       pdf.font_size 10 do
-        if @exam.is_mass_repeat?
+        if @exam.is_mass_repeat? || @exam.is_individual_repeat?
           @exam.students.each_with_index do |student, index|
             result_5 = @discipline.final_exam.predication(5, student.student.ball(@discipline))
             result_4 = @discipline.final_exam.predication(4, student.student.ball(@discipline))
@@ -345,7 +345,7 @@ prawn_document margin: [28, 20, 28, 28],
             result_2 = @discipline.final_exam.predication(2, student.student.ball(@discipline))
             applicationTable << [index+1, student.student.person.full_name, student.student.id, student.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
           end
-        elsif @exam.is_individual_repeat?
+        elsif @exam.student
           result_5 = @discipline.final_exam.predication(5, @exam.student.ball(@discipline))
           result_4 = @discipline.final_exam.predication(4, @exam.student.ball(@discipline))
           result_3 = @discipline.final_exam.predication(3, @exam.student.ball(@discipline))
@@ -400,21 +400,21 @@ prawn_document margin: [28, 20, 28, 28],
 
       end
       pdf.font_size 10 do
-        if @exam.is_mass_repeat?
+        if @exam.is_mass_repeat? || @exam.is_individual_repeat?
           index = 1
           @exam.students.each do |student|
             if (!(student.student.ball(@discipline) < 55) && @exam.test?)
               next
             end
-            applicationTable << [index, student.person.full_name, student.student.id, student.student.ball(@discipline)]
+            applicationTable << [index, student.student.person.full_name, student.student.id, student.student.ball(@discipline)]
             @discipline.checkpoints.each do |checkpoint|
               applicationTable[applicationTable.length - 1] << "#{checkpoint.min}/#{checkpoint.max}"
-              applicationTable[applicationTable.length - 1] << "#{checkpoint.marks.by_student(student.student).last ? checkpoint.marks.by_student(student).last.mark : 0}"
+              applicationTable[applicationTable.length - 1] << "#{checkpoint.marks.by_student(student.student).last ? checkpoint.marks.by_student(student.student).last.mark : 0}"
               applicationTable[applicationTable.length - 1] << ''
             end
             index+=1
           end
-        elsif @exam.is_individual_repeat?
+        elsif @exam.student
           applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline)]
           @discipline.checkpoints.each do |checkpoint|
             applicationTable[applicationTable.length - 1] << "#{checkpoint.min}/#{checkpoint.max}"

@@ -128,7 +128,7 @@ class Study::Exam < ActiveRecord::Base
   end
 
   def is_individual_repeat?
-    exam_student_group?
+    students.length == 1 && parent?
   end
 
   def is_mass_repeat?
@@ -181,15 +181,15 @@ class Study::Exam < ActiveRecord::Base
   def repeat_type
     case repeat
       when FIRST_REPEAT
-        'первичный'
+        'первая пересдача'
       when SECOND_REPEAT
-        'повторный'
+        'вторая пересдача'
       when COMMISSION_REPEAT
         'комиссия'
       when EARLY_REPEAT
-        'досрочный'
+        'досрочно'
       when RESPECTFUL_REPEAT
-        'уважительная'
+        'уважительная причина'
     end
   end
 
