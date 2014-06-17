@@ -13,7 +13,7 @@ before_install:
 - sh -e /etc/init.d/xvfb start
 before_script:
 - bundle exec rake db:setup
-- bundle exec rake db:test:prepare
+#- bundle exec rake db:test:prepare
 env:
   global:
   - secure: G1oS+ZXo5Ogrj0vsUd/UG2mZ5anPr7oELeTYRML42UdtE34aCuLwiWCOgMkCWZpcp9OIgPzHOG8IEfqrFJUQbA7oTYHib4C2WQTkz18hyqcvsMnHTv2WBIrW0RIMrPhx3gsYiXE3f5eYJAxWGqj9L9LFa7XBToBxRRISA/fZiys=

@@ -9,6 +9,12 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
+
+        primary.item :nav_group_entrance, 'Приёмная кампания',
+                     class: 'nav-header disabled'
+
+        primary.item :entrance_dates, 'Сроки проведения',
+                     entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
       end
 
       primary.item :user_rating,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140611123751) do
+ActiveRecord::Schema.define(version: 20140617121231) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -566,6 +566,36 @@ ActiveRecord::Schema.define(version: 20140611123751) do
   add_index "document_student_group", ["student_group_id"], name: "student_group_id", using: :btree
   add_index "document_student_group", ["student_group_student"], name: "student_group_student", using: :btree
 
+  create_table "education_forms", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "education_forms_entrance_campaigns", id: false, force: true do |t|
+    t.integer "campaign_id"
+    t.integer "education_form_id"
+  end
+
+  create_table "education_levels", force: true do |t|
+    t.integer  "course",            default: 1, null: false
+    t.integer  "education_type_id", default: 2, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "education_sources", force: true do |t|
+    t.string   "name",       default: "", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "education_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "employee", primary_key: "employee_id", force: true do |t|
     t.integer "employee_dictionary_iname", null: false
     t.integer "employee_dictionary_oname", null: false
@@ -582,6 +612,36 @@ ActiveRecord::Schema.define(version: 20140611123751) do
 
   add_index "employee_position", ["employee_position_employee"], name: "employee_position_employee", using: :btree
   add_index "employee_position", ["employee_position_position"], name: "employee_position_position", using: :btree
+
+  create_table "entrance_campaigns", force: true do |t|
+    t.string   "name",       default: "", null: false
+    t.integer  "start_year",              null: false
+    t.integer  "end_year",                null: false
+    t.integer  "status",     default: 0,  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_dates", force: true do |t|
+    t.integer  "campaign_id",                     null: false
+    t.integer  "course",              default: 1, null: false
+    t.date     "start_date",                      null: false
+    t.date     "end_date",                        null: false
+    t.date     "order_date",                      null: false
+    t.integer  "education_form_id",               null: false
+    t.integer  "education_type_id",               null: false
+    t.integer  "education_source_id",             null: false
+    t.integer  "stage"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_queries", force: true do |t|
+    t.text     "request"
+    t.text     "response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "event", force: true do |t|
     t.string   "name",                              null: false

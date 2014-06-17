@@ -144,6 +144,9 @@ GEM
     highline (1.6.21)
     hike (1.2.3)
     htmlentities (4.3.2)
+    httparty (0.13.1)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.6.9)
     jbuilder (2.1.0)
       activesupport (>= 3.0.0, < 5)
@@ -177,6 +180,7 @@ GEM
     mini_portile (0.6.0)
     minitest (5.3.4)
     multi_json (1.10.1)
+    multi_xml (0.5.5)
     mysql2 (0.3.16)
     nested_form (0.3.2)
     net-scp (1.2.1)
@@ -379,6 +383,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   hairtrigger
+  httparty
   jbuilder
   jquery-rails
   jquery-turbolinks

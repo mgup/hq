@@ -257,6 +257,18 @@ HQ::Application.routes.draw do
   get '/ajax/group_exams' => 'ajax#group_exams'
   get '/ajax/orderstudent' => 'ajax#orderstudent'
 
+
+
+  namespace :entrance do
+    resources :campaigns do
+      resources :dates
+    end
+
+    get 'fis/test' => 'fis#test'
+  end
+
+
+
   root to: 'dashboard#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,33 @@
+<div class="page-header">
+  <h1>
+    Сроки проведения
+    <small><%= @campaign.name %></small>
+  </h1>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="text-muted">#</th>
+      <th>Набор</th>
+      <th>Волна</th>
+      <th>Приём документов</th>
+      <th>Приказ о&nbsp;зачислении</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @dates.each do |date| %>
+      <tr>
+        <td class="text-muted"><%= date.id %></td>
+        <td><%= date.description %></td>
+        <td><%= date.stage %></td>
+        <td>
+          <%= l date.start_date %>
+          <br>
+          <%= l date.end_date %>
+        </td>
+        <td><%= l date.order_date %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
