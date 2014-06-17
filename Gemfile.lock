@@ -79,6 +79,9 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    capistrano-sidekiq (0.3.3)
+      capistrano
+      sidekiq
     capybara (2.3.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -222,6 +225,8 @@ GEM
       rack (>= 0.9.1)
     rack-mini-profiler (0.9.1)
       rack (>= 1.1.3)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.1.1)
@@ -318,6 +323,10 @@ GEM
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
     skylight (0.3.14)
       activesupport (>= 3.0.0)
     slim (2.0.2)
@@ -387,6 +396,7 @@ DEPENDENCIES
   bullet
   cancan
   capistrano
+  capistrano-sidekiq
   capybara
   capybara-webkit
   chunky_png
@@ -429,6 +439,7 @@ DEPENDENCIES
   sidekiq
   sidetiq
   simple-navigation
+  sinatra
   skylight
   spreadsheet
   therubyracer

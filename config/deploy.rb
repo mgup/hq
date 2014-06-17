@@ -3,6 +3,7 @@ require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'dotenv/capistrano'
 require 'airbrake/capistrano'
+require 'capistrano/sidekiq'
 
 set :application, 'matrix'
 set :repository,  'git@github.com:mgup/hq.git'
