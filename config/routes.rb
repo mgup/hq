@@ -1,4 +1,19 @@
 HQ::Application.routes.draw do
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.is?(:developer) } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
+  require 'sidekiq/api'
+  get 'queue-status' => proc {
+    [200, { 'Content-Type' => 'text/plain' },
+     [Sidekiq::Queue.new.size < 20000 ? 'OK' : 'UHOH' ]]
+  }
+  get 'queue-latency' => proc {
+    [200, { 'Content-Type' => 'text/plain' },
+     [Sidekiq::Queue.new.latency < 30 ? 'OK' : 'UHOH' ]]
+  }
+
   # Выпуски (группы выпускников).
   resources :graduates do
     get 'students', on: :member

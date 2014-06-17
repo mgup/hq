@@ -1,5 +1,8 @@
 class Entrance::FisController < ApplicationController
   def test
+    FISRequestWorker.perform_async('test')
+
+
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.Root do
         xml.AuthData do

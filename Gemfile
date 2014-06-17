@@ -55,6 +55,8 @@ gem 'dotenv-rails'
 #gem 'activerecord-sqlserver-adapter'
 
 gem 'httparty'
+gem 'sidekiq'
+gem 'sidetiq'
 
 group :production do
   gem 'skylight'
