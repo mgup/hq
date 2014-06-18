@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617121231) do
+ActiveRecord::Schema.define(version: 20140618093705) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -263,6 +263,12 @@ ActiveRecord::Schema.define(version: 20140617121231) do
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
 
+  create_table "benefit_kinds", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "blanks", force: true do |t|
     t.integer  "type"
     t.integer  "number"
@@ -311,6 +317,54 @@ ActiveRecord::Schema.define(version: 20140617121231) do
 
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
   add_index "checkpoint_mark", ["checkpoint_mark_student"], name: "checkpoint_mark_student", using: :btree
+
+  create_table "common_benefit_item_olympics", id: false, force: true do |t|
+    t.integer "common_benefit_item_id"
+    t.integer "use_olympic_id"
+  end
+
+  create_table "common_benefit_items", force: true do |t|
+    t.integer  "benefit_kind_id",     null: false
+    t.boolean  "is_for_all_olympics"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "competitive_group_items", force: true do |t|
+    t.integer  "competitive_group_id", null: false
+    t.integer  "education_level_id",   null: false
+    t.integer  "direction_id",         null: false
+    t.integer  "number_budget_o"
+    t.integer  "number_budget_oz"
+    t.integer  "number_budget_z"
+    t.integer  "number_paid_o"
+    t.integer  "number_paid_oz"
+    t.integer  "number_paid_z"
+    t.integer  "number_quota_o"
+    t.integer  "number_quota_oz"
+    t.integer  "number_quota_z"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "competitive_group_target_items", force: true do |t|
+    t.integer  "target_organization_id", null: false
+    t.integer  "number_target_o"
+    t.integer  "number_target_oz"
+    t.integer  "number_target_z"
+    t.integer  "education_level_id",     null: false
+    t.integer  "direction_id",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "competitive_groups", force: true do |t|
+    t.integer  "campaign_id"
+    t.integer  "course",      default: 1, null: false
+    t.string   "name",                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "curator_group", force: true do |t|
     t.date    "start_date"
@@ -373,6 +427,18 @@ ActiveRecord::Schema.define(version: 20140617121231) do
     t.text "dictionary_vp", limit: 16777215, null: false
     t.text "dictionary_tp", limit: 16777215, null: false
     t.text "dictionary_pp", limit: 16777215, null: false
+  end
+
+  create_table "directions", force: true do |t|
+    t.string   "code"
+    t.string   "new_code"
+    t.string   "name"
+    t.integer  "qualification_code"
+    t.string   "ugs_code"
+    t.string   "ugs_name"
+    t.string   "period"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "discount", primary_key: "discount_id", force: true do |t|
@@ -585,7 +651,7 @@ ActiveRecord::Schema.define(version: 20140617121231) do
   end
 
   create_table "education_sources", force: true do |t|
-    t.string   "name",       default: "", null: false
+    t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -614,10 +680,10 @@ ActiveRecord::Schema.define(version: 20140617121231) do
   add_index "employee_position", ["employee_position_position"], name: "employee_position_position", using: :btree
 
   create_table "entrance_campaigns", force: true do |t|
-    t.string   "name",       default: "", null: false
-    t.integer  "start_year",              null: false
-    t.integer  "end_year",                null: false
-    t.integer  "status",     default: 0,  null: false
+    t.string   "name",                   null: false
+    t.integer  "start_year",             null: false
+    t.integer  "end_year",               null: false
+    t.integer  "status",     default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -639,6 +705,38 @@ ActiveRecord::Schema.define(version: 20140617121231) do
   create_table "entrance_queries", force: true do |t|
     t.text     "request"
     t.text     "response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_test_benefit_item_olympics", id: false, force: true do |t|
+    t.integer "entrance_test_benefit_item_id"
+    t.integer "use_olympic_id"
+  end
+
+  create_table "entrance_test_benefit_items", force: true do |t|
+    t.integer  "entrance_test_item_id", null: false
+    t.integer  "benefit_kind_id",       null: false
+    t.boolean  "is_for_all_olympics"
+    t.integer  "min_ege_mark"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_test_items", force: true do |t|
+    t.integer  "competitive_group_id",   null: false
+    t.integer  "entrance_test_type_id",  null: false
+    t.string   "form"
+    t.integer  "min_score"
+    t.integer  "entrance_test_priority"
+    t.integer  "use_subject_id"
+    t.string   "subject_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_test_types", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1044,6 +1142,14 @@ ActiveRecord::Schema.define(version: 20140617121231) do
 
   add_index "mark_final", ["mark_final_exam"], name: "mark_final_exam", using: :btree
   add_index "mark_final", ["mark_final_student", "mark_final_exam"], name: "mark_final_unique", unique: true, using: :btree
+
+  create_table "min_ege_marks", force: true do |t|
+    t.integer  "common_benefit_item_id", null: false
+    t.integer  "use_subject_id",         null: false
+    t.integer  "min_mark"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "optional", primary_key: "optional_id", force: true do |t|
     t.integer "optional_form"
@@ -1634,6 +1740,13 @@ ActiveRecord::Schema.define(version: 20140617121231) do
     t.integer "sushnevo_room_seats"
   end
 
+  create_table "target_organizations", force: true do |t|
+    t.integer  "competitive_group_id", null: false
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "teacher", primary_key: "teacher_id", force: true do |t|
     t.integer "teacher_fname",         null: false
     t.integer "teacher_iname",         null: false
@@ -1677,6 +1790,13 @@ ActiveRecord::Schema.define(version: 20140617121231) do
   end
 
   add_index "template_reason", ["template_reason_template"], name: "template_reason_template", using: :btree
+
+  create_table "use_olympics", force: true do |t|
+    t.string   "name"
+    t.integer  "number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "use_subjects", force: true do |t|
     t.string   "name"
