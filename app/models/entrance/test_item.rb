@@ -3,5 +3,6 @@ class Entrance::TestItem < ActiveRecord::Base
   self.table_name_prefix = 'entrance_'
 
   belongs_to :competitive_group, class_name: Entrance::CompetitiveGroup
-  has_many :benefit_items, class_name: Entrance::TestBenefitItem
+  has_many :benefit_items, class_name: Entrance::TestBenefitItem, foreign_key: :entrance_test_item_id
+  accepts_nested_attributes_for :benefit_items
 end

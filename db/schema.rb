@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618093705) do
+ActiveRecord::Schema.define(version: 20140619122304) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -318,16 +318,25 @@ ActiveRecord::Schema.define(version: 20140618093705) do
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
   add_index "checkpoint_mark", ["checkpoint_mark_student"], name: "checkpoint_mark_student", using: :btree
 
+  create_table "common_benefit_item_olympic_diplom_types", force: true do |t|
+    t.integer  "common_benefit_item_id", null: false
+    t.integer  "olympic_diplom_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "common_benefit_item_olympics", id: false, force: true do |t|
     t.integer "common_benefit_item_id"
     t.integer "use_olympic_id"
   end
 
   create_table "common_benefit_items", force: true do |t|
-    t.integer  "benefit_kind_id",     null: false
+    t.integer  "benefit_kind_id",      null: false
     t.boolean  "is_for_all_olympics"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "year"
+    t.integer  "competitive_group_id", null: false
   end
 
   create_table "competitive_group_items", force: true do |t|
@@ -709,6 +718,13 @@ ActiveRecord::Schema.define(version: 20140618093705) do
     t.datetime "updated_at"
   end
 
+  create_table "entrance_test_benefit_item_olympic_diplom_types", force: true do |t|
+    t.integer  "entrance_test_benefit_item_id", null: false
+    t.integer  "olympic_diplom_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "entrance_test_benefit_item_olympics", id: false, force: true do |t|
     t.integer "entrance_test_benefit_item_id"
     t.integer "use_olympic_id"
@@ -721,11 +737,11 @@ ActiveRecord::Schema.define(version: 20140618093705) do
     t.integer  "min_ege_mark"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "year"
   end
 
   create_table "entrance_test_items", force: true do |t|
     t.integer  "competitive_group_id",   null: false
-    t.integer  "entrance_test_type_id",  null: false
     t.string   "form"
     t.integer  "min_score"
     t.integer  "entrance_test_priority"
