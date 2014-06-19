@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140619122304) do
+ActiveRecord::Schema.define(version: 20140619125703) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -1808,10 +1808,11 @@ ActiveRecord::Schema.define(version: 20140619122304) do
   add_index "template_reason", ["template_reason_template"], name: "template_reason_template", using: :btree
 
   create_table "use_olympics", force: true do |t|
-    t.string   "name"
+    t.text     "name"
     t.integer  "number"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "year"
   end
 
   create_table "use_subjects", force: true do |t|
