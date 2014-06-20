@@ -8,4 +8,8 @@
 <% @entrant.applications.sort_by { |a|
      a.competitive_group_item.competitive_group.name }.each do |a| %>
   <h4><%= a.competitive_group_item.competitive_group.name %></h4>
+
+  <div id="<%= dom_id(a.competitive_group_item.competitive_group) %>">
+    <%= render partial: 'form', locals: { application: a } %>
+  </div>
 <% end %>

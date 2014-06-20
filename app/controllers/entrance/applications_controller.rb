@@ -20,7 +20,9 @@ class Entrance::ApplicationsController < ApplicationController
       possible_exams.each do |combination|
         if combination == needed_exams.sort
           # Эта конкурсная группа подходит.
-          @entrant.applications.build(competitive_group_item_id: g.items.first.id)
+          @entrant.applications.build(
+            competitive_group_item_id: g.items.first.id,
+            campaign_id: @campaign.id)
         end
       end
     end
@@ -31,7 +33,17 @@ class Entrance::ApplicationsController < ApplicationController
   end
 
   def create
-
+    if @application.save
+      respond_to do |format|
+        format.html do
+          redirect_to entrance_campaign_entrants_path(@campaign),
+                      notice: 'Абитуриент успешно добавлен.'
+        end
+        format.js
+      end
+    else
+      render action: :new
+    end
   end
 
   def print
@@ -42,8 +54,9 @@ class Entrance::ApplicationsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:application, {}).permit(
-      :number, :registration_date
+    params.fetch(:entrance_application, {}).permit(
+      :entrant_id, :number, :original, :registration_date, :campaign_id,
+      :competitive_group_item_id
     )
   end
 end

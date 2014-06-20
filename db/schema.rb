@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620060832) do
+ActiveRecord::Schema.define(version: 20140620075434) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -448,6 +448,7 @@ ActiveRecord::Schema.define(version: 20140620060832) do
     t.string   "period"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "letters"
   end
 
   create_table "discount", primary_key: "discount_id", force: true do |t|
@@ -694,12 +695,13 @@ ActiveRecord::Schema.define(version: 20140620060832) do
     t.date     "registration_date"
     t.date     "last_deny_date"
     t.boolean  "need_hostel"
-    t.integer  "status_id",                 default: 1, null: false
+    t.integer  "status_id",                 default: 1,     null: false
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "campaign_id",                           null: false
+    t.integer  "campaign_id",                               null: false
     t.integer  "competitive_group_item_id"
+    t.boolean  "original",                  default: false
   end
 
   create_table "entrance_campaigns", force: true do |t|
