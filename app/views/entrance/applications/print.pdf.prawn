@@ -1,6 +1,6 @@
 prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
-               filename: "Заявление № #{@application.id}.pdf",
+               filename: "Заявление № #{@application.number}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
 
   render 'pdf/font', pdf: pdf
@@ -15,13 +15,13 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       pdf.text "проживающ#{@entrant.female? ? 'ей' : 'его'} по адресу <u>#{@entrant.azip} #{@entrant.aregion} #{@entrant.aaddress}</u>", inline_format: true
       pdf.text "окончивш#{@entrant.female? ? 'ей' : 'его'} <u>#{@entrant.institution}</u> в <u>#{@entrant.graduation_year} г.</u>", inline_format: true
 
-      pdf.move_down 8
+      pdf.move_down 5
       pdf.text 'ЗАЯВЛЕНИЕ', align: :center, style: :bold
-      pdf.move_down 8
+      pdf.move_down 5
 
       pdf.text 'Прошу допустить меня к вступительным испытаниям и участию  в конкурсе'
       pdf.text "на направление подготовки (специальность): <u>#{@application.competitive_group_item.direction.code}.#{@application.competitive_group_item.direction.qualification_code}, «#{@application.competitive_group_item.direction.name}»</u>", inline_format: true
-      pdf.text "Форма обучения: <u>#{@application.competitive_group_item.form}</u> Основа обучения: <u>#{@application.competitive_group_item.budget}</u>", inline_format: true
+      pdf.text "Форма обучения: <u>#{@application.competitive_group_item.form_name}</u> Основа обучения: <u>#{@application.competitive_group_item.budget_name}</u>", inline_format: true
       pdf.text "В общежитии: <u>#{@application.need_hostel? ? 'нуждаюсь' : 'не нуждаюсь'}</u>            Контактный/домашний телефон: <u>#{@entrant.phone}</u>", inline_format: true
       pdf.text "О себе сообщаю следующие сведения:   пол: <u>#{@entrant.female? ? 'женский' : 'мужской'}</u>, дата рождения: <u>#{l @entrant.birthday}</u>,<br>место рождения: <u>#{@entrant.birth_place}</u>", inline_format: true
       pdf.text "С правилами приёма, Лицензией на право ведения образовательной деятельности в сфере профессионального образования ААА № 001773 от 11.08.116 Свидетельством о государственной аккредитации по выбранному направлению подготовки (специальности) ВВ № 001559 от 19.03.12 ознакомлен#{'а' if @entrant.female?}"
@@ -32,10 +32,10 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         end
       end
 
-      pdf.move_down 12
+      pdf.move_down 8
 
       #только для бюджета (надо поставить условие)
-      if @application.competitive_group_item.budget == 'бюджет'
+      if @application.competitive_group_item.budget_name == 'бюджет'
           pdf.text 'Получение высшего образования данного уровня впервые подтверждаю'
           pdf.text '__________________ / __________________ /', align: :right
           pdf.font_size 8 do
@@ -88,19 +88,20 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         end
       end
 
-      pdf.move_down 8
+      pdf.move_down 5
 
-      pdf.text "Гражданство <u><#{}</u>", inline_format: true
-      pdf.text "Отношение к военной службе <u>#{}</u>", inline_format: true
-      pdf.text "Наличие направления <u>Целевое направление, орган власти/организация</u>", inline_format: true
-      pdf.text "Категория зачисления <u>Без вступительных испытаний/целевой приём/особые права/Крым/по конкурсу</u>", inline_format: true
+      pdf.text "Гражданство: <u> <#{@entrant.citizen_name} </u>", inline_format: true
+      pdf.text "Отношение к военной службе: <u> #{@entrant.military_status} </u>", inline_format: true
+      pdf.text "Наличие направления: <u> нет </u>", inline_format: true
+      pdf.text "Категория зачисления: <u> по конкурсу </u>", inline_format: true
       pdf.text 'Оценки для участия в конкурсе:'
       @entrant.exam_results.each_with_index do |exam_result, index|
         pdf.text "#{index+1}. #{exam_result.exam.name} (#{exam_result.exam_type}) - #{exam_result.score}"
       end
 
-      pdf.move_down 8
+      pdf.move_down 4
       pdf.text 'Достоверность всех предоставленных сведений и подлинность документов подтверждаю.', align: :center
+      pdf.move_down 6
       pdf.text "«<u>#{l @application.created_at, format: '%d'}</u>» <u>#{l @application.created_at, format: '%B'}</u> <u>#{l @application.created_at, format: '%Y'}</u> г.                                                                                         ___________________ / __________________ /", inline_format: true
       pdf.font_size 8 do
         pdf.indent 330 do
@@ -108,7 +109,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         end
       end
 
-      pdf.move_down 8
+      pdf.move_down 5
       pdf.text '__________________ / __________________ /', align: :right
       pdf.font_size 8 do
         pdf.indent 330 do
@@ -123,7 +124,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         pdf.text "Институт", align: :center
 
         pdf.move_down 8
-        pdf.text "направление подготовки (специальность): <strong>000000.6х</strong>                     форма обучения:<strong>очно-заочная</strong>", inline_format: true
+        pdf.text "направление подготовки (специальность): <strong>#{@application.competitive_group_item.direction.code}.#{@application.competitive_group_item.direction.qualification_code}</strong>                     форма обучения: <strong>#{@application.competitive_group_item.form_name}</strong>", inline_format: true
         pdf.move_down 8
         pdf.font_size 12 do
           pdf.text "ЭКЗАМЕНАЦИОННЫЙ ЛИСТ №#{@application.number}", align: :center
@@ -199,14 +200,14 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
             pdf.text "Расписка № #{@application.number}", style: :bold, align: :center, size: 11
             pdf.move_down 15
             pdf.font_size 10 do
-                pdf.text "о приёме документов от пуступающего на направление подготовки (специальность): 000000.6х"
+                pdf.text "о приёме документов от пуступающего на направление подготовки (специальность): #{@application.competitive_group_item.direction.code}.#{@application.competitive_group_item.direction.qualification_code}"
                 pdf.text "Получены от #{@entrant.short_name} следующие документы:"
                 pdf.text '1. Заявление'
-                pdf.text "2. Документ (подлинник) об образовании, выданный <u>#{@entrant.institution}</u>", inline_format: true
+                pdf.text "2. Документ (#{@application.original? ? 'подлинник' : 'копия'}) об образовании, выданный <u>#{@entrant.institution}</u>", inline_format: true
                 pdf.text '3. 4 фотокарточки 3х4'
-                pdf.text '4. Направление на целевой приём (нет)'
-                pdf.text '5. Копия паспорта'
-                pdf.text '6. Другое: __________________________'
+                # pdf.text '4. Направление на целевой приём (нет)'
+                pdf.text '4. Копия паспорта'
+                pdf.text '5. Другое: __________________________'
             end
         end
 

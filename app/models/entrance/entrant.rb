@@ -24,4 +24,26 @@ class Entrance::Entrant < ActiveRecord::Base
   def short_name
     "#{last_name} #{first_name[0]}. #{patronym[0]}."
   end
+
+  def citizen_name
+    case citizenship
+      when 'russian'
+        'Российская Федерация'
+    end
+  end
+
+  def military_status
+    case military_service
+      when 'not'
+        'Невоеннообязанный (девушки и иностранцы)'
+      when 'conscript'
+        'Призывник'
+      when 'reservist'
+        'Военнообязанный'
+      when 'free_of_service'
+        'Освобождён от воинской обязанности'
+      when 'too_young'
+        'Не достигший возраста призывника'
+    end
+  end
 end
