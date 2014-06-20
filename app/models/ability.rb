@@ -90,6 +90,8 @@ class Ability
     can :manage, EventDate
     can :actual, :events
     can :create, EventDateClaim
+
+    can :manage, Entrance::Campaign
   end
 
   # Обычный преподаватель.
