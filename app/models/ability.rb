@@ -190,6 +190,7 @@ class Ability
   def selection(user)
     can :manage, Entrance::Campaign
     can :manage, Entrance::Entrant
+    can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
   end
 end
