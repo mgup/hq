@@ -14,6 +14,7 @@ class Office::OrdersController < ApplicationController
   end
 
   def show
+    @order = Office::Order.find(params[:order_id])
     respond_to do |format|
       format.pdf {
         filename = "Приказ №#{@order.id}"

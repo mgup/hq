@@ -772,12 +772,15 @@ ActiveRecord::Schema.define(version: 20140619224558) do
     t.datetime "updated_at"
   end
 
+<<<<<<< HEAD
   create_table "entrance_statuses", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+=======
+>>>>>>> 8f8a533513633ab926485341ac9e8a855086133a
   create_table "entrance_test_benefit_item_olympic_diplom_types", force: true do |t|
     t.integer  "entrance_test_benefit_item_id", null: false
     t.integer  "olympic_diplom_type_id"
