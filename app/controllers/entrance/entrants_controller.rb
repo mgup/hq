@@ -19,6 +19,20 @@ class Entrance::EntrantsController < ApplicationController
     end
   end
 
+  def edit
+
+  end
+
+  def update
+    if @entrant.update(resource_params)
+      redirect_to entrance_campaign_entrants_path(@campaign),
+                  notice: 'Информация об абитуриенте успешно изменена.'
+    else
+      render action: :edit
+    end
+
+  end
+
   def destroy
     @entrant.destroy
     redirect_to entrance_campaign_entrants_path(@campaign)
@@ -30,7 +44,8 @@ class Entrance::EntrantsController < ApplicationController
       :citizenship, :birthday, :birth_place, :pseries, :pnumber, :pdepartment,
       :pdate, :acountry, :azip, :aregion, :aaddress, :phone, :military_service,
       :foreign_institution, :institution, :graduation_year, :certificate_number,
-      :certificate_date, :foreign_language, :need_hostel
+      :certificate_date, :foreign_language, :need_hostel,
+      exam_results_attributes: [:id, :exam_id, :form, :score, :document]
     )
   end
 end

@@ -1,5 +1,5 @@
 <%= nested_form_for @entrant,
-                    url: entrance_campaign_entrants_path(@campaign, @entrant),
+                    url: url,
                     html: { class: 'form-horizontal' } do |f| %>
   <div class="form-group">
     <%= f.label :last_name, class: 'col-sm-2 control-label' %>
@@ -204,6 +204,59 @@
         </div>
       </div>
     </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Вступительные испытания</legend>
+
+    <%= f.fields_for :exam_results do |exams_f| %>
+      <%= exams_f.hidden_field :id %>
+
+      <div class="form-group">
+        <%= exams_f.label :exam_id, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= exams_f.select :exam_id,
+                             options_from_collection_for_select(
+                                 Entrance::Exam.all, :id, :name
+                             ), {}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= exams_f.label :form, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= exams_f.select :form, options_for_select(
+              [['ЕГЭ', :use],
+               ['Внутренние испытания', :university],
+               ['Тестирование для платного приёма', :payed_test]]),
+                             {}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= exams_f.label :score, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= exams_f.number_field :score, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= exams_f.label :document, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= exams_f.text_field :document, class: 'form-control' %>
+        </div>
+      </div>
+
+      <%= exams_f.link_to_remove class: 'col-sm-offset-2 text-danger',
+                                 title: 'Удалить' do %>
+        Удалить вступительное испытание
+      <% end %>
+      <br><br>
+    <% end %>
+    <%= f.link_to_add 'Добавить вступительное испытание', :exam_results,
+                      class: 'col-sm-offset-2',
+                      style: 'font-weight: bold;' %>
+    <br><br>
   </fieldset>
 
   <div class="form-group">

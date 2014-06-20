@@ -1,0 +1,11 @@
+ru:
+  activerecord:
+    models:
+      entrance/exam_result: 'вступительное испытание'
+    attributes:
+      entrance/exam_result:
+        entrant_id: 'абитуриент'
+        exam_id: 'дисциплина'
+        score: 'результат'
+        type: 'тип'
+        document: 'подтверждающий документ'

@@ -280,6 +280,7 @@ HQ::Application.routes.draw do
     resources :campaigns do
       resources :dates
       resources :entrants do
+        resources :exam_results
         resources :applications
       end
     end

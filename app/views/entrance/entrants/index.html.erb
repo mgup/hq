@@ -33,6 +33,16 @@
       <td><%= entrant.patronym %></td>
       <td><%= [entrant.pseries, entrant.pnumber].join(' ') %></td>
       <td>
+        <%= link_to_if false, entrance_campaign_entrant_exam_results_path(@campaign, entrant) do %>
+          <%= entrant.exam_results.count %>
+          <%= Russian::p(entrant.exam_results.count,
+                         'экзамен',
+                         'экзамена',
+                         'экзаменов') %>
+        <% end %>
+      </td>
+
+      <td>
         <%= link_to entrance_campaign_entrant_applications_path(@campaign, entrant) do %>
           <%= entrant.applications.count %>
           <%= Russian::p(entrant.applications.count,
@@ -43,6 +53,11 @@
       </td>
       <td>
         <% if can?(:manage, :all) %>
+          <%= link_to edit_entrance_campaign_entrant_path(@campaign, entrant),
+                      class: 'btn btn-danger' do %>
+            <span class="glyphicons pen"></span>
+          <% end %>
+
           <%= link_to entrance_campaign_entrant_path(@campaign, entrant),
                       method: :delete, class: 'btn btn-danger',
                       data: { confirm: 'Вы уверены?' } do %>

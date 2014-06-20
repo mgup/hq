@@ -11,6 +11,17 @@ class Entrance::Entrant < ActiveRecord::Base
 
   belongs_to :campaign, class_name: 'Entrance::Campaign'
 
+  has_many :exam_results, class_name: 'Entrance::ExamResult'
+  accepts_nested_attributes_for :exam_results, allow_destroy: true
+
   has_many :applications, class_name: 'Entrance::Application'
   accepts_nested_attributes_for :applications, allow_destroy: true
+
+  def full_name
+    [last_name, first_name, patronym].join(' ')
+  end
+
+  def short_name
+    "#{last_name} #{first_name[0]}. #{patronym[0]}."
+  end
 end
