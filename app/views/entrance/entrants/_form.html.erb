@@ -1,0 +1,217 @@
+<%= nested_form_for @entrant,
+                    url: entrance_campaign_entrants_path(@campaign, @entrant),
+                    html: { class: 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :last_name, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+      <%= f.text_field :last_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :first_name, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+      <%= f.text_field :first_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :patronym, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+      <%= f.text_field :patronym, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :gender, class: 'col-sm-2 control-label' %>
+    <div class="radio col-sm-10">
+      <label>
+        <%= f.radio_button :gender, :male %> мужской
+      </label>
+    </div>
+    <div class="radio col-sm-offset-2 col-sm-10">
+      <label>
+        <%= f.radio_button :gender, :female %> женский
+      </label>
+    </div>
+  </div>
+
+  <fieldset>
+    <legend>Паспортные данные</legend>
+
+    <div class="form-group">
+      <%= f.label :birthday, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+        <%= f.text_field :birthday, class: 'form-control datepicker' %>
+      </div>
+
+      <%= f.label :birth_place, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-4">
+        <%= f.text_field :birth_place, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :citizenship, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :citizenship,
+                     options_for_select([['Российская Федерация', :russian]]),
+                     {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :pseries, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+        <%= f.text_field :pseries, class: 'form-control' %>
+      </div>
+
+      <%= f.label :pnumber, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-4">
+        <%= f.text_field :pnumber, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :pdepartment, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.text_field :pdepartment, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :pdate, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+        <%= f.text_field :pdate, class: 'form-control datepicker' %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Контакты</legend>
+
+    <div class="form-group">
+      <%= f.label :acountry, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+        <%= f.select :acountry,
+                     options_for_select([['Российская Федерация', :russia]]),
+                     {}, class: 'form-control' %>
+      </div>
+
+      <%= f.label :azip, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+        <%= f.text_field :azip, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :aregion, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :aregion, options_for_select([]),
+                     {}, class: 'form-control', disabled: true %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :aaddress, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.text_area :aaddress, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :phone, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.text_field :phone, class: 'form-control' %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Образование</legend>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :foreign_institution %> Иностранное учебное заведение
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :institution, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.text_area :institution, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :graduation_year, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-2">
+        <%= f.number_field :graduation_year, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :certificate_number, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-5">
+        <%= f.text_field :certificate_number, class: 'form-control' %>
+      </div>
+
+      <%= f.label :certificate_date, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-2">
+        <%= f.text_field :certificate_date, class: 'form-control datepicker' %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Дополнительная информация</legend>
+
+    <div class="form-group">
+      <%= f.label :military_service, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :military_service, options_for_select(
+            [['Невоеннообязанный (девушки и иностранцы)', :not],
+             ['Призывник', :conscript],
+             ['Военнообязанный', :reservist],
+             ['Освобождён от воинской обязанности', :free_of_service],
+             ['Не достигший возраста призывника', :too_young]]),
+                     {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :foreign_language, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :foreign_language, options_for_select(
+            [['Английский', :english],
+             ['Немецкий', :german],
+             ['Французский', :french],
+             ['Испанский', :spanish]]),
+                     {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :need_hostel %> Нуждаюсь в общежитии
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Сохранить', class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад ко всем абитуриентам',
+                  entrance_campaign_entrants_path(@campaign) %>
+    </div>
+  </div>
+<% end %>

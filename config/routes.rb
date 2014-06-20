@@ -278,6 +278,9 @@ HQ::Application.routes.draw do
   namespace :entrance do
     resources :campaigns do
       resources :dates
+      resources :entrants do
+        resources :applications
+      end
     end
 
     get 'fis/test' => 'fis#test'

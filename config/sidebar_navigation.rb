@@ -13,6 +13,9 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :nav_group_entrance, 'Приёмная кампания',
                      class: 'nav-header disabled'
 
+        primary.item :new_entrance_application, 'Абитуриенты',
+                     entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
+
         primary.item :entrance_dates, 'Сроки проведения',
                      entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
       end

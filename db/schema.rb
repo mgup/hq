@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618093705) do
+ActiveRecord::Schema.define(version: 20140619224558) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -318,16 +318,25 @@ ActiveRecord::Schema.define(version: 20140618093705) do
   add_index "checkpoint_mark", ["checkpoint_mark_checkpoint"], name: "checkpoint_mark_checkpoint", using: :btree
   add_index "checkpoint_mark", ["checkpoint_mark_student"], name: "checkpoint_mark_student", using: :btree
 
+  create_table "common_benefit_item_olympic_diplom_types", force: true do |t|
+    t.integer  "common_benefit_item_id", null: false
+    t.integer  "olympic_diplom_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "common_benefit_item_olympics", id: false, force: true do |t|
     t.integer "common_benefit_item_id"
     t.integer "use_olympic_id"
   end
 
   create_table "common_benefit_items", force: true do |t|
-    t.integer  "benefit_kind_id",     null: false
+    t.integer  "benefit_kind_id",      null: false
     t.boolean  "is_for_all_olympics"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "year"
+    t.integer  "competitive_group_id", null: false
   end
 
   create_table "competitive_group_items", force: true do |t|
@@ -679,6 +688,19 @@ ActiveRecord::Schema.define(version: 20140618093705) do
   add_index "employee_position", ["employee_position_employee"], name: "employee_position_employee", using: :btree
   add_index "employee_position", ["employee_position_position"], name: "employee_position_position", using: :btree
 
+  create_table "entrance_applications", force: true do |t|
+    t.string   "number"
+    t.integer  "entrant_id"
+    t.date     "registration_date"
+    t.date     "last_deny_date"
+    t.boolean  "need_hostel"
+    t.integer  "status_id",         default: 1, null: false
+    t.text     "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "campaign_id",                   null: false
+  end
+
   create_table "entrance_campaigns", force: true do |t|
     t.string   "name",                   null: false
     t.integer  "start_year",             null: false
@@ -702,9 +724,63 @@ ActiveRecord::Schema.define(version: 20140618093705) do
     t.datetime "updated_at"
   end
 
+  create_table "entrance_entrants", force: true do |t|
+    t.string   "last_name"
+    t.string   "first_name"
+    t.string   "patronym"
+    t.integer  "gender",              default: 1,     null: false
+    t.string   "snils"
+    t.string   "information"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "campaign_id",                         null: false
+    t.integer  "citizenship",         default: 1,     null: false
+    t.date     "birthday",                            null: false
+    t.string   "birth_place",                         null: false
+    t.string   "pseries"
+    t.string   "pnumber",                             null: false
+    t.string   "pdepartment",                         null: false
+    t.date     "pdate",                               null: false
+    t.integer  "acountry",            default: 0,     null: false
+    t.string   "azip",                                null: false
+    t.string   "aregion"
+    t.string   "aaddress",                            null: false
+    t.string   "phone",                               null: false
+    t.integer  "military_service",    default: 1,     null: false
+    t.boolean  "foreign_institution", default: false
+    t.string   "institution",                         null: false
+    t.integer  "graduation_year",                     null: false
+    t.string   "certificate_number",                  null: false
+    t.date     "certificate_date",                    null: false
+    t.integer  "foreign_language"
+    t.boolean  "need_hostel",         default: true
+  end
+
+  create_table "entrance_exams", force: true do |t|
+    t.integer  "campaign_id"
+    t.boolean  "use"
+    t.integer  "use_subject_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "entrance_queries", force: true do |t|
     t.text     "request"
     t.text     "response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_statuses", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_test_benefit_item_olympic_diplom_types", force: true do |t|
+    t.integer  "entrance_test_benefit_item_id", null: false
+    t.integer  "olympic_diplom_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -721,11 +797,11 @@ ActiveRecord::Schema.define(version: 20140618093705) do
     t.integer  "min_ege_mark"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "year"
   end
 
   create_table "entrance_test_items", force: true do |t|
     t.integer  "competitive_group_id",   null: false
-    t.integer  "entrance_test_type_id",  null: false
     t.string   "form"
     t.integer  "min_score"
     t.integer  "entrance_test_priority"
@@ -733,6 +809,7 @@ ActiveRecord::Schema.define(version: 20140618093705) do
     t.string   "subject_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "exam_id"
   end
 
   create_table "entrance_test_types", force: true do |t|
@@ -1792,10 +1869,11 @@ ActiveRecord::Schema.define(version: 20140618093705) do
   add_index "template_reason", ["template_reason_template"], name: "template_reason_template", using: :btree
 
   create_table "use_olympics", force: true do |t|
-    t.string   "name"
+    t.text     "name"
     t.integer  "number"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "year"
   end
 
   create_table "use_subjects", force: true do |t|

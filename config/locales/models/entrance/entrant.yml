@@ -1,0 +1,30 @@
+ru:
+  activerecord:
+    models:
+      entrance/entrant: 'приёмная кампания'
+    attributes:
+      entrance/entrant:
+        last_name: 'фамилия'
+        first_name: 'имя'
+        patronym: 'отчество'
+        gender: 'пол'
+        citizenship: 'гражданство'
+        birthday: 'дата рождения'
+        birth_place: 'место рождения'
+        pseries: 'серия'
+        pnumber: 'номер'
+        pdepartment: 'кем выдан'
+        pdate: 'дата выдачи'
+        acountry: 'страна жительства'
+        azip: 'индекс'
+        aregion: 'регион'
+        aaddress: 'адрес'
+        phone: 'телефон'
+        foreign_institution: 'иностранное учебное заведение'
+        institution: 'учебное заведение'
+        graduation_year: 'год окончания'
+        certificate_number: 'номер аттестата'
+        certificate_date: 'дата выдачи аттестата'
+        foreign_language: 'иностранный язык'
+        military_service: 'служба в армии'
+        need_hostel: 'потребность в общежитии'

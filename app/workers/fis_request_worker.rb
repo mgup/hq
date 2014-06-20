@@ -22,6 +22,6 @@ class FISRequestWorker
       headers: { 'Content-Type' => 'text/xml' }
     )
 
-    puts response
+    raise response.inspect
   end
 end
