@@ -228,7 +228,8 @@
         <div class="col-sm-10">
           <%= exams_f.select :form, options_for_select(
               [['ЕГЭ', :use],
-               ['Внутренние испытания', :university]]),
+               ['Внутренние испытания', :university]],
+              exams_f.object.form),
                              {}, class: 'form-control' %>
         </div>
       </div>
