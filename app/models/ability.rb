@@ -189,6 +189,6 @@ class Ability
 
   def selection(user)
     can :manage, Entrance::Entrant
-    can :manage, Entrance::Applications
+    can :manage, Entrance::Application
   end
 end
