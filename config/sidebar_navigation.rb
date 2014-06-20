@@ -9,7 +9,9 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
+      end
 
+      if can?(:manage, Entrance::Entrant)
         primary.item :nav_group_entrance, 'Приёмная кампания',
                      class: 'nav-header disabled'
 
