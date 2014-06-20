@@ -58,10 +58,11 @@ class Entrance::ApplicationsController < ApplicationController
 
       payment = @application.competitive_group_item.payed? ? 'п' : ''
 
-      last_number = Entrance::Application.
+      last = Entrance::Application.
         where('number LIKE ?', "#{number}%#{payment}").
         order(number: :desc).first
-      if last_number
+      if last
+        last_number = last.number
         last_number.slice!(number)
         last_number.slice!(payment)
 
