@@ -1,0 +1,24 @@
+<%= nested_form_for application,
+             url: entrance_campaign_entrant_applications_path(@campaign, @entrant),
+             remote: true, html: { class: 'form-horizontal' } do |f| %>
+  <%= f.hidden_field :entrant_id %>
+  <%= f.hidden_field :status_id %>
+  <%= f.hidden_field :campaign_id %>
+  <%= f.hidden_field :competitive_group_item_id %>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <div class="checkbox">
+        <label>
+          <%= f.check_box :original %> Оригинал документа об образовании
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Создать заявление', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
