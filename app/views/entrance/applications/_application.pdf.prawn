@@ -56,7 +56,7 @@ pdf.font_size 11 do
       pdf.text "Наличие направления: <u> нет </u>", inline_format: true
       pdf.text "Категория зачисления: <u> по конкурсу </u>", inline_format: true
       pdf.text 'Оценки для участия в конкурсе:'
-      entrant.exam_results.each_with_index do |exam_result, index|
+      entrant.exam_results.in_competitive_group(application.competitive_group_item.competitive_group).each_with_index do |exam_result, index|
         pdf.text "#{index+1}. #{exam_result.exam.name} (#{exam_result.exam_type}) - #{exam_result.score}"
       end
 
@@ -100,7 +100,7 @@ pdf.font_size 11 do
         data = [['№ п/п', 'Наименование предмета (тип экзамена)', 'Дата экзамена', 'Оценка', 'Фамилия экзаменатора / сертификат ЕГЭ', 'Подпись экзаменатора']]
         sum = 0
         all = true
-        entrant.exam_results.each_with_index do |exam_result, index|
+        entrant.exam_results.in_competitive_group(application.competitive_group_item.competitive_group).each_with_index do |exam_result, index|
             data << ["#{index+1}.", "#{exam_result.exam.name} (#{exam_result.exam_type})", '', exam_result.score, '', '']
 
             if exam_result.score
