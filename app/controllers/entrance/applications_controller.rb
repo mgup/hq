@@ -49,11 +49,23 @@ class Entrance::ApplicationsController < ApplicationController
 
       payment = @application.competitive_group_item.payed? ? 'п' : ''
 
-      apps = Entrance::Application.
+      last_number = Entrance::Application.
         where('number LIKE ?', "#{number}%#{payment}").
-        order()
+        order(number: :desc).first
+      if last_number
+        last_number.slice!(number)
+        last_number.slice!(payment)
 
+        count = last_number.to_i + 1
+      else
+        count = 1
+      end
+
+      number << sprintf('%03d', count)
       number << payment
+
+      @application.number = number
+      @application.save!
 
       respond_to do |format|
         format.html do
