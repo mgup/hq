@@ -19,10 +19,19 @@ class Entrance::ApplicationsController < ApplicationController
 
       possible_exams.each do |combination|
         if combination == needed_exams.sort
-          # Эта конкурсная группа подходит.
-          @entrant.applications.build(
-            competitive_group_item_id: g.items.first.id,
-            campaign_id: @campaign.id)
+          found = false
+          @entrant.applications.each do |a|
+            if a.competitive_group_item_id == g.items.first.id
+              found = true
+            end
+          end
+
+          unless found
+            # Эта конкурсная группа подходит.
+            @entrant.applications.build(
+              competitive_group_item_id: g.items.first.id,
+              campaign_id: @campaign.id)
+          end
         end
       end
     end
