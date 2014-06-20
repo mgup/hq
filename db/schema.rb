@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620073852) do
+ActiveRecord::Schema.define(version: 20140620075434) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -448,6 +448,7 @@ ActiveRecord::Schema.define(version: 20140620073852) do
     t.string   "period"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "letters"
   end
 
   create_table "discount", primary_key: "discount_id", force: true do |t|
