@@ -34,6 +34,27 @@ class Entrance::ApplicationsController < ApplicationController
 
   def create
     if @application.save
+      # Теперь нужно заявлению присвоить номер.
+      number = '14-'
+      number << @application.competitive_group_item.direction.letters
+
+      number << case @application.competitive_group_item.form
+        when 10
+          'З'
+        when 11
+          'О'
+        when 12
+          'В'
+      end
+
+      payment = @application.competitive_group_item.payed? ? 'п' : ''
+
+      apps = Entrance::Application.
+        where('number LIKE ?', "#{number}%#{payment}").
+        order()
+
+      number << payment
+
       respond_to do |format|
         format.html do
           redirect_to entrance_campaign_entrants_path(@campaign),
