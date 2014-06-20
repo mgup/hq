@@ -1,3 +1,9 @@
 <p class="lead">
   Заявление № <%= application.number %> от <%= l application.created_at %>.
 </p>
+
+<p class="lead">
+  <%= application.original ? 'Получен <strong>подлинник</strong>'.html_safe : 'Получена <strong>копия</strong>'.html_safe %> документа.
+</p>
+
+<hr>
