@@ -23,4 +23,5 @@ class Entrance::CompetitiveGroup < ActiveRecord::Base
     end
     super
   end
+
 end

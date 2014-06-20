@@ -32,15 +32,15 @@ class DirectionsController < ApplicationController
     #   record.save
     # end
 
-    doc = Nokogiri::XML(open('/Users/anna/Downloads/19.xml'))
-    doc.css('DictionaryItem').each do |node|
-      record = Use::Olympic.new
-      record.id = node.xpath('OlympicID').inner_text
-      record.name = node.xpath('OlympicName').inner_text
-      record.number = node.xpath('OlympicNumber').inner_text
-      record.year = node.xpath('Year').inner_text
-      record.save
-    end
+    # doc = Nokogiri::XML(open('/Users/anna/Downloads/19.xml'))
+    # doc.css('DictionaryItem').each do |node|
+    #   record = Use::Olympic.new
+    #   record.id = node.xpath('OlympicID').inner_text
+    #   record.name = node.xpath('OlympicName').inner_text
+    #   record.number = node.xpath('OlympicNumber').inner_text
+    #   record.year = node.xpath('Year').inner_text
+    #   record.save
+    # end
 
     # xml = Nokogiri::XML(open('/Users/anna/Downloads/CompetitiveGroups 2014-06-17.xml'))
     # hash = Hash.from_xml("#{xml}")

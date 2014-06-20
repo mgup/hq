@@ -34,6 +34,13 @@ class Entrance::ApplicationsController < ApplicationController
 
   end
 
+  def print
+    @entrant = @application.entrant
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   def resource_params
     params.fetch(:application, {}).permit(
       :number, :registration_date
