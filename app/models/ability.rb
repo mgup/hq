@@ -186,4 +186,9 @@ class Ability
     can :manage, Study::Exam
     can :manage, Study::Repeat
   end
+
+  def selection(user)
+    can :manage, Entrance::Entrant
+    can :manage, Entrance::Application
+  end
 end
