@@ -5,7 +5,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   render 'pdf/font', pdf: pdf
 
-    @entrant.application.each do |ap|
+    @entrant.applications.each do |ap|
         render 'application', pdf: pdf, application: ap, entrant: @entrant
         pdf.start_new_page
     end

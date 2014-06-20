@@ -35,7 +35,7 @@ class Entrance::Entrant < ActiveRecord::Base
   def military_status
     case military_service
       when 'not'
-        'Невоеннообязанный (девушки и иностранцы)'
+        'Невоеннообязанный'
       when 'conscript'
         'Призывник'
       when 'reservist'

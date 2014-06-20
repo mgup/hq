@@ -5,7 +5,7 @@
   </h1>
 </div>
 
-<%= link_to print_all_entrance_campaign_entrant_applications_path(application.entrance.campaign, application.entrance),
+<%= link_to print_all_entrance_campaign_entrant_applications_path(@campaign, @entrant),
             class: 'btn btn-info' do %>
     <span class="glyphicon glyphicon-print"></span> Распечатать все заявления
 <% end %>

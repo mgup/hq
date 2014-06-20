@@ -51,7 +51,7 @@ class Entrance::ApplicationsController < ApplicationController
         when 10
           'З'
         when 11
-          'О'
+          'Д'
         when 12
           'В'
       end
@@ -89,17 +89,11 @@ class Entrance::ApplicationsController < ApplicationController
   end
 
   def print
-    @entrant = @application.entrant
-    respond_to do |format|
-      format.pdf
-    end
+    respond_to { |format| format.pdf }
   end
 
   def print_all
-    @entrant = Entrance::Entrante.find(:entrant_id)
-    respond_to do |format|
-      format.pdf
-    end
+    respond_to { |format| format.pdf }
   end
 
   def resource_params

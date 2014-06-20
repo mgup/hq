@@ -11,7 +11,7 @@ class Entrance::ExamResult < ActiveRecord::Base
       when 'use'
         'ЕГЭ'
       when 'university'
-        'Внутренее испытание'
+        'ВИ'
     end
   end
 
