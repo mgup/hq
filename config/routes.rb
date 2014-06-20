@@ -278,6 +278,8 @@ HQ::Application.routes.draw do
 
   namespace :entrance do
     resources :campaigns do
+      get 'applications', on: :member
+
       resources :dates
       resources :entrants do
         resources :exam_results

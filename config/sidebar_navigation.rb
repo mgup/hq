@@ -23,17 +23,19 @@ SimpleNavigation::Configuration.run do |navigation|
                      department_users_path
       end
 
-      if can?(:manage, Entrance::Entrant)
-        primary.item :nav_group_entrance, 'Приёмная кампания',
-                     class: 'nav-header disabled'
+      primary.item :nav_group_entrance, 'Приёмная кампания',
+                   class: 'nav-header disabled'
 
+      primary.item :entrance_campaign_applications, 'Поданные заявления',
+                   applications_entrance_campaign_path(Entrance::Campaign::CURRENT)
+
+      if can?(:manage, Entrance::Entrant)
         primary.item :new_entrance_application, 'Абитуриенты',
                      entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
-
-        primary.item :entrance_dates, 'Сроки проведения',
-                     entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
       end
 
+      primary.item :entrance_dates, 'Сроки проведения',
+                   entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
     end
 
     # ======================================

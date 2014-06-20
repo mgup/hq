@@ -6,4 +6,24 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :entrant, class_name: 'Entrance::Entrant'
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
   belongs_to :competitive_group, :class_name => 'Entrance::CompetitiveGroup'
+
+  scope :paid, -> do
+    where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0')
+  end
+
+  scope :not_paid, -> do
+    where('number_paid_o = 0 OR number_paid_oz = 0 OR number_paid_z = 0')
+  end
+
+  scope :o_form, -> do
+    where('number_budget_o > 0 OR number_paid_o > 0 OR number_quota_o > 0')
+  end
+
+  scope :oz_form, -> do
+    where('number_budget_oz > 0 OR number_paid_oz > 0 OR number_quota_oz > 0')
+  end
+
+  scope :z_form, -> do
+    where('number_budget_z > 0 OR number_paid_z > 0 OR number_quota_z > 0')
+  end
 end
