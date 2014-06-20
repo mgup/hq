@@ -281,7 +281,9 @@ HQ::Application.routes.draw do
       resources :dates
       resources :entrants do
         resources :exam_results
-        resources :applications
+        resources :applications do
+          get '/print.pdf', to: 'applications#print', on: :member, defaults: { format: 'pdf' }, as: :print
+        end
       end
     end
 
