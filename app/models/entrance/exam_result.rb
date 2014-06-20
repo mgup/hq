@@ -20,5 +20,4 @@ class Entrance::ExamResult < ActiveRecord::Base
         'ВИ'
     end
   end
-
 end

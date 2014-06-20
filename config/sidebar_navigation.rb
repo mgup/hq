@@ -8,6 +8,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :actual_events, 'Актуальные события', actual_events_path,
                  icon: 'calendar'
 
+
     if user_signed_in?
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
@@ -22,13 +23,15 @@ SimpleNavigation::Configuration.run do |navigation|
                      '<span class="glyphicons group"></span> Подразделение'.html_safe,
                      department_users_path
       end
+    end
 
-      primary.item :nav_group_entrance, 'Приёмная кампания',
-                   class: 'nav-header disabled'
+    primary.item :nav_group_entrance, 'Приёмная кампания',
+                 class: 'nav-header disabled'
 
-      primary.item :entrance_campaign_applications, 'Поданные заявления',
-                   applications_entrance_campaign_path(Entrance::Campaign::CURRENT)
+    primary.item :entrance_campaign_applications, 'Поданные заявления',
+                 applications_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
+    if user_signed_in?
       if can?(:manage, Entrance::Entrant)
         primary.item :new_entrance_application, 'Абитуриенты',
                      entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)

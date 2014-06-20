@@ -33,4 +33,25 @@
   </div>
 <% end %>
 
-<%= @applications.inspect %>
+<% if @applications.empty? %>
+  <p>Нет ни одного заявления.</p>
+<% else %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>№</th>
+        <th>Регистрационный номер</th>
+        <th>Фамилия, имя, отчество</th>
+        <th>Основание приёма</th>
+      </tr>
+    </thead>
+    <% @applications.each_with_index do |application, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= application.number %></td>
+        <td><%= application.entrant.full_name %></td>
+        <td><%= application.entrance_type %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
