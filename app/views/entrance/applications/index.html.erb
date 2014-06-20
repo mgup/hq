@@ -1,0 +1,10 @@
+<div class="page-header">
+  <h1>
+    Заявления
+    <small class="nowrap"><%= @entrant.full_name %></small>
+  </h1>
+</div>
+
+<% @entrant.applications.each do |a| %>
+  <h4><%= a.competitive_group_item.competitive_group.name %></h4>
+<% end %>
