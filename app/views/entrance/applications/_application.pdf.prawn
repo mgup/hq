@@ -114,7 +114,7 @@ pdf.font_size 11 do
     pdf.start_new_page
     pdf.font_size 11 do
         pdf.text 'МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ<br>ФГБУ ВПО «МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ<br>ИМЕНИ ИВАНА ФЕДОРОВА»', align: :center, style: :bold, inline_format: true
-        pdf.text "Институт", align: :center
+       
 
         pdf.move_down 8
         pdf.text "направление подготовки (специальность): <strong>#{application.competitive_group_item.direction.code}.#{application.competitive_group_item.direction.qualification_code}</strong>                     форма обучения: <strong>#{application.competitive_group_item.form_name}</strong>", inline_format: true
