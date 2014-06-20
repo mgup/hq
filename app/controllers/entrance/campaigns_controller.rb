@@ -1,5 +1,6 @@
 class Entrance::CampaignsController < ApplicationController
-  load_and_authorize_resource class: 'Entrance::Campaign'
+  skip_before_filter :authenticate_user!
+  load_resource class: 'Entrance::Campaign'
 
   def applications
     params[:direction] ||= 1887
