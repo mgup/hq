@@ -79,7 +79,7 @@ pdf.font_size 11 do
       pdf.move_down 4
       pdf.text 'Достоверность всех предоставленных сведений и подлинность документов подтверждаю.', align: :center
       pdf.move_down 6
-      pdf.text "#{l application.created_at, format: '%d %B %Y'} г.                                                                                              ___________________ / #{entrant.short_name} /", inline_format: true
+      pdf.text "#{l application.created_at, format: '%d %B %Y'} г.                                                                                      ___________________ / #{entrant.short_name} /", inline_format: true
 
       pdf.move_down 5
       pdf.text '__________________ / __________________ /', align: :right
