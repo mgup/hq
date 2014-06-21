@@ -17,6 +17,10 @@ class Entrance::Entrant < ActiveRecord::Base
   has_many :applications, class_name: Entrance::Application
   accepts_nested_attributes_for :applications, allow_destroy: true
 
+  default_scope do
+    order(:last_name, :first_name, :patronym)
+  end
+
   def full_name
     [last_name, first_name, patronym].join(' ')
   end
