@@ -23,6 +23,8 @@ class Entrance::CampaignsController < ApplicationController
   private
 
   def applications_from_filters(opts = { date: false })
+    params[:date] ||= l(Date.today)
+
     params[:direction] ||= 1887
     @direction = Direction.find(params[:direction])
 
@@ -50,12 +52,12 @@ class Entrance::CampaignsController < ApplicationController
 
     apps = Entrance::Application.
       joins(competitive_group_item: :direction).
+      joins(:benefits).
       send(form_method).send(payment_method).
       where('directions.id = ?', params[:direction]).
-      order('entrance_applications.number ASC')
+      order('(entrance_benefits.benefit_kind_id = 1), entrance_applications.number ASC')
 
     if opts[:date]
-      params[:date] ||= l(Date.today)
       apps = apps.where('DATE(entrance_applications.created_at) = ?',
                  Date.strptime(params[:date], '%d.%m.%Y'))
     end

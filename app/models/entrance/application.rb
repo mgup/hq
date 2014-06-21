@@ -32,6 +32,10 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def entrance_type
+    if benefits.first && benefits.first.benefit_kind.out_of_competition?
+      return benefits.first.benefit_kind.name
+    end
+
     use = true
     entrant.exam_results.in_competitive_group(competitive_group_item.competitive_group).each do |exam_result|
       use = false if exam_result.university?
@@ -46,5 +50,9 @@ class Entrance::Application < ActiveRecord::Base
     end
 
     false
+  end
+
+  def to_fis
+
   end
 end
