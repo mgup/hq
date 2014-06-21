@@ -74,7 +74,7 @@ class Entrance::Application < ActiveRecord::Base
           xml.CompetitiveGroupItemID competitive_group_item_id
         end
         xml.FinSourceAndEduForms do
-          xml.FinSourceAndEduForm do
+          xml.FinSourceEduForm do
             xml.FinanceSourceID     competitive_group_item.payed? ? 15 : 14
             xml.EducationFormID     competitive_group_item.form
             xml.CompetitiveGroupID  competitive_group_item.competitive_group.id
