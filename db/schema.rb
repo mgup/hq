@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621065034) do
+ActiveRecord::Schema.define(version: 20140621073024) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -262,12 +262,6 @@ ActiveRecord::Schema.define(version: 20140621065034) do
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
-
-  create_table "benefit_kinds", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "blanks", force: true do |t|
     t.integer  "type"

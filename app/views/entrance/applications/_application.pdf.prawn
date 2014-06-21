@@ -63,7 +63,12 @@ pdf.font_size 11 do
 
       pdf.text 'Оценки для участия в конкурсе:'
       entrant.exam_results.in_competitive_group(application.competitive_group_item.competitive_group).each_with_index do |exam_result, index|
-        pdf.text "#{index+1}. #{exam_result.exam.name} (#{exam_result.exam_type}) - #{exam_result.score}"
+        result = ["#{index + 1}."]
+        result << exam_result.exam.name
+        result << "(#{exam_result.exam_type})"
+        result << exam_result.score unless application.
+
+        pdf.text result.join(' ')
       end
 
       pdf.move_down 4

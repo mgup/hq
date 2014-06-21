@@ -39,4 +39,12 @@ class Entrance::Application < ActiveRecord::Base
 
     use ? 'ЕГЭ' : 'Внутренние испытания'
   end
+
+  def out_of_competition
+    if benefits
+      benefits.first.benefit_kind.out_of_competition?
+    end
+
+    false
+  end
 end
