@@ -3,7 +3,7 @@ class Entrance::CampaignsController < ApplicationController
   load_and_authorize_resource class: 'Entrance::Campaign'
 
   def applications
-    params[:direction] = 1887
+    params[:direction] ||= 1887
 
     @applications = applications_from_filters
 
