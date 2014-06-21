@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620075434) do
+ActiveRecord::Schema.define(version: 20140621065034) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -702,6 +702,21 @@ ActiveRecord::Schema.define(version: 20140620075434) do
     t.integer  "campaign_id",                               null: false
     t.integer  "competitive_group_item_id"
     t.boolean  "original",                  default: false
+  end
+
+  create_table "entrance_benefit_kinds", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_benefits", force: true do |t|
+    t.integer  "application_id"
+    t.integer  "benefit_kind_id"
+    t.integer  "document_type_id"
+    t.string   "temp_text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "entrance_campaigns", force: true do |t|

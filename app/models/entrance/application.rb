@@ -7,6 +7,8 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
   belongs_to :competitive_group, :class_name => 'Entrance::CompetitiveGroup'
 
+  has_many :benefits, class_name: 'Entrance::Benefit'
+
   scope :paid, -> do
     where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
     where('number_budget_o = 0 AND number_budget_oz = 0 AND number_budget_z = 0').
