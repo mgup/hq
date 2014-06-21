@@ -53,6 +53,58 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def to_fis
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.Application do
+        xml.UID               id
+        xml.ApplicationNumber number
+        xml.Entrant do
+          xml.UID         entrant.id
+          xml.FirstName   entrant.first_name
+          xml.MiddleName  entrant.patronym
+          xml.LastName    entrant.last_name
+          xml.GenderId    entrant[:gender]
+        end
+        xml.RegistrationDate  created_at
+        xml.NeedHostel        entrant.need_hostel
+        xml.StatusID          status_id
+        xml.SelectedCompetitiveGroups do
+          xml.CompetitiveGroupID competitive_group_item.competitive_group.id
+        end
+        xml.SelectedCompetitiveGroupItems do
+          xml.CompetitiveGroupItemID competitive_group_item_id
+        end
+        xml.FinSourceAndEduForms do
+          xml.FinSourceAndEduForm do
+            xml.FinanceSourceID     competitive_group_item.payed? ? 15 : 14
+            xml.EducationFormID     competitive_group_item.form
+            xml.CompetitiveGroupID  competitive_group_item.competitive_group.id
+            xml.CompetitiveGroupItemID  competitive_group_item_id
+          end
+        end
+        xml.ApplicationDocuments do
+          xml.IdentityDocument do
+            xml.OriginalReceived true
+            xml.DocumentSeries  entrant.pseries
+            xml.DocumentNumber  entrant.pnumber
+            xml.DocumentDate    entrant.pdate
+            xml.IdentityDocumentTypeID  1
+            xml.NationalityTypeID       1
+            xml.BirthDate               entrant.birthday
+          end
+          # xml.EduDocuments do
+          #   xml.EduDocument do
+          #     xml.SchoolCertificateDocument do
+          #       xml.OriginalReceived original
+          #       xml.DocumentSeries entrant.certificate_series
+          #       xml.DocumentNumber entrant.certificate_number
+          #
+          #     end
+          #   end
+          # end
+        end
+      end
+    end
 
+    builder.doc
   end
 end

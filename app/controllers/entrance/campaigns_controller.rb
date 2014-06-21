@@ -17,6 +17,17 @@ class Entrance::CampaignsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf
+      format.xml do
+        doc = Nokogiri::XML::Builder.new do |xml|
+          xml.Applications do
+            @applications.each do |application|
+              xml << application.to_fis.xpath('/Application').to_xml.to_str
+            end
+          end
+        end
+
+        render xml: doc.to_xml
+      end
     end
   end
 

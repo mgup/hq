@@ -37,6 +37,12 @@ class Entrance::ApplicationsController < ApplicationController
     end
   end
 
+  def show
+    respond_to do |format|
+      format.xml { render xml: @application.to_fis.to_xml }
+    end
+  end
+
   def new
 
   end
