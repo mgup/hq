@@ -66,7 +66,7 @@ pdf.font_size 11 do
         result = ["#{index + 1}."]
         result << exam_result.exam.name
         result << "(#{exam_result.exam_type})"
-        result << exam_result.score unless application.
+        result << exam_result.score unless application.benefits.first.benefit_kind.out_of_competition
 
         pdf.text result.join(' ')
       end
@@ -112,13 +112,22 @@ pdf.font_size 11 do
         sum = 0
         all = true
         entrant.exam_results.in_competitive_group(application.competitive_group_item.competitive_group).each_with_index do |exam_result, index|
-            data << ["#{index+1}.", "#{exam_result.exam.name} (#{exam_result.exam_type})", '', exam_result.score, '', '']
+          data = ["#{index + 1}."]
+          data << "#{exam_result.exam.name} (#{exam_result.exam_type})"
+          data << ''
+          if application.benefits.first.benefit_kind.out_of_competition
+            data << ''
+          else
+            data << exam_result.score
+          end
+          data << ''
+          data << ''
 
-            if exam_result.score
-              sum += exam_result.score
-            else
-              all = false
-            end
+          if exam_result.score
+            sum += exam_result.score
+          else
+            all = false
+          end
         end
         data << [{content: 'Общее количество баллов', colspan: 3}, sum] unless all
         pdf.table data, header: true, cell_style: { padding: 2 } do
