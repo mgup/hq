@@ -64,7 +64,7 @@ class Entrance::Application < ActiveRecord::Base
           xml.LastName    entrant.last_name
           xml.GenderId    entrant[:gender]
         end
-        xml.RegistrationDate  created_at
+        xml.RegistrationDate  created_at.to_i
         xml.NeedHostel        entrant.need_hostel
         xml.StatusID          status_id
         xml.SelectedCompetitiveGroups do
@@ -86,10 +86,10 @@ class Entrance::Application < ActiveRecord::Base
             xml.OriginalReceived true
             xml.DocumentSeries  entrant.pseries
             xml.DocumentNumber  entrant.pnumber
-            xml.DocumentDate    entrant.pdate
+            xml.DocumentDate    entrant.pdate.to_i
             xml.IdentityDocumentTypeID  1
             xml.NationalityTypeID       1
-            xml.BirthDate               entrant.birthday
+            xml.BirthDate               entrant.birthday.to_i
           end
           # xml.EduDocuments do
           #   xml.EduDocument do
