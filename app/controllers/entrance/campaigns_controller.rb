@@ -3,6 +3,8 @@ class Entrance::CampaignsController < ApplicationController
   load_and_authorize_resource class: 'Entrance::Campaign'
 
   def applications
+    params[:direction] = 1887
+
     @applications = applications_from_filters
 
     respond_to do |format|
@@ -36,9 +38,6 @@ class Entrance::CampaignsController < ApplicationController
   def applications_from_filters(opts = { date: false })
     params[:date] ||= l(Date.today)
 
-    params[:direction] ||= 1887
-    @direction = Direction.find(params[:direction])
-
     params[:form]      ||= 11
     @form = EducationForm.find(params[:form])
 
@@ -65,12 +64,16 @@ class Entrance::CampaignsController < ApplicationController
       joins(competitive_group_item: :direction).
       joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id').
       send(form_method).send(payment_method).
-      where('directions.id = ?', params[:direction]).
       order('(entrance_benefits.benefit_kind_id = 1) DESC, entrance_applications.number ASC')
 
     if opts[:date]
       apps = apps.where('DATE(entrance_applications.created_at) = ?',
                  Date.strptime(params[:date], '%d.%m.%Y'))
+    end
+
+    if params[:direction]
+      @direction = Direction.find(params[:direction])
+      apps = apps.where('directions.id = ?', params[:direction])
     end
 
     apps
