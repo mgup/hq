@@ -67,7 +67,7 @@ pdf.font_size 11 do
         result << exam_result.exam.name
         result << "(#{exam_result.exam_type})"
 
-        if application.benefits.first && application.benefits.first.benefit_kind.out_of_competition
+        if application.benefits.first && application.benefits.first.benefit_kind.out_of_competition?
           result << ''
         else
           result << exam_result.score
@@ -120,19 +120,20 @@ pdf.font_size 11 do
           res = ["#{index + 1}."]
           res << "#{exam_result.exam.name} (#{exam_result.exam_type})"
           res << ''
-          if application.benefits.first && application.benefits.first.benefit_kind.out_of_competition
+          if application.benefits.first && application.benefits.first.benefit_kind.out_of_competition?
             res << ''
           else
             res << exam_result.score
+
+            if exam_result.score
+              sum += exam_result.score
+            else
+              all = false
+            end
           end
           res << ''
           res << ''
 
-          if exam_result.score
-            sum += exam_result.score
-          else
-            all = false
-          end
           data << res
         end
         data << [{content: 'Общее количество баллов', colspan: 3}, sum] unless all
