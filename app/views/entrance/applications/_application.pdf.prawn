@@ -157,10 +157,10 @@ pdf.font_size 11 do
             end
         end
 
-        pdf.move_down 10
+        pdf.move_down 5
 
         pdf.stroke do
-            pdf.move_down 8
+            pdf.move_down 4
             pdf.horizontal_rule
         end
         pdf.font_size 8 do
