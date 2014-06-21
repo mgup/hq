@@ -122,6 +122,7 @@ pdf.font_size 11 do
           res << ''
           if application.benefits.first && application.benefits.first.benefit_kind.out_of_competition?
             res << ''
+            all = false
           else
             res << exam_result.score
 
@@ -136,7 +137,9 @@ pdf.font_size 11 do
 
           data << res
         end
-        data << [{content: 'Общее количество баллов', colspan: 3}, sum] unless all
+
+        total_sum = all ? sum : ''
+        data << [{content: 'Общее количество баллов', colspan: 3}, total_sum]
         pdf.table data, header: true, cell_style: { padding: 2 } do
              column(0).width = 24
              column(1).width = 179.28
