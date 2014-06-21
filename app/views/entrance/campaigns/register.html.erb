@@ -5,7 +5,8 @@
 </div>
 
 <%= render partial: 'filters',
-           locals: { url: register_entrance_campaign_path(@campaign) } %>
+           locals: { url: register_entrance_campaign_path(@campaign),
+                     date: true } %>
 
 <% if @applications.empty? %>
   <p>Нет ни одного заявления.</p>

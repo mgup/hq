@@ -25,4 +25,15 @@
                      onchange: %q($(this).parents('form').submit();) %>
     </div>
   </div>
+
+  <% if defined?(date) && date %>
+    <div class="row">
+      <div class="col-sm-2">
+        <%= text_field_tag :date, params[:date], class: 'form-control datepicker' %>
+      </div>
+      <div class="col-sm-2">
+        <%= submit_tag 'Выбрать дату', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
 <% end %>

@@ -10,6 +10,12 @@
 <% if @applications.empty? %>
   <p>Нет ни одного заявления.</p>
 <% else %>
+  <%= link_to 'Распечатать',
+              applications_entrance_campaign_path(
+                @campaign, params.merge({ format: :pdf })
+              ),
+              target: :blank, class: 'lead' %>
+
   <table class="table table-striped">
     <thead>
       <tr>
