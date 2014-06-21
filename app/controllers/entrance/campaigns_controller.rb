@@ -20,7 +20,7 @@ class Entrance::CampaignsController < ApplicationController
       format.html
       format.pdf
       format.xml do
-        doc = Nokogiri::XML::Builder.new do |xml|
+        doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.Applications do
             @applications.each do |application|
               xml << application.to_fis.xpath('/Application').to_xml.to_str

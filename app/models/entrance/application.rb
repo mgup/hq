@@ -53,7 +53,7 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def to_fis
-    builder = Nokogiri::XML::Builder.new do |xml|
+    builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
       xml.Application do
         xml.UID               id
         xml.ApplicationNumber number
