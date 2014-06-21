@@ -108,7 +108,7 @@ pdf.font_size 11 do
         pdf.rectangle [0,670], 100, 130
         pdf.text_box 'место для фото', size: 9, at: [16,630], width: 70, height: 50
 
-        pdf.text_box "#{l application.created_at, format: '%d %B %Y'} г.                                  ___________________ / #{entrant.short_name} /", inline_format: true, at: [130,630], width: 600, height: 50
+        pdf.text_box "#{l application.created_at, format: '%d %B %Y'} г.                               ___________________ / #{entrant.short_name} /", inline_format: true, at: [130,630], width: 600, height: 50
 
         pdf.move_down 140
         pdf.text 'Оценки вступительных испытаний', style: :bold, align: :center
