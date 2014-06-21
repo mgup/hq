@@ -157,7 +157,7 @@ pdf.font_size 11 do
             end
         end
 
-        pdf.move_down 20
+        pdf.move_down 10
 
         pdf.stroke do
             pdf.move_down 8
