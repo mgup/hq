@@ -186,9 +186,9 @@ pdf.font_size 11 do
             end
         end
 
-        pdf.bounding_box([250, 260], width: 260, height: 220) do
+        pdf.bounding_box([250, 260], width: 260, height: 210) do
             pdf.text "Расписка № #{application.number}", style: :bold, align: :center, size: 11
-            pdf.move_down 15
+            pdf.move_down 10
             pdf.font_size 10 do
                 pdf.text "о приёме документов от поступающего на направление подготовки (специальность): #{application.competitive_group_item.direction.new_code}"
                 pdf.text "Получены от #{entrant.short_name} следующие документы:"
@@ -201,7 +201,7 @@ pdf.font_size 11 do
             end
         end
 
-        pdf.text "Сдал: ______________ / #{entrant.short_name} /                   Принял: секретарь комиссии ______________ / ___________________ /", size: 10
+        pdf.text "Сдал: ______________ / #{entrant.short_name} /          Принял: секретарь комиссии ______________ / ___________________ /", size: 10
         pdf.move_down 8
         pdf.text "#{l application.created_at, format: '%d %B %Y'} г.", inline_format: true, size: 10
 
