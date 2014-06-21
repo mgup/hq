@@ -167,7 +167,7 @@ pdf.font_size 11 do
             pdf.text 'Линия отреза', align: :center
         end
 
-        pdf.bounding_box([0, 280], width: 200, height: 220) do
+        pdf.bounding_box([0, 280], width: 270, height: 220) do
             pdf.font_size 9 do
                 pdf.text 'МИНИСТЕРСТВО', align: :center
                 pdf.text 'ОБРАЗОВАНИЯ И НАУКИ', align: :center
