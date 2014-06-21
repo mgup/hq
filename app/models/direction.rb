@@ -1,4 +1,6 @@
 class Direction < ActiveRecord::Base
+  belongs_to :department
+
   has_many :competitive_group_items, class_name: 'Entrance::CompetitiveGroupItem'
 
   scope :for_campaign, -> (campaign) do
