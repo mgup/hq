@@ -28,10 +28,17 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :nav_group_entrance, 'Приёмная кампания',
                  class: 'nav-header disabled'
 
-    primary.item :entrance_campaign_applications, 'Поданные заявления',
+    primary.item :entrance_campaign_applications,
+                 '<span class="glyphicons notes_2"></span> Поданные заявления'.html_safe,
                  applications_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
     if user_signed_in?
+      if can?(:register, Entrance::Campaign)
+        primary.item :entrance_campaign_register,
+                     '<span class="glyphicons notes_2"></span> Регистрационный журнал'.html_safe,
+                     register_entrance_campaign_path(Entrance::Campaign::CURRENT)
+      end
+
       if can?(:manage, Entrance::Entrant)
         primary.item :new_entrance_application, 'Абитуриенты',
                      entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)

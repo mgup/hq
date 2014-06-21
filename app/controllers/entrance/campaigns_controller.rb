@@ -1,8 +1,18 @@
 class Entrance::CampaignsController < ApplicationController
   skip_before_filter :authenticate_user!
-  load_resource class: 'Entrance::Campaign'
+  load_and_authorize_resource class: 'Entrance::Campaign'
 
   def applications
+    @applications = applications_from_filters
+  end
+
+  def register
+    @applications = applications_from_filters
+  end
+
+  private
+
+  def applications_from_filters
     params[:direction] ||= 1887
     params[:form]      ||= 11
     params[:payment]   ||= 14
@@ -23,7 +33,7 @@ class Entrance::CampaignsController < ApplicationController
                          :not_paid
                      end
 
-    @applications = Entrance::Application.
+    Entrance::Application.
       joins(competitive_group_item: :direction).
       send(form_method).send(payment_method).
       where('directions.id = ?', params[:direction]).

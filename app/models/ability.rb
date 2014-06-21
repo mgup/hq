@@ -91,7 +91,7 @@ class Ability
     can :actual, :events
     can :create, EventDateClaim
 
-    can :manage, Entrance::Campaign
+    can :applications, Entrance::Campaign
   end
 
   # Обычный преподаватель.

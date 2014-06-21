@@ -50,4 +50,8 @@ class Entrance::Entrant < ActiveRecord::Base
         'не достигший возраста призывника'
     end
   end
+
+  def contacts
+    [azip, aaddress, phone].join(', ')
+  end
 end
