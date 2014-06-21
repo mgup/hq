@@ -71,7 +71,7 @@ class Entrance::CampaignsController < ApplicationController
                  Date.strptime(params[:date], '%d.%m.%Y'))
     end
 
-    if params[:direction]
+    if params[:direction].present?
       @direction = Direction.find(params[:direction])
       apps = apps.where('directions.id = ?', params[:direction])
     end

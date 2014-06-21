@@ -5,7 +5,9 @@
                      options_from_collection_for_select(
                          Direction.for_campaign(@campaign),
                          :id, :description, params[:direction]
-                     ), class: 'form-control',
+                     ),
+                     prompt: 'Все направления',
+                     class: 'form-control',
                      onchange: %q($(this).parents('form').submit();) %>
     </div>
     <div class="col-sm-2">
@@ -13,7 +15,8 @@
                      options_for_select(
                          [['очная', 11], ['очно-заочная', 12], ['заочная', 10]],
                          params[:form]
-                     ), class: 'form-control',
+                     ),
+                     class: 'form-control',
                      onchange: %q($(this).parents('form').submit();) %>
     </div>
     <div class="col-sm-2">
