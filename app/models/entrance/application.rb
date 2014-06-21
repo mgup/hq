@@ -62,7 +62,7 @@ class Entrance::Application < ActiveRecord::Base
           xml.FirstName   entrant.first_name
           xml.MiddleName  entrant.patronym
           xml.LastName    entrant.last_name
-          xml.GenderId    entrant[:gender]
+          xml.GenderID    entrant[:gender]
         end
         xml.RegistrationDate  created_at.iso8601
         xml.NeedHostel        entrant.need_hostel
