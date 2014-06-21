@@ -52,7 +52,7 @@ class Entrance::CampaignsController < ApplicationController
 
     apps = Entrance::Application.
       joins(competitive_group_item: :direction).
-      joins(:benefits).
+      joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id').
       send(form_method).send(payment_method).
       where('directions.id = ?', params[:direction]).
       order('(entrance_benefits.benefit_kind_id = 1), entrance_applications.number ASC')
