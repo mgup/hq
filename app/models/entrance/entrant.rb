@@ -3,7 +3,7 @@ class Entrance::Entrant < ActiveRecord::Base
   self.table_name_prefix = 'entrance_'
 
   enum gender: { male: 1, female: 2 }
-  enum citizenship: { russian: 1 }
+  enum citizenship: { russian: 1, other_citizenship: 2 }
   enum acountry: { russia: 0, cis: 1, other_countries: 2 }
   enum military_service: { not: 1, conscript: 2, reservist: 6,
                            free_of_service: 7, too_young: 8 }

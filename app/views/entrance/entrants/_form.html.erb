@@ -55,7 +55,8 @@
       <%= f.label :citizenship, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
         <%= f.select :citizenship,
-                     options_for_select([['Российская Федерация', :russian]]),
+                     options_for_select([['Российская Федерация', :russian],
+                                         ['Другие страны', :other_citizenship]]),
                      {}, class: 'form-control' %>
       </div>
     </div>
@@ -94,7 +95,10 @@
       <%= f.label :acountry, class: 'col-sm-2 control-label' %>
       <div class="col-sm-4">
         <%= f.select :acountry,
-                     options_for_select([['Российская Федерация', :russia]]),
+                     options_for_select(
+                       [['Российская Федерация', :russia],
+                        ['Страны СНГ', :cis],
+                        ['Дальнее зарубежье', :other_countries]]),
                      {}, class: 'form-control' %>
       </div>
 
