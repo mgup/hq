@@ -24,5 +24,13 @@ FactoryGirl.define do
                            user: user
       end
     end
+
+    trait :selection do
+      after(:create) do |user|
+        FactoryGirl.create :position,
+                           role: FactoryGirl.create(:role, :selection),
+                           user: user
+      end
+    end
   end
 end

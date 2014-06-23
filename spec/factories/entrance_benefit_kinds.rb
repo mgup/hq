@@ -1,7 +1,7 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+require 'faker'
 
 FactoryGirl.define do
-  factory :entrance_benefit_kind, :class => 'Entrance::BenefitKind' do
-    name "MyString"
+  factory :entrance_benefit_kind, class: 'Entrance::BenefitKind' do
+    name { Faker::Lorem.sentence }
   end
 end

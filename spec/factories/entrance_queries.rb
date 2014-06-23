@@ -1,8 +1,8 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+require 'faker'
 
 FactoryGirl.define do
   factory :entrance_query do
-    request "MyText"
-    response "MyText"
+    request { Faker::Lorem.sentence }
+    response { Faker::Lorem.sentence }
   end
 end

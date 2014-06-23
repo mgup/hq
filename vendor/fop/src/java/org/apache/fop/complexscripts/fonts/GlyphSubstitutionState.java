@@ -112,7 +112,7 @@ public class GlyphSubstitutionState extends GlyphProcessingState {
         }
         ogb.put ( glyph );
         if ( predications && ( predication != null ) ) {
-            a.setPredication ( feature, predication );
+            a.setPredication (features, predication );
         }
         oal.add ( a );
     }

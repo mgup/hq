@@ -1,11 +1,12 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :entrance_exam_result, :class => 'Entrance::ExamResult' do
-    entrant_id 1
-    exam_id 1
-    score 1
-    type 1
-    document "MyString"
+  factory :exam_result, class: 'Entrance::ExamResult' do
+    score { rand(100) }
+    form 1
+    association :entrant
+
+    trait :empty do
+      score nil
+    end
   end
 end

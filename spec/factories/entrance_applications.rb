@@ -1,13 +1,16 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+require 'faker'
 
 FactoryGirl.define do
-  factory :entrance_application, :class => 'Entrance::Application' do
-    number "MyString"
-    entrant_id 1
-    registration_date "2014-06-19"
-    last_deny_date "2014-06-19"
+  factory :entrance_application, class: 'Entrance::Application' do
+    number { Faker::Lorem.sentence }
+    registration_date { Date.today }
+    last_deny_date { Date.today + 20.days }
     need_hostel false
     status_id 1
-    status_comment "MyText"
+    comment { Faker::Lorem.paragraph }
+    association :campaign
+    association :competitive_group_item
+    association :entrant
+    original false
   end
 end

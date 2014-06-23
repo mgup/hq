@@ -1,12 +1,26 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+require 'faker'
 
 FactoryGirl.define do
-  factory :entrance_entrant, :class => 'Entrance::Entrant' do
-    last_name "MyString"
-    first_name "MyString"
-    patronym "MyString"
-    gender 1
-    snils "MyString"
-    information "MyString"
+  factory :entrant, class: 'Entrance::Entrant' do
+    last_name  { Faker::Lorem.word }
+    first_name { Faker::Lorem.word }
+    patronym { Faker::Lorem.word }
+    gender { [:male, :female].sample }
+    information { Faker::Lorem.sentence }
+    birthday { Date.today - 18.years }
+    birth_place { Faker::Lorem.sentence }
+    pseries { 1000 + rand(9000) }
+    pnumber { 100000 + rand(900000) }
+    pdepartment { Faker::Lorem.sentence }
+    pdate { Date.today - 4.years }
+    azip { 100000 + rand(900000) }
+    aaddress { Faker::Lorem.sentence }
+    institution { Faker::Lorem.sentence }
+    graduation_year { Date.today.year }
+    certificate_number { 123 + rand(2000) }
+    certificate_date { Date.today - 2.months }
+    phone '+7 900 123-45-67'
+    military_service { [:not, :conscript, :reservist, :free_of_service, :too_young].sample }
+    association :campaign
   end
 end
