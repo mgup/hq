@@ -9,9 +9,13 @@
   <thead>
     <tr>
       <th rowspan="2">Направление</th>
-      <th colspan="3" class="text-center">Заявления</th>
+      <th colspan="3" class="text-center">Бюджет</th>
+      <th colspan="3" class="text-center">Платный приём</th>
     </tr>
     <tr>
+      <th>Очная</th>
+      <th>Очно-заочная</th>
+      <th>Заочная</th>
       <th>Очная</th>
       <th>Очно-заочная</th>
       <th>Заочная</th>
@@ -26,9 +30,12 @@
         <td><%= direction.description %></td>
 
         <% stats = Entrance::Application.direction_stats(@campaign, direction) %>
-        <td><%= stats[:o] %></td>
-        <td><%= stats[:oz] %></td>
-        <td><%= stats[:z] %></td>
+        <td><%= stats[:budget][:o] %></td>
+        <td><%= stats[:budget][:oz] %></td>
+        <td><%= stats[:budget][:z] %></td>
+        <td><%= stats[:paid][:o] %></td>
+        <td><%= stats[:paid][:oz] %></td>
+        <td><%= stats[:paid][:z] %></td>
       </tr>
     <% end %>
   <% end %>

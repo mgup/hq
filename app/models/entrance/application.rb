@@ -39,19 +39,27 @@ class Entrance::Application < ActiveRecord::Base
   def self.direction_stats(campaign, direction)
     applications = campaign.applications.for_direction(direction)
     stats = {
-      o:  0,
-      oz: 0,
-      z:  0
+      budget: {
+        o:  0,
+        oz: 0,
+        z:  0
+      },
+      paid: {
+        o:  0,
+        oz: 0,
+        z:  0
+      }
     }
     applications.each do |app|
-      case app.competitive_group_item.form
+       form = case app.competitive_group_item.form
         when 11
-          stats[:o]  += 1
+          :o
         when 12
-          stats[:oz] += 1
+          :oz
         when 10
-          stats[:z]  += 1
-      end
+          :z
+         end
+       stats[app.competitive_group_item.payed? ? :paid : :budget][form] += 1
     end
 
     stats
