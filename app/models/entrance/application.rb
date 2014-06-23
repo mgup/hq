@@ -9,6 +9,18 @@ class Entrance::Application < ActiveRecord::Base
 
   has_many :benefits, class_name: 'Entrance::Benefit'
 
+  after_create do |application|
+    Entrance::Log.create entrant_id: application.entrant.id,
+                         user_id: User.current.id,
+                         comment: "Создано заявление #{application.number}."
+  end
+
+  after_update do |application|
+    Entrance::Log.create entrant_id: application.entrant.id,
+                         user_id: User.current.id,
+                         comment: "Обновлено заявление #{application.number}."
+  end
+
   scope :for_direction, -> (direction) do
     joins(:competitive_group_item).
       where("competitive_group_items.direction_id = #{direction.id}")

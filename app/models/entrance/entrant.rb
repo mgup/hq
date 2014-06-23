@@ -17,6 +17,16 @@ class Entrance::Entrant < ActiveRecord::Base
   has_many :applications, class_name: Entrance::Application
   accepts_nested_attributes_for :applications, allow_destroy: true
 
+  after_create do |entrant|
+    Entrance::Log.create entrant_id: entrant.id, user_id: User.current.id,
+                         comment: 'Добавлена информация об абитуриенте.'
+  end
+
+  after_update do |entrant|
+    Entrance::Log.create entrant_id: entrant.id, user_id: User.current.id,
+                         comment: 'Обновлена информация об абитуриенте.'
+  end
+
   default_scope do
     order(:last_name, :first_name, :patronym)
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621100447) do
+ActiveRecord::Schema.define(version: 20140623094553) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -784,6 +784,14 @@ ActiveRecord::Schema.define(version: 20140621100447) do
     t.boolean  "use"
     t.integer  "use_subject_id"
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_logs", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "entrant_id"
+    t.string   "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
