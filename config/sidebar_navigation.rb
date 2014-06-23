@@ -33,6 +33,10 @@ SimpleNavigation::Configuration.run do |navigation|
                  applications_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
     if user_signed_in?
+      primary.item :entrance_campaign_report,
+                   '<span class="glyphicons adjust_alt"></span> Статистика'.html_safe,
+                   register_entrance_campaign_path(Entrance::Campaign::CURRENT)
+
       if can?(:register, Entrance::Campaign)
         primary.item :entrance_campaign_register,
                      '<span class="glyphicons notes_2"></span> Регистрационный журнал'.html_safe,

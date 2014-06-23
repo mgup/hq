@@ -201,7 +201,17 @@ class Ability
 
   def selection_technical_secretary(user)
     can :manage, Entrance::Campaign
-    can :manage,  Entrance::Entrant
+
+    can :manage,      Entrance::Entrant
+    cannot :destroy,  Entrance::Entrant
+
+    can :manage, Entrance::ExamResult
+    can :manage, Entrance::Application
+  end
+
+  def selection_editor(user)
+    can :manage, Entrance::Campaign
+    can :manage, Entrance::Entrant
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
   end
