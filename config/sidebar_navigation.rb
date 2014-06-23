@@ -35,7 +35,7 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       primary.item :entrance_campaign_report,
                    '<span class="glyphicons adjust_alt"></span> Статистика'.html_safe,
-                   register_entrance_campaign_path(Entrance::Campaign::CURRENT)
+                   report_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
       if can?(:register, Entrance::Campaign)
         primary.item :entrance_campaign_register,

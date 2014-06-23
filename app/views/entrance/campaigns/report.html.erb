@@ -30,12 +30,12 @@
         <td><%= direction.description %></td>
 
         <% stats = Entrance::Application.direction_stats(@campaign, direction) %>
-        <td><%= stats[:budget][:o] unless stats[:budget][:o].zero? %></td>
-        <td><%= stats[:budget][:oz] unless stats[:budget][:oz].zero? %></td>
-        <td><%= stats[:budget][:z] unless stats[:budget][:z].zero? %></td>
-        <td><%= stats[:paid][:o] unless stats[:paid][:o].zero? %></td>
-        <td><%= stats[:paid][:oz] unless stats[:paid][:oz].zero? %></td>
-        <td><%= stats[:paid][:z] unless stats[:paid][:z].zero? %></td>
+        <td><%= campaign_stat(stats, :budget, :o) %></td>
+        <td><%= campaign_stat(stats, :budget, :oz) %></td>
+        <td><%= campaign_stat(stats, :budget, :z) %></td>
+        <td><%= campaign_stat(stats, :paid, :o) %></td>
+        <td><%= campaign_stat(stats, :paid, :oz) %></td>
+        <td><%= campaign_stat(stats, :paid, :z) %></td>
       </tr>
     <% end %>
   <% end %>
