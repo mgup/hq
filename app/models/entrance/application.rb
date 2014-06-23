@@ -5,9 +5,26 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :campaign, class_name: 'Entrance::Campaign'
   belongs_to :entrant, class_name: 'Entrance::Entrant'
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
-  belongs_to :competitive_group, :class_name => 'Entrance::CompetitiveGroup'
+  belongs_to :competitive_group, class_name: 'Entrance::CompetitiveGroup'
 
   has_many :benefits, class_name: 'Entrance::Benefit'
+
+  after_create do |application|
+    Entrance::Log.create entrant_id: application.entrant.id,
+                         user_id: User.current.id,
+                         comment: "Создано заявление #{application.number}."
+  end
+
+  after_update do |application|
+    Entrance::Log.create entrant_id: application.entrant.id,
+                         user_id: User.current.id,
+                         comment: "Обновлено заявление #{application.number}."
+  end
+
+  scope :for_direction, -> (direction) do
+    joins(:competitive_group_item).
+      where("competitive_group_items.direction_id = #{direction.id}")
+  end
 
   scope :paid, -> do
     where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
@@ -29,6 +46,39 @@ class Entrance::Application < ActiveRecord::Base
 
   scope :z_form, -> do
     where('number_budget_z > 0 OR number_paid_z > 0 OR number_quota_z > 0')
+  end
+
+  def self.direction_stats(campaign, direction)
+    applications = campaign.applications.for_direction(direction)
+    stats = {
+      budget: {
+        o:  { total: 0, original: 0 },
+        oz: { total: 0, original: 0 },
+        z:  { total: 0, original: 0 }
+      },
+      paid: {
+        o:  { total: 0, original: 0 },
+        oz: { total: 0, original: 0 },
+        z:  { total: 0, original: 0 }
+      }
+    }
+    applications.each do |app|
+      form = case app.competitive_group_item.form
+        when 11
+          :o
+        when 12
+          :oz
+        when 10
+          :z
+      end
+
+      payment_form = app.competitive_group_item.payed? ? :paid : :budget
+
+      stats[payment_form][form][:total] += 1
+      stats[payment_form][form][:original] += 1 if app.original?
+    end
+
+    stats
   end
 
   def entrance_type

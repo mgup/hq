@@ -12,7 +12,7 @@ class Entrance::EntrantsController < ApplicationController
 
   def create
     if @entrant.save
-      redirect_to entrance_campaign_entrants_path(@campaign),
+      redirect_to entrance_campaign_entrant_applications_path(@campaign, @entrant),
                   notice: 'Абитуриент успешно добавлен.'
     else
       render action: :new
@@ -25,7 +25,7 @@ class Entrance::EntrantsController < ApplicationController
 
   def update
     if @entrant.update(resource_params)
-      redirect_to entrance_campaign_entrants_path(@campaign),
+      redirect_to entrance_campaign_entrant_applications_path(@campaign, @entrant),
                   notice: 'Информация об абитуриенте успешно изменена.'
     else
       render action: :edit

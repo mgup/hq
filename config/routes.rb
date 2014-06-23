@@ -279,6 +279,7 @@ HQ::Application.routes.draw do
   namespace :entrance do
     resources :campaigns do
       get 'applications', on: :member
+      get 'report',       on: :member
       get 'register',     on: :member
 
       resources :dates

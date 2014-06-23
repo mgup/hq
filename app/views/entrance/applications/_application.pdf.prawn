@@ -13,7 +13,7 @@ pdf.font_size 11 do
       pdf.text 'Прошу допустить меня к вступительным испытаниям и участию  в конкурсе'
       pdf.text "на направление подготовки (специальность): <u>#{application.competitive_group_item.direction.new_code}, «#{application.competitive_group_item.direction.name}»</u>", inline_format: true
       pdf.text "Форма обучения: <u>#{application.competitive_group_item.form_name}</u> Основа обучения: <u>#{application.competitive_group_item.budget_name}</u>", inline_format: true
-      pdf.text "В общежитии: <u>#{application.need_hostel? ? 'нуждаюсь' : 'не нуждаюсь'}</u>            Контактный/домашний телефон: <u>#{entrant.phone}</u>", inline_format: true
+      pdf.text "В общежитии: <u>#{application.entrant.need_hostel? ? 'нуждаюсь' : 'не нуждаюсь'}</u>            Контактный/домашний телефон: <u>#{entrant.phone}</u>", inline_format: true
       pdf.text "#{entrant.female? ? 'Окончила' : 'Окончил'} #{entrant.institution} в #{entrant.graduation_year} г.<br>аттестат (диплом об окончании): <u>№ #{entrant.certificate_number} от #{l entrant.certificate_date}</u>.", inline_format: true
       pdf.text "С правилами приёма, Лицензией на право ведения образовательной деятельности <br>в сфере профессионального образования ААА № 001773 от 11.08.11, Свидетельством <br>о государственной аккредитации по выбранному направлению подготовки (специальности) <br>ВВ № 001559 от 19.03.12 ознакомлен#{'а' if entrant.female?}", inline_format: true
       pdf.text "__________________ / #{entrant.short_name} /", align: :right

@@ -3,7 +3,7 @@ class Entrance::Entrant < ActiveRecord::Base
   self.table_name_prefix = 'entrance_'
 
   enum gender: { male: 1, female: 2 }
-  enum citizenship: { russian: 1 }
+  enum citizenship: { russian: 1, other_citizenship: 2 }
   enum acountry: { russia: 0, cis: 1, other_countries: 2 }
   enum military_service: { not: 1, conscript: 2, reservist: 6,
                            free_of_service: 7, too_young: 8 }
@@ -16,6 +16,16 @@ class Entrance::Entrant < ActiveRecord::Base
 
   has_many :applications, class_name: Entrance::Application
   accepts_nested_attributes_for :applications, allow_destroy: true
+
+  after_create do |entrant|
+    Entrance::Log.create entrant_id: entrant.id, user_id: User.current.id,
+                         comment: 'Добавлена информация об абитуриенте.'
+  end
+
+  after_update do |entrant|
+    Entrance::Log.create entrant_id: entrant.id, user_id: User.current.id,
+                         comment: 'Обновлена информация об абитуриенте.'
+  end
 
   default_scope do
     order(:last_name, :first_name, :patronym)
@@ -33,6 +43,8 @@ class Entrance::Entrant < ActiveRecord::Base
     case citizenship
       when 'russian'
         'Российская Федерация'
+      else
+        'зарубежье'
     end
   end
 

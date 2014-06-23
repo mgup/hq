@@ -13,6 +13,16 @@ class Entrance::CampaignsController < ApplicationController
     end
   end
 
+  def report
+    respond_to do |format|
+      format.html
+      format.xlsx do
+        response.headers['Content-Disposition'] = 'attachment; filename="' +
+          "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
+      end
+    end
+  end
+
   def register
     @applications = applications_from_filters
 
