@@ -5,9 +5,14 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :campaign, class_name: 'Entrance::Campaign'
   belongs_to :entrant, class_name: 'Entrance::Entrant'
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
-  belongs_to :competitive_group, :class_name => 'Entrance::CompetitiveGroup'
+  belongs_to :competitive_group, class_name: 'Entrance::CompetitiveGroup'
 
   has_many :benefits, class_name: 'Entrance::Benefit'
+
+  scope :for_direction, -> (direction) do
+    joins(:competitive_group_item).
+      where("competitive_group_items.direction_id = #{direction.id}")
+  end
 
   scope :paid, -> do
     where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
@@ -29,6 +34,27 @@ class Entrance::Application < ActiveRecord::Base
 
   scope :z_form, -> do
     where('number_budget_z > 0 OR number_paid_z > 0 OR number_quota_z > 0')
+  end
+
+  def self.direction_stats(campaign, direction)
+    applications = campaign.applications.for_direction(direction)
+    stats = {
+      o:  0,
+      oz: 0,
+      z:  0
+    }
+    applications.each do |app|
+      case app.competitive_group_item.form
+        when 11
+          stats[:o]  += 1
+        when 12
+          stats[:oz] += 1
+        when 10
+          stats[:z]  += 1
+      end
+    end
+
+    stats
   end
 
   def entrance_type
