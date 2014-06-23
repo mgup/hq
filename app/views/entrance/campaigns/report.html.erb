@@ -23,7 +23,7 @@
   </thead>
   <% Department.faculties.each do |faculty| %>
     <tr>
-      <th colspan="4"><%= faculty.name %></th>
+      <th colspan="7"><%= faculty.name %></th>
     </tr>
     <% faculty.directions.for_campaign(@campaign).each do |direction| %>
       <tr>
