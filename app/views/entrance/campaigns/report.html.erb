@@ -5,7 +5,7 @@
   </h1>
 </div>
 
-<table class="table table-condensed table-bordered">
+<table class="table table-condensed table-bordered table-striped">
   <thead>
     <tr>
       <th rowspan="2">Направление</th>
@@ -23,7 +23,7 @@
   </thead>
   <% Department.faculties.each do |faculty| %>
     <tr>
-      <th colspan="4"><%= faculty.abbreviation %></th>
+      <th colspan="4"><%= faculty.name %></th>
     </tr>
     <% faculty.directions.for_campaign(@campaign).each do |direction| %>
       <tr>
