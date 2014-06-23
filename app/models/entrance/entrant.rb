@@ -33,6 +33,8 @@ class Entrance::Entrant < ActiveRecord::Base
     case citizenship
       when 'russian'
         'Российская Федерация'
+      else
+        'зарубежье'
     end
   end
 
