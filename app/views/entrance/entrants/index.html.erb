@@ -54,6 +54,7 @@
       <td>
         <% if can?(:edit, Entrance::Entrant) %>
           <%= link_to edit_entrance_campaign_entrant_path(@campaign, entrant),
+
                       class: 'btn btn-danger' do %>
             <span class="glyphicons pen"></span>
           <% end %>
@@ -61,7 +62,8 @@
 
         <% if can?(:destroy, Entrance::Entrant) %>
           <%= link_to entrance_campaign_entrant_path(@campaign, entrant),
-                      method: :delete, class: 'btn btn-danger',
+                      title: 'Удалить', method: :delete,
+                      class: 'btn btn-danger',
                       data: { confirm: 'Вы уверены?' } do %>
             <span class="glyphicons remove_2"></span>
           <% end %>

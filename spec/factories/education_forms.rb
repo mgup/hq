@@ -1,7 +1,7 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+require 'faker'
 
 FactoryGirl.define do
   factory :education_form do
-    name "MyString"
+    name { Faker::Lorem.sentence }
   end
 end
