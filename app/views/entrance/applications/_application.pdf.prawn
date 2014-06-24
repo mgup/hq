@@ -194,7 +194,7 @@ pdf.font_size 11 do
                 pdf.text "Получены от #{entrant.short_name} следующие документы:"
                 pdf.text '1. Заявление'
                 pdf.text "2. Документ (#{application.original? ? 'подлинник' : 'копия'}) об образовании № #{entrant.certificate_number}, выданный #{entrant.institution} #{l entrant.certificate_date}", inline_format: true
-                pdf.text '3. 4 фотокарточки 3х4'
+                pdf.text '3. 2 фотокарточки 3х4'
                 # pdf.text '4. Направление на целевой приём (нет)'
                 pdf.text '4. Копия паспорта'
                 pdf.text '5. Другое: __________________________'
