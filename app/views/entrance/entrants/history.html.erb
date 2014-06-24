@@ -1,0 +1,26 @@
+<div class="page-header">
+  <h1>
+    История работы с абитуриентом
+    <br>
+    <small><%= @entrant.full_name %></small>
+  </h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="text-muted">#</th>
+      <th>Пользователь</th>
+      <th>Действие</th>
+      <th>Время</th>
+    </tr>
+  </thead>
+  <% @logs.each do |log| %>
+    <tr>
+      <td class="text-muted"><%= log.id %></td>
+      <td><%= log.user.full_name %></td>
+      <td><%= log.comment %></td>
+      <td><%= l log.created_at %></td>
+    </tr>
+  <% end %>
+</table>
