@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140623094553) do
+ActiveRecord::Schema.define(version: 20140624075007) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -1219,6 +1219,12 @@ ActiveRecord::Schema.define(version: 20140623094553) do
 
   add_index "hostel_report_offense_student", ["hostel_report_offense_id"], name: "index_hostel_report_offense_student_on_hostel_report_offense_id", using: :btree
   add_index "hostel_report_offense_student", ["student_id"], name: "index_hostel_report_offense_student_on_student_id", using: :btree
+
+  create_table "identity_document_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "log", primary_key: "log_id", force: true do |t|
     t.timestamp "log_timestamp",                          null: false
