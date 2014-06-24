@@ -192,8 +192,9 @@ class Ability
   def selection(user)
     can :manage, Entrance::Campaign
 
-    can :manage,  Entrance::Entrant
+    can :manage, Entrance::Entrant
     cannot :edit, Entrance::Entrant
+    cannot :destroy, Entrance::Entrant
 
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
@@ -214,5 +215,9 @@ class Ability
     can :manage, Entrance::Entrant
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
+  end
+
+  def zamestitel_otvetstvennogo_sekretarja(user)
+    selection_editor(user)
   end
 end
