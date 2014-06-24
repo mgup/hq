@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140624091039) do
+ActiveRecord::Schema.define(version: 20140624095513) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -769,6 +769,7 @@ ActiveRecord::Schema.define(version: 20140624091039) do
     t.boolean  "need_hostel",               default: true
     t.integer  "identity_document_type_id", default: 1,     null: false
     t.integer  "nationality_type_id",       default: 1,     null: false
+    t.boolean  "need_hostel_for_exams",     default: false, null: false
   end
 
   create_table "entrance_exam_results", force: true do |t|

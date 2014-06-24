@@ -28,5 +28,6 @@ ru:
         foreign_language: 'иностранный язык'
         military_service: 'служба в армии'
         need_hostel: 'потребность в общежитии'
+        need_hostel_for_exams: 'потребность в общежитии на период сдачи экзаменов'
         identity_document_type_id: 'тип документа, удостоверяющего личность'
         nationality_type_id: 'гражданство'

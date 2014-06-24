@@ -12,13 +12,13 @@ class Entrance::Application < ActiveRecord::Base
   after_create do |application|
     Entrance::Log.create entrant_id: application.entrant.id,
                          user_id: User.current.id,
-                         comment: "Создано заявление #{application.number}."
+                         comment: "Создано заявление #{application.id}."
   end
 
   after_update do |application|
     Entrance::Log.create entrant_id: application.entrant.id,
                          user_id: User.current.id,
-                         comment: "Обновлено заявление #{application.number}."
+                         comment: "Обновлено заявление #{[application.number, application.id].join(', ')}."
   end
 
   scope :for_direction, -> (direction) do
