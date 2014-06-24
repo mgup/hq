@@ -20,21 +20,14 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def report
+    @applications = applications_from_filters(form: false, payment: false)
+
     respond_to do |format|
       format.html
       format.xlsx do
         response.headers['Content-Disposition'] = 'attachment; filename="' +
           "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
       end
-    end
-  end
-
-  def register
-    @applications = applications_from_filters
-
-    respond_to do |format|
-      format.html
-      format.pdf
       format.xml do
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.Applications do
@@ -49,9 +42,18 @@ class Entrance::CampaignsController < ApplicationController
     end
   end
 
+  def register
+    @applications = applications_from_filters
+
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
+  end
+
   private
 
-  def applications_from_filters(opts = { date: false })
+  def applications_from_filters(opts = { form: true, payment: true, date: false })
     params[:date] ||= l(Date.today)
 
     params[:form]      ||= 11
@@ -81,6 +83,14 @@ class Entrance::CampaignsController < ApplicationController
       joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id').
       send(form_method).send(payment_method).
       order('(entrance_benefits.benefit_kind_id = 1) DESC, entrance_applications.number ASC')
+
+    if opts[:form]
+      apps = apps.send(form_method)
+    end
+
+    if opts[:payment]
+      apps = apps.send(payment_method)
+    end
 
     if opts[:date]
       apps = apps.where('DATE(entrance_applications.created_at) = ?',
