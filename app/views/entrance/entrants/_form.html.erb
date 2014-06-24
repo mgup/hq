@@ -37,7 +37,7 @@
   </div>
 
   <fieldset>
-    <legend>Паспортные данные</legend>
+    <legend>Удостоверение личности</legend>
 
     <div class="form-group">
       <%= f.label :birthday, class: 'col-sm-2 control-label' %>
@@ -58,6 +58,17 @@
                      options_for_select([['Российская Федерация', :russian],
                                          ['Другие страны', :other_citizenship]]),
                      {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :identity_document_type_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :identity_document_type_id,
+                     options_from_collection_for_select(
+                       IdentityDocumentType.all, :id, :name,
+                       @entrant.identity_document_type_id
+                     ), {}, class: 'form-control' %>
       </div>
     </div>
 
@@ -126,7 +137,8 @@
     <div class="form-group">
       <%= f.label :phone, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
-        <%= f.text_field :phone, class: 'form-control', pattern: '([\+]\d{11})($|([\,] [\+]\d{11})+$)' %>
+        <%= f.text_field :phone, class: 'form-control',
+                         pattern: '([\+]\d{11})($|([\,] [\+]\d{11})+$)' %>
       </div>
     </div>
   </fieldset>
@@ -212,7 +224,10 @@
 
   <fieldset>
     <legend>Вступительные испытания</legend>
-    <p id="required_exam_message" class="alert alert-info" style="display: none;">Необходимо добавить хотя бы одно вступительное испытание</p>
+    <p id="required_exam_message" class="alert alert-info"
+       style="display: none;">
+      Необходимо добавить хотя бы одно вступительное испытание
+    </p>
 
     <%= f.fields_for :exam_results do |exams_f| %>
       <%= exams_f.hidden_field :id %>
