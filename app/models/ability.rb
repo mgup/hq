@@ -92,6 +92,7 @@ class Ability
     can :create, EventDateClaim
 
     can :applications, Entrance::Campaign
+    can :print_all, Entrance::Campaign
   end
 
   # Обычный преподаватель.

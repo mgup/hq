@@ -4,17 +4,22 @@
   </h1>
 </div>
 
+<%= link_to print_all_entrance_campaign_path(@campaign), target: :blank, class: 'btn btn-info', style: 'margin-bottom: 15px' do %>
+    <span class="glyphicon glyphicon-print"></span> Распечатать все заявления на текущую дату
+<% end %>
+
+
 <%= render partial: 'filters',
            locals: { url: applications_entrance_campaign_path(@campaign) } %>
 
 <% if @applications.empty? %>
   <p>Нет ни одного заявления.</p>
 <% else %>
-  <%= link_to 'Распечатать',
-              applications_entrance_campaign_path(
-                @campaign, params.merge({ format: :pdf })
-              ),
-              target: :blank, class: 'lead' %>
+    <%= link_to 'Распечатать',
+                applications_entrance_campaign_path(
+                        @campaign, params.merge({ format: :pdf })
+                ),
+                target: :blank, class: 'lead' %>
 
   <table class="table table-striped">
     <thead>

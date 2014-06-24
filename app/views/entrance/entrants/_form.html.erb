@@ -276,7 +276,7 @@
 <% end %>
 
 <script>
-    var key = false;
+    var key = $('.required_exam_id:visible').length > 0;
     $('form').validate({
         messages: {
             "entrance_entrant[phone]": {pattern: 'Неверный формат. Введите телефон в формате: +79001234567, несколько телефонов разделите запятой'}
@@ -287,12 +287,12 @@
         $('#required_exam_message').hide();
     });
     $(document).on('nested:fieldRemoved:exam_results', function(){
-        key = $('.required_exam_id:visible').length > 0
+        key = $('.required_exam_id:visible').length > 0;
         if ($('.required_exam_id:visible').length > 0) $('#required_exam_message').hide();
         else $('#required_exam_message').show();
     });
     $('form').submit(function(e){
-        if (!key){
+        if (!key ){
             e.preventDefault();
             $('#required_exam_message').show();
         } else $('#required_exam_message').hide();

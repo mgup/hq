@@ -13,6 +13,12 @@ class Entrance::CampaignsController < ApplicationController
     end
   end
 
+  def print_all
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   def report
     respond_to do |format|
       format.html
