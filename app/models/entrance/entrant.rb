@@ -10,6 +10,7 @@ class Entrance::Entrant < ActiveRecord::Base
   enum foreign_language: { english: 24, german: 12, french: 13, spanish: 14 }
 
   belongs_to :identity_document_type
+  belongs_to :nationality_type
 
   belongs_to :campaign, class_name: Entrance::Campaign
 

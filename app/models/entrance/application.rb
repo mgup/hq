@@ -137,7 +137,7 @@ class Entrance::Application < ActiveRecord::Base
             xml.DocumentSeries  entrant.pseries
             xml.DocumentNumber  entrant.pnumber
             xml.DocumentDate    entrant.pdate.iso8601
-            xml.IdentityDocumentTypeID  1
+            xml.IdentityDocumentTypeID  entrant.identity_document_type_id
             xml.NationalityTypeID       1
             xml.BirthDate               entrant.birthday.iso8601
           end

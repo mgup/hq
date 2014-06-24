@@ -45,7 +45,7 @@ class Entrance::EntrantsController < ApplicationController
       :pdate, :acountry, :azip, :aregion, :aaddress, :phone, :military_service,
       :foreign_institution, :institution, :graduation_year, :certificate_number,
       :certificate_date, :foreign_language, :need_hostel,
-      :identity_document_type_id,
+      :identity_document_type_id, :nationality_type_id,
       exam_results_attributes: [:id, :exam_id, :form, :score,
                                 :document, :'_destroy']
     )
