@@ -7,7 +7,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     @entrant.applications.each do |ap|
         render 'application', pdf: pdf, application: ap, entrant: @entrant
-        pdf.start_new_page
+        pdf.start_new_page unless ap == @entrant.applications.last
     end
 
  end
