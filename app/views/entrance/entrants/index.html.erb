@@ -52,9 +52,13 @@
         <% end %>
       </td>
       <td>
+        <%= link_to history_entrance_campaign_entrant_path(@campaign, entrant),
+                    title: 'История', class: 'btn btn-default' do %>
+          <span class="glyphicons history"></span>
+        <% end %>
+
         <% if can?(:edit, Entrance::Entrant) %>
           <%= link_to edit_entrance_campaign_entrant_path(@campaign, entrant),
-
                       class: 'btn btn-danger' do %>
             <span class="glyphicons pen"></span>
           <% end %>

@@ -38,6 +38,10 @@ class Entrance::EntrantsController < ApplicationController
     redirect_to entrance_campaign_entrants_path(@campaign)
   end
 
+  def history
+    @logs = Entrance::Log.for_entrant(@entrant)
+  end
+
   def resource_params
     params.fetch(:entrance_entrant, {}).permit(
       :last_name, :first_name, :patronym, :gender, :snils, :information,
@@ -45,6 +49,7 @@ class Entrance::EntrantsController < ApplicationController
       :pdate, :acountry, :azip, :aregion, :aaddress, :phone, :military_service,
       :foreign_institution, :institution, :graduation_year, :certificate_number,
       :certificate_date, :foreign_language, :need_hostel,
+      :identity_document_type_id, :nationality_type_id,
       exam_results_attributes: [:id, :exam_id, :form, :score,
                                 :document, :'_destroy']
     )

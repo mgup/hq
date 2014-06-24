@@ -37,12 +37,13 @@
   </div>
 
   <fieldset>
-    <legend>Паспортные данные</legend>
+    <legend>Удостоверение личности</legend>
 
     <div class="form-group">
       <%= f.label :birthday, class: 'col-sm-2 control-label' %>
       <div class="col-sm-3">
-        <%= f.text_field :birthday, class: 'form-control datepicker' %>
+        <%= f.text_field :birthday, class: 'form-control datepicker',
+                         value: @entrant.birthday ? l(@entrant.birthday) : '' %>
       </div>
 
       <%= f.label :birth_place, class: 'col-sm-3 control-label' %>
@@ -52,12 +53,24 @@
     </div>
 
     <div class="form-group">
-      <%= f.label :citizenship, class: 'col-sm-2 control-label' %>
+      <%= f.label :nationality_type_id, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
-        <%= f.select :citizenship,
-                     options_for_select([['Российская Федерация', :russian],
-                                         ['Другие страны', :other_citizenship]]),
-                     {}, class: 'form-control' %>
+        <%= f.select :nationality_type_id,
+                     options_from_collection_for_select(
+                         NationalityType.all, :id, :name,
+                         @entrant.nationality_type_id
+                     ), {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :identity_document_type_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :identity_document_type_id,
+                     options_from_collection_for_select(
+                       IdentityDocumentType.all, :id, :name,
+                       @entrant.identity_document_type_id
+                     ), {}, class: 'form-control' %>
       </div>
     </div>
 
@@ -83,7 +96,8 @@
     <div class="form-group">
       <%= f.label :pdate, class: 'col-sm-2 control-label' %>
       <div class="col-sm-3">
-        <%= f.text_field :pdate, class: 'form-control datepicker' %>
+        <%= f.text_field :pdate, class: 'form-control datepicker',
+                         value: @entrant.pdate ? l(@entrant.pdate) : ''%>
       </div>
     </div>
   </fieldset>
@@ -126,7 +140,8 @@
     <div class="form-group">
       <%= f.label :phone, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
-        <%= f.text_field :phone, class: 'form-control', pattern: '([\+]\d{11})($|([\,] [\+]\d{11})+$)' %>
+        <%= f.text_field :phone, class: 'form-control',
+                         pattern: '([\+]\d{11})($|([\,] [\+]\d{11})+$)' %>
       </div>
     </div>
   </fieldset>
@@ -166,7 +181,8 @@
 
       <%= f.label :certificate_date, class: 'col-sm-3 control-label' %>
       <div class="col-sm-2">
-        <%= f.text_field :certificate_date, class: 'form-control datepicker' %>
+        <%= f.text_field :certificate_date, class: 'form-control datepicker',
+                         value: @entrant.certificate_date ? l(@entrant.certificate_date) : ''  %>
       </div>
     </div>
   </fieldset>
@@ -212,7 +228,10 @@
 
   <fieldset>
     <legend>Вступительные испытания</legend>
-    <p id="required_exam_message" class="alert alert-info" style="display: none;">Необходимо добавить хотя бы одно вступительное испытание</p>
+    <p id="required_exam_message" class="alert alert-info"
+       style="display: none;">
+      Необходимо добавить хотя бы одно вступительное испытание
+    </p>
 
     <%= f.fields_for :exam_results do |exams_f| %>
       <%= exams_f.hidden_field :id %>

@@ -9,6 +9,9 @@ class Entrance::Entrant < ActiveRecord::Base
                            free_of_service: 7, too_young: 8 }
   enum foreign_language: { english: 24, german: 12, french: 13, spanish: 14 }
 
+  belongs_to :identity_document_type
+  belongs_to :nationality_type
+
   belongs_to :campaign, class_name: Entrance::Campaign
 
   has_many :exam_results, class_name: Entrance::ExamResult

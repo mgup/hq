@@ -12,13 +12,13 @@ class Entrance::Application < ActiveRecord::Base
   after_create do |application|
     Entrance::Log.create entrant_id: application.entrant.id,
                          user_id: User.current.id,
-                         comment: "Создано заявление #{application.number}."
+                         comment: "Создано заявление #{application.id}."
   end
 
   after_update do |application|
     Entrance::Log.create entrant_id: application.entrant.id,
                          user_id: User.current.id,
-                         comment: "Обновлено заявление #{application.number}."
+                         comment: "Обновлено заявление #{[application.number, application.id].join(', ')}."
   end
 
   scope :for_direction, -> (direction) do
@@ -137,8 +137,8 @@ class Entrance::Application < ActiveRecord::Base
             xml.DocumentSeries  entrant.pseries
             xml.DocumentNumber  entrant.pnumber
             xml.DocumentDate    entrant.pdate.iso8601
-            xml.IdentityDocumentTypeID  1
-            xml.NationalityTypeID       1
+            xml.IdentityDocumentTypeID  entrant.identity_document_type_id
+            xml.NationalityTypeID       entrant.nationality_type_id
             xml.BirthDate               entrant.birthday.iso8601
           end
           # xml.EduDocuments do
