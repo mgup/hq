@@ -126,7 +126,7 @@
     <div class="form-group">
       <%= f.label :phone, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
-        <%= f.text_field :phone, class: 'form-control', pattern: '([\+]\d{11})(, [\+]\d{11})*' %>
+        <%= f.text_field :phone, class: 'form-control', pattern: '([\+]\d{11})($|([\,] [\+]\d{11})+$)' %>
       </div>
     </div>
   </fieldset>
