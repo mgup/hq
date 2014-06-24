@@ -69,7 +69,7 @@
 
       <%= f.label :pnumber, class: 'col-sm-3 control-label' %>
       <div class="col-sm-4">
-        <%= f.text_field :pnumber, class: 'form-control', required: true, maxlength: 6 %>
+        <%= f.text_field :pnumber, class: 'form-control' %>
       </div>
     </div>
 
@@ -154,7 +154,7 @@
     <div class="form-group">
       <%= f.label :graduation_year, class: 'col-sm-2 control-label' %>
       <div class="col-sm-2">
-        <%= f.number_field :graduation_year, class: 'form-control' %>
+        <%= f.number_field :graduation_year, class: 'form-control', required: true %>
       </div>
     </div>
 
@@ -212,6 +212,7 @@
 
   <fieldset>
     <legend>Вступительные испытания</legend>
+    <p id="required_exam_message" class="alert alert-info" style="display: none;">Необходимо добавить хотя бы одно вступительное испытание</p>
 
     <%= f.fields_for :exam_results do |exams_f| %>
       <%= exams_f.hidden_field :id %>
@@ -223,7 +224,7 @@
                              options_from_collection_for_select(
                                  Entrance::Exam.all, :id, :name,
                                  exams_f.object.exam_id
-                             ), {}, class: 'form-control' %>
+                             ), {}, class: 'form-control required_exam_id' %>
         </div>
       </div>
 
@@ -275,10 +276,26 @@
 <% end %>
 
 <script>
+    var key = false;
     $('form').validate({
         messages: {
             "entrance_entrant[phone]": {pattern: 'Неверный формат. Введите телефон в формате: +79001234567, несколько телефонов разделите запятой'}
         }
-
     });
+
+    $(document).on('nested:fieldAdded:exam_results', function(){
+        key = true;
+        $('#required_exam_message').hide();
+    });
+    $(document).on('nested:fieldRemoved:exam_results', function(){
+        key = $('.required_exam_id:visible').length > 0
+        if ($('.required_exam_id:visible').length > 0) $('#required_exam_message').hide();
+        else $('#required_exam_message').show();
+    });
+    $('form').submit(function(e){
+        if (!key){
+            e.preventDefault();
+            $('#required_exam_message').show();
+        } else $('#required_exam_message').hide();
+    })
 </script>
