@@ -29,3 +29,4 @@ ru:
         military_service: 'служба в армии'
         need_hostel: 'потребность в общежитии'
         identity_document_type_id: 'тип документа, удостоверяющего личность'
+        nationality_type_id: 'гражданство'
