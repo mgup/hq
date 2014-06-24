@@ -42,7 +42,8 @@
     <div class="form-group">
       <%= f.label :birthday, class: 'col-sm-2 control-label' %>
       <div class="col-sm-3">
-        <%= f.text_field :birthday, class: 'form-control datepicker' %>
+        <%= f.text_field :birthday, class: 'form-control datepicker',
+                         value: @entrant.birthday ? l(@entrant.birthday) : '' %>
       </div>
 
       <%= f.label :birth_place, class: 'col-sm-3 control-label' %>
@@ -94,7 +95,8 @@
     <div class="form-group">
       <%= f.label :pdate, class: 'col-sm-2 control-label' %>
       <div class="col-sm-3">
-        <%= f.text_field :pdate, class: 'form-control datepicker' %>
+        <%= f.text_field :pdate, class: 'form-control datepicker',
+                         value: @entrant.pdate ? l(@entrant.pdate) : ''%>
       </div>
     </div>
   </fieldset>
@@ -178,7 +180,8 @@
 
       <%= f.label :certificate_date, class: 'col-sm-3 control-label' %>
       <div class="col-sm-2">
-        <%= f.text_field :certificate_date, class: 'form-control datepicker' %>
+        <%= f.text_field :certificate_date, class: 'form-control datepicker',
+                         value: @entrant.certificate_date ? l(@entrant.certificate_date) : ''  %>
       </div>
     </div>
   </fieldset>
