@@ -12,6 +12,10 @@ class Entrance::EntrantsController < ApplicationController
 
   def create
     if @entrant.save
+      @entrant.update(
+        edu_document_attributes: resource_params[:edu_document_attributes]
+      )
+
       redirect_to entrance_campaign_entrant_applications_path(@campaign, @entrant),
                   notice: 'Абитуриент успешно добавлен.'
     else
@@ -52,9 +56,9 @@ class Entrance::EntrantsController < ApplicationController
       exam_results_attributes: [:id, :exam_id, :form, :score,
                                 :document, :_destroy],
       edu_document_attributes: [:id, :document_type_id, :series, :number,
-                                 :date, :organization, :graduation_year,
-                                 :foreign_institution, :our_institution,
-                                 :_destroy]
+                                :date, :organization, :graduation_year,
+                                :foreign_institution, :our_institution,
+                                :_destroy ]
     )
   end
 end
