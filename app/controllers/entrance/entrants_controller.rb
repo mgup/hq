@@ -49,7 +49,7 @@ class Entrance::EntrantsController < ApplicationController
   def resource_params
     params.fetch(:entrance_entrant, {}).permit(
       :last_name, :first_name, :patronym, :gender, :snils, :information,
-      :citizenship, :birthday, :birth_place, :pseries, :pnumber, :pdepartment,
+      :nationality_type_id, :birthday, :birth_place, :pseries, :pnumber, :pdepartment,
       :pdate, :acountry, :azip, :aregion, :aaddress, :phone, :military_service,
       :foreign_language, :need_hostel,
       :identity_document_type_id, :nationality_type_id,

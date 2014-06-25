@@ -51,7 +51,7 @@ pdf.font_size 11 do
 
       pdf.move_down 5
 
-      pdf.text "Гражданство: <u> <#{entrant.citizen_name} </u>", inline_format: true
+      pdf.text "Гражданство: <u> <#{entrant.nationality_type.name} </u>", inline_format: true
       pdf.text "Отношение к военной службе: <u> #{entrant.military_status} </u>", inline_format: true
       pdf.text "Наличие направления: <u> нет </u>", inline_format: true
 
