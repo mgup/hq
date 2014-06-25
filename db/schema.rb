@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140624095513) do
+ActiveRecord::Schema.define(version: 20140625072346) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -733,6 +733,12 @@ ActiveRecord::Schema.define(version: 20140624095513) do
     t.integer  "education_type_id",               null: false
     t.integer  "education_source_id",             null: false
     t.integer  "stage"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_document_types", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
