@@ -14,7 +14,7 @@ pdf.font_size 11 do
       pdf.text "на направление подготовки (специальность): <u>#{application.competitive_group_item.direction.new_code}, «#{application.competitive_group_item.direction.name}»</u>", inline_format: true
       pdf.text "Форма обучения: <u>#{application.competitive_group_item.form_name}</u> Основа обучения: <u>#{application.competitive_group_item.budget_name}</u>", inline_format: true
       pdf.text "В общежитии: <u>#{application.entrant.need_hostel? ? 'нуждаюсь' : 'не нуждаюсь'}</u>            Контактный/домашний телефон: <u>#{entrant.phone}</u>", inline_format: true
-      pdf.text "#{entrant.female? ? 'Окончила' : 'Окончил'} #{entrant.institution} в #{entrant.graduation_year} г.<br>аттестат (диплом об окончании): <u>№ #{entrant.certificate_number} от #{l entrant.certificate_date}</u>.", inline_format: true
+      pdf.text "#{entrant.female? ? 'Окончила' : 'Окончил'} #{entrant.edu_document.organization} в #{entrant.edu_document.graduation_year} г.<br>аттестат (диплом об окончании): <u>#{entrant.edu_document.series} № #{entrant.edu_document.number} от #{l entrant.edu_document.date}</u>.", inline_format: true
       pdf.text "С правилами приёма, Лицензией на право ведения образовательной деятельности <br>в сфере профессионального образования ААА № 001773 от 11.08.11, Свидетельством <br>о государственной аккредитации по выбранному направлению подготовки (специальности) <br>ВВ № 001559 от 19.03.12 ознакомлен#{'а' if entrant.female?}", inline_format: true
       pdf.text "__________________ / #{entrant.short_name} /", align: :right
 
@@ -193,7 +193,7 @@ pdf.font_size 11 do
                 pdf.text "о приёме документов от поступающего на направление подготовки (специальность): #{application.competitive_group_item.direction.new_code}"
                 pdf.text "Получены от #{entrant.short_name} следующие документы:"
                 pdf.text '1. Заявление'
-                pdf.text "2. Документ (#{application.original? ? 'подлинник' : 'копия'}) об образовании № #{entrant.certificate_number}, выданный #{entrant.institution} #{l entrant.certificate_date}", inline_format: true
+                pdf.text "2. Документ (#{application.original? ? 'подлинник' : 'копия'}) об образовании #{entrant.edu_document.series} № #{entrant.edu_document.number}, выданный #{entrant.edu_document.organization} #{l entrant.edu_document.date}", inline_format: true
                 pdf.text '3. 2 фотокарточки 3х4'
                 # pdf.text '4. Направление на целевой приём (нет)'
                 pdf.text '4. Копия паспорта'
