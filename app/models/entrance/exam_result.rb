@@ -5,6 +5,7 @@ class Entrance::ExamResult < ActiveRecord::Base
   enum form: { use: 1, university: 2, payed_test: 3 }
 
   belongs_to :exam, class_name: Entrance::Exam
+  belongs_to :entrant, class_name: Entrance::Entrant
 
   scope :in_competitive_group, -> competitive_group do
     joins('LEFT JOIN entrance_test_items ON entrance_test_items.exam_id = entrance_exam_results.exam_id').

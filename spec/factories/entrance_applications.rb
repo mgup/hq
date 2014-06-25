@@ -9,7 +9,7 @@ FactoryGirl.define do
     status_id 1
     comment { Faker::Lorem.paragraph }
     association :campaign
-    association :competitive_group_item
+    association :competitive_group_item, strategy: :build
     association :entrant
     original false
   end
