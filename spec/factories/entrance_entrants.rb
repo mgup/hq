@@ -19,8 +19,11 @@ FactoryGirl.define do
     graduation_year { Date.today.year }
     certificate_number { 123 + rand(2000) }
     certificate_date { Date.today - 2.months }
+    need_hostel_for_exams false
     phone '+7 900 123-45-67'
     military_service { [:not, :conscript, :reservist, :free_of_service, :too_young].sample }
     association :campaign
+    association :identity_document_type
+    association :nationality_type
   end
 end

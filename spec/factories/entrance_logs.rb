@@ -1,9 +1,9 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+require 'faker'
 
 FactoryGirl.define do
-  factory :entrance_log, :class => 'Entrance::Log' do
-    user_id 1
-    entrant_id 1
-    comment "MyString"
+  factory :entrance_log, class: 'Entrance::Log' do
+    comment { Faker::Lorem.sentence }
+    association :user
+    association :entrant
   end
 end

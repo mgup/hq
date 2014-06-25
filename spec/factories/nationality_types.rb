@@ -1,7 +1,7 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+require 'faker'
 
 FactoryGirl.define do
   factory :nationality_type do
-    name "MyString"
+    name { Faker::Lorem.word }
   end
 end
