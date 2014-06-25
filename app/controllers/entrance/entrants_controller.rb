@@ -7,7 +7,7 @@ class Entrance::EntrantsController < ApplicationController
   end
 
   def new
-
+    @entrant.build_edu_document
   end
 
   def create
@@ -51,7 +51,10 @@ class Entrance::EntrantsController < ApplicationController
       :certificate_date, :foreign_language, :need_hostel,
       :identity_document_type_id, :nationality_type_id,
       exam_results_attributes: [:id, :exam_id, :form, :score,
-                                :document, :'_destroy']
+                                :document, :'_destroy'],
+      edu_documents_attributes: [:id, :document_type_id, :series, :number,
+                                 :date, :organization, :graduation_year,
+                                 :'_destroy']
     )
   end
 end

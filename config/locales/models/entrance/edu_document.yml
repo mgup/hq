@@ -1,0 +1,12 @@
+ru:
+  activerecord:
+    models:
+      entrance/edu_document: 'документ об образовании'
+    attributes:
+      entrance/edu_document:
+        document_type_id: 'тип документа'
+        organization: 'учебное заведение'
+        series: 'серия'
+        number: 'номер'
+        date: 'дата выдачи'
+        graduation_year: 'год окончания'

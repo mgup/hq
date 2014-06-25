@@ -17,8 +17,15 @@ class Entrance::Entrant < ActiveRecord::Base
   has_many :exam_results, class_name: Entrance::ExamResult
   accepts_nested_attributes_for :exam_results, allow_destroy: true
 
+  has_one :edu_document, class_name: 'Entrance::EduDocument'
+  accepts_nested_attributes_for :edu_document, allow_destroy: true
+
   has_many :applications, class_name: Entrance::Application
   accepts_nested_attributes_for :applications, allow_destroy: true
+
+  before_create do |entrant|
+    entrant.build_edu_document
+  end
 
   after_create do |entrant|
     Entrance::Log.create entrant_id: entrant.id, user_id: User.current.id,

@@ -147,44 +147,76 @@
   </fieldset>
 
   <fieldset>
-    <legend>Образование</legend>
+    <legend>Документ об образовании</legend>
 
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <div class="checkbox">
-          <label>
-            <%= f.check_box :foreign_institution %> Иностранное учебное заведение
-          </label>
+    <%= f.fields_for :edu_document do |edu_f| %>
+      <%= edu_f.hidden_field :id %>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <%= edu_f.check_box :foreign_institution %> Иностранное учебное заведение
+            </label>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <%= f.label :institution, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-10">
-        <%= f.text_area :institution, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :graduation_year, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-2">
-        <%= f.number_field :graduation_year, class: 'form-control', required: true %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :certificate_number, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-5">
-        <%= f.text_field :certificate_number, class: 'form-control' %>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <%= edu_f.check_box :our_institution %>
+              МГУП им. Ивана Федорова (для магистров и аспирантов)
+            </label>
+          </div>
+        </div>
       </div>
 
-      <%= f.label :certificate_date, class: 'col-sm-3 control-label' %>
-      <div class="col-sm-2">
-        <%= f.text_field :certificate_date, class: 'form-control datepicker',
-                         value: @entrant.certificate_date ? l(@entrant.certificate_date) : ''  %>
+      <div class="form-group">
+        <%= edu_f.label :document_type_id, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= edu_f.select :document_type_id,
+                           options_from_collection_for_select(
+                             Entrance::DocumentType.find(3,4,5,6,7,8,16),
+                             :id, :name, edu_f.object.document_type_id
+                           ), {}, class: 'form-control' %>
+        </div>
       </div>
-    </div>
+
+      <div class="form-group">
+        <%= edu_f.label :organization, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= edu_f.text_area :organization, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= edu_f.label :series, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-4">
+          <%= edu_f.text_field :series, class: 'form-control' %>
+        </div>
+
+        <%= edu_f.label :number, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-4">
+          <%= edu_f.text_field :number, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= edu_f.label :date, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-4">
+          <%= edu_f.text_field :date, class: 'form-control datepicker',
+                           value: edu_f.object.date ? l(edu_f.object.date) : ''  %>
+        </div>
+
+        <%= edu_f.label :graduation_year, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-4">
+          <%= edu_f.number_field :graduation_year, class: 'form-control',
+                                 required: true %>
+        </div>
+      </div>
+    <% end %>
   </fieldset>
 
   <fieldset>
@@ -241,8 +273,8 @@
         <div class="col-sm-10">
           <%= exams_f.select :exam_id,
                              options_from_collection_for_select(
-                                 Entrance::Exam.all, :id, :name,
-                                 exams_f.object.exam_id
+                               Entrance::Exam.all, :id, :name,
+                               exams_f.object.exam_id
                              ), {}, class: 'form-control required_exam_id' %>
         </div>
       </div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140625074338) do
+ActiveRecord::Schema.define(version: 20140625104714) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -744,7 +744,7 @@ ActiveRecord::Schema.define(version: 20140625074338) do
   end
 
   create_table "entrance_edu_documents", force: true do |t|
-    t.integer  "document_type_id"
+    t.integer  "document_type_id",        default: 3,     null: false
     t.string   "series"
     t.string   "number"
     t.date     "date"
@@ -759,6 +759,9 @@ ActiveRecord::Schema.define(version: 20140625074338) do
     t.string   "document_type_name_text"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "entrant_id"
+    t.boolean  "foreign_institution",     default: false, null: false
+    t.boolean  "our_institution",         default: false, null: false
   end
 
   create_table "entrance_entrants", force: true do |t|
@@ -785,10 +788,10 @@ ActiveRecord::Schema.define(version: 20140625074338) do
     t.string   "phone",                                     null: false
     t.integer  "military_service",          default: 1,     null: false
     t.boolean  "foreign_institution",       default: false
-    t.string   "institution",                               null: false
-    t.integer  "graduation_year",                           null: false
-    t.string   "certificate_number",                        null: false
-    t.date     "certificate_date",                          null: false
+    t.string   "institution"
+    t.integer  "graduation_year"
+    t.string   "certificate_number"
+    t.date     "certificate_date"
     t.integer  "foreign_language"
     t.boolean  "need_hostel",               default: true
     t.integer  "identity_document_type_id", default: 1,     null: false
