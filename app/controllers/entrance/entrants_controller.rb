@@ -47,14 +47,14 @@ class Entrance::EntrantsController < ApplicationController
       :last_name, :first_name, :patronym, :gender, :snils, :information,
       :citizenship, :birthday, :birth_place, :pseries, :pnumber, :pdepartment,
       :pdate, :acountry, :azip, :aregion, :aaddress, :phone, :military_service,
-      :foreign_institution, :institution, :graduation_year, :certificate_number,
-      :certificate_date, :foreign_language, :need_hostel,
+      :foreign_language, :need_hostel,
       :identity_document_type_id, :nationality_type_id,
       exam_results_attributes: [:id, :exam_id, :form, :score,
-                                :document, :'_destroy'],
-      edu_documents_attributes: [:id, :document_type_id, :series, :number,
+                                :document, :_destroy],
+      edu_document_attributes: [:id, :document_type_id, :series, :number,
                                  :date, :organization, :graduation_year,
-                                 :'_destroy']
+                                 :foreign_institution, :our_institution,
+                                 :_destroy]
     )
   end
 end
