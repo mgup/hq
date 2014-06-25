@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140625072346) do
+ActiveRecord::Schema.define(version: 20140625074338) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -739,6 +739,24 @@ ActiveRecord::Schema.define(version: 20140625072346) do
 
   create_table "entrance_document_types", force: true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_edu_documents", force: true do |t|
+    t.integer  "document_type_id"
+    t.string   "series"
+    t.string   "number"
+    t.date     "date"
+    t.string   "organization"
+    t.integer  "graduation_year"
+    t.float    "gpa"
+    t.string   "registration_number"
+    t.integer  "qualification_type_id"
+    t.integer  "speciality_id"
+    t.integer  "specialization_id"
+    t.integer  "profession_id"
+    t.string   "document_type_name_text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
