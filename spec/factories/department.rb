@@ -6,7 +6,11 @@ FactoryGirl.define do
     abbreviation { Faker::Lorem.word }
 
     trait :academic do
-      department_role { 'subdepartment' }
+      department_role 'subdepartment'
+    end
+
+    trait :faculty do
+      department_role 'faculty'
     end
   end
 end
