@@ -12,5 +12,9 @@ FactoryGirl.define do
     association :competitive_group_item, strategy: :build
     association :entrant
     original false
+
+    trait :original do
+      original true
+    end
   end
 end
