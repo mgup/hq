@@ -7,6 +7,8 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
   belongs_to :competitive_group, class_name: 'Entrance::CompetitiveGroup'
 
+  delegate :direction, to: :competitive_group_item
+
   has_many :benefits, class_name: 'Entrance::Benefit'
 
   after_create do |application|
@@ -129,6 +131,7 @@ class Entrance::Application < ActiveRecord::Base
             xml.EducationFormID     competitive_group_item.form
             xml.CompetitiveGroupID  competitive_group_item.competitive_group.id
             xml.CompetitiveGroupItemID  competitive_group_item_id
+            xml.Priority            1
           end
         end
         xml.ApplicationDocuments do
