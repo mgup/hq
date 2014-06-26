@@ -7,6 +7,8 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
   belongs_to :competitive_group, class_name: 'Entrance::CompetitiveGroup'
 
+  delegate :direction, to: :competitive_group_item
+
   has_many :benefits, class_name: 'Entrance::Benefit'
 
   after_create do |application|
