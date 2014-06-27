@@ -42,7 +42,11 @@
             <% end %>
           </button>
 
-          <%= render partial: 'documents_packed', locals: { a: a } %>
+          <%= render partial: 'move_documents',
+                     locals: {
+                       from_application: a,
+                       to_applications: @applications.reject { |x| x.id == a.id }
+                     } %>
         <% end %>
       </td>
       <td>

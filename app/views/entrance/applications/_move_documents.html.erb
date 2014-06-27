@@ -1,0 +1,75 @@
+<div id="documents_packed" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+        <h4 class="modal-title">Управление комплектом документов</h4>
+      </div>
+      <%= form_for Entrance::DocumentMovement.new,
+                   html: { class: 'form-horizontal' } do |f| %>
+        <%= f.hidden_field :from_application_id, value: from_application.id %>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :moved %>
+                  <script>
+                    $(document.getElementById(
+                      'entrance_document_movement_moved'
+                    )).change(function() {
+                      if (this.checked) {
+                        $('.move_to').removeAttr('disabled');
+                      } else {
+                        $('.move_to').attr('disabled', 'disabled');
+                      }
+                    });
+                  </script>
+
+                  Переместить пакет документов
+                </label>
+              </div>
+            </div>
+
+            <div class="col-sm-offset-2 col-sm-10">
+              <%= f.collection_radio_buttons :to_application_id,
+                                             to_applications,
+                                             :id, :number do |b| %>
+                <div class="radio">
+                  <label>
+                    <%= b.radio_button class: 'move_to', disabled: true %>
+                    к заявлению <%= b.text %>
+                  </label>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :original,
+                                  checked: from_application.original? %>
+                  Приложен оригинал документ об образовании
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default"
+                  data-dismiss="modal">
+            Закрыть
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Сохранить
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
