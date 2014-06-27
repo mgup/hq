@@ -1,19 +1,19 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
+require 'faker'
 
 FactoryGirl.define do
-  factory :entrance_edu_document, :class => 'Entrance::EduDocument' do
-    document_type_id 1
-    series "MyString"
-    number "MyString"
-    date "2014-06-25"
-    organization "MyString"
-    graduation_year 1
-    gpa 1.5
-    registration_number "MyString"
-    qualification_type_id 1
-    speciality_id 1
-    specialization_id 1
-    profession_id 1
-    document_type_name_text "MyString"
+  factory :edu_document, class: Entrance::EduDocument do
+    number { 1000000 + rand(900000) }
+    series { 1000 + rand(9000) }
+    date { Date.today - (2+rand(4)).months }
+    organization      { Faker::Lorem.sentence }
+    graduation_year { Date.today.year - rand(3) }
+    foreign_institution false
+    our_institution false
+    association :entrant
+    association :entrance_document_type
+
+    trait :mgup do
+      our_institution true
+    end
   end
 end

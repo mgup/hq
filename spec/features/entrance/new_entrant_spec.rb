@@ -2,8 +2,10 @@ require 'spec_helper'
 
 feature 'Добавление нового абитуриента' do
   background 'Сотрудник приёмной комиссии' do
+    user = create(:user, :selection)
+    Thread.current[:user] = user
+    as_user(user)
     @campaign = create(:campaign)
-    as_user(create(:user, :selection))
     @exam = create(:entrance_exam)
   end
 

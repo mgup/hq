@@ -104,6 +104,33 @@ class Entrance::Application < ActiveRecord::Base
     false
   end
 
+  def self.register_information
+    applications = []
+    self.all.each_with_index do |application, index|
+      applications << [index + 1, (I18n.l application.created_at), application.entrant.full_name, application.number, application.entrant.contacts, '']
+    end
+    return applications
+  end
+
+  def self.report_information(campaign)
+    info = []
+    Department.faculties.each do |faculty|
+      applications = []
+      faculty.directions.for_campaign(campaign).each do |direction|
+        stats = self.direction_stats(campaign, direction)
+        applications << [direction.description,
+                         stats[:budget][:o][:total].zero? ? '' : "#{stats[:budget][:o][:total]} (#{stats[:budget][:o][:original]})",
+                         stats[:budget][:oz][:total].zero? ? '' : "#{stats[:budget][:oz][:total]} (#{stats[:budget][:oz][:original]})",
+                         stats[:budget][:z][:total].zero? ? '' : "#{stats[:budget][:z][:total]} (#{stats[:budget][:z][:original]})",
+                         stats[:paid][:o][:total].zero? ? '' : "#{stats[:paid][:o][:total]} (#{stats[:paid][:o][:original]})",
+                         stats[:paid][:oz][:total].zero? ? '' : "#{stats[:paid][:oz][:total]} (#{stats[:paid][:oz][:original]})",
+                         stats[:paid][:z][:total].zero? ? '' : "#{stats[:paid][:z][:total]} (#{stats[:paid][:z][:original]})"]
+      end
+      info << {faculty: faculty.name, applications: applications}
+    end
+    return info
+  end
+
   def to_fis
     builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
       xml.Application do

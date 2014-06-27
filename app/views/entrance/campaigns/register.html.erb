@@ -11,6 +11,11 @@
 <% if @applications.empty? %>
   <p>Нет ни одного заявления.</p>
 <% else %>
+    <%= link_to 'Распечатать',
+                register_entrance_campaign_path(
+                        @campaign, params.merge({ format: :pdf })
+                ),
+                target: :blank, class: 'lead' %>
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -22,15 +27,12 @@
       <th>Возврат документов (подпись или номер почтовой квитанции)</th>
     </tr>
     </thead>
-    <% @applications.each_with_index do |application, i| %>
+      <% @applications.register_information.each do |row| %>
       <tr>
-        <td><%= i + 1 %></td>
-        <td><%= l application.created_at %></td>
-        <td><%= application.entrant.full_name %></td>
-        <td><%= application.number %></td>
-        <td><%= application.entrant.contacts %></td>
-        <td></td>
+          <% row.each do |field| %>
+          <td><%= field %></td>
+          <% end %>
       </tr>
-    <% end %>
+      <% end %>
   </table>
 <% end %>

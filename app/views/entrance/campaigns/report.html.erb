@@ -4,7 +4,10 @@
     <small><%= @campaign.name %></small>
   </h2>
 </div>
-
+<%= link_to 'Распечатать',
+            report_entrance_campaign_path(
+                    @campaign, params.merge({ format: :xlsx })
+            ), class: 'lead' %>
 <table class="table table-condensed table-bordered table-striped">
   <thead>
     <tr>
@@ -21,21 +24,15 @@
       <th>Заочная</th>
     </tr>
   </thead>
-  <% Department.faculties.each do |faculty| %>
+  <% Entrance::Application.report_information(@campaign).each do |f| %>
     <tr>
-      <th colspan="7"><%= faculty.name %></th>
+      <th colspan="7"><%= f[:faculty] %></th>
     </tr>
-    <% faculty.directions.for_campaign(@campaign).each do |direction| %>
+    <% f[:applications].each do |row| %>
       <tr>
-        <td><%= direction.description %></td>
-
-        <% stats = Entrance::Application.direction_stats(@campaign, direction) %>
-        <td><%= campaign_stat(stats, :budget, :o) %></td>
-        <td><%= campaign_stat(stats, :budget, :oz) %></td>
-        <td><%= campaign_stat(stats, :budget, :z) %></td>
-        <td><%= campaign_stat(stats, :paid, :o) %></td>
-        <td><%= campaign_stat(stats, :paid, :oz) %></td>
-        <td><%= campaign_stat(stats, :paid, :z) %></td>
+        <% row.each do |field| %>
+            <td><%= field %></td>
+        <% end %>
       </tr>
     <% end %>
   <% end %>

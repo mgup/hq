@@ -43,7 +43,8 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def register
-    @applications = applications_from_filters
+    params[:date] = (l Date.today) if params[:date] == ''
+    @applications = applications_from_filters(date: true)
 
     respond_to do |format|
       format.html
@@ -81,8 +82,8 @@ class Entrance::CampaignsController < ApplicationController
     apps = Entrance::Application.
       joins(competitive_group_item: :direction).
       joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id').
-      send(form_method).send(payment_method).
-      order('(entrance_benefits.benefit_kind_id = 1) DESC, entrance_applications.number ASC')
+      send(form_method).send(payment_method).order('entrance_applications.created_at')
+      # .order('(entrance_benefits.benefit_kind_id = 1) DESC, entrance_applications.number ASC')
 
     if opts[:form]
       apps = apps.send(form_method)
