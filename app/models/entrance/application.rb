@@ -144,16 +144,17 @@ class Entrance::Application < ActiveRecord::Base
             xml.NationalityTypeID       entrant.nationality_type_id
             xml.BirthDate               entrant.birthday.iso8601
           end
-          # xml.EduDocuments do
-          #   xml.EduDocument do
-          #     xml.SchoolCertificateDocument do
-          #       xml.OriginalReceived original
-          #       xml.DocumentSeries entrant.certificate_series
-          #       xml.DocumentNumber entrant.certificate_number
-          #
-          #     end
-          #   end
-          # end
+          xml.EduDocuments do
+            xml.EduDocument do
+              xml.SchoolCertificateDocument do
+                xml.OriginalReceived original
+                xml.DocumentSeries entrant.edu_document.series
+                xml.DocumentNumber entrant.edu_document.number
+                xml.DocumentDate   entrant.edu_document.date.iso8601
+                xml.DocumentOrganization entrant.edu_document.organization
+              end
+            end
+          end
         end
       end
     end
