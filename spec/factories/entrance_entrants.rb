@@ -25,5 +25,13 @@ FactoryGirl.define do
     association :campaign
     association :identity_document_type
     association :nationality_type
+
+    trait :with_exams do
+      callback(:after_build, :after_stub) do |entrant|
+        3.times do
+          entrant.exam_results << build(:exam_result, entrant: entrant)
+        end
+      end
+    end
   end
 end

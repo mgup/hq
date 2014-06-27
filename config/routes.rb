@@ -284,6 +284,7 @@ HQ::Application.routes.draw do
       get 'register',     on: :member
 
       resources :dates
+      resources :min_scores
       resources :entrants do
         get 'history', on: :member
 

@@ -1,0 +1,27 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }, border: { style: :thin, color: "000000" }
+style_f = wb.styles.add_style b: true, border: { style: :thin, color: "000000" }
+border = wb.styles.add_style border: { style: :thin, color: "000000" }
+wb.add_worksheet(name: 'Приёмная компания 2014', page_setup: {orientation: :landscape}) do |sheet|
+    sheet.add_row ['Направление', 'Бюджет', '', '', 'Платный приём', '', '']
+    sheet.add_row ['', 'Очная', 'Очно-заочная', 'Заочная', 'Очная', 'Очно-заочная', 'Заочная']
+    sheet['A1:G2'].each do |cell|
+      cell.style = style_shout
+    end
+    sheet.merge_cells('A1:A2')
+    sheet.merge_cells('B1:D1')
+    sheet.merge_cells('E1:G1')
+    i = 3
+    Entrance::Application.report_information(@campaign).each do |f|
+        sheet.add_row [f[:faculty], '', '', '', '', '', ''], border: { style: :thin, color: "000000" }
+        sheet["A#{i}:G#{i}"].each do |cell|
+          cell.style = style_f
+        end
+        sheet.merge_cells("A#{i}:G#{i}")
+        i+=1
+        f[:applications].each do |row|
+            sheet.add_row row, style: border
+            i+=1
+        end
+    end
+end
