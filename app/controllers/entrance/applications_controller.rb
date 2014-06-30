@@ -141,7 +141,7 @@ class Entrance::ApplicationsController < ApplicationController
   def resource_params
     params.fetch(:entrance_application, {}).permit(
       :entrant_id, :number, :original, :registration_date, :campaign_id,
-      :competitive_group_item_id
+      :competitive_group_item_id, :packed
     )
   end
 end

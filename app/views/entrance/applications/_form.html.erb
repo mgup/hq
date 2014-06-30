@@ -1,6 +1,10 @@
 <%= nested_form_for application,
              url: entrance_campaign_entrant_applications_path(@campaign, @entrant),
              html: { class: 'form-horizontal' } do |f| %>
+  <% if @applications.without_called_back.empty? %>
+    <%= f.hidden_field :packed, value: '1' %>
+  <% end %>
+
   <%= f.hidden_field :entrant_id %>
   <!--<%#= f.hidden_field :need_hostel %>-->
   <%= f.hidden_field :status_id %>
