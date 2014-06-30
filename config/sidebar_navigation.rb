@@ -47,10 +47,12 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :new_entrance_application, 'Абитуриенты',
                      entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
       end
-
-      primary.item :entrance_dates, 'Сроки проведения',
-                   entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
     end
+
+    primary.item :entrance_dates, 'Сроки проведения',
+                 entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
+    primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
+                 entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
 
     # ======================================
     primary.item :nav_group_study, 'Учёба', class: 'nav-header disabled'
