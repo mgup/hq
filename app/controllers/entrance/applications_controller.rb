@@ -4,6 +4,12 @@ class Entrance::ApplicationsController < ApplicationController
   load_and_authorize_resource through: :entrant, class: 'Entrance::Application'
 
   def index
+    # Проверяем созданные заявления на предмет наличия оригинала.
+    @has_original = false
+    @applications.each do |a|
+      @has_original = true if a.original?
+    end
+
     # Находим все подходящие конкурсные группы.
     entrant_exams = @entrant.exam_results.map { |r| r.exam_id }.sort
     possible_exams = []
@@ -100,8 +106,11 @@ class Entrance::ApplicationsController < ApplicationController
 
       respond_to do |format|
         format.html do
-          redirect_to entrance_campaign_entrants_path(@campaign),
-                      notice: 'Абитуриент успешно добавлен.'
+          redirect_to entrance_campaign_entrant_applications_path(
+                        @application.campaign,
+                        @application.entrant
+                      ),
+                      notice: 'Заявление успешно создано.'
         end
         format.js
       end
@@ -118,7 +127,7 @@ class Entrance::ApplicationsController < ApplicationController
                   @application.campaign,
                   @application.entrant
                 ),
-                notice: 'Абитуриент успешно добавлен.'
+                notice: 'Заявление успешно отозвано.'
   end
 
   def print
