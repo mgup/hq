@@ -18,19 +18,24 @@ class Entrance::DocumentMovement < ActiveRecord::Base
   # Совершение действий, которые указаны в этом движении.
   def apply_movement!
     if moved?
-      # Необходимо перенести пакет документов из одного заявления в другое.
-      from_application.packed = false
-      to_application.packed = true
+      if to_application
+        # Необходимо перенести пакет документов из одного заявления в другое.
+        from_application.packed = false
+        to_application.packed = true
 
-      if original?
-        from_application.original = false
-        to_application.original = true
+        if original?
+          from_application.original = false
+          to_application.original = true
+        else
+          from_application.original = false
+          to_application.original = false
+        end
+        from_application.save!
+        to_application.save!
       else
-        from_application.original = false
-        to_application.original = false
+        moved = false
+        save!
       end
-      from_application.save!
-      to_application.save!
     else
       # Доложили или забрали оригинал.
       from_application.original = original?
