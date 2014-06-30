@@ -90,6 +90,8 @@ class Ability
     can :manage, EventDate
     can :actual, :events
     can :create, EventDateClaim
+    can :index, Entrance::Date
+    can :index, Entrance::MinScore
 
     can :applications, Entrance::Campaign
     can :print_all, Entrance::Campaign
