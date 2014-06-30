@@ -27,6 +27,10 @@ class Entrance::Application < ActiveRecord::Base
   #   where('status_id != ?', 6)
   # end
 
+  scope :without_called_back, -> do
+    where('status_id != ?', 6)
+  end
+
   scope :for_direction, -> (direction) do
     joins(:competitive_group_item).
       where("competitive_group_items.direction_id = #{direction.id}")

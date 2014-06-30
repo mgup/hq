@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140627100131) do
+ActiveRecord::Schema.define(version: 20140628102458) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false

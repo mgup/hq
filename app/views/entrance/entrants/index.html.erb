@@ -44,8 +44,8 @@
 
       <td>
         <%= link_to entrance_campaign_entrant_applications_path(@campaign, entrant) do %>
-          <%= entrant.applications.count %>
-          <%= Russian::p(entrant.applications.count,
+          <%= entrant.applications.without_called_back.count %>
+          <%= Russian::p(entrant.applications.without_called_back.count,
                          'заявление',
                          'заявления',
                          'заявлений') %>
