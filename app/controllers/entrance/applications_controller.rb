@@ -14,6 +14,7 @@ class Entrance::ApplicationsController < ApplicationController
     end
     possible_exams.uniq!
 
+    @new_applications = []
     Entrance::CompetitiveGroup.all.each do |g|
       needed_exams = g.test_items.map { |i| i.exam_id }
 
@@ -21,16 +22,22 @@ class Entrance::ApplicationsController < ApplicationController
         if combination == needed_exams.sort
           found = false
           @entrant.applications.each do |a|
-            if a.competitive_group_item_id == g.items.first.id
-              found = true
+            # Только для неотозванных заявлений.
+            unless a.called_back?
+              # Проверяем, что у человека ещё нет заявлений в этой конкурсной
+              # группе.
+              if a.competitive_group_item_id == g.items.first.id
+                found = true
+              end
             end
           end
 
           unless found
             # Эта конкурсная группа подходит.
-            @entrant.applications.build(
+            @new_applications << @entrant.applications.build(
               competitive_group_item_id: g.items.first.id,
-              campaign_id: @campaign.id)
+              campaign_id: @campaign.id
+            )
           end
         end
       end

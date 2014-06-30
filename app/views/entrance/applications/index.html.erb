@@ -95,11 +95,9 @@
   </table>
 <% end %>
 
-<%= @applications.inspect %>
-
 <hr>
 
-<% @entrant.applications.sort_by { |a|
+<% @new_applications.sort_by { |a|
      a.competitive_group_item.competitive_group.name }.each do |a| %>
   <h4><%= a.competitive_group_item.competitive_group.name %></h4>
 
