@@ -201,6 +201,7 @@ class Ability
 
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
+    can :manage, Entrance::DocumentMovement
   end
 
   def selection_technical_secretary(user)

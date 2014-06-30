@@ -4,6 +4,12 @@ class Entrance::ApplicationsController < ApplicationController
   load_and_authorize_resource through: :entrant, class: 'Entrance::Application'
 
   def index
+    # Проверяем созданные заявления на предмет наличия оригинала.
+    @has_original = false
+    @applications.each do |a|
+      @has_original = true if a.original?
+    end
+
     # Находим все подходящие конкурсные группы.
     entrant_exams = @entrant.exam_results.map { |r| r.exam_id }.sort
     possible_exams = []
@@ -31,22 +37,30 @@ class Entrance::ApplicationsController < ApplicationController
     # end
     # raise possible_exams.inspect
 
+    @new_applications = []
+
     Entrance::CompetitiveGroup.all.each do |g|
       needed_exams = g.test_items.map { |i| i.exam_id }
       possible_exams.each do |combination|
         if combination == needed_exams.sort
           found = false
           @entrant.applications.each do |a|
-            if a.competitive_group_item_id == g.items.first.id
-              found = true
+            # Только для неотозванных заявлений.
+            unless a.called_back?
+              # Проверяем, что у человека ещё нет заявлений в этой конкурсной
+              # группе.
+              if a.competitive_group_item_id == g.items.first.id
+                found = true
+              end
             end
           end
 
           unless found
             # Эта конкурсная группа подходит.
-            @entrant.applications.build(
+            @new_applications << @entrant.applications.build(
               competitive_group_item_id: g.items.first.id,
-              campaign_id: @campaign.id)
+              campaign_id: @campaign.id
+            )
           end
         end
       end
@@ -110,8 +124,11 @@ class Entrance::ApplicationsController < ApplicationController
 
       respond_to do |format|
         format.html do
-          redirect_to entrance_campaign_entrants_path(@campaign),
-                      notice: 'Абитуриент успешно добавлен.'
+          redirect_to entrance_campaign_entrant_applications_path(
+                        @application.campaign,
+                        @application.entrant
+                      ),
+                      notice: 'Заявление успешно создано.'
         end
         format.js
       end
@@ -128,7 +145,7 @@ class Entrance::ApplicationsController < ApplicationController
                   @application.campaign,
                   @application.entrant
                 ),
-                notice: 'Абитуриент успешно добавлен.'
+                notice: 'Заявление успешно отозвано.'
   end
 
   def print
@@ -142,7 +159,7 @@ class Entrance::ApplicationsController < ApplicationController
   def resource_params
     params.fetch(:entrance_application, {}).permit(
       :entrant_id, :number, :original, :registration_date, :campaign_id,
-      :competitive_group_item_id
+      :competitive_group_item_id, :packed
     )
   end
 end
