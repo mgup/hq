@@ -11,7 +11,11 @@ pdf.font_size 11 do
       pdf.move_down 5
 
       pdf.text 'Прошу допустить меня к вступительным испытаниям и участию  в конкурсе'
-      pdf.text "на направление подготовки (специальность): <u>#{application.competitive_group_item.direction.new_code}, «#{application.competitive_group_item.direction.name}»</u>", inline_format: true
+      if Entrance::Entrant.aspirants.include? entrant
+        pdf.text "на право поступления на обучение по программам подготовки научно-педагогических кадров в аспирантуре на направление подготовки (специальность): <u>#{application.competitive_group_item.direction.new_code}, «#{application.competitive_group_item.direction.name}»</u>", inline_format: true
+      else
+        pdf.text "на направление подготовки (специальность): <u>#{application.competitive_group_item.direction.new_code}, «#{application.competitive_group_item.direction.name}»</u>", inline_format: true
+      end
       pdf.text "Форма обучения: <u>#{application.competitive_group_item.form_name}</u> Основа обучения: <u>#{application.competitive_group_item.budget_name}</u>", inline_format: true
       pdf.text "В общежитии: <u>#{application.entrant.need_hostel? ? 'нуждаюсь' : 'не нуждаюсь'}</u>            Контактный/домашний телефон: <u>#{entrant.phone}</u>", inline_format: true
       pdf.text "#{entrant.female? ? 'Окончила' : 'Окончил'} #{entrant.edu_document.organization} в #{entrant.edu_document.graduation_year} г.<br>аттестат (диплом об окончании): <u>#{entrant.edu_document.series} № #{entrant.edu_document.number} от #{l entrant.edu_document.date}</u>.", inline_format: true
@@ -79,7 +83,7 @@ pdf.font_size 11 do
       pdf.move_down 4
       pdf.text 'Достоверность всех предоставленных сведений и подлинность документов подтверждаю.', align: :center
       pdf.move_down 6
-      pdf.text "#{l application.created_at, format: '%d %B %Y'} г.                                                                                      ___________________ / #{entrant.short_name} /", inline_format: true
+      pdf.text "#{l application.created_at, format: '%d %B %Y'} г.                                                                                               ___________________ / #{entrant.short_name} /", inline_format: true
 
       pdf.move_down 5
       pdf.text '__________________ / __________________ /', align: :right
@@ -108,7 +112,7 @@ pdf.font_size 11 do
         pdf.rectangle [0,670], 100, 130
         pdf.text_box 'место для фото', size: 9, at: [16,630], width: 70, height: 50
 
-        pdf.text_box "#{l application.created_at, format: '%d %B %Y'} г.                               ___________________ / #{entrant.short_name} /", inline_format: true, at: [130,630], width: 600, height: 50
+        pdf.text_box "#{l application.created_at, format: '%d %B %Y'} г.                                           ___________________ / #{entrant.short_name} /", inline_format: true, at: [130,630], width: 600, height: 50
 
         pdf.move_down 140
         pdf.text 'Оценки вступительных испытаний', style: :bold, align: :center
@@ -201,8 +205,28 @@ pdf.font_size 11 do
             end
         end
 
-        pdf.text "Сдал: ______________ / #{entrant.short_name} /          Принял: секретарь комиссии ______________ / ___________________ /", size: 10
+        pdf.text "Сдал: ______________ / #{entrant.short_name} /                Принял: секретарь комиссии ______________ / ___________________ /", size: 10
         pdf.move_down 8
         pdf.text "#{l application.created_at, format: '%d %B %Y'} г.", inline_format: true, size: 10
+
+        unless entrant.papers.empty?
+         pdf.start_new_page
+
+         pdf.text 'СПИСОК НАУЧНЫХ ТРУДОВ', align: :center, style: :bold
+         pdf.move_down 15
+         pdf.text "#{entrant.full_name}"
+         pdf.move_down 20
+
+         paper_data = [['№ п/п', 'Наименование', 'Печатный или рукописный', 'Издательство, журнал (номер, год) или номер авторского свидетельства', 'Количество страниц', 'Фамилии соавторов']]
+         entrant.papers.each_with_index do |paper, i|
+            paper_data << [i+1, paper.name, (paper.printed ? 'печатный' : 'рукописный'), paper.publication, paper.lists, paper.co_authors]
+         end
+
+         pdf.font_size 9 do
+             pdf.table paper_data, header: true do
+                 column(1).width = 120
+             end
+         end
+        end
 
     end

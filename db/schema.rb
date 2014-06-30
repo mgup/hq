@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140630065843) do
+ActiveRecord::Schema.define(version: 20140630090822) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -764,7 +764,7 @@ ActiveRecord::Schema.define(version: 20140630065843) do
     t.float    "gpa"
     t.string   "registration_number"
     t.integer  "qualification_type_id"
-    t.integer  "speciality_id"
+    t.integer  "direction_id"
     t.integer  "specialization_id"
     t.integer  "profession_id"
     t.string   "document_type_name_text"
@@ -773,6 +773,7 @@ ActiveRecord::Schema.define(version: 20140630065843) do
     t.integer  "entrant_id"
     t.boolean  "foreign_institution",     default: false, null: false
     t.boolean  "our_institution",         default: false, null: false
+    t.string   "qualification"
   end
 
   create_table "entrance_entrants", force: true do |t|
@@ -845,6 +846,15 @@ ActiveRecord::Schema.define(version: 20140630065843) do
     t.integer  "entrance_exam_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "entrance_papers", force: true do |t|
+    t.string  "name"
+    t.string  "publication"
+    t.boolean "printed"
+    t.integer "lists"
+    t.string  "co_authors"
+    t.integer "entrance_entrant_id", null: false
   end
 
   create_table "entrance_queries", force: true do |t|

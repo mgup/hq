@@ -20,8 +20,13 @@ class Entrance::Entrant < ActiveRecord::Base
   has_one :edu_document, class_name: 'Entrance::EduDocument', dependent: :destroy
   accepts_nested_attributes_for :edu_document, update_only: true
 
+  has_many :papers, class_name: 'Entrance::Paper', foreign_key: :entrance_entrant_id, dependent: :destroy
+  accepts_nested_attributes_for :papers, allow_destroy: true
+
   has_many :applications, class_name: Entrance::Application, dependent: :destroy
   accepts_nested_attributes_for :applications, allow_destroy: true
+
+  scope :aspirants, -> { joins(:edu_document).where('entrance_edu_documents.direction_id IS NOT NULL') }
 
   before_create do |entrant|
     entrant.build_edu_document
