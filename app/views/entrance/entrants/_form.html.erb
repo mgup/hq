@@ -217,6 +217,21 @@
         </div>
       </div>
 
+      <div class="form-group">
+          <%= edu_f.label :direction_id, class: 'col-sm-2 control-label' %>
+          <div class="col-sm-10">
+              <%= edu_f.select :direction_id,
+                               options_from_collection_for_select(
+                                       Direction.with_new_code,
+                                       :id, :description, edu_f.object.direction_id
+                               ), {prompt: 'Выберите специальность (направление подготовки)'}, class: 'form-control' %>
+          </div>
+      </div>
+      <%= edu_f.label :qualification, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+          <%= edu_f.text_field :qualification, class: 'form-control' %>
+      </div>
+
       <%= edu_f.link_to_remove '', class: 'hidden' %>
       <% end %>
   </fieldset>
@@ -317,6 +332,58 @@
                       style: 'font-weight: bold; color: red; font-size: 2em;' %>
     <br><br>
   </fieldset>
+
+    <fieldset>
+        <legend>Научные труды (аспирантура)</legend>
+
+        <%= f.fields_for :papers do |paper_f| %>
+            <%= paper_f.hidden_field :id %>
+
+            <div class="form-group">
+                <%= paper_f.label :name, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-10">
+                    <%= paper_f.text_field :name, class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= paper_f.label :printed, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-4">
+                    <%= paper_f.select :printed, [['печатный', true], ['рукописный', false]], {}, class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= paper_f.label :publication, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-10">
+                    <%= paper_f.text_field :publication, class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= paper_f.label :lists, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-4">
+                    <%= paper_f.number_field :lists, class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= paper_f.label :co_authors, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-10">
+                    <%= paper_f.text_field :co_authors, class: 'form-control' %>
+                </div>
+            </div>
+
+            <%= paper_f.link_to_remove class: 'col-sm-offset-2 text-danger',
+                                       title: 'Удалить' do %>
+                Удалить научный труд
+            <% end %>
+            <br><br>
+        <% end %>
+        <%= f.link_to_add 'Добавить информацию о научном труде', :papers,
+                          class: 'col-sm-offset-2' %>
+        <br><br>
+    </fieldset>
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">

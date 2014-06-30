@@ -58,7 +58,10 @@ class Entrance::EntrantsController < ApplicationController
       edu_document_attributes: [:id, :document_type_id, :series, :number,
                                 :date, :organization, :graduation_year,
                                 :foreign_institution, :our_institution,
-                                :_destroy ]
+                                :direction_id, :qualification,
+                                :_destroy ],
+      papers_attributes: [:id, :name, :publication, :printed,
+                              :lists, :co_authors, :_destroy ]
     )
   end
 end
