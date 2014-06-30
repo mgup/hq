@@ -23,6 +23,10 @@ class Entrance::Application < ActiveRecord::Base
                          comment: "Обновлено заявление #{[application.number, application.id].join(', ')}."
   end
 
+  # default_scope do
+  #   where('status_id != ?', 6)
+  # end
+
   scope :for_direction, -> (direction) do
     joins(:competitive_group_item).
       where("competitive_group_items.direction_id = #{direction.id}")
@@ -128,7 +132,12 @@ class Entrance::Application < ActiveRecord::Base
       end
       info << {faculty: faculty.name, applications: applications}
     end
+
     return info
+  end
+
+  def called_back?
+    6 == status_id
   end
 
   def to_fis

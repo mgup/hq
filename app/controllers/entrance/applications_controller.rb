@@ -103,6 +103,17 @@ class Entrance::ApplicationsController < ApplicationController
     end
   end
 
+  def destroy
+    @application.status_id = 6
+    @application.save!
+
+    redirect_to entrance_campaign_entrant_applications_path(
+                  @application.campaign,
+                  @application.entrant
+                ),
+                notice: 'Абитуриент успешно добавлен.'
+  end
+
   def print
     respond_to { |format| format.pdf }
   end

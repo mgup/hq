@@ -697,6 +697,7 @@ ActiveRecord::Schema.define(version: 20140627100131) do
     t.integer  "campaign_id",                               null: false
     t.integer  "competitive_group_item_id"
     t.boolean  "original",                  default: false
+    t.boolean  "packed"
   end
 
   create_table "entrance_benefit_kinds", force: true do |t|
@@ -735,6 +736,16 @@ ActiveRecord::Schema.define(version: 20140627100131) do
     t.integer  "stage"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "entrance_document_movements", force: true do |t|
+    t.boolean  "moved"
+    t.boolean  "original"
+    t.integer  "from_application_id"
+    t.integer  "to_application_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "original_changed",    default: false
   end
 
   create_table "entrance_document_types", force: true do |t|

@@ -296,6 +296,8 @@ HQ::Application.routes.draw do
       end
     end
 
+    resources :document_movements
+
     get 'fis/test' => 'fis#test'
   end
 

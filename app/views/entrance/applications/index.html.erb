@@ -5,10 +5,99 @@
   </h1>
 </div>
 
-<%= link_to print_all_entrance_campaign_entrant_applications_path(@campaign, @entrant),
-            class: 'btn btn-info' do %>
-    <span class="glyphicon glyphicon-print"></span> Распечатать все заявления
+<h2>Оформленные заявления</h2>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th class="text-muted">#</th>
+      <th>Номер</th>
+      <th>Направление</th>
+      <th></th>
+      <th>
+        <%= link_to print_all_entrance_campaign_entrant_applications_path(@campaign, @entrant),
+                    class: 'btn btn-info' do %>
+          <span class="glyphicons print"></span>
+        <% end %>
+      </th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @applications.each do |a| %>
+    <tr>
+      <td class="text-muted"><%= a.id %></td>
+      <td><%= a.number %></td>
+      <td>
+        <%= a.direction.new_code %>
+        <%= a.direction.name %>
+      </td>
+      <td>
+        <% if a.packed? %>
+          <button class="btn btn-<%= a.original? ? 'success' : 'default' %>"
+                  title="<%= a.original? ? 'Оригинал' : 'Копия' %> аттестата"
+                  data-toggle="modal" data-target="#documents_packed">
+            <% if a.original? %>
+              <span class="glyphicons folder_flag"></span>
+            <% else %>
+              <span class="glyphicons folder_open"></span>
+            <% end %>
+          </button>
+
+          <%= render partial: 'move_documents',
+                     locals: {
+                       from_application: a,
+                       to_applications: @applications.reject { |x| x.id == a.id }
+                     } %>
+        <% end %>
+      </td>
+      <% if a.called_back? %>
+        <td colspan="2">
+          Отозвано.
+        </td>
+      <% else %>
+        <td>
+          <%= link_to print_entrance_campaign_entrant_application_path(@campaign, @entrant, a),
+                      class: 'btn btn-default', title: 'Распечатать' do %>
+            <span class="glyphicons print"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to entrance_campaign_entrant_application_path(@campaign, @entrant, a),
+                      method: :delete, class: 'btn btn-danger',
+                      title: 'Отозвать', data: { confirm: 'Вы уверены?' } do %>
+            <span class="glyphicons remove_2"></span>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<% if Entrance::DocumentMovement.for_applications(@applications).any? %>
+  <h2>Движение документов</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="text-muted">#</th>
+        <th>Дата</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <% Entrance::DocumentMovement.for_applications(@applications).each do |m| %>
+      <tr>
+        <td class="text-muted"><%= m.id %></td>
+        <td><%= l m.created_at %></td>
+        <td><%= m.description %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </table>
 <% end %>
+
+<%= @applications.inspect %>
+
+<hr>
 
 <% @entrant.applications.sort_by { |a|
      a.competitive_group_item.competitive_group.name }.each do |a| %>
