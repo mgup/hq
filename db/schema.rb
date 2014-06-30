@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140627084419) do
+ActiveRecord::Schema.define(version: 20140628102458) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -745,6 +745,7 @@ ActiveRecord::Schema.define(version: 20140627084419) do
     t.integer  "to_application_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "original_changed",    default: false
   end
 
   create_table "entrance_document_types", force: true do |t|

@@ -20,6 +20,7 @@
           <span class="glyphicons print"></span>
         <% end %>
       </th>
+      <th></th>
     </tr>
   </thead>
   <% @applications.each do |a| %>
@@ -49,15 +50,50 @@
                      } %>
         <% end %>
       </td>
-      <td>
-        <%= link_to print_entrance_campaign_entrant_application_path(@campaign, @entrant, a),
-                    class: 'btn btn-default' do %>
-          <span class="glyphicons print"></span>
-        <% end %>
-      </td>
+      <% if a.called_back? %>
+        <td colspan="2">
+          Отозвано.
+        </td>
+      <% else %>
+        <td>
+          <%= link_to print_entrance_campaign_entrant_application_path(@campaign, @entrant, a),
+                      class: 'btn btn-default', title: 'Распечатать' do %>
+            <span class="glyphicons print"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to entrance_campaign_entrant_application_path(@campaign, @entrant, a),
+                      method: :delete, class: 'btn btn-danger',
+                      title: 'Отозвать', data: { confirm: 'Вы уверены?' } do %>
+            <span class="glyphicons remove_2"></span>
+          <% end %>
+        </td>
+      <% end %>
     </tr>
   <% end %>
 </table>
+
+<% if Entrance::DocumentMovement.for_applications(@applications).any? %>
+  <h2>Движение документов</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="text-muted">#</th>
+        <th>Дата</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <% Entrance::DocumentMovement.for_applications(@applications).each do |m| %>
+      <tr>
+        <td class="text-muted"><%= m.id %></td>
+        <td><%= l m.created_at %></td>
+        <td><%= m.description %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
 
 <%= @applications.inspect %>
 

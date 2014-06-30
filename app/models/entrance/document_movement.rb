@@ -7,6 +7,14 @@ class Entrance::DocumentMovement < ActiveRecord::Base
   belongs_to :to_application, class_name: 'Entrance::Application',
              foreign_key: :to_application_id
 
+  default_scope do
+    order(created_at: :desc)
+  end
+
+  scope :for_applications, -> (applications) do
+    where(from_application_id: applications.map(&:id))
+  end
+
   # Совершение действий, которые указаны в этом движении.
   def apply_movement!
     if moved?
@@ -28,5 +36,24 @@ class Entrance::DocumentMovement < ActiveRecord::Base
       from_application.original = original?
       from_application.save!
     end
+  end
+
+  def description
+    d = []
+
+    if moved?
+      with_original = original? ? '+' : '-'
+      d << "Комплект (#{with_original}) перенесён в #{to_application.number}."
+    end
+
+    if original_changed
+      if original?
+        d << 'Принесён оригинал аттестата.'
+      else
+        d << 'Забран оригинал аттестата.'
+      end
+    end
+
+    d.join(' ')
   end
 end

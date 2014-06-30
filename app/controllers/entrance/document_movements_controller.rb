@@ -2,6 +2,10 @@ class Entrance::DocumentMovementsController < ApplicationController
   load_and_authorize_resource
 
   def create
+    if @document_movement.from_application.original? != @document_movement.original?
+      @document_movement.original_changed = true
+    end
+
     if @document_movement.save
       @document_movement.apply_movement!
 
