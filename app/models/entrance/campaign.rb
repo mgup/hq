@@ -7,6 +7,7 @@ class Entrance::Campaign < ActiveRecord::Base
   enum status: { not_started: 0, started: 1, finished: 2 }
 
   has_many :dates, class_name: 'Entrance::Date'
+  has_many :events, class_name: 'Entrance::Event'
   has_many :min_scores, class_name: Entrance::MinScore
   has_many :exams, class_name: 'Entrance::Exam'
   has_many :entrants, class_name: 'Entrance::Entrant'

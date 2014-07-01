@@ -26,6 +26,10 @@ class Entrance::Entrant < ActiveRecord::Base
   has_many :applications, class_name: Entrance::Application, dependent: :destroy
   accepts_nested_attributes_for :applications, allow_destroy: true
 
+  has_many :event_entrants, class_name: Entrance::EventEntrant, foreign_key: :entrance_entrant_id
+  accepts_nested_attributes_for :event_entrants, allow_destroy: true
+  has_many :events, class_name: Entrance::Event, through: :event_entrants
+
   scope :aspirants, -> { joins(:edu_document).where('entrance_edu_documents.direction_id IS NOT NULL') }
 
   before_create do |entrant|

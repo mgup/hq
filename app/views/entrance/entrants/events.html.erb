@@ -1,0 +1,53 @@
+<div class="page-header">
+    <h1>
+        Мероприятия с абитуриентом
+        <br>
+        <small><%= @entrant.full_name %></small>
+    </h1>
+</div>
+
+<% if @events.empty? %>
+    <p class="lead">Абитуриент не записан ни на одно из мероприятий</p>
+<% else %>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="text-muted">#</th>
+            <th>Название</th>
+            <th>Дата</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @events.each do |event| %>
+            <tr>
+                <td class="text-muted"><%= event.id %></td>
+                <td><%= event.name %></td>
+                <td><%= l event.date %></td>
+                <td><%= link_to  entrance_campaign_entrant_event_entrant_path(campaign_id: @campaign, entrant_id: @entrant,
+                                                                              id: @entrant.event_entrants.from_event(event).first.id),
+                                method: :delete, data: { confirm: 'Вы уверены?' },
+                                class: 'btn btn-danger' do %>
+                        <span class="glyphicon glyphicon-remove"></span> Удалить
+                    <% end %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+<% end %>
+<br>
+<h3>Добавить абитуриенту мероприятие</h3>
+<br>
+<%= form_for @event_entrant, url: entrance_campaign_entrant_event_entrants_path(campaign_id: @campaign, entrant_id: @entrant) do |f| %>
+    <div class="row">
+        <div class="col-sm-6">
+            <%= f.select :entrance_event_id,
+                         options_from_collection_for_select(Entrance::Event.without(@events.collect{|u| u.id}.join(',')), :id, :name_with_date),
+                         {prompt: 'Выберите мероприятие из списка'}, class: 'form-control' %>
+        </div>
+        <%= f.hidden_field :entrance_entrant_id, value: @entrant.id %>
+        <div class="col-sm-2">
+            <%= f.submit 'Добавить', class: 'btn btn-primary' %>
+        </div>
+    </div>
+<% end %>

@@ -95,6 +95,8 @@ class Ability
 
     can :applications, Entrance::Campaign
     can :print_all, Entrance::Campaign
+    can :print_all, Entrance::Campaign
+    can :show, Entrance::Event
   end
 
   # Обычный преподаватель.
@@ -202,6 +204,7 @@ class Ability
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
     can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::EventEntrant
   end
 
   def selection_technical_secretary(user)
@@ -212,6 +215,7 @@ class Ability
 
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
+    can :manage, Entrance::EventEntrant
   end
 
   def selection_editor(user)
@@ -219,6 +223,7 @@ class Ability
     can :manage, Entrance::Entrant
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
+    can :manage, Entrance::EventEntrant
   end
 
   def zamestitel_otvetstvennogo_sekretarja(user)

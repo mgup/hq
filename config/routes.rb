@@ -285,10 +285,12 @@ HQ::Application.routes.draw do
 
       resources :dates
       resources :min_scores
+      resources :events
       resources :entrants do
         get 'history', on: :member
-
+        get 'events', on: :member
         resources :exam_results
+        resources :event_entrants
         resources :applications do
           get '/print.pdf', to: 'applications#print', on: :member, defaults: { format: 'pdf' }, as: :print
           get '/print_all.pdf', to: 'applications#print_all', on: :collection, defaults: { format: 'pdf' }, as: :print_all

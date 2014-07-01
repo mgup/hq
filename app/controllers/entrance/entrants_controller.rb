@@ -46,6 +46,11 @@ class Entrance::EntrantsController < ApplicationController
     @logs = Entrance::Log.for_entrant(@entrant)
   end
 
+  def events
+    @events = @entrant.events
+    @event_entrant = Entrance::EventEntrant.new
+  end
+
   def resource_params
     params.fetch(:entrance_entrant, {}).permit(
       :last_name, :first_name, :patronym, :gender, :snils, :information,

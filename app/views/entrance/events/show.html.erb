@@ -1,0 +1,27 @@
+<div class="page-header">
+    <h1>Участники мероприятия</h1>
+</div>
+<%= select_tag :list_of_events, options_from_collection_for_select(@campaign.events, :id, :name_with_date, selected: @event.id),
+               class: 'form-control', data: {value: @campaign.id},
+               onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/events/' + $(this).val();)%>
+
+<br>
+<table class="table table-striped">
+ <thead>
+   <tr>
+     <th>#</th>
+     <th>Фамилия</th>
+     <th>Имя</th>
+     <th>Отчество</th>
+   </tr>
+ </thead>
+ <% @event.entrants.each do |entrant| %>
+   <tr>
+     <td class="text-muted"><%= entrant.id %></td>
+     <td><%= entrant.last_name %></td>
+     <td><%= entrant.first_name %></td>
+     <td><%= entrant.patronym %></td>
+   </tr>
+ <% end %>
+</table>
+

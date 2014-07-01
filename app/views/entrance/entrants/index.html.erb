@@ -64,6 +64,13 @@
           <% end %>
         <% end %>
 
+         <% if can?(:edit, Entrance::EventEntrant) %>
+           <%= link_to events_entrance_campaign_entrant_path(@campaign, entrant),
+                          class: 'btn btn-info', title: 'Мероприятия' do %>
+             <span class="glyphicons list"></span>
+           <% end %>
+         <% end %>
+
         <% if can?(:destroy, Entrance::Entrant) %>
           <%= link_to entrance_campaign_entrant_path(@campaign, entrant),
                       title: 'Удалить', method: :delete,
