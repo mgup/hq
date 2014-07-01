@@ -53,7 +53,7 @@ SimpleNavigation::Configuration.run do |navigation|
                  entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
 
     primary.item :entrance_events, 'Вступительные испытания',
-                 entrance_campaign_events_path(Entrance::Campaign::CURRENT)
+                 entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: 1)
 
     primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
                  entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
