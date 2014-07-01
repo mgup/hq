@@ -20,30 +20,17 @@ class Entrance::ApplicationsController < ApplicationController
     end
     possible_exams.uniq!
 
-    # Находим все подходящие конкурсные группы.
-    # entrant_exams = @entrant.exam_results.map { |r| r.exam_id }.sort
-    # possible_exams = []
-    # (1..entrant_exams.size).each do |n|
-    #   entrant_exams.combination(n).to_a.each do |combination|
-    #     possible_exams << combination.sort
-    #   end
-    # end
-    # possible_exams.uniq!
-
-    # if g.items.first.payed?
-    #   need_scores = g.items.first.direction.min_scores.paid.order(:entrance_exam_id)
-    # else
-    #   need_scores = g.items.first.direction.min_scores.budget.order(:entrance_exam_id)
-    # end
-    # raise possible_exams.inspect
-
     @new_applications = []
 
     Entrance::CompetitiveGroup.all.each do |g|
-      needed_exams = g.test_items.map { |i| i.exam_id }
+      needed_exams = g.test_items
       possible_exams.each do |combination|
-        if combination == needed_exams.sort
-          found = false
+        if combination == needed_exams.map { |i| i.exam_id }.sort
+          key = true
+          needed_exams.each do |exam|
+            key &&= (@entrant.exam_results.by_exam(exam.exam_id).first.score ? exam.min_score <= @entrant.exam_results.by_exam(exam.exam_id).first.score : true)
+          end
+          found = !key
           @entrant.applications.each do |a|
             # Только для неотозванных заявлений.
             unless a.called_back?

@@ -13,6 +13,8 @@ class Entrance::ExamResult < ActiveRecord::Base
     where('entrance_test_items.id IS NOT NULL')
   end
 
+  scope :by_exam, -> exam_id { where(exam_id: exam_id) }
+
   def exam_type
     case form
       when 'use'
