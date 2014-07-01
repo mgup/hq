@@ -2,9 +2,11 @@ require 'spec_helper'
 
 feature 'Список абитуриентов' do
   background 'Сотрудник приёмной комисии' do
+    user = create(:user, :selection)
+    Thread.current[:user] = user
+    as_user(user)
     @campaign = create(:campaign)
     @entrant = create(:entrant, campaign: @campaign)
-    as_user(create(:user, :selection))
   end
 
   scenario 'Должен видеть список абитуриентов текущей компании' do

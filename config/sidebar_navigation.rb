@@ -52,7 +52,7 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :entrance_dates, 'Сроки проведения',
                  entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
     primary.item :entrance_events, 'Вступительные испытания',
-                 entrance_campaign_event_path(Entrance::Campaign::CURRENT, params[:id] || 1)
+                 entrance_campaign_event_path(Entrance::Campaign::CURRENT, 1), highlights_on: -> { current_page?(controller: 'entrance/events', action: 'show') }
     primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
                  entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
 

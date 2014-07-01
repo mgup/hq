@@ -37,6 +37,19 @@
       <div class="col-sm-2">
         <%= submit_tag 'Выбрать дату', class: 'btn btn-primary' %>
       </div>
+      <% if false %>
+      <div class="col-sm-2">
+        <%= link_to 'Все даты', '#', class: 'btn btn-success', id: 'all_dates_applications' %>
+      </div>
+      <% end %>
     </div>
   <% end %>
 <% end %>
+
+<script>
+    $('#all_dates_applications').click(function(e){
+        e.preventDefault();
+        $(this).closest('form').find('.datepicker').val('');
+        $(this).closest('form').submit();
+    })
+</script>

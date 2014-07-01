@@ -115,7 +115,7 @@ class Entrance::Application < ActiveRecord::Base
   def self.register_information
     applications = []
     self.all.each_with_index do |application, index|
-      applications << [index + 1, (I18n.l application.created_at), application.entrant.full_name, application.number, application.entrant.contacts, '']
+      applications << [index + 1, (I18n.l application.created_at, format: '%d.%m.%Y'), application.entrant.full_name, application.number, application.entrant.contacts, '']
     end
     return applications
   end

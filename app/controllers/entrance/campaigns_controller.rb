@@ -43,8 +43,11 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def register
-    params[:date] = (l Date.today) if params[:date] == ''
-    @applications = applications_from_filters(date: true)
+    if params[:date] == ''
+      @applications = applications_from_filters
+    else
+      @applications = applications_from_filters(date: true)
+    end
 
     respond_to do |format|
       format.html
