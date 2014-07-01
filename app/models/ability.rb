@@ -212,6 +212,7 @@ class Ability
 
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
+    can :manage, Entrance::DocumentMovement
   end
 
   def selection_editor(user)
@@ -219,6 +220,7 @@ class Ability
     can :manage, Entrance::Entrant
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
+    can :manage, Entrance::DocumentMovement
   end
 
   def zamestitel_otvetstvennogo_sekretarja(user)
