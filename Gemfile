@@ -52,7 +52,7 @@ gem 'jquery-validation-rails'
 
 gem 'airbrake'
 gem 'dotenv-rails'
-# gem 'tiny_tds'
+gem 'tiny_tds'
 #gem 'activerecord-sqlserver-adapter'
 
 gem 'httparty'

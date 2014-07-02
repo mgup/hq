@@ -6,6 +6,29 @@
                onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/events/' + $(this).val();)%>
 
 <br>
+<% if @event.with_classroom %>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+        </tr>
+        </thead>
+        <% @event.event_entrants.group_by(:classroom).each do |classroom| %>
+            <tr><td colspan="3"><%= classroom %></td></tr>
+            <% classroom.entrants.each do |entrant| %>
+            <tr>
+                <td class="text-muted"><%= entrant.id %></td>
+                <td><%= entrant.last_name %></td>
+                <td><%= entrant.first_name %></td>
+                <td><%= entrant.patronym %></td>
+            </tr>
+            <% end %>
+        <% end %>
+    </table>
+<% else %>
 <table class="table table-striped">
  <thead>
    <tr>
@@ -24,4 +47,4 @@
    </tr>
  <% end %>
 </table>
-
+<% end %>

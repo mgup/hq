@@ -9,7 +9,7 @@ class Entrance::Event < ActiveRecord::Base
   scope :without, -> ids { where("id NOT IN (#{ids})") }
 
   def name_with_date
-    "#{name}, #{I18n.l date}"
+    "#{name}, #{I18n.l date if date}"
   end
 
 end
