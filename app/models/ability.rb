@@ -97,6 +97,8 @@ class Ability
     can :print_all, Entrance::Campaign
     can :print_all, Entrance::Campaign
     can :show, Entrance::Event
+
+    can :index, EducationPrice
   end
 
   # Обычный преподаватель.

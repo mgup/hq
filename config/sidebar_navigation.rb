@@ -58,6 +58,8 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
                  entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
 
+    primary.item :education_prices, 'Стоимость обучения', education_prices_path
+
     # ======================================
     primary.item :nav_group_study, 'Учёба', class: 'nav-header disabled'
     primary.item :progress, 'Успеваемость'.html_safe, study_groups_path, icon: 'list' do |d|
