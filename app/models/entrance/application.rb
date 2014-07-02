@@ -185,15 +185,7 @@ class Entrance::Application < ActiveRecord::Base
             xml.BirthDate               entrant.birthday.iso8601
           end
           xml.EduDocuments do
-            xml.EduDocument do
-              xml.SchoolCertificateDocument do
-                xml.OriginalReceived original
-                xml.DocumentSeries entrant.edu_document.series
-                xml.DocumentNumber entrant.edu_document.number
-                xml.DocumentDate   entrant.edu_document.date.iso8601
-                xml.DocumentOrganization entrant.edu_document.organization
-              end
-            end
+            xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
         end
       end

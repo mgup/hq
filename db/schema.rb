@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140702065932) do
+ActiveRecord::Schema.define(version: 20140702071043) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -690,7 +690,7 @@ ActiveRecord::Schema.define(version: 20140702065932) do
     t.date     "registration_date"
     t.date     "last_deny_date"
     t.boolean  "need_hostel"
-    t.integer  "status_id",                 default: 1,     null: false
+    t.integer  "status_id",                 default: 4,     null: false
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
