@@ -7,6 +7,7 @@ class Entrance::Event < ActiveRecord::Base
   belongs_to :campaign, class_name: Entrance::Campaign
 
   scope :without, -> ids { where("id NOT IN (#{ids})") }
+  scope :without_classroom, -> { where('with_classroom IS NULL OR with_classroom = FALSE') }
 
   def name_with_date
     "#{name}, #{I18n.l date if date}"
