@@ -690,7 +690,7 @@ ActiveRecord::Schema.define(version: 20140702071248) do
     t.date     "registration_date"
     t.date     "last_deny_date"
     t.boolean  "need_hostel"
-    t.integer  "status_id",                 default: 1,     null: false
+    t.integer  "status_id",                 default: 4,     null: false
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"

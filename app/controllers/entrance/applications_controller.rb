@@ -126,6 +126,7 @@ class Entrance::ApplicationsController < ApplicationController
 
   def destroy
     @application.status_id = 6
+    @application.last_deny_date = Date.today
     @application.save!
 
     redirect_to entrance_campaign_entrant_applications_path(
