@@ -296,11 +296,14 @@ HQ::Application.routes.draw do
           get '/print_all.pdf', to: 'applications#print_all', on: :collection, defaults: { format: 'pdf' }, as: :print_all
         end
       end
+
+      get 'fis/clear'       => 'fis#clear'
+      get 'fis/clear-check' => 'fis#clear_check'
+
+      get 'fis/test'  => 'fis#test'
     end
 
     resources :document_movements
-
-    get 'fis/test' => 'fis#test'
   end
 
 
