@@ -1,11 +1,40 @@
 <div class="page-header">
     <h1>Участники мероприятия</h1>
 </div>
-<%= select_tag :list_of_events, options_from_collection_for_select(@campaign.events, :id, :name_with_date, selected: @event.id),
+<% unless current_user %>
+    <%= select_tag :list_of_events, options_from_collection_for_select(@campaign.events.without_classroom, :id, :name_with_date, selected: @event.id),
                class: 'form-control', data: {value: @campaign.id},
                onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/events/' + $(this).val();)%>
+<% else %>
+    <%= select_tag :list_of_events, options_from_collection_for_select(@campaign.events, :id, :name_with_date, selected: @event.id),
+                   class: 'form-control', data: {value: @campaign.id},
+                   onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/events/' + $(this).val();)%>
+<% end %>
 
 <br>
+<% if @event.with_classroom %>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+        </tr>
+        </thead>
+        <% @event.event_entrants.group_by(&:classroom).each do |classroom, event_entrants| %>
+            <tr><td class="lead" colspan="4">Аудитория <%= classroom.number %></td></tr>
+            <% event_entrants.each do |ee| %>
+            <tr>
+                <td class="text-muted"><%= ee.entrant.id %></td>
+                <td><%= ee.entrant.last_name %></td>
+                <td><%= ee.entrant.first_name %></td>
+                <td><%= ee.entrant.patronym %></td>
+            </tr>
+            <% end %>
+        <% end %>
+    </table>
+<% else %>
 <table class="table table-striped">
  <thead>
    <tr>
@@ -24,4 +53,4 @@
    </tr>
  <% end %>
 </table>
-
+<% end %>

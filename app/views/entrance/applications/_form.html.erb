@@ -23,6 +23,11 @@
     </div>
   <% end %>
 
+  <% if application.direction.id == 430 %>
+     <div class="col-sm-offset-1 col-sm-10">
+        <p class="text-danger">Необходимо наличие справки 086/у</p>
+     </div>
+  <% end %>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <%= f.submit 'Создать заявление', class: 'btn btn-primary' %>

@@ -12,7 +12,7 @@ class Entrance::EventsController < ApplicationController
   end
 
   def show
-
+    redirect_to entrance_campaign_event_path(@campaign, 1) unless Entrance::Event.without_classroom.include? @event
   end
 
   def create
