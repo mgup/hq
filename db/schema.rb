@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140702075958) do
+ActiveRecord::Schema.define(version: 20140702113352) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -651,6 +651,16 @@ ActiveRecord::Schema.define(version: 20140702075958) do
   create_table "education_levels", force: true do |t|
     t.integer  "course",            default: 1, null: false
     t.integer  "education_type_id", default: 2, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "education_prices", force: true do |t|
+    t.integer  "direction_id"
+    t.integer  "education_form_id"
+    t.integer  "entrance_year"
+    t.integer  "course"
+    t.decimal  "price",             precision: 9, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
