@@ -72,9 +72,9 @@ class Entrance::ApplicationsController < ApplicationController
       number << @application.competitive_group_item.direction.letters
 
       number << case @application.competitive_group_item.direction.qualification_code
-                  when '68'
+                  when 68
                     'М'
-                  when '70'
+                  when 70
                     'А'
                   else case @application.competitive_group_item.form
                          when 10
