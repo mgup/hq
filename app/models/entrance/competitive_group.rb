@@ -18,7 +18,7 @@ class Entrance::CompetitiveGroup < ActiveRecord::Base
     attributes.each do |item_hash|
       item = item_hash.second
       unless self.items.collect{|i| i.id}.include? item['id']
-        self.items << Entrance::CompetitiveGroupItem.create(item.merge(competitive_group_id: self.id))
+        self.items << Entrance::CompetitiveGroupItem.create(item.except('UID').merge(competitive_group_id: self.id))
       end
     end
     super

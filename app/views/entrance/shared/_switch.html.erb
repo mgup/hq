@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-sm-12">
+    <form method="get">
+      <%= select_tag :campaign_id,
+                     options_for_select(
+                       Entrance::Campaign.all.map { |c| [c.name, url_for(params.merge({ campaign_id: c.id }))] },
+                       url_for(params)
+                     ),
+                     class: 'form-control',
+                     onchange: 'document.location = $(this).val();' %>
+    </form>
+  </div>
+</div>

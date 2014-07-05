@@ -275,9 +275,7 @@ HQ::Application.routes.draw do
   get '/ajax/orderstudent' => 'ajax#orderstudent'
 
 
-  resources :education_prices, only: [:index] do
-    # get
-  end
+  resources :education_prices, only: [:index]
 
   namespace :entrance do
     resources :campaigns do

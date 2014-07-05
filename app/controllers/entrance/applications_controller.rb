@@ -22,7 +22,7 @@ class Entrance::ApplicationsController < ApplicationController
 
     @new_applications = []
 
-    Entrance::CompetitiveGroup.all.each do |g|
+    @campaign.competitive_groups.each do |g|
       needed_exams = g.test_items
       possible_exams.each do |combination|
         if combination == needed_exams.map { |i| i.exam_id }.sort

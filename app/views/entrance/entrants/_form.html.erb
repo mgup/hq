@@ -290,7 +290,7 @@
         <div class="col-sm-10">
           <%= exams_f.select :exam_id,
                              options_from_collection_for_select(
-                               Entrance::Exam.all, :id, :name,
+                               @campaign.exams, :id, :name,
                                exams_f.object.exam_id
                              ), {}, class: 'form-control required_exam_id' %>
         </div>
