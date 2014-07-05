@@ -21,6 +21,7 @@
         <% end %>
       </th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <% @applications.each do |a| %>
@@ -51,7 +52,7 @@
         <% end %>
       </td>
       <% if a.called_back? %>
-        <td colspan="2">
+        <td colspan="3">
           Отозвано.
         </td>
       <% else %>
@@ -61,6 +62,82 @@
             <span class="glyphicons print"></span>
           <% end %>
         </td>
+
+        <td>
+          <% if a.competitive_group_item.payed? %>
+            <button class="btn btn-<%= a.contract ? 'success' : 'default' %>"
+                    data-toggle="modal"
+                    data-target="#<%= dom_id(a, 'contract') %>"
+                    title="Договор об образовании"
+                    disabled="disabled">
+              <span class="glyphicons coins"></span>
+            </button>
+            <div class="modal fade" id="<%= dom_id(a, 'contract') %>">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                      <span aria-hidden="true">&times;</span>
+                      <span class="sr-only">Закрыть</span>
+                    </button>
+                    <h4 class="modal-title">Договор об образовании</h4>
+                  </div>
+                  <% if a.contract %>
+                    <div class="modal-body">
+                      <p>
+                        Договор № <%= a.contract.number %>
+                        от <%= l a.contract.created_at %>.
+                      </p>
+                      <%= link_to 'Распечатать',
+                                  entrance_campaign_entrant_application_contract_path(@campaign, @entrant, a, format: :pdf), target: :blank %>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default"
+                              data-dismiss="modal">
+                        Закрыть
+                      </button>
+                      <%= link_to entrance_campaign_entrant_application_contract_path(@campaign, @entrant, a), method: :delete, class: 'btn btn-danger', data: { confirm: 'Вы уверены?' } do %>
+                        Удалить договор
+                      <% end %>
+                    </div>
+                <% else %>
+                    <%= form_for a.build_contract,
+                                 url: entrance_campaign_entrant_application_contract_path(@campaign, @entrant, a),
+                                 html: { class: 'form-horizontal' } do |f| %>
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <div class="col-sm-offset-2 col-sm-10">
+                            <div class="radio">
+                              <label>
+                                <%= f.radio_button :sides, :bilateral %>
+                                Договор с совершеннолетним абитуриентом
+                              </label>
+                            </div>
+                            <div class="radio">
+                              <label>
+                                <%= f.radio_button :sides, :trilateral %>
+                                Договор с родителем/представителем абитуриента
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">
+                          Закрыть
+                        </button>
+                        <%= f.submit 'Сформировать контракт',
+                                     class: 'btn btn-primary' %>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </td>
+
         <td>
           <%= link_to entrance_campaign_entrant_application_path(@campaign, @entrant, a),
                       method: :delete, class: 'btn btn-danger',

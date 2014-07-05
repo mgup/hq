@@ -11,6 +11,8 @@ class Entrance::Application < ActiveRecord::Base
 
   has_many :benefits, class_name: 'Entrance::Benefit'
 
+  has_one :contract, class_name: 'Entrance::Contract'
+
   after_create do |application|
     Entrance::Log.create entrant_id: application.entrant.id,
                          user_id: User.current.id,

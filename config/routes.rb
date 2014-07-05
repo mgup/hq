@@ -295,6 +295,8 @@ HQ::Application.routes.draw do
         resources :exam_results
         resources :event_entrants
         resources :applications do
+          resource :contract
+
           get '/print.pdf', to: 'applications#print', on: :member, defaults: { format: 'pdf' }, as: :print
           get '/print_all.pdf', to: 'applications#print_all', on: :collection, defaults: { format: 'pdf' }, as: :print_all
         end

@@ -59,6 +59,7 @@ gem 'httparty'
 gem 'sidekiq'
 gem 'sidetiq'
 gem 'sinatra', require: nil
+gem 'numbers_and_words'
 
 group :production do
   gem 'skylight'
