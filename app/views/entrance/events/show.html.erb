@@ -2,7 +2,7 @@
     <h1>Участники мероприятия</h1>
 </div>
 <% unless current_user %>
-    <%= select_tag :list_of_events, options_from_collection_for_select(@campaign.events.without_classroom, :id, :name_with_date, selected: @event.id),
+    <%= select_tag :list_of_events, options_from_collection_for_select(@campaign.events, :id, :name_with_date, selected: @event.id),
                class: 'form-control', data: {value: @campaign.id},
                onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/events/' + $(this).val();)%>
 <% else %>
