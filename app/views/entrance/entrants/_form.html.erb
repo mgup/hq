@@ -310,7 +310,7 @@
       <div class="form-group">
         <%= exams_f.label :score, class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
-          <%= exams_f.text_field :score, class: 'form-control' %>
+          <%= exams_f.text_field :score, class: 'form-control', disabled: exams_f.object.checked || exams_f.object.university? %>
         </div>
       </div>
 

@@ -284,6 +284,7 @@ HQ::Application.routes.draw do
       get 'report',       on: :member
       get 'register',     on: :member
       get 'results',     on: :member
+      get 'balls',     on: :member
 
       resources :dates
       resources :exams do
@@ -309,6 +310,7 @@ HQ::Application.routes.draw do
       get 'fis/clear'       => 'fis#clear'
       get 'fis/clear-check' => 'fis#clear_check'
       get 'fis/check-use'   => 'fis#check_use'
+      post 'fis/check'   => 'fis#check'
 
       get 'fis/test'  => 'fis#test'
     end

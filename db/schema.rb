@@ -851,13 +851,16 @@ ActiveRecord::Schema.define(version: 20140707131914) do
   end
 
   create_table "entrance_exam_results", force: true do |t|
-    t.integer  "entrant_id",             null: false
-    t.integer  "exam_id",                null: false
+    t.integer  "entrant_id",                 null: false
+    t.integer  "exam_id",                    null: false
     t.integer  "score"
-    t.integer  "form",       default: 1, null: false
+    t.integer  "form",       default: 1,     null: false
     t.string   "document"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "checked",    default: false
+    t.datetime "checked_at"
+    t.integer  "old_score"
   end
 
   create_table "entrance_exams", force: true do |t|
