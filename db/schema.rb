@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140703090801) do
+ActiveRecord::Schema.define(version: 20140707131914) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -833,6 +833,7 @@ ActiveRecord::Schema.define(version: 20140703090801) do
     t.integer  "identity_document_type_id", default: 1,     null: false
     t.integer  "nationality_type_id",       default: 1,     null: false
     t.boolean  "need_hostel_for_exams",     default: false, null: false
+    t.integer  "student_id"
   end
 
   create_table "entrance_event_entrants", force: true do |t|
@@ -1647,8 +1648,8 @@ ActiveRecord::Schema.define(version: 20140703090801) do
 
   create_table "student", primary_key: "student_id", force: true do |t|
     t.integer "student_status",                                         default: 1,     null: false
-    t.integer "student_oldid",                                                          null: false
-    t.integer "student_oldperson",                                                      null: false
+    t.integer "student_oldid"
+    t.integer "student_oldperson"
     t.boolean "student_homeless",                                       default: false, null: false
     t.boolean "student_gender",                                         default: false, null: false
     t.integer "student_fname",                                                          null: false
@@ -1724,10 +1725,10 @@ ActiveRecord::Schema.define(version: 20140703090801) do
   create_table "student_group", primary_key: "student_group_id", force: true do |t|
     t.integer  "student_group_student",                                                               null: false
     t.integer  "student_group_infin"
-    t.integer  "student_group_oldstudent",                                                            null: false
+    t.integer  "student_group_oldstudent"
     t.integer  "student_group_group",                                                                 null: false
     t.integer  "student_group_yearin"
-    t.integer  "student_group_oldgroup",                                                              null: false
+    t.integer  "student_group_oldgroup"
     t.string   "student_group_record",              limit: 11
     t.integer  "student_group_tax",                                                     default: 1,   null: false
     t.text     "student_group_contract_customer"
