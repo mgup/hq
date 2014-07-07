@@ -4,7 +4,6 @@ class Entrance::FisController < ApplicationController
   def test
     FISRequestWorker.perform_async('test')
 
-
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.Root do
         xml.AuthData do
@@ -49,9 +48,13 @@ class Entrance::FisController < ApplicationController
         end
       end
     end
+    doc = builder.doc
+    doc.encoding = 'utf-8'
+    @xml = doc.to_xml
 
     respond_to do |format|
-      format.xml { render xml: builder.doc.to_xml }
+      format.html
+      # format.xml { render xml: builder.doc.to_xml }
     end
   end
 
@@ -72,5 +75,10 @@ class Entrance::FisController < ApplicationController
     respond_to do |format|
       format.xml { render xml: builder.doc.to_xml }
     end
+  end
+
+  # Пакетная проверка результатов ЕГЭ.
+  def check_use
+
   end
 end

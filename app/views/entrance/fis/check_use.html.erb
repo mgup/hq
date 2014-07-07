@@ -1,0 +1,9 @@
+<div class="page-header">
+  <h1>Пакетная проверка результатов ЕГЭ</h1>
+</div>
+
+<pre>
+  <% @campaign.entrants.each do |e| %>
+  <%= e.last_name %>%<%= e.first_name %>%<%= e.patronym %>%<%= e.pseries %>%<%= e.pnumber %>
+  <% end %>
+</pre>
