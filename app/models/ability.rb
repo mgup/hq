@@ -94,6 +94,7 @@ class Ability
     can :index, Entrance::MinScore
 
     can :applications, Entrance::Campaign
+    can :balls, Entrance::Campaign
     can :print_all, Entrance::Campaign
     can :print_all, Entrance::Campaign
     can :show, Entrance::Event

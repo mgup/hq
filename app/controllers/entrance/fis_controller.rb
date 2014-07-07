@@ -1,4 +1,5 @@
 class Entrance::FisController < ApplicationController
+  require 'csv'
   load_and_authorize_resource :campaign, class: 'Entrance::Campaign'
 
   def test
@@ -79,6 +80,41 @@ class Entrance::FisController < ApplicationController
 
   # Пакетная проверка результатов ЕГЭ.
   def check_use
+  end
 
+  def check
+    if params[:fis_check]
+      file_data = params[:fis_check]
+      content = CSV.parse(file_data.read.force_encoding('windows-1251').encode('UTF-8'))
+
+      results = []
+      content.each do |row|
+        a = row.join.split('%')
+        next if a[9] != 'Действующий'
+        results << {last_name: Unicode::capitalize(a[0]), pseries: a[3], pnumber: a[4], exam_name: a[5], score: a[6], year: a[7].to_i}
+      end
+      results.group_by { |h| h.values_at(:last_name, :pseries, :pnumber, :exam_name) }.map{ |_, v| v.max_by { |h| h[:year] }}.each do |r|
+        entrant = Entrance::Entrant.filter(pseries: r[:pseries], pnumber: r[:pnumber], last_name: r[:last_name]).last
+        if entrant
+          result = entrant.exam_results.from_exam_name(r[:exam_name]).use.last
+        end
+          if result
+            if result.score != r[:score].to_i
+              result.old_score = result.score
+              result.score = r[:score].to_i
+              result.checked = true
+              result.checked_at = DateTime.now
+              result.save
+            else
+              result.checked = true
+              result.checked_at = DateTime.now
+              result.save
+            end
+        else
+          next
+        end
+      end
+    end
+    redirect_to entrance_campaign_fis_check_use_path, notice: 'Проверка завершена'
   end
 end

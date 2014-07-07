@@ -1,0 +1,26 @@
+<div class="page-header">
+    <h2>
+        Результаты внутренних вступительных испытаний
+        <small><%= @campaign.name %></small>
+    </h2>
+</div>
+<%= select_tag :list_of_exams, options_from_collection_for_select(Entrance::Exam.all, :id, :name, selected: @exam.id),
+               class: 'form-control', data: {value: @campaign.id},
+               onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/balls?exam=' + $(this).val();)%>
+<br>
+
+<table class="table">
+    <% @entrants.each do |entrant| %>
+        <% result = entrant.exam_results.vi.by_exam(@exam.id).last.score %>
+        <% if result %>
+        <tr>
+            <td class="text-muted"><%= entrant.id %></td>
+            <td><%= entrant.full_name %></td>
+            <td><%= result %></td>
+        </tr>
+        <% else %>
+            <% next %>
+        <% end %>
+    <% end %>
+</table>
+

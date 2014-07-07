@@ -2,6 +2,22 @@
   <h1>Пакетная проверка результатов ЕГЭ</h1>
 </div>
 
+<% if params[:notice] %>
+    <p class="alert alert-info"><%= params[:notice] %></p>
+<% end %>
+
+<%= form_tag entrance_campaign_fis_check_path, method: :post, multipart: true do %>
+    <div class="row">
+        <div class="col col-sm-6">
+            <%= file_field_tag :fis_check,class: 'form-control' %>
+        </div>
+        <div class="col col-sm-2">
+            <%= submit_tag 'Проверить', class: 'btn btn-info' %>
+        </div>
+    </div>
+ <% end %>
+<br>
+
 <pre>
   <% @campaign.entrants.each do |e| %>
   <%= e.last_name %>%<%= e.first_name %>%<%= e.patronym %>%<%= e.pseries %>%<%= e.pnumber %>

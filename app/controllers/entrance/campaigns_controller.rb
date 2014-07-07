@@ -1,5 +1,5 @@
 class Entrance::CampaignsController < ApplicationController
-  skip_before_filter :authenticate_user!, only: [:applications]
+  skip_before_filter :authenticate_user!, only: [:applications, :balls]
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
@@ -22,6 +22,12 @@ class Entrance::CampaignsController < ApplicationController
 
   def results
     authorize! :manage, Entrance::Exam
+    params[:exam] ||= 1
+    @exam = Entrance::Exam.find(params[:exam])
+    @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
+  end
+
+  def balls
     params[:exam] ||= 1
     @exam = Entrance::Exam.find(params[:exam])
     @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)

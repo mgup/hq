@@ -33,6 +33,19 @@ class Entrance::Entrant < ActiveRecord::Base
   scope :aspirants, -> { joins(:edu_document).where('entrance_edu_documents.direction_id IS NOT NULL') }
   scope :from_exam, -> exam_id { joins(:exam_results).where("entrance_exam_results.exam_id = #{exam_id} AND entrance_exam_results.form = 2") }
 
+  scope :from_pseries, -> pseries { where(pseries: pseries) }
+  scope :from_pnumber, -> pnumber { where(pnumber: pnumber) }
+  scope :from_last_name, -> last_name { where(last_name: last_name) }
+
+  scope :filter, -> filters {
+    [:pseries, :pnumber, :last_name].inject(all) do |cond, field|
+      if filters.include?(field) && !filters[field].empty?
+        cond = cond.send "from_#{field.to_s}", filters[field]
+      end
+      cond
+    end
+  }
+
   before_create do |entrant|
     entrant.build_edu_document
   end

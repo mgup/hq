@@ -14,7 +14,9 @@ class Entrance::ExamResult < ActiveRecord::Base
   end
 
   scope :by_exam, -> exam_id { where(exam_id: exam_id) }
+  scope :from_exam_name, -> exam_name { joins(:exam).where("entrance_exams.name = '#{exam_name}'") }
   scope :vi, -> { where(form: 2) }
+  scope :use, -> { where(form: 1) }
 
   def exam_type
     case form
