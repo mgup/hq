@@ -11,7 +11,7 @@ pdf.font_size 11 do
       pdf.move_down 5
 
       pdf.text 'Прошу допустить меня к вступительным испытаниям и участию  в конкурсе'
-      if Entrance::Entrant.aspirants.include? entrant
+      if Entrance::Application.from_aspirant.include? application
         pdf.text "на право поступления на обучение по программам подготовки научно-педагогических кадров в аспирантуре на направление подготовки (специальность): <u>#{application.competitive_group_item.direction.new_code}, «#{application.competitive_group_item.direction.name}»</u>", inline_format: true
       else
         pdf.text "на направление подготовки (специальность): <u>#{application.competitive_group_item.direction.new_code}, «#{application.competitive_group_item.direction.name}»</u>", inline_format: true

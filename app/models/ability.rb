@@ -135,6 +135,7 @@ class Ability
   end
 
   def executive_secretary(user)
+    can :manage, Entrance::Exam
     # can :update, Achievement
     # can :validate_selection, Achievement
   end

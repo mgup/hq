@@ -1,6 +1,7 @@
 class Entrance::CampaignsController < ApplicationController
   skip_before_filter :authenticate_user!, only: [:applications]
-  load_and_authorize_resource class: 'Entrance::Campaign'
+  load_and_authorize_resource class: 'Entrance::Campaign', except: :results
+  load_resource class: 'Entrance::Campaign', only: :results
 
   def applications
     params[:direction] ||= 1887
@@ -17,6 +18,13 @@ class Entrance::CampaignsController < ApplicationController
     respond_to do |format|
       format.pdf
     end
+  end
+
+  def results
+    authorize! :manage, Entrance::Exam
+    params[:exam] ||= 1
+    @exam = Entrance::Exam.find(params[:exam])
+    @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
   end
 
   def report

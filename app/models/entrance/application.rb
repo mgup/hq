@@ -33,6 +33,10 @@ class Entrance::Application < ActiveRecord::Base
     where('status_id != ?', 6)
   end
 
+  scope :from_aspirant, -> do
+    joins(:competitive_group_item).where("competitive_group_items.direction_id IN (#{Direction.for_aspirants.collect{|x| x.id}.join(', ')})")
+  end
+
   scope :for_direction, -> (direction) do
     joins(:competitive_group_item).
       where("competitive_group_items.direction_id = #{direction.id}")

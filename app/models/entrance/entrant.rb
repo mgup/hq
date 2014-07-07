@@ -31,6 +31,7 @@ class Entrance::Entrant < ActiveRecord::Base
   has_many :events, class_name: Entrance::Event, through: :event_entrants
 
   scope :aspirants, -> { joins(:edu_document).where('entrance_edu_documents.direction_id IS NOT NULL') }
+  scope :from_exam, -> exam_id { joins(:exam_results).where("entrance_exam_results.exam_id = #{exam_id} AND entrance_exam_results.form = 2") }
 
   before_create do |entrant|
     entrant.build_edu_document

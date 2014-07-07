@@ -47,6 +47,12 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :new_entrance_application, 'Абитуриенты',
                      entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
       end
+
+      if can?(:manage, Entrance::Exam)
+        primary.item :new_entrants_results,
+                     '<span class="glyphicons sort"></span> Результаты внутренних вступительных испытаний'.html_safe,
+                     results_entrance_campaign_path(Entrance::Campaign::CURRENT)
+      end
     end
 
     primary.item :entrance_dates, 'Сроки проведения',

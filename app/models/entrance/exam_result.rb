@@ -14,6 +14,7 @@ class Entrance::ExamResult < ActiveRecord::Base
   end
 
   scope :by_exam, -> exam_id { where(exam_id: exam_id) }
+  scope :vi, -> { where(form: 2) }
 
   def exam_type
     case form

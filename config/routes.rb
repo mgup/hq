@@ -283,8 +283,14 @@ HQ::Application.routes.draw do
       get 'print_all', on: :member, defaults: {format: :pdf}
       get 'report',       on: :member
       get 'register',     on: :member
+      get 'results',     on: :member
 
       resources :dates
+      resources :exams do
+        resources :exam_results do
+          get 'ajax_update', to: 'exam_results#ajax_update', on: :member
+        end
+      end
       resources :min_scores
       resources :events
       resources :entrants do
