@@ -69,6 +69,7 @@ class Person < ActiveRecord::Base
            foreign_key: :student_room
 
   has_many :students, primary_key: :student_id, foreign_key: :student_group_student
+  accepts_nested_attributes_for :students
 
   scope :from_flat, -> flat { joins(:room).where(room: {room_flat: flat})}
 

@@ -9,6 +9,12 @@
 
 <h2>Оформленные заявления</h2>
 
+<% if flash[:notice] %>
+    <br>
+    <div class="alert alert-info"><%= flash[:notice] %></div>
+    <br>
+<% end %>
+
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
@@ -70,8 +76,7 @@
             <button class="btn btn-<%= a.contract ? 'success' : 'default' %>"
                     data-toggle="modal"
                     data-target="#<%= dom_id(a, 'contract') %>"
-                    title="Договор об образовании"
-                    disabled="disabled">
+                    title="Договор об образовании">
               <span class="glyphicons coins"></span>
             </button>
             <div class="modal fade" id="<%= dom_id(a, 'contract') %>">
