@@ -24,7 +24,7 @@
         </thead>
         <% @event.event_entrants.group_by(&:classroom).each do |classroom, event_entrants| %>
             <tr><td class="lead" colspan="4">Аудитория <%= classroom.number %></td></tr>
-            <% event_entrants.each do |ee| %>
+            <% event_entrants.sort_by{|x| x.entrant.last_name}.each do |ee| %>
             <tr>
                 <td class="text-muted"><%= ee.entrant.id %></td>
                 <td><%= ee.entrant.last_name %></td>

@@ -10,7 +10,7 @@ class Entrance::Event < ActiveRecord::Base
   scope :without_classroom, -> { where('with_classroom IS NULL OR with_classroom = FALSE') }
 
   def name_with_date
-    "#{name}, #{I18n.l date if date}"
+    "#{name}, #{ (with_time ? (I18n.l date) : (I18n.l date, format: '%d %b %Y')) if date}"
   end
 
 end
