@@ -48,6 +48,14 @@ class UsersController < ApplicationController
 
   def show ; end
 
+  def destroy
+    if current_user.is?(:developer)
+      @user.destroy
+    end
+
+    redirect_to users_path
+  end
+
 
   def profile
     @user = User.find @current_user

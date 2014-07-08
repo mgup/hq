@@ -6,7 +6,7 @@ class Entrance::CampaignsController < ApplicationController
   def applications
     params[:direction] ||= 1887
 
-    @applications = applications_from_filters
+    @applications = applications_from_filters.actual
 
     respond_to do |format|
       format.html

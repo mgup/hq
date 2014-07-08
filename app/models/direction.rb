@@ -16,4 +16,8 @@ class Direction < ActiveRecord::Base
   def description
     "#{new_code} #{name}"
   end
+
+  def full_description
+    "#{code+'.'+qualification_code.to_s+', ' if code} #{new_code if new_code} #{name}"
+  end
 end

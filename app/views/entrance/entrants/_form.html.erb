@@ -222,8 +222,8 @@
           <div class="col-sm-10">
               <%= edu_f.select :direction_id,
                                options_from_collection_for_select(
-                                       Direction.with_new_code,
-                                       :id, :description, edu_f.object.direction_id
+                                       Direction.all,
+                                       :id, :full_description, edu_f.object.direction_id
                                ), {prompt: 'Выберите специальность (направление подготовки)'}, class: 'form-control' %>
           </div>
       </div>
