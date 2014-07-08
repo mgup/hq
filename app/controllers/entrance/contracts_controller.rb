@@ -10,6 +10,8 @@ class Entrance::ContractsController < ApplicationController
 
   def create
     if @contract.save!
+
+
       @contract.number = "#{Date.today.year}-#{@contract.id}"
       @contract.save!
 

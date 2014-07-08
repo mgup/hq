@@ -234,5 +234,6 @@ class Ability
 
   def zamestitel_otvetstvennogo_sekretarja(user)
     selection_editor(user)
+    can :manage, Entrance::Exam
   end
 end
