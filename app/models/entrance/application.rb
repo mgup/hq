@@ -5,9 +5,9 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :campaign, class_name: 'Entrance::Campaign'
   belongs_to :entrant, class_name: 'Entrance::Entrant'
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
-  belongs_to :competitive_group, class_name: 'Entrance::CompetitiveGroup'
 
   delegate :direction, to: :competitive_group_item
+  delegate :competitive_group, to: :competitive_group_item
 
   has_many :benefits, class_name: 'Entrance::Benefit'
 
@@ -194,6 +194,40 @@ class Entrance::Application < ActiveRecord::Base
           end
           xml.EduDocuments do
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
+          end
+        end
+        xml.EntranceTestResults do
+          entrant.exam_results.in_competitive_group(competitive_group).each do |r|
+            if r.score
+              xml.EntranceTestResult do
+                xml.UID r.id
+                xml.ResultValue r.score
+
+                xml.ResultSourceTypeID case r.form.to_sym
+                                         when :use
+                                           1
+                                         when :university
+                                           2
+                                         else
+                                           raise '123'
+                                       end
+
+                xml.EntranceTestSubject do
+                  if r.exam.use_subject_id
+                    xml.SubjectID r.exam.use_subject_id
+                  else
+                    xml.SubjectName r.exam.name
+                  end
+                end
+
+                xml.EntranceTestTypeID r.exam[:form]
+
+                xml.CompetitiveGroupID competitive_group.id
+                # xml.ResultDocument do
+                #
+                # end
+              end
+            end
           end
         end
       end
