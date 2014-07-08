@@ -196,36 +196,45 @@ class Entrance::Application < ActiveRecord::Base
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
         end
-        xml.EntranceTestResults do
-          entrant.exam_results.in_competitive_group(competitive_group).each do |r|
-            if r.score
-              xml.EntranceTestResult do
-                xml.UID r.id
-                xml.ResultValue r.score
 
-                xml.ResultSourceTypeID case r.form.to_sym
-                                         when :use
-                                           1
-                                         when :university
-                                           2
-                                         else
-                                           raise '123'
-                                       end
+        has_scores = false
+        results = entrant.exam_results.in_competitive_group(competitive_group)
+        results.each do |r|
+          has_scores = true if r.score
+        end
 
-                xml.EntranceTestSubject do
-                  if r.exam.use_subject_id
-                    xml.SubjectID r.exam.use_subject_id
-                  else
-                    xml.SubjectName r.exam.name
+        if has_scores
+          xml.EntranceTestResults do
+            results.each do |r|
+              if r.score
+                xml.EntranceTestResult do
+                  xml.UID r.id
+                  xml.ResultValue r.score
+
+                  xml.ResultSourceTypeID case r.form.to_sym
+                                           when :use
+                                             1
+                                           when :university
+                                             2
+                                           else
+                                             raise '123'
+                                         end
+
+                  xml.EntranceTestSubject do
+                    if r.exam.use_subject_id
+                      xml.SubjectID r.exam.use_subject_id
+                    else
+                      xml.SubjectName r.exam.name
+                    end
                   end
+
+                  xml.EntranceTestTypeID r.exam[:form]
+
+                  xml.CompetitiveGroupID competitive_group.id
+                  # xml.ResultDocument do
+                  #
+                  # end
                 end
-
-                xml.EntranceTestTypeID r.exam[:form]
-
-                xml.CompetitiveGroupID competitive_group.id
-                # xml.ResultDocument do
-                #
-                # end
               end
             end
           end
