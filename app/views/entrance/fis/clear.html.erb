@@ -4,6 +4,19 @@
 
 <h2>Получение всех заявлений в статусе «Принято»</h2>
 
+<br>
+<%= form_tag nil, method: :post, multipart: true do %>
+    <div class="row">
+        <div class="col col-sm-6">
+            <%= file_field_tag :fis_clear,class: 'form-control' %>
+        </div>
+        <div class="col col-sm-2">
+            <%= submit_tag 'Загрузить', class: 'btn btn-info' %>
+        </div>
+    </div>
+<% end %>
+<br>
+
 <pre>
 &lt;Root&gt;
   &lt;AuthData&gt;
