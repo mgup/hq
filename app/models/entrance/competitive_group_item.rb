@@ -4,6 +4,8 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   belongs_to :direction
   belongs_to :education_level
 
+  scope :from_direction, -> direction_id { where(direction_id: direction_id) }
+
   def direction_name
     direction.name
   end
@@ -22,5 +24,9 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
 
   def budget_name
     (number_paid_o > 0 || number_paid_oz > 0 || number_paid_z > 0) ? 'договор' : 'бюджет'
+  end
+
+  def distance?
+    number_budget_z > 0 || number_paid_z > 0 || number_quota_z > 0
   end
 end

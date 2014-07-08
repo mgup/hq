@@ -222,8 +222,8 @@
           <div class="col-sm-10">
               <%= edu_f.select :direction_id,
                                options_from_collection_for_select(
-                                       Direction.with_new_code,
-                                       :id, :description, edu_f.object.direction_id
+                                       Direction.all,
+                                       :id, :full_description, edu_f.object.direction_id
                                ), {prompt: 'Выберите специальность (направление подготовки)'}, class: 'form-control' %>
           </div>
       </div>
@@ -261,6 +261,16 @@
              ['Французский', :french],
              ['Испанский', :spanish]]),
                      {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :ioo %> Дистанционное обучение (Институт открытого образования)
+          </label>
+        </div>
       </div>
     </div>
 

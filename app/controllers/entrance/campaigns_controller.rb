@@ -6,7 +6,7 @@ class Entrance::CampaignsController < ApplicationController
   def applications
     params[:direction] ||= 1887
 
-    @applications = applications_from_filters
+    @applications = applications_from_filters.actual
 
     respond_to do |format|
       format.html
@@ -25,6 +25,11 @@ class Entrance::CampaignsController < ApplicationController
     params[:exam] ||= 1
     @exam = Entrance::Exam.find(params[:exam])
     @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
+
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
   end
 
   def balls

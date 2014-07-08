@@ -29,6 +29,8 @@ class Entrance::Application < ActiveRecord::Base
   #   where('status_id != ?', 6)
   # end
 
+  scope :actual, -> { where('status_id != ?', 6) }
+
   scope :without_called_back, -> do
     where('status_id != ?', 6)
   end

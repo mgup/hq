@@ -71,22 +71,24 @@ class Entrance::ApplicationsController < ApplicationController
       number = '14-'
       number << @application.competitive_group_item.direction.letters
 
-      number << case @application.competitive_group_item.direction.qualification_code
-                  when 68
-                    'М'
-                  when 70
-                    'А'
-                  else case @application.competitive_group_item.form
-                         when 10
-                           'З'
-                         when 11
-                           'Д'
-                         when 12
-                           'В'
-                         else
-                           raise 'Кажется, что-то пошло не так.'
-                       end
-                end
+      second = case @application.competitive_group_item.direction.qualification_code
+                 when 68
+                   'М'
+                 when 70
+                   'А'
+                 else case @application.competitive_group_item.form
+                        when 10
+                          'З'
+                        when 11
+                          'Д'
+                        when 12
+                          'В'
+                        else
+                          raise 'Кажется, что-то пошло не так.'
+                      end
+               end
+
+      number << (@application.entrant.ioo ? 'И' : second)
 
       payment = @application.competitive_group_item.payed? ? 'п' : ''
 

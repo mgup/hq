@@ -7,4 +7,6 @@ class Entrance::Exam < ActiveRecord::Base
 
   has_many :exam_results, class_name: Entrance::ExamResult, foreign_key: :exam_id
   accepts_nested_attributes_for :exam_results
+
+  has_many :test_items, class_name: Entrance::TestItem, foreign_key: :exam_id
 end

@@ -8,6 +8,12 @@
                class: 'form-control', data: {value: @campaign.id},
                onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/results?exam=' + $(this).val();)%>
 <br>
+<%= link_to 'Распечатать',
+            results_entrance_campaign_path(
+                    @campaign, params.merge({ format: :pdf })
+            ),
+            target: :blank, class: 'lead' %>
+<br>
 <%= nested_form_for @exam, url: entrance_campaign_exam_path(@campaign, @exam),
                     method: :patch, html: { class: 'form-horizontal exam_results', role: 'form', id: 'formForVIResults'} do |f| %>
 

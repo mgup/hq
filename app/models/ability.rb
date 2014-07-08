@@ -232,6 +232,16 @@ class Ability
     can :manage, Entrance::DocumentMovement
   end
 
+  def selection_io(user)
+    can :manage, Entrance::Campaign
+    can :manage,      Entrance::Entrant, ioo: true
+    cannot :destroy,  Entrance::Entrant
+    can :manage, Entrance::ExamResult
+    can :manage, Entrance::Application
+    can :manage, Entrance::EventEntrant
+    can :manage, Entrance::DocumentMovement
+  end
+
   def zamestitel_otvetstvennogo_sekretarja(user)
     selection_editor(user)
     can :manage, Entrance::Exam

@@ -178,6 +178,9 @@
 
 <% @new_applications.sort_by { |a|
      a.competitive_group_item.competitive_group.name }.each do |a| %>
+    <% if a.entrant.ioo %>
+        <% next unless a.competitive_group_item.distance? %>
+    <% end %>
   <h4><%= a.competitive_group_item.competitive_group.name %></h4>
 
   <div id="<%= dom_id(a.competitive_group_item.competitive_group) %>">
