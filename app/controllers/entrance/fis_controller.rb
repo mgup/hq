@@ -30,18 +30,18 @@ class Entrance::FisController < ApplicationController
   # Формирование запроса на удаление из ФИС всех заявлений,
   # которые мы туда добавляли.
   def clear
-    if params[:fis_clear]
-      file_data = params[:fis_clear].tempfile
-      content = Nokogiri::XML(file_data)
-      builder = Nokogiri::XML::Builder.new do |xml|
-        xml.comment 'Удаление всех заявлений.'
-        xml.Root do
-          xml.AuthData do
-            xml.Login ENV['FIS_LOGIN']
-            xml.Pass  ENV['FIS_PASSWORD']
-          end
-          xml.DataForDelete do
-            xml.Applications do
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.comment 'Удаление всех заявлений.'
+      xml.Root do
+        xml.AuthData do
+          xml.Login ENV['FIS_LOGIN']
+          xml.Pass  ENV['FIS_PASSWORD']
+        end
+        xml.DataForDelete do
+          xml.Applications do
+            if params[:fis_clear]
+              file_data = params[:fis_clear].tempfile
+              content = Nokogiri::XML(file_data)
               content.css('Application').each do |node|
                 xml.Application do
                   xml.ApplicationNumber node.xpath('ApplicationNumber').inner_text
