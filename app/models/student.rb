@@ -13,6 +13,7 @@ class Student < ActiveRecord::Base
 
   STATUS_STUDENT            = 101
   STATUS_DEBTOR             = 107
+  STATUS_ENTRANT            = 100
 
   self.table_name = 'student_group'
 

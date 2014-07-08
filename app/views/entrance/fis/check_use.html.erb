@@ -2,8 +2,8 @@
   <h1>Пакетная проверка результатов ЕГЭ</h1>
 </div>
 
-<% if params[:notice] %>
-    <p class="alert alert-info"><%= params[:notice] %></p>
+<% if flash[:notice] %>
+    <p class="alert alert-info"><%= flash[:notice] %></p>
 <% end %>
 
 <%= form_tag entrance_campaign_fis_check_path, method: :post, multipart: true do %>

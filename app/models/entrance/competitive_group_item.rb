@@ -29,4 +29,15 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   def distance?
     number_budget_z > 0 || number_paid_z > 0 || number_quota_z > 0
   end
+
+  def matrix_form
+    case form
+      when 11
+        101
+      when 12
+        102
+      else 10
+        103
+    end
+  end
 end
