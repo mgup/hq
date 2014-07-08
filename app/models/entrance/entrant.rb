@@ -46,6 +46,10 @@ class Entrance::Entrant < ActiveRecord::Base
     end
   }
 
+  scope :from_direction, -> direction_id { joins(:applications)
+                                  .where("entrance_applications.competitive_group_item_id IN (#{Entrance::CompetitiveGroupItem.from_direction(direction_id).collect{|x| x.id}.join(', ')})")
+                                  .select('DISTINCT entrance_entrants.id, entrance_entrants.last_name, entrance_entrants.first_name, entrance_entrants.patronym') }
+
   before_create do |entrant|
     entrant.build_edu_document
   end

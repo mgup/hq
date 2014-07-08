@@ -25,6 +25,11 @@ class Entrance::CampaignsController < ApplicationController
     params[:exam] ||= 1
     @exam = Entrance::Exam.find(params[:exam])
     @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
+
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
   end
 
   def balls

@@ -4,6 +4,8 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   belongs_to :direction
   belongs_to :education_level
 
+  scope :from_direction, -> direction_id { where(direction_id: direction_id) }
+
   def direction_name
     direction.name
   end
