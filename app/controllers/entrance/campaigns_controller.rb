@@ -114,8 +114,7 @@ class Entrance::CampaignsController < ApplicationController
 
   private
 
-  def applications_from_filters(applications = Entrace::Application,
-                                opts = { form: true, payment: true, date: false })
+  def applications_from_filters(opts = { form: true, payment: true, date: false })
     params[:date] ||= l(Date.today)
 
     params[:form]      ||= 11
