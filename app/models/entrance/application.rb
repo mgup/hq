@@ -115,13 +115,19 @@ class Entrance::Application < ActiveRecord::Base
     stats
   end
 
-  def entrance_type
+  def entrance_type(full_name = true)
     benefit = benefits.first
     if benefit
-      if benefit.benefit_kind.out_of_competition?
-        return benefits.first.benefit_kind.short_name
-      end
-      if benefit.benefit_kind.special_rights?
+      # if benefit.benefit_kind.out_of_competition?
+      #   return benefits.first.benefit_kind.short_name
+      # end
+      # if benefit.benefit_kind.special_rights?
+      #   return benefits.first.benefit_kind.short_name
+      # end
+
+      if full_name
+        return benefits.first.benefit_kind.name
+      else
         return benefits.first.benefit_kind.short_name
       end
     end
