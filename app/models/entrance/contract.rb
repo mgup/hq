@@ -23,4 +23,8 @@ class Entrance::Contract < ActiveRecord::Base
   def delegate_short_name
     "#{delegate_last_name} #{delegate_first_name[0]}. #{delegate_patronym[0]}."
   end
+
+  def student_id
+    number.split('-')[1].to_i
+  end
 end
