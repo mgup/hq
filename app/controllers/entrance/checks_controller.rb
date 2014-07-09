@@ -9,10 +9,4 @@ class Entrance::ChecksController < ApplicationController
     end
   end
 
-  def empty
-    respond_to do |format|
-      format.pdf
-    end
-  end
-
 end
