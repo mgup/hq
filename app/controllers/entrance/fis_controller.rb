@@ -95,13 +95,17 @@ class Entrance::FisController < ApplicationController
       content.each do |row|
         a = row.join.split('%')
         next if a[9] != 'Действующий'
-        results << {last_name: Unicode::capitalize(a[0]), pseries: a[3], pnumber: a[4], exam_name: a[5], score: a[6], year: a[7].to_i}
+        results << {last_name: Unicode::capitalize(a[0]), pseries: a[3], pnumber: a[4], exam_name: a[5], score: a[6], year: a[7].to_i, number: a[11]}
       end
       results.group_by { |h| h.values_at(:last_name, :pseries, :pnumber, :exam_name) }.map{ |_, v| v.max_by { |h| h[:year] }}.each do |r|
         entrant = Entrance::Entrant.filter(pseries: r[:pseries], pnumber: r[:pnumber], last_name: r[:last_name]).last
         if entrant
+          if Entrance::UseCheck.last.entrant == entrant
+            check = Entrance::UseCheck.last
+          else
+            check = Entrance::UseCheck.create date: Date.today, number: r[:number], year: r[:year], entrant_id: entrant.id
+          end
           result = entrant.exam_results.from_exam_name(r[:exam_name]).use.last
-        end
           if result
             if result.score != r[:score].to_i
               result.old_score = result.score
@@ -114,6 +118,12 @@ class Entrance::FisController < ApplicationController
               result.checked_at = DateTime.now
               result.save
             end
+            Entrance::UseCheckResult.create exam_name: r[:exam_name], score: r[:score].to_i,
+                                                   exam_result_id: result.id, use_check_id: check.id
+          else
+            Entrance::UseCheckResult.create exam_name: r[:exam_name], score: r[:score].to_i,
+                                                   use_check_id: check.id
+          end
         else
           next
         end

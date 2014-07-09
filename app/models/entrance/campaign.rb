@@ -14,4 +14,5 @@ class Entrance::Campaign < ActiveRecord::Base
   has_many :applications, class_name: 'Entrance::Application'
   has_and_belongs_to_many :education_forms
   has_many :competitive_groups, class_name: 'Entrance::CompetitiveGroup'
+  has_many :checks, through: :entrants
 end

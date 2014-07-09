@@ -23,6 +23,8 @@ class Entrance::Entrant < ActiveRecord::Base
   has_many :papers, class_name: 'Entrance::Paper', foreign_key: :entrance_entrant_id, dependent: :destroy
   accepts_nested_attributes_for :papers, allow_destroy: true
 
+  has_many :checks, class_name: 'Entrance::UseCheck', foreign_key: :entrant_id, dependent: :destroy
+
   has_many :applications, class_name: Entrance::Application, dependent: :destroy
   accepts_nested_attributes_for :applications, allow_destroy: true
   has_many :contracts, through: :applications, class_name: 'Entrance::Contract'

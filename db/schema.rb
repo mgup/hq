@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140709062044) do
+ActiveRecord::Schema.define(version: 20140709105933) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -973,6 +973,24 @@ ActiveRecord::Schema.define(version: 20140709062044) do
 
   create_table "entrance_test_types", force: true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_use_check_results", force: true do |t|
+    t.text     "exam_name"
+    t.integer  "score"
+    t.integer  "exam_result_id"
+    t.integer  "use_check_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "entrance_use_checks", force: true do |t|
+    t.text     "number"
+    t.integer  "year"
+    t.date     "date"
+    t.integer  "entrant_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
