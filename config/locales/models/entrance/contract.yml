@@ -1,0 +1,15 @@
+ru:
+  activerecord:
+    models:
+      entrance/contract: 'договор'
+    attributes:
+      entrance/contract:
+        delegate_last_name: 'фамилия'
+        delegate_first_name: 'имя'
+        delegate_patronym: 'отчество'
+        delegate_pseries: 'серия'
+        delegate_pnumber: 'номер'
+        delegate_pdepartment: 'кем выдан'
+        delegate_pdate: 'дата выдачи'
+        delegate_address: 'адрес'
+        delegate_phone: 'телефон'

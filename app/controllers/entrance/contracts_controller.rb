@@ -18,9 +18,23 @@ class Entrance::ContractsController < ApplicationController
                     ),
                     notice: "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
       else
+        army = case @entrant.military_service
+                 when 'not'
+                   Person::ARMY_NOT_RESERVIST
+                 when 'conscript'
+                   Person::ARMY_INDUCTEE
+                 when 'reservist'
+                   Person::ARMY_RESERVIST
+                 when 'free_of_service'
+                   Person::ARMY_NOT_RESERVIST
+                 when 'too_young'
+                   Person::ARMY_NOT_RESERVIST
+               end
         person = Person.create(birthday: @entrant.birthday, birthplace: @entrant.birth_place, gender: @entrant.male?, homeless: @entrant.need_hostel, passport_series: @entrant.pseries,
                                passport_number: @entrant.pnumber, passport_date: @entrant.pdate, passport_department: @entrant.pdepartment,
                                phone_mobile: @entrant.phone, residence_address: @entrant.aaddress, residence_zip: @entrant.azip,
+                               student_foreign: @entrant.other_citizenship?, army: army, last_name_hint: @entrant.last_name,
+                               first_name_hint: @entrant.first_name, patronym_hint: @entrant.patronym, student_oldid: 0, student_oldperson: 0,
                                fname_attributes: {ip: @entrant.last_name, rp: @entrant.last_name, dp: @entrant.last_name,
                                                   vp: @entrant.last_name, tp: @entrant.last_name, pp: @entrant.last_name},
                                iname_attributes: {ip: @entrant.first_name, rp: @entrant.first_name, dp: @entrant.first_name,
@@ -29,7 +43,7 @@ class Entrance::ContractsController < ApplicationController
                                                   vp: @entrant.patronym, tp: @entrant.patronym, pp: @entrant.patronym},
                                students_attributes: {'0' => {student_group_group: group.id, student_group_yearin: Date.today.year, student_group_tax: Student::PAYMENT_BUDGET,
                                                      student_group_status: Student::STATUS_ENTRANT, student_group_speciality: group.speciality.id,
-                                                     student_group_form: group.form}})
+                                                     student_group_form: group.form, student_group_oldgroup: 0, student_group_oldstudent: 0}})
 
       @contract.number = "#{Date.today.year}-#{person.students.first.id}"
       @contract.save!
@@ -51,6 +65,10 @@ class Entrance::ContractsController < ApplicationController
   end
 
   def destroy
+    number = @contract.number
+    number.slice! "#{Date.today.year}-"
+    student = Student.find(number.to_i)
+    student.person.destroy
     @contract.destroy
 
     redirect_to entrance_campaign_entrant_applications_path(
@@ -62,7 +80,8 @@ class Entrance::ContractsController < ApplicationController
 
   def resource_params
     params.fetch(:entrance_contract, {}).permit(
-      :sides
+      :sides, :delegate_last_name, :delegate_first_name, :delegate_patronym, :delegate_address,
+      :delegate_phone, :delegate_pseries, :delegate_pnumber, :delegate_pdepartment, :delegate_pdate
     )
   end
 

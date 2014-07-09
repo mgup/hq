@@ -73,12 +73,12 @@
 
         <td>
           <% if a.competitive_group_item.payed? %>
-            <button class="btn btn-<%= a.contract ? 'success' : 'default' %>"
-                    data-toggle="modal"
-                    data-target="#<%= dom_id(a, 'contract') %>"
-                    title="Договор об образовании">
+            <%= button_tag class: "btn btn-#{a.contract ? 'success' : 'default'}",
+                    data: {toggle: 'modal', target: "##{dom_id(a, 'contract')}"},
+                    title: 'Договор об образовании',
+                    disabled: (!@entrant.contracts.empty? && !a.contract) do %>
               <span class="glyphicons coins"></span>
-            </button>
+            <% end %>
             <div class="modal fade" id="<%= dom_id(a, 'contract') %>">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -127,6 +127,83 @@
                               </label>
                             </div>
                           </div>
+                        </div>
+                        <div class="delegate_information" style="display: none;">
+                            <div class="form-group">
+                              <h4 class="col-sm-offset-1">Информация о родителе/представителе абитуриента</h4>
+                              <div class="col-sm-12">
+                                <%= f.label :delegate_last_name, class: 'control-label col-sm-3' %>
+                                <div class="col-sm-9">
+                                  <%= f.text_field :delegate_last_name, class: 'form-control', disabled: true %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                <%= f.label :delegate_first_name, class: 'control-label col-sm-3' %>
+                                <div class="col-sm-9">
+                                  <%= f.text_field :delegate_first_name, class: 'form-control', disabled: true %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                <%= f.label :delegate_patronym, class: 'control-label col-sm-3' %>
+                                <div class="col-sm-9">
+                                  <%= f.text_field :delegate_patronym, class: 'form-control', disabled: true %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                <%= f.label :delegate_address, class: 'control-label col-sm-3' %>
+                                <div class="col-sm-9">
+                                  <%= f.text_field :delegate_address, class: 'form-control', disabled: true %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <%= f.label :delegate_phone, class: 'control-label col-sm-3' %>
+                                    <div class="col-sm-9">
+                                        <%= f.text_field :delegate_phone, pattern: '([\+]\d+)($|([\,] [\+]\d+)+$)',
+                                                         class: 'form-control', disabled: true %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                              <h5 class="col-sm-offset-1">Паспорт</h5>
+                              <div class="col-sm-12">
+                                <%= f.label :delegate_pseries, class: 'control-label col-sm-3' %>
+                                <div class="col-sm-9">
+                                  <%= f.text_field :delegate_pseries, class: 'form-control', disabled: true %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                <%= f.label :delegate_pnumber, class: 'control-label col-sm-3' %>
+                                <div class="col-sm-9">
+                                  <%= f.text_field :delegate_pnumber, class: 'form-control', disabled: true %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                  <%= f.label :delegate_pdate, class: 'control-label col-sm-3' %>
+                                <div class="col-sm-9">
+                                  <%= f.text_field :delegate_pdate, value: f.object.delegate_pdate ? l(f.object.delegate_pdate) : '', class: 'form-control datepicker', disabled: true %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                <%= f.label :delegate_pdepartment, class: 'control-label col-sm-3' %>
+                                  <div class="col-sm-9">
+                                    <%= f.text_field :delegate_pdepartment, class: 'form-control', disabled: true %>
+                                  </div>
+                              </div>
+                            </div>
                         </div>
                       </div>
                       <div class="modal-footer">

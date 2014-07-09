@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20140708125710) do
+ActiveRecord::Schema.define(version: 20140709062044) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -746,7 +745,16 @@ ActiveRecord::Schema.define(version: 20140708125710) do
     t.integer  "application_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sides",          default: 2, null: false
+    t.integer  "sides",                default: 2, null: false
+    t.string   "delegate_last_name"
+    t.string   "delegate_first_name"
+    t.string   "delegate_patronym"
+    t.string   "delegate_address"
+    t.string   "delegate_phone"
+    t.string   "delegate_pseries"
+    t.string   "delegate_pnumber"
+    t.string   "delegate_pdepartment"
+    t.date     "delegate_pdate"
   end
 
   create_table "entrance_dates", force: true do |t|

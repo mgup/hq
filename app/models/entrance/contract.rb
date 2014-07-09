@@ -15,4 +15,12 @@ class Entrance::Contract < ActiveRecord::Base
   def total_price
     prices.map(&:price).reduce(:+)
   end
+
+  def delegate_full_name
+    [delegate_last_name, delegate_first_name, delegate_patronym].join(' ')
+  end
+
+  def delegate_short_name
+    "#{delegate_last_name} #{delegate_first_name[0]}. #{delegate_patronym[0]}."
+  end
 end
