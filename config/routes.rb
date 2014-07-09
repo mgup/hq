@@ -302,7 +302,6 @@ HQ::Application.routes.draw do
         resources :exam_results
         resources :checks do
           get 'show.pdf', to: 'checks#show', on: :member, defaults: { format: 'pdf' }, as: :print
-          get 'empty.pdf', to: 'checks#empty', on: :collection, defaults: { format: 'pdf' }, as: :empty
         end
         # get 'checks/:id/show.pdf', to: 'checks#show', on: :member, defaults: { format: 'pdf' }, as: :check
         resources :event_entrants
