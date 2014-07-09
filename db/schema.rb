@@ -350,6 +350,8 @@ ActiveRecord::Schema.define(version: 20140709062044) do
     t.datetime "updated_at"
   end
 
+  add_index "competitive_group_items", ["competitive_group_id"], name: "index_competitive_group_items_on_competitive_group_id", using: :btree
+
   create_table "competitive_group_target_items", force: true do |t|
     t.integer  "target_organization_id", null: false
     t.integer  "number_target_o"
@@ -711,10 +713,13 @@ ActiveRecord::Schema.define(version: 20140709062044) do
     t.integer  "package_id"
   end
 
+  add_index "entrance_applications", ["competitive_group_item_id"], name: "index_entrance_applications_on_competitive_group_item_id", using: :btree
+
   create_table "entrance_benefit_kinds", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "short_name"
   end
 
   create_table "entrance_benefits", force: true do |t|
@@ -725,6 +730,8 @@ ActiveRecord::Schema.define(version: 20140709062044) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "entrance_benefits", ["application_id"], name: "index_entrance_benefits_on_application_id", using: :btree
 
   create_table "entrance_campaigns", force: true do |t|
     t.string   "name",                   null: false
@@ -874,6 +881,9 @@ ActiveRecord::Schema.define(version: 20140709062044) do
     t.integer  "old_score"
   end
 
+  add_index "entrance_exam_results", ["entrant_id"], name: "index_entrance_exam_results_on_entrant_id", using: :btree
+  add_index "entrance_exam_results", ["exam_id"], name: "index_entrance_exam_results_on_exam_id", using: :btree
+
   create_table "entrance_exams", force: true do |t|
     t.integer  "campaign_id"
     t.boolean  "use"
@@ -957,6 +967,9 @@ ActiveRecord::Schema.define(version: 20140709062044) do
     t.datetime "updated_at"
     t.integer  "exam_id"
   end
+
+  add_index "entrance_test_items", ["competitive_group_id"], name: "index_entrance_test_items_on_competitive_group_id", using: :btree
+  add_index "entrance_test_items", ["exam_id"], name: "index_entrance_test_items_on_exam_id", using: :btree
 
   create_table "entrance_test_types", force: true do |t|
     t.string   "name"

@@ -1,0 +1,13 @@
+<td class="text-muted"><%= a.id %></td>
+<td class="nowrap"><%= a.number %></td>
+<td><%= l a.created_at.to_date %></td>
+<td>
+  <%= content_tag (a.packed? ? :strong : :span), a.entrant.full_name %>
+</td>
+<td>
+  <%= a.total_score %>
+</td>
+<td>
+  <span class="glyphicons <%= a.original? ? 'plus text-success' : 'minus text-muted' %>"></span>
+</td>
+<td><%= a.entrance_type(false) %></td>

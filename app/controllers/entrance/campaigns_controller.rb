@@ -3,6 +3,12 @@ class Entrance::CampaignsController < ApplicationController
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
+  def dashboard
+    @applications = @campaign.applications.for_rating
+
+    @applications = @applications.page(params[:page] || 1).per(100)
+  end
+
   def applications
     params[:direction] ||= 1887
 

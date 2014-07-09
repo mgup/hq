@@ -66,6 +66,22 @@ class Entrance::Application < ActiveRecord::Base
     where('number_budget_z > 0 OR number_paid_z > 0 OR number_quota_z > 0')
   end
 
+  scope :for_rating, -> do
+    select('CASE b.benefit_kind_id WHEN 1 THEN 1 WHEN 4 THEN 4 ELSE NULL END AS benefit_type').
+    select('COALESCE(SUM(r.score), 0) AS total_score').
+    select('MIN(r.score >= ti.min_score) AS pass_min_score').
+    select('entrance_applications.*').
+    joins('LEFT JOIN entrance_benefits AS b ON b.application_id = entrance_applications.id').
+    joins('LEFT JOIN competitive_group_items AS i ON i.id = entrance_applications.competitive_group_item_id').
+    joins('LEFT JOIN competitive_groups AS g ON g.id = i.competitive_group_id').
+    joins('LEFT JOIN entrance_test_items AS ti ON ti.competitive_group_id = g.id').
+    joins('LEFT JOIN entrance_exam_results AS r ON r.entrant_id = entrance_applications.entrant_id AND ti.exam_id = r.exam_id').
+    group('entrance_applications.id').
+    order('benefit_type = 1 DESC').
+	  order('benefit_type = 4 DESC').
+    order('total_score DESC')
+  end
+
   def self.direction_stats(campaign, direction)
     applications = campaign.applications.for_direction(direction)
     stats = {
@@ -99,9 +115,21 @@ class Entrance::Application < ActiveRecord::Base
     stats
   end
 
-  def entrance_type
-    if benefits.first && benefits.first.benefit_kind.out_of_competition?
-      return benefits.first.benefit_kind.name
+  def entrance_type(full_name = true)
+    benefit = benefits.first
+    if benefit
+      # if benefit.benefit_kind.out_of_competition?
+      #   return benefits.first.benefit_kind.short_name
+      # end
+      # if benefit.benefit_kind.special_rights?
+      #   return benefits.first.benefit_kind.short_name
+      # end
+
+      if full_name
+        return benefits.first.benefit_kind.name
+      else
+        return benefits.first.benefit_kind.short_name
+      end
     end
 
     use = true
@@ -109,7 +137,7 @@ class Entrance::Application < ActiveRecord::Base
       use = false if exam_result.university?
     end
 
-    use ? 'ЕГЭ' : 'Внутренние испытания'
+    use ? 'ЕГЭ' : 'ВИ'
   end
 
   def out_of_competition
@@ -119,6 +147,13 @@ class Entrance::Application < ActiveRecord::Base
 
     false
   end
+
+  # def total_score
+  #   results = entrant.exam_results.in_competitive_group(competitive_group)
+  #   results.inject(0) do |result, exam|
+  #     exam.score ? result + exam.score : result
+  #   end
+  # end
 
   def self.register_information
     applications = []
