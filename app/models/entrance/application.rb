@@ -148,12 +148,12 @@ class Entrance::Application < ActiveRecord::Base
     false
   end
 
-  def total_score
-    results = entrant.exam_results.in_competitive_group(competitive_group)
-    results.inject(0) do |result, exam|
-      exam.score ? result + exam.score : result
-    end
-  end
+  # def total_score
+  #   results = entrant.exam_results.in_competitive_group(competitive_group)
+  #   results.inject(0) do |result, exam|
+  #     exam.score ? result + exam.score : result
+  #   end
+  # end
 
   def self.register_information
     applications = []

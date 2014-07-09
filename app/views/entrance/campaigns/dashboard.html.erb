@@ -9,7 +9,7 @@
 <table class="table table-condensed table-striped">
   <thead>
     <tr>
-      <th>#</th>
+      <th class="text-muted">#</th>
       <th>Номер</th>
       <th>Дата</th>
       <th>ФИО</th>
@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <% @applications.each do |application| %>
-    <tr>
+    <tr style="<%= 'text-decoration: line-through;' if 0 == application.pass_min_score %>" class="<%= 'text-muted' if 0 == application.pass_min_score %>">
       <%= render partial: 'application_row', locals: { a: application } %>
     </tr>
   <% end %>
