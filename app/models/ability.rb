@@ -209,6 +209,7 @@ class Ability
     can :manage, Entrance::Application
     can :manage, Entrance::DocumentMovement
     can :manage, Entrance::EventEntrant
+    can :manage, Entrance::Contract
   end
 
   def selection_technical_secretary(user)
@@ -221,6 +222,7 @@ class Ability
     can :manage, Entrance::Application
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::Contract
   end
 
   def selection_editor(user)
@@ -230,6 +232,7 @@ class Ability
     can :manage, Entrance::Application
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::Contract
   end
 
   def selection_io(user)
@@ -240,6 +243,7 @@ class Ability
     can :manage, Entrance::Application
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::Contract
   end
 
   def zamestitel_otvetstvennogo_sekretarja(user)
