@@ -4,9 +4,39 @@ class Entrance::CampaignsController < ApplicationController
   load_resource class: 'Entrance::Campaign', only: :results
 
   def dashboard
-    @applications = @campaign.applications.for_rating
+    params[:direction] ||= 1887
 
-    @applications = @applications.page(params[:page] || 1).per(100)
+    params[:form]      ||= 11
+    @form = EducationForm.find(params[:form])
+
+    params[:payment]   ||= 14
+    @source = EducationSource.find(params[:payment])
+
+    form_method = case params[:form]
+                    when '10'
+                      :z_form
+                    when '12'
+                      :oz_form
+                    else
+                      :o_form
+                  end
+
+    payment_method = case params[:payment]
+                       when '15'
+                         :paid
+                       else
+                         :not_paid
+                     end
+
+    @direction = Direction.find(params[:direction])
+
+    @applications = @campaign.applications.for_rating.
+      where('d.id = ?', params[:direction]).
+      send(form_method).send(payment_method)
+
+    # @applications = @applications
+
+    # @applications = @applications.page(params[:page] || 1).per(100)
   end
 
   def applications
@@ -84,7 +114,8 @@ class Entrance::CampaignsController < ApplicationController
 
   private
 
-  def applications_from_filters(opts = { form: true, payment: true, date: false })
+  def applications_from_filters(applications = Entrace::Application,
+                                opts = { form: true, payment: true, date: false })
     params[:date] ||= l(Date.today)
 
     params[:form]      ||= 11
@@ -109,7 +140,7 @@ class Entrance::CampaignsController < ApplicationController
                          :not_paid
                      end
 
-    apps = Entrance::Application.
+    apps =applications.
       joins(competitive_group_item: :direction).
       joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id').
       send(form_method).send(payment_method).order('entrance_applications.created_at')

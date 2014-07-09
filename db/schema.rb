@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140709105933) do
+ActiveRecord::Schema.define(version: 20140709134406) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -351,6 +351,7 @@ ActiveRecord::Schema.define(version: 20140709105933) do
   end
 
   add_index "competitive_group_items", ["competitive_group_id"], name: "index_competitive_group_items_on_competitive_group_id", using: :btree
+  add_index "competitive_group_items", ["direction_id"], name: "index_competitive_group_items_on_direction_id", using: :btree
 
   create_table "competitive_group_target_items", force: true do |t|
     t.integer  "target_organization_id", null: false
