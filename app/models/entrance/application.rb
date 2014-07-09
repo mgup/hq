@@ -76,6 +76,7 @@ class Entrance::Application < ActiveRecord::Base
     joins('LEFT JOIN competitive_groups AS g ON g.id = i.competitive_group_id').
     joins('LEFT JOIN entrance_test_items AS ti ON ti.competitive_group_id = g.id').
     joins('LEFT JOIN entrance_exam_results AS r ON r.entrant_id = entrance_applications.entrant_id AND ti.exam_id = r.exam_id').
+    joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
     group('entrance_applications.id').
     order('benefit_type = 1 DESC').
 	  order('benefit_type = 4 DESC').
