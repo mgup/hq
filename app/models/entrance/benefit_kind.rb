@@ -4,4 +4,8 @@ class Entrance::BenefitKind < ActiveRecord::Base
   def out_of_competition?
     1 == id
   end
+
+  def special_rights?
+    4 == id
+  end
 end

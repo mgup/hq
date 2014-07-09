@@ -1,0 +1,28 @@
+<%= render 'entrance/shared/switch' %>
+
+<div class="page-header">
+  <h1>Заявления</h1>
+</div>
+
+<%= paginate @applications %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Номер</th>
+      <th>ФИО</th>
+      <th>Баллы</th>
+      <th>
+        <abbr title="Оригинал документа об образовании">О</abbr>
+      </th>
+    </tr>
+  </thead>
+  <% @applications.each do |application| %>
+    <tr>
+      <%= render partial: 'application_row', locals: { a: application } %>
+    </tr>
+  <% end %>
+</table>
+
+<%= paginate @applications %>

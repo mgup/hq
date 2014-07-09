@@ -44,6 +44,10 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       if can?(:manage, Entrance::Entrant)
+        primary.item :entrance_applications,
+                     '<span class="glyphicons skull"></span> Заявления'.html_safe,
+                     dashboard_entrance_campaign_path(Entrance::Campaign::CURRENT)
+
         primary.item :new_entrance_application, 'Абитуриенты',
                      entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
       end
