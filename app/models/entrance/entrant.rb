@@ -73,12 +73,21 @@ class Entrance::Entrant < ActiveRecord::Base
     order(:last_name, :first_name, :patronym)
   end
 
+  # def patronym
+  #   res = super
+  #   res.blank? ? ' ' : res
+  # end
+
   def full_name
     [last_name, first_name, patronym].join(' ')
   end
 
   def short_name
-    "#{last_name} #{first_name[0]}. #{patronym[0]}."
+    if patronym.blank?
+      "#{last_name} #{first_name[0]}."
+    else
+      "#{last_name} #{[first_name[0] + '.', patronym[0] + '.'].join(' ')}"
+    end
   end
 
   def citizen_name

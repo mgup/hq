@@ -30,20 +30,63 @@ class Entrance::ContractsController < ApplicationController
                  when 'too_young'
                    Person::ARMY_NOT_RESERVIST
                end
-        person = Person.create(birthday: @entrant.birthday, birthplace: @entrant.birth_place, gender: @entrant.male?, homeless: @entrant.need_hostel, passport_series: @entrant.pseries,
-                               passport_number: @entrant.pnumber, passport_date: @entrant.pdate, passport_department: @entrant.pdepartment,
-                               phone_mobile: @entrant.phone, residence_address: @entrant.aaddress, residence_zip: @entrant.azip,
-                               student_foreign: @entrant.other_citizenship?, army: army, last_name_hint: @entrant.last_name,
-                               first_name_hint: @entrant.first_name, patronym_hint: @entrant.patronym, student_oldid: 0, student_oldperson: 0,
-                               fname_attributes: {ip: @entrant.last_name, rp: @entrant.last_name, dp: @entrant.last_name,
-                                                  vp: @entrant.last_name, tp: @entrant.last_name, pp: @entrant.last_name},
-                               iname_attributes: {ip: @entrant.first_name, rp: @entrant.first_name, dp: @entrant.first_name,
-                                                  vp: @entrant.first_name, tp: @entrant.first_name, pp: @entrant.first_name},
-                               oname_attributes: {ip: @entrant.patronym, rp: @entrant.patronym, dp: @entrant.patronym,
-                                                  vp: @entrant.patronym, tp: @entrant.patronym, pp: @entrant.patronym},
-                               students_attributes: {'0' => {student_group_group: group.id, student_group_yearin: Date.today.year, student_group_tax: Student::PAYMENT_BUDGET,
-                                                     student_group_status: Student::STATUS_ENTRANT, student_group_speciality: group.speciality.id,
-                                                     student_group_form: group.form, student_group_oldgroup: 0, student_group_oldstudent: 0}})
+
+        person = Person.create!(
+          birthday: @entrant.birthday,
+          birthplace: @entrant.birth_place,
+          gender: @entrant.male?,
+          homeless: @entrant.need_hostel,
+          passport_series: @entrant.pseries,
+          passport_number: @entrant.pnumber,
+          passport_date: @entrant.pdate,
+          passport_department: @entrant.pdepartment,
+          phone_mobile: @entrant.phone,
+          residence_address: @entrant.aaddress,
+          residence_zip: @entrant.azip,
+          student_foreign: @entrant.other_citizenship?,
+          army: army,
+          last_name_hint: @entrant.last_name,
+          first_name_hint: @entrant.first_name,
+          patronym_hint: @entrant.patronym,
+          student_oldid: 0,
+          student_oldperson: 0,
+          fname_attributes: {
+            ip: @entrant.last_name,
+            rp: @entrant.last_name,
+            dp: @entrant.last_name,
+            vp: @entrant.last_name,
+            tp: @entrant.last_name,
+            pp: @entrant.last_name
+          },
+          iname_attributes: {
+            ip: @entrant.first_name,
+            rp: @entrant.first_name,
+            dp: @entrant.first_name,
+            vp: @entrant.first_name,
+            tp: @entrant.first_name,
+            pp: @entrant.first_name
+          },
+          oname_attributes: {
+            ip: @entrant.patronym,
+            rp: @entrant.patronym,
+            dp: @entrant.patronym,
+            vp: @entrant.patronym,
+            tp: @entrant.patronym,
+            pp: @entrant.patronym
+          },
+          students_attributes: {
+            '0' => {
+              student_group_group: group.id,
+              student_group_yearin: Date.today.year,
+              student_group_tax: Student::PAYMENT_BUDGET,
+              student_group_status: Student::STATUS_ENTRANT,
+              student_group_speciality: group.speciality.id,
+              student_group_form: group.form,
+              student_group_oldgroup: 0,
+              student_group_oldstudent: 0
+            }
+          }
+        )
 
       @contract.number = "#{Date.today.year}-#{person.students.first.id}"
       @contract.save!
@@ -68,7 +111,12 @@ class Entrance::ContractsController < ApplicationController
     number = @contract.number
     number.slice! "#{Date.today.year}-"
     student = Student.find(number.to_i)
-    student.person.destroy
+
+    if student
+      student.person.destroy
+      student.destroy
+    end
+
     @contract.destroy
 
     redirect_to entrance_campaign_entrant_applications_path(

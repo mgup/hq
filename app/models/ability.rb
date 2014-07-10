@@ -135,12 +135,6 @@ class Ability
     #can :validate, Achievement
   end
 
-  def executive_secretary(user)
-    can :manage, Entrance::Exam
-    # can :update, Achievement
-    # can :validate_selection, Achievement
-  end
-
   def dean(user)
     can :manage, Achievement
     # can :update, Achievement
@@ -255,5 +249,11 @@ class Ability
   def zamestitel_otvetstvennogo_sekretarja(user)
     selection_editor(user)
     can :manage, Entrance::Exam
+  end
+
+  def executive_secretary(user)
+    zamestitel_otvetstvennogo_sekretarja(user)
+    # can :update, Achievement
+    # can :validate_selection, Achievement
   end
 end
