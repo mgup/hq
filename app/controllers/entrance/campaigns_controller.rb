@@ -58,7 +58,17 @@ class Entrance::CampaignsController < ApplicationController
 
   def results
     authorize! :manage, Entrance::Exam
-    params[:exam] ||= @campaign.exams.first.id
+
+    if params[:exam]
+      found = false
+      @campaign.exams.each do |exam|
+        found = true if exam.id == params[:exam]
+      end
+      params[:exam] = @campaign.exams.first.id unless found
+    else
+      params[:exam] ||= @campaign.exams.first.id
+    end
+
     @exam = Entrance::Exam.find(params[:exam])
     @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
 
@@ -69,7 +79,16 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def balls
-    params[:exam] ||= @campaign.exams.first.id
+    if params[:exam]
+      found = false
+      @campaign.exams.each do |exam|
+        found = true if exam.id == params[:exam]
+      end
+      params[:exam] = @campaign.exams.first.id unless found
+    else
+      params[:exam] ||= @campaign.exams.first.id
+    end
+
     @exam = Entrance::Exam.find(params[:exam])
     @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
   end
