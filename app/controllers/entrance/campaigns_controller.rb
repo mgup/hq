@@ -69,7 +69,7 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def balls
-    params[:exam] ||= 1
+    params[:exam] ||= @campaign.exams.first.id
     @exam = Entrance::Exam.find(params[:exam])
     @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
   end
