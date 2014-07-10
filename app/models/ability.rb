@@ -223,6 +223,8 @@ class Ability
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
     can :manage, Entrance::Contract
+    can :manage, Entrance::UseCheck
+    can :manage, Entrance::UseCheckResult
   end
 
   def selection_editor(user)
@@ -233,6 +235,8 @@ class Ability
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
     can :manage, Entrance::Contract
+    can :manage, Entrance::UseCheck
+    can :manage, Entrance::UseCheckResult
   end
 
   def selection_io(user)
@@ -244,6 +248,8 @@ class Ability
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
     can :manage, Entrance::Contract
+    can :manage, Entrance::UseCheck
+    can :manage, Entrance::UseCheckResult
   end
 
   def zamestitel_otvetstvennogo_sekretarja(user)

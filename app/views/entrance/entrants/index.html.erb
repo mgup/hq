@@ -46,15 +46,18 @@
                       class: 'btn btn-danger' do %>
             <span class="glyphicons pen"></span>
           <% end %>
-          <% if entrant.checks.last %>
-              <%= link_to print_entrance_campaign_entrant_check_path(@campaign.id, entrant.id, entrant.checks.last.id),
-                          class: 'btn btn-default' do %>
-                <span class="glyphicons notes"></span>
-              <% end %>
-          <% else %>
-              <%= button_tag class: 'btn btn-default', disabled: true do %>
+
+          <% if can?(:manage, Entrance::UseCheck) %>
+            <% if entrant.checks.last %>
+                <%= link_to print_entrance_campaign_entrant_check_path(@campaign.id, entrant.id, entrant.checks.last.id),
+                            class: 'btn btn-default' do %>
                   <span class="glyphicons notes"></span>
-              <% end %>
+                <% end %>
+            <% else %>
+                <%= button_tag class: 'btn btn-default', disabled: true do %>
+                    <span class="glyphicons notes"></span>
+                <% end %>
+            <% end %>
           <% end %>
         <% end %>
 
