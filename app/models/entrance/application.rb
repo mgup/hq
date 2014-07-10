@@ -8,6 +8,7 @@ class Entrance::Application < ActiveRecord::Base
 
   delegate :direction, to: :competitive_group_item
   delegate :competitive_group, to: :competitive_group_item
+  delegate :payed?, to: :competitive_group_item
 
   has_many :benefits, class_name: 'Entrance::Benefit'
 

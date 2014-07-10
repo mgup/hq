@@ -11,3 +11,13 @@
   <span class="glyphicons <%= a.original? ? 'plus text-success' : 'minus text-muted' %>"></span>
 </td>
 <td><%= a.entrance_type(false) %></td>
+
+<td>
+  <%= render partial: 'entrance/entrants/check_use',
+             locals: { entrant: a.entrant } %>
+</td>
+
+<td>
+  <%= render partial: 'entrance/applications/contract',
+             locals: { application: a } if a.payed? %>
+</td>
