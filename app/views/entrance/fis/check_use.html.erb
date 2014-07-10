@@ -7,18 +7,38 @@
 <% end %>
 
 <%= form_tag entrance_campaign_fis_check_path, method: :post, multipart: true do %>
-    <div class="row">
-        <div class="col col-sm-6">
-            <%= file_field_tag :fis_check,class: 'form-control' %>
-        </div>
-        <div class="col col-sm-2">
-            <%= submit_tag 'Проверить', class: 'btn btn-info' %>
-        </div>
+  <div class="row">
+      <div class="col col-sm-6">
+          <%= file_field_tag :fis_empty_check,class: 'form-control' %>
+      </div>
+      <div class="col col-sm-2">
+          <%= submit_tag 'Проверить новых абитуриентов', class: 'btn btn-info' %>
+      </div>
+  </div>
+<% end %>
+
+<pre id="new_entrants">
+  <% @campaign.entrants.without_checks.each do |e| %>
+    <%= e.last_name %>%<%= e.first_name %>%<%= e.patronym %>%<%= e.pseries %>%<%= e.pnumber %>
+  <% end %>
+</pre>
+
+<br>
+<hr>
+
+<%= form_tag entrance_campaign_fis_check_path, method: :post, multipart: true do %>
+  <div class="row">
+    <div class="col col-sm-6">
+      <%= file_field_tag :fis_check,class: 'form-control' %>
     </div>
- <% end %>
+    <div class="col col-sm-2">
+      <%= submit_tag 'Проверить', class: 'btn btn-info' %>
+    </div>
+  </div>
+<% end %>
 <br>
 
-<pre>
+<pre id="all_entrants">
   <% @campaign.entrants.each do |e| %>
   <%= e.last_name %>%<%= e.first_name %>%<%= e.patronym %>%<%= e.pseries %>%<%= e.pnumber %>
   <% end %>

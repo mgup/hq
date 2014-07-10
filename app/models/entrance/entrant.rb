@@ -40,7 +40,7 @@ class Entrance::Entrant < ActiveRecord::Base
   scope :from_pnumber, -> pnumber { where(pnumber: pnumber) }
   scope :from_last_name, -> last_name { where(last_name: last_name) }
 
-  # scope :with_empty_results, -> {where("(SELECT COUNT(entrance_use_check_results.id) FROM entrance_use_check_results WHERE entrance_use_check_results.use_check_id IN (SELECT entrance_use_checks.id FROM entrance_use_checks ON entrance_use_checks.entrant_id = entrance_entrants.id)) = 0")}
+  scope :without_checks, -> {includes(:checks).where(entrance_use_checks: {entrant_id: nil} )}
 
   scope :filter, -> filters {
     [:pseries, :pnumber, :last_name].inject(all) do |cond, field|
