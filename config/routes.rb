@@ -279,6 +279,8 @@ HQ::Application.routes.draw do
 
   namespace :entrance do
     resources :campaigns do
+      get 'temp_print_all_checks', on: :member
+
       get 'dashboard', on: :member
 
       get 'applications', on: :member
@@ -302,8 +304,6 @@ HQ::Application.routes.draw do
         resources :exam_results
         resources :checks do
           get 'show.pdf', to: 'checks#show', on: :member, defaults: { format: 'pdf' }, as: :print
-
-          get 'temp_print_all', to: 'checks#temp_print_all'
         end
 
         # get 'checks/:id/show.pdf', to: 'checks#show', on: :member, defaults: { format: 'pdf' }, as: :check

@@ -133,6 +133,23 @@ class Entrance::CampaignsController < ApplicationController
     end
   end
 
+  def temp_print_all_checks
+    params[:faculty] ||= 3 # 5,6,7
+    @faculty = Department.find(params[:faculty])
+
+    @checks = Entrance::UseCheck.all.joins(:entrant).
+      joins('LEFT JOIN entrance_applications AS a ON a.entrant_id = entrance_entrants.id').
+      where('a.packed = 1').
+      joins('LEFT JOIN competitive_group_items as i ON a.competitive_group_item_id = i.id').
+      joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
+      where('d.department_id = ?', params[:faculty])
+
+      respond_to do |format|
+        format.html
+        format.pdf
+      end
+  end
+
   private
 
   def applications_from_filters(opts = { form: true, payment: true, date: false })

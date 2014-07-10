@@ -8,8 +8,4 @@ class Entrance::ChecksController < ApplicationController
       format.pdf
     end
   end
-
-  def temp_print_all
-
-  end
 end
