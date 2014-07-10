@@ -8,5 +8,4 @@ class Entrance::ChecksController < ApplicationController
       format.pdf
     end
   end
-
 end

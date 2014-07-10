@@ -62,7 +62,7 @@ class Entrance::CampaignsController < ApplicationController
     if params[:exam]
       found = false
       @campaign.exams.each do |exam|
-        found = true if exam.id == params[:exam]
+        found = true if exam.id == params[:exam].to_i
       end
       params[:exam] = @campaign.exams.first.id unless found
     else
@@ -70,7 +70,8 @@ class Entrance::CampaignsController < ApplicationController
     end
 
     @exam = Entrance::Exam.find(params[:exam])
-    @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
+    @entrants = Entrance::Entrant.from_exam(params[:exam]).
+      order(:last_name, :first_name, :patronym)
 
     respond_to do |format|
       format.html
@@ -82,7 +83,7 @@ class Entrance::CampaignsController < ApplicationController
     if params[:exam]
       found = false
       @campaign.exams.each do |exam|
-        found = true if exam.id == params[:exam]
+        found = true if exam.id == params[:exam].to_i
       end
       params[:exam] = @campaign.exams.first.id unless found
     else
@@ -90,7 +91,8 @@ class Entrance::CampaignsController < ApplicationController
     end
 
     @exam = Entrance::Exam.find(params[:exam])
-    @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
+    @entrants = Entrance::Entrant.from_exam(params[:exam]).
+      order(:last_name, :first_name, :patronym)
   end
 
   def report
@@ -129,6 +131,23 @@ class Entrance::CampaignsController < ApplicationController
       format.html
       format.pdf
     end
+  end
+
+  def temp_print_all_checks
+    params[:faculty] ||= 3 # 5,6,7
+    @faculty = Department.find(params[:faculty])
+
+    @checks = Entrance::UseCheck.all.joins(:entrant).
+      joins('LEFT JOIN entrance_applications AS a ON a.entrant_id = entrance_entrants.id').
+      where('a.packed = 1').
+      joins('LEFT JOIN competitive_group_items as i ON a.competitive_group_item_id = i.id').
+      joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
+      where('d.department_id = ?', params[:faculty])
+
+      respond_to do |format|
+        format.html
+        format.pdf
+      end
   end
 
   private

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140709134406) do
+ActiveRecord::Schema.define(version: 20140710120032) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -1727,8 +1727,8 @@ ActiveRecord::Schema.define(version: 20140709134406) do
     t.string  "student_residence_region",              limit: 200
     t.string  "student_residence_zip",                 limit: 10
     t.text    "student_residence_address",             limit: 16777215
-    t.string  "student_phone_home",                    limit: 45
-    t.string  "student_phone_mobile",                  limit: 45
+    t.string  "student_phone_home"
+    t.string  "student_phone_mobile"
     t.string  "student_email",                         limit: 300
     t.integer "student_room"
     t.integer "student_hostel_temp"
