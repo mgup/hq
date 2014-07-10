@@ -47,21 +47,10 @@
             <span class="glyphicons pen"></span>
           <% end %>
 
-          <% if can?(:manage, Entrance::UseCheck) %>
-            <% if entrant.checks.last %>
-                <%= link_to print_entrance_campaign_entrant_check_path(@campaign.id, entrant.id, entrant.checks.last.id),
-                            class: 'btn btn-default' do %>
-                  <span class="glyphicons notes"></span>
-                <% end %>
-            <% else %>
-                <%= button_tag class: 'btn btn-default', disabled: true do %>
-                    <span class="glyphicons notes"></span>
-                <% end %>
-            <% end %>
-          <% end %>
+          <%= render partial: 'check_use', locals: { entrant: entrant } %>
         <% end %>
 
-         <% if can?(:edit, Entrance::EventEntrant) %>
+        <% if can?(:edit, Entrance::EventEntrant) %>
            <%= link_to events_entrance_campaign_entrant_path(@campaign, entrant),
                           class: 'btn btn-info', title: 'Мероприятия' do %>
              <span class="glyphicons list"></span>

@@ -15,6 +15,8 @@ class Entrance::DocumentMovement < ActiveRecord::Base
     where(from_application_id: applications.map(&:id))
   end
 
+  delegate :entrant, to: :from_application
+
   # Совершение действий, которые указаны в этом движении.
   def apply_movement!
     if moved?
