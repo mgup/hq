@@ -1,0 +1,21 @@
+<% content_for :modal_title do %>
+  Договор об образовании
+<% end %>
+
+<%= render partial: 'entrance/applications/contract', locals: { application: @application }  %>
+
+<script>
+  $('.submit_contract').click(function(){
+    $(this).closest('.modal').find('.form_for_contract').submit();
+  });
+
+  $('input[type="radio"][name="entrance_contract[sides]"]').change(function(){
+    if ($(this).val() == 'trilateral') {
+      $(this).closest('.form-group').next('.delegate_information').show();
+      $(this).closest('.form-group').next('.delegate_information').find('input').prop('disabled', false)
+    } else{
+      $(this).closest('.form-group').next('.delegate_information').hide();
+      $(this).closest('.form-group').next('.delegate_information').find('input').prop('disabled', true);
+    }
+  })
+</script>

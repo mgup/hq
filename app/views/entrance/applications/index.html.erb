@@ -72,7 +72,22 @@
         </td>
 
         <td>
-          <%= render partial: 'contract', locals: { application: a } if a.payed? %>
+          <% if a.payed? %>
+              <% if !a.entrant.contracts.empty? && !a.contract %>
+                <%= button_tag disabled: true, class: 'btn btn-default' do %>
+                  <span class="glyphicons coins"></span>
+                <% end %>
+              <% else %>
+                <%= link_to entrance_campaign_entrant_application_contract_path(@campaign, @entrant, a),
+                            class: "btn btn-#{a.contract ? 'success' : 'default'}",
+                            data: { toggle: 'modal',
+                                    target: '#' + dom_id(a, 'contract'),
+                                    remote: entrance_campaign_entrant_application_contract_path(@campaign, @entrant, a) } do %>
+                  <span class="glyphicons coins"></span>
+                <% end %>
+                <%= modal_placeholder(dom_id(a, 'contract'), size: 'modal-lg') %>
+               <% end %>
+          <% end %>
         </td>
 
         <td>
