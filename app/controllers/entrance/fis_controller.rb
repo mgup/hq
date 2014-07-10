@@ -89,16 +89,23 @@ class Entrance::FisController < ApplicationController
   def check
     if params[:fis_check]
       file_data = params[:fis_check]
-      content = CSV.parse(file_data.read.force_encoding('windows-1251').encode('UTF-8'))
+    elsif params[:fis_empty_check]
+      file_data = params[:fis_empty_check]
+    else
+      file_data = nil
+    end
 
+    if file_data
+      content = CSV.parse(file_data.read.force_encoding('windows-1251').encode('UTF-8'))
       results = []
+      entrants = (params[:fis_check] ? @campaign.entrants : @campaign.entrants.without_checks)
       content.each do |row|
         a = row.join.split('%')
         next if a[9] != 'Действующий'
         results << {last_name: Unicode::capitalize(a[0]), pseries: a[3], pnumber: a[4], exam_name: a[5], score: a[6], year: a[7].to_i, number: a[11]}
       end
       results.group_by { |h| h.values_at(:last_name, :pseries, :pnumber, :exam_name) }.map{ |_, v| v.max_by { |h| h[:year] }}.each do |r|
-        entrant = @campaign.entrants.filter(pseries: r[:pseries], pnumber: r[:pnumber], last_name: r[:last_name]).last
+        entrant = entrants.filter(pseries: r[:pseries], pnumber: r[:pnumber], last_name: r[:last_name]).last
         if entrant
           if Entrance::UseCheck.last && Entrance::UseCheck.last.entrant == entrant
             check = Entrance::UseCheck.last
@@ -128,13 +135,14 @@ class Entrance::FisController < ApplicationController
           next
         end
       end
-      @campaign.entrants.select {|e| e.checks.collect{|c| c.results.count}.sum == 0 }.each do |entrant|
+      entrants.select {|e| e.checks.collect{|c| c.results.count}.sum == 0 }.each do |entrant|
         Entrance::UseCheck.create date: Date.today, entrant_id: entrant.id
       end
-      @campaign.entrants.select {|e| e.checks.count == 0 }.each do |entrant|
+      entrants.without_checks.each do |entrant|
         Entrance::UseCheck.create date: Date.today, entrant_id: entrant.id
       end
     end
+
     redirect_to entrance_campaign_fis_check_use_path, notice: 'Проверка завершена'
   end
 end
