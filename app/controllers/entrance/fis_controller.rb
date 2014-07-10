@@ -100,7 +100,7 @@ class Entrance::FisController < ApplicationController
       results.group_by { |h| h.values_at(:last_name, :pseries, :pnumber, :exam_name) }.map{ |_, v| v.max_by { |h| h[:year] }}.each do |r|
         entrant = @campaign.entrants.filter(pseries: r[:pseries], pnumber: r[:pnumber], last_name: r[:last_name]).last
         if entrant
-          if Entrance::UseCheck.last.entrant == entrant
+          if Entrance::UseCheck.last && Entrance::UseCheck.last.entrant == entrant
             check = Entrance::UseCheck.last
           else
             check = Entrance::UseCheck.create date: Date.today, number: r[:number], year: r[:year], entrant_id: entrant.id
