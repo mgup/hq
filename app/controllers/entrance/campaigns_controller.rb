@@ -62,7 +62,7 @@ class Entrance::CampaignsController < ApplicationController
     if params[:exam]
       found = false
       @campaign.exams.each do |exam|
-        found = true if exam.id == params[:exam]
+        found = true if exam.id == params[:exam].to_i
       end
       params[:exam] = @campaign.exams.first.id unless found
     else
@@ -70,7 +70,8 @@ class Entrance::CampaignsController < ApplicationController
     end
 
     @exam = Entrance::Exam.find(params[:exam])
-    @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
+    @entrants = Entrance::Entrant.from_exam(params[:exam]).
+      order(:last_name, :first_name, :patronym)
 
     respond_to do |format|
       format.html
@@ -82,7 +83,7 @@ class Entrance::CampaignsController < ApplicationController
     if params[:exam]
       found = false
       @campaign.exams.each do |exam|
-        found = true if exam.id == params[:exam]
+        found = true if exam.id == params[:exam].to_i
       end
       params[:exam] = @campaign.exams.first.id unless found
     else
@@ -90,7 +91,8 @@ class Entrance::CampaignsController < ApplicationController
     end
 
     @exam = Entrance::Exam.find(params[:exam])
-    @entrants = Entrance::Entrant.from_exam(params[:exam]).order(:last_name, :first_name, :patronym)
+    @entrants = Entrance::Entrant.from_exam(params[:exam]).
+      order(:last_name, :first_name, :patronym)
   end
 
   def report

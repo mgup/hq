@@ -9,4 +9,7 @@ class Entrance::ChecksController < ApplicationController
     end
   end
 
+  def temp_print_all
+
+  end
 end
