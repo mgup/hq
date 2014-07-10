@@ -16,6 +16,12 @@ class Entrance::DocumentMovementsController < ApplicationController
     end
   end
 
+  def show
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   def resource_params
     params.fetch(:entrance_document_movement, {}).permit(
       :moved, :original, :from_application_id, :to_application_id

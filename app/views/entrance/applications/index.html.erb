@@ -103,7 +103,12 @@
         <td class="text-muted"><%= m.id %></td>
         <td><%= l m.created_at %></td>
         <td><%= m.description %></td>
-        <td></td>
+        <td>
+          <%= link_to entrance_document_movement_path(m, format: :pdf),
+                      class: 'btn btn-default', target: :blank do %>
+            <span class="glyphicons print"></span> Заявление
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </table>
