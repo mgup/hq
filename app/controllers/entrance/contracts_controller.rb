@@ -102,7 +102,9 @@ class Entrance::ContractsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html
+      format.html do
+        render layout: 'modal'
+      end
       format.pdf
     end
   end
