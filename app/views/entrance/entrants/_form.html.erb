@@ -82,7 +82,7 @@
 
       <%= f.label :pnumber, class: 'col-sm-3 control-label' %>
       <div class="col-sm-4">
-        <%= f.text_field :pnumber, class: 'form-control' %>
+        <%= f.text_field :pnumber, class: 'form-control', required: true %>
       </div>
     </div>
 
@@ -199,7 +199,7 @@
 
         <%= edu_f.label :number, class: 'col-sm-2 control-label' %>
         <div class="col-sm-4">
-          <%= edu_f.text_field :number, class: 'form-control' %>
+          <%= edu_f.text_field :number, class: 'form-control', required: true %>
         </div>
       </div>
 
@@ -207,7 +207,7 @@
         <%= edu_f.label :date, class: 'col-sm-2 control-label' %>
         <div class="col-sm-4">
           <%= edu_f.text_field :date, class: 'form-control datepicker',
-                           value: edu_f.object.date ? l(edu_f.object.date) : ''  %>
+                           value: edu_f.object.date ? l(edu_f.object.date) : '', required: true  %>
         </div>
 
         <%= edu_f.label :graduation_year, class: 'col-sm-2 control-label' %>
