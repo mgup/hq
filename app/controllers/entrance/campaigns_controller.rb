@@ -177,7 +177,7 @@ class Entrance::CampaignsController < ApplicationController
                          :not_paid
                      end
 
-    apps = Entrance::Application.
+    apps = @campaign.applications.
       joins(competitive_group_item: :direction).
       joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id').
       send(form_method).send(payment_method).order('entrance_applications.created_at')
