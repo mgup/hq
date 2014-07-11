@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
 
   unless Rails.application.config.consider_all_requests_local
     rescue_from Exception, with: lambda { |exception|
+      notify_honeybadger(exception)
       render_error 500, exception
     }
     rescue_from ActionController::RoutingError, ActionController::UnknownController, ::AbstractController::ActionNotFound, ActiveRecord::RecordNotFound, with: lambda { |exception|
