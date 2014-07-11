@@ -3,6 +3,8 @@ class Entrance::FisController < ApplicationController
   load_and_authorize_resource :campaign, class: 'Entrance::Campaign'
 
   def test
+    raise 'Тестовая ошибка'
+
     FISRequestWorker.perform_async('test')
 
     builder = Nokogiri::XML::Builder.new do |xml|
