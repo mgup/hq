@@ -222,7 +222,9 @@ class Entrance::Application < ActiveRecord::Base
         xml.ApplicationDocuments do
           xml.IdentityDocument do
             xml.OriginalReceived true
-            xml.DocumentSeries  entrant.pseries
+            unless entrant.pseries.blank?
+              xml.DocumentSeries  entrant.pseries
+            end
             xml.DocumentNumber  entrant.pnumber
             xml.DocumentDate    entrant.pdate.iso8601
             xml.IdentityDocumentTypeID  entrant.identity_document_type_id
