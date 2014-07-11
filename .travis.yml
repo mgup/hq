@@ -9,6 +9,8 @@ matrix:
   allow_failures:
   - rvm: ruby-head
 before_install:
+- sudo apt-get update -qq
+- sudo apt-get install -qq freetds-bin freetds-dev freetds-common
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 before_script:
