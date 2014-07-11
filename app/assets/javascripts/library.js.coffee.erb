@@ -7,8 +7,8 @@ $ ->
 		context.font = '17px Times New Roman'	  
 		readers1 = new Image()
 		readers2 = new Image()
-		readers1.src = '/assets/library/reader1.gif'
-		readers2.src = '/assets/library/reader2.gif'
+		readers1.src = "<%= asset_path('library/reader1.gif') %>"
+		readers2.src = "<%= asset_path('library/reader2.gif') %>"
 		fio = name.split(' ')
 		readers1.onload = ->
 			canvas.width = readers1.width * 2.5
@@ -20,7 +20,7 @@ $ ->
 		readers2.onload = ->
 		  context.drawImage(readers2, 370, 2)
     barcodes = new Image()
-    barcodes.src = '/assets/library/barcode.png'
+    barcodes.src = "<%= asset_path('library/barcode.png') %>"
     barcodes.onload = ->
       context.drawImage(barcodes, 147, 140, barcodes.width/1.6, barcodes.height/1.2)
       context.fillText(rdr_id, 215, 210)
