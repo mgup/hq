@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Entrance::EntrantsController, type: :controller do
   context 'авторизованный сотрудник приёмной комиссии' do

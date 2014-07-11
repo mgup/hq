@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Curator::TaskUser do
   describe 'обладает связями с другими моделями:' do 	

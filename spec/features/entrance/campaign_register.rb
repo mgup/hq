@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'Регистрационный журнал' do
   background 'Сотрудник приёмной комисии' do

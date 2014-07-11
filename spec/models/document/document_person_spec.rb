@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Document::DocumentPerson do
   describe 'должен обладать связями с другими моделями:' do

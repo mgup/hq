@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Study::GroupsController, type: :controller do
   before  do

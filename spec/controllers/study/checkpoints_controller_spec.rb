@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Study::CheckpointsController, type: :controller do
   context 'для авторизованных преподавателей' do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'Редактирование абитуриента' do
   background 'Разработчик' do

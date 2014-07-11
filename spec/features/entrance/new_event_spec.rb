@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'Добавление нового вступительного испытания' do
   background 'Разработчик' do

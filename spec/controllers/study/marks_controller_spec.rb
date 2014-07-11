@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Study::MarksController, type: :controller do
   context 'для авторизованных преподавателей' do

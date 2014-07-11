@@ -50,7 +50,7 @@ gem 'jquery-validation-rails'
 # В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
 # gem 'morpher', github: 'mgup/morpher', branch: :master
 
-gem 'airbrake'
+gem 'honeybadger'
 gem 'dotenv-rails'
 gem 'tiny_tds'
 gem 'activerecord-sqlserver-adapter'

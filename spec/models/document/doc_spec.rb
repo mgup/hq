@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Document::Doc do
   describe 'должен обладать связями с:' do

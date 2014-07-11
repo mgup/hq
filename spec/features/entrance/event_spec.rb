@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'Список участников вступительных испытаний' do
   background 'Любой человек' do

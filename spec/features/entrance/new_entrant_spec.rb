@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'Добавление нового абитуриента' do
   background 'Сотрудник приёмной комиссии' do

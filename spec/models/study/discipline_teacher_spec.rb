@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Study::DisciplineTeacher do
   it 'должен обладать валидной фабрикой' do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 feature 'Список заявлений текущей приёмной компании' do
   background 'Сотрудник приёмной комисии' do
