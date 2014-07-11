@@ -82,6 +82,7 @@ group :development do
   gem 'bullet'
   gem 'meta_request'
   gem 'capistrano-sidekiq'
+  gem 'dotenv-deployment'
 end
 
 group :test do

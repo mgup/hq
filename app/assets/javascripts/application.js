@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.turbolinks
-//= require jquery.ui.effect-highlight
+//= require jquery-ui/effect-highlight
 //
 //= require bootstrap
 //= require jquery.validate

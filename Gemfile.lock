@@ -418,6 +418,7 @@ DEPENDENCIES
   database_cleaner
   devise
   devise-i18n
+  dotenv-deployment
   dotenv-rails
   factory_girl_rails
   faker
