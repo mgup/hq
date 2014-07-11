@@ -2,8 +2,8 @@ require 'faker'
 
 FactoryGirl.define do
   factory :entrant, class: 'Entrance::Entrant' do
-    last_name  { Faker::Lorem.word }
-    first_name { Faker::Lorem.word }
+    last_name  { Faker::Name.last_name }
+    first_name { Faker::Name.first_name }
     patronym { Faker::Lorem.word }
     gender { [:male, :female].sample }
     information { Faker::Lorem.sentence }

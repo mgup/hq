@@ -27,11 +27,6 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = true
-
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
@@ -48,4 +43,13 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include FactoryGirl::Syntax::Methods
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end

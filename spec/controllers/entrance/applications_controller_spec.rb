@@ -5,6 +5,8 @@ describe Entrance::ApplicationsController, type: :controller do
     before :each do
       @user = create(:user, :selection)
       sign_in @user
+      User.current = @user
+
       @campaign = create(:campaign)
       @entrant = create(:entrant, campaign: @campaign)
     end
