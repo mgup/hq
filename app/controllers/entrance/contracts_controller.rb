@@ -2,11 +2,12 @@ class Entrance::ContractsController < ApplicationController
   load_and_authorize_resource :campaign,
                               class: 'Entrance::Campaign'
   load_and_authorize_resource :entrant, through: :campaign,
-                              class: 'Entrance::Campaign'
+                              class: 'Entrance::Campaign', except: :statistics
   load_and_authorize_resource :application, through: :entrant,
-                              class: 'Entrance::Application'
+                              class: 'Entrance::Application', except: :statistics
   load_and_authorize_resource through: :application, singleton: true,
-                              class: 'Entrance::Contract'
+                              class: 'Entrance::Contract', except: :statistics
+  load_and_authorize_resource through: :campaign, class: 'Entrance::Contract', only: :statistics
 
   def create
     if @contract.save!
@@ -78,7 +79,7 @@ class Entrance::ContractsController < ApplicationController
             '0' => {
               student_group_group: group.id,
               student_group_yearin: Date.today.year,
-              student_group_tax: Student::PAYMENT_BUDGET,
+              student_group_tax: Student::PAYMENT_OFF BUDGET,
               student_group_status: Student::STATUS_ENTRANT,
               student_group_speciality: group.speciality.id,
               student_group_form: group.form,
@@ -107,6 +108,10 @@ class Entrance::ContractsController < ApplicationController
       end
       format.pdf
     end
+  end
+
+  def statistics
+
   end
 
   def destroy
