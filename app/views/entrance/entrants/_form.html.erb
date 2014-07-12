@@ -97,7 +97,7 @@
       <%= f.label :pdate, class: 'col-sm-2 control-label' %>
       <div class="col-sm-3">
         <%= f.text_field :pdate, class: 'form-control datepicker',
-                         value: @entrant.pdate ? l(@entrant.pdate) : ''%>
+                         value: @entrant.pdate ? l(@entrant.pdate) : '', required: true%>
       </div>
     </div>
   </fieldset>
