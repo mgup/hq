@@ -1,3 +1,4 @@
+require "prawn/table"
 prawn_document margin: [28, 20, 28, 28],
                filename: "Ведомость № #{@exam.id}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
