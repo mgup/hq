@@ -57,6 +57,12 @@ SimpleNavigation::Configuration.run do |navigation|
                      '<span class="glyphicons sort"></span> Результаты внутренних вступительных испытаний'.html_safe,
                      results_entrance_campaign_path(Entrance::Campaign::CURRENT)
       end
+
+      if can?(:manage, Entrance::Contract)
+        primary.item :entrance_contracts_statistics,
+                     '<span class="glyphicons coins"></span> Статистика платного приёма'.html_safe,
+                     statistics_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
+      end
     end
 
     primary.item :entrance_dates, 'Сроки проведения',

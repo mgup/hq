@@ -298,6 +298,9 @@ HQ::Application.routes.draw do
       end
       resources :min_scores
       resources :events
+      resources :contracts do
+        get 'statistics', to: 'contracts#statistics', on: :collection
+      end
       resources :entrants do
         get 'history', on: :member
         get 'events', on: :member

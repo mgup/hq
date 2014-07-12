@@ -12,6 +12,7 @@ class Entrance::Campaign < ActiveRecord::Base
   has_many :exams, class_name: 'Entrance::Exam'
   has_many :entrants, class_name: 'Entrance::Entrant'
   has_many :applications, class_name: 'Entrance::Application'
+  has_many :contracts, class_name: 'Entrance::Contract', through: :applications
   has_and_belongs_to_many :education_forms
   has_many :competitive_groups, class_name: 'Entrance::CompetitiveGroup'
   has_many :checks, through: :entrants

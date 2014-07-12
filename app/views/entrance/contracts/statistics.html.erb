@@ -1,0 +1,57 @@
+<%= render 'entrance/shared/switch' %>
+<div class="page-header">
+    <h1>
+        Статистика платного приёма
+    </h1>
+</div>
+
+<p class="lead">На <%= l Time.now %>:</p>
+<ul class="lead">
+    <li>всего заключено договоров — <%= @contracts.count %>;</li>
+    <li>
+        общая сумма заключённых договоров —
+        <%= number_to_currency @contracts.calculate_contract_stats[:total] %>;
+    </li>
+    <li>
+        поступило оплаты по договорам —
+        <%= number_to_currency @contracts.calculate_contract_stats[:received] %>
+        из <%= number_to_currency @contracts.calculate_contract_stats[:expected] %>
+    </li>
+</ul>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Фамилия, имя, отчество</th>
+        <th>Номер договора</th>
+        <th>Сумма договора за первый семестр/год</th>
+        <th>Поступившая сумма</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @contracts.each_with_index do |contract, index| %>
+        <tr>
+          <td><%= index+1 %></td>
+            <td><%= contract.application.entrant.full_name %></td>
+            <td><%= contract.number %></td>
+            <td><%= 10 == contract.application.competitive_group_item.form ? '1 год: '+number_to_currency(contract.prices.first.price) : '1 семестр: '+number_to_currency(contract.prices.first.price/2) %></td>
+            <td>
+              <table>
+                <% contract.student.payments.each do |payment| %>
+                  <tr>
+                    <td class="nowrap"><%= l(payment.date, format: :short) %></td>
+                    <td class="text-right nowrap"><%= number_to_currency(payment.sum) %></td>
+                  </tr>
+                <% end %>
+                <tr>
+                  <td class="text-right nowrap" colspan="2">
+                    <strong><%= number_to_currency(contract.student.total_payments) %></strong>
+                  </td>
+                </tr>
+              </table>
+            </td>
+        </tr>
+      <% end %>
+    </tbody>
+</table>
