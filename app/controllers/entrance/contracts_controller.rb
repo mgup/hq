@@ -79,7 +79,7 @@ class Entrance::ContractsController < ApplicationController
             '0' => {
               student_group_group: group.id,
               student_group_yearin: Date.today.year,
-              student_group_tax: Student::PAYMENT_OFF BUDGET,
+              student_group_tax: Student::PAYMENT_OFF_BUDGET,
               student_group_status: Student::STATUS_ENTRANT,
               student_group_speciality: group.speciality.id,
               student_group_form: group.form,
