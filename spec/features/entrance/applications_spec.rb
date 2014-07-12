@@ -3,17 +3,20 @@ require 'rails_helper'
 feature 'Список заявлений абитуриента' do
   background 'Сотрудник приёмной комисии' do
     @user = create(:user, :selection)
-    Thread.current[:user] = @user
+    User.current = @user
+
     as_user(@user)
     @campaign =  create(:campaign)
     tests = @campaign.competitive_groups.first.test_items
     3.times do
       tests << create(:entrance_test_item, competitive_group: @campaign.competitive_groups.first)
     end
+
     exams = []
     tests.each do |test|
       exams << test.exam
     end
+
     @entrant = create(:entrant, campaign: @campaign)
     exams.each do |exam|
       create(:exam_result, exam: exam, entrant: @entrant)

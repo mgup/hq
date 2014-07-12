@@ -108,7 +108,7 @@ class Entrance::CampaignsController < ApplicationController
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.Applications do
             @applications.each do |application|
-              unless application.entrant.pseries.blank?
+              unless application.entrant.pnumber.blank?
                 xml << application.to_fis.xpath('/Application').to_xml.to_str
               end
             end
@@ -177,7 +177,7 @@ class Entrance::CampaignsController < ApplicationController
                          :not_paid
                      end
 
-    apps = Entrance::Application.
+    apps = @campaign.applications.
       joins(competitive_group_item: :direction).
       joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id').
       send(form_method).send(payment_method).order('entrance_applications.created_at')
