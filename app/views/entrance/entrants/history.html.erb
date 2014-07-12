@@ -18,7 +18,7 @@
   <% @logs.each do |log| %>
     <tr>
       <td class="text-muted"><%= log.id %></td>
-      <td><%= log.user.full_name %></td>
+      <td><%= log.user ? log.user.full_name : 'неизвестный пользователь' %></td>
       <td><%= log.comment %></td>
       <td><%= l log.created_at %></td>
     </tr>
