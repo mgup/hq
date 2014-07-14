@@ -73,7 +73,7 @@ group :development do
   gem 'capistrano', '~> 3.2.0'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
-  gem 'capistrano-rails'
+  gem 'capistrano-rails', '~> 1.1.0'
   gem 'capistrano-sidekiq'
   gem 'sextant'
   gem 'quiet_assets'

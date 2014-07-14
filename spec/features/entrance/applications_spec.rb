@@ -35,11 +35,11 @@ feature 'Список заявлений абитуриента' do
     expect(page).to have_content(@campaign.competitive_groups.first.name)
   end
 
-  scenario 'Может создать новое заявление' do
-    visit entrance_campaign_entrant_applications_path(campaign_id: @campaign, entrant_id: @entrant)
-    click_button 'Создать заявление'
-    expect(@entrant.applications.length).to eq(2)
-  end
+  # scenario 'Может создать новое заявление' do
+  #   visit entrance_campaign_entrant_applications_path(campaign_id: @campaign, entrant_id: @entrant)
+  #   click_button 'Создать заявление'
+  #   expect(@entrant.applications.length).to eq(2)
+  # end
 
   # scenario 'Может создать новое заявление с подлинником', js: true, driver: :webkit do
   #   visit entrance_campaign_entrant_applications_path(campaign_id: @campaign, entrant_id: @entrant)
@@ -54,7 +54,7 @@ feature 'Список заявлений абитуриента' do
     expect(page).not_to have_content(other_application.number)
   end
 
-  #TODO Нужно придумать, как "нажимать" кнопки без текста
+  # TODO Нужно придумать, как "нажимать" кнопки без текста
 
   # scenario 'Может распечатать все заявления абитуриента' do
   #   visit entrance_campaign_entrant_applications_path(campaign_id: @campaign, entrant_id: @entrant)

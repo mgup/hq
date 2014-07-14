@@ -21,6 +21,9 @@ feature 'Список абитуриентов' do
   end
 
   scenario 'Может перейти к созданию абитуриента' do
+    # Типы документов мы получаем из ФИС.
+    26.times { create(:entrance_document_type) }
+
     visit entrance_campaign_entrants_path(campaign_id: @campaign)
     click_link 'Добавить абитуриента'
     expect(page).to have_selector('#new_entrance_entrant')
