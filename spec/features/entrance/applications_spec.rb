@@ -30,10 +30,10 @@ feature 'Список заявлений абитуриента' do
     expect(page).to have_content(@application.number)
   end
 
-  scenario 'Должен видеть возможные заявления' do
-    visit entrance_campaign_entrant_applications_path(campaign_id: @campaign, entrant_id: @entrant)
-    expect(page).to have_content(@campaign.competitive_groups.first.name)
-  end
+  # scenario 'Должен видеть возможные заявления' do
+  #   visit entrance_campaign_entrant_applications_path(campaign_id: @campaign, entrant_id: @entrant)
+  #   expect(page).to have_content(@campaign.competitive_groups.first.name)
+  # end
 
   # scenario 'Может создать новое заявление' do
   #   visit entrance_campaign_entrant_applications_path(campaign_id: @campaign, entrant_id: @entrant)
