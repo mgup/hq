@@ -32,9 +32,9 @@ class Entrance::Contract < ActiveRecord::Base
     Student.find(student_id)
   end
 
-  def self.calculate_contract_stats(year=2014)
+  def self.calculate_contract_stats
     total, received, expected = 0, 0, 0
-    self.all.each do |contract|
+    self.find_each do |contract|
       total += contract.prices.map{|x| x.price}.sum
       expected += (10 == contract.application.competitive_group_item.form ? contract.prices.first.price : contract.prices.first.price/2)
       received += contract.student.total_payments

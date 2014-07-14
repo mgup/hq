@@ -37,12 +37,12 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   scope :from_aspirant, -> do
-    joins(:competitive_group_item).where("competitive_group_items.direction_id IN (#{Direction.for_aspirants.collect{|x| x.id}.join(', ')})")
+    joins(:competitive_group_item).where('competitive_group_items.direction_id IN (?)', Direction.for_aspirants.collect{|x| x.id}.join(', '))
   end
 
   scope :for_direction, -> (direction) do
     joins(:competitive_group_item).
-      where("competitive_group_items.direction_id = #{direction.id}")
+      where('competitive_group_items.direction_id = ?', direction.id)
   end
 
   scope :paid, -> do
@@ -82,6 +82,28 @@ class Entrance::Application < ActiveRecord::Base
     order('benefit_type = 1 DESC').
 	  order('benefit_type = 4 DESC').
     order('total_score DESC')
+  end
+
+  def self.rating(form = '11', payment = '14', direction = '1887')
+    form_method = case form
+                    when '10'
+                      :z_form
+                    when '12'
+                      :oz_form
+                    else
+                      :o_form
+                  end
+    payment_method = case payment
+                       when '15'
+                         :paid
+                       else
+                         :not_paid
+                     end
+
+    applications = self.for_rating.
+        where('d.id = ?', direction).
+        send(form_method).send(payment_method)
+    return applications
   end
 
   def self.direction_stats(campaign, direction)

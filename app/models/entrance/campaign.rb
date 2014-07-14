@@ -1,5 +1,6 @@
 class Entrance::Campaign < ActiveRecord::Base
   CURRENT = 2014
+  CRIMEA = 12014
 
   # TODO Почему-то не получается перенести table_name_prefix в entrance.rb
   self.table_name_prefix = 'entrance_'

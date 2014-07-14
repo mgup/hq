@@ -1,0 +1,48 @@
+<%= render 'entrance/shared/switch' %>
+
+
+<div class="page-header">
+    <h1>Пофамильные списки поступающих <small>рейтинги</small></h1>
+</div>
+
+<% if @campaign.id == 2014 %>
+  <p class="lead">Пофамильные списки поступающих (рейтинги) будут доступны с 28 июля в этом разделе.</p>
+<% else %>
+
+<%= render partial: 'filters',
+           locals: { url: rating_entrance_campaign_path(@campaign) } %>
+
+<% unless @applications.take %>
+    <p class="lead">По данному конкурсу не было найдено ни одного заявления</p>
+<% else %>
+  <p class="lead">Количество мест: <%= @number %></p>
+
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+        <th class="text-muted">#</th>
+        <th>Номер</th>
+        <th>ФИО</th>
+        <th>Баллы</th>
+        <th>
+            <abbr title="Оригинал документа об образовании">Оригинал</abbr>
+        </th>
+        <th>Льгота</th>
+    </tr>
+    </thead>
+    <% @applications.each_with_index do |application, index| %>
+      <tr style="<%= 0 == application.pass_min_score ? 'text-decoration: line-through;' : ((index+1) <= @number ? 'font-weight: bold;' : '') %>"
+          class="<%= 'text-muted' if 0 == application.pass_min_score %>">
+        <td class="text-muted"><%= index + 1 %></td>
+        <td class="nowrap"><%= application.number %></td>
+        <td><%= application.entrant.full_name %></td>
+        <td><%= application.total_score %></td>
+        <td><span class="glyphicons <%= application.original? ? 'plus text-success' : 'minus text-muted' %>"></span></td>
+        <td>
+            <abbr title="<%= application.benefit_type? ? Entrance::BenefitKind.find(application.benefit_type).name : 'Без льгот' %>"><span class="glyphicons <%= application.benefit_type? ? 'plus text-success' : 'minus text-muted' %>"></span></abbr>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+<% end %>

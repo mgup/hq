@@ -78,6 +78,10 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
                  entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
 
+    primary.item :rating,
+                 '<span class="glyphicons charts"></span> Пофамильные списки поступающих (рейтинги)'.html_safe,
+                 rating_entrance_campaign_path(Entrance::Campaign::CRIMEA)
+
     primary.item :education_prices, 'Стоимость обучения', education_prices_path
 
     # ======================================

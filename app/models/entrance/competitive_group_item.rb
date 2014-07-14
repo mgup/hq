@@ -30,6 +30,10 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
     number_budget_z > 0 || number_paid_z > 0 || number_quota_z > 0
   end
 
+  def total_number
+    number_budget_o + number_budget_oz + number_budget_z + number_paid_o + number_paid_oz + number_paid_z + number_quota_o + number_quota_oz + number_quota_z
+  end
+
   def matrix_form
     case form
       when 11

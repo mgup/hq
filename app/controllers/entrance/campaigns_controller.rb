@@ -1,5 +1,5 @@
 class Entrance::CampaignsController < ApplicationController
-  skip_before_filter :authenticate_user!, only: [:applications, :balls]
+  skip_before_filter :authenticate_user!, only: [:applications, :balls, :rating]
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
@@ -12,31 +12,28 @@ class Entrance::CampaignsController < ApplicationController
     params[:payment]   ||= 14
     @source = EducationSource.find(params[:payment])
 
-    form_method = case params[:form]
-                    when '10'
-                      :z_form
-                    when '12'
-                      :oz_form
-                    else
-                      :o_form
-                  end
-
-    payment_method = case params[:payment]
-                       when '15'
-                         :paid
-                       else
-                         :not_paid
-                     end
-
     @direction = Direction.find(params[:direction])
 
-    @applications = @campaign.applications.for_rating.
-      where('d.id = ?', params[:direction]).
-      send(form_method).send(payment_method)
+    @applications = @campaign.applications.rating(params[:form], params[:payment], params[:direction])
 
     # @applications = @applications
 
     # @applications = @applications.page(params[:page] || 1).per(100)
+  end
+
+  def rating
+    params[:direction] ||= 1887
+
+    params[:form]      ||= 11
+    @form = EducationForm.find(params[:form])
+
+    params[:payment]   ||= 14
+    @source = EducationSource.find(params[:payment])
+
+    @direction = Direction.find(params[:direction])
+
+    @applications = @campaign.applications.rating(params[:form], params[:payment], params[:direction])
+    @number = @applications.first.competitive_group_item.total_number if @applications.first
   end
 
   def applications
