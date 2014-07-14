@@ -111,7 +111,6 @@ class Student < ActiveRecord::Base
     if filters.key?(:name)
       fields = %w(last_name_hint first_name_hint patronym_hint)
       names = filters[:name].split(' ').map { |n| "%#{n}%" }
-
       cond = cond.where((["CONCAT_WS(' ', #{fields.join(',')}) LIKE ?"] * names.size).join(' AND '), *names)
     end
 

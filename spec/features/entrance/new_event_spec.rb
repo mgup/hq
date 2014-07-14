@@ -18,7 +18,7 @@ feature 'Добавление нового вступительного испы
     end
     within 'table' do
       expect(page).to have_content('Example')
-      expect(page).to have_content('20.06.2014')
+      expect(page).to have_content('20 июня 2014')
     end
   end
 
