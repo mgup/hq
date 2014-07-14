@@ -1,6 +1,8 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
+set :honeybadger_async_notify, true
+
 set :application, 'matrix'
 set :repo_url, 'git@github.com:mgup/hq.git'
 

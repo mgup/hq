@@ -2,7 +2,6 @@ set :rvm_type, :user
 require 'rvm/capistrano'
 require 'bundler/capistrano'
 require 'dotenv/deployment/capistrano'
-require 'honeybadger/capistrano'
 require 'capistrano/sidekiq'
 
 set :application, 'matrix'
