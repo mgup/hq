@@ -192,13 +192,20 @@ class Entrance::Application < ActiveRecord::Base
       applications = []
       faculty.directions.for_campaign(campaign).each do |direction|
         stats = self.direction_stats(campaign, direction)
-        applications << [direction.description,
-                         stats[:budget][:o][:total].zero? ? '' : "#{stats[:budget][:o][:total]} (#{stats[:budget][:o][:original]})",
-                         stats[:budget][:oz][:total].zero? ? '' : "#{stats[:budget][:oz][:total]} (#{stats[:budget][:oz][:original]})",
-                         stats[:budget][:z][:total].zero? ? '' : "#{stats[:budget][:z][:total]} (#{stats[:budget][:z][:original]})",
-                         stats[:paid][:o][:total].zero? ? '' : "#{stats[:paid][:o][:total]} (#{stats[:paid][:o][:original]})",
-                         stats[:paid][:oz][:total].zero? ? '' : "#{stats[:paid][:oz][:total]} (#{stats[:paid][:oz][:original]})",
-                         stats[:paid][:z][:total].zero? ? '' : "#{stats[:paid][:z][:total]} (#{stats[:paid][:z][:original]})"]
+
+        row = [direction.description]
+
+        [:budget, :paid].each do |p|
+          [:o, :oz, :z].each do |f|
+            row << if stats[p][f][:total].zero?
+                     ''
+                   else
+                     "#{stats[p][f][:total]} (#{stats[p][f][:original]})"
+                   end
+          end
+        end
+
+        applications << row
       end
       info << {faculty: faculty.name, applications: applications}
     end
