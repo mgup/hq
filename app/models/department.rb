@@ -87,10 +87,10 @@ class Department < ActiveRecord::Base
   end
 
   def to_nokogiri
-    builder = Nokogiri::XML::Builder do |xml|
+    builder = Nokogiri::XML::Builder.new do |xml|
       xml.faculty do
         xml.id_   id
-        xml.short  abbreviation
+        xml.short abbreviation
         xml.name  name
       end
     end
@@ -101,5 +101,4 @@ class Department < ActiveRecord::Base
   def to_xml
     to_nokogiri.to_xml
   end
-
 end

@@ -267,34 +267,7 @@ class Entrance::Application < ActiveRecord::Base
           xml.EntranceTestResults do
             results.each do |r|
               if r.score
-                xml.EntranceTestResult do
-                  xml.UID r.id
-                  xml.ResultValue r.score
-
-                  xml.ResultSourceTypeID case r.form.to_sym
-                                           when :use
-                                             1
-                                           when :university
-                                             2
-                                           else
-                                             raise '123'
-                                         end
-
-                  xml.EntranceTestSubject do
-                    if r.exam.use_subject_id
-                      xml.SubjectID r.exam.use_subject_id
-                    else
-                      xml.SubjectName r.exam.name
-                    end
-                  end
-
-                  xml.EntranceTestTypeID r.exam[:form]
-
-                  xml.CompetitiveGroupID competitive_group.id
-                  # xml.ResultDocument do
-                  #
-                  # end
-                end
+                xml << r.to_fis(competitive_group_id: competitive_group.id).to_xml
               end
             end
           end

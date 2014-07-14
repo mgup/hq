@@ -26,4 +26,30 @@ class Entrance::ExamResult < ActiveRecord::Base
         'ВИ'
     end
   end
+
+  def to_fis(opts = {})
+    unless opts[:competitive_group_id]
+      raise('Не указан идентификатор конкурсной группы.')
+    end
+
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.EntranceTestResult do
+        xml.UID                 id
+        xml.ResultValue         score
+        xml.ResultSourceTypeID  self[:form]
+        xml.EntranceTestTypeID  exam[:form]
+        xml.CompetitiveGroupID  opts[:competitive_group_id]
+
+        xml.EntranceTestSubject do
+          if exam.use_subject_id
+            xml.SubjectID   exam.use_subject_id
+          else
+            xml.SubjectName exam.name
+          end
+        end
+      end
+    end
+
+    builder.doc
+  end
 end
