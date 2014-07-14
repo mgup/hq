@@ -87,13 +87,15 @@ class Department < ActiveRecord::Base
   end
 
   def to_nokogiri
-    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
-      xml.faculty {
+    builder = Nokogiri::XML::Builder do |xml|
+      xml.faculty do
         xml.id_   id
         xml.short  abbreviation
         xml.name  name
-      }
-    }.doc
+      end
+    end
+
+    builder.doc
   end
 
   def to_xml
