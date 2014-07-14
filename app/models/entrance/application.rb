@@ -7,6 +7,7 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
 
   delegate :direction, to: :competitive_group_item
+  delegate :form, to: :competitive_group_item
   delegate :competitive_group, to: :competitive_group_item
   delegate :payed?, to: :competitive_group_item
 

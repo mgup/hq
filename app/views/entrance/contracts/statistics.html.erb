@@ -10,12 +10,12 @@
     <li>всего заключено договоров — <%= @contracts.count %>;</li>
     <li>
         общая сумма заключённых договоров —
-        <%= number_to_currency @contracts.calculate_contract_stats[:total] %>;
+        <%= number_to_currency @contracts.stats[:total] %>;
     </li>
     <li>
         поступило оплаты по договорам —
-        <%= number_to_currency @contracts.calculate_contract_stats[:received] %>
-        из <%= number_to_currency @contracts.calculate_contract_stats[:expected] %>
+        <%= number_to_currency @contracts.stats[:received] %>
+        из <%= number_to_currency @contracts.stats[:expected] %>
     </li>
 </ul>
 

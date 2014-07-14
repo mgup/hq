@@ -12,6 +12,11 @@ class Entrance::Contract < ActiveRecord::Base
       for_direction(application.direction.id).sort_by { |p| p.course }
   end
 
+  # Разовый платеж, который совершается в рамках договора.
+  def one_time_payment
+    10 == application.form ? prices.first.price : prices.first.price / 2
+  end
+
   def total_price
     prices.map(&:price).reduce(:+)
   end
@@ -32,16 +37,15 @@ class Entrance::Contract < ActiveRecord::Base
     Student.find(student_id)
   end
 
-  def self.calculate_contract_stats
-    total, received, expected = 0, 0, 0
-    self.find_each do |contract|
-      total += contract.prices.map{|x| x.price}.sum
-      expected += (10 == contract.application.competitive_group_item.form ? contract.prices.first.price : contract.prices.first.price/2)
-      received += contract.student.total_payments
-    end
+  def self.stats
+    self.find_each.inject({ total:    0,
+                            received: 0,
+                            expected: 0 }) do |r, contract|
+      r[:total] += contract.prices.map(&:price).sum
+      r[:expected] += contract.one_time_payment
+      r[:received] += contract.student.total_payments
 
-    { total: total,
-      received: received,
-      expected: expected }
+      r
+    end
   end
 end
