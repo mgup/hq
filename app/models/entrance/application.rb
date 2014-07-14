@@ -187,10 +187,8 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def self.report_information(campaign)
-    info = []
-    Department.faculties.each do |faculty|
-      applications = []
-      faculty.directions.for_campaign(campaign).each do |direction|
+    Department.faculties.map do |faculty|
+      applications = faculty.directions.for_campaign(campaign).map do |direction|
         stats = self.direction_stats(campaign, direction)
 
         row = [direction.description]
@@ -205,12 +203,11 @@ class Entrance::Application < ActiveRecord::Base
           end
         end
 
-        applications << row
+        row
       end
-      info << {faculty: faculty.name, applications: applications}
-    end
 
-    return info
+      { faculty: faculty.name, applications: applications }
+    end
   end
 
   def called_back?
