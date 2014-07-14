@@ -61,10 +61,6 @@ gem 'sidetiq'
 gem 'sinatra', require: nil
 gem 'numbers_and_words'
 
-group :production do
-  gem 'skylight'
-end
-
 group :development do
   gem 'thin'
   #gem 'debugger'
@@ -74,14 +70,16 @@ group :development do
   gem 'brakeman', require: false
   gem 'rails-erd'
 
-  gem 'capistrano'
-  gem 'rvm-capistrano'
+  gem 'capistrano', '~> 3.2.0'
+  gem 'capistrano-rvm'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-sidekiq'
   gem 'sextant'
   gem 'quiet_assets'
   gem 'letter_opener'
   gem 'bullet'
   gem 'meta_request'
-  gem 'capistrano-sidekiq'
   gem 'dotenv-deployment'
 end
 
