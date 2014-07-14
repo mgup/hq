@@ -287,6 +287,7 @@ HQ::Application.routes.draw do
       get 'print_all', on: :member, defaults: {format: :pdf}
       get 'report',       on: :member
       get 'register',     on: :member
+      get 'rating',     on: :member
       get 'results',     on: :member
       get 'balls',     on: :member
 

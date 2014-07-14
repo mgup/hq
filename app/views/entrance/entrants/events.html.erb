@@ -23,7 +23,7 @@
             <tr>
                 <td class="text-muted"><%= event.id %></td>
                 <td><%= event.name %></td>
-                <td><%= l event.date %></td>
+                <td><%= (event.with_time ? (l event.date) : (l event.date, format: '%d %b %Y')) if event.date %></td>
                 <td><%= link_to  entrance_campaign_entrant_event_entrant_path(campaign_id: @campaign, entrant_id: @entrant,
                                                                               id: @entrant.event_entrants.from_event(event).first.id),
                                 method: :delete, data: { confirm: 'Вы уверены?' },

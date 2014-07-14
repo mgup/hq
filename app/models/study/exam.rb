@@ -120,7 +120,7 @@ class Study::Exam < ActiveRecord::Base
     JOIN `group` ON `group`.group_id = `subject`.subject_group
     JOIN `speciality` ON `speciality`.speciality_id = `group`.group_speciality
     JOIN `department` ON `department`.department_id = `speciality`.speciality_faculty')
-    .where("`department`.department_id = #{faculty_id}")
+    .where('`department`.department_id = ?', faculty_id)
   }
 
   def is_repeat?
