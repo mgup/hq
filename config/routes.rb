@@ -5,11 +5,11 @@ HQ::Application.routes.draw do
   end
 
   require 'sidekiq/api'
-  get 'queue-status' => proc {
+  get 'sidekiq/queue-status' => proc {
     [200, { 'Content-Type' => 'text/plain' },
-     [Sidekiq::Queue.new.size < 20000 ? 'OK' : 'UHOH' ]]
+     [Sidekiq::Queue.new.size < 100 ? 'OK' : 'UHOH' ]]
   }
-  get 'queue-latency' => proc {
+  get 'sidekiq/queue-latency' => proc {
     [200, { 'Content-Type' => 'text/plain' },
      [Sidekiq::Queue.new.latency < 30 ? 'OK' : 'UHOH' ]]
   }
