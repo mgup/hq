@@ -204,6 +204,7 @@ class Ability
     can :manage, Entrance::DocumentMovement
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::Contract
+    cannot :statistics, Entrance::Contract
   end
 
   def selection_technical_secretary(user)
@@ -217,6 +218,7 @@ class Ability
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
     can :manage, Entrance::Contract
+    cannot :statistics, Entrance::Contract
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
   end
@@ -229,6 +231,7 @@ class Ability
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
     can :manage, Entrance::Contract
+    cannot :statistics, Entrance::Contract
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
   end
@@ -242,6 +245,7 @@ class Ability
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::DocumentMovement
     can :manage, Entrance::Contract
+    cannot :statistics, Entrance::Contract
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
   end
@@ -253,6 +257,7 @@ class Ability
 
   def executive_secretary(user)
     zamestitel_otvetstvennogo_sekretarja(user)
+    can :statistics, Entrance::Contract
     # can :update, Achievement
     # can :validate_selection, Achievement
   end
