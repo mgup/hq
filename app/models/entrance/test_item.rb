@@ -8,5 +8,5 @@ class Entrance::TestItem < ActiveRecord::Base
   accepts_nested_attributes_for :benefit_items
   belongs_to :exam, class_name: 'Entrance::Exam'
 
-  scope :from_direction, -> direction_id { joins(:competitive_group).where('competitive_group_id IN (?)', Entrance::CompetitiveGroupItem.from_direction(direction_id).collect{|x| x.competitive_group_id}.join(','))}
+  scope :from_direction, -> direction_id { where("competitive_group_id IN (#{Entrance::CompetitiveGroupItem.from_direction(direction_id).collect{|x| x.competitive_group_id}.join(',')})")}
 end
