@@ -1,0 +1,10 @@
+$('.modal-backdrop').remove();
+$('.modal').modal('hide');
+$('body').on('hidden.bs.modal', '.modal', function () {
+  $(this).removeData('bs.modal');
+});
+$(document.getElementById('contract_for_<%= @application.id %>')).replaceWith(
+    '<%=j raw(render partial: 'entrance/contracts/contract_button', locals: {a: @application}) %>'
+);
+alert($(document.getElementById('contract_for_<%= @application.id %>')).find('a').length)
+$(document.getElementById('contract_for_<%= @application.id %>')).find('.contract-btn').addClass('btn-default').removeClass('btn-success');

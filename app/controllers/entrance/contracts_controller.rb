@@ -92,11 +92,15 @@ class Entrance::ContractsController < ApplicationController
       @contract.number = "#{Date.today.year}-#{person.students.first.id}"
       @contract.save!
 
-      redirect_to entrance_campaign_entrant_applications_path(
-                    @campaign,
-                    @entrant
-                  ),
-                  notice: 'Договор об образовании успешно сформирован.'
+      respond_to do |format|
+        format.js
+      end
+
+      # redirect_to entrance_campaign_entrant_applications_path(
+      #               @campaign,
+      #               @entrant
+      #             ),
+      #             notice: 'Договор об образовании успешно сформирован.'
       end
     end
   end
@@ -126,17 +130,23 @@ class Entrance::ContractsController < ApplicationController
 
     @contract.destroy
 
-    redirect_to entrance_campaign_entrant_applications_path(
-                  @campaign,
-                  @entrant
-                ),
-                notice: 'Договор об образовании успешно удалён.'
+    respond_to do |format|
+      format.js
+    end
+
+    # redirect_to entrance_campaign_entrant_applications_path(
+    #               @campaign,
+    #               @entrant
+    #             ),
+    #             notice: 'Договор об образовании успешно удалён.'
   end
 
   def resource_params
     params.fetch(:entrance_contract, {}).permit(
       :sides, :delegate_last_name, :delegate_first_name, :delegate_patronym, :delegate_address,
-      :delegate_phone, :delegate_pseries, :delegate_pnumber, :delegate_pdepartment, :delegate_pdate
+      :delegate_phone, :delegate_pseries, :delegate_pnumber, :delegate_pdepartment, :delegate_pdate,
+      :delegate_organization, :delegate_position, :delegate_mobile, :delegate_fax, :delegate_inn, :delegate_kpp,
+      :delegate_ls, :delegate_bik
     )
   end
 

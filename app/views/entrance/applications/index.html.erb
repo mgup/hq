@@ -72,6 +72,7 @@
         </td>
 
         <td>
+          <div id="contract_for_<%= a.id %>">
           <% if a.payed? %>
               <% if !a.entrant.contracts.empty? && !a.contract %>
                 <%= button_tag disabled: true, class: 'btn btn-default' do %>
@@ -88,6 +89,7 @@
                 <%= modal_placeholder(dom_id(a, 'contract'), size: 'modal-lg') %>
                <% end %>
           <% end %>
+          </div>
         </td>
 
         <td>

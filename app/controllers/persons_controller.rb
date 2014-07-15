@@ -17,7 +17,10 @@ class PersonsController < ApplicationController
     params.fetch(:person, {}).permit(:id, :birthday, :birthplace, :gender, :homeless,
           :passport_series, :passport_number, :passport_date, :passport_department,
           :email, :phone_home, :phone_mobile, :residence_address, :residence_zip,
-          :registration_address, :registration_zip
+          :registration_address, :registration_zip,
+          fname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
+          iname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
+          oname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp]
     )
   end
 end

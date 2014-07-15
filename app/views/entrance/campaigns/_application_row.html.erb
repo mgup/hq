@@ -18,6 +18,9 @@
 </td>
 
 <td>
-  <%= render partial: 'entrance/applications/contract',
-             locals: { application: a } if a.payed? %>
+  <div id="contract_for_<%= a.id %>">
+  <% if a.payed? %>
+    <%= render partial: 'entrance/contracts/contract_button', locals: {a: a} %>
+  <% end %>
+  </div>
 </td>

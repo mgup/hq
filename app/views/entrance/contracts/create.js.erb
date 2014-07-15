@@ -1,0 +1,7 @@
+$('.modal-backdrop').remove();
+$('body').on('hidden.bs.modal', '.modal', function () {
+  $(this).removeData('bs.modal');
+});
+$(document.getElementById('contract_for_<%= @application.id %>')).replaceWith(
+    '<%=j raw(render partial: 'entrance/contracts/contract_button', locals: {a: @application}) %>'
+);

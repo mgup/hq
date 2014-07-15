@@ -11,11 +11,21 @@
 
   $('input[type="radio"][name="entrance_contract[sides]"]').change(function(){
     if ($(this).val() == 'trilateral') {
-      $(this).closest('.form-group').next('.delegate_information').show();
-      $(this).closest('.form-group').next('.delegate_information').find('input').prop('disabled', false)
-    } else{
-      $(this).closest('.form-group').next('.delegate_information').hide();
-      $(this).closest('.form-group').next('.delegate_information').find('input').prop('disabled', true);
+      $(this).closest('.form-group').siblings('.delegate_information').show();
+      $(this).closest('.form-group').siblings('.delegate_information').find('input').prop('disabled', false);
+      $(this).closest('.form-group').siblings('.organization_information').hide();
+      $(this).closest('.form-group').siblings('.organization_information').find('input').prop('disabled', true);
+    } else if ($(this).val() == 'trilateral_with_organization') {
+      $(this).closest('.form-group').siblings('.organization_information').show();
+      $(this).closest('.form-group').siblings('.organization_information').find('input').prop('disabled', false);
+      $(this).closest('.form-group').siblings('.delegate_information').hide();
+      $(this).closest('.form-group').siblings('.delegate_information').find('input').prop('disabled', true);
+    } else {
+      $(this).closest('.form-group').siblings('.delegate_information').hide();
+      $(this).closest('.form-group').siblings('.delegate_information').find('input').prop('disabled', true);
+      $(this).closest('.form-group').siblings('.organization_information').hide();
+      $(this).closest('.form-group').siblings('.organization_information').find('input').prop('disabled', true);
     }
+
   })
 </script>
