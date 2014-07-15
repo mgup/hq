@@ -3,37 +3,16 @@ class Entrance::CampaignsController < ApplicationController
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
-  def dashboard
-    params[:direction] ||= 1887
+  before_filter :initialize_default_filters, only: [:dashboard, :rating]
 
-    params[:form]      ||= 11
-    @form = EducationForm.find(params[:form])
+  # Заявления.
+  def dashboard ; end
 
-    params[:payment]   ||= 14
-    @source = EducationSource.find(params[:payment])
-
-    @direction = Direction.find(params[:direction])
-
-    @applications = @campaign.applications.rating(params[:form], params[:payment], params[:direction])
-
-    # @applications = @applications
-
-    # @applications = @applications.page(params[:page] || 1).per(100)
-  end
-
+  # Пофамильные списки поступающих (рейтинги).
   def rating
-    params[:direction] ||= 1887
-
-    params[:form]      ||= 11
-    @form = EducationForm.find(params[:form])
-
-    params[:payment]   ||= 14
-    @source = EducationSource.find(params[:payment])
-
-    @direction = Direction.find(params[:direction])
-
-    @applications = @campaign.applications.rating(params[:form], params[:payment], params[:direction])
-    @number = @applications.first.competitive_group_item.total_number if @applications.first
+    if @applications.first
+      @number = @applications.first.competitive_group_item.total_number
+    end
   end
 
   def applications
@@ -130,24 +109,40 @@ class Entrance::CampaignsController < ApplicationController
     end
   end
 
-  def temp_print_all_checks
-    params[:faculty] ||= 3 # 5,6,7
-    @faculty = Department.find(params[:faculty])
-
-    @checks = Entrance::UseCheck.all.joins(:entrant).
-      joins('LEFT JOIN entrance_applications AS a ON a.entrant_id = entrance_entrants.id').
-      where('a.packed = 1').
-      joins('LEFT JOIN competitive_group_items as i ON a.competitive_group_item_id = i.id').
-      joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
-      where('d.department_id = ?', params[:faculty])
-
-      respond_to do |format|
-        format.html
-        format.pdf
-      end
-  end
+  # def temp_print_all_checks
+  #   params[:faculty] ||= 3 # 5,6,7
+  #   @faculty = Department.find(params[:faculty])
+  #
+  #   @checks = Entrance::UseCheck.all.joins(:entrant).
+  #     joins('LEFT JOIN entrance_applications AS a ON a.entrant_id = entrance_entrants.id').
+  #     where('a.packed = 1').
+  #     joins('LEFT JOIN competitive_group_items as i ON a.competitive_group_item_id = i.id').
+  #     joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
+  #     where('d.department_id = ?', params[:faculty])
+  #
+  #     respond_to do |format|
+  #       format.html
+  #       format.pdf
+  #     end
+  # end
 
   private
+
+  # Инициализация фильтров по-умолчанию.
+  def initialize_default_filters
+    params[:direction] ||= 1887
+    @direction = Direction.find(params[:direction])
+
+    params[:form] ||= 11
+    @form = EducationForm.find(params[:form])
+
+    params[:payment] ||= 14
+    @source = EducationSource.find(params[:payment])
+
+    @applications = @campaign.applications.rating(params[:form],
+                                                  params[:payment],
+                                                  params[:direction])
+  end
 
   def applications_from_filters(opts = { form: true, payment: true, date: false })
     params[:date] ||= l(Date.today)
