@@ -39,17 +39,20 @@ class Entrance::ExamResult < ActiveRecord::Base
         xml.ResultSourceTypeID  self[:form]
         xml.EntranceTestTypeID  exam[:form]
         xml.CompetitiveGroupID  opts[:competitive_group_id]
-
-        xml.EntranceTestSubject do
-          if exam.use_subject_id
-            xml.SubjectID   exam.use_subject_id
-          else
-            xml.SubjectName exam.name
-          end
-        end
+        xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
       end
     end
 
     builder.doc
+  end
+
+  private
+
+  def fis_entrance_test_subject(xml)
+    if exam.use_subject_id
+      xml.SubjectID exam.use_subject_id
+    else
+      xml.Subject_name exam.name
+    end
   end
 end
