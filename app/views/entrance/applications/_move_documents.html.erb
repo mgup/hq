@@ -23,8 +23,14 @@
                     )).change(function() {
                       if (this.checked) {
                         $('.move_to').removeAttr('disabled');
+                        if ($('.move_to').length == 1){
+                          $('.move_to').prop('checked', true);
+                        }
                       } else {
                         $('.move_to').attr('disabled', 'disabled');
+                        if ($('.move_to').length == 1){
+                          $('.move_to').prop('checked', false);
+                        }
                       }
                     });
                   </script>
