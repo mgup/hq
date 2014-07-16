@@ -110,7 +110,7 @@ class Entrance::FisController < ApplicationController
       # Выполняем проверку для всех абитуриентов или только для непроверенных.
       entrants = if params[:fis_check]
                    @campaign.entrants
-                 else
+                 elsif params[:fis_empty_check]
                    @campaign.entrants.without_checks
                  end
 
@@ -131,8 +131,8 @@ class Entrance::FisController < ApplicationController
 
             results = entrant.exam_results.use.by_exam_name(subject[:exam_name])
             if results.size > 1
-              raise "У абитуриента #{entrant.full_name} дублируются экзамены."
-            elsif result
+              fail "У абитуриента #{entrant.full_name} дублируются экзамены."
+            elsif results
               result = results.first
 
               # Если наш результат не совпадает с полученным от ФИС, то меняем
@@ -146,8 +146,6 @@ class Entrance::FisController < ApplicationController
               result.save!
 
               data[:exam_result_id] = result.id
-            else
-
             end
 
             check.results.create(data)
