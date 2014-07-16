@@ -89,59 +89,76 @@ class Entrance::FisController < ApplicationController
   end
 
   def check
-    if params[:fis_check]
-      file_data = params[:fis_check]
-    elsif params[:fis_empty_check]
-      file_data = params[:fis_empty_check]
-    else
-      file_data = nil
-    end
+    file_data = params[:fis_check] || params[:fis_empty_check]
 
     if file_data
-      content = CSV.parse(file_data.read.force_encoding('windows-1251').encode('UTF-8'))
-      results = []
-      entrants = (params[:fis_check] ? @campaign.entrants : @campaign.entrants.without_checks)
-      content.each do |row|
-        a = row.join.split('%')
-        next if a[9] != 'Действующий'
-        results << {last_name: Unicode::capitalize(a[0]), pseries: a[3], pnumber: a[4], exam_name: a[5], score: a[6], year: a[7].to_i, number: a[11]}
-      end
-      results.group_by { |h| h.values_at(:last_name, :pseries, :pnumber, :exam_name) }.map{ |_, v| v.max_by { |h| h[:year] }}.each do |r|
-        entrant = entrants.filter(pseries: r[:pseries], pnumber: r[:pnumber], last_name: r[:last_name]).last
+      # Парсим ответ от ФИС, исключаем из выдачи недействительные результаты
+      # и формируем хэш с понятными названиями полей.
+      headers = [:last_name, :first_name, :patronym, :pseries, :pnumber,
+                 :exam_name, :score, :year, :f8, :f9, :f10, :number, :f12]
+      r = CSV.parse(
+        file_data.read.force_encoding('Windows-1251').encode('UTF-8'),
+        col_sep: '%', skip_lines: /^((?!Действующий).)*$/
+      ).map { |row| Hash[headers.zip(row)] }
+
+      # Выполняем проверку для всех абитуриентов или только для непроверенных.
+      entrants = if params[:fis_check]
+                   @campaign.entrants
+                 else
+                   @campaign.entrants.without_checks
+                 end
+
+      # Группируем результаты по серии и номеру документа.
+      r.group_by { |h| h.values_at(:pseries, :pnumber) }.each do |pdata, scores|
+        # Находим нужного абитуриента и делаем запись о проверке.
+        entrant = entrants.find_by_pseries_and_pnumber(*pdata)
         if entrant
-          if Entrance::UseCheck.last && Entrance::UseCheck.last.entrant == entrant
-            check = Entrance::UseCheck.last
-          else
-            check = Entrance::UseCheck.create date: Date.today, number: r[:number], year: r[:year], entrant_id: entrant.id
-          end
-          result = entrant.exam_results.from_exam_name(r[:exam_name]).use.last
-          if result
-            if result.score != r[:score].to_i
-              result.old_score = result.score
-              result.score = r[:score].to_i
+          check = entrant.checks.create(date: Date.today)
+
+          # Для каждого результата проверяем совпадение баллов с записанными
+          # у нас и сохраняем баллы в информацию о проверке.
+          scores.each do |subject|
+            # Информация о результатах ЕГЭ по дисциплине, полученная из ФИС.
+            data = { exam_name: subject[:exam_name],
+                     score: subject[:score],
+                     year: subject[:year] }
+
+            results = entrant.exam_results.use.by_exam_name(subject[:exam_name])
+            if results.size > 1
+              raise "У абитуриента #{entrant.full_name} дублируются экзамены."
+            elsif result
+              result = results.first
+
+              # Если наш результат не совпадает с полученным от ФИС, то меняем
+              # наш на результат из ФИС, сохраняя при этом старое значение.
+              if result.score != subject[:score].to_i
+                result.old_score = result.score
+                result.score = subject[:score]
+              end
               result.checked = true
               result.checked_at = DateTime.now
-              result.save
+              result.save!
+
+              data[:exam_result_id] = result.id
             else
-              result.checked = true
-              result.checked_at = DateTime.now
-              result.save
+
             end
-            Entrance::UseCheckResult.create exam_name: r[:exam_name], score: r[:score].to_i,
-                                                   exam_result_id: result.id, use_check_id: check.id
-          else
-            Entrance::UseCheckResult.create exam_name: r[:exam_name], score: r[:score].to_i,
-                                                   use_check_id: check.id
+
+            check.results.create(data)
           end
-        else
-          next
         end
       end
-      entrants.select {|e| e.checks.collect{|c| c.results.count}.sum == 0 }.each do |entrant|
-        Entrance::UseCheck.create date: Date.today, entrant_id: entrant.id
-      end
-      entrants.without_checks.each do |entrant|
-        Entrance::UseCheck.create date: Date.today, entrant_id: entrant.id
+
+      # Ищем абитуриентов, у которых были пустые проверки или у которых
+      # ещё не было ни одной проверки. Если в результатах от ФИС их нет,
+      # то создаём для них пустую проверку.
+      grouped_results = r.group_by { |h| h.values_at(:pseries, :pnumber) }
+      entrants.each do |e|
+        found = grouped_results.find_all do |pdata, _|
+          pdata == [e.pseries, e.pnumber]
+        end
+
+        e.checks.create(date: Date.today) unless found
       end
     end
 
