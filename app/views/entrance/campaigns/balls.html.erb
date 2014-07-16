@@ -11,7 +11,7 @@
 
 <table class="table">
     <% @entrants.each do |entrant| %>
-        <% result = entrant.exam_results.vi.by_exam(@exam.id).last.score %>
+        <% result = entrant.exam_results.internal.by_exam(@exam.id).last.score %>
         <% if result %>
         <tr>
             <td class="text-muted"><%= entrant.id %></td>
