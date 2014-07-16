@@ -26,7 +26,7 @@
             <tr><td class="lead" colspan="4">Аудитория <%= classroom.number %></td></tr>
             <% event_entrants.sort_by{|x| x.entrant.last_name}.each do |ee| %>
             <tr>
-                <td class="text-muted"><%= ee.entrant.id %></td>
+                <td class="text-muted"><%= ee.entrant.packed_application.number %></td>
                 <td><%= ee.entrant.last_name %></td>
                 <td><%= ee.entrant.first_name %></td>
                 <td><%= ee.entrant.patronym %></td>
@@ -46,7 +46,7 @@
  </thead>
  <% @event.entrants.each do |entrant| %>
    <tr>
-     <td class="text-muted"><%= entrant.id %></td>
+     <td class="text-muted"><%= entrant.packed_application.number %></td>
      <td><%= entrant.last_name %></td>
      <td><%= entrant.first_name %></td>
      <td><%= entrant.patronym %></td>
