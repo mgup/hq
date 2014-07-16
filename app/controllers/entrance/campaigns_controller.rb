@@ -1,18 +1,16 @@
 class Entrance::CampaignsController < ApplicationController
-  skip_before_filter :authenticate_user!, only: [:applications, :balls, :rating]
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating]
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
-  before_filter :initialize_default_filters, only: [:dashboard, :rating]
+  before_action :initialize_default_filters, only: [:dashboard, :rating]
 
   # Заявления.
   def dashboard ; end
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
-    if @applications.first
-      @number = @applications.first.competitive_group_item.total_number
-    end
+    @number = @applications.first.competitive_group_item.total_number if @applications.first
   end
 
   def applications
@@ -46,8 +44,8 @@ class Entrance::CampaignsController < ApplicationController
     end
 
     @exam = Entrance::Exam.find(params[:exam])
-    @entrants = Entrance::Entrant.from_exam(params[:exam]).
-      order(:last_name, :first_name, :patronym)
+    @entrants = Entrance::Entrant.from_exam(params[:exam])
+      .order(:last_name, :first_name, :patronym)
 
     respond_to do |format|
       format.html
@@ -154,34 +152,29 @@ class Entrance::CampaignsController < ApplicationController
     @source = EducationSource.find(params[:payment])
 
     form_method = case params[:form]
-                    when '10'
-                      :z_form
-                    when '12'
-                      :oz_form
-                    else
-                      :o_form
+                  when '10'
+                    :z_form
+                  when '12'
+                    :oz_form
+                  else
+                    :o_form
                   end
 
     payment_method = case params[:payment]
-                       when '15'
-                         :paid
-                       else
-                         :not_paid
+                     when '15'
+                       :paid
+                     else
+                       :not_paid
                      end
 
     apps = @campaign.applications.
-      joins(competitive_group_item: :direction).
-      joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id').
-      send(form_method).send(payment_method).order('entrance_applications.created_at')
-      # .order('(entrance_benefits.benefit_kind_id = 1) DESC, entrance_applications.number ASC')
+      joins(competitive_group_item: :direction)
+      .joins('LEFT JOIN entrance_benefits ON entrance_benefits.application_id = entrance_applications.id')
+      .send(form_method).send(payment_method).order('entrance_applications.created_at')
+    # .order('(entrance_benefits.benefit_kind_id = 1) DESC, entrance_applications.number ASC')
 
-    if opts[:form]
-      apps = apps.send(form_method)
-    end
-
-    if opts[:payment]
-      apps = apps.send(payment_method)
-    end
+    apps = apps.send(form_method) if opts[:form]
+    apps = apps.send(payment_method) if opts[:payment]
 
     if opts[:date]
       apps = apps.where('DATE(entrance_applications.created_at) = ?',
@@ -195,4 +188,5 @@ class Entrance::CampaignsController < ApplicationController
 
     apps
   end
+
 end

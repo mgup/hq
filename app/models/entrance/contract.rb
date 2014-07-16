@@ -1,7 +1,7 @@
 class Entrance::Contract < ActiveRecord::Base
   self.table_name_prefix = 'entrance_'
 
-  enum sides: { bilateral: 2, trilateral: 3 }
+  enum sides: { bilateral: 2, trilateral: 3, trilateral_with_organization: 4 }
 
   belongs_to :application, class_name: 'Entrance::Application'
 

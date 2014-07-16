@@ -7,14 +7,14 @@
                 entrance_campaign_entrant_application_contract_path(@campaign, application.entrant, application, format: :pdf), target: :blank %>
 
   <%= content_for :modal_save do %>
-    <%= link_to entrance_campaign_entrant_application_contract_path(@campaign, application.entrant, application), method: :delete, class: 'btn btn-danger', data: { confirm: 'Вы уверены?' } do %>
+    <%= link_to entrance_campaign_entrant_application_contract_path(@campaign, application.entrant, application), method: :delete, remote: true, class: 'btn btn-danger modal-remote-btn', data: { confirm: 'Вы уверены?' } do %>
       Удалить договор
     <% end %>
   <% end %>
 <% else %>
   <%= form_for application.build_contract,
                url: entrance_campaign_entrant_application_contract_path(@campaign, application.entrant, application),
-               html: { class: 'form-horizontal form_for_contract' } do |f| %>
+               html: { class: 'form-horizontal form_for_contract' }, remote: true do |f| %>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <div class="radio">
@@ -29,6 +29,12 @@
               Договор с родителем/представителем абитуриента
             </label>
           </div>
+            <div class="radio">
+              <label>
+                <%= f.radio_button :sides, :trilateral_with_organization %>
+                Договор с организацией
+              </label>
+            </div>
         </div>
       </div>
       <div class="delegate_information" style="display: none;">
@@ -109,10 +115,131 @@
         </div>
       </div>
 
+    <div class="organization_information" style="display: none;">
+        <div class="form-group">
+            <h4 class="col-sm-offset-1">Информация о представителе организации</h4>
+            <div class="col-sm-12">
+                <%= f.label :delegate_last_name, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_last_name, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_first_name, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_first_name, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_patronym, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_patronym, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_address, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_address, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_position, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_position, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_mobile, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_mobile, pattern: '([\+]\d+)($|([\,] [\+]\d+)+$)',
+                                     class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_organization, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_organization, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_phone, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_phone, pattern: '([\+]\d+)($|([\,] [\+]\d+)+$)',
+                                     class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_fax, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_fax, pattern: '([\+]\d+)($|([\,] [\+]\d+)+$)',
+                                     class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_inn, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_inn, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_kpp, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_kpp, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_ls, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_ls, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_bik, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_bik, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <%= content_for :modal_save do %>
       <%= f.submit 'Сформировать контракт',
-                     class: 'btn btn-primary submit_contract' %>
+                     class: 'btn btn-primary submit_contract modal-remote-btn' %>
     <% end %>
 
   <% end %>
 <% end %>
+
+<script type="text/javascript" charset="utf-8">
+  var count = 0;
+  $('.modal-remote-btn').click(function(){
+    count++;
+    if (count > 1){
+      return false;
+    }
+  })
+</script>

@@ -86,6 +86,12 @@ class Entrance::FisController < ApplicationController
 
   # Пакетная проверка результатов ЕГЭ.
   def check_use
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data (params[:new_entrants] ? @campaign.entrants.without_checks.as_csv : @campaign.entrants.as_csv)
+      end
+    end
   end
 
   def check

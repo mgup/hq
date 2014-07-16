@@ -23,9 +23,17 @@ pdf.move_down 5
 if @contract.bilateral?
   pdf.text "Федеральное государственное бюджетное образовательное учреждение высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (МГУП имени Ивана Федорова), осуществляющее образовательную деятельность на основании лицензии от 11 августа 2011 г. серия ААА № 001773 (срок действия — бессрочно), выданной Федеральной службой по надзору в сфере образования и науки, именуемое в дальнейшем «Исполнитель», в лице начальника студенческого отдела кадров Бутаревой Ларисы Львовны, действующей на основании доверенности № 69/13 от 5 ноября 2013 года, и #{@entrant.full_name}, #{@entrant.male? ? 'именуемый' : 'именуемая'} в дальнейшем «Обучающийся», совместно именуемые «Стороны», заключили настоящий Договор о нижеследующем:",
          align: :justify, indent_paragraphs: 15
-else
+elsif @contract.trilateral?
   pdf.text "Федеральное государственное бюджетное образовательное учреждение высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (МГУП имени Ивана Федорова), осуществляющее образовательную деятельность на основании лицензии от 11 августа 2011 г. серия ААА № 001773 (срок действия — бессрочно), выданной Федеральной службой по надзору в сфере образования и науки, именуемое в дальнейшем «Исполнитель», в лице начальника студенческого отдела кадров Бутаревой Ларисы Львовны, действующей на основании доверенности № 69/13 от 5 ноября 2013 года, и #{@contract.delegate_full_name}, именуемый в дальнейшем «Заказчик», и #{@entrant.full_name}, #{@entrant.male? ? 'именуемый' : 'именуемая'} в дальнейшем «Обучающийся», совместно именуемые «Стороны», заключили настоящий Договор о нижеследующем:",
            align: :justify, indent_paragraphs: 15
+else
+  pdf.text "Федеральное государственное бюджетное образовательное учреждение высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» (МГУП имени Ивана Федорова), осуществляющее образовательную деятельность на основании лицензии от 11 августа 2011 г. серия ААА № 001773 (срок действия — бессрочно), выданной Федеральной службой по надзору в сфере образования и науки, именуемое в дальнейшем «Исполнитель», в лице начальника студенческого отдела кадров Бутаревой Ларисы Львовны, действующей на основании доверенности № 69/13 от 5 ноября 2013 года, и #{@contract.delegate_organization}, именуемый в дальнейшем «Заказчик», в лице #{@contract.delegate_full_name}, #{@contract.delegate_position}, действующего на основании",
+           align: :justify, indent_paragraphs: 15, inline_format: true
+  pdf.move_down 5
+  pdf.line_width 0.2
+  pdf.stroke_horizontal_rule
+  pdf.move_down 4
+  pdf.text "и #{@entrant.full_name}, #{@entrant.male? ? 'именуемый' : 'именуемая'} в дальнейшем «Обучающийся», совместно именуемые «Стороны», заключили настоящий Договор о нижеследующем:", align: :justify
 end
 pdf.move_down 5
 pdf.text 'I. Предмет Договора', align: :center, style: :bold, leading: 5
@@ -307,6 +315,23 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
       END
     end
     delegate_height = third_box.height
+  elsif @contract.trilateral_with_organization?
+    third_box = pdf.bounding_box([170,  pdf.bounds.top], width: 160) do
+      pdf.text 'ЗАКАЗЧИК', style: :bold, leading: 5
+
+      pdf.text <<-END
+#{@contract.delegate_organization}, #{@contract.delegate_full_name}
+Адрес: #{@contract.delegate_address}
+Телефон: #{@contract.delegate_phone}
+Моб. телефон: #{@contract.delegate_mobile}
+Факс: #{@contract.delegate_fax}
+ИНН: #{@contract.delegate_inn}
+КПП: #{@contract.delegate_kpp}
+л/с: #{@contract.delegate_ls}
+БИК: #{@contract.delegate_bik}
+      END
+    end
+    delegate_height = third_box.height
   end
 
   second_box = pdf.bounding_box([(@contract.bilateral? ? 280 : 340),  pdf.bounds.top], width: (@contract.bilateral? ? 240 : 160)) do
@@ -322,7 +347,7 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
   end
   entrant_height = second_box.height
 
-  if @contract.trilateral?
+  if @contract.trilateral? || @contract.trilateral_with_organization?
     pdf.move_down 10 + [university_height, entrant_height, delegate_height].max - entrant_height
   else
     pdf.move_down 10 + [university_height, entrant_height].max - entrant_height
@@ -333,7 +358,7 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
       pdf.text '_____________________ Бутарева Л. Л.',
                indent_paragraphs: 15
     end
-    if @contract.trilateral?
+    if @contract.trilateral? || @contract.trilateral_with_organization?
       pdf.bounding_box([170, pdf.bounds.top], width: 160) do
         pdf.text "_____________________ #{@contract.delegate_short_name}",
                  indent_paragraphs: 15

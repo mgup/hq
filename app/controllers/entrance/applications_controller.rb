@@ -33,12 +33,11 @@ class Entrance::ApplicationsController < ApplicationController
           found = !key
           @entrant.applications.each do |a|
             # Только для неотозванных заявлений.
-            unless a.called_back?
-              # Проверяем, что у человека ещё нет заявлений в этой конкурсной
-              # группе.
-              if a.competitive_group_item_id == g.items.first.id
-                found = true
-              end
+            if a.called_back?
+              # Проверяем, что у человека ещё нет заявлений в этой конкурсной группе.
+              next
+            else
+              found = true if a.competitive_group_item_id == g.items.first.id
             end
           end
 
@@ -49,11 +48,12 @@ class Entrance::ApplicationsController < ApplicationController
               campaign_id: @campaign.id
             )
           end
+        else
+          next
         end
       end
     end
   end
-
 
   def show
     respond_to do |format|
@@ -61,9 +61,7 @@ class Entrance::ApplicationsController < ApplicationController
     end
   end
 
-  def new
-
-  end
+  def new ; end
 
   def create
     if @application.save
@@ -72,20 +70,20 @@ class Entrance::ApplicationsController < ApplicationController
       number << @application.competitive_group_item.direction.letters
 
       second = case @application.competitive_group_item.direction.qualification_code
-                 when 68
-                   'М'
-                 when 70
-                   'А'
-                 else case @application.competitive_group_item.form
-                        when 10
-                          'З'
-                        when 11
-                          'Д'
-                        when 12
-                          'В'
-                        else
-                          raise 'Кажется, что-то пошло не так.'
-                      end
+               when 68
+                 'М'
+               when 70
+                 'А'
+               else case @application.competitive_group_item.form
+                    when 10
+                      'З'
+                    when 11
+                      'Д'
+                    when 12
+                      'В'
+                    else
+                      fail 'Кажется, что-то пошло не так.'
+                    end
                end
 
       number << (@application.entrant.ioo ? 'И' : second)
@@ -93,8 +91,8 @@ class Entrance::ApplicationsController < ApplicationController
       payment = @application.competitive_group_item.payed? ? 'п' : ''
 
       last = Entrance::Application.
-        where('number LIKE ?', "#{number}%#{payment}").
-        order(number: :desc).first
+        where('number LIKE ?', "#{number}%#{payment}")
+        .order(number: :desc).first
       if last
         last_number = last.number
         last_number.slice!(number)
