@@ -110,7 +110,7 @@ class Entrance::FisController < ApplicationController
       # Выполняем проверку для всех абитуриентов или только для непроверенных.
       entrants = if params[:fis_check]
                    @campaign.entrants
-                 else
+                 elsif params[:fis_empty_check]
                    @campaign.entrants.without_checks
                  end
 
@@ -131,7 +131,7 @@ class Entrance::FisController < ApplicationController
 
             results = entrant.exam_results.use.by_exam_name(subject[:exam_name])
             if results.size > 1
-              raise "У абитуриента #{entrant.full_name} дублируются экзамены."
+              fail "У абитуриента #{entrant.full_name} дублируются экзамены."
             elsif results.any?
               result = results.first
 
