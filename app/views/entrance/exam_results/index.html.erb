@@ -1,6 +1,31 @@
+<%= render 'entrance/shared/switch' %>
+
 <div class="page-header">
-  <h1>
-    Вступительные испытания
-    <small class="nowrap"><%= @entrant.full_name %></small>
-  </h1>
+  <h1>Результаты вступительных испытаний</h1>
 </div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <select class="form-control" onchange="document.location = $(this).val();">
+      <% @campaign.exams.each do |exam| %>
+        <option value="<%= url_for(params.merge(exam_id: exam.id)) %>"
+                <%= 'selected' if exam.id == params[:exam_id].to_i %>>
+          <%= exam.name %>
+        </option>
+      <% end %>
+    </select>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <% @exam_results.each do |result| %>
+    <tr>
+      <td class="text-muted"><%= result.entrant.id %></td>
+      <td><%= result.entrant.full_name %></td>
+      <td>
+        <%= render result %>
+      </td>
+      <td></td>
+    </tr>
+  <% end %>
+</table>

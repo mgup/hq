@@ -11,4 +11,8 @@ class Entrance::Exam < ActiveRecord::Base
   accepts_nested_attributes_for :exam_results
 
   has_many :test_items, class_name: Entrance::TestItem, foreign_key: :exam_id
+
+  default_scope do
+    order(:name)
+  end
 end

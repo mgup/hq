@@ -146,8 +146,6 @@ class Entrance::FisController < ApplicationController
               result.save!
 
               data[:exam_result_id] = result.id
-            else
-
             end
 
             check.results.create(data)

@@ -26,7 +26,7 @@
             <tr>
                 <td class="text-muted"><%= entrant.id %></td>
                 <td><%= entrant.full_name %></td>
-                <% result = entrant.exam_results.vi.by_exam(@exam.id).last %>
+                <% result = entrant.exam_results.internal.by_exam(@exam.id).last %>
                 <% if result.score == nil %>
                     <td>
                         <%= f.fields_for :exam_results, result  do |result_form| %>

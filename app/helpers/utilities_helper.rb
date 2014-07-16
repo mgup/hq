@@ -5,4 +5,8 @@ module UtilitiesHelper
   def prettify(num)
     num.to_i == num ? num.to_i : num
   end
+
+  def pluralize(n, f1, f2, f5)
+    "#{n} #{Russian::pluralize(n, f1, f2, f5)}"
+  end
 end

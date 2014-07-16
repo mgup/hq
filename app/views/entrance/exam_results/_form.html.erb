@@ -1,0 +1,14 @@
+<%= form_for exam_result,
+             url: entrance_campaign_exam_exam_result_path(@campaign,
+                                                          @exam,
+                                                          exam_result),
+             remote: true,
+             html: { class: 'form-inline' } do |f| %>
+  <div class="form-group">
+    <%= f.text_field :score, class: 'form-control', style: 'width: 50px;' %>
+  </div>
+
+  <button type="submit" class="btn btn-default">
+    <span class="glyphicons floppy_save"></span>
+  </button>
+<% end %>

@@ -14,7 +14,7 @@ class Entrance::Entrant < ActiveRecord::Base
 
   belongs_to :campaign, class_name: Entrance::Campaign
 
-  has_many :exam_results, class_name: Entrance::ExamResult, dependent: :destroy
+  has_many :exam_results, class_name: 'Entrance::ExamResult', dependent: :destroy
   accepts_nested_attributes_for :exam_results, allow_destroy: true
 
   has_one :edu_document, class_name: 'Entrance::EduDocument', dependent: :destroy
