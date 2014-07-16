@@ -17,12 +17,12 @@
   </div>
 <% end %>
 
-<pre id="new_entrants">
-  <% @campaign.entrants.without_checks.each do |e| %>
-    <%= e.last_name %>%<%= e.first_name %>%<%= e.patronym %>%<%= e.pseries %>%<%= e.pnumber %>
-  <% end %>
-</pre>
-
+<% if @campaign.entrants.without_checks.empty? %>
+  <p class="lead">Результааты всех абитуриентов проверены</p>
+<% else %>
+<%= link_to 'Скачать файл для проверки новых абитуриентов', request.parameters.merge({format: :csv, new_entrants: 1}),
+        class: 'btn btn-primary btn-lg' %>
+<% end %>
 <br>
 <hr>
 
@@ -38,8 +38,6 @@
 <% end %>
 <br>
 
-<pre id="all_entrants">
-  <% @campaign.entrants.each do |e| %>
-  <%= e.last_name %>%<%= e.first_name %>%<%= e.patronym %>%<%= e.pseries %>%<%= e.pnumber %>
-  <% end %>
-</pre>
+<%= link_to 'Скачать файл для проверки всех абитуриентов', request.parameters.merge({format: :csv}),
+            class: 'btn btn-primary btn-lg' %>
+

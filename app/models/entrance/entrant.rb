@@ -102,6 +102,14 @@ class Entrance::Entrant < ActiveRecord::Base
     end
   end
 
+  def self.as_csv
+    CSV.generate do |csv|
+      all.each do |e|
+        csv << ["#{e.last_name}%#{e.first_name}%#{e.patronym}%#{e.pseries}%#{e.pnumber}".encode('windows-1251')]
+      end
+    end
+  end
+
   def military_status
     case military_service
       when 'not'

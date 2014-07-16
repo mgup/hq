@@ -20,16 +20,16 @@ class Entrance::ContractsController < ApplicationController
                     notice: "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
       else
         army = case @entrant.military_service
-                 when 'not'
-                   Person::ARMY_NOT_RESERVIST
-                 when 'conscript'
-                   Person::ARMY_INDUCTEE
-                 when 'reservist'
-                   Person::ARMY_RESERVIST
-                 when 'free_of_service'
-                   Person::ARMY_NOT_RESERVIST
-                 when 'too_young'
-                   Person::ARMY_NOT_RESERVIST
+               when 'not'
+                 Person::ARMY_NOT_RESERVIST
+               when 'conscript'
+                 Person::ARMY_INDUCTEE
+               when 'reservist'
+                 Person::ARMY_RESERVIST
+               when 'free_of_service'
+                 Person::ARMY_NOT_RESERVIST
+               when 'too_young'
+                 Person::ARMY_NOT_RESERVIST
                end
 
         person = Person.create!(
