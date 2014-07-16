@@ -7,7 +7,7 @@
                 entrance_campaign_entrant_application_contract_path(@campaign, application.entrant, application, format: :pdf), target: :blank %>
 
   <%= content_for :modal_save do %>
-    <%= link_to entrance_campaign_entrant_application_contract_path(@campaign, application.entrant, application), method: :delete, remote: true, class: 'btn btn-danger', data: { confirm: 'Вы уверены?' } do %>
+    <%= link_to entrance_campaign_entrant_application_contract_path(@campaign, application.entrant, application), method: :delete, remote: true, class: 'btn btn-danger modal-remote-btn', data: { confirm: 'Вы уверены?' } do %>
       Удалить договор
     <% end %>
   <% end %>
@@ -228,8 +228,18 @@
 
     <%= content_for :modal_save do %>
       <%= f.submit 'Сформировать контракт',
-                     class: 'btn btn-primary submit_contract' %>
+                     class: 'btn btn-primary submit_contract modal-remote-btn' %>
     <% end %>
 
   <% end %>
 <% end %>
+
+<script type="text/javascript" charset="utf-8">
+  var count = 0;
+  $('.modal-remote-btn').click(function(){
+    count++;
+    if (count > 1){
+      return false;
+    }
+  })
+</script>

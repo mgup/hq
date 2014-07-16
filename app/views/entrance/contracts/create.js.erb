@@ -1,12 +1,18 @@
-if ($('.entrant_contract_buttons').length > 0){
-  window.location.reload();
-}
 $('.modal-backdrop').remove();
 $('body').on('hidden.bs.modal', '.modal', function () {
   $(this).removeData('bs.modal');
 });
-$(document.getElementById('contract_for_<%= @application.id %>')).html(
-    '<%=j raw(render partial: 'entrance/contracts/contract_button', locals: {a: @application, from_entrant: false}) %>'
-);
+
+if ($('.entrant_contract_buttons').length > 0){
+  <% @application.entrant.applications.joins(:competitive_group_item).paid.each do |a| %>
+    $(document.getElementById('contract_for_<%= a.id %>')).html(
+        '<%=j raw(render partial: 'entrance/contracts/contract_button', locals: {a: a}) %>'
+    );
+  <% end %>
+} else {
+  $(document.getElementById('contract_for_<%= @application.id %>')).html(
+      '<%=j raw(render partial: 'entrance/contracts/contract_button', locals: {a: @application}) %>'
+  );
+}
 
 

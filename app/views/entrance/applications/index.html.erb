@@ -75,7 +75,7 @@
           <div class="entrant_contract_buttons" id="contract_for_<%= a.id %>">
           <% if a.payed? %>
             <% if a.payed? %>
-              <%= render partial: 'entrance/contracts/contract_button', locals: {a: a, from_entrant: true} %>
+              <%= render partial: 'entrance/contracts/contract_button', locals: {a: a} %>
             <% end %>
           <% end %>
           </div>
