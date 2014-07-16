@@ -22,7 +22,7 @@ prawn_document margin: [40.34645669291339, 35.34645669291339,
       ]
       i = 0
       entrants.each do |entrant|
-        result = entrant.exam_results.vi.by_exam(@exam.id).last.score
+        result = entrant.exam_results.internal.by_exam(@exam.id).last.score
             if result
                 i+=1
                 data << [i, entrant.full_name, result]
