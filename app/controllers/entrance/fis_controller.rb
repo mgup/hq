@@ -132,7 +132,7 @@ class Entrance::FisController < ApplicationController
             results = entrant.exam_results.use.by_exam_name(subject[:exam_name])
             if results.size > 1
               fail "У абитуриента #{entrant.full_name} дублируются экзамены."
-            elsif results
+            elsif results.any?
               result = results.first
 
               # Если наш результат не совпадает с полученным от ФИС, то меняем
