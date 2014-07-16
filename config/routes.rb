@@ -291,6 +291,8 @@ HQ::Application.routes.draw do
       get 'results',     on: :member
       get 'balls',     on: :member
 
+      get 'paid_enrollment', on: :member
+
       resources :dates
       resources :exams do
         resources :exam_results do

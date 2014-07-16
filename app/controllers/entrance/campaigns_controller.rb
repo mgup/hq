@@ -124,6 +124,15 @@ class Entrance::CampaignsController < ApplicationController
   #     end
   # end
 
+  def paid_enrollment
+    respond_to do |format|
+      format.html
+      format.pdf do
+        @report = Entrance::PaidEnrollmentReport.new(@campaign)
+      end
+    end
+  end
+
   private
 
   # Инициализация фильтров по-умолчанию.

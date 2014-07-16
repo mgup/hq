@@ -29,6 +29,7 @@ gem 'cancan'
 gem 'bootstrap-datepicker-rails'
 gem 'kaminari'
 gem 'prawn'
+gem 'gruff'
 # gem 'rqrcode'
 # gem 'squeel'
 gem 'chunky_png'
@@ -80,6 +81,7 @@ group :development do
   gem 'bullet'
   gem 'meta_request'
   gem 'dotenv-deployment'
+  gem 'inch', require: false
 end
 
 group :test do
