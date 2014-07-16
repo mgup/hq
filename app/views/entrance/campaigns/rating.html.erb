@@ -5,12 +5,12 @@
     <h1>Пофамильные списки поступающих <small>рейтинги</small></h1>
 </div>
 
-<% if @campaign.id == 2014 %>
-  <p class="lead">Пофамильные списки поступающих (рейтинги) будут доступны с 28 июля в этом разделе.</p>
-<% else %>
-
 <%= render partial: 'filters',
            locals: { url: rating_entrance_campaign_path(@campaign) } %>
+
+<% if @campaign.id == 2014 && !(Direction.for_aspirants.include? Direction.find(params[:direction])) %>
+  <p class="lead">Пофамильные списки поступающих (рейтинги) будут доступны с 28 июля в этом разделе.</p>
+<% else %>
 
 <% unless @applications.take %>
     <p class="lead">По данному конкурсу не было найдено ни одного заявления</p>
