@@ -10,7 +10,10 @@ class Entrance::CampaignsController < ApplicationController
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
-    @number = @applications.first.competitive_group_item.total_number if @applications.first
+    if @applications.first
+      @number = @applications.first.competitive_group_item.total_number
+      @number_q = @applications.first.competitive_group_item.quota_number
+    end
   end
 
   def applications

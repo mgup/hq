@@ -31,7 +31,11 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   end
 
   def total_number
-    number_budget_o + number_budget_oz + number_budget_z + number_paid_o + number_paid_oz + number_paid_z + number_quota_o + number_quota_oz + number_quota_z
+    number_budget_o + number_budget_oz + number_budget_z + number_paid_o + number_paid_oz + number_paid_z
+  end
+
+  def quota_number
+    number_quota_o + number_quota_oz + number_quota_z
   end
 
   def matrix_form

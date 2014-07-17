@@ -1,23 +1,32 @@
 <%= render 'entrance/shared/switch' %>
 
-
 <div class="page-header">
-    <h1>Пофамильные списки поступающих <small>рейтинги</small></h1>
+    <h2>Конкурсные списки на места в рамках контрольных цифр по общему конкурсу с выделением списков лиц, рекомендованных к зачислению на первом этапе</h2>
 </div>
 
 <%= render partial: 'filters',
            locals: { url: rating_entrance_campaign_path(@campaign) } %>
 
-<% if @campaign.id == 2014 && !(Direction.for_aspirants.include? Direction.find(params[:direction])) %>
+<% if @campaign.id == Entrance::Campaign::CURRENT && !(Direction.for_aspirants.include? Direction.find(params[:direction])) %>
   <p class="lead">Пофамильные списки поступающих (рейтинги) будут доступны с 28 июля в этом разделе.</p>
 <% else %>
 
 <% unless @applications.take %>
     <p class="lead">По данному конкурсу не было найдено ни одного заявления</p>
 <% else %>
-  <p class="lead">Количество мест: <%= @number %></p>
+  <% if @campaign.id == Entrance::Campaign::CRIMEA %>
+     <br>
+     <p class="text-center alert alert-warning">Срок предоставления оригинала документа об образовании лицами, рекомендованными к зачислению, завершается <span style="text-decoration: underline;">19 июля</span>.<br>
+     <strong>!!! Напоминаем, что 19 июля &mdash; суббота, и приёмная комиссия работает до 15:00 !!! </strong></p>
+  <% elsif @campaign.id == Entrance::Campaign::CURRENT && (Direction.for_aspirants.include? Direction.find(params[:direction])) %>
+      <br>
+      <p class="text-center alert alert-warning">Срок предоставления оригинала документа об образовании лицами, рекомендованными к зачислению, завершается <span style="text-decoration: underline;">17 июля</span>.</p>
+  <% end %>
 
-  <table class="table table-condensed table-striped">
+  <% if @number_q > 0 %>
+  <p class="lead">Количество мест (квота): <%= @number_q %></p>
+
+  <table class="table table-condensed">
     <thead>
     <tr>
         <th class="text-muted">#</th>
@@ -30,19 +39,51 @@
         <th>Льгота</th>
     </tr>
     </thead>
-    <% @applications.each_with_index do |application, index| %>
-      <tr style="<%= 0 == application.pass_min_score ? 'text-decoration: line-through;' : ((index+1) <= @number ? 'font-weight: bold;' : '') %>"
-          class="<%= 'text-muted' if 0 == application.pass_min_score %>">
-        <td class="text-muted"><%= index + 1 %></td>
+    <% index = 0 %>
+    <% @applications.where('benefit_kind_id = 1 OR benefit_kind_id = 4').each do |application| %>
+      <tr style="<%= 'font-weight: bold; background-color: #dff0d8;' if index <= @number_q %>">
+        <% index += 1 unless application.benefit_type == 1 %>
+        <td class="text-muted"><%= index unless application.benefit_type == 1 %></td>
         <td class="nowrap"><%= application.number %></td>
         <td><%= application.entrant.full_name %></td>
         <td><%= application.total_score %></td>
         <td><span class="glyphicons <%= application.original? ? 'plus text-success' : 'minus text-muted' %>"></span></td>
-        <td>
-            <abbr title="<%= application.benefit_type? ? Entrance::BenefitKind.find(application.benefit_type).name : 'Без льгот' %>"><span class="glyphicons <%= application.benefit_type? ? 'plus text-success' : 'minus text-muted' %>"></span></abbr>
-        </td>
+        <td><abbr title="<%= Entrance::BenefitKind.find(application.benefit_type).name %>"><span class="glyphicons plus text-success"></span></abbr></td>
       </tr>
     <% end %>
+  </table>
+
+  <hr>
+  <% end %>
+
+  <p class="lead">Количество мест (общий конкурс): <%= @number %></p>
+
+  <table class="table table-condensed">
+      <thead>
+      <tr>
+          <th class="text-muted">#</th>
+          <th>Номер</th>
+          <th>ФИО</th>
+          <th>Баллы</th>
+          <th>
+              <abbr title="Оригинал документа об образовании">Оригинал</abbr>
+          </th>
+          <th>Льгота</th>
+      </tr>
+      </thead>
+      <% index = 1 %>
+      <% @applications.where('benefit_kind_id IS NULL OR benefit_kind_id IN (2,3,5)').each do |application| %>
+        <tr style="<%= 0 == application.pass_min_score ? 'text-decoration: line-through;' : (index <= @number ? 'font-weight: bold; background-color: #dff0d8;' : '') %>"
+            class="<%= 'text-muted' if 0 == application.pass_min_score %>">
+            <td class="text-muted"><%= index %></td>
+            <% index += 1 %>
+            <td class="nowrap"><%= application.number %></td>
+            <td><%= application.entrant.full_name %></td>
+            <td><%= application.total_score %></td>
+            <td><span class="glyphicons <%= application.original? ? 'plus text-success' : 'minus text-muted' %>"></span></td>
+            <td><span class="glyphicons minus text-muted"></span></td>
+        </tr>
+      <% end %>
   </table>
 <% end %>
 <% end %>

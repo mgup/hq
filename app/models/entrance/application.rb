@@ -69,21 +69,24 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   scope :for_rating, -> do
-    select('CASE b.benefit_kind_id WHEN 1 THEN 1 WHEN 4 THEN 4 ELSE NULL END AS benefit_type').
-    select('COALESCE(SUM(r.score), 0) AS total_score').
-    select('MIN(r.score >= ti.min_score) AS pass_min_score').
-    select('entrance_applications.*').
-    joins('LEFT JOIN entrance_benefits AS b ON b.application_id = entrance_applications.id').
-    joins('LEFT JOIN competitive_group_items AS i ON i.id = entrance_applications.competitive_group_item_id').
-    joins('LEFT JOIN competitive_groups AS g ON g.id = i.competitive_group_id').
-    joins('LEFT JOIN entrance_test_items AS ti ON ti.competitive_group_id = g.id').
-    joins('LEFT JOIN entrance_exam_results AS r ON r.entrant_id = entrance_applications.entrant_id AND ti.exam_id = r.exam_id').
-    joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
-    where('status_id != 6').
-    group('entrance_applications.id').
-    order('benefit_type = 1 DESC').
-	  order('benefit_type = 4 DESC').
-    order('total_score DESC')
+    select('CASE b.benefit_kind_id WHEN 1 THEN 1 WHEN 4 THEN 4 ELSE NULL END AS benefit_type')
+    .select('COALESCE(SUM(r.score), 0) AS total_score')
+    .select('MIN(r.score >= ti.min_score) AS pass_min_score')
+    .select('pr.score AS priority_score')
+    .select('entrance_applications.*')
+    .joins('LEFT JOIN entrance_benefits AS b ON b.application_id = entrance_applications.id')
+    .joins('LEFT JOIN competitive_group_items AS i ON i.id = entrance_applications.competitive_group_item_id')
+    .joins('LEFT JOIN competitive_groups AS g ON g.id = i.competitive_group_id')
+    .joins('LEFT JOIN entrance_test_items AS ti ON ti.competitive_group_id = g.id')
+    .joins('LEFT JOIN entrance_exam_results AS r ON r.entrant_id = entrance_applications.entrant_id AND ti.exam_id = r.exam_id')
+    .joins('LEFT JOIN entrance_exam_results AS pr ON pr.entrant_id = entrance_applications.entrant_id AND ti.exam_id = pr.exam_id AND ti.entrance_test_priority = 1')
+    .joins('LEFT JOIN directions AS d ON d.id = i.direction_id')
+    .where('status_id != 6')
+    .group('entrance_applications.id')
+    .order('benefit_type = 1 DESC')
+	  .order('benefit_type = 4 DESC')
+    .order('total_score DESC')
+    .order('priority_score DESC')
   end
 
   def self.rating(form = '11', payment = '14', direction = '1887')
