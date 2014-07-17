@@ -157,7 +157,7 @@ class Entrance::ContractsController < ApplicationController
     if specialities.any?
       speciality = specialities.first
     else
-      speciality = Speciality.find_by_speciality_code(direction.new_code).first
+      speciality = Speciality.find_by_speciality_code(direction.new_code)
     end
 
     form = ioo ? 105 : competitive_group_item.matrix_form
