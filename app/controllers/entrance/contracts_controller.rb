@@ -13,11 +13,8 @@ class Entrance::ContractsController < ApplicationController
     if @contract.save!
       group = find_group(@application.competitive_group_item, @entrant.ioo)
       if group.is_a?(Hash)
-        redirect_to entrance_campaign_entrant_applications_path(
-                        @campaign,
-                        @entrant
-                    ),
-                    notice: "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
+        @contract.destroy
+        @notice = "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
       else
         army = case @entrant.military_service
                when 'not'
@@ -92,16 +89,15 @@ class Entrance::ContractsController < ApplicationController
       @contract.number = "#{Date.today.year}-#{person.students.first.id}"
       @contract.save!
 
-      respond_to do |format|
-        format.js
-      end
-
       # redirect_to entrance_campaign_entrant_applications_path(
       #               @campaign,
       #               @entrant
       #             ),
       #             notice: 'Договор об образовании успешно сформирован.'
       end
+    end
+    respond_to do |format|
+      format.js
     end
   end
 
