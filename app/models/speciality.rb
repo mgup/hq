@@ -17,7 +17,9 @@ class Speciality < ActiveRecord::Base
   end
 
   scope :from_faculty, -> faculty { where(speciality_faculty: faculty) }
-  scope :from_direction, -> direction { where(speciality_code: "#{direction.code+'.'+direction.qualification_code.to_s}") }
+  scope :from_direction, -> direction do
+    where(speciality_code: "#{direction.code+'.'+direction.qualification_code.to_s}")
+  end
   scope :active, -> { where('speciality_id NOT IN (1,27)')}
   scope :masters, -> { where(speciality_ntype: 2) }
   scope :not_masters, -> {where(speciality_ntype: [0,1])}

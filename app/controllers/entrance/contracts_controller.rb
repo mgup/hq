@@ -152,7 +152,14 @@ class Entrance::ContractsController < ApplicationController
 
   def find_group(competitive_group_item, ioo)
     direction = competitive_group_item.direction
-    speciality = Speciality.from_direction(direction).first
+
+    specialities = Speciality.from_direction(direction)
+    if specialities.any?
+      speciality = specialities.first
+    else
+      speciality = Speciality.find_by_speciality_code(direction.new_code).first
+    end
+
     form = ioo ? 105 : competitive_group_item.matrix_form
     group = Group.filter(speciality: [speciality.id], form: [form], course: [1]).first if speciality
     if group
