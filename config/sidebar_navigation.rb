@@ -52,12 +52,18 @@ SimpleNavigation::Configuration.run do |navigation|
                      entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
       end
 
-      primary.item :new_entrants_results,
-                   '<span class="glyphicons charts"></span> Результаты внутренних вступительных испытаний'.html_safe,
-                   entrance_campaign_exam_exam_results_path(
-                     Entrance::Campaign::CURRENT,
-                     Entrance::Exam.first
-                   )
+      # primary.item :new_entrants_results,
+      #              '<span class="glyphicons charts"></span> Результаты внутренних вступительных испытаний'.html_safe,
+      #              entrance_campaign_exam_exam_results_path(
+      #                Entrance::Campaign::CURRENT,
+      #                Entrance::Exam.first
+      #              )
+
+      if can?(:manage, Entrance::Exam)
+        primary.item :new_entrants_results,
+                     '<span class="glyphicons charts"></span> Результаты вступительных испытаний'.html_safe,
+                     results_entrance_campaign_path(Entrance::Campaign::CURRENT)
+      end
 
       if can?(:statistics, Entrance::Contract)
         primary.item :entrance_contracts_statistics,
