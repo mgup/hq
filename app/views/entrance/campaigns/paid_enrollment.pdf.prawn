@@ -23,7 +23,7 @@ prawn_document do |pdf|
 
   g = Gruff::SideBar.new("#{4 * pdf.bounds.width}x400")
   g.font = ::Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf').to_s
-  g.theme_pastel
+  g.theme_greyscale
   # g.title = 'Поступившие платежи'
   g.right_margin = 120
   g.legend_font_size = 15
