@@ -1,0 +1,3 @@
+class PdfRenderer < Renderer
+
+end
