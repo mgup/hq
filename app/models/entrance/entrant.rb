@@ -128,4 +128,17 @@ class Entrance::Entrant < ActiveRecord::Base
   def contacts
     [azip, aaddress, phone].join(', ')
   end
+
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.entrant {
+        xml.id_   id
+        xml << packed_application.to_nokogiri.root.to_xml
+      }
+    }.doc
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
 end

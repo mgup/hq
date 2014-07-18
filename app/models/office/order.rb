@@ -22,6 +22,8 @@ class Office::Order < ActiveRecord::Base
   has_many :order_reasons, class_name: Office::OrderReason, foreign_key: :order_reason_order
   has_many :reasons, class_name: Office::Reason, through: :order_reasons
 
+  has_many :metas, class_name: Office::OrderMeta, foreign_key: :order_meta_order
+
   scope :drafts, -> { where(order_status: STATUS_DRAFT) }
   scope :underways, -> { where(order_status: STATUS_UNDERWAY) }
 
@@ -55,6 +57,9 @@ class Office::Order < ActiveRecord::Base
         xml << template.to_nokogiri.root.to_xml
         xml.students {
           students.each { |student| xml << student.to_nokogiri.root.to_xml }
+        }
+        xml.metas {
+          metas.each { |meta| xml << meta.to_nokogiri.root.to_xml }
         }
         xml.reasons {
           reasons.each { |reason| xml << reason.to_nokogiri.root.to_xml }

@@ -89,6 +89,14 @@ class Entrance::Application < ActiveRecord::Base
     .order('priority_score DESC')
   end
 
+  def abitpoints
+    sum = 0
+    competitive_group_item.competitive_group.test_items.collect{|x| x.exam}.each do |exam|
+      sum += entrant.exam_results.by_exam(exam.id).last.score
+    end
+    sum
+  end
+
   def self.rating(form = '11', payment = '14', direction = '1887')
     form_method = case form
                     when '10'
@@ -283,5 +291,21 @@ class Entrance::Application < ActiveRecord::Base
     end
 
     builder.doc
+  end
+
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.application {
+        xml.id_   id
+        xml.abitpoints abitpoints
+        xml.benefit (benefits.collect{|x| x.id}.include? 4 ? 4 : (benefits.collect{|x| x.id}.include? 1 ? 1 : nil))
+        xml.number number
+        xml << contract.to_nokogiri.root.to_xml
+      }
+    }.doc
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
   end
 end

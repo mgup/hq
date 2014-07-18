@@ -7,9 +7,14 @@
 </div>
 
 <% if current_user %>
-    <%= link_to print_all_entrance_campaign_path(@campaign), target: :blank, class: 'btn btn-info', style: 'margin-bottom: 15px' do %>
-        <span class="glyphicon glyphicon-print"></span> Распечатать все заявления на текущую дату
+    <% Department.faculties.each do |department| %>
+    <%= link_to print_all_entrance_campaign_path(@campaign, department: department.id), target: :blank, class: 'btn btn-info', style: 'margin-bottom: 15px' do %>
+        <span class="glyphicon glyphicon-print"></span> <%= department.abbreviation %>
     <% end %>
+   <% end %>
+  <%= link_to print_all_entrance_campaign_path(@campaign, aspirants: 1), target: :blank, class: 'btn btn-info', style: 'margin-bottom: 15px' do %>
+    <span class="glyphicon glyphicon-print"></span> Аспирантура
+  <% end %>
 <% end %>
 
 <%= render partial: 'filters',
