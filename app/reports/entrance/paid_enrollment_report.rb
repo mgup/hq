@@ -19,16 +19,14 @@ class Entrance::PaidEnrollmentReport < Report
 
   # Алгоритм формирования отчёта.
   def _render
-    res = @renderer.title(self)
-    res << @renderer.text(txt_general_info)
-    res << @renderer.image(graph_received_expected_sums)
-
-    res
+    @renderer.title(self)
+    @renderer.text(txt_general_info)
+    @renderer.image(graph_received_expected_sums)
   end
 
   # Название отчёта.
   def title
-    "#{campaign.name}: статистика платного приёма"
+    "#{campaign.name}: статистика платного приёма"
   end
 
   # Общее количество заключённых договоров о образовании.
@@ -37,7 +35,7 @@ class Entrance::PaidEnrollmentReport < Report
   end
 
   def graph_received_expected_sums
-    g = Gruff::SideBar.new('800x200')
+    g = Gruff::SideBar.new('800x175')
     g.font = ::Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf').to_s
     g.theme = { colors: %w(#000000 #444444 #666666 #888888 #aaaaaa #cccccc),
                 marker_color: '#aea9a9',
@@ -45,8 +43,8 @@ class Entrance::PaidEnrollmentReport < Report
                 background_colors: 'white' }
     # g.title = 'Поступившие платежи'
     g.right_margin = 100
-    g.legend_font_size = 10
-    g.marker_font_size = 10
+    g.legend_font_size = 12
+    g.marker_font_size = 12
     g.data('Поступившие платежи, руб.',
            [received_for_first_term_sum])
     g.data('Суммарный первый обязательный платёж, руб.',

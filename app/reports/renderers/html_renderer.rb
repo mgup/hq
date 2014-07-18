@@ -3,8 +3,12 @@ class Renderers::HtmlRenderer < Renderer
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::AssetTagHelper
 
+  def initialize
+    @result = ''
+  end
+
   def title(report)
-    content_tag(:div, class: 'page-header') do
+    @result << content_tag(:div, class: 'page-header') do
       content_tag(:h1) do
         res = [report.title]
         res << '<br>'.html_safe
@@ -16,11 +20,11 @@ class Renderers::HtmlRenderer < Renderer
   end
 
   def text(txt)
-    content_tag :p, txt
+    @result << content_tag(:p, txt)
   end
 
   def image(img)
-    image_tag "data:image/png;base64,#{Base64.encode64(img)}",
-              class: 'img-responsive'
+    @result << image_tag("data:image/png;base64,#{Base64.encode64(img)}",
+                         class: 'img-responsive')
   end
 end

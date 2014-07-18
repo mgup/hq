@@ -5,7 +5,7 @@ class Report
 
   def render(format: :pdf)
     @renderer = eval("Renderers::#{format.to_s.capitalize}Renderer").new
-    _render
+    @renderer.render { _render }
   end
 
   def _render

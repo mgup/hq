@@ -62,4 +62,11 @@ class ApplicationController < ActionController::Base
       format.all { render nothing: true, status: status }
     end
   end
+
+  def render_report(report)
+    respond_to do |format|
+      format.html { render inline: report.render(format: :html), layout: true }
+      format.pdf { render body: report.render(format: :pdf) }
+    end
+  end
 end

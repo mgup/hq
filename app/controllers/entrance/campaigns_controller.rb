@@ -130,10 +130,7 @@ class Entrance::CampaignsController < ApplicationController
   def paid_enrollment
     @report = Entrance::PaidEnrollmentReport.new(@campaign)
 
-    respond_to do |format|
-      format.html
-      format.pdf
-    end
+    render_report @report
   end
 
   private
