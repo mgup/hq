@@ -22,6 +22,8 @@ class Entrance::PaidEnrollmentReport < Report
     @renderer.title(self)
     @renderer.text(txt_general_info)
     @renderer.image(graph_received_expected_sums)
+    @renderer.text('Распределение поступивших платежей по факультетам:')
+    @renderer.image(graph_received_sums_by_department)
   end
 
   # Название отчёта.
@@ -51,6 +53,30 @@ class Entrance::PaidEnrollmentReport < Report
            [expected_for_first_term_sum])
     g.minimum_value = 0
     g.labels = { 0 => ' ' }
+    g.show_labels_for_bar_values = true
+
+    g.to_blob('PNG')
+  end
+
+  def graph_received_sums_by_department
+    g = Gruff::Pie.new('800x300')
+    g.font = ::Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf').to_s
+    g.theme = { colors: %w(#000000 #444444 #666666 #888888 #aaaaaa #cccccc),
+                marker_color: '#aea9a9',
+                font_color: 'black',
+                background_colors: 'white' }
+    g.legend_font_size = 12
+    g.marker_font_size = 12
+
+    groups = @contracts.group_by do |contract|
+      contract.application.direction.department.abbreviation
+    end
+    groups.each do |department_name, contracts|
+      received = contracts.inject(0.0) { |r, c| r + c.student.total_payments }
+      g.data("#{department_name}, #{number_to_currency(received)}",
+             [received.to_f])
+    end
+
     g.show_labels_for_bar_values = true
 
     g.to_blob('PNG')
