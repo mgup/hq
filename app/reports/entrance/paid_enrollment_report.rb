@@ -59,12 +59,13 @@ class Entrance::PaidEnrollmentReport < Report
   end
 
   def graph_received_sums_by_department
-    g = Gruff::Pie.new('800x300')
+    g = Gruff::SideBar.new('800x200')
     g.font = ::Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf').to_s
     g.theme = { colors: %w(#000000 #444444 #666666 #888888 #aaaaaa #cccccc),
                 marker_color: '#aea9a9',
                 font_color: 'black',
                 background_colors: 'white' }
+    g.right_margin = 100
     g.legend_font_size = 12
     g.marker_font_size = 12
 
@@ -73,10 +74,12 @@ class Entrance::PaidEnrollmentReport < Report
     end
     groups.each do |department_name, contracts|
       received = contracts.inject(0.0) { |r, c| r + c.student.total_payments }
-      g.data("#{department_name}, #{number_to_currency(received)}",
-             [received.to_f])
+      # g.data("#{department_name}, #{number_to_currency(received)}",
+      g.data(department_name, [received.to_f])
     end
 
+    g.minimum_value = 0
+    g.labels = { 0 => ' ' }
     g.show_labels_for_bar_values = true
 
     g.to_blob('PNG')
