@@ -17,9 +17,91 @@ class Entrance::PaidEnrollmentReport < Report
     detect_sum_and_payments_stats
   end
 
+  # Алгоритм формирования отчёта.
+  def _render
+    @renderer.title(self)
+    @renderer.text(txt_general_info)
+    @renderer.image(graph_received_expected_sums)
+    @renderer.text('Распределение поступивших платежей по факультетам:')
+    @renderer.image(graph_received_sums_by_department)
+  end
+
+  # Название отчёта.
+  def title
+    "#{campaign.name}: статистика платного приёма"
+  end
+
   # Общее количество заключённых договоров о образовании.
   def contracts_count
     @contracts.size
+  end
+
+  def graph_received_expected_sums
+    g = Gruff::SideBar.new('800x175')
+    g.font = ::Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf').to_s
+    g.theme = { colors: %w(#000000 #444444 #666666 #888888 #aaaaaa #cccccc),
+                marker_color: '#aea9a9',
+                font_color: 'black',
+                background_colors: 'white' }
+    # g.title = 'Поступившие платежи'
+    g.right_margin = 100
+    g.legend_font_size = 12
+    g.marker_font_size = 12
+    g.data('Поступившие платежи, руб.',
+           [received_for_first_term_sum])
+    g.data('Суммарный первый обязательный платёж, руб.',
+           [expected_for_first_term_sum])
+    g.minimum_value = 0
+    g.labels = { 0 => ' ' }
+    g.show_labels_for_bar_values = true
+
+    g.to_blob('PNG')
+  end
+
+  def graph_received_sums_by_department
+    g = Gruff::SideBar.new('800x200')
+    g.font = ::Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf').to_s
+    g.theme = { colors: %w(#000000 #444444 #666666 #888888 #aaaaaa #cccccc),
+                marker_color: '#aea9a9',
+                font_color: 'black',
+                background_colors: 'white' }
+    g.right_margin = 100
+    g.legend_font_size = 12
+    g.marker_font_size = 12
+
+    groups = @contracts.group_by do |contract|
+      contract.application.direction.department.abbreviation
+    end
+    groups.each do |department_name, contracts|
+      received = contracts.inject(0.0) { |r, c| r + c.student.total_payments }
+      # g.data("#{department_name}, #{number_to_currency(received)}",
+      g.data(department_name, [received.to_f])
+    end
+
+    g.minimum_value = 0
+    g.labels = { 0 => ' ' }
+    g.show_labels_for_bar_values = true
+
+    g.to_blob('PNG')
+  end
+
+  def txt_general_info
+    txt = ["Всего заключено #{contracts_count}"]
+    txt << Russian::p(contracts_count, 'договор', 'договора', 'договоров')
+    txt << 'об образовании на общую сумму'
+    txt << number_to_currency(total_sum).gsub(' ', ' ')
+
+    if payed_contracts_count > 0
+      txt << "Из них по #{payed_contracts_count}"
+      txt << Russian::p(payed_contracts_count,
+                        'договору', 'договорам', 'договорам')
+      txt << 'уже полностью поступил первый обязательный платёж.'
+    else
+      txt << 'Ни по одному договору ещё полностью не поступил'
+      txt << 'первый обязательный платёж.'
+    end
+
+    txt.join(' ')
   end
 
   private
