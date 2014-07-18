@@ -81,7 +81,8 @@ class Entrance::ContractsController < ApplicationController
               student_group_speciality: group.speciality.id,
               student_group_form: group.form,
               student_group_oldgroup: 0,
-              student_group_oldstudent: 0
+              student_group_oldstudent: 0,
+              entrant_id: @entrant.id
             }
           }
         )

@@ -28,6 +28,8 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def print_all
+    @department = Department.find(params[:department]) if params[:department]
+    @for_aspirants = true if params[:aspirants]
     respond_to do |format|
       format.pdf
     end

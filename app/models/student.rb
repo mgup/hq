@@ -49,6 +49,8 @@ class Student < ActiveRecord::Base
   alias_attribute :record,          :student_group_record
   alias_attribute :abit,            :student_group_abit
   alias_attribute :abitpoints,      :student_group_abitpoints
+  alias_attribute :abit_contract,   :student_group_abit_contract
+  alias_attribute :accept_type,     :student_group_a_accept_type
   alias_attribute :school,          :student_group_a_school
   alias_attribute :state_line,      :student_group_a_state_line
   alias_attribute :password,        :encrypted_password
@@ -57,6 +59,7 @@ class Student < ActiveRecord::Base
 
   belongs_to :person, class_name: Person, primary_key: :student_id, foreign_key: :student_group_student
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :student_group_group
+  belongs_to :entrant, class_name: Entrance::Entrant
 
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_student
   has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_student_group
@@ -376,9 +379,15 @@ GROUP BY `group`
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.student {
         xml.id_   id
+        xml.abitpoints abitpoints
+        xml.abit abit
+        xml.contract abit_contract
+        xml.accept_type accept_type
+        xml.state_line state_line
         xml << person.to_nokogiri.root.to_xml
         xml << group.to_nokogiri.root.to_xml
         xml << speciality.to_nokogiri.root.to_xml
+        xml << entrant.to_nokogiri.root.to_xml if entrant
       }
     }.doc
   end

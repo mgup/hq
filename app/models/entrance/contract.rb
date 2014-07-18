@@ -48,4 +48,17 @@ class Entrance::Contract < ActiveRecord::Base
       r
     end
   end
+
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.contract {
+        xml.id_   id
+        xml.number number
+      }
+    }.doc
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
 end

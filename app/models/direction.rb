@@ -12,6 +12,8 @@ class Direction < ActiveRecord::Base
 
   scope :with_new_code, -> { where('new_code IS NOT NULL AND new_code != ""') }
   scope :for_aspirants, -> { where('new_code LIKE "%.06.%"') }
+  scope :not_aspirants, -> { where('new_code NOT LIKE "%.06.%"') }
+  scope :from_department, -> department_id { where(department_id: department_id) }
 
   def description
     "#{new_code} #{name}"

@@ -27,44 +27,40 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   render 'pdf/font', pdf: pdf
   key = false
-  Direction.for_campaign(@campaign).each do |direction|
-      EducationForm.all.each do |form|
-        EducationSource.all.each do |source|
-          applications = find_applications(direction.id, form.id, source.id)
-          if applications.size > 0
-            pdf.start_new_page if key
-            key = true unless key
-          else
+  pdf.font_size 12 do
+    pdf.text "Пофамильный список лиц, подавших документы, необходимые для поступления, по состоянию на #{l Time.now}."
+  end
+  pdf.stroke do
+    pdf.horizontal_rule
+  end
+  pdf.move_down 5
+  pdf.font_size 12 do
+    pdf.text 'Аспирантура'
+  end
+  if @department
+    directions = Direction.not_aspirants.from_department(@department.id).for_campaign(@campaign)
+  elsif @for_aspirants
+    directions = Direction.for_aspirants.for_campaign(@campaign)
+  end
+    directions.each do |direction|
+      EducationForm.find_each do |form|
+        [[14, 'бюджетные места'],[15, 'с оплатой обучения']].each do |source|
+          applications = find_applications(direction.id, form.id, source[0])
+          unless applications.size > 0
             next
           end
-          pdf.font_size 14 do
-            pdf.text "Пофамильный список лиц, подавших документы, необходимые для поступления, по состоянию на #{l Time.now}."
-          end
-          pdf.stroke do
-            pdf.horizontal_rule
-          end
-          pdf.move_down 5
-          pdf.font_size 13 do
-            pdf.text direction.department.name if direction.department
-          end
-          pdf.move_down 5
-          pdf.font_size 12 do
-            pdf.text "#{direction.new_code} #{direction.name}", style: :bold
-            pdf.text "#{form.name}, #{Unicode::downcase(source.name)}", style: :bold
+          pdf.move_down 20
+          pdf.font_size 10 do
+            pdf.text "#{direction.new_code} #{direction.name}, #{Unicode::downcase(form.name)}, #{Unicode::downcase(source[1])}", style: :bold
             pdf.move_down 5
             pdf.text "Подано #{applications.size} #{Russian::p(applications.size, 'заявление', 'заявления', 'заявлений')}."
           end
-          data = [
-            ['№', 'Регистрационный номер', 'Фамилия, имя, отчество', 'Основание приёма']
-          ]
-          applications.each_with_index do |application, index|
-            row = [index + 1]
-            row << application.number
-            row << application.entrant.full_name
-            row << application.entrance_type
-            data << row
+          pdf.move_down 5
+          pdf.font_size 9 do
+            applications.each_with_index do |application, index|
+              pdf.text "#{index + 1}. #{application.number}, #{application.entrant.full_name}, #{application.entrance_type}"
+            end
           end
-          pdf.table data, header: true
         end
       end
   end

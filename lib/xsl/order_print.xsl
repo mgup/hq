@@ -76,7 +76,7 @@
                     <fo:block font="12pt PT Serif">
                       <xsl:choose>
                         <xsl:when test="not(./sign/date)">
-                          от &laquo;______&raquo; ______________ 2013 г.
+                          от &laquo;______&raquo; ______________ 2014 г.
                         </xsl:when>
                         <xsl:otherwise>
                           от &laquo;<xsl:value-of select="substring(./sign/date, 9, 2)" />&raquo;
