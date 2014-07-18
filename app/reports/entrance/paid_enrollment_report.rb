@@ -39,21 +39,22 @@ class Entrance::PaidEnrollmentReport < Report
   def graph_received_expected_sums
     g = Gruff::SideBar.new('800x175')
     g.font = ::Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf').to_s
-    g.theme = { colors: %w(#000000 #444444 #666666 #888888 #aaaaaa #cccccc),
+    g.theme = { colors: %w(#aaaaaa),
                 marker_color: '#aea9a9',
                 font_color: 'black',
                 background_colors: 'white' }
     # g.title = 'Поступившие платежи'
-    g.right_margin = 100
-    g.legend_font_size = 12
-    g.marker_font_size = 12
-    g.data('Поступившие платежи, руб.',
-           [received_for_first_term_sum])
-    g.data('Суммарный первый обязательный платёж, руб.',
-           [expected_for_first_term_sum])
+    # g.right_margin = 100
+    g.margins = 0
+    g.marker_font_size = 20
+    g.data('', [received_for_first_term_sum, expected_for_first_term_sum])
     g.minimum_value = 0
-    g.labels = { 0 => ' ' }
-    g.show_labels_for_bar_values = true
+    g.hide_legend = true
+    g.hide_line_numbers = true
+    g.labels = {
+      0 => "Поступило #{number_to_currency(received_for_first_term_sum)}",
+      1 => "Ожидаем #{number_to_currency(expected_for_first_term_sum)}"
+    }
 
     g.to_blob('PNG')
   end
@@ -61,26 +62,32 @@ class Entrance::PaidEnrollmentReport < Report
   def graph_received_sums_by_department
     g = Gruff::SideBar.new('800x200')
     g.font = ::Rails.root.join('app', 'assets', 'fonts', 'PTF55F.ttf').to_s
-    g.theme = { colors: %w(#000000 #444444 #666666 #888888 #aaaaaa #cccccc),
+    g.theme = { colors: %w(#aaaaaa),
                 marker_color: '#aea9a9',
                 font_color: 'black',
                 background_colors: 'white' }
-    g.right_margin = 100
-    g.legend_font_size = 12
-    g.marker_font_size = 12
+    g.margins = 0
+    g.marker_font_size = 20
 
     groups = @contracts.group_by do |contract|
       contract.application.direction.department.abbreviation
     end
-    groups.each do |department_name, contracts|
-      received = contracts.inject(0.0) { |r, c| r + c.student.total_payments }
-      # g.data("#{department_name}, #{number_to_currency(received)}",
-      g.data(department_name, [received.to_f])
+
+    sums = groups.map do |n, cs|
+      [n, cs.inject(0.0) { |r, c| r + c.student.total_payments }]
     end
 
+    g.data('', sums.map { |s| s[1] })
+
     g.minimum_value = 0
-    g.labels = { 0 => ' ' }
-    g.show_labels_for_bar_values = true
+    g.hide_legend = true
+    g.hide_line_numbers = true
+
+    labels = {}
+    sums.each_with_index do |s, i|
+      labels[i] = "#{s[0]}, #{number_to_currency(s[1])}"
+    end
+    g.labels = labels
 
     g.to_blob('PNG')
   end
