@@ -128,9 +128,7 @@ class Entrance::CampaignsController < ApplicationController
   # end
 
   def paid_enrollment
-    @report = Entrance::PaidEnrollmentReport.new(@campaign)
-
-    render_report @report
+    render_report Entrance::PaidEnrollmentReport.new(@campaign)
   end
 
   private
