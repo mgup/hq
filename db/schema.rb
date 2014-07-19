@@ -763,7 +763,6 @@ ActiveRecord::Schema.define(version: 20140718074551) do
     t.string   "delegate_pnumber"
     t.string   "delegate_pdepartment"
     t.date     "delegate_pdate"
-    t.string   "delegate_organization"
     t.string   "delegate_mobile"
     t.string   "delegate_fax"
     t.string   "delegate_inn"
@@ -771,6 +770,7 @@ ActiveRecord::Schema.define(version: 20140718074551) do
     t.string   "delegate_ls"
     t.string   "delegate_bik"
     t.string   "delegate_position"
+    t.string   "delegate_organization"
   end
 
   create_table "entrance_dates", force: true do |t|
