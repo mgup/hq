@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Установка Elementary OS рядом с Windows"
+title:  "Установка Linux OS рядом с Windows"
 date:   2014-07-17 00:00:22
 categories: jekyll update
 ---
@@ -43,18 +43,7 @@ categories: jekyll update
 
 6) Заводим пользователя. Пароль обязателен. Жмём продолжить и дожидаемся окончания установки системы, после чего жмём 
 перезагрузить. После перезагрузки вы попадаете в меню выбора операционной системы — GRUB.
-Выбрав Elementary, мы попадем в нашу только что установленную Elementary.
-
-
-<!--{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].-->
+Выбрав только что установленную Linux OS, мы попадем в нашу только что установленную Linux OS.
 
 [jekyll-gh]: https://github.com/jekyll/jekyll
 [jekyll]:    http://jekyllrb.com

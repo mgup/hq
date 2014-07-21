@@ -17,13 +17,13 @@ categories: jekyll update
 2) Установка дополнительных пакетов (если они уже установлены, то их нет необходимости ставить)
 
 Проверить это можно поочередно, выполняя в терминале следующие команды:
-{% highlight ruby %}
-ruby -v (нажать enter)
-gem -v (нажать enter)
+{% highlight bash %}
+ruby -v #нажать enter
+gem -v  #нажать enter
 {% endhighlight %}
 
 Для проверки удачной установки nodejs необходимо в терминале выполнить следующую команду, которая позволяет войти под интерктивную оболочку Nodejs:
-{% highlight ruby %}
+{% highlight bash %}
 node
 {% endhighlight %}
 Если в терминале будет аналогичная ситуация как на скриншоте ниже, то установка nodejs прошла удачно. 
@@ -36,19 +36,19 @@ node
 нам нужна, чтобы установить последнюю версию Ruby.
 
 1) Если у вас нет curl — его можно установить командой:
-{% highlight ruby %}
+{% highlight bash %}
 sudo apt-get install curl
 {% endhighlight %}
 2) Затем ставим RVM:
-{% highlight ruby %}
+{% highlight bash %}
 curl -L get.rvm.io | bash -s stable
 {% endhighlight %}
 3) После установки RVM его необходимо запустить:
-{% highlight ruby %}
+{% highlight bash %}
 source ~/.rvm/scripts/rvm
 {% endhighlight %}
 4) С использованием RVM, Ruby легко установить:
-{% highlight ruby %}
+{% highlight bash %}
 rvm install 2.1.2
 {% endhighlight %}
 
@@ -59,14 +59,14 @@ RubyGems устанавливаются вместе с Ruby.
 ###Установка Nodejs
 
 Для установки Nodejs необходимо в терминале выполнить следующую команду:
-{% highlight ruby %}
+{% highlight bash %}
 sudo apt-get install nodejs
 {% endhighlight %}
 
 ###Установка Jekyll
 
 Для установки Jekyll необходимо в терминале выполнить следующую команду:
-{% highlight ruby %}
+{% highlight bash %}
 gem install jekyll
 {% endhighlight %}
 
@@ -74,16 +74,16 @@ gem install jekyll
 
 Для создания нового веб-приложения с использованием Jekyll необходимо в терминале 
 выполнить следующую команду:
-{% highlight ruby %}
+{% highlight bash %}
 jekyll new name_app
 {% endhighlight %}
 Для запуска веб-приложения необходимо перейти в папку с именем приложения. Для этого 
 необходимо выполнить в терминале следующую команду:
-{% highlight ruby %}
+{% highlight bash %}
 cd name_app
 {% endhighlight %}
 Для запуска веб-приложения необходимо в терминале выполнить следующую команду:
-{% highlight ruby %}
+{% highlight bash %}
 jekyll serve
 {% endhighlight %}
 Веб-приложение будет доступно по адресу 127.0.0.1:4000
@@ -96,7 +96,7 @@ jekyll serve
 2) Далее нужно создать новый репозиторий, кликнув на кнопке New repository.
 
 3) Далее в окне настроек нового репозитория ввести его будущее имя: 
-{% highlight ruby %}
+{% highlight bash %}
 username.github.io 
 {% endhighlight %}
 где username — ваше имя пользователя на github, описание (необязательно), выбрать public и нажать кнопку Create repository. 
@@ -104,7 +104,7 @@ username.github.io
 4) Будет создан пустой репозиторий с инструкцией по работе с ним.
 
 5) Далее необходимо перейти в папку с именем приложения jekyll, созданного ранее. Для этого необходимо выполнить в терминале следующую команду:
-{% highlight ruby %}
+{% highlight bash %}
 cd name_app
 {% endhighlight %}
 6) Первоначальная настройка Git
@@ -112,19 +112,19 @@ cd name_app
 Первое, что вам следует сделать после установки Git'а, — указать ваше имя и адрес электронной почты. Это важно, потому что каждый коммит в Git'е содержит эту информацию, и она включена в коммиты, передаваемые вами, и не может быть далее изменена. 
 
 Для этого нужно в терминале последовательно выполнить следующие команды:
-{% highlight ruby %}
-git config --global user.name "username" //где username — ваше имя пользователя на github 
-git config --global user.email johndoe@example.com // где johndoe@example.com — ваш почтовый адрес
+{% highlight bash %}
+git config --global user.name "username" #где username — ваше имя пользователя на github 
+git config --global user.email johndoe@example.com #где johndoe@example.com — ваш почтовый адрес
 {% endhighlight %}
 
 7) Далее в соответствии с инструкцией в терминале поочередно выполняются следующие команды:
-{% highlight ruby %}
-git init //инициализация пустого репозитория
-git add . //сохранение всех сделанных изменений
-git commit -m «комментарий» //комментирование всех изменений
+{% highlight bash %}
+git init #инициализация пустого репозитория
+git add . #сохранение всех сделанных изменений
+git commit -m «комментарий» #комментирование всех изменений
 git remote add origin https://github.com/username/username.github.io.git, 
-где username — ваше имя пользователя на github //добавление ссылки на репозиторий
-git push -u origin master //отправка данных в репозиторий
+где username — ваше имя пользователя на github #добавление ссылки на репозиторий
+git push -u origin master #отправка данных в репозиторий
 {% endhighlight %}
 
 После ввода последней команды будет предложено ввести логин и пароль. 

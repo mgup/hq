@@ -11,38 +11,38 @@ categories: jekyll update
 1) Запускаем Терминал.
 
 2) Перед тем, как что-нибудь сделать мы должны убедиться, что все пакеты актуальны:
-{% highlight ruby %}
+{% highlight bash %}
 sudo apt-get update
 {% endhighlight %}
 
 3) Далее мы можем приступить к установке RVM (Ruby Version Manager). Это программа, позволяющая использовать несколько версий Ruby на одной машине. В данном случае она нужна, чтобы установить последнюю версию Ruby.
 
 Если у вас нет curl — его можно установить командой:
-{% highlight ruby %}
+{% highlight bash %}
 sudo apt-get install curl
 {% endhighlight %}
 4) Затем ставим RVM:
-{% highlight ruby %}
+{% highlight bash %}
 curl -sSL https://get.rvm.io | bash -s stable
 {% endhighlight %}
 5) После установки RVM его необходимо запустить:
-{% highlight ruby %}
+{% highlight bash %}
 source /home/inflab/.rvm/scripts/rvm
 {% endhighlight %}
 6) С использованием RVM, Ruby легко установить:
-{% highlight ruby %}
+{% highlight bash %}
 rvm install 2.1.2
 {% endhighlight %}
 7) Устанавливаем Rails:
-{% highlight ruby %}
+{% highlight bash %}
 gem install rails
 {% endhighlight %}
 8) Устанавливаем MySQL:
-{% highlight ruby %}
+{% highlight bash %}
 sudo apt-get install mysql-server
 {% endhighlight %}
 9) Устанавливаем дополнительные библиотеки для работы с программой. Для этого нам необходимо зайти в директорию программы (у меня путь: cd Downloads/hq-master/) и выполнить команды (bundle install в последнюю очередь):
-{% highlight ruby %}
+{% highlight bash %}
 sudo apt-get install libqt4-dev
 
 sudo apt-get install freetds-dev
@@ -58,27 +58,27 @@ bundle install
 Нужно сделать следующие шаги:
 
 1) Нужно войти под:
-{% highlight ruby %}
+{% highlight bash %}
 /bin/bash --login
 {% endhighlight %}
 2) Затем проверяем версию ruby:
-{% highlight ruby %}
+{% highlight bash %}
 ruby -v
 {% endhighlight %}
 3) При необходимости подключаем версию 2.1.2:
-{% highlight ruby %}
+{% highlight bash %}
 rvm ruby-2.1.2
 {% endhighlight %}
 4) Используем команду для переноса структуры из структуры базы данных в таблицы базы данных:
-{% highlight ruby %}
+{% highlight bash %}
 rake db:setup
 {% endhighlight %}
 5) Запускаем сервер:
-{% highlight ruby %}
+{% highlight bash %}
 rails s
 {% endhighlight %}
 6) Проверяем сервер в проводнике браузера:
-{% highlight ruby %}
+{% highlight bash %}
 http://127.0.0.1:3000
 {% endhighlight %}
 
