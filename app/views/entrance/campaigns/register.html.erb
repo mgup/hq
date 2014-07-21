@@ -1,0 +1,39 @@
+<%= render 'entrance/shared/switch' %>
+<div class="page-header">
+  <h1>
+    Регистрационный журнал
+  </h1>
+</div>
+
+<%= render partial: 'filters',
+           locals: { url: register_entrance_campaign_path(@campaign),
+                     date: true } %>
+
+<% if @applications.empty? %>
+  <p>Нет ни одного заявления.</p>
+<% else %>
+    <%= link_to 'Распечатать',
+                register_entrance_campaign_path(
+                        @campaign, params.merge({ format: :pdf })
+                ),
+                target: :blank, class: 'lead' %>
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>№</th>
+      <th>Дата приёма документов</th>
+      <th>Фамилия, имя, отчество</th>
+      <th>Регистрационный номер</th>
+      <th>Индекс, адрес, телефон</th>
+      <th>Возврат документов (подпись или номер почтовой квитанции)</th>
+    </tr>
+    </thead>
+      <% @applications.register_information.each do |row| %>
+      <tr>
+          <% row.each do |field| %>
+          <td><%= field %></td>
+          <% end %>
+      </tr>
+      <% end %>
+  </table>
+<% end %>

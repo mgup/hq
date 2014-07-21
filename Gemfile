@@ -28,8 +28,8 @@ gem 'rack-mini-profiler'
 gem 'cancan'
 gem 'bootstrap-datepicker-rails'
 gem 'kaminari'
-gem 'prawn' #, git: 'git://github.com/prawnpdf/prawn', branch: 'master'
-gem 'prawn_rails'
+gem 'prawn'
+gem 'gruff'
 # gem 'rqrcode'
 # gem 'squeel'
 gem 'chunky_png'
@@ -41,6 +41,7 @@ gem 'acts_as_xlsx'
 gem 'ace-rails-ap'
 gem 'unicode'
 gem 'spreadsheet'
+gem 'jquery-validation-rails'
 #gem 'jquery-ui-rails'
 #gem 'jquery-multiselect-rails', git: 'git://github.com/arojoal/jquery-multiselect-rails.git'
 
@@ -49,14 +50,16 @@ gem 'spreadsheet'
 # В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
 # gem 'morpher', github: 'mgup/morpher', branch: :master
 
-gem 'airbrake'
+gem 'honeybadger'
 gem 'dotenv-rails'
-# gem 'tiny_tds'
-#gem 'activerecord-sqlserver-adapter'
+gem 'tiny_tds'
+gem 'activerecord-sqlserver-adapter'
 
-group :production do
-  gem 'skylight'
-end
+gem 'httparty'
+gem 'sidekiq'
+gem 'sidetiq'
+gem 'sinatra', require: nil
+gem 'numbers_and_words'
 
 group :development do
   gem 'thin'
@@ -67,13 +70,18 @@ group :development do
   gem 'brakeman', require: false
   gem 'rails-erd'
 
-  gem 'capistrano'
-  gem 'rvm-capistrano'
+  gem 'capistrano', '~> 3.2.0'
+  gem 'capistrano-rvm'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails', '~> 1.1.0'
+  gem 'capistrano-sidekiq'
   gem 'sextant'
   gem 'quiet_assets'
   gem 'letter_opener'
   gem 'bullet'
   gem 'meta_request'
+  gem 'dotenv-deployment'
+  gem 'inch', require: false
 end
 
 group :test do

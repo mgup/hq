@@ -1,0 +1,430 @@
+<%= nested_form_for @entrant,
+                    url: url,
+                    html: { class: 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :last_name, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+      <%= f.text_field :last_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :first_name, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+      <%= f.text_field :first_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :patronym, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+      <%= f.text_field :patronym, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :gender, class: 'col-sm-2 control-label' %>
+    <div class="radio col-sm-10">
+      <label>
+        <%= f.radio_button :gender, :male %> мужской
+      </label>
+    </div>
+    <div class="radio col-sm-offset-2 col-sm-10">
+      <label>
+        <%= f.radio_button :gender, :female %> женский
+      </label>
+    </div>
+  </div>
+
+  <fieldset>
+    <legend>Удостоверение личности</legend>
+
+    <div class="form-group">
+      <%= f.label :birthday, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+        <%= f.text_field :birthday, class: 'form-control datepicker',
+                         value: @entrant.birthday ? l(@entrant.birthday) : '' %>
+      </div>
+
+      <%= f.label :birth_place, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-4">
+        <%= f.text_field :birth_place, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :nationality_type_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :nationality_type_id,
+                     options_from_collection_for_select(
+                         NationalityType.all, :id, :name,
+                         @entrant.nationality_type_id
+                     ), {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :identity_document_type_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :identity_document_type_id,
+                     options_from_collection_for_select(
+                       IdentityDocumentType.all, :id, :name,
+                       @entrant.identity_document_type_id
+                     ), {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :pseries, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+        <%= f.text_field :pseries, class: 'form-control' %>
+      </div>
+
+      <%= f.label :pnumber, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-4">
+        <%= f.text_field :pnumber, class: 'form-control', required: true %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :pdepartment, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.text_field :pdepartment, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :pdate, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+        <%= f.text_field :pdate, class: 'form-control datepicker',
+                         value: @entrant.pdate ? l(@entrant.pdate) : '', required: true%>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Контакты</legend>
+
+    <div class="form-group">
+      <%= f.label :acountry, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+        <%= f.select :acountry,
+                     options_for_select(
+                       [['Российская Федерация', :russia],
+                        ['Страны СНГ', :cis],
+                        ['Дальнее зарубежье', :other_countries]]),
+                     {}, class: 'form-control' %>
+      </div>
+
+      <%= f.label :azip, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+        <%= f.text_field :azip, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :aregion, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :aregion, options_for_select([]),
+                     {}, class: 'form-control', disabled: true %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :aaddress, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.text_area :aaddress, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :phone, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.text_field :phone, class: 'form-control',
+                         pattern: '([\+]\d+)($|([\,] [\+]\d+)+$)' %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Документ об образовании</legend>
+
+    <%= f.fields_for :edu_document do |edu_f| %>
+      <%= edu_f.hidden_field :id %>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <%= edu_f.check_box :foreign_institution %> Иностранное учебное заведение
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <%= edu_f.check_box :our_institution %>
+              МГУП им. Ивана Федорова (для магистров и аспирантов)
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= edu_f.label :document_type_id, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= edu_f.select :document_type_id,
+                           options_from_collection_for_select(
+                             Entrance::DocumentType.find(3,4,5,6,7,8,16),
+                             :id, :name, edu_f.object.document_type_id
+                           ), {}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= edu_f.label :organization, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= edu_f.text_area :organization, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= edu_f.label :series, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-4">
+          <%= edu_f.text_field :series, class: 'form-control' %>
+        </div>
+
+        <%= edu_f.label :number, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-4">
+          <%= edu_f.text_field :number, class: 'form-control', required: true %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= edu_f.label :date, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-4">
+          <%= edu_f.text_field :date, class: 'form-control datepicker',
+                           value: edu_f.object.date ? l(edu_f.object.date) : '', required: true  %>
+        </div>
+
+        <%= edu_f.label :graduation_year, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-4">
+          <%= edu_f.number_field :graduation_year, class: 'form-control',
+                                 required: true %>
+        </div>
+      </div>
+
+      <div class="form-group">
+          <%= edu_f.label :direction_id, class: 'col-sm-2 control-label' %>
+          <div class="col-sm-10">
+              <%= edu_f.select :direction_id,
+                               options_from_collection_for_select(
+                                       Direction.all,
+                                       :id, :full_description, edu_f.object.direction_id
+                               ), {prompt: 'Выберите специальность (направление подготовки)'}, class: 'form-control' %>
+          </div>
+      </div>
+      <%= edu_f.label :qualification, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+          <%= edu_f.text_field :qualification, class: 'form-control' %>
+      </div>
+
+      <%= edu_f.link_to_remove '', class: 'hidden' %>
+      <% end %>
+  </fieldset>
+
+  <fieldset>
+    <legend>Дополнительная информация</legend>
+
+    <div class="form-group">
+      <%= f.label :military_service, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :military_service, options_for_select(
+            [['Невоеннообязанный (девушки и иностранцы)', :not],
+             ['Призывник', :conscript],
+             ['Военнообязанный', :reservist],
+             ['Освобождён от воинской обязанности', :free_of_service],
+             ['Не достигший возраста призывника', :too_young]]),
+                     {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :foreign_language, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :foreign_language, options_for_select(
+            [['Английский', :english],
+             ['Немецкий', :german],
+             ['Французский', :french],
+             ['Испанский', :spanish]]),
+                     {}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :ioo %> Дистанционное обучение (Институт открытого образования)
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :need_hostel %> Нуждаюсь в общежитии
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Вступительные испытания</legend>
+    <p id="required_exam_message" class="alert alert-info"
+       style="display: none;">
+      Необходимо добавить хотя бы одно вступительное испытание
+    </p>
+
+    <%= f.fields_for :exam_results do |exams_f| %>
+      <%= exams_f.hidden_field :id %>
+
+      <div class="form-group">
+        <%= exams_f.label :exam_id, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= exams_f.select :exam_id,
+                             options_from_collection_for_select(
+                               @campaign.exams, :id, :name,
+                               exams_f.object.exam_id
+                             ), {}, class: 'form-control required_exam_id' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= exams_f.label :form, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= exams_f.select :form, options_for_select(
+              [['ЕГЭ', :use],
+               ['Внутренние испытания', :university]],
+              exams_f.object.form),
+                             {}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= exams_f.label :score, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= exams_f.text_field :score, class: 'form-control', disabled: exams_f.object.checked || exams_f.object.university? %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= exams_f.label :document, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= exams_f.text_field :document, class: 'form-control' %>
+        </div>
+      </div>
+
+      <%= exams_f.link_to_remove class: 'col-sm-offset-2 text-danger',
+                                 title: 'Удалить' do %>
+        Удалить вступительное испытание
+      <% end %>
+      <br><br>
+    <% end %>
+    <%= f.link_to_add 'Добавить вступительное испытание', :exam_results,
+                      class: 'col-sm-offset-2',
+                      style: 'font-weight: bold; color: red; font-size: 2em;' %>
+    <br><br>
+  </fieldset>
+
+    <fieldset>
+        <legend>Научные труды (аспирантура)</legend>
+
+        <%= f.fields_for :papers do |paper_f| %>
+            <%= paper_f.hidden_field :id %>
+
+            <div class="form-group">
+                <%= paper_f.label :name, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-10">
+                    <%= paper_f.text_field :name, class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= paper_f.label :printed, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-4">
+                    <%= paper_f.select :printed, [['печатный', true], ['рукописный', false]], {}, class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= paper_f.label :publication, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-10">
+                    <%= paper_f.text_field :publication, class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= paper_f.label :lists, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-4">
+                    <%= paper_f.number_field :lists, class: 'form-control' %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= paper_f.label :co_authors, class: 'col-sm-2 control-label' %>
+                <div class="col-sm-10">
+                    <%= paper_f.text_field :co_authors, class: 'form-control' %>
+                </div>
+            </div>
+
+            <%= paper_f.link_to_remove class: 'col-sm-offset-2 text-danger',
+                                       title: 'Удалить' do %>
+                Удалить научный труд
+            <% end %>
+            <br><br>
+        <% end %>
+        <%= f.link_to_add 'Добавить информацию о научном труде', :papers,
+                          class: 'col-sm-offset-2' %>
+        <br><br>
+    </fieldset>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Сохранить', class: 'btn btn-primary' %>
+      или
+      <%= link_to 'назад ко всем абитуриентам',
+                  entrance_campaign_entrants_path(@campaign) %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+    var key = $('.required_exam_id:visible').length > 0;
+    $('form').validate({
+        messages: {
+            "entrance_entrant[phone]": {pattern: 'Неверный формат. Введите телефон в формате: +79001234567, несколько телефонов разделите запятой'}
+        }
+    });
+    $(document).on('nested:fieldAdded:exam_results', function(){
+        key = true;
+        $('#required_exam_message').hide();
+    });
+    $(document).on('nested:fieldRemoved:exam_results', function(){
+        key = $('.required_exam_id:visible').length > 0;
+        if ($('.required_exam_id:visible').length > 0) $('#required_exam_message').hide();
+        else $('#required_exam_message').show();
+    });
+    $('form').submit(function(e){
+        if (!key ){
+            e.preventDefault();
+            $('#required_exam_message').show();
+        } else $('#required_exam_message').hide();
+    })
+</script>

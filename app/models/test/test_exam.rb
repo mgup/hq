@@ -14,5 +14,4 @@ class Exam < ActiveRecord::Base
 
   has_many :exam_students, foreign_key: :exam_student_exam
   has_many :marks, foreign_key: :mark_exam
-
 end

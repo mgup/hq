@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ActivitiesController, type: :controller do
   before do
@@ -6,21 +6,21 @@ describe ActivitiesController, type: :controller do
     sign_in @user
   end
 
-	describe 'GET "index"' do
-		before :each do
-			get :index
-		end
+  describe 'GET "index"' do
+    before :each do
+      get :index
+    end
 
-		it 'должен выполняться успешно' do
-			expect(response).to be_success
-		end
+    it 'должен выполняться успешно' do
+      expect(response).to be_success
+    end
 
-		it 'должен выводить правильное представление' do
-			expect(response).to render_template(:index)
-		end
-	end
+    it 'должен выводить правильное представление' do
+      expect(response).to render_template(:index)
+    end
+  end
 
-	describe 'GET #new' do
+  describe 'GET #new' do
     before :each do
       get :new
     end

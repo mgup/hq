@@ -1,0 +1,55 @@
+<%= form_tag url, method: :get do %>
+  <div class="row">
+    <div class="col-sm-8">
+      <%= select_tag :direction,
+                     options_from_collection_for_select(
+                         Direction.for_campaign(@campaign),
+                         :id, :description, params[:direction]
+                     ),
+                     prompt: 'Все направления',
+                     class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :form,
+                     options_for_select(
+                         [['очная', 11], ['очно-заочная', 12], ['заочная', 10]],
+                         params[:form]
+                     ),
+                     class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :payment,
+                     options_for_select(
+                         [['бюджет', 14], ['платное', 15]],
+                         params[:payment]
+                     ), class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+  </div>
+
+  <% if defined?(date) && date %>
+    <div class="row">
+      <div class="col-sm-2">
+        <%= text_field_tag :date, params[:date], class: 'form-control datepicker' %>
+      </div>
+      <div class="col-sm-2">
+        <%= submit_tag 'Выбрать дату', class: 'btn btn-primary' %>
+      </div>
+      <% if false %>
+      <div class="col-sm-2">
+        <%= link_to 'Все даты', '#', class: 'btn btn-success', id: 'all_dates_applications' %>
+      </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<script>
+    $('#all_dates_applications').click(function(e){
+        e.preventDefault();
+        $(this).closest('form').find('.datepicker').val('');
+        $(this).closest('form').submit();
+    })
+</script>

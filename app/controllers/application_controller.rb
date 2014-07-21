@@ -1,5 +1,10 @@
 class ApplicationController < ActionController::Base
 
+  before_filter :set_current_user
+  def set_current_user
+    User.current = current_user
+  end
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -11,15 +16,18 @@ class ApplicationController < ActionController::Base
   # before_filter :authorize_developer
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, :alert => exception.message
+    redirect_to root_path, alert: exception.message
   end
-  #unless Rails.application.config.consider_all_requests_local
-  #  rescue_from ActionController::RoutingError,
-  #              ActionController::UnknownController,
-  #              ::AbstractController::ActionNotFound,
-  #              ActiveRecord::RecordNotFound,
-  #              with: -> exception { render_error 404, exception }
-  #end
+
+  unless Rails.application.config.consider_all_requests_local
+    rescue_from Exception, with: lambda { |exception|
+      notify_honeybadger exception
+      render_error 500, exception
+    }
+    rescue_from ActionController::RoutingError, ActionController::UnknownController, ::AbstractController::ActionNotFound, ActiveRecord::RecordNotFound, with: lambda { |exception|
+      render_error 404, exception
+    }
+  end
 
   before_filter :enable_profiler unless Rails.env.test?
 
@@ -40,24 +48,25 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  #def authenticate_student
-  #  #raise authenticate_user!.inspect
-  #  #redirect_to study_groups_path if student_signed_in?
-  #end
-
-  # def authorize_developer
-  #   authorize! :manage, :all if user_signed_in?
-  # end
-
-  #def auth_user!(opts = {})
-  #  if student_signed_in?
-  #    authenticate_student!
-  #  else
-  #    authenticate_user!
-  #  end
-  #end
-
   def enable_profiler
     Rack::MiniProfiler.authorize_request if can?(:manage, :all)
+  end
+
+  private
+
+  def render_error(status, exception)
+    respond_to do |format|
+      format.html { render template: "application/error_#{status}",
+                           status: status,
+                           locals: { exception: exception, request: request } }
+      format.all { render nothing: true, status: status }
+    end
+  end
+
+  def render_report(report)
+    respond_to do |format|
+      format.html { render inline: report.render(format: :html), layout: true }
+      format.pdf { render body: report.render(format: :pdf) }
+    end
   end
 end

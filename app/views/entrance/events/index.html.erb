@@ -1,0 +1,44 @@
+<div class="page-header">
+    <h1>
+        Мероприятия с абитуриентами
+        <small><%= @campaign.name %></small>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <%= link_to 'Добавить мероприятие',
+                    new_entrance_campaign_event_path(@campaign) %>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th class="text-muted">#</th>
+        <th>Название</th>
+        <th>Дата</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @events.each do |event| %>
+        <tr>
+            <td class="text-muted"><%= event.id %></td>
+            <td><%= event.name %></td>
+            <td><%= (event.with_time ? (l event.date) : (l event.date, format: '%d %b %Y')) if event.date %></td>
+            <td><%= link_to  edit_entrance_campaign_event_path(campaign_id: @campaign, id: event),
+                             class: 'btn btn-default' do %>
+                    <span class="glyphicon glyphicon-pencil"></span> Редактировать
+                <% end %>
+
+                <%= link_to  entrance_campaign_event_path(campaign_id: @campaign, id: event),
+                             method: :delete, data: { confirm: 'Вы уверены?' },
+                             class: 'btn btn-danger' do %>
+                    <span class="glyphicon glyphicon-remove"></span> Удалить
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>

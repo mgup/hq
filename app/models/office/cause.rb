@@ -8,13 +8,15 @@ class Office::Cause < ActiveRecord::Base
   belongs_to :template, class_name: Office::OrderTemplate, foreign_key: :template_cause_template
 
   def to_nokogiri
-    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
-      xml.cause {
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.cause do
         xml.id_   id
         xml.pattern  pattern
         xml.patternf  patternf
-      }
-    }.doc
+      end
+    end
+
+    builder.doc
   end
 
   def to_xml

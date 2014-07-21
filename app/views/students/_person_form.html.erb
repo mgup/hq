@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-3"><%= f.label :birthday, class: 'control-label' %></div>
         <div class="col-sm-9">
-          <%= f.text_field :birthday, class: 'form-control datepicker', placeholder: 'дд.мм.гггг' %>
+          <%= f.text_field :birthday, value: f.object.birthday ? (l f.object.birthday) : '', class: 'form-control datepicker', placeholder: 'дд.мм.гггг' %>
         </div>
       </div>
       <div class="row">
@@ -62,7 +62,7 @@
       <div class="row">
         <div class="col-sm-3"><%= f.label :passport_date, class: 'control-label' %></div>
         <div class="col-sm-9">
-          <%= f.text_field :passport_date, class: 'col col-lg-2 col-offset-1 datepicker form-control', placeholder: 'дд.мм.гггг' %>
+          <%= f.text_field :passport_date, value: f.object.passport_date ? (l f.object.passport_date) : '', class: 'col col-lg-2 col-offset-1 datepicker form-control', placeholder: 'дд.мм.гггг' %>
         </div>
       </div>
       <div class="row">

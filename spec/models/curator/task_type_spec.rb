@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Curator::TaskType do
   describe 'обладает ограничениями на поля' do

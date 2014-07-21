@@ -1,6 +1,6 @@
 .success {
-  background-color: #dff0d8;
-}
+   background-color: #dff0d8;
+ }
 
 .current {
   background-color: #eee;
@@ -28,4 +28,16 @@
 
 .nav-header{
   font-weight: bold;
+}
+
+.super-tabs{
+  font-size: 2em;
+  li{
+    a{
+      color: rgb(92, 184, 92);
+    }
+  };
+  li.active a{
+    background-color: rgb(92, 184, 92) !important;
+  }
 }

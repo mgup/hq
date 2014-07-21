@@ -1,0 +1,59 @@
+<%= render 'entrance/shared/switch' %>
+
+<div class="page-header">
+  <h1>Результаты внутренних вступительных испытаний</h1>
+</div>
+
+<%= select_tag :list_of_exams, options_from_collection_for_select(@campaign.exams, :id, :name, selected: @exam.id),
+               class: 'form-control', data: {value: @campaign.id},
+               onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/results?exam=' + $(this).val();)%>
+<br>
+<%= link_to 'Распечатать',
+            results_entrance_campaign_path(
+                    @campaign, params.merge({ format: :pdf })
+            ),
+            target: :blank, class: 'lead' %>
+<br>
+<%= nested_form_for @exam, url: entrance_campaign_exam_path(@campaign, @exam),
+                    method: :patch, html: { class: 'form-horizontal exam_results', role: 'form', id: 'formForVIResults'} do |f| %>
+
+    <div class="alert alert-warning" style="display: none;">
+        <p>Проверьте правильность введенных баллов</p>
+    </div>
+
+    <table class="table">
+        <% @entrants.each do |entrant| %>
+            <tr>
+                <td class="text-muted"><%= entrant.id %></td>
+                <td><%= entrant.full_name %></td>
+                <% result = entrant.exam_results.internal.by_exam(@exam.id).last %>
+                <% if result.score == nil %>
+                    <td>
+                        <%= f.fields_for :exam_results, result  do |result_form| %>
+                            <%= result_form.hidden_field :id, class: 'exam_result_id' %>
+                            <%= result_form.hidden_field :entrant_id, value: entrant.id %>
+                            <%= result_form.text_field :score, class: 'form-control score' %>
+                        <% end %>
+                    </td>
+                    <td></td>
+                <% else %>
+                    <td>
+                        <span><%= result.score %></span>
+                        <div class="editResultFields">
+                            <br>
+                            <%= f.fields_for :exam_results, result  do |result_form| %>
+                                <%= result_form.hidden_field :id, class: 'exam_result_id' %>
+                                <%= result_form.hidden_field :entrant_id, value: entrant.id %>
+                                <%= result_form.text_field :score, class: 'form-control score' %>
+                            <% end %>
+                        </div>
+                    </td>
+                    <td><button class="btn btn-default editResultButton">Редактировать</button></td>
+                <% end %>
+            </tr>
+        <% end %>
+    </table>
+    <div class="col-sm-3 col-sm-offset-4">
+        <%= f.submit 'Внести результаты', class: 'btn btn-primary' %>
+    </div>
+<% end %>

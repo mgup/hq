@@ -13,5 +13,9 @@ FactoryGirl.define do
     trait :lecturer do
       name 'lecturer'
     end
+
+    trait :selection do
+      name 'selection'
+    end
   end
 end

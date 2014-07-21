@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SpecialitiesController, type: :controller do
   context 'для разработчиков' do

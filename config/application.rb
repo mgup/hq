@@ -24,6 +24,7 @@ module HQ
     config.i18n.enforce_available_locales = true
     config.i18n.default_locale = :ru
 
+    config.autoload_paths += Dir["#{config.root}/app/reports"]
     config.autoload_paths += Dir["#{config.root}/lib"]
 
     config.assets.paths << "#{Rails.root}/app/assets/docs"

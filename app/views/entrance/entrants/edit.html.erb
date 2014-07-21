@@ -1,0 +1,9 @@
+<div class="page-header">
+  <h1>
+    Изменение информации об абитуриенте
+    <small class="nowrap"><%= @entrant.full_name %></small>
+  </h1>
+</div>
+
+<%= render partial: 'form',
+           locals: { url: entrance_campaign_entrant_path(@campaign, @entrant) } %>

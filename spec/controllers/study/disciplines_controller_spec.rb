@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Study::DisciplinesController, type: :controller do
   context 'авторизованный преподаватель' do
@@ -23,7 +23,8 @@ describe Study::DisciplinesController, type: :controller do
       context 'получая дисциплины' do
         before :each do
           @my_lead      = create(:discipline, lead_teacher: @user)
-          @my_assistant = create(:discipline, lead_teacher: create(:user, :lecturer))
+          @my_assistant = create(:discipline,
+                                 lead_teacher: create(:user, :lecturer))
           @my_assistant.assistant_teachers << @user
 
           @other = create(:discipline, lead_teacher: create(:user, :lecturer))
@@ -33,7 +34,7 @@ describe Study::DisciplinesController, type: :controller do
           expect(assigns(:disciplines)).to include(@my_lead)
         end
 
-        it 'должен получить дисциплины, в которых он дополнительный преподаватель' do
+        it 'должен получить дисциплины, в которых он доп. преподаватель' do
           expect(assigns(:disciplines)).to include(@my_assistant)
         end
 
@@ -67,13 +68,13 @@ describe Study::DisciplinesController, type: :controller do
           @discipline_attrs = build(:discipline,
                                     subject_teacher: @user.id,
                                     subject_group: create(:group).id).attributes
-          @discipline_attrs[:final_exam_attributes] = build(:exam, :final).attributes
+          @discipline_attrs[:final_exam_attributes] =
+            build(:exam, :final).attributes
         end
 
         it 'должен вызывать создание дисциплины' do
-          expect {
-            post :create, study_discipline: @discipline_attrs
-          }.to change { Study::Discipline.count }.by(1)
+          expect { post :create, study_discipline: @discipline_attrs }
+            .to change { Study::Discipline.count }.by(1)
         end
 
         it 'должен переходить на страницу редактирования занятий' do
@@ -84,9 +85,8 @@ describe Study::DisciplinesController, type: :controller do
 
       context 'при наличии ошибок в данных дисциплины' do
         it 'не должен вызывать создание дисциплины' do
-          expect {
-            post :create, study_discipline: attributes_for(:discipline)
-          }.not_to change { Study::Discipline.count }
+          expect { post :create, study_discipline: attributes_for(:discipline) }
+            .not_to change { Study::Discipline.count }
         end
         it 'должен видеть форму создания дисциплины' do
           post :create, study_discipline: attributes_for(:discipline)
@@ -114,9 +114,10 @@ describe Study::DisciplinesController, type: :controller do
       end
     end
 
-    describe 'при редактировании дисциплины, в которой он дополнительный преподаватель' do
+    describe 'при редактировании дисциплины, в которой он доп. преподаватель' do
       before :each do
-        @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        @discipline = create(:discipline,
+                             lead_teacher: create(:user, :lecturer))
         @discipline.assistant_teachers << @user
 
         get :edit, id: @discipline.id
@@ -139,9 +140,12 @@ describe Study::DisciplinesController, type: :controller do
       context 'при отсутствии ошибок в данных дисциплины' do
         before :each do
           @discipline = create(:discipline, lead_teacher: @user)
-          @discipline_attrs = build(:discipline, subject_id: @discipline.id,
-                                    lead_teacher: @user, subject_name: 'Some name').attributes
-          @discipline_attrs[:final_exam_attributes] = build(:exam, :final).attributes
+          @discipline_attrs = build(:discipline,
+                                    subject_id: @discipline.id,
+                                    lead_teacher: @user,
+                                    subject_name: 'Some name').attributes
+          @discipline_attrs[:final_exam_attributes] =
+            build(:exam, :final).attributes
         end
 
         it 'должен вызывать редактирование правильной дисциплины' do
@@ -157,7 +161,8 @@ describe Study::DisciplinesController, type: :controller do
 
         it 'должен перейти на страницу с занятиями' do
           put :update, id: @discipline, study_discipline: @discipline_attrs
-          expect(response).to redirect_to study_discipline_checkpoints_path(@discipline)
+          expect(response).to redirect_to(
+                                study_discipline_checkpoints_path(@discipline))
         end
       end
 
@@ -165,9 +170,12 @@ describe Study::DisciplinesController, type: :controller do
         before :each do
           @discipline = create(:discipline, lead_teacher: @user)
           @name =  @discipline.name
-          @discipline_attrs = build(:discipline, subject_id: @discipline.id,
-                                    lead_teacher: @user, subject_name: '').attributes
-          @discipline_attrs[:final_exam_attributes] = build(:exam, :final).attributes
+          @discipline_attrs = build(:discipline,
+                                    subject_id: @discipline.id,
+                                    lead_teacher: @user,
+                                    subject_name: '').attributes
+          @discipline_attrs[:final_exam_attributes] =
+            build(:exam, :final).attributes
         end
 
         it 'не должен вызывать изменение дисциплины' do
@@ -188,9 +196,12 @@ describe Study::DisciplinesController, type: :controller do
           @old = @discipline
           @checkpoint = create(:checkpoint, :control, discipline: @discipline)
           @discipline_attrs = @discipline.attributes
-          @discipline_attrs[:checkpoints_attributes] = {2 => build(:checkpoint, :control,
-                                                             checkpoint_subject: @discipline.id,
-                                                             checkpoint_max: 90).attributes}
+          @discipline_attrs[:checkpoints_attributes] = {
+            2 => build(:checkpoint,
+                       :control,
+                       checkpoint_subject: @discipline.id,
+                       checkpoint_max: 90).attributes
+          }
         end
 
         it 'не должен вызывать изменение дисциплины и контрольных точек' do
@@ -208,9 +219,8 @@ describe Study::DisciplinesController, type: :controller do
 
       context 'при отсутствии у неё контрольных точек' do
         it 'должен удалить дисциплину' do
-          expect {
-            delete :destroy, id: @discipline
-          }.to change { Study::Discipline.count }.by(-1)
+          expect { delete :destroy, id: @discipline }
+            .to change { Study::Discipline.count }.by(-1)
         end
 
         it 'должен перейти на страницу со списком дисциплин' do
@@ -226,9 +236,8 @@ describe Study::DisciplinesController, type: :controller do
         end
 
         it 'не должен удалить дисциплину' do
-          expect {
-            delete :destroy, id: @discipline
-          }.not_to change { Study::Discipline.count }
+          expect { delete :destroy, id: @discipline }
+            .not_to change { Study::Discipline.count }
         end
 
         it 'должен перейти на страницу со списком дисциплин' do
@@ -238,17 +247,17 @@ describe Study::DisciplinesController, type: :controller do
       end
     end
 
-    describe 'при удалении дисциплины, в которой он дополнительный преподаватель' do
+    describe 'при удалении дисциплины, в которой он доп. преподаватель' do
       before :each do
-        @discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
+        @discipline = create(:discipline,
+                             lead_teacher: create(:user, :lecturer))
         @discipline.assistant_teachers << @user
       end
 
       context 'при отсутствии у неё контрольных точек' do
         it 'должен удалить дисциплину' do
-          expect {
-            delete :destroy, id: @discipline
-          }.to change { Study::Discipline.count }.by(-1)
+          expect { delete :destroy, id: @discipline }
+            .to change { Study::Discipline.count }.by(-1)
         end
 
         it 'должен перейти на страницу со списком дисциплин' do
@@ -263,9 +272,8 @@ describe Study::DisciplinesController, type: :controller do
         end
 
         it 'не должен удалить дисциплину' do
-          expect {
-            delete :destroy, id: @discipline
-          }.not_to change { Study::Discipline.count }
+          expect { delete :destroy, id: @discipline }
+            .not_to change { Study::Discipline.count }
         end
 
         it 'должен перейти на страницу со списокм дисциплин' do
@@ -278,11 +286,9 @@ describe Study::DisciplinesController, type: :controller do
     describe 'при удалении чужой дисциплины' do
       it 'должен получить ошибку ActiveRecord::RecordNotFound' do
         discipline = create(:discipline, lead_teacher: create(:user, :lecturer))
-        expect {
-          delete :destroy, id: discipline
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { delete :destroy, id: discipline }
+          .to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
-
 end

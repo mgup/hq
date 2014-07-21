@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Study::Discipline do
   it 'должен обладать валидной фабрикой (через финальный экзамен)' do

@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1>Пакетная проверка результатов ЕГЭ</h1>
+</div>
+
+<% if flash[:notice] %>
+    <p class="alert alert-info"><%= flash[:notice] %></p>
+<% end %>
+
+<%= form_tag entrance_campaign_fis_check_path, method: :post, multipart: true do %>
+  <div class="row">
+      <div class="col col-sm-6">
+          <%= file_field_tag :fis_empty_check,class: 'form-control' %>
+      </div>
+      <div class="col col-sm-2">
+          <%= submit_tag 'Проверить новых абитуриентов', class: 'btn btn-info' %>
+      </div>
+  </div>
+<% end %>
+
+<% if @campaign.entrants.without_checks.empty? %>
+  <p class="lead">Результааты всех абитуриентов проверены</p>
+<% else %>
+<%= link_to 'Скачать файл для проверки новых абитуриентов', request.parameters.merge({format: :csv, new_entrants: 1}),
+        class: 'btn btn-primary btn-lg' %>
+<% end %>
+<br>
+<hr>
+
+<%= form_tag entrance_campaign_fis_check_path, method: :post, multipart: true do %>
+  <div class="row">
+    <div class="col col-sm-6">
+      <%= file_field_tag :fis_check,class: 'form-control' %>
+    </div>
+    <div class="col col-sm-2">
+      <%= submit_tag 'Проверить', class: 'btn btn-info' %>
+    </div>
+  </div>
+<% end %>
+<br>
+
+<%= link_to 'Скачать файл для проверки всех абитуриентов', request.parameters.merge({format: :csv}),
+            class: 'btn btn-primary btn-lg' %>
+

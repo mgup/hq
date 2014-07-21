@@ -7,6 +7,6 @@ FactoryGirl.define do
     dp { Faker::Lorem.word }
     vp { Faker::Lorem.word }
     tp { Faker::Lorem.word }
-    pp { Faker::Lorem.word }
+    pp { Faker::Lorem.word } # rubocop:disable Rails/Output
   end
 end

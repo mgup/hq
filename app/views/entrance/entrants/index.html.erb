@@ -1,0 +1,71 @@
+<%= render 'entrance/shared/switch' %>
+
+<div class="page-header">
+  <h1>Абитуриенты</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <%= link_to 'Добавить абитуриента',
+                new_entrance_campaign_entrant_path(@campaign) %>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Фамилия, имя, отчество</th>
+      <th>Паспорт</th>
+      <th>Заявления</th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @entrants.each do |entrant| %>
+    <tr>
+      <td class="text-muted"><%= entrant.id %></td>
+      <td><%= entrant.full_name %></td>
+      <td><%= [entrant.pseries, entrant.pnumber].join(' ') %></td>
+      <td>
+        <%= link_to entrance_campaign_entrant_applications_path(@campaign, entrant) do %>
+          <%= entrant.applications.without_called_back.count %>
+          <%= Russian::p(entrant.applications.without_called_back.count,
+                         'заявление',
+                         'заявления',
+                         'заявлений') %>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to history_entrance_campaign_entrant_path(@campaign, entrant),
+                    title: 'История', class: 'btn btn-default' do %>
+          <span class="glyphicons history"></span>
+        <% end %>
+
+        <% if can?(:edit, Entrance::Entrant) %>
+          <%= link_to edit_entrance_campaign_entrant_path(@campaign, entrant),
+                      class: 'btn btn-danger' do %>
+            <span class="glyphicons pen"></span>
+          <% end %>
+
+          <%= render partial: 'check_use', locals: { entrant: entrant } %>
+        <% end %>
+
+        <% if can?(:edit, Entrance::EventEntrant) %>
+           <%= link_to events_entrance_campaign_entrant_path(@campaign, entrant),
+                          class: 'btn btn-info', title: 'Мероприятия' do %>
+             <span class="glyphicons list"></span>
+           <% end %>
+         <% end %>
+
+        <% if can?(:destroy, Entrance::Entrant) %>
+          <%= link_to entrance_campaign_entrant_path(@campaign, entrant),
+                      title: 'Удалить', method: :delete,
+                      class: 'btn btn-danger',
+                      data: { confirm: 'Вы уверены?' } do %>
+            <span class="glyphicons remove_2"></span>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

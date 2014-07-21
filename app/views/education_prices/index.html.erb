@@ -1,0 +1,51 @@
+<div class="page-header">
+  <h1>
+    Стоимость обучения
+    <br>
+    <small>
+      для поступающих
+      в <%= params[:entrance_year] %>/<%= params[:entrance_year].to_i + 1 %>
+      учебном году
+    </small>
+  </h1>
+</div>
+
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th></th>
+      <% EducationForm.all.each do |form| %>
+        <th>
+          <%= form.name %>
+          <br>
+          (по курсам)
+        </th>
+      <% end %>
+    </tr>
+  </thead>
+  <% @directions.each do |direction| %>
+    <tr>
+      <th>
+        <%= direction[:code] + ' ' + direction[:name] %>
+      </th>
+      <% EducationForm.all.each do |form| %>
+        <td class="text-right">
+          <% if education_prices_by_course(direction[:id], form.id, @prices).any? %>
+            <ul class="list-unstyled">
+              <% education_prices_by_course(direction[:id], form.id, @prices).each do |p| %>
+                <li class="nowrap">
+                  <%= p.course %>:
+                  <%= number_to_currency(p.price, precision: 0) %>
+                </li>
+              <% end %>
+            </ul>
+            <hr style="margin: 5px 0;">
+            <%= number_to_currency(
+                  education_price_total(direction[:id], form.id, @prices),
+                  precision: 0) %>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

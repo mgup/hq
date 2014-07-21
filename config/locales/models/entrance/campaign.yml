@@ -1,0 +1,7 @@
+ru:
+  activerecord:
+    models:
+      entrance/campaign: 'приёмная кампания'
+    attributes:
+      entrance/campaign:
+        name: 'название'

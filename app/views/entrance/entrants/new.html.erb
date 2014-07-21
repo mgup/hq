@@ -1,0 +1,9 @@
+<div class="page-header">
+  <h1>
+    Новый абитуриент
+    <small class="nowrap"><%= @campaign.name %></small>
+  </h1>
+</div>
+
+<%= render partial: 'form',
+           locals: { url: entrance_campaign_entrants_path(@campaign, @entrant) } %>

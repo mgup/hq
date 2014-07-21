@@ -1,0 +1,7 @@
+ru:
+  activerecord:
+    models:
+      entrance/application: 'заявление'
+    attributes:
+      entrance/application:
+        number: 'номер'

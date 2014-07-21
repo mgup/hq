@@ -13,9 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.turbolinks
-//= require jquery.ui.effect-highlight
+//= require jquery-ui/effect-highlight
 //
 //= require bootstrap
+//= require jquery.validate
+//= require jquery.validate.additional-methods
+//= require jquery.validate.localization/messages_ru
 //
 //= require bootstrap-datepicker/core
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.ru.js

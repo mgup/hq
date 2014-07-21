@@ -120,7 +120,7 @@ class Study::Exam < ActiveRecord::Base
     JOIN `group` ON `group`.group_id = `subject`.subject_group
     JOIN `speciality` ON `speciality`.speciality_id = `group`.group_speciality
     JOIN `department` ON `department`.department_id = `speciality`.speciality_faculty')
-    .where("`department`.department_id = #{faculty_id}")
+    .where('`department`.department_id = ?', faculty_id)
   }
 
   def is_repeat?
@@ -181,15 +181,15 @@ class Study::Exam < ActiveRecord::Base
   def repeat_type
     case repeat
       when FIRST_REPEAT
-        'первичный'
+        'первая пересдача'
       when SECOND_REPEAT
-        'повторный'
+        'вторая пересдача'
       when COMMISSION_REPEAT
         'комиссия'
       when EARLY_REPEAT
-        'досрочный'
+        'досрочно'
       when RESPECTFUL_REPEAT
-        'уважительная'
+        'уважительная причина'
     end
   end
 

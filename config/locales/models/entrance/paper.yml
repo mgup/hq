@@ -1,0 +1,11 @@
+ru:
+  activerecord:
+    models:
+      entrance/paper: 'научный труд'
+    attributes:
+      entrance/paper:
+        name: 'наименование'
+        printed: 'способ издания'
+        publication: 'издательство, журнал или номер авторского свидетельства'
+        lists: 'количество страниц'
+        co_authors: 'фамилии соавторов'

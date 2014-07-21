@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe My::SupportOption do
   describe 'обладает связями с другими моделями:' do

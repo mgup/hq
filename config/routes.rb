@@ -1,4 +1,19 @@
 HQ::Application.routes.draw do
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.is?(:developer) } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
+  require 'sidekiq/api'
+  get 'queue-status' => proc {
+    [200, { 'Content-Type' => 'text/plain' },
+     [Sidekiq::Queue.new.size < 100 ? 'OK' : 'UHOH' ]]
+  }
+  get 'queue-latency' => proc {
+    [200, { 'Content-Type' => 'text/plain' },
+     [Sidekiq::Queue.new.latency < 30 ? 'OK' : 'UHOH' ]]
+  }
+
   # Выпуски (группы выпускников).
   resources :graduates do
     get 'students', on: :member
@@ -7,6 +22,7 @@ HQ::Application.routes.draw do
   end
 
   resources :blanks
+  resources :directions
 
   devise_for :users, controllers: { registrations: 'users' }
     as :user do
@@ -181,6 +197,7 @@ HQ::Application.routes.draw do
 
   namespace :office do
     resources :orders do
+      get '/', to: 'orders#show', defaults: { format: 'pdf' }, as: :show
       get 'drafts', to: 'orders#drafts', on: :collection
       get 'underways', to: 'orders#underways', on: :collection
     end
@@ -256,6 +273,69 @@ HQ::Application.routes.draw do
   get '/ajax/group_students' => 'ajax#group_students'
   get '/ajax/group_exams' => 'ajax#group_exams'
   get '/ajax/orderstudent' => 'ajax#orderstudent'
+
+
+  resources :education_prices, only: [:index]
+
+  namespace :entrance do
+    resources :campaigns do
+      get 'temp_print_all_checks', on: :member
+
+      get 'dashboard', on: :member
+
+      get 'applications', on: :member
+      get 'print_all', on: :member, defaults: { format: :pdf }
+      get 'report',       on: :member
+      get 'register',     on: :member
+      get 'rating',     on: :member
+      get 'results',     on: :member
+      get 'balls',     on: :member
+
+      get 'paid_enrollment', on: :member
+
+      resources :dates
+      resources :exams do
+        resources :exam_results do
+          get 'ajax_update', to: 'exam_results#ajax_update', on: :member
+        end
+      end
+      resources :min_scores
+      resources :events
+      resources :contracts do
+        get 'statistics', to: 'contracts#statistics', on: :collection
+      end
+      resources :entrants do
+        get 'history', on: :member
+        get 'events', on: :member
+        resources :exam_results
+        resources :checks do
+          get 'show.pdf', to: 'checks#show', on: :member, defaults: { format: 'pdf' }, as: :print
+        end
+
+        # get 'checks/:id/show.pdf', to: 'checks#show', on: :member, defaults: { format: 'pdf' }, as: :check
+
+        resources :event_entrants
+        resources :applications do
+          resource :contract
+
+          get '/print.pdf', to: 'applications#print', on: :member, defaults: { format: 'pdf' }, as: :print
+          get '/print_all.pdf', to: 'applications#print_all', on: :collection, defaults: { format: 'pdf' }, as: :print_all
+        end
+      end
+
+      post 'fis/clear'       => 'fis#clear'
+      get 'fis/clear'       => 'fis#clear'
+      get 'fis/clear-check' => 'fis#clear_check'
+      get 'fis/check-use'   => 'fis#check_use'
+      post 'fis/check'   => 'fis#check'
+
+      get 'fis/test'  => 'fis#test'
+    end
+
+    resources :document_movements
+  end
+
+
 
   root to: 'dashboard#index'
 

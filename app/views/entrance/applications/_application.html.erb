@@ -1,0 +1,15 @@
+<p class="lead">
+  Заявление № <%= application.number %> от <%= l application.created_at %>.
+    <%= link_to print_entrance_campaign_entrant_application_path(@campaign, @entrant, application),
+                class: 'btn btn-info' do %>
+        <span class="glyphicon glyphicon-print"></span> Распечатать заявление
+    <% end %>
+</p>
+
+<p class="lead">
+  <%= application.original ? 'Получен <strong>подлинник</strong>'.html_safe : 'Получена <strong>копия</strong>'.html_safe %> документа.
+</p>
+
+
+<hr>
+

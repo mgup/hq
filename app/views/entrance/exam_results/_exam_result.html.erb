@@ -1,0 +1,8 @@
+<% if can?(:mark, exam_result) %>
+  <%= render partial: 'form', locals: { exam_result: exam_result } %>
+<%# else %>
+  <% unless exam_result.score.blank? %>
+    <%= exam_result.score %>
+    <%= Russian::p exam_result.score, 'балл', 'балла', 'баллов' %>
+  <% end %>
+<% end %>

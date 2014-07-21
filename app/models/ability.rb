@@ -90,6 +90,17 @@ class Ability
     can :manage, EventDate
     can :actual, :events
     can :create, EventDateClaim
+    can :index, Entrance::Date
+    can :index, Entrance::MinScore
+
+    can :applications, Entrance::Campaign
+    can :balls, Entrance::Campaign
+    can :rating, Entrance::Campaign
+    can :print_all, Entrance::Campaign
+    can :print_all, Entrance::Campaign
+    can :show, Entrance::Event
+
+    can :index, EducationPrice
   end
 
   # Обычный преподаватель.
@@ -123,11 +134,6 @@ class Ability
   def pro_rector_science(user)
     #can :update, Achievement
     #can :validate, Achievement
-  end
-
-  def executive_secretary(user)
-    # can :update, Achievement
-    # can :validate_selection, Achievement
   end
 
   def dean(user)
@@ -185,5 +191,77 @@ class Ability
     can :manage, Study::Discipline
     can :manage, Study::Exam
     can :manage, Study::Repeat
+  end
+
+  def selection(user)
+    can :manage, Entrance::Campaign
+
+    can :manage, Entrance::Entrant
+    cannot :edit, Entrance::Entrant
+    cannot :destroy, Entrance::Entrant
+
+    can :manage, Entrance::ExamResult
+    can :manage, Entrance::Application
+    can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::EventEntrant
+    can :manage, Entrance::Contract
+    cannot :statistics, Entrance::Contract
+  end
+
+  def selection_technical_secretary(user)
+    can :manage, Entrance::Campaign
+
+    can :manage,      Entrance::Entrant
+    cannot :destroy,  Entrance::Entrant
+
+    can :manage, Entrance::ExamResult
+    can :manage, Entrance::Application
+    can :manage, Entrance::EventEntrant
+    can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::Contract
+    cannot :statistics, Entrance::Contract
+    can :manage, Entrance::UseCheck
+    can :manage, Entrance::UseCheckResult
+  end
+
+  def selection_editor(user)
+    can :manage, Entrance::Campaign
+    can :manage, Entrance::Entrant
+    can :manage, Entrance::ExamResult
+    can :manage, Entrance::Application
+    can :manage, Entrance::EventEntrant
+    can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::Contract
+    cannot :statistics, Entrance::Contract
+    can :manage, Entrance::UseCheck
+    can :manage, Entrance::UseCheckResult
+  end
+
+  def selection_io(user)
+    can :manage, Entrance::Campaign
+    can :manage,      Entrance::Entrant, ioo: true
+    cannot :destroy,  Entrance::Entrant
+    can :manage, Entrance::ExamResult
+    can :manage, Entrance::Application
+    can :manage, Entrance::EventEntrant
+    can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::Contract
+    cannot :statistics, Entrance::Contract
+    can :manage, Entrance::UseCheck
+    can :manage, Entrance::UseCheckResult
+  end
+
+  def zamestitel_otvetstvennogo_sekretarja(user)
+    selection_editor(user)
+    can :manage, Entrance::Exam
+
+    can :mark, Entrance::ExamResult
+  end
+
+  def executive_secretary(user)
+    zamestitel_otvetstvennogo_sekretarja(user)
+    can :statistics, Entrance::Contract
+    # can :update, Achievement
+    # can :validate_selection, Achievement
   end
 end

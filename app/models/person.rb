@@ -58,17 +58,18 @@ class Person < ActiveRecord::Base
   alias_attribute :army_voenkom, :student_army_voenkom
 
 
-  belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname
+  belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname, dependent: :destroy
   accepts_nested_attributes_for :fname
-  belongs_to :iname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_iname
+  belongs_to :iname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_iname, dependent: :destroy
   accepts_nested_attributes_for :iname
-  belongs_to :oname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_oname
+  belongs_to :oname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_oname, dependent: :destroy
   accepts_nested_attributes_for :oname
 
   belongs_to :room, class_name: Hostel::Room, primary_key: :room_id,
            foreign_key: :student_room
 
-  has_many :students, primary_key: :student_id, foreign_key: :student_group_student
+  has_many :students, primary_key: :student_id, foreign_key: :student_group_student, dependent: :destroy
+  accepts_nested_attributes_for :students
 
   scope :from_flat, -> flat { joins(:room).where(room: {room_flat: flat})}
 

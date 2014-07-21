@@ -1,10 +1,16 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Study::StudentsController, type: :controller do
   before  do
     @group = FactoryGirl.create(:group)
-    @student = FactoryGirl.create(:student, person: FactoryGirl.create(:person, fname: FactoryGirl.create(:dictionary),
-                                                                       iname: FactoryGirl.create(:dictionary), oname: FactoryGirl.create(:dictionary)), group: @group)
+    @student = FactoryGirl.create(
+      :student,
+      person: FactoryGirl.create(
+        :person, fname: FactoryGirl.create(:dictionary),
+                 iname: FactoryGirl.create(:dictionary),
+                 oname: FactoryGirl.create(:dictionary)
+      ),
+      group: @group)
   end
 
   describe 'GET #show' do
@@ -30,8 +36,10 @@ describe Study::StudentsController, type: :controller do
     before :each do
       user = FactoryGirl.create(:user)
       @discipline = FactoryGirl.create(:discipline, lead_teacher: user,
-                                       group: @group)
-      get :discipline, group_id: @group.id, id: @student.id, discipline: @discipline.id
+                                                    group: @group)
+      get :discipline, group_id: @group.id,
+                       id: @student.id,
+                       discipline: @discipline.id
     end
 
     it 'должен выполняться успешно' do
@@ -41,7 +49,5 @@ describe Study::StudentsController, type: :controller do
     it 'должен выводить правильное представление' do
       expect(response).to render_template(:discipline)
     end
-
   end
-
 end

@@ -10,10 +10,10 @@ class Dictionary < ActiveRecord::Base
   alias_attribute :tp, :dictionary_tp
   alias_attribute :pp, :dictionary_pp
 
-  validates :ip, presence: true
-  validates :rp, presence: true
-  validates :dp, presence: true
-  validates :vp, presence: true
-  validates :tp, presence: true
-  validates :pp, presence: true
+  # validates :ip, presence: true
+  # validates :rp, presence: true
+  # validates :dp, presence: true
+  # validates :vp, presence: true
+  # validates :tp, presence: true
+  # validates :pp, presence: true
 end
