@@ -5,7 +5,7 @@ class Office::OrderMeta < ActiveRecord::Base
   alias_attribute :type,    :order_meta_type
   alias_attribute :object,  :order_meta_object
   alias_attribute :text,    :order_meta_text
-  alias_attribute :pattern, :order_meta_text
+  alias_attribute :pattern, :order_meta_pattern
 
   belongs_to :order, class_name: Office::Order, foreign_key: :order_meta_order
 

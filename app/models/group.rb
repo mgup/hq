@@ -10,6 +10,7 @@ class Group < ActiveRecord::Base
   alias_attribute :course, :group_course
   alias_attribute :number, :group_number
   alias_attribute :form,   :group_form
+  alias_attribute :education_form, :group_form
 
   belongs_to :speciality, primary_key: :speciality_id, foreign_key: :group_speciality
 
