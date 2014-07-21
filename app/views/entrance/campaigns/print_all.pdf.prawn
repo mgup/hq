@@ -26,28 +26,33 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                page_size: 'A4', page_layout: :portrait do |pdf|
 
   render 'pdf/font', pdf: pdf
-  key = false
-  pdf.font_size 12 do
-    pdf.text "Пофамильный список лиц, подавших документы, необходимые для поступления, по состоянию на #{l Time.now}."
-  end
-  pdf.stroke do
-    pdf.horizontal_rule
-  end
-  pdf.move_down 5
-  pdf.font_size 12 do
-    pdf.text 'Аспирантура'
-  end
   if @department
     directions = Direction.not_aspirants.from_department(@department.id).for_campaign(@campaign)
   elsif @for_aspirants
     directions = Direction.for_aspirants.for_campaign(@campaign)
   end
+  key = false
     directions.each do |direction|
       EducationForm.find_each do |form|
         [[14, 'бюджетные места'],[15, 'с оплатой обучения']].each do |source|
           applications = find_applications(direction.id, form.id, source[0])
-          unless applications.size > 0
+          if applications.size > 0
+            pdf.start_new_page if key
+            unless key
+              key = true
+            end
+          else
             next
+          end
+          pdf.font_size 12 do
+          pdf.text "Пофамильный список лиц, подавших документы, необходимые для поступления, по состоянию на #{l Time.now}."
+          end
+          pdf.stroke do
+            pdf.horizontal_rule
+          end
+          pdf.move_down 5
+          pdf.font_size 12 do
+            pdf.text "#{@department ? @department.abbreviation : 'Аспирантура'}"
           end
           pdf.move_down 20
           pdf.font_size 10 do
