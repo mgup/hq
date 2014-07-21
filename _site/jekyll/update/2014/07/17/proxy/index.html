@@ -62,9 +62,9 @@
 
 <p>Для этого надо открыть системные настройки → Сеть → Сетевая прокси-служба. В методе выбрать «вручную»:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">HTTP</span> <span class="no">Proxy</span> <span class="err">указать</span> <span class="mi">192</span><span class="o">.</span><span class="mi">168</span><span class="o">.</span><span class="mi">200</span><span class="o">.</span><span class="mi">42</span> <span class="err">порт</span> <span class="mi">3128</span>
+<p>HTTP Proxy указать 192.168.200.42 порт 3128</p>
 
-<span class="no">HTTPS</span> <span class="no">Proxy</span> <span class="err">указать</span> <span class="mi">192</span><span class="o">.</span><span class="mi">168</span><span class="o">.</span><span class="mi">200</span><span class="o">.</span><span class="mi">42</span> <span class="err">порт</span> <span class="mi">3128</span></code></pre></div>
+<p>HTTPS Proxy указать 192.168.200.42 порт 3128</p>
 
 <p>2) Настройка proxy для консольной команды “apt-get”, предназначенный для установки программ.</p>
 
@@ -72,17 +72,17 @@
 
 <p>Полный синтаксис команды: </p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">nano</span> <span class="sr">/etc/</span><span class="n">apt</span><span class="o">/</span><span class="n">apt</span><span class="o">.</span><span class="n">conf</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo nano /etc/apt/apt.conf</code></pre></div>
 
 <p>В нем указать следующие настройки proxy:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Acquire</span><span class="o">::</span><span class="n">http</span><span class="o">::</span><span class="n">proxy</span> <span class="s2">&quot;http://имя пользователя:пароль@адрес:порт&quot;</span><span class="p">;</span> 
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">Acquire::http::proxy <span class="s2">&quot;http://имя пользователя:пароль@адрес:порт&quot;</span><span class="p">;</span> 
 
-<span class="no">Acquire</span><span class="o">::</span><span class="n">ftp</span><span class="o">::</span><span class="n">proxy</span> <span class="s2">&quot;ftp://имя пользователя:пароль@адрес:порт&quot;</span><span class="p">;</span> 
+Acquire::ftp::proxy <span class="s2">&quot;ftp://имя пользователя:пароль@адрес:порт&quot;</span><span class="p">;</span> 
 
-<span class="no">Acquire</span><span class="o">::</span><span class="n">https</span><span class="o">::</span><span class="n">proxy</span> <span class="s2">&quot;https://имя пользователя:пароль@адрес:порт&quot;</span><span class="p">;</span> 
+Acquire::https::proxy <span class="s2">&quot;https://имя пользователя:пароль@адрес:порт&quot;</span><span class="p">;</span> 
 
-<span class="no">Acquire</span><span class="o">::::</span><span class="no">Proxy</span> <span class="s2">&quot;true&quot;</span><span class="p">;</span></code></pre></div>
+Acquire::::Proxy <span class="s2">&quot;true&quot;</span><span class="p">;</span></code></pre></div>
 
 <p>Для сохранения изменений необходимо нажать сочетание клавиш на клавиатуре «ctrl+o» и подтвердить сохранение файла нажатием кнопки «enter».</p>
 
@@ -92,11 +92,11 @@
 
 <p>Для этого в терминале нужно ввести две строчки, предварительно войти в оболочку bash командой в терминале:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/bin/</span><span class="n">bash</span> <span class="o">--</span><span class="n">login</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">/bin/bash --login
 
-<span class="n">export</span> <span class="n">http_proxy</span><span class="o">=</span><span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="err">имя</span> <span class="err">пользователя</span><span class="p">:</span><span class="err">пароль@адрес</span><span class="p">:</span><span class="err">порт</span>
+<span class="nb">export </span><span class="nv">http_proxy</span><span class="o">=</span>http://имя пользователя:пароль@адрес:порт
 
-<span class="n">export</span> <span class="n">https_proxy</span><span class="o">=</span><span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="err">имя</span> <span class="err">пользователя</span><span class="p">:</span><span class="err">пароль@адрес</span><span class="p">:</span><span class="err">порт</span></code></pre></div>
+<span class="nb">export </span><span class="nv">https_proxy</span><span class="o">=</span>https://имя пользователя:пароль@адрес:порт</code></pre></div>
 
 
 		  </article>

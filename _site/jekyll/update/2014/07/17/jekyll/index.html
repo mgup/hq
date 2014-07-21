@@ -71,12 +71,12 @@
 
 <p>Проверить это можно поочередно, выполняя в терминале следующие команды:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">ruby</span> <span class="o">-</span><span class="n">v</span> <span class="p">(</span><span class="err">нажать</span> <span class="n">enter</span><span class="p">)</span>
-<span class="n">gem</span> <span class="o">-</span><span class="n">v</span> <span class="p">(</span><span class="err">нажать</span> <span class="n">enter</span><span class="p">)</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ruby -v <span class="c">#нажать enter</span>
+gem -v  <span class="c">#нажать enter</span></code></pre></div>
 
 <p>Для проверки удачной установки nodejs необходимо в терминале выполнить следующую команду, которая позволяет войти под интерктивную оболочку Nodejs:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">node</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">node</code></pre></div>
 
 <p>Если в терминале будет аналогичная ситуация как на скриншоте ниже, то установка nodejs прошла удачно. 
 Для выхода из оболочки нужно нажать сочетание клавиш «ctrl+c».</p>
@@ -89,19 +89,19 @@
 
 <p>1) Если у вас нет curl — его можно установить командой:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">curl</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install curl</code></pre></div>
 
 <p>2) Затем ставим RVM:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="n">get</span><span class="o">.</span><span class="n">rvm</span><span class="o">.</span><span class="n">io</span> <span class="o">|</span> <span class="n">bash</span> <span class="o">-</span><span class="n">s</span> <span class="n">stable</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -L get.rvm.io <span class="p">|</span> bash -s stable</code></pre></div>
 
 <p>3) После установки RVM его необходимо запустить:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">source</span> <span class="o">~</span><span class="sr">/.rvm/s</span><span class="n">cripts</span><span class="o">/</span><span class="n">rvm</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">source</span> ~/.rvm/scripts/rvm</code></pre></div>
 
 <p>4) С использованием RVM, Ruby легко установить:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">rvm</span> <span class="n">install</span> <span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">rvm install 2.1.2</code></pre></div>
 
 <h3 id="rubygems">Установка RubyGems</h3>
 
@@ -111,29 +111,29 @@
 
 <p>Для установки Nodejs необходимо в терминале выполнить следующую команду:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">nodejs</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install nodejs</code></pre></div>
 
 <h3 id="jekyll">Установка Jekyll</h3>
 
 <p>Для установки Jekyll необходимо в терминале выполнить следующую команду:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="n">install</span> <span class="n">jekyll</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">gem install jekyll</code></pre></div>
 
 <h3 id="section">Создание нового веб-приложения</h3>
 
 <p>Для создания нового веб-приложения с использованием Jekyll необходимо в терминале 
 выполнить следующую команду:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">jekyll</span> <span class="kp">new</span> <span class="n">name_app</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">jekyll new name_app</code></pre></div>
 
 <p>Для запуска веб-приложения необходимо перейти в папку с именем приложения. Для этого 
 необходимо выполнить в терминале следующую команду:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cd</span> <span class="n">name_app</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd </span>name_app</code></pre></div>
 
 <p>Для запуска веб-приложения необходимо в терминале выполнить следующую команду:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">jekyll</span> <span class="n">serve</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">jekyll serve</code></pre></div>
 
 <p>Веб-приложение будет доступно по адресу 127.0.0.1:4000</p>
 
@@ -146,7 +146,7 @@
 
 <p>3) Далее в окне настроек нового репозитория ввести его будущее имя: </p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">username</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">username.github.io</code></pre></div>
 
 <p>где username — ваше имя пользователя на github, описание (необязательно), выбрать public и нажать кнопку Create repository. </p>
 
@@ -154,7 +154,7 @@
 
 <p>5) Далее необходимо перейти в папку с именем приложения jekyll, созданного ранее. Для этого необходимо выполнить в терминале следующую команду:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cd</span> <span class="n">name_app</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd </span>name_app</code></pre></div>
 
 <p>6) Первоначальная настройка Git</p>
 
@@ -162,17 +162,17 @@
 
 <p>Для этого нужно в терминале последовательно выполнить следующие команды:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="s2">&quot;username&quot;</span> <span class="sr">//</span><span class="err">где</span> <span class="n">username</span> <span class="err">—</span> <span class="err">ваше</span> <span class="err">имя</span> <span class="err">пользователя</span> <span class="err">на</span> <span class="n">github</span> 
-<span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">global</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="n">johndoe</span><span class="vi">@example</span><span class="o">.</span><span class="n">com</span> <span class="sr">//</span> <span class="err">где</span> <span class="n">johndoe</span><span class="vi">@example</span><span class="o">.</span><span class="n">com</span> <span class="err">—</span> <span class="err">ваш</span> <span class="err">почтовый</span> <span class="err">адрес</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git config --global user.name <span class="s2">&quot;username&quot;</span> <span class="c">#где username — ваше имя пользователя на github </span>
+git config --global user.email johndoe@example.com <span class="c">#где johndoe@example.com — ваш почтовый адрес</span></code></pre></div>
 
 <p>7) Далее в соответствии с инструкцией в терминале поочередно выполняются следующие команды:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">init</span> <span class="sr">//</span><span class="err">инициализация</span> <span class="err">пустого</span> <span class="err">репозитория</span>
-<span class="n">git</span> <span class="n">add</span> <span class="o">.</span> <span class="sr">//</span><span class="err">сохранение</span> <span class="err">всех</span> <span class="err">сделанных</span> <span class="err">изменений</span>
-<span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="err">«комментарий»</span> <span class="sr">//</span><span class="err">комментирование</span> <span class="err">всех</span> <span class="err">изменений</span>
-<span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">origin</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">username</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">git</span><span class="p">,</span> 
-<span class="err">где</span> <span class="n">username</span> <span class="err">—</span> <span class="err">ваше</span> <span class="err">имя</span> <span class="err">пользователя</span> <span class="err">на</span> <span class="n">github</span> <span class="sr">//</span><span class="err">добавление</span> <span class="err">ссылки</span> <span class="err">на</span> <span class="err">репозиторий</span>
-<span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">u</span> <span class="n">origin</span> <span class="n">master</span> <span class="sr">//</span><span class="err">отправка</span> <span class="err">данных</span> <span class="err">в</span> <span class="err">репозиторий</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git init <span class="c">#инициализация пустого репозитория</span>
+git add . <span class="c">#сохранение всех сделанных изменений</span>
+git commit -m «комментарий» <span class="c">#комментирование всех изменений</span>
+git remote add origin https://github.com/username/username.github.io.git, 
+где username — ваше имя пользователя на github <span class="c">#добавление ссылки на репозиторий</span>
+git push -u origin master <span class="c">#отправка данных в репозиторий</span></code></pre></div>
 
 <p>После ввода последней команды будет предложено ввести логин и пароль. 
 После ввода логина (вашего имени пользователя github) необходимо нажать на клавиатуре кнопку enter.</p>

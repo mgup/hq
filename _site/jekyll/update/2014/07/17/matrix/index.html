@@ -65,43 +65,43 @@
 
 <p>2) Перед тем, как что-нибудь сделать мы должны убедиться, что все пакеты актуальны:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get update</code></pre></div>
 
 <p>3) Далее мы можем приступить к установке RVM (Ruby Version Manager). Это программа, позволяющая использовать несколько версий Ruby на одной машине. В данном случае она нужна, чтобы установить последнюю версию Ruby.</p>
 
 <p>Если у вас нет curl — его можно установить командой:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">curl</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install curl</code></pre></div>
 
 <p>4) Затем ставим RVM:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="n">sSL</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">get</span><span class="o">.</span><span class="n">rvm</span><span class="o">.</span><span class="n">io</span> <span class="o">|</span> <span class="n">bash</span> <span class="o">-</span><span class="n">s</span> <span class="n">stable</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -sSL https://get.rvm.io <span class="p">|</span> bash -s stable</code></pre></div>
 
 <p>5) После установки RVM его необходимо запустить:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">source</span> <span class="sr">/home/in</span><span class="n">flab</span><span class="o">/.</span><span class="n">rvm</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">rvm</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">source</span> /home/inflab/.rvm/scripts/rvm</code></pre></div>
 
 <p>6) С использованием RVM, Ruby легко установить:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">rvm</span> <span class="n">install</span> <span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">rvm install 2.1.2</code></pre></div>
 
 <p>7) Устанавливаем Rails:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="n">install</span> <span class="n">rails</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">gem install rails</code></pre></div>
 
 <p>8) Устанавливаем MySQL:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">mysql</span><span class="o">-</span><span class="n">server</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install mysql-server</code></pre></div>
 
 <p>9) Устанавливаем дополнительные библиотеки для работы с программой. Для этого нам необходимо зайти в директорию программы (у меня путь: cd Downloads/hq-master/) и выполнить команды (bundle install в последнюю очередь):</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libqt4</span><span class="o">-</span><span class="n">dev</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install libqt4-dev
 
-<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">freetds</span><span class="o">-</span><span class="n">dev</span>
+sudo apt-get install freetds-dev
 
-<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libmysql</span><span class="o">-</span><span class="n">ruby</span> <span class="n">libmysqlclient</span><span class="o">-</span><span class="n">dev</span>
+sudo apt-get install libmysql-ruby libmysqlclient-dev
 
-<span class="n">bundle</span> <span class="n">install</span></code></pre></div>
+bundle install</code></pre></div>
 
 <h3 id="section">На этом этапе нам нужно создать базу данных с целью запуска “Матрица МГУП”</h3>
 
@@ -109,27 +109,27 @@
 
 <p>1) Нужно войти под:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/bin/</span><span class="n">bash</span> <span class="o">--</span><span class="n">login</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">/bin/bash --login</code></pre></div>
 
 <p>2) Затем проверяем версию ruby:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">ruby</span> <span class="o">-</span><span class="n">v</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ruby -v</code></pre></div>
 
 <p>3) При необходимости подключаем версию 2.1.2:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">rvm</span> <span class="n">ruby</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">rvm ruby-2.1.2</code></pre></div>
 
 <p>4) Используем команду для переноса структуры из структуры базы данных в таблицы базы данных:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">setup</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">rake db:setup</code></pre></div>
 
 <p>5) Запускаем сервер:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">rails</span> <span class="n">s</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">rails s</code></pre></div>
 
 <p>6) Проверяем сервер в проводнике браузера:</p>
 
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">3000</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">http://127.0.0.1:3000</code></pre></div>
 
 
 		  </article>
