@@ -80,6 +80,7 @@ class Office::Order < ActiveRecord::Base
       xml.order {
         xml.id_         id
         xml.version     version
+        xml.revision     version
         xml.responsible responsible
         xml.status      status
         xml << template.to_nokogiri.root.to_xml

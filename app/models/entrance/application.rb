@@ -292,7 +292,7 @@ class Entrance::Application < ActiveRecord::Base
           '0' => {
             student_group_group: group.id,
             student_group_yearin: Date.today.year,
-            student_group_tax: Student::PAYMENT_OFF_BUDGET,
+            student_group_tax:  payed? ? Student::PAYMENT_OFF_BUDGET : Student::PAYMENT_BUDGET,
             student_group_status: Student::STATUS_ENTRANT,
             student_group_speciality: group.speciality.id,
             student_group_form: group.form,
@@ -380,7 +380,8 @@ class Entrance::Application < ActiveRecord::Base
         xml.abitpoints abitpoints
         xml.benefit (benefits.collect{|x| x.id}.include? 4 ? 4 : (benefits.collect{|x| x.id}.include? 1 ? 1 : nil))
         xml.number number
-        xml << contract.to_nokogiri.root.to_xml
+
+        xml << contract.to_nokogiri.root.to_xml if contract
       }
     }.doc
   end

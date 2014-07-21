@@ -386,6 +386,7 @@ GROUP BY `group`
         xml.contract abit_contract
         xml.accept_type accept_type
         xml.state_line state_line
+        xml.education_source payment
         xml << person.to_nokogiri.root.to_xml
         xml << group.to_nokogiri.root.to_xml
         xml << speciality.to_nokogiri.root.to_xml

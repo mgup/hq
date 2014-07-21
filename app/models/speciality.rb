@@ -45,6 +45,7 @@ class Speciality < ActiveRecord::Base
       xml.speciality {
         xml.id_   id
         xml.code  code
+        xml.new_code Direction.where('code = ? AND qualification_code = ?', code.split('.')[0], code.split('.')[1]).first.new_code
         xml.name  name
         xml.type type
         xml << faculty.to_nokogiri.root.to_xml
