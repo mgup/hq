@@ -1,7 +1,21 @@
 class Entrance::ApplicationsController < ApplicationController
   load_and_authorize_resource :campaign, class: 'Entrance::Campaign'
-  load_and_authorize_resource :entrant, through: :campaign, class: 'Entrance::Campaign'
+  load_and_authorize_resource :entrant,
+                              through: :campaign, class: 'Entrance::Campaign'
   load_and_authorize_resource through: :entrant, class: 'Entrance::Application'
+
+  # Отправка заявления в приказ, то есть зачислени абитуриента.
+  #
+  # Это выведено в отдельное действие, потому в процессе происходит не только
+  # создание определённого приказа, но и проверка, что подобных неподписанных
+  # приказов больше нет. Если же находятся подобные приказы, то, вместо создания
+  # нового, абитуриент добавляется в уже существующий приказ.
+  def send_to_order
+
+  end
+
+  # То, что ниже, нужно рефакторить.
+  # ================================
 
   def index
     # Проверяем созданные заявления на предмет наличия оригинала.

@@ -13,16 +13,19 @@ class Office::Order < ActiveRecord::Base
   alias_attribute :signing_date, :order_signing
   alias_attribute :responsible,  :order_responsible
 
-  belongs_to :template, class_name: Office::OrderTemplate,
+  belongs_to :template, class_name: 'Office::OrderTemplate',
                         foreign_key: :order_template
 
-  has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_order
-  has_many :students, class_name: Student, through: :students_in_order
+  has_many :students_in_order, class_name: 'Office::OrderStudent',
+           foreign_key: :order_student_order
+  has_many :students, class_name: 'Student', through: :students_in_order
 
-  has_many :order_reasons, class_name: Office::OrderReason, foreign_key: :order_reason_order
-  has_many :reasons, class_name: Office::Reason, through: :order_reasons
+  has_many :order_reasons, class_name: 'Office::OrderReason',
+           foreign_key: :order_reason_order
+  has_many :reasons, class_name: 'Office::Reason', through: :order_reasons
 
-  has_many :metas, class_name: Office::OrderMeta, foreign_key: :order_meta_order
+  has_many :metas, class_name: 'Office::OrderMeta',
+           foreign_key: :order_meta_order
 
   scope :drafts, -> { where(order_status: STATUS_DRAFT) }
   scope :underways, -> { where(order_status: STATUS_UNDERWAY) }
@@ -47,11 +50,37 @@ class Office::Order < ActiveRecord::Base
     template.name
   end
 
+  # Форма обучения, к которой относится приказ.
+  def education_form
+    # Если для приказа не актуальна проверка формы обучения, †то nil.
+    return nil unless template.check_form
+
+    # TODO По-хорошему, нужно всё-таки добавлять к самому приказу его форму.
+    forms = students.map(&:education_form).uniq
+
+    if forms.size > 1
+      fail 'Студенты с разными формами обучения в одном приказе.'
+    end
+
+    forms.first
+  end
+
+  # Основа обучения, к которой относится приказ.
+  def education_source
+
+  end
+
+  # Направление обучения, к которому относится приказ.
+  def direction
+
+  end
+
   def to_nokogiri
     doc = Nokogiri::XML::Builder.new { |xml|
       xml.order {
         xml.id_         id
         xml.version     version
+        xml.revision     version
         xml.responsible responsible
         xml.status      status
         xml << template.to_nokogiri.root.to_xml

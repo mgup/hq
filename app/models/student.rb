@@ -86,6 +86,8 @@ class Student < ActiveRecord::Base
   has_and_belongs_to_many :study_repeats, class_name: 'Study::Repeat', join_table: 'exam_student', foreign_key: 'exam_student_student_group',
                           association_foreign_key: 'exam_student_exam'
 
+  delegate :education_form, to: :group
+
   default_scope do
     joins(:person)
     .order('last_name_hint, first_name_hint, patronym_hint')
@@ -384,6 +386,7 @@ GROUP BY `group`
         xml.contract abit_contract
         xml.accept_type accept_type
         xml.state_line state_line
+        xml.education_source payment
         xml << person.to_nokogiri.root.to_xml
         xml << group.to_nokogiri.root.to_xml
         xml << speciality.to_nokogiri.root.to_xml
