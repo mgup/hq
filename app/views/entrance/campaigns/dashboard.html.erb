@@ -13,6 +13,7 @@
 <table class="table table-condensed table-striped">
   <thead>
     <tr>
+      <th class="text-muted">№ п/п</th>
       <th class="text-muted">#</th>
       <th>Номер</th>
       <th>Дата</th>
@@ -28,10 +29,10 @@
       </th>
     </tr>
   </thead>
-  <% @applications.each do |application| %>
+  <% @applications.each_with_index do |application, index| %>
     <tr style="<%= 'text-decoration: line-through;' if 0 == application.pass_min_score %>"
         class="<%= 'text-muted' if 0 == application.pass_min_score %>">
-      <%= render partial: 'application_row', locals: { a: application } %>
+      <%= render partial: 'application_row', locals: { a: application, i: index+1 } %>
     </tr>
   <% end %>
 </table>

@@ -14,6 +14,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>№ п/п</th>
       <th>#</th>
       <th>Фамилия, имя, отчество</th>
       <th>Паспорт</th>
@@ -21,8 +22,9 @@
       <th></th>
     </tr>
   </thead>
-  <% @entrants.each do |entrant| %>
+  <% @entrants.each_with_index do |entrant, index| %>
     <tr>
+      <td class="text-muted"><%= index+1 %></td>
       <td class="text-muted"><%= entrant.id %></td>
       <td><%= entrant.full_name %></td>
       <td><%= [entrant.pseries, entrant.pnumber].join(' ') %></td>
