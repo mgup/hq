@@ -7,7 +7,7 @@
   <xsl:output method="xml" version="1.0" indent="yes" encoding="UTF-8" />
 
   <xsl:include href="utilities.xsl" />
-
+  <xsl:include href="metas_print.xsl" />
 
   <xsl:template match="order">
     <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -29,6 +29,7 @@
         <!-- Правила чередования нечетных/четных страниц -->
         <fo:page-sequence-master master-name="main">
           <fo:repeatable-page-master-alternatives>
+            <fo:conditional-page-master-reference master-reference="mainOdd" odd-or-even="odd" />
             <fo:conditional-page-master-reference master-reference="mainOdd" odd-or-even="odd" />
             <fo:conditional-page-master-reference master-reference="mainEven" odd-or-even="even" />
           </fo:repeatable-page-master-alternatives>
@@ -265,7 +266,7 @@
       <xsl:value-of select="./name" />
     </fo:block>
     <fo:block font="12pt PT Serif">
-      &laquo;______&raquo; _______________ 2013 г.
+      &laquo;______&raquo; _______________ 2014 г.
     </fo:block>
 
   </xsl:template>
@@ -300,7 +301,7 @@
 
   <!-- Обработка мета-информации -->
   <xsl:template match="outmeta">
-    <xsl:value-of select="/order/metas/meta[@name=current()/@name]" />
+    <xsl:value-of select="/order/metas/meta[@name=current()/@name]/value" />
   </xsl:template>
 
   <!-- Абзац с выравниванием по левому краю -->

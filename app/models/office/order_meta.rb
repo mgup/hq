@@ -10,13 +10,13 @@ class Office::OrderMeta < ActiveRecord::Base
   belongs_to :order, class_name: Office::Order, foreign_key: :order_meta_order
 
   def to_nokogiri
-    doc = Nokogiri::XML::Builder.new { |xml|
-      xml.meta {
-        xml.id_      id
-        xml.type     type
-        xml.object   object
-        xml.text     text
-        xml.pattern  pattern
+    Nokogiri::XML::Builder.new { |xml|
+      xml.meta(name: pattern) {
+        xml.id_     id
+        xml.type    type
+        xml.object  object
+        xml.value   text
+        xml.pattern pattern
       }
     }.doc
   end
