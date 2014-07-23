@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140718074551) do
+ActiveRecord::Schema.define(version: 20140723115223) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 20140718074551) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
+    t.integer  "entrant_id"
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
@@ -317,6 +318,11 @@ ActiveRecord::Schema.define(version: 20140718074551) do
     t.integer  "olympic_diplom_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "common_benefit_item_olympics", id: false, force: true do |t|
+    t.integer "common_benefit_item_id"
+    t.integer "use_olympic_id"
   end
 
   create_table "common_benefit_items", force: true do |t|
@@ -417,6 +423,8 @@ ActiveRecord::Schema.define(version: 20140718074551) do
     t.string  "department_role",    limit: 200, default: "students"
     t.boolean "department_active",              default: true,       null: false
     t.integer "department_parent"
+    t.string  "name_rp"
+    t.string  "short_name_rp"
   end
 
   add_index "department", ["department_prename"], name: "department_prename", using: :btree
@@ -629,6 +637,7 @@ ActiveRecord::Schema.define(version: 20140718074551) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
+    t.integer  "entrant_id"
   end
 
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
@@ -945,6 +954,11 @@ ActiveRecord::Schema.define(version: 20140718074551) do
     t.datetime "updated_at"
   end
 
+  create_table "entrance_test_benefit_item_olympics", id: false, force: true do |t|
+    t.integer "entrance_test_benefit_item_id"
+    t.integer "use_olympic_id"
+  end
+
   create_table "entrance_test_benefit_items", force: true do |t|
     t.integer  "entrance_test_item_id", null: false
     t.integer  "benefit_kind_id",       null: false
@@ -1056,6 +1070,89 @@ ActiveRecord::Schema.define(version: 20140718074551) do
   end
 
   add_index "exam", ["exam_subject"], name: "exam_subject", using: :btree
+
+  create_table "exam_formreader", primary_key: "exam_formreader_id", force: true do |t|
+    t.boolean "exam_formreader_parsed",                  default: false, null: false
+    t.string  "DocNumber",              limit: 16
+    t.string  "S1Id",                   limit: 16
+    t.float   "S1Result",               limit: 53
+    t.string  "S2Id",                   limit: 16
+    t.float   "S2Result",               limit: 53
+    t.string  "S3Id",                   limit: 16
+    t.float   "S3Result",               limit: 53
+    t.string  "S4Id",                   limit: 16
+    t.float   "S4Result",               limit: 53
+    t.string  "S5Id",                   limit: 16
+    t.float   "S5Result",               limit: 53
+    t.string  "S6Id",                   limit: 16
+    t.float   "S6Result",               limit: 53
+    t.string  "S7Id",                   limit: 16
+    t.float   "S7Result",               limit: 53
+    t.string  "S8Id",                   limit: 16
+    t.float   "S8Result",               limit: 53
+    t.string  "S9Id",                   limit: 16
+    t.float   "S9Result",               limit: 53
+    t.string  "S10Id",                  limit: 16
+    t.float   "S10Result",              limit: 53
+    t.string  "S11Id",                  limit: 16
+    t.float   "S11Result",              limit: 53
+    t.string  "S12Id",                  limit: 16
+    t.float   "S12Result",              limit: 53
+    t.string  "S13Id",                  limit: 16
+    t.float   "S13Result",              limit: 53
+    t.string  "S14Id",                  limit: 16
+    t.float   "S14Result",              limit: 53
+    t.string  "S15Id",                  limit: 16
+    t.float   "S15Result",              limit: 53
+    t.string  "S16Id",                  limit: 16
+    t.float   "S16Result",              limit: 53
+    t.string  "S17Id",                  limit: 16
+    t.float   "S17Result",              limit: 53
+    t.string  "S18Id",                  limit: 16
+    t.float   "S18Result",              limit: 53
+    t.string  "S19Id",                  limit: 16
+    t.float   "S19Result",              limit: 53
+    t.string  "S20Id",                  limit: 16
+    t.float   "S20Result",              limit: 53
+    t.string  "S21Id",                  limit: 16
+    t.float   "S21Result",              limit: 53
+    t.string  "S22Id",                  limit: 16
+    t.float   "S22Result",              limit: 53
+    t.string  "S23Id",                  limit: 16
+    t.float   "S23Result",              limit: 53
+    t.string  "S24Id",                  limit: 16
+    t.float   "S24Result",              limit: 53
+    t.string  "S25Id",                  limit: 16
+    t.float   "S25Result",              limit: 53
+    t.string  "S26Id",                  limit: 16
+    t.float   "S26Result",              limit: 53
+    t.string  "S27Id",                  limit: 16
+    t.float   "S27Result",              limit: 53
+    t.string  "S28Id",                  limit: 16
+    t.float   "S28Result",              limit: 53
+    t.string  "S29Id",                  limit: 16
+    t.float   "S29Result",              limit: 53
+    t.string  "S30Id",                  limit: 16
+    t.float   "S30Result",              limit: 53
+    t.string  "S31Id",                  limit: 16
+    t.float   "S31Result",              limit: 53
+    t.string  "S32Id",                  limit: 16
+    t.float   "S32Result",              limit: 53
+    t.string  "S33Id",                  limit: 16
+    t.float   "S33Result",              limit: 53
+    t.string  "S34Id",                  limit: 16
+    t.float   "S34Result",              limit: 53
+    t.string  "S35Id",                  limit: 16
+    t.float   "S35Result",              limit: 53
+    t.string  "S36Id",                  limit: 16
+    t.float   "S36Result",              limit: 53
+    t.binary  "ImageData",              limit: 16777215
+    t.string  "Created",                limit: 32
+    t.string  "Recognized",             limit: 32
+    t.string  "Verified",               limit: 32
+  end
+
+  add_index "exam_formreader", ["DocNumber"], name: "DocNumber", using: :btree
 
   create_table "exam_student", primary_key: "exam_student_id", force: true do |t|
     t.integer "exam_student_exam",          null: false
