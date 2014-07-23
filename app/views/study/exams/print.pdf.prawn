@@ -247,7 +247,7 @@ prawn_document margin: [28, 20, 28, 28],
 
         st.each_with_index do |student, index|
             position_x = x_pos
-            tableData << [index+1, student.student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
+            tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
             8.times do
               pdf.rectangle [position_x + 242, position_y - 5.4], 7, 7
               position_x += 15

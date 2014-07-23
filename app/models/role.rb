@@ -15,6 +15,7 @@ class Role < ActiveRecord::Base
   end
 
   scope :ordered, -> { order(:acl_role_description) }
+  scope :by_name, -> name {where(acl_role_name: name)}
 
   def active?
     active

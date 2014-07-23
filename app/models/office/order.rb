@@ -101,7 +101,37 @@ class Office::Order < ActiveRecord::Base
   end
 
   def to_xml
-    to_nokogiri.to_xml
+    xml = to_nokogiri
+
+    xml.css('employee').each do |node|
+      # role = Role.by_name(node.xpath('role').inner_text).first
+      users = User.all
+      if !node.xpath('role').empty?
+        users = users.from_role(node.xpath('role').inner_text)
+        position = Position.from_role(node.xpath('role').inner_text).first
+      elsif !(node.xpath('position').empty? || node.xpath('position').inner_text == '')
+        users = users.from_position(node.xpath('position').inner_text)
+        position = Position.find(node.xpath('position').inner_text)
+      elsif !(node.xpath('department').empty? || node.xpath('department').inner_text == '')
+        users = users.from_department(node.xpath('department').inner_text)
+      end
+
+      unless users.empty? || users == User.all || users.nil?
+        user = users.first
+        id = Nokogiri::XML::Node.new 'id', node
+        id.content = user.id
+        phone = Nokogiri::XML::Node.new 'phone', node
+        phone.content = user.phone
+        name = Nokogiri::XML::Node.new 'name', node
+        name.content = user.short_name
+        title = Nokogiri::XML::Node.new 'title', node
+        title.content = position.title
+        department = Nokogiri::XML::Node.new 'department_short_name', node
+        department.content = position.department.abbreviation
+        node << id << phone << name << title << department
+      end
+    end
+    xml.to_xml
   end
 
   def to_html
