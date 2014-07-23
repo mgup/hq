@@ -340,6 +340,21 @@
     </fo:list-item>
   </xsl:template>
 
+  <xsl:template match="iListInner">
+    <fo:list-item>
+      <fo:list-item-label end-indent="label-end()">
+        <fo:block>
+          <xsl:number format="1" />)
+        </fo:block>
+      </fo:list-item-label>
+      <fo:list-item-body start-indent="body-start()">
+        <fo:block>
+          <xsl:apply-templates />
+        </fo:block>
+      </fo:list-item-body>
+    </fo:list-item>
+  </xsl:template>
+
   <xsl:template match="table">
     <fo:table table-layout="fixed" width="100%" border="1pt solid #000000" space-before="10pt">
       <xsl:apply-templates />
