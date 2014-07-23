@@ -15,7 +15,7 @@ class Office::OrderMeta < ActiveRecord::Base
         xml.id_      id
         xml.type     type
         xml.object   object
-        xml.text     text
+        xml._text     text
         xml.pattern  pattern
       }
     }.doc
