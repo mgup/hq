@@ -7,18 +7,22 @@ class Office::OrderMeta < ActiveRecord::Base
   alias_attribute :text,    :order_meta_text
   alias_attribute :pattern, :order_meta_pattern
 
-  belongs_to :order, class_name: Office::Order, foreign_key: :order_meta_order
+  belongs_to :order,
+             class_name: 'Office::Order',
+             foreign_key: :order_meta_order
 
   def to_nokogiri
-    doc = Nokogiri::XML::Builder.new { |xml|
-      xml.meta {
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.meta do
         xml.id_      id
         xml.type     type
         xml.object   object
         xml.value    text
         xml.pattern  pattern
-      }
-    }.doc
+      end
+    end
+
+    builder.doc
   end
 
   def to_xml

@@ -76,28 +76,29 @@ class Office::Order < ActiveRecord::Base
   end
 
   def to_nokogiri
-    doc = Nokogiri::XML::Builder.new { |xml|
-      xml.order {
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.order do
         xml.id_         id
         xml.version     version
         xml.revision     version
         xml.responsible responsible
         xml.status      status
         xml << template.to_nokogiri.root.to_xml
-        xml.students {
+        xml.students do
           students.each { |student| xml << student.to_nokogiri.root.to_xml }
-        }
-        xml.metas {
+        end
+        xml.metas do
           metas.each { |meta| xml << meta.to_nokogiri.root.to_xml }
-        }
-        xml.reasons {
-          reasons.each { |reason| xml << reason.to_nokogiri.root.to_xml }
-        }
+        end
+        # xml.reasons do
+        #   reasons.each { |reason| xml << reason.to_nokogiri.root.to_xml }
+        # end
         xml.text_
-      }
-    }.doc
+        xml.signature_
+      end
+    end
 
-    Nokogiri::XSLT(template.current_xsl.stylesheet).transform(doc)
+    Nokogiri::XSLT(template.current_xsl.stylesheet).transform(builder.doc)
   end
 
   def to_xml
