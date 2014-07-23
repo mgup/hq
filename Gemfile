@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails'
 gem 'mysql2'
-gem 'coveralls', require: false
 
 gem 'sass-rails'
 gem 'bootstrap-sass'
