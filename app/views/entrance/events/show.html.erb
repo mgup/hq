@@ -46,7 +46,9 @@
  </thead>
  <% @event.entrants.each do |entrant| %>
    <tr>
-     <td class="text-muted"><%= entrant.packed_application.number %></td>
+     <td class="text-muted">
+       <%= entrant.packed_application.number if entrant.packed_application %>
+     </td>
      <td><%= entrant.last_name %></td>
      <td><%= entrant.first_name %></td>
      <td><%= entrant.patronym %></td>
