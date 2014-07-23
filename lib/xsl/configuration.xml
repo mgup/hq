@@ -6,7 +6,7 @@
       <fonts>
         <directory>/Users/anna/Projects/hq/app/assets/fonts</directory>
         <directory>/Users/storkvist/Sites/mgup/hq/app/assets/fonts</directory>
-        <directory>/var/www/Matrix-HQ/current/app/assets/fonts</directory>
+        <directory>/home/matrix/webapps/matrix/current/app/assets/fonts</directory>
       </fonts>
     </renderer>
   </renderers>
