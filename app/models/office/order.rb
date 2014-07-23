@@ -108,8 +108,14 @@ class Office::Order < ActiveRecord::Base
       # role = Role.by_name(node.xpath('role').inner_text).first
       users = User.all
       if !node.xpath('role').empty?
-        users = users.from_role(node.xpath('role').inner_text)
-        position = Position.from_role(node.xpath('role').inner_text).first
+        if !node.xpath('department').empty?
+          position = Position.from_role(node.xpath('role').inner_text).
+            where('acl_position_department = ?', node.xpath('department').inner_text).first
+          users = [position.user]
+        else
+          users = users.from_role(node.xpath('role').inner_text)
+          position = Position.from_role(node.xpath('role').inner_text).first
+        end
       elsif !(node.xpath('position').empty? || node.xpath('position').inner_text == '')
         users = users.from_position(node.xpath('position').inner_text)
         position = Position.find(node.xpath('position').inner_text)
