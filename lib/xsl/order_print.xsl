@@ -145,15 +145,17 @@
                 <!--</fo:block>-->
                 <!--</fo:table-cell>-->
                 <!--</fo:table-row>-->
-                <xsl:if test="payment">
+                <!--<xsl:if test="payment">-->
                   <fo:table-row>
                     <fo:table-cell>
-                      <fo:block font="12pt PT Serif">
-                        (<xsl:value-of select="payment/ip" /> основа)
+                      <fo:block font="12pt PT Serif" font-weight="bold">
+                        <xsl:if test="1 = /order/students/student/education_source">бюджетная </xsl:if>
+                        <xsl:if test="2 = /order/students/student/education_source">внебюджетная </xsl:if>
+                        основа
                       </fo:block>
                     </fo:table-cell>
                   </fo:table-row>
-                </xsl:if>
+                <!--</xsl:if>-->
               </fo:table-body>
             </fo:table>
           </fo:block>
@@ -350,6 +352,11 @@
       <fo:list-item-body start-indent="body-start()">
         <fo:block>
           <xsl:apply-templates />
+          <!-- Вывод точки с запятой или точки, в зависимости от положения основания в списке. -->
+          <xsl:choose>
+            <xsl:when test="position() = last()">.</xsl:when>
+            <xsl:otherwise>;</xsl:otherwise>
+          </xsl:choose>
         </fo:block>
       </fo:list-item-body>
     </fo:list-item>
