@@ -35,7 +35,10 @@ class Office::OrdersController < ApplicationController
         command << ' -pdf -'
         document = `#{command}`
 
-        send_data( document, type: 'application/pdf', filename: "#{filename}.pdf")
+        send_data document,
+                  type: 'application/pdf',
+                  filename: "#{filename}.pdf",
+                  disposition: 'inline'
 
         xml.close
         xml.unlink
