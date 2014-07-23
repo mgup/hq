@@ -25,7 +25,7 @@ class Office::Order < ActiveRecord::Base
   has_many :reasons, class_name: 'Office::Reason', through: :order_reasons
 
   has_many :metas, class_name: 'Office::OrderMeta',
-           foreign_key: :order_meta_order
+           foreign_key: :order_meta_order, primary_key: :order_id
 
   scope :drafts, -> { where(order_status: STATUS_DRAFT) }
   scope :underways, -> { where(order_status: STATUS_UNDERWAY) }
