@@ -42,6 +42,14 @@ class Speciality < ActiveRecord::Base
     code + ' ' + name
   end
 
+  def group_name_suffix
+    suffix + case
+             when bachelor? then 'Б'
+             when master? then 'М'
+             else ''
+             end
+  end
+
   def to_xml
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.speciality do

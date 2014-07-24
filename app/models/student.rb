@@ -138,7 +138,7 @@ class Student < ActiveRecord::Base
       cond = cond.where(student_group_group: Group.includes(:speciality).from_speciality(filters[:speciality]))
     end
     if filters.key?(:faculty)
-      cond = cond.where(student_group_group: Group.from_faculty(filters[:faculty]))
+      cond = cond.where(student_group_group: Group.filter(faculty: filters[:faculty]))
     end
 
     if filters.key?(:form)
@@ -213,7 +213,7 @@ GROUP BY `group`
   def tuition_fee
     return 0 if budget?
 
-    student_form = group.distance? ? Group::FORM_POSTAL : group.form
+    student_form = group.distance? ? Group::FORMS[:postal] : group.form
 
     total_sum = 0
     {

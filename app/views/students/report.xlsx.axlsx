@@ -141,7 +141,7 @@ end
 #Department.includes(:specialities).faculties.each do |f|
 #  f.specialities.each do |s|
 #    [1,2,3,4,5,6].each do |course|
-#      lines[(course-1)] << Student.unscoped.valid_student.filter(speciality: s, course: course, form: Group::FORM_DISTANCE).length
+#      lines[(course-1)] << Student.unscoped.valid_student.filter(speciality: s, course: course, form: Group::FORMS[:distance]).length
 #    end
 #  end
 #end
