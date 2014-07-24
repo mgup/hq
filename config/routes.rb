@@ -294,6 +294,7 @@ HQ::Application.routes.draw do
       get 'paid_enrollment', on: :member
 
       resources :dates
+      resources :items, only: [:index, :show]
       resources :exams do
         resources :exam_results do
           get 'ajax_update', to: 'exam_results#ajax_update', on: :member

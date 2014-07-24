@@ -16,5 +16,6 @@ class Entrance::Campaign < ActiveRecord::Base
   has_many :contracts, class_name: 'Entrance::Contract', through: :applications
   has_and_belongs_to_many :education_forms
   has_many :competitive_groups, class_name: 'Entrance::CompetitiveGroup'
+  has_many :items, class_name: 'Entrance::CompetitiveGroupItem', through: :competitive_groups
   has_many :checks, through: :entrants
 end

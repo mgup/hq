@@ -259,7 +259,6 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
-    t.integer  "entrant_id"
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
@@ -637,7 +636,6 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
-    t.integer  "entrant_id"
   end
 
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
@@ -767,6 +765,7 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.string   "delegate_pnumber"
     t.string   "delegate_pdepartment"
     t.date     "delegate_pdate"
+    t.string   "delegate_organization"
     t.string   "delegate_mobile"
     t.string   "delegate_fax"
     t.string   "delegate_inn"
@@ -774,7 +773,6 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.string   "delegate_ls"
     t.string   "delegate_bik"
     t.string   "delegate_position"
-    t.string   "delegate_organization"
   end
 
   create_table "entrance_dates", force: true do |t|

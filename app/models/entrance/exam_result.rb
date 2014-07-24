@@ -70,6 +70,20 @@ class Entrance::ExamResult < ActiveRecord::Base
     builder.doc
   end
 
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.exam_result {
+        xml.id_   id
+        xml.score score
+        xml.name exam.name
+      }
+    }.doc
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
+
   private
 
   def fis_entrance_test_subject(xml)
