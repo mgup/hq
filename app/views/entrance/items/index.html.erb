@@ -1,0 +1,28 @@
+<div class="page-header">
+    <h1>Протоколы заседения приёмной комисси <small><%= @campaign.name %></small></h1>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Конкурсная группа</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each_with_index do |item, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= item.description %></td>
+        <td>
+            <%= link_to 'Распечатать протокол',
+                        entrance_campaign_item_path(
+                            @campaign, item, params.merge({ name: 'О зачислении', format: :pdf })
+                        ),
+                        target: :blank, class: 'btn btn-default' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

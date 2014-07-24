@@ -10,6 +10,10 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
     direction.name
   end
 
+  def description
+   "#{direction_name}, #{form_name} форма, #{budget_name}"
+  end
+
   def form
     (number_budget_o > 0 || number_paid_o > 0 || number_quota_o > 0) ? 11 : ((number_budget_oz > 0 || number_paid_oz > 0 || number_quota_oz > 0) ? 12 : 10)
   end
@@ -47,5 +51,24 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
       else 10
         103
     end
+  end
+
+  def to_nokogiri(protocol_name)
+    Nokogiri::XML::Builder.new do |xml|
+      xml.protocol do
+        xml.id_     id
+        xml.name    protocol_name
+        xml.form    matrix_form
+        xml.speciality Speciality.from_direction(direction)
+        # xml.students do
+        #   students.each { |student| xml << student.to_nokogiri.root.to_xml }
+        # end
+
+      end
+    end
+  end
+
+  def to_xml(protocol_name)
+    to_nokogiri(protocol_name).to_xml
   end
 end

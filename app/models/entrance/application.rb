@@ -98,6 +98,14 @@ class Entrance::Application < ActiveRecord::Base
     sum
   end
 
+  def abitexams
+    exams = []
+    competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).collect{|x| x.exam}.each do |exam|
+      exams << entrant.exam_results.by_exam(exam.id).last
+    end
+    exams
+  end
+
   def self.rating(form = '11', payment = '14', direction = '1887')
     form_method = case form
                     when '10'
@@ -380,7 +388,9 @@ class Entrance::Application < ActiveRecord::Base
         xml.abitpoints abitpoints
         xml.benefit (benefits.collect{|x| x.id}.include? 4 ? 4 : (benefits.collect{|x| x.id}.include? 1 ? 1 : nil))
         xml.number number
-
+        xml.exams do
+          abitexams.each { |exam| xml << exam.to_nokogiri.root.to_xml }
+        end
         xml << contract.to_nokogiri.root.to_xml if contract
       }
     }.doc
