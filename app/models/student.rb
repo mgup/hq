@@ -213,7 +213,7 @@ GROUP BY `group`
   def tuition_fee
     return 0 if budget?
 
-    student_form = group.is_distance? ? Group::FORM_POSTAL : group.form
+    student_form = group.distance? ? Group::FORM_POSTAL : group.form
 
     total_sum = 0
     {

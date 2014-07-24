@@ -6,11 +6,16 @@ class Group < ActiveRecord::Base
 
   self.table_name = 'group'
 
-  alias_attribute :id,     :group_id
-  alias_attribute :course, :group_course
-  alias_attribute :number, :group_number
-  alias_attribute :form,   :group_form
+  alias_attribute :id,             :group_id
+  alias_attribute :course,         :group_course
+  alias_attribute :number,         :group_number
+  alias_attribute :form,           :group_form
   alias_attribute :education_form, :group_form
+
+  enum group_form: { fulltime: FORM_FULLTIME,
+                     semitime: FORM_SEMITIME,
+                     postal: FORM_POSTAL,
+                     distance: FORM_DISTANCE }
 
   belongs_to :speciality, primary_key: :speciality_id, foreign_key: :group_speciality
 
@@ -33,14 +38,13 @@ class Group < ActiveRecord::Base
   scope :from_speciality, -> speciality { where(group_speciality: speciality) }
   scope :from_course, -> course { where(group_course: course) }
   scope :from_form, -> form { where(group_form: form) }
-  scope :from_faculty, -> faculty {
+  scope :from_faculty, -> faculty do
     joins(:speciality).where(speciality: { speciality_faculty: faculty })
-  }
+  end
 
+  scope :second_higher, -> { where(group_second_higher: true) }
 
-  scope :second_higher, -> {where(group_second_higher: true)}
-
-  scope :filter, -> filters {
+  def self.filter(filters)
     [:speciality, :course, :form, :faculty].inject(all) do |cond, field|
       if filters.include?(field) && !filters[field].empty?
         cond = cond.send "from_#{field.to_s}", filters[field]
@@ -48,12 +52,12 @@ class Group < ActiveRecord::Base
 
       cond
     end
-  }
+  end
 
-  scope :without_graduate, -> {
+  def self.without_graduate
     joins('LEFT JOIN graduates ON graduates.group_id = group.group_id')
     .where('graduates.id IS NULL')
-  }
+  end
 
   # Поиск всех групп с выпускниками.
   def self.for_graduate
@@ -61,83 +65,52 @@ class Group < ActiveRecord::Base
   end
 
   def study_length
-    case form
-      when 101
-        speciality.speciality_olength
-      when 102
-        speciality.speciality_ozlength
-      when 103
-        speciality.speciality_zlength
-      when 105
-        speciality.speciality_zlength
-    end
+    speciality.send case form
+                    when 101 then :speciality_olength
+                    when 102 then :speciality_ozlength
+                    when 103 then :speciality_zlength
+                    when 105 then :speciality_zlength
+                    else fail 'Неизвестная форма обучения.'
+                    end
   end
 
   def support
     case form
-      when 101
-        'очной'
-      when 102
-        'очно-заочной'
-      when 103
-        'заочной'
-      when 105
-        'дистанционной'
+    when 101 then 'очной'
+    when 102 then 'очно-заочной'
+    when 103 then 'заочной'
+    when 105 then 'дистанционной'
+    else fail 'Неизвестная форма обучения.'
     end
   end
 
   def this_form
     case form
-      when 101
-        'очная'
-      when 102
-        'очно-заочная'
-      when 103
-        'заочная'
-      when 105
-        'дистанционная'
+    when 101 then 'очная'
+    when 102 then 'очно-заочная'
+    when 103 then 'заочная'
+    when 105 then 'дистанционная'
+    else fail 'Неизвестная форма обучения.'
     end
   end
 
   def library_form
     case form
-      when 101
-        1
-      when 102
-        2
-      else
-        3
+    when 101 then 1
+    when 102 then 2
+    else 3
     end
   end
 
   def name
-    n = []
+    n = [] << case form
+              when 'fulltime' then 'Д'
+              when 'semitime' then 'В'
+              when 'postal'   then 'З'
+              when 'distance' then 'З'
+              else fail 'Неизвестная форма обучения.'
+              end
 
-    case form
-      when 101
-        n << 'Д'
-      when 102
-        n << 'В'
-      when 103
-        n << 'З'
-      when 105
-        n << 'З'
-    end
-
-    #case speciality.faculty.id
-    #  when Department::FITIM
-    #    n << 'Ц'
-    #  when Department::FPT
-    #    n << 'Т'
-    #  when Department::FRISO
-    #    n << 'Р'
-    #  when Department::FIDIZH
-    #    n << 'К'
-    #  when Department::FEIM
-    #    n << 'Э'
-    #  when Department::FGI
-    #    n << 'Г'
-    #end
     n << group_name[1]
 
     n << speciality.suffix
@@ -147,10 +120,6 @@ class Group < ActiveRecord::Base
 
     n << "-#{course}-#{number}"
     n.join
-  end
-
-  def is_distance?
-    FORM_DISTANCE == form
   end
 
   def group_marks(discipline = nil)
@@ -163,26 +132,22 @@ class Group < ActiveRecord::Base
   WHERE (subject_group = #{id}) AND (m2.checkpoint_mark_submitted IS NULL)
                                 AND (subject_year = #{discipline ? discipline.year : Study::Discipline::CURRENT_STUDY_YEAR})
                                 AND (subject_semester = #{discipline ? discipline.semester : :Study::Discipline::CURRENT_STUDY_TERM})
-                                AND (subject_id IN (#{discipline ? discipline.id : disciplines.now.collect{|d| d.id}.join(', ')}))
+                                AND (subject_id IN (#{discipline ? discipline.id : disciplines.now.map(&:id).join(', ')}))
                                 GROUP BY `m1`.`checkpoint_mark_checkpoint`,
   `m1`.`checkpoint_mark_student`,
   `m1`.`checkpoint_mark_submitted` ORDER BY `checkpoint`.`checkpoint_date` ASC, `m1`.`checkpoint_mark_submitted` ASC
   ;")
   end
 
-  def to_nokogiri
+  def to_xml
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.group do
-        xml.id_   id
-        xml.name  name
+        xml.id_ id
+        xml.name name
         xml.form form
       end
     end
 
-    builder.doc
-  end
-
-  def to_xml
-    to_nokogiri.to_xml
+    builder.doc.to_xml
   end
 end
