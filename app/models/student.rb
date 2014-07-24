@@ -127,7 +127,7 @@ class Student < ActiveRecord::Base
     end
 
     if filters.key?(:course)
-      cond = cond.where(student_group_group: Group.from_course(filters[:course]))
+      cond = cond.where(student_group_group: Group.filter(course: filters[:course]))
     end
 
     if filters.key?(:group)
@@ -135,14 +135,14 @@ class Student < ActiveRecord::Base
     end
 
     if filters.key?(:speciality)
-      cond = cond.where(student_group_group: Group.includes(:speciality).from_speciality(filters[:speciality]))
+      cond = cond.where(student_group_group: Group.filter(speciality: filters[:speciality]))
     end
     if filters.key?(:faculty)
       cond = cond.where(student_group_group: Group.filter(faculty: filters[:faculty]))
     end
 
     if filters.key?(:form)
-      cond = cond.where(student_group_group: Group.from_form(filters[:form]))
+      cond = cond.where(student_group_group: Group.filter(form: filters[:form]))
     end
 
     if filters.key?(:finance)

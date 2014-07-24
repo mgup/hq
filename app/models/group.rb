@@ -44,9 +44,6 @@ class Group < ActiveRecord::Base
     .order('group_name ASC, group_course ASC, group_number ASC')
   end
 
-  scope :from_speciality, -> speciality { where(group_speciality: speciality) }
-  scope :from_course, -> course { where(group_course: course) }
-  scope :from_form, -> form { where(group_form: form) }
   scope :find_all_by_faculty, lambda { |faculty|
     joins(:speciality).where(speciality: { speciality_faculty: faculty })
   }
