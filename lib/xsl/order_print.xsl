@@ -379,7 +379,7 @@
                       <fo:table-body>
                           <fo:table-row>
                               <fo:table-cell>
-                                  <fo:block>Председатель приёмной комиссии</fo:block>
+                                  <fo:block>Председатель приемной комиссии</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block>Антипов К.В.</fo:block>
@@ -390,7 +390,7 @@
                           </fo:table-row>
                           <fo:table-row>
                               <fo:table-cell>
-                                  <fo:block>Зам. председателя приёмной комиссии</fo:block>
+                                  <fo:block>Зам. председателя приемной комиссии</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block>Маркелова Т.В.</fo:block>
@@ -401,7 +401,7 @@
                           </fo:table-row>
                           <fo:table-row>
                               <fo:table-cell>
-                                  <fo:block>Зам. председателя по приёму в аспирантуру</fo:block>
+                                  <fo:block>Зам. председателя по приему в аспирантуру</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block>Назаров В.Г.</fo:block>
