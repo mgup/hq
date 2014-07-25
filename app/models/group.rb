@@ -146,4 +146,14 @@ class Group < ActiveRecord::Base
 
     builder.doc.to_xml
   end
+
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.group do
+        xml.id_ id
+        xml.name name
+        xml.form form
+      end
+    }.doc
+  end
 end

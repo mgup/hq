@@ -64,4 +64,17 @@ class Speciality < ActiveRecord::Base
 
     builder.doc.to_xml
   end
+
+  def to_nokogiri
+    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
+      xml.speciality do
+        xml.id_   id
+        xml.code  code
+        xml.new_code Direction.where('code = ? AND qualification_code = ?', code.split('.')[0], code.split('.')[1]).first.new_code
+        xml.name  name
+        xml.type type
+        xml << faculty.to_nokogiri.root.to_xml
+      end
+    }.doc
+  end
 end

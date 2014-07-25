@@ -4,6 +4,10 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   belongs_to :direction
   belongs_to :education_level
 
+  has_many :applications, class_name: 'Entrance::Application'
+  has_many :packed_applications, -> { where(packed: true)}, class_name: 'Entrance::Application'
+  has_many :entrants, through: :applications
+
   scope :from_direction, -> direction_id { where(direction_id: direction_id) }
 
   def direction_name
@@ -27,7 +31,7 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   end
 
   def budget_name
-    (number_paid_o > 0 || number_paid_oz > 0 || number_paid_z > 0) ? 'договор' : 'бюджет'
+    (number_paid_o > 0 || number_paid_oz > 0 || number_paid_z > 0) ? 'по договорам' : 'бюджет'
   end
 
   def distance?
@@ -60,10 +64,9 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
         xml.name    protocol_name
         xml.form    matrix_form
         xml.speciality Speciality.from_direction(direction)
-        # xml.students do
-        #   students.each { |student| xml << student.to_nokogiri.root.to_xml }
-        # end
-
+        xml.applications do
+          applications.each { |ap| xml << ap.to_nokogiri.root.to_xml }
+        end
       end
     end
   end

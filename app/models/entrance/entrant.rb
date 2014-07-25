@@ -132,7 +132,8 @@ class Entrance::Entrant < ActiveRecord::Base
   def to_nokogiri
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.entrant {
-        xml.id_   id
+        xml.id_  id
+        xml.name full_name
         xml << packed_application.to_nokogiri.root.to_xml
       }
     }.doc

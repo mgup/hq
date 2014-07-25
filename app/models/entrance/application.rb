@@ -93,7 +93,7 @@ class Entrance::Application < ActiveRecord::Base
   def abitpoints
     sum = 0
     competitive_group_item.competitive_group.test_items.collect{|x| x.exam}.each do |exam|
-      sum += entrant.exam_results.by_exam(exam.id).last.score
+      sum += entrant.exam_results.by_exam(exam.id).last.score if entrant.exam_results.by_exam(exam.id).last.score
     end
     sum
   end
@@ -391,6 +391,7 @@ class Entrance::Application < ActiveRecord::Base
         xml.exams do
           abitexams.each { |exam| xml << exam.to_nokogiri.root.to_xml }
         end
+        # xml << entrant.to_nokogiri.root.to_xml
         xml << contract.to_nokogiri.root.to_xml if contract
       }
     }.doc

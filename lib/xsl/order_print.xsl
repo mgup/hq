@@ -11,7 +11,6 @@
 
   <xsl:template match="order">
     <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
-
       <!-- Верстка -->
       <fo:layout-master-set>
         <!-- Шаблон нечетных страниц -->
@@ -34,6 +33,18 @@
             <fo:conditional-page-master-reference master-reference="mainEven" odd-or-even="even" />
           </fo:repeatable-page-master-alternatives>
         </fo:page-sequence-master>
+
+          <fo:simple-page-master master-name="landscape" page-height="210mm" page-width="297mm" margin-top="2cm" margin-bottom="1.5cm" margin-left="2cm" margin-right="2cm">
+              <fo:region-body margin-bottom="1mm" />
+              <fo:region-after region-name="oddFoot" />
+          </fo:simple-page-master>
+
+          <fo:page-sequence-master master-name="protocol">
+              <fo:repeatable-page-master-alternatives>
+                  <fo:conditional-page-master-reference master-reference="landscape"  />
+                  <fo:conditional-page-master-reference master-reference="landscape"  />
+              </fo:repeatable-page-master-alternatives>
+          </fo:page-sequence-master>
       </fo:layout-master-set>
 
       <fo:page-sequence master-reference="main">
@@ -170,11 +181,12 @@
           <xsl:apply-templates select="/order/signature" />
           <xsl:apply-templates select="/order/dispatch" />
 
-          <xsl:apply-templates select="/order/protocol" />
         </fo:flow>
       </fo:page-sequence>
+      <xsl:apply-templates select="/order/protocol" />
     </fo:root>
   </xsl:template>
+
 
   <!-- Основания приказа -->
   <xsl:template match="reasons">
@@ -310,317 +322,339 @@
 
   <!-- Протокол -->
   <xsl:template match="protocol">
-    <fo:block break-after="page"/>
-    <fo:block>
-      <fo:block font="12pt PT Serif" text-align="right" space-after="13pt">
-        Приложение № <xsl:value-of select="position()" />
-      </fo:block>
-      <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
-         ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ
-      </fo:block>
-      <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
-         МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА
-      </fo:block>
-      <fo:block font="12pt PT Serif" space-before="5pt" font-weight="bold" text-align="center">
-          <xsl:apply-templates select="./name" />
-      </fo:block>
-      <fo:block font="11pt PT Serif" space-before="15pt">
-      от &laquo;______&raquo; _______________ 2014 г.
-      </fo:block>
-      <fo:block font="12pt PT Serif" space-before="10pt" font-weight="bold">
-        Направление: <xsl:value-of select="/order/students/student/speciality/new_code" />
-        &laquo;<xsl:value-of select="/order/students/student/speciality/name" />&raquo;
-      </fo:block>
-      <fo:block font="12pt PT Serif" space-before="3pt" font-weight="bold">
-        Форма обучения: 
-          <xsl:choose>
-              <xsl:when test="101 = /order/students/student/group/form">очная</xsl:when>
-              <xsl:when test="102 = /order/students/student/group/form">очно-заочная</xsl:when>
-              <xsl:when test="103 = /order/students/student/group/form">заочная</xsl:when>
-          </xsl:choose>
-      </fo:block>
-      <fo:block font="12pt PT Serif" space-before="3pt" font-weight="bold">
-        Основа обучения:
-        <xsl:if test="1 = /order/students/student/education_source"> бюджет</xsl:if>
-        <xsl:if test="2 = /order/students/student/education_source"> контракт</xsl:if>
-      </fo:block>
-    </fo:block>
+      <!--<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">-->
+          <fo:page-sequence master-reference="protocol">
+              <fo:flow flow-name="xsl-region-body">
+                  <fo:block>
+                      <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
+                          ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ
+                      </fo:block>
+                      <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
+                          МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА
+                      </fo:block>
+                      <fo:block font="12pt PT Serif" space-before="5pt" font-weight="bold" text-align="center">
+                          <xsl:apply-templates select="./name" />
+                      </fo:block>
+                      <fo:table table-layout="fixed" width="100%" space-after="8pt">
+                          <fo:table-column column-width="proportional-column-width(1)" />
+                          <fo:table-column column-width="proportional-column-width(2.5)" />
+                          <fo:table-column column-width="proportional-column-width(1.2)" />
+                          <fo:table-body>
+                              <fo:table-row>
+                                  <fo:table-cell>
+                                      <fo:block font="12pt PT Serif" text-align="end">№ __________________</fo:block>
+                                  </fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block />
+                                  </fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block font="12pt PT Serif" text-align="end">от &laquo;______&raquo; ______________ 2014 г.</fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </fo:table-body>
+                      </fo:table>
+                      <fo:block font="11pt PT Serif" space-before="8pt" font-weight="bold">
+                          Направление: <xsl:value-of select="/order/students/student/speciality/new_code" />
+                          &laquo;<xsl:value-of select="/order/students/student/speciality/name" />&raquo;
+                      </fo:block>
+                      <fo:block font="11pt PT Serif" space-before="2pt" font-weight="bold">
+                          Форма обучения: 
+                          <xsl:choose>
+                              <xsl:when test="101 = /order/students/student/group/form">очная</xsl:when>
+                              <xsl:when test="102 = /order/students/student/group/form">очно-заочная</xsl:when>
+                              <xsl:when test="103 = /order/students/student/group/form">заочная</xsl:when>
+                          </xsl:choose>
+                      </fo:block>
+                      <fo:block font="11pt PT Serif" space-before="2pt" font-weight="bold">
+                          Основа обучения:
+                          <xsl:if test="1 = /order/students/student/education_source"> бюджет</xsl:if>
+                          <xsl:if test="2 = /order/students/student/education_source"> по договорам</xsl:if>
+                      </fo:block>
+                  </fo:block>
 
-    <fo:table font="11pt PT Serif" table-layout="fixed" width="100%" space-before="15pt">
-      <fo:table-column column-width="proportional-column-width(2.5)" />
-      <fo:table-column column-width="proportional-column-width(1)" />
-      <fo:table-column column-width="proportional-column-width(1)" />
-      <fo:table-body>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Председатель приёмной комиссии</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Антипов К.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Зам. председателя приёмной комиссии</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Маркелова Т.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Зам. председателя по приёму в аспирантуру</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Назаров В.Г.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Ответственный секретарь</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Хохлогорская Е.Л.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Заместитель ответственного секретаря по бюджетному приему</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Боцман Ю.Ю.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Заместитель ответственного секретаря по приему в аспирантуру</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Ситникова Т.А.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Заместитель ответственного секретаря по проведению вступительных испытаний</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Алиева Д.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Заместитель ответственного секретаря по приему иностранных граждан</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Иванова И.А.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Заместитель ответственного секретаря</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Саркисова Е.Ю.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-      </fo:table-body>
-    </fo:table>
-    <fo:block font="12pt PT Serif" space-before="10pt">
-    Члены приемной комиссии
-    </fo:block>
-    <fo:table font="11pt PT Serif" table-layout="fixed" width="100%" space-before="10pt">
-      <fo:table-column column-width="proportional-column-width(1)" />
-      <fo:table-column column-width="proportional-column-width(1)" />
-      <fo:table-column column-width="proportional-column-width(0.2)" />
-      <fo:table-column column-width="proportional-column-width(1)" />
-      <fo:table-column column-width="proportional-column-width(1)" />
-      <fo:table-body>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Корытов О.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Горлов С.Ю.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Винокур А.И.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Столяров А.А.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Кулаков В.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Сидорова Н.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Миронова Г.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Перевалова Е.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Дмитриев Я.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Галицкий Д.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Гордеева Е.Е.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Шляга В.С.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Голева О.П.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Толутанова Ю.Н.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Токмаков Б.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>Яковлев Р.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-          </fo:table-row>
-          <fo:table-row>
-              <fo:table-cell>
-                  <fo:block>Яковлев А.В.</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block>______________________</fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-              <fo:table-cell>
-                  <fo:block />
-              </fo:table-cell>
-          </fo:table-row>
-      </fo:table-body>
-    </fo:table>
-    <fo:block font="11pt PT Serif" space-before="25pt">
-        <xsl:apply-templates select="./content" />
-    </fo:block>
-
+                  <fo:table font="11pt PT Serif" table-layout="fixed" width="100%" space-before="8pt">
+                      <fo:table-column column-width="proportional-column-width(4.4)" />
+                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-body>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Председатель приёмной комиссии</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Антипов К.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Зам. председателя приёмной комиссии</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Маркелова Т.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Зам. председателя по приёму в аспирантуру</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Назаров В.Г.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Ответственный секретарь</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Хохлогорская Е.Л.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Заместитель ответственного секретаря по бюджетному приему</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Боцман Ю.Ю.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Заместитель ответственного секретаря по приему в аспирантуру</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Ситникова Т.А.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Заместитель ответственного секретаря по проведению вступительных испытаний</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Алиева Д.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Заместитель ответственного секретаря по приему иностранных граждан</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Иванова И.А.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Заместитель ответственного секретаря</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Саркисова Е.Ю.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                      </fo:table-body>
+                  </fo:table>
+                  <fo:block font="12pt PT Serif" space-before="8pt">
+                      Члены приемной комиссии
+                  </fo:block>
+                  <fo:table font="11pt PT Serif" table-layout="fixed" width="100%" space-before="8pt">
+                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-column column-width="proportional-column-width(0.2)" />
+                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-column column-width="proportional-column-width(0.2)" />
+                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-body>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Корытов О.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Горлов С.Ю.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Винокур А.И.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Кулаков В.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Столяров А.А.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Сидорова Н.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Дмитриев Я.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Миронова Г.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Перевалова Е.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Гордеева Е.Е.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Галицкий Д.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Шляга В.С.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Токмаков Б.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Голева О.П.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Толутанова Ю.Н.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                          </fo:table-row>
+                          <fo:table-row>
+                              <fo:table-cell>
+                                  <fo:block>Яковлев А.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>Яковлев Р.В.</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block>______________________</fo:block>
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                              <fo:table-cell>
+                                  <fo:block />
+                              </fo:table-cell>
+                          </fo:table-row>
+                      </fo:table-body>
+                  </fo:table>
+                  <fo:block font="11pt PT Serif" space-before="10pt">
+                      <xsl:apply-templates select="./content" />
+                  </fo:block>
+              </fo:flow>
+          </fo:page-sequence>
+      <!--</fo:root>-->
   </xsl:template>
 
   <!-- Абзац с выравниванием по левому краю -->

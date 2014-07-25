@@ -12,13 +12,13 @@
   </thead>
   <tbody>
     <% @items.each_with_index do |item, index| %>
-      <tr>
+      <tr class="item_<%= item.id %>">
         <td><%= index + 1 %></td>
         <td><%= item.description %></td>
         <td>
-            <%= link_to 'Распечатать протокол',
+            <%= link_to 'Распечатать протокол допуска к вступительным испытаниям',
                         entrance_campaign_item_path(
-                            @campaign, item, params.merge({ name: 'О зачислении', format: :pdf })
+                            @campaign, item, params.merge({ name: 'допуска к вступительным испытаниям', format: :pdf })
                         ),
                         target: :blank, class: 'btn btn-default' %>
         </td>
