@@ -9,4 +9,7 @@ class Entrance::TestItem < ActiveRecord::Base
   belongs_to :exam, class_name: 'Entrance::Exam'
 
   scope :from_direction, -> direction_id { where("competitive_group_id IN (#{Entrance::CompetitiveGroupItem.from_direction(direction_id).collect{|x| x.competitive_group_id}.join(',')})")}
+
+  scope :use, -> { where('use_subject_id IS NOT NULL') }
+  scope :internal, -> { where('use_subject_id IS NULL') }
 end
