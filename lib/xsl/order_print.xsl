@@ -360,15 +360,15 @@
                       <fo:block font="11pt PT Serif" space-before="2pt" font-weight="bold">
                           Форма обучения: 
                           <xsl:choose>
-                              <xsl:when test="101 = /order/students/student/group/form">очная</xsl:when>
-                              <xsl:when test="102 = /order/students/student/group/form">очно-заочная</xsl:when>
-                              <xsl:when test="103 = /order/students/student/group/form">заочная</xsl:when>
+                              <xsl:when test="'fulltime' = /order/students/student/group/form">очная</xsl:when>
+                              <xsl:when test="'semitime' = /order/students/student/group/form">очно-заочная</xsl:when>
+                              <xsl:when test="'postal' = /order/students/student/group/form">заочная</xsl:when>
                           </xsl:choose>
                       </fo:block>
                       <fo:block font="11pt PT Serif" space-before="2pt" font-weight="bold">
                           Основа обучения:
                           <xsl:if test="1 = /order/students/student/education_source"> бюджет</xsl:if>
-                          <xsl:if test="2 = /order/students/student/education_source"> по договорам</xsl:if>
+                          <xsl:if test="2 = /order/students/student/education_source"> по договорам (внебюджетная)</xsl:if>
                       </fo:block>
                   </fo:block>
 

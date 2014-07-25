@@ -86,7 +86,7 @@
     <xsl:param name="id" />
     <xsl:param name="form">ip</xsl:param>
     <xsl:choose>
-      <xsl:when test="101 = $id">
+      <xsl:when test="'fulltime' = $id">
         <xsl:choose>
           <xsl:when test="'ip' = $form">очная</xsl:when>
           <xsl:when test="'rp' = $form">очной</xsl:when>
@@ -96,7 +96,7 @@
           <xsl:when test="'pp' = $form">очной</xsl:when>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="102 = $id">
+      <xsl:when test="'semitime' = $id">
         <xsl:choose>
           <xsl:when test="'ip' = $form">очно-заочная</xsl:when>
           <xsl:when test="'rp' = $form">очно-заочной</xsl:when>
@@ -106,7 +106,7 @@
           <xsl:when test="'pp' = $form">очно-заочной</xsl:when>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="103 = $id">
+      <xsl:when test="'postal' = $id">
         <xsl:choose>
           <xsl:when test="'ip' = $form">заочная</xsl:when>
           <xsl:when test="'rp' = $form">заочной</xsl:when>
