@@ -1,0 +1,45 @@
+<div class="page-header">
+  <h1>Конфликты при проверке ЕГЭ</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <th></th>
+    <th></th>
+    <th>Матрица</th>
+    <th>ФИС</th>
+    <th></th>
+  </thead>
+  <% @campaign.entrants.each do |entrant| %>
+    <% if entrant.has_use_check_conflicts? %>
+      <tr>
+        <td><%= entrant.packed_application.number %></td>
+        <td><%= entrant.full_name %></td>
+        <td>
+          <ul class="list-unstyled">
+            <% entrant.exam_results.each do |r| %>
+              <li><%= r.exam.name %> (<%= r.exam_type %>) — <%= r.score %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <% if entrant.last_check %>
+            <ul class="list-unstyled">
+              <% entrant.last_check.results.each do |c| %>
+                <li><%= c.exam_name %> — <%= c.score %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </td>
+        <td>
+          <% if can?(:edit, Entrance::Entrant) %>
+            <%= link_to edit_entrance_campaign_entrant_path(@campaign, entrant),
+                        class: 'btn btn-danger' do %>
+              <span class="glyphicons pen"></span>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

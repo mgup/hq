@@ -25,6 +25,8 @@ class Entrance::Entrant < ActiveRecord::Base
 
   has_many :checks, class_name: 'Entrance::UseCheck', foreign_key: :entrant_id, dependent: :destroy
 
+  has_one :last_check, -> { order(created_at: :desc) }, class_name: 'Entrance::UseCheck', foreign_key: :entrant_id, dependent: :destroy
+
   has_many :applications, class_name: Entrance::Application, dependent: :destroy
   accepts_nested_attributes_for :applications, allow_destroy: true
   has_many :contracts, through: :applications, class_name: 'Entrance::Contract'
@@ -141,5 +143,27 @@ class Entrance::Entrant < ActiveRecord::Base
 
   def to_xml
     to_nokogiri.to_xml
+  end
+
+  def has_use_check_conflicts?
+    has_conflicts = false
+
+    # 1) У поступающего отмечено ЕГЭ, которого нет в результатах проверки.
+    if last_check
+      exam_results.each do |result|
+        if result.use?
+          use_result_approved = false
+          last_check.results.each do |r|
+            use_result_approved = true if r.exam_result_id == result.id
+          end
+
+          has_conflicts = true unless use_result_approved
+        end
+      end
+    else
+      has_conflicts = true
+    end
+
+    has_conflicts
   end
 end

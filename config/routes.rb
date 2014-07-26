@@ -279,6 +279,11 @@ HQ::Application.routes.draw do
 
   namespace :entrance do
     resources :campaigns do
+      member do
+        get 'paid_enrollment'
+        get 'conflicts'
+      end
+
       get 'temp_print_all_checks', on: :member
 
       get 'dashboard', on: :member
@@ -290,8 +295,6 @@ HQ::Application.routes.draw do
       get 'rating',     on: :member
       get 'results',     on: :member
       get 'balls',     on: :member
-
-      get 'paid_enrollment', on: :member
 
       resources :dates
       resources :items, only: [:index, :show]

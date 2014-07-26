@@ -133,6 +133,11 @@ class Entrance::CampaignsController < ApplicationController
     render_report Entrance::PaidEnrollmentReport.new(@campaign)
   end
 
+  # Конфликты при проверке ЕГЭ.
+  def conflicts
+
+  end
+
   private
 
   # Инициализация фильтров по-умолчанию.
