@@ -125,6 +125,10 @@ class Entrance::FisController < ApplicationController
           # у нас и сохраняем баллы в информацию о проверке.
           scores.each do |subject|
             # Информация о результатах ЕГЭ по дисциплине, полученная из ФИС.
+            if 'Английский язык' == subject[:exam_name]
+              subject[:exam_name] = 'Иностранный язык'
+            end
+
             data = { exam_name: subject[:exam_name],
                      score: subject[:score],
                      year: subject[:year] }
