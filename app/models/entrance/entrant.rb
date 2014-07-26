@@ -161,7 +161,12 @@ class Entrance::Entrant < ActiveRecord::Base
         end
       end
     else
-      has_conflicts = true
+      has_use = false
+      exam_results.each do |result|
+        has_use = true if result.use?
+      end
+
+      has_conflicts = true if has_use
     end
 
     has_conflicts
