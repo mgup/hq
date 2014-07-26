@@ -169,6 +169,20 @@ class Entrance::Entrant < ActiveRecord::Base
       has_conflicts = true if has_use
     end
 
+    # 2) У поступающего есть ЕГЭ, но он у нас проходит по внутренним испытаниям.
+    if last_check
+      last_check.results.each do |result|
+        has_internal = false
+        exam_results.each do |r|
+          if r.university? && result.exam_name == r.exam.name
+            has_internal = true
+          end
+        end
+
+        has_conflicts = true if has_internal
+      end
+    end
+
     has_conflicts
   end
 end
