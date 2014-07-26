@@ -30,7 +30,7 @@
     </tr>
   </thead>
   <% @applications.each_with_index do |application, index| %>
-    <tr style="<%= 'text-decoration: line-through;' if 0 == application.pass_min_score %>"
+    <tr style="<%= 'text-decoration: line-through;' if !application.out_of_competition && 0 == application.pass_min_score %>"
         class="<%= 'text-muted' if 0 == application.pass_min_score %>">
       <%= render partial: 'application_row', locals: { a: application, i: index+1 } %>
     </tr>
