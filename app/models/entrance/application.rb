@@ -186,9 +186,9 @@ class Entrance::Application < ActiveRecord::Base
   def out_of_competition
     if benefits && benefits.first
       benefits.first.benefit_kind.out_of_competition?
+    else
+      false
     end
-
-    false
   end
 
   # def total_score
