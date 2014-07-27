@@ -99,7 +99,11 @@ class Entrance::Application < ActiveRecord::Base
       elsif sum1 < sum2
         1
       else
-        0
+        case b.abitexams.map(&:score) <=> a.abitexams.map(&:score)
+        when 1 then 1
+        when -1 then -1
+        when 0 then fail("Нужна проверка преимущественного права. #{a.inspect} #{b.inspect}")
+        end
       end
     end
   end

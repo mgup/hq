@@ -36,7 +36,7 @@ group.items.first.applications.for_rating.each do |a|
   end
 end
 
-pdf.font_size = 10
+pdf.font_size = 8
 
 # Без вступительных испытаний.
 if a_out_of_competition.any?
