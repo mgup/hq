@@ -51,7 +51,7 @@ if a_out_of_competition.any?
     data << [i + 1, a.number, a.entrant.full_name, a.benefits.first.temp_text]
   end
 
-  pdf.table data, width: pdf.bounds.width
+  pdf.table data, width: pdf.bounds.width, header: true
   pdf.move_down 40
 
   remaining_places -= a_out_of_competition.size
@@ -60,6 +60,9 @@ end
 exam_names = group.test_items.order(:entrance_test_priority).collect do |t|
   t.exam.name
 end
+column_widths = {
+  (3 + exam_names.size) => 34
+}
 
 # Квота.
 if a_special_rights.any?
@@ -74,7 +77,7 @@ if a_special_rights.any?
     data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
   end
 
-  pdf.table data, width: pdf.bounds.width
+  pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
   pdf.move_down 40
 
   remaining_places -= (a_special_rights.size > group.items.first.number_quota_o ? group.items.first.number_quota_o : a_special_rights.size)
@@ -93,7 +96,7 @@ if a_organization.any?
       data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
     end
 
-    pdf.table data, width: pdf.bounds.width
+    pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
     pdf.move_down 40
 
     remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size)
@@ -101,7 +104,7 @@ if a_organization.any?
 end
 
 # Общий конкурс.
-if a_contest.any?
+if false && a_contest.any?
   pdf.text 'Список поступающих по общему конкурсу',
            size: 14
 
@@ -113,5 +116,5 @@ if a_contest.any?
     data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
   end
 
-  pdf.table data, width: pdf.bounds.width
+  pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
 end
