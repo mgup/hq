@@ -64,6 +64,12 @@ column_widths = {
   1 => 45,
   (3 + exam_names.size) => 34
 }
+exam_names.each_with_index do |name, i|
+  # Название предмета состоит из одного слова.
+  if 1 == name.split(' ').size
+    column_widths[3 + i] = pdf.width_of(name) + 10
+  end
+end
 
 # Квота.
 if a_special_rights.any?
@@ -105,7 +111,7 @@ if a_organization.any?
 end
 
 # Общий конкурс.
-if false && a_contest.any?
+if a_contest.any?
   pdf.text 'Список поступающих по общему конкурсу',
            size: 14
 
