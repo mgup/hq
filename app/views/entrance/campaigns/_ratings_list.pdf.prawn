@@ -38,6 +38,8 @@ end
 
 pdf.font_size = 8
 
+remaining_places = total_places = group.items.first.number_budget_o
+
 # Без вступительных испытаний.
 if a_out_of_competition.any?
   pdf.text 'Список поступающих без вступительных испытаний', size: 14
@@ -48,6 +50,8 @@ if a_out_of_competition.any?
 
   pdf.table data, width: pdf.bounds.width
   pdf.move_down 40
+
+  remaining_places -= a_out_of_competition.size
 end
 
 exam_names = group.test_items.order(:entrance_test_priority).collect do |t|
@@ -58,6 +62,10 @@ end
 if a_special_rights.any?
   pdf.text 'Список поступающих по квоте приема лиц, имеющих особое право',
            size: 14
+
+  pdf.text "Доступное количество мест — #{group.items.first.number_quota_o}",
+           style: :bold, size: 10
+
   data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма').flatten]
   a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
     data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
@@ -65,12 +73,18 @@ if a_special_rights.any?
 
   pdf.table data, width: pdf.bounds.width
   pdf.move_down 40
+
+  remaining_places -= (a_special_rights.size > group.items.first.number_quota_o ? group.items.first.number_quota_o : a_special_rights.size)
 end
 
 # Общий конкурс.
 if a_contest.any?
   pdf.text 'Список поступающих по общему конкурсу',
            size: 14
+
+  pdf.text "Доступное количество мест — #{remaining_places}",
+           style: :bold, size: 10
+
   data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма').flatten]
   a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
     data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
