@@ -1,4 +1,8 @@
-prawn_document page_layout: :landscape do |pdf|
+prawn_document margin: [72.0 * 1.0 / 2.54,
+                        72.0 * 1.0 / 2.54,
+                        72.0 * 1.0 / 2.54,
+                        72.0 * 1.0 / 2.54],
+               page_layout: :landscape do |pdf|
   @campaign.competitive_groups.select { |g| 193585 == g.id }.each do |competitive_group|
     next if competitive_group.items.first.payed?
 

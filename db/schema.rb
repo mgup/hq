@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140723115223) do
+ActiveRecord::Schema.define(version: 20140727221652) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
+    t.integer  "entrant_id"
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
@@ -636,6 +637,7 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
+    t.integer  "entrant_id"
   end
 
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
@@ -705,15 +707,16 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.date     "registration_date"
     t.date     "last_deny_date"
     t.boolean  "need_hostel"
-    t.integer  "status_id",                 default: 4,     null: false
+    t.integer  "status_id",                        default: 4,     null: false
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "campaign_id",                               null: false
+    t.integer  "campaign_id",                                      null: false
     t.integer  "competitive_group_item_id"
-    t.boolean  "original",                  default: false
+    t.boolean  "original",                         default: false
     t.boolean  "packed"
     t.integer  "package_id"
+    t.integer  "competitive_group_target_item_id"
   end
 
   add_index "entrance_applications", ["competitive_group_item_id"], name: "index_entrance_applications_on_competitive_group_item_id", using: :btree
@@ -765,7 +768,6 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.string   "delegate_pnumber"
     t.string   "delegate_pdepartment"
     t.date     "delegate_pdate"
-    t.string   "delegate_organization"
     t.string   "delegate_mobile"
     t.string   "delegate_fax"
     t.string   "delegate_inn"
@@ -773,6 +775,7 @@ ActiveRecord::Schema.define(version: 20140723115223) do
     t.string   "delegate_ls"
     t.string   "delegate_bik"
     t.string   "delegate_position"
+    t.string   "delegate_organization"
   end
 
   create_table "entrance_dates", force: true do |t|
