@@ -72,7 +72,7 @@ class Entrance::Application < ActiveRecord::Base
   scope :for_rating, -> do
     select('CASE b.benefit_kind_id WHEN 1 THEN 1 WHEN 4 THEN 4 ELSE NULL END AS benefit_type')
     .select('COALESCE(SUM(r.score), 0) AS total_score')
-    .select('MIN(r.score >= ti.min_score) AS pass_min_score')
+    .select('MIN(COALESCE(r.score, 0) >= ti.min_score) AS pass_min_score')
     .select('pr.score AS priority_score')
     .select('entrance_applications.*')
     .joins('LEFT JOIN entrance_benefits AS b ON b.application_id = entrance_applications.id')
@@ -90,6 +90,20 @@ class Entrance::Application < ActiveRecord::Base
     .order('priority_score DESC')
   end
 
+  def self.sort_applications
+    lambda do |a, b|
+      sum1 = a.abitexams.map(&:score).sum
+      sum2 = b.abitexams.map(&:score).sum
+      if sum1 > sum2
+        -1
+      elsif sum1 < sum2
+        1
+      else
+        0
+      end
+    end
+  end
+
   def abitpoints
     sum = 0
     competitive_group_item.competitive_group.test_items.collect{|x| x.exam}.each do |exam|
@@ -100,7 +114,7 @@ class Entrance::Application < ActiveRecord::Base
 
   def abitexams
     exams = []
-    competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).collect{|x| x.exam}.each do |exam|
+    competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).collect{ |x| x.exam }.each do |exam|
       exams << entrant.exam_results.by_exam(exam.id).last
     end
     exams
@@ -186,6 +200,14 @@ class Entrance::Application < ActiveRecord::Base
   def out_of_competition
     if benefits && benefits.first
       benefits.first.benefit_kind.out_of_competition?
+    else
+      false
+    end
+  end
+
+  def special_rights
+    if benefits && benefits.first
+      benefits.first.benefit_kind.special_rights?
     else
       false
     end

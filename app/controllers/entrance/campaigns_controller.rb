@@ -138,6 +138,13 @@ class Entrance::CampaignsController < ApplicationController
 
   end
 
+  # Пофамильные списки поступающих с баллами.
+  def ratings
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   private
 
   # Инициализация фильтров по-умолчанию.

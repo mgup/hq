@@ -282,6 +282,7 @@ HQ::Application.routes.draw do
       member do
         get 'paid_enrollment'
         get 'conflicts'
+        get 'ratings'
       end
 
       get 'temp_print_all_checks', on: :member
