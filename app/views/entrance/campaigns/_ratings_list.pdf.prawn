@@ -101,7 +101,7 @@ if a_organization.any?
 end
 
 # Общий конкурс.
-if false && a_contest.any?
+if a_contest.any?
   pdf.text 'Список поступающих по общему конкурсу',
            size: 14
 
