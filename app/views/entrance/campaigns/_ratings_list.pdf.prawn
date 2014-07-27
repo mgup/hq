@@ -22,6 +22,7 @@ pdf.move_down 40
 
 a_out_of_competition = []
 a_special_rights = []
+a_organization = []
 a_contest = []
 
 group.items.first.applications.for_rating.each do |a|
@@ -30,6 +31,8 @@ group.items.first.applications.for_rating.each do |a|
       a_out_of_competition << a
     elsif a.special_rights
       a_special_rights << a
+    elsif a.competitive_group_target_item
+      a_organization << a
     else
       a_contest << a
     end
@@ -77,8 +80,28 @@ if a_special_rights.any?
   remaining_places -= (a_special_rights.size > group.items.first.number_quota_o ? group.items.first.number_quota_o : a_special_rights.size)
 end
 
+if a_organization.any?
+  pdf.text 'Список поступающих по квоте целевого приема', size: 14
+
+  a_organization.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls|
+    pdf.text "Договор № #{target_item.target_organization.contract_number} от #{l target_item.target_organization.contract_date}, #{target_item.target_organization.name}", size: 12
+    pdf.text "Доступное количество мест — #{target_item.number_target_o}",
+             style: :bold, size: 10
+
+    data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма').flatten]
+    appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
+      data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
+    end
+
+    pdf.table data, width: pdf.bounds.width
+    pdf.move_down 40
+
+    remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size)
+  end
+end
+
 # Общий конкурс.
-if a_contest.any?
+if false && a_contest.any?
   pdf.text 'Список поступающих по общему конкурсу',
            size: 14
 

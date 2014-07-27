@@ -5,6 +5,7 @@ class Entrance::Application < ActiveRecord::Base
   belongs_to :campaign, class_name: 'Entrance::Campaign'
   belongs_to :entrant, class_name: 'Entrance::Entrant'
   belongs_to :competitive_group_item, class_name: 'Entrance::CompetitiveGroupItem'
+  belongs_to :competitive_group_target_item, class_name: 'Entrance::CompetitiveGroupTargetItem'
 
   delegate :direction, to: :competitive_group_item
   delegate :department, to: :direction

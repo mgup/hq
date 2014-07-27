@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140727221652) do
+ActiveRecord::Schema.define(version: 20140727223548) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -2027,6 +2027,8 @@ ActiveRecord::Schema.define(version: 20140727221652) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "contract_number"
+    t.date     "contract_date"
   end
 
   create_table "teacher", primary_key: "teacher_id", force: true do |t|
