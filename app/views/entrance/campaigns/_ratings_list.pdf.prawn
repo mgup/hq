@@ -61,6 +61,7 @@ exam_names = group.test_items.order(:entrance_test_priority).collect do |t|
   t.exam.name
 end
 column_widths = {
+  1 => 45,
   (3 + exam_names.size) => 34
 }
 
