@@ -173,7 +173,7 @@ if a_contest.any?
 
   data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
   a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
-    data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+    data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map{|e| e ? e.score : ''} + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
   end
 
   pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
