@@ -4,7 +4,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   render 'pdf/font', pdf: pdf
   key = true
-  @items.each do |i|
+  @items.select { |g| 192686 == g.competitive_group_id }.each do |i|
     if i.applications.empty?
      next
     else
@@ -79,7 +79,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         0 => 30,
         1 => 60,
         2 => 170,
-        (3 + exams.size) => 34
+        (3 + exams.size) => 50
       }
       exams.each_with_index do |name, i|
         # Название предмета состоит из одного слова.
