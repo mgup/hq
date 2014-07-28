@@ -87,7 +87,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           column_widths[3 + i] = pdf.width_of(name) + 10
         end
       end
-      pdf.table data, width: pdf.bounds.width
+      pdf.table data, width: pdf.bounds.width, column_widths: column_widths
     end
     end
   end
