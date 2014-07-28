@@ -75,6 +75,18 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     end
     pdf.font_size 8 do
       pdf.move_down 2
+      column_widths = {
+        0 => 30,
+        1 => 60,
+        2 => 170,
+        (3 + exams.size) => 34
+      }
+      exams.each_with_index do |name, i|
+        # Название предмета состоит из одного слова.
+        if 1 == name.split(' ').size
+          column_widths[3 + i] = pdf.width_of(name) + 10
+        end
+      end
       pdf.table data, width: pdf.bounds.width
     end
     end
