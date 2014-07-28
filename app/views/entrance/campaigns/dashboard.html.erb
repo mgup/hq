@@ -29,7 +29,30 @@
       </th>
     </tr>
   </thead>
-  <% @applications.each_with_index do |application, index| %>
+  <% if @a_out_of_competition.any? %>
+    <tr>
+        <td colspan="10">Список поступающих без вступительных испытаний</td>
+    </tr>
+    <% @a_out_of_competition.each_with_index do |application, index| %>
+      <tr style="<%= 'text-decoration: line-through;' if !application.out_of_competition && 0 == application.pass_min_score %>"
+          class="<%= 'text-muted' if 0 == application.pass_min_score %>">
+          <%= render partial: 'application_row', locals: { a: application, i: index+1 } %>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <% if @a_out_of_competition.any? %>
+    <tr>
+        <td colspan="10">Список поступающих без вступительных испытаний</td>
+    </tr>
+    <% @a_out_of_competition.each_with_index do |application, index| %>
+      <tr style="<%= 'text-decoration: line-through;' if !application.out_of_competition && 0 == application.pass_min_score %>"
+          class="<%= 'text-muted' if 0 == application.pass_min_score %>">
+          <%= render partial: 'application_row', locals: { a: application, i: index+1 } %>
+      </tr>
+    <% end %>
+  <% end %>
+    <% @applications.each_with_index do |application, index| %>
     <tr style="<%= 'text-decoration: line-through;' if !application.out_of_competition && 0 == application.pass_min_score %>"
         class="<%= 'text-muted' if 0 == application.pass_min_score %>">
       <%= render partial: 'application_row', locals: { a: application, i: index+1 } %>

@@ -6,7 +6,29 @@ class Entrance::CampaignsController < ApplicationController
   before_action :initialize_default_filters, only: [:dashboard, :rating]
 
   # Заявления.
-  def dashboard ; end
+  def dashboard
+    @a_out_of_competition = []
+    @a_special_rights = []
+    @a_organization = []
+    @a_contest = []
+
+    @items = Entrance::CompetitiveGroupItem.find(@applications.collect{|ap| app.competitive_group_item_id}.uniq)
+    @applications.for_rating.each do |a|
+      if a.out_of_competition
+        @a_out_of_competition << a
+      else
+        if 0 != a.pass_min_score
+          if a.special_rights
+            @a_special_rights << a
+          elsif a.competitive_group_target_item
+            @a_organization << a
+          else
+            @a_contest << a
+          end
+        end
+      end
+    end
+  end
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
