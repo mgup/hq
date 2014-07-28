@@ -1,8 +1,13 @@
-pdf.text group.name
+# pdf.text group.name
+
+item = group.items.first
 
 pdf.bounding_box([0, pdf.cursor], width: 510) do
   pdf.bounding_box([0, pdf.bounds.top], width: 500) do
     pdf.text 'Пофамильные списки поступающих', style: :bold, size: 16
+
+    pdf.text "#{group.items.first.direction.new_code}, #{group.items.first.direction.name}", size: 14
+    pdf.text "#{group.items.first.form_name} форма обучения, #{group.items.first.budget_name}", size: 14
     # pdf.stroke_bounds
   end
 
@@ -18,7 +23,7 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
 
   # pdf.stroke_bounds
 end
-pdf.move_down 40
+pdf.move_down 30
 
 a_out_of_competition = []
 a_special_rights = []
@@ -41,7 +46,22 @@ end
 
 pdf.font_size = 8
 
-remaining_places = total_places = group.items.first.number_budget_o
+field_payment = item.payed? ? 'paid' : 'budget'
+field_form = case item.form
+             when 11 then 'o'
+             when 12 then 'oz'
+             when 10 then 'z'
+             end
+
+total_places = item.send("number_#{field_payment}_#{field_form}")
+total_places += item.send("number_quota_#{field_form}")
+group.target_organizations.each do |org|
+  org.items.where(direction_id: item.direction_id, education_level_id: item.education_level_id).each do |i|
+    total_places += i.send("number_target_#{field_form}")
+  end
+end
+
+remaining_places = total_places
 
 # Без вступительных испытаний.
 if a_out_of_competition.any?

@@ -4,7 +4,7 @@ prawn_document margin: [72.0 * 1.0 / 2.54,
                         72.0 * 1.0 / 2.54],
                page_layout: :landscape do |pdf|
   @campaign.competitive_groups.each do |competitive_group|
-    next if competitive_group.items.first.payed?
+    # next if competitive_group.items.first.payed?
 
     render partial: 'ratings_list', locals: { pdf: pdf,
                                               group: competitive_group }
