@@ -641,10 +641,10 @@
                                   <fo:block />
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block />
+                                  <fo:block>Самоделова Е.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block />
+                                  <fo:block>______________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                       </fo:table-body>

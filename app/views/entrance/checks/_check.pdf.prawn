@@ -44,7 +44,7 @@ end
 pdf.font_size 11 do
   pdf.move_down 30
   pdf.text 'Лицо, сформировавшее справку:'
-  pdf.text 'технический секретарь                                                                     ___________________ / _____________________ /'
+  pdf.text 'технический секретарь                                                       ___________________ / _____________________ /'
   pdf.font_size 8 do
     pdf.indent 50 do
       pdf.text 'подпись                            расшифровка                     ', align: :right
@@ -52,7 +52,7 @@ pdf.font_size 11 do
   end
   pdf.move_down 15
   pdf.text 'Ответственное лицо приемной комиссии:'
-  pdf.text 'ответственный секретарь                                                                ___________________ / Е. Л. Хохлогорская /', inline_format: true
+  pdf.text 'ответственный секретарь                                                   ___________________ / Е. Л. Хохлогорская /', inline_format: true
   pdf.font_size 8 do
     pdf.indent 50 do
       pdf.text 'подпись                                                                           ', align: :right
