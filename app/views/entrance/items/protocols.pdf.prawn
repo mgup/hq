@@ -70,7 +70,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       end
       index += 1
       data << ["#{index}", ap.number, ap.entrant.full_name]
-      ap.abitexams.collect{|x| (x.use? ? x.score : '')}.each{ |x| data.last << x }
+      ap.abitexams.collect{|x| (x ? (x.use? ? x.score : '') : '')}.each{ |x| data.last << x }
       data.last << 'допустить'
     end
     pdf.font_size 8 do
