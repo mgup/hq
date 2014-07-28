@@ -93,8 +93,8 @@ class Entrance::Application < ActiveRecord::Base
 
   def self.sort_applications
     lambda do |a, b|
-      sum1 = a.abitexams.map(&:score).sum
-      sum2 = b.abitexams.map(&:score).sum
+      sum1 = a.total_score
+      sum2 = b.total_score
       if sum1 > sum2
         -1
       elsif sum1 < sum2

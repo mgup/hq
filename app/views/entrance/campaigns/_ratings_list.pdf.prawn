@@ -102,7 +102,7 @@ if a_special_rights.any?
 
   data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма').flatten]
   a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
-    data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
+    data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score]
   end
 
   pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
@@ -121,7 +121,7 @@ if a_organization.any?
 
     data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма').flatten]
     appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
-      data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
+      data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score]
     end
 
     pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
@@ -141,7 +141,7 @@ if a_contest.any?
 
   data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма').flatten]
   a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
-    data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitexams.map(&:score).sum]
+    data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score]
   end
 
   pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
