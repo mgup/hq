@@ -59,7 +59,7 @@ data.first << 'Решение комиссии'
 appls = item.applications.for_rating
 appls.sort { |a, b| a.number <=> b.number }.each_with_index do |ap, index|
   data << ["#{index+1}", ap.number, ap.entrant.full_name]
-  ap.abitexams.collect{ |x| x.score }.each{ |x| data.last << x }
+  ap.abitexams.collect{ |x| x ? x.score : '' }.each{ |x| data.last << x }
 
   benefit = ap.benefits.first
   if benefit && (benefit.benefit_kind.out_of_competition? || benefit.benefit_kind.special_rights?)
