@@ -66,11 +66,18 @@ appls.sort { |a, b| a.number <=> b.number }.each_with_index do |ap, index|
   if benefit && (benefit.benefit_kind.out_of_competition? || benefit.benefit_kind.special_rights?)
     data.last << benefit.benefit_kind.short_name
   else
-    if ap.
-    data.last << 'В общем конкурсе'
+    if ap.competitive_group_target_item
+      data.last << 'Квота целевого приема'
+    else
+      data.last << 'По конкурсу'
+    end
   end
 
-  data.last << 'допустить'
+  if 0 != ap.pass_min_score
+    data.last << 'допустить'
+  else
+    data.last << 'не допустить'
+  end
 end
 
 pdf.font_size 8 do
