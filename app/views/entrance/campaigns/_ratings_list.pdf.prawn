@@ -31,15 +31,17 @@ a_organization = []
 a_contest = []
 
 group.items.first.applications.for_rating.each do |a|
-  if 0 != a.pass_min_score
-    if a.out_of_competition
-      a_out_of_competition << a
-    elsif a.special_rights
-      a_special_rights << a
-    elsif a.competitive_group_target_item
-      a_organization << a
-    else
-      a_contest << a
+  if a.out_of_competition
+    a_out_of_competition << a
+  else
+    if 0 != a.pass_min_score
+      if a.special_rights
+        a_special_rights << a
+      elsif a.competitive_group_target_item
+        a_organization << a
+      else
+        a_contest << a
+      end
     end
   end
 end

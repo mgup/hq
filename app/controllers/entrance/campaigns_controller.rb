@@ -145,6 +145,12 @@ class Entrance::CampaignsController < ApplicationController
     end
   end
 
+  def protocol_permit
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   private
 
   # Инициализация фильтров по-умолчанию.
