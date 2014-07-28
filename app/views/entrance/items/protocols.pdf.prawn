@@ -4,7 +4,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   render 'pdf/font', pdf: pdf
   key = true
-  @items.select { |g| 192686 == g.competitive_group_id }.each do |i|
+  @items.each do |i|
     if i.applications.empty?
      next
     else
