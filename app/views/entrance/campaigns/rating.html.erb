@@ -145,7 +145,17 @@
 
     <% if a_contest.any? %>
       <h2>Список поступающих по общему конкурсу</h2>
-      <h3><strong>Доступное количество мест — <%= remaining_places %></strong></h3>
+      <h3>
+        <strong>
+          Доступное количество мест — <%= remaining_places %>
+        </strong>
+        <% if item.payed? && 193593 != item.competitive_group.id %>
+          <br>
+          <span class="text-danger">
+            <sup>*</sup> минимальный план приема, который может быть увеличен
+          </span>
+        <% end %>
+      </h3>
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
