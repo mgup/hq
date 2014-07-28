@@ -67,13 +67,19 @@ remaining_places = total_places
 
 # Без вступительных испытаний.
 if a_out_of_competition.any?
+  column_widths = {
+    0 => 30,
+    1 => 60,
+    2 => 170
+  }
+
   pdf.text 'Список поступающих без вступительных испытаний', size: 14
   data = [['', 'Рег. номер', 'Поступающий', 'Причина']]
   a_out_of_competition.each_with_index do |a, i|
     data << [i + 1, a.number, a.entrant.full_name, a.benefits.first.temp_text]
   end
 
-  pdf.table data, width: pdf.bounds.width, header: true
+  pdf.table data, width: pdf.bounds.width, header: true, column_widths: column_widths
   pdf.move_down 40
 
   remaining_places -= a_out_of_competition.size
@@ -84,7 +90,8 @@ exam_names = group.test_items.order(:entrance_test_priority).collect do |t|
 end
 column_widths = {
   0 => 30,
-  1 => 50,
+  1 => 60,
+  2 => 170,
   (3 + exam_names.size) => 34
 }
 exam_names.each_with_index do |name, i|

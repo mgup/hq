@@ -16,9 +16,8 @@ pdf.table [['№ __________________', "от #{date} 2014 г."]], cell_style: {bo
   column(0).width = 600
 end
 pdf.move_down 8
-pdf.text "<strong>Направление:</strong> #{item.direction.new_code} «#{item.direction.name}»", inline_format: true
-pdf.text "<strong>Форма обучения:</strong> #{item.form_name}", inline_format: true
-pdf.text "<strong>Основа обучения:</strong> #{item.budget_name}", inline_format: true
+pdf.text "#{item.direction.new_code}, #{item.direction.name}"
+pdf.text "#{item.form_name} форма обучения, #{item.budget_name}"
 
 pdf.font_size 10 do
   pdf.table [
@@ -73,13 +72,23 @@ appls.sort { |a, b| a.number <=> b.number }.each_with_index do |ap, index|
     end
   end
 
-  if 0 != ap.pass_min_score
+  if benefit && benefit.benefit_kind.out_of_competition?
     data.last << 'допустить'
   else
-    data.last << 'не допустить'
+    if 0 != ap.pass_min_score
+      data.last << 'допустить'
+    else
+      data.last << 'не допустить'
+    end
   end
 end
 
 pdf.font_size 8 do
-  pdf.table data, width: pdf.bounds.width
+  column_widths = {
+    0 => 30,
+    1 => 60,
+    2 => 170
+  }
+
+  pdf.table data, width: pdf.bounds.width, column_widths: column_widths
 end
