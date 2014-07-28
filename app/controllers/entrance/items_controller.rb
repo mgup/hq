@@ -17,7 +17,7 @@ class Entrance::ItemsController < ApplicationController
               when 5
                 'от «7» июля 2014 г.'
               when 6
-                'от «5» июля 2014 г.'
+                'от «7» июля 2014 г.'
             end
     @items = case @type
               when 1
