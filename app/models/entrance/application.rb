@@ -95,18 +95,18 @@ class Entrance::Application < ActiveRecord::Base
     lambda do |a, b|
       sum1 = a.total_score.to_i
       sum2 = b.total_score.to_i
-      0
-      # if sum1 > sum2
-      #   -1
-      # elsif sum1 < sum2
-      #   1
-      # else
-      #   case b.abitexams.map{|e| e ? e.score : 0} <=> a.abitexams.map{|e| e ? e.score : 0}
-      #   when 1 then 1
-      #   when -1 then -1
-      #   when 0 then 0 #fail("Нужна проверка преимущественного права. #{a.inspect} #{b.inspect}")
-      #   end
-      # end
+      # 0
+      if sum1 > sum2
+        -1
+      elsif sum1 < sum2
+        1
+      else
+        case b.abitexams.map{|e| e ? e.score : 0} <=> a.abitexams.map{|e| e ? e.score : 0}
+        when 1 then 1
+        when -1 then -1
+        when 0 then 0 #fail("Нужна проверка преимущественного права. #{a.inspect} #{b.inspect}")
+        end
+      end
     end
   end
 
