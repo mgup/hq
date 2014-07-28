@@ -286,6 +286,7 @@ HQ::Application.routes.draw do
         get 'paid_enrollment'
         get 'conflicts'
         get 'ratings'
+        get 'protocol_permit'
       end
 
       get 'temp_print_all_checks', on: :member
