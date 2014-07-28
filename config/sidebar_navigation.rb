@@ -44,9 +44,9 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       if can?(:manage, Entrance::Entrant)
-        primary.item :entrance_applications,
-                     '<span class="glyphicons skull"></span> Заявления'.html_safe,
-                     dashboard_entrance_campaign_path(Entrance::Campaign::CURRENT)
+        # primary.item :entrance_applications,
+        #              '<span class="glyphicons skull"></span> Заявления'.html_safe,
+        #              dashboard_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
         primary.item :new_entrance_application, 'Абитуриенты',
                      entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
@@ -72,6 +72,10 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     end
 
+    primary.item :rating,
+                 '<span class="glyphicons charts"></span> Пофамильные списки поступающих (рейтинги)'.html_safe,
+                 rating_entrance_campaign_path(Entrance::Campaign::CURRENT)
+
     primary.item :entrance_dates, 'Сроки проведения',
                  entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
 
@@ -84,10 +88,6 @@ SimpleNavigation::Configuration.run do |navigation|
 
     primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
                  entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
-
-    primary.item :rating,
-                 '<span class="glyphicons charts"></span> Пофамильные списки поступающих (рейтинги)'.html_safe,
-                 rating_entrance_campaign_path(Entrance::Campaign::CRIMEA)
 
     primary.item :education_prices, 'Стоимость обучения', education_prices_path
 
