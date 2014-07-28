@@ -133,7 +133,7 @@ if a_special_rights.any?
            style: :bold, size: 10
 
   data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
-  a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
+  a_special_rights.each_with_index do |a, i|
     data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
   end
 
@@ -152,7 +152,7 @@ if a_organization.any?
              style: :bold, size: 10
 
     data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
-    appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
+    appls.each_with_index do |a, i|
       data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
     end
 
@@ -172,7 +172,7 @@ if a_contest.any?
            style: :bold, size: 10
 
   data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
-  a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
+  a_contest.each_with_index do |a, i|
     data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map{|e| e ? e.score : ''} + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
   end
 
