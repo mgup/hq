@@ -144,18 +144,20 @@
     <% end %>
 
     <% if a_contest.any? %>
-      <h2>Список поступающих по общему конкурсу</h2>
-      <h3>
-        <strong>
-          Доступное количество мест — <%= remaining_places %>
-        </strong>
-        <% if item.payed? && 193593 != item.competitive_group.id %>
-          <br>
-          <span class="text-danger">
-            <sup>*</sup> минимальный план приема, который может быть увеличен
-          </span>
-        <% end %>
-      </h3>
+      <% unless 12014 == @campaign.id %>
+        <h2>Список поступающих по общему конкурсу</h2>
+        <h3>
+          <strong>
+            Доступное количество мест — <%= remaining_places %>
+          </strong>
+          <% if item.payed? && 193593 != item.competitive_group.id %>
+            <br>
+            <span class="text-danger">
+              <sup>*</sup> минимальный план приема, который может быть увеличен
+            </span>
+          <% end %>
+        </h3>
+      <% end %>
 
       <% if item.payed? %>
         <div class="alert alert-success">
