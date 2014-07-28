@@ -86,10 +86,11 @@ pdf.font_size 11 do
       pdf.move_down 4
       pdf.text 'Достоверность всех предоставленных сведений и подлинность документов подтверждаю.', align: :center
       pdf.move_down 6
-      pdf.text "#{l application.created_at, format: '%d %B %Y'} г.                                                                                               ___________________ / #{entrant.short_name} /", inline_format: true
+      pdf.table [["#{l application.created_at, format: '%d %B %Y'} г.", {content:"___________________ / #{entrant.short_name} /", align: :right}]],
+                width: pdf.bounds.width, cell_style: {border_color: 'ffffff'}
 
       pdf.move_down 5
-      pdf.text '__________________ / __________________ /', align: :right
+      pdf.text '__________________ / __________________ / ', align: :right
       pdf.font_size 8 do
         pdf.indent 330 do
           pdf.text 'подпись ответственного секретаря'
@@ -115,7 +116,7 @@ pdf.font_size 11 do
         pdf.rectangle [0,670], 100, 130
         pdf.text_box 'место для фото', size: 9, at: [16,630], width: 70, height: 50
 
-        pdf.text_box "#{l application.created_at, format: '%d %B %Y'} г.                                           ___________________ / #{entrant.short_name} /", inline_format: true, at: [130,630], width: 600, height: 50
+        pdf.text_box "#{l application.created_at, format: '%d %B %Y'} г.                      ___________________ / #{entrant.short_name} /", inline_format: true, at: [130,630], width: 600, height: 50
 
         pdf.move_down 140
         pdf.text 'Оценки вступительных испытаний', style: :bold, align: :center
@@ -174,7 +175,7 @@ pdf.font_size 11 do
             pdf.text 'Линия отреза', align: :center
         end
 
-        pdf.bounding_box([0, 280], width: 270, height: 220) do
+        pdf.bounding_box([0, 270], width: 270, height: 240) do
             pdf.font_size 9 do
                 pdf.text 'МИНИСТЕРСТВО', align: :center
                 pdf.text 'ОБРАЗОВАНИЯ И НАУКИ', align: :center
@@ -190,10 +191,14 @@ pdf.font_size 11 do
                 pdf.text 'Москва, 127550', align: :center
                 pdf.text 'ул. Прянишникова, д. 2А', align: :center
                 pdf.text 'тел. (499) 976-78-57', align: :center
+                pdf.move_down 58
+                pdf.indent 30 do
+                  pdf.text "Сдал: ______________ / #{entrant.short_name} /", size: 9
+                end
             end
         end
 
-        pdf.bounding_box([250, 260], width: 260, height: 210) do
+        pdf.bounding_box([250, 250], width: 260, height: 210) do
             pdf.text "Расписка № #{application.number}", style: :bold, align: :center, size: 11
             pdf.move_down 10
             pdf.font_size 10 do
@@ -205,10 +210,11 @@ pdf.font_size 11 do
                 # pdf.text '4. Направление на целевой приём (нет)'
                 pdf.text '4. Копия паспорта'
                 pdf.text '5. Другое: __________________________'
+                pdf.move_down 5
+                pdf.text 'Принял: секретарь комиссии ____________ / ________________ /', size: 9
             end
         end
 
-        pdf.text "Сдал: ______________ / #{entrant.short_name} /                Принял: секретарь комиссии ______________ / ___________________ /", size: 10
         pdf.move_down 8
         pdf.text "#{l application.created_at, format: '%d %B %Y'} г.", inline_format: true, size: 10
 
