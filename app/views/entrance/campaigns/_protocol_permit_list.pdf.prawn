@@ -96,7 +96,7 @@ if a_out_of_competition.any?
   }
 
   pdf.text 'Список поступающих без вступительных испытаний', size: 14
-  data = [['', 'Рег. номер', 'Поступающий', 'Причина', 'Решение комиссии']]
+  data = [['', 'Рег. номер', 'Поступающий', 'Основание', 'Решение комиссии']]
   a_out_of_competition.each_with_index do |a, i|
     data << [i + 1, a.number, a.entrant.full_name, a.benefits.first.temp_text, 'допустить']
   end
@@ -172,7 +172,7 @@ if a_contest.any?
            style: :bold, size: 10
 
   data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
-  a_contest.each_with_index do |a, i|
+  a_contest.sort_by { |a| [a.pass_min_score, a.total_score] }.reverse.each_with_index do |a, i|
     data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map{|e| e ? e.score : ''} + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
   end
 
