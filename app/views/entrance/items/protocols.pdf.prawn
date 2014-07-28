@@ -62,9 +62,9 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     index = 0
     i.applications.each do |ap|
       if @type == 2
-        next if ap.abitexams.select{|e| e.university?}.empty?
+        next if ap.abitexams.select{|e| e ? e.university? : false}.empty?
       elsif @type == 3
-        next unless ap.abitexams.select{|e| e.university?}.empty?
+        next unless ap.abitexams.select{|e| e ? e.university? : false}.empty?
       elsif ap.entrant.id == 1850
         next
       end
