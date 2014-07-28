@@ -278,6 +278,9 @@ HQ::Application.routes.draw do
   resources :education_prices, only: [:index]
 
   namespace :entrance do
+    resources :items do
+      get 'protocols', on: :collection, defaults: { format: :pdf }
+    end
     resources :campaigns do
       member do
         get 'paid_enrollment'
@@ -298,7 +301,6 @@ HQ::Application.routes.draw do
       get 'balls',     on: :member
 
       resources :dates
-      resources :items, only: [:index, :show]
       resources :exams do
         resources :exam_results do
           get 'ajax_update', to: 'exam_results#ajax_update', on: :member

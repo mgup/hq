@@ -10,6 +10,12 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
 
   scope :from_direction, -> direction_id { where(direction_id: direction_id) }
 
+  scope :for_5_july, -> { where('competitive_group_id IN (189106,193585,193593,193597,193610,193629,193635)') }
+  scope :for_10_and_25_july, -> { where('competitive_group_id IN (192420,192669,192679,192682,192684,192686,192688,192691,192694,193640,199761)') }
+  scope :for_15_july, -> { where('competitive_group_id IN (201408,201422,201424,201439,201443)') }
+  scope :for_7_july_aspirants, -> { where('competitive_group_id IN (201453,201457,201458,201627,201630,201634,201637,201640,201649,201661,201668,201673,201676,201679,201686,201688,201692,201694,201695,201697,201699,201702,201704,201706)') }
+  scope :for_7_july_crimea, -> { where('competitive_group_id IN (228818,228819,230882,230883,230884,230885,230886,247821,247836,247844,247847,247850,247854,247857,247862,247867,247893,247897,247898,247900,247903,247905,247911,247913,247923,247929,247934,247937,247938)') }
+
   def direction_name
     direction.name
   end

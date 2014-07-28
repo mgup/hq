@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1>Протоколы заседения приёмной комисси <small><%= @campaign.name %></small></h1>
+    <h1>Протоколы заседения приёмной комисси</h1>
 </div>
 
 <table class="table">
@@ -11,18 +11,59 @@
     </tr>
   </thead>
   <tbody>
-    <% @items.each_with_index do |item, index| %>
-      <tr class="item_<%= item.id %>">
-        <td><%= index + 1 %></td>
-        <td><%= item.description %></td>
+    <tr>
+        <td>1</td>
+        <td>Протоколы от 5 июля</td>
         <td>
             <%= link_to 'Распечатать протокол допуска к вступительным испытаниям',
-                        entrance_campaign_item_path(
-                            @campaign, item, params.merge({ name: 'допуска к вступительным испытаниям', format: :pdf })
-                        ),
+                        protocols_entrance_items_path(type: 1),
                         target: :blank, class: 'btn btn-default' %>
         </td>
-      </tr>
-    <% end %>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Протоколы от 10 июля</td>
+        <td>
+            <%= link_to 'Распечатать протокол допуска к вступительным испытаниям',
+                        protocols_entrance_items_path( type: 2),
+                        target: :blank, class: 'btn btn-default' %>
+        </td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>Протоколы от 25 июля</td>
+        <td>
+            <%= link_to 'Распечатать протокол допуска к вступительным испытаниям',
+                        protocols_entrance_items_path(type: 3),
+                        target: :blank, class: 'btn btn-default' %>
+        </td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Протоколы от 15 июля (магистратура)</td>
+        <td>
+            <%= link_to 'Распечатать протокол допуска к вступительным испытаниям',
+                        protocols_entrance_items_path(type: 4),
+                        target: :blank, class: 'btn btn-default' %>
+        </td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>Протоколы от 7 июля (аспирантура)</td>
+        <td>
+            <%= link_to 'Распечатать протокол допуска к вступительным испытаниям',
+                        protocols_entrance_items_path(type: 5),
+                        target: :blank, class: 'btn btn-default' %>
+        </td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>Протоколы от 7 июля</td>
+        <td>
+            <%= link_to 'Распечатать протокол допуска к вступительным испытаниям',
+                        protocols_entrance_items_path(type: 6),
+                        target: :blank, class: 'btn btn-default' %>
+        </td>
+    </tr>
   </tbody>
 </table>
