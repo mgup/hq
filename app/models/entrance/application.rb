@@ -142,10 +142,7 @@ class Entrance::Application < ActiveRecord::Base
                          :not_paid
                      end
 
-    applications = self.for_rating.
-        where('d.id = ?', direction).
-        send(form_method).send(payment_method)
-    return applications
+    where('d.id = ?', direction).send(form_method).send(payment_method)
   end
 
   def self.direction_stats(campaign, direction)

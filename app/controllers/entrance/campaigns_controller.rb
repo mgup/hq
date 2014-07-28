@@ -6,36 +6,14 @@ class Entrance::CampaignsController < ApplicationController
   before_action :initialize_default_filters, only: [:dashboard, :rating]
 
   # Заявления.
-  def dashboard
-    @a_out_of_competition = []
-    @a_special_rights = []
-    @a_organization = []
-    @a_contest = []
-
-    @items = Entrance::CompetitiveGroupItem.find(@applications.collect{|ap| app.competitive_group_item_id}.uniq)
-    @applications.for_rating.each do |a|
-      if a.out_of_competition
-        @a_out_of_competition << a
-      else
-        if 0 != a.pass_min_score
-          if a.special_rights
-            @a_special_rights << a
-          elsif a.competitive_group_target_item
-            @a_organization << a
-          else
-            @a_contest << a
-          end
-        end
-      end
-    end
-  end
+  # def dashboard
+  #   fail '123'
+  #   @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
+  # end
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
-    if @applications.first
-      @number = @applications.first.competitive_group_item.total_number
-      @number_q = @applications.first.competitive_group_item.quota_number
-    end
+    @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
   end
 
   def applications
@@ -186,9 +164,9 @@ class Entrance::CampaignsController < ApplicationController
     params[:payment] ||= 14
     @source = EducationSource.find(params[:payment])
 
-    @applications = @campaign.applications.rating(params[:form],
-                                                  params[:payment],
-                                                  params[:direction])
+    @applications = @campaign.applications.for_rating.rating(params[:form],
+                                                             params[:payment],
+                                                             params[:direction])
   end
 
   def applications_from_filters(opts = { form: true, payment: true, date: false })
