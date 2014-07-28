@@ -3,19 +3,9 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                page_size: 'A4', page_layout: :landscape do |pdf|
 
   render 'pdf/font', pdf: pdf
-
-  use = []
-  internal = []
-  @item.applications.each do |ap|
-    if ap.entrant.exam_results.internal.empty?
-      use << ap
-    else
-      internal << ap
-    end
-  end
   key = true
-  [internal, use].each do |apps|
-    if apps.empty?
+  @items.each do |i|
+    if i.applications.empty?
      next
     else
       pdf.start_new_page unless key
@@ -25,24 +15,14 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
-    pdf.move_down 5
-    pdf.text "#{params[:name]}", style: :bold, align: :center
-    pdf.move_down 5
-    n = apps.first.number[3,2]
-    if n == 'ЖД' || n == 'ГД' || n == 'ГВ' || n == 'ЗД'
-      date = '«5» июля'
-    elsif apps == use
-      date = '«25» июля'
-    else
-      date = '«10» июля'
-    end
-    pdf.table [['№ __________________', "от #{date} 2014 г."]], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
+    pdf.move_down 4
+    pdf.text 'допуска к вступительным испытаниям', style: :bold, align: :center
+    pdf.table [['№ __________________', @date]], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
       column(0).width = 600
     end
-    pdf.move_down 8
-    pdf.text "<strong>Направление:</strong> #{@item.direction.new_code} «#{@item.direction.name}»", inline_format: true
-    pdf.text "<strong>Форма обучения:</strong> #{@item.form_name}", inline_format: true
-    pdf.text "<strong>Основа обучения:</strong> #{@item.budget_name}", inline_format: true
+    pdf.move_down 2
+    pdf.text "#{i.direction.new_code} «#{i.direction.name}»"
+    pdf.text "#{i.form_name} форма обучения, #{i.budget_name}"
 
     pdf.font_size 10 do
       pdf.table [
@@ -60,7 +40,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       end
     end
 
-    pdf.move_down 8
+    pdf.move_down 2
     pdf.text 'Члены приемной комиссии'
 
     pdf.font_size 10 do
@@ -74,18 +54,27 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                 ], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width
     end
 
-    exams = @item.competitive_group.test_items.order(:entrance_test_priority).collect{ |x| x.exam.name }
+    exams = i.competitive_group.test_items.order(:entrance_test_priority).collect{ |x| x.exam.name }
     data = [['№ п/п', 'Рег. номер', 'ФИО абитуриента']]
     exams.each {|e|  data.first << e}
     data.first << 'Решение комиссии'
 
-    apps.each_with_index do |ap, index|
-      data << ["#{index+1}", ap.number, ap.entrant.full_name]
-      ap.abitexams.collect{|x| (x.use? ? x.score : '')}.each{ |x| data.last << x }
+    index = 0
+    i.applications.each do |ap|
+      if @type == 2
+        next if ap.abitexams.select{|e| e.university?}.empty?
+      elsif @type == 3
+        next unless ap.abitexams.select{|e| e.university?}.empty?
+      elsif ap.entrant.id == 1850
+        next
+      end
+      index += 1
+      data << ["#{index}", ap.number, ap.entrant.full_name]
+      ap.abitexams.collect{|x| (x ? (x.use? ? x.score : '') : '')}.each{ |x| data.last << x }
       data.last << 'допустить'
     end
-    pdf.font_size 10 do
-      pdf.start_new_page
+    pdf.font_size 8 do
+      pdf.move_down 2
       pdf.table data, width: pdf.bounds.width
     end
     end
