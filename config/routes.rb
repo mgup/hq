@@ -298,6 +298,7 @@ HQ::Application.routes.draw do
       get 'report',       on: :member
       get 'register',     on: :member
       get 'rating',     on: :member
+      get 'crimea_rating',     on: :member
       get 'results',     on: :member
       get 'balls',     on: :member
 

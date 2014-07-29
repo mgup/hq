@@ -189,6 +189,10 @@ GROUP BY `group`
     group.course
   end
 
+  def entrance_order
+    orders.where('order_template = 16').last
+  end  
+
   # Обучается ли студент на бюджетной основе?
   def budget?
     PAYMENT_BUDGET == payment

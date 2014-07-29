@@ -38,6 +38,9 @@ class Entrance::Entrant < ActiveRecord::Base
   accepts_nested_attributes_for :event_entrants, allow_destroy: true
   has_many :events, class_name: Entrance::Event, through: :event_entrants
 
+  # или всё-таки has_many?
+  has_one :student, class_name: 'Student', foreign_key: :entrant_id
+
   scope :aspirants, -> { joins(:edu_document).where('entrance_edu_documents.direction_id IS NOT NULL') }
   scope :from_exam, -> exam_id { joins(:exam_results).where('entrance_exam_results.exam_id = ? AND entrance_exam_results.form = 2', exam_id) }
 

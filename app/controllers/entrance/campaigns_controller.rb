@@ -1,9 +1,9 @@
 class Entrance::CampaignsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating]
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
-  before_action :initialize_default_filters, only: [:dashboard, :rating]
+  before_action :initialize_default_filters, only: [:dashboard, :rating, :crimea_rating]
 
   # Заявления.
   # def dashboard
@@ -14,6 +14,13 @@ class Entrance::CampaignsController < ApplicationController
   # Пофамильные списки поступающих (рейтинги).
   def rating
     @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
+  end
+
+  def crimea_rating
+    items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
+    if @applications.take
+      @number = items.collect { |i| i.total_number }.sum
+    end
   end
 
   def applications
