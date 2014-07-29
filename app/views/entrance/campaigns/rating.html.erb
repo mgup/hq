@@ -57,6 +57,9 @@
             <th>Рег. номер</th>
             <th>Поступающий</th>
             <th>Основание</th>
+            <% if can?(:manage, Entrance::Application) %>
+              <th>Оригинал</th>
+            <% end %>
           </tr>
         </thead>
         <% a_out_of_competition.each_with_index do |a, i| %>
@@ -65,6 +68,13 @@
             <td class="nowrap"><%= a.number %></td>
             <td><%= a.entrant.full_name %></td>
             <td><%= a.benefits.first.temp_text %></td>
+            <% if can?(:manage, Entrance::Application) %>
+              <td>
+                <% if a.original? %>
+                  <span class="glyphicons ok_2"></span>
+                <% end %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       </table>
