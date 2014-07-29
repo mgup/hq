@@ -426,6 +426,19 @@ class Entrance::Application < ActiveRecord::Base
     to_nokogiri.to_xml
   end
 
+  def enrolled?
+    # fail '123' if 13083 == id
+    if entrant.student
+      if entrant.student.speciality.code.split('.')[0] == direction.code && entrant.student.speciality.code.split('.')[1] == direction.qualification_code.to_s
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
   private
 
   # TODO Переделать и перенести в Group.

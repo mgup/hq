@@ -39,20 +39,20 @@
       <% if recomendation %>
         <% entrance_index += 1 %>
       <% end %>
-      <tr style="<%= (application.entrant.student || (entrance_index <= @number-students && recomendation) ? 'font-weight: bold; background-color: #dff0d8;' : '') %>">
+      <tr style="<%= (application.enrolled? || (entrance_index <= @number-students && recomendation) ? 'font-weight: bold; background-color: #dff0d8;' : '') %>">
        <td class="text-muted"><%= index+1 %></td>
        <td class="nowrap"><%= application.number %></td>
        <td><%= application.entrant.full_name %></td>
        <td><%= application.total_score %></td>
        <td>
-        <% if application.entrant.student %>
-        зачислен, приказ № <%= application.entrant.student.entrance_order.number%>
+        <% if application.enrolled? %>
+          зачислен, приказ № <%= application.entrant.student.entrance_order.number%>
         <% elsif (0 != application.pass_min_score) && (index <= @number-1) && !application.entrant.student %>
           не зачислен
         <% elsif entrance_index <= @number-students && recomendation %>
           рекомендован к зачислению
         <% else %>
-          <span class="glyphicons minus text-muted">  
+          <span class="glyphicons minus text-muted"></span>
         <% end %>
        </td> 
       </tr>
