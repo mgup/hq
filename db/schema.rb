@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140727223548) do
+ActiveRecord::Schema.define(version: 20140729074926) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
+    t.integer  "entrant_id"
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
@@ -636,6 +637,7 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
+    t.integer  "entrant_id"
   end
 
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
@@ -717,7 +719,12 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.integer  "competitive_group_target_item_id"
   end
 
+  add_index "entrance_applications", ["campaign_id"], name: "index_entrance_applications_on_campaign_id", using: :btree
   add_index "entrance_applications", ["competitive_group_item_id"], name: "index_entrance_applications_on_competitive_group_item_id", using: :btree
+  add_index "entrance_applications", ["competitive_group_target_item_id"], name: "index_entrance_applications_on_competitive_group_target_item_id", using: :btree
+  add_index "entrance_applications", ["entrant_id"], name: "index_entrance_applications_on_entrant_id", using: :btree
+  add_index "entrance_applications", ["package_id"], name: "index_entrance_applications_on_package_id", using: :btree
+  add_index "entrance_applications", ["status_id"], name: "index_entrance_applications_on_status_id", using: :btree
 
   create_table "entrance_benefit_kinds", force: true do |t|
     t.string   "name"
@@ -736,6 +743,8 @@ ActiveRecord::Schema.define(version: 20140727223548) do
   end
 
   add_index "entrance_benefits", ["application_id"], name: "index_entrance_benefits_on_application_id", using: :btree
+  add_index "entrance_benefits", ["benefit_kind_id"], name: "index_entrance_benefits_on_benefit_kind_id", using: :btree
+  add_index "entrance_benefits", ["document_type_id"], name: "index_entrance_benefits_on_document_type_id", using: :btree
 
   create_table "entrance_campaigns", force: true do |t|
     t.string   "name",                   null: false
@@ -766,7 +775,6 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.string   "delegate_pnumber"
     t.string   "delegate_pdepartment"
     t.date     "delegate_pdate"
-    t.string   "delegate_organization"
     t.string   "delegate_mobile"
     t.string   "delegate_fax"
     t.string   "delegate_inn"
@@ -774,7 +782,10 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.string   "delegate_ls"
     t.string   "delegate_bik"
     t.string   "delegate_position"
+    t.string   "delegate_organization"
   end
+
+  add_index "entrance_contracts", ["application_id"], name: "index_entrance_contracts_on_application_id", using: :btree
 
   create_table "entrance_dates", force: true do |t|
     t.integer  "campaign_id",                     null: false
@@ -790,6 +801,11 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.datetime "updated_at"
   end
 
+  add_index "entrance_dates", ["campaign_id"], name: "index_entrance_dates_on_campaign_id", using: :btree
+  add_index "entrance_dates", ["education_form_id"], name: "index_entrance_dates_on_education_form_id", using: :btree
+  add_index "entrance_dates", ["education_source_id"], name: "index_entrance_dates_on_education_source_id", using: :btree
+  add_index "entrance_dates", ["education_type_id"], name: "index_entrance_dates_on_education_type_id", using: :btree
+
   create_table "entrance_document_movements", force: true do |t|
     t.boolean  "moved"
     t.boolean  "original"
@@ -799,6 +815,9 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.datetime "updated_at"
     t.boolean  "original_changed",    default: false
   end
+
+  add_index "entrance_document_movements", ["from_application_id"], name: "index_entrance_document_movements_on_from_application_id", using: :btree
+  add_index "entrance_document_movements", ["to_application_id"], name: "index_entrance_document_movements_on_to_application_id", using: :btree
 
   create_table "entrance_document_types", force: true do |t|
     t.string   "name"
@@ -827,6 +846,13 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.boolean  "our_institution",                    default: false, null: false
     t.string   "qualification"
   end
+
+  add_index "entrance_edu_documents", ["direction_id"], name: "index_entrance_edu_documents_on_direction_id", using: :btree
+  add_index "entrance_edu_documents", ["document_type_id"], name: "index_entrance_edu_documents_on_document_type_id", using: :btree
+  add_index "entrance_edu_documents", ["entrant_id"], name: "index_entrance_edu_documents_on_entrant_id", using: :btree
+  add_index "entrance_edu_documents", ["profession_id"], name: "index_entrance_edu_documents_on_profession_id", using: :btree
+  add_index "entrance_edu_documents", ["qualification_type_id"], name: "index_entrance_edu_documents_on_qualification_type_id", using: :btree
+  add_index "entrance_edu_documents", ["specialization_id"], name: "index_entrance_edu_documents_on_specialization_id", using: :btree
 
   create_table "entrance_entrants", force: true do |t|
     t.string   "last_name"
@@ -865,11 +891,19 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.boolean  "ioo",                       default: false
   end
 
+  add_index "entrance_entrants", ["campaign_id"], name: "index_entrance_entrants_on_campaign_id", using: :btree
+  add_index "entrance_entrants", ["identity_document_type_id"], name: "index_entrance_entrants_on_identity_document_type_id", using: :btree
+  add_index "entrance_entrants", ["nationality_type_id"], name: "index_entrance_entrants_on_nationality_type_id", using: :btree
+  add_index "entrance_entrants", ["student_id"], name: "index_entrance_entrants_on_student_id", using: :btree
+
   create_table "entrance_event_entrants", force: true do |t|
     t.integer "entrance_event_id",   null: false
     t.integer "entrance_entrant_id", null: false
     t.integer "classroom_id"
   end
+
+  add_index "entrance_event_entrants", ["entrance_entrant_id"], name: "index_entrance_event_entrants_on_entrance_entrant_id", using: :btree
+  add_index "entrance_event_entrants", ["entrance_event_id"], name: "index_entrance_event_entrants_on_entrance_event_id", using: :btree
 
   create_table "entrance_events", force: true do |t|
     t.string   "name"
@@ -879,6 +913,8 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.boolean  "with_classroom"
     t.boolean  "with_time",      default: false
   end
+
+  add_index "entrance_events", ["campaign_id"], name: "index_entrance_events_on_campaign_id", using: :btree
 
   create_table "entrance_exam_results", force: true do |t|
     t.integer  "entrant_id",                 null: false
@@ -906,6 +942,9 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.integer  "form",           default: 1, null: false
   end
 
+  add_index "entrance_exams", ["campaign_id"], name: "index_entrance_exams_on_campaign_id", using: :btree
+  add_index "entrance_exams", ["use_subject_id"], name: "index_entrance_exams_on_use_subject_id", using: :btree
+
   create_table "entrance_logs", force: true do |t|
     t.integer  "user_id"
     t.integer  "entrant_id"
@@ -913,6 +952,8 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "entrance_logs", ["user_id"], name: "index_entrance_logs_on_user_id", using: :btree
 
   create_table "entrance_min_scores", force: true do |t|
     t.integer  "score"
@@ -924,6 +965,11 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.datetime "updated_at"
   end
 
+  add_index "entrance_min_scores", ["campaign_id"], name: "index_entrance_min_scores_on_campaign_id", using: :btree
+  add_index "entrance_min_scores", ["direction_id"], name: "index_entrance_min_scores_on_direction_id", using: :btree
+  add_index "entrance_min_scores", ["education_source_id"], name: "index_entrance_min_scores_on_education_source_id", using: :btree
+  add_index "entrance_min_scores", ["entrance_exam_id"], name: "index_entrance_min_scores_on_entrance_exam_id", using: :btree
+
   create_table "entrance_papers", force: true do |t|
     t.string  "name"
     t.string  "publication"
@@ -932,6 +978,8 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.string  "co_authors"
     t.integer "entrance_entrant_id", null: false
   end
+
+  add_index "entrance_papers", ["entrance_entrant_id"], name: "index_entrance_papers_on_entrance_entrant_id", using: :btree
 
   create_table "entrance_queries", force: true do |t|
     t.text     "request"
@@ -982,6 +1030,7 @@ ActiveRecord::Schema.define(version: 20140727223548) do
 
   add_index "entrance_test_items", ["competitive_group_id"], name: "index_entrance_test_items_on_competitive_group_id", using: :btree
   add_index "entrance_test_items", ["exam_id"], name: "index_entrance_test_items_on_exam_id", using: :btree
+  add_index "entrance_test_items", ["use_subject_id"], name: "index_entrance_test_items_on_use_subject_id", using: :btree
 
   create_table "entrance_test_types", force: true do |t|
     t.string   "name"
@@ -999,6 +1048,9 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.integer  "year"
   end
 
+  add_index "entrance_use_check_results", ["exam_result_id"], name: "index_entrance_use_check_results_on_exam_result_id", using: :btree
+  add_index "entrance_use_check_results", ["use_check_id"], name: "index_entrance_use_check_results_on_use_check_id", using: :btree
+
   create_table "entrance_use_checks", force: true do |t|
     t.text     "number"
     t.integer  "year"
@@ -1007,6 +1059,8 @@ ActiveRecord::Schema.define(version: 20140727223548) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "entrance_use_checks", ["entrant_id"], name: "index_entrance_use_checks_on_entrant_id", using: :btree
 
   create_table "event", force: true do |t|
     t.string   "name",                              null: false
