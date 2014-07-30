@@ -7,7 +7,7 @@ class Office::OrderTemplatesController < ApplicationController
 
   def update
     if @order_template.update(resource_params)
-      redirect_to office_order_templates_path, notice: 'Изменения в шаблоне приказа сохранены.'
+      redirect_to edit_office_order_template_path(@order_template), notice: 'Изменения в шаблоне приказа сохранены.'
     else
       render action: :edit
     end

@@ -184,6 +184,7 @@
         </fo:flow>
       </fo:page-sequence>
       <xsl:apply-templates select="/order/protocol" />
+      <!--<xsl:apply-templates select="/order/act" />-->
     </fo:root>
   </xsl:template>
 
@@ -656,6 +657,34 @@
           </fo:page-sequence>
       <!--</fo:root>-->
   </xsl:template>
+
+    <xsl:template match="act">
+      <fo:page-sequence master-reference="main">
+        <fo:flow flow-name="xsl-region-body">
+          <fo:block font="12pt PT Serif" text-align="right">
+              УТВЕРЖДАЮ
+          </fo:block>
+          <fo:block font="12pt PT Serif" space-before="8pt" text-align="right">
+                __________________
+          </fo:block>
+          <fo:block font="12pt PT Serif" text-align="right">
+                Первый проректор по учебной работе
+          </fo:block>
+          <fo:block font="12pt PT Serif" text-align="right">
+                МГУП имени Ивана Федорова
+          </fo:block>
+          <fo:block font="12pt PT Serif" text-align="right">
+                Т.В.Маркелова
+          </fo:block>
+          <fo:block font="12pt PT Serif" space-before="15pt" font-weight="bold" text-align="center">
+                АКТ
+          </fo:block>
+          <fo:block font="11pt PT Serif" space-before="15pt">
+            <xsl:apply-templates select="./content" />
+          </fo:block>
+        </fo:flow>
+      </fo:page-sequence>
+    </xsl:template>
 
   <!-- Абзац с выравниванием по левому краю -->
   <xsl:template match="lBlock">

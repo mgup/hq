@@ -5,6 +5,8 @@ class Office::Order < ActiveRecord::Base
   STATUS_UNDERWAY = 2
   STATUS_SIGNED   = 3
 
+  ENTRANCE_TEMPLATE = 16
+
   alias_attribute :id,      :order_id
   alias_attribute :version, :order_revision
   alias_attribute :number,  :order_number
@@ -18,6 +20,7 @@ class Office::Order < ActiveRecord::Base
 
   has_many :students_in_order, class_name: 'Office::OrderStudent',
            foreign_key: :order_student_order
+  accepts_nested_attributes_for :students_in_order
   has_many :students, class_name: 'Student', through: :students_in_order
 
   has_many :order_reasons, class_name: 'Office::OrderReason',
@@ -26,9 +29,12 @@ class Office::Order < ActiveRecord::Base
 
   has_many :metas, class_name: 'Office::OrderMeta',
            foreign_key: :order_meta_order, primary_key: :order_id
+  accepts_nested_attributes_for :metas
 
   scope :drafts, -> { where(order_status: STATUS_DRAFT) }
   scope :underways, -> { where(order_status: STATUS_UNDERWAY) }
+
+  scope :entrance, -> { where(order_template: ENTRANCE_TEMPLATE) }
 
   def draft?
     STATUS_DRAFT == status
@@ -96,6 +102,7 @@ class Office::Order < ActiveRecord::Base
         xml.text_
         xml.signature_
         xml.protocol_
+        xml.act_
       end
     end
 
