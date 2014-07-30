@@ -342,7 +342,7 @@ class Entrance::Application < ActiveRecord::Base
       order = Office::Order.entrance
       .joins(:metas)
       .where("order_meta.order_meta_pattern = 'Конкурсная группа' && order_meta.order_meta_text = '#{competitive_group_item.competitive_group.id}'").last
-      if order
+      if order && order.draft?
         order.students_in_order << Office::OrderStudent.create!(
             order_student_student: person.id,
             order_student_student_group_id: person.students.first.id,
