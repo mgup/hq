@@ -456,6 +456,13 @@ class Entrance::Application < ActiveRecord::Base
         else
           xml.benefit nil
         end
+
+        if competitive_group_target_item
+          xml.target ", договор № #{target_item.target_organization.contract_number} от #{l target_item.target_organization.contract_date}, #{target_item.target_organization.name}"
+        else
+          xml.target ''
+        end
+
         # xml.benefit (benefits.collect{|x| x.id}.include? 4 ? 4 : (benefits.collect{|x| x.id}.include? 1 ? 1 : nil))
 
         xml.number number
