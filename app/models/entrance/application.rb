@@ -458,7 +458,7 @@ class Entrance::Application < ActiveRecord::Base
         end
 
         if competitive_group_target_item
-          xml.target ", договор № #{competitive_group_target_item.target_organization.contract_number} от #{I18n.l competitive_group_target_item.target_organization.contract_date}, #{competitive_group_target_item.target_organization.name}"
+          xml.target "договор № #{competitive_group_target_item.target_organization.contract_number} от #{I18n.l competitive_group_target_item.target_organization.contract_date}, #{competitive_group_target_item.target_organization.name}"
         else
           xml.target ''
         end
