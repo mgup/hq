@@ -74,6 +74,7 @@
             <th>Основание</th>
             <% if can?(:manage, Entrance::Application) %>
               <th>Оригинал</th>
+              <th>#app</th>
             <% end %>
           </tr>
         </thead>
@@ -89,6 +90,7 @@
                   <span class="glyphicons ok_2"></span>
                 <% end %>
               </td>
+              <td><%= a.id %></td>
             <% end %>
           </tr>
         <% end %>
@@ -118,7 +120,8 @@
           <th>Сумма</th>
           <% if can?(:manage, Entrance::Application) %>
             <th>Оригинал</th>
-          <% end %>
+            <th>#app</th>
+        <% end %>
         </tr>
         </thead>
         <% a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
@@ -136,7 +139,8 @@
                   <span class="glyphicons ok_2"></span>
                 <% end %>
               </td>
-            <% end %>
+              <td><%= a.id %></td>
+          <% end %>
           </tr>
         <% end %>
       </table>
@@ -161,7 +165,8 @@
             <th>Сумма</th>
             <% if can?(:manage, Entrance::Application) %>
               <th>Оригинал</th>
-            <% end %>
+              <th>#app</th>
+          <% end %>
           </tr>
           </thead>
           <% appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
@@ -179,7 +184,8 @@
                     <span class="glyphicons ok_2"></span>
                   <% end %>
                 </td>
-              <% end %>
+                <td><%= a.id %></td>
+            <% end %>
             </tr>
           <% end %>
         </table>
@@ -224,7 +230,8 @@
           <th>Сумма</th>
           <% if can?(:manage, Entrance::Application) %>
             <th>Оригинал</th>
-          <% end %>
+            <th>#app</th>
+        <% end %>
         </tr>
         </thead>
         <% a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
@@ -242,7 +249,8 @@
                   <span class="glyphicons ok_2"></span>
                 <% end %>
               </td>
-            <% end %>
+              <td><%= a.id %></td>
+          <% end %>
           </tr>
         <% end %>
       </table>
