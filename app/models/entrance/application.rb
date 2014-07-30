@@ -448,7 +448,16 @@ class Entrance::Application < ActiveRecord::Base
       xml.application {
         xml.id_   id
         xml.abitpoints abitpoints
-        xml.benefit (benefits.collect{|x| x.id}.include? 4 ? 4 : (benefits.collect{|x| x.id}.include? 1 ? 1 : nil))
+
+        if out_of_competition
+          xml.benefit 1
+        elsif special_rights
+          xml.benefit 4
+        else
+          xml.benefit nil
+        end
+        # xml.benefit (benefits.collect{|x| x.id}.include? 4 ? 4 : (benefits.collect{|x| x.id}.include? 1 ? 1 : nil))
+
         xml.number number
         xml.exams do
           abitexams.each { |exam| xml << exam.to_nokogiri.root.to_xml }
