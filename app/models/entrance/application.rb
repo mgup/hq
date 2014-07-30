@@ -34,6 +34,7 @@ class Entrance::Application < ActiveRecord::Base
   # end
 
   scope :actual, -> { where('status_id != ?', 6) }
+  scope :with_order, -> { where(status_id: 8) }
 
   scope :without_called_back, -> do
     where('status_id != ?', 6)
@@ -427,16 +428,17 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def enrolled?
+    entrant.student && status_id == 8
     # fail '123' if 13083 == id
-    if entrant.student
-      if entrant.student.speciality.code.split('.')[0] == direction.code && entrant.student.speciality.code.split('.')[1] == direction.qualification_code.to_s
-        true
-      else
-        false
-      end
-    else
-      false
-    end
+    # if entrant.student
+    #   if entrant.student.speciality.code.split('.')[0] == direction.code && entrant.student.speciality.code.split('.')[1] == direction.qualification_code.to_s
+    #     true
+    #   else
+    #     false
+    #   end
+    # else
+    #   false
+    # end
   end
 
   private

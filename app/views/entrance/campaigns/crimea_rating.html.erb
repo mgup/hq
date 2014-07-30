@@ -33,7 +33,7 @@
      </tr>
     </thead>
     <% entrance_index = 0 %>
-    <% students = @applications.select{|a| a.entrant.student}.length %>
+    <% students = @applications.with_order.length %>
     <% @applications.each_with_index do |application, index| %>
     <% recomendation = (0 != application.pass_min_score && index > @number-1) %>
       <% if recomendation %>
@@ -47,12 +47,12 @@
        <td>
         <% if application.enrolled? %>
           зачислен, приказ № <%= application.entrant.student.entrance_order.number%>
-        <% elsif (0 != application.pass_min_score) && (index <= @number-1) && !application.entrant.student %>
+        <% elsif (0 != application.pass_min_score) && (index <= @number-1) %>
           не зачислен
         <% elsif entrance_index <= @number-students && recomendation %>
           рекомендован к зачислению
         <% else %>
-          <span class="glyphicons minus text-muted"></span>
+          <span class="glyphicons minus text-<%= 0 == application.pass_min_score ? 'danger' : 'muted' %>"></span>
         <% end %>
        </td> 
       </tr>

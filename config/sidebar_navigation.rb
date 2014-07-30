@@ -74,7 +74,8 @@ SimpleNavigation::Configuration.run do |navigation|
 
     primary.item :rating,
                  '<span class="glyphicons charts"></span> Пофамильные списки поступающих (рейтинги)'.html_safe,
-                 rating_entrance_campaign_path(Entrance::Campaign::CURRENT)
+                 rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
+                 highlights_on: -> { (params[:action] == 'rating' || params[:action] == 'crimea_rating') && params[:controller] == 'entrance/campaigns'}
 
     primary.item :entrance_dates, 'Сроки проведения',
                  entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
