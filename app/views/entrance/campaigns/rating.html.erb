@@ -19,8 +19,37 @@
     <h1>Рейтинги и приказы о зачислении</h1>
 </div>
 
-<%= render partial: 'filters',
-           locals: { url: rating_entrance_campaign_path(@campaign) } %>
+<%= form_tag rating_entrance_campaign_path(@campaign), method: :get do %>
+  <div class="row">
+    <div class="col-sm-8">
+      <%= select_tag :direction,
+                     options_from_collection_for_select(
+                       Direction.for_campaign(@campaign),
+                       :id, :description, params[:direction]
+                     ),
+                     prompt: 'Все направления',
+                     class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :form,
+                     options_for_select(
+                       [['очная', 11], ['очно-заочная', 12], ['заочная', 10]],
+                       params[:form]
+                     ),
+                     class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :payment,
+                     options_for_select(
+                       [['бюджет', 14], ['платное', 15]],
+                       params[:payment]
+                     ), class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+  </div>
+<% end %>
 
 <% if @items && @items.any? %>
   <% @items.each do |item| %>
@@ -184,6 +213,22 @@
         </div>
       <% end %>
 
+      <div class="row">
+        <div class="col-sm-12">
+          <label>
+            <input name="original" type="radio" checked onclick="$('.app').show();"> Все заявления
+          </label>
+          &nbsp;&nbsp;&nbsp;
+          <label>
+            <input name="original" type="radio" onclick="$('.app.original').show(); $('.app.without_original').hide();"> Только с оригиналом
+          </label>
+          &nbsp;&nbsp;&nbsp;
+          <label>
+            <input name="original" type="radio" onclick="$('.app.without_original').show(); $('.app.original').hide();"> Только без оригинала
+          </label>
+        </div>
+      </div>
+
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -201,19 +246,21 @@
         <% last_found = false %>
         <% prev_score = 0 %>
         <% a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
+          <% or_class = a.original? ? 'app original' : 'app without_original' %>
           <% if to_enroll > 0 %>
-            <tr class="success">
+            <tr class="success <%= or_class %>">
             <% to_enroll -= 1 %>
             <% prev_score = a.total_score %>
           <% elsif 0 == to_enroll && !last_found %>
             <% # Огого. Совпали баллы. %>
             <% if prev_score == a.total_score %>
-              <tr class="success">
+              <tr class="success <%= or_class %>">
             <% else %>
+              <tr class="<%= or_class %>">
               <% last_found = true %>
             <% end %>
           <% else %>
-            <tr>
+            <tr class="<%= or_class %>">
           <% end %>
             <td><%= i + 1 %></td>
             <td class="nowrap"><%= a.number %></td>
