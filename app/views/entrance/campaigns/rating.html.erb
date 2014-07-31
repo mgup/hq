@@ -126,7 +126,7 @@
     <% end %>
 
     <% if a_organization.any? %>
-      <h2>Зачисленныех по квоте целевого приема</h2>
+      <h2>Зачисленные по квоте целевого приема</h2>
       <% a_organization.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls| %>
         <h2>Договор № <%= target_item.target_organization.contract_number %> от <%= l target_item.target_organization.contract_date %>, <%= target_item.target_organization.name %></h2>
         <table class="table table-striped table-bordered">
