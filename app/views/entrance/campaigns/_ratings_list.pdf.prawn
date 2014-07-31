@@ -157,7 +157,7 @@ if a_contest.any?
   prev_score = 0
 
   a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
-    d = [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score, (a.original? ? '+' : '')]
+    d = [i + 1, a.number, "#{a.entrant.full_name}, #{a.entrant.phone}"] + a.abitexams.map(&:score) + [a.total_score, (a.original? ? '+' : '')]
 
     if to_enroll > 0
       to_enroll -= 1
