@@ -22,7 +22,6 @@ HQ::Application.routes.draw do
   end
 
   resources :blanks
-  resources :directions
 
   devise_for :users, controllers: { registrations: 'users' }
     as :user do

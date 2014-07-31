@@ -37,6 +37,7 @@ class Entrance::Application < ActiveRecord::Base
 
   scope :actual, -> { where('status_id != ?', 6) }
   scope :with_order, -> { where(status_id: 8) }
+  scope :without_order, -> { where('status_id != ?', 8) }
 
   scope :without_called_back, -> do
     where('status_id != ?', 6)
