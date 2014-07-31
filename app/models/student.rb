@@ -73,7 +73,7 @@ class Student < ActiveRecord::Base
            foreign_key: :support_student
   has_many :selections,  class_name: My::Select, primary_key: :student_group_id,
            foreign_key: :optional_select_student
-  has_many :choices, class_name: My::Choice, :through => :selections
+  has_many :choices, class_name: My::Choice, through: :selections
 
   has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_student_group_id
   has_many :orders, class_name: Office::Order, through: :students_in_order

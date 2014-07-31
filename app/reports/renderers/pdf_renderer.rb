@@ -28,6 +28,10 @@ module Renderers
       pdf.image StringIO.new(img), width: pdf.bounds.width
     end
 
+    def table(data)
+      pdf.table data, header: true
+    end
+
     private
 
     def render_report_header

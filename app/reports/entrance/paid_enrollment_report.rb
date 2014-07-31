@@ -26,6 +26,7 @@ module Entrance
       @renderer.image(graph_received_expected_sums)
       @renderer.text('Распределение поступивших платежей по институтам:')
       @renderer.image(graph_received_sums_by_department)
+      contracts_by_direction
     end
 
     # Название отчёта.
@@ -51,10 +52,12 @@ module Entrance
     def graph_received_sums_by_department
       g = Graphs::SideBar.new('800x200')
 
-      groups = @contracts.group_by { |c| c.application.department.abbreviation }
+      @grouped_by_department = @contracts.group_by do |contract|
+        contract.application.department.abbreviation
+      end
 
       sums = []
-      groups.each_with_index do |group, index|
+      @grouped_by_department.each_with_index do |group, index|
         group_sum = group[1].reduce(0.0) { |a, e| a + e.student.total_payments }
         sums << group_sum
 
@@ -110,6 +113,36 @@ module Entrance
 
         @expected_for_first_term_sum += expected_for_first_term_sum
         @received_for_first_term_sum += received_for_first_term_sum
+      end
+    end
+
+    def contracts_by_direction
+      @grouped_by_department.each do |abbreviation, contracts|
+        # next unless 'ИПИТ' == abbreviation
+
+        @renderer.text("Статистика договоров #{abbreviation}")
+
+        by_speciality = contracts.group_by do |contract|
+          contract.student.group.speciality
+        end
+
+        data = [['Направление', 'Очная', 'Очно-заочная', 'Заочная']]
+        by_speciality.each do |speciality, contracts|
+          d = [speciality.name, 0, 0, 0]
+          contracts.each do |contract|
+            case contract.student.group.form
+            when 'fulltime' then d[1] += 1
+            when 'semitime' then d[2] += 1
+            when 'postal'   then d[3] += 1
+            when 'distance' then d[3] += 1
+            else fail 'Неизвестная форма обучения.'
+            end
+          end
+
+          data << d
+        end
+
+        @renderer.table(data)
       end
     end
   end
