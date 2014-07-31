@@ -184,7 +184,7 @@
         </fo:flow>
       </fo:page-sequence>
       <xsl:apply-templates select="/order/protocol" />
-      <!--<xsl:apply-templates select="/order/act" />-->
+      <xsl:apply-templates select="/order/act" />
     </fo:root>
   </xsl:template>
 
@@ -661,26 +661,60 @@
     <xsl:template match="act">
       <fo:page-sequence master-reference="main">
         <fo:flow flow-name="xsl-region-body">
-          <fo:block font="12pt PT Serif" text-align="right">
-              УТВЕРЖДАЮ
-          </fo:block>
-          <fo:block font="12pt PT Serif" space-before="8pt" text-align="right">
-                __________________
-          </fo:block>
-          <fo:block font="12pt PT Serif" text-align="right">
-                Первый проректор по учебной работе
-          </fo:block>
-          <fo:block font="12pt PT Serif" text-align="right">
-                МГУП имени Ивана Федорова
-          </fo:block>
-          <fo:block font="12pt PT Serif" text-align="right">
-                Т.В.Маркелова
-          </fo:block>
-          <fo:block font="12pt PT Serif" space-before="15pt" font-weight="bold" text-align="center">
+          <fo:block font="12pt PT Serif" text-indent="260">
+              <fo:block>
+                  УТВЕРЖДАЮ
+              </fo:block>
+              <fo:block space-before="5pt">
+                    ____________________________
+              </fo:block>
+              <fo:block>
+                    Первый проректор по учебной работе
+              </fo:block>
+              <fo:block>
+                    МГУП имени Ивана Федорова
+              </fo:block>
+              <fo:block>
+                    Т.В. Маркелова
+              </fo:block>
+         </fo:block>
+          <fo:block font="14pt PT Serif" space-before="15pt" font-weight="bold" text-align="center">
                 АКТ
           </fo:block>
           <fo:block font="11pt PT Serif" space-before="15pt">
             <xsl:apply-templates select="./content" />
+          </fo:block>
+          <fo:block font="12pt PT Serif" space-before="40pt">
+            <fo:table table-layout="fixed" width="100%" space-after="8pt">
+              <fo:table-column column-width="proportional-column-width(1.2)" />
+              <fo:table-column column-width="proportional-column-width(1)" />
+              <fo:table-body>
+                <fo:table-row>
+                  <fo:table-cell>
+                    <fo:block><xsl:apply-templates select="./act_employee/position" /></fo:block>
+                  </fo:table-cell>
+                  <fo:table-cell>
+                    <fo:block text-align="end">__________________/<xsl:apply-templates select="./act_employee/name" />/</fo:block>
+                  </fo:table-cell>
+                </fo:table-row>
+                <fo:table-row>
+                  <fo:table-cell>
+                      <fo:block> </fo:block>
+                  </fo:table-cell>
+                  <fo:table-cell>
+                      <fo:block> </fo:block>
+                  </fo:table-cell>
+                </fo:table-row>
+                 <fo:table-row>
+                  <fo:table-cell>
+                    <fo:block><xsl:apply-templates select="./act_ok/position" /></fo:block>
+                  </fo:table-cell>
+                  <fo:table-cell>
+                    <fo:block text-align="end">__________________/<xsl:apply-templates select="./act_ok/name" />/</fo:block>
+                  </fo:table-cell>
+                 </fo:table-row>
+              </fo:table-body>
+            </fo:table>
           </fo:block>
         </fo:flow>
       </fo:page-sequence>
@@ -693,6 +727,13 @@
       <xsl:apply-templates />
     </fo:block>
   </xsl:template>
+
+    <xsl:template match="cBlock">
+        <fo:block font="12pt PT Serif" space-before="5pt" text-align="justify" text-align-last="start"
+                  text-indent="20pt">
+            <xsl:apply-templates />
+        </fo:block>
+    </xsl:template>
 
   <xsl:template match="lBlockNoIndent">
      <fo:block font="11pt PT Serif" space-before="2pt" text-align="justify" text-align-last="start">
