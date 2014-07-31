@@ -16,7 +16,8 @@ class Entrance::Application < ActiveRecord::Base
   has_many :benefits, class_name: 'Entrance::Benefit'
 
   has_one :contract, class_name: 'Entrance::Contract'
-  belongs_to :order, class_name: 'Office::Order', primary_key: :order_id, foreign_key: :order_id
+
+  belongs_to :order, class_name: 'Office::Order'
 
   after_create do |application|
     Entrance::Log.create entrant_id: application.entrant.id,

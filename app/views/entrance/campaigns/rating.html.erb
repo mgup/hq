@@ -16,7 +16,7 @@
 <br>
 
 <div class="page-header">
-    <h1>Пофамильные списки поступающих (рейтинги)</h1>
+    <h1>Рейтинги и приказы о зачислении</h1>
 </div>
 
 <%= render partial: 'filters',
@@ -64,7 +64,7 @@
     %>
 
     <% if a_out_of_competition.any? %>
-      <h2>Список поступающих без вступительных испытаний</h2>
+      <h2>Зачисленные без вступительных испытаний</h2>
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
@@ -72,10 +72,7 @@
             <th>Рег. номер</th>
             <th>Поступающий</th>
             <th>Основание</th>
-            <% if can?(:manage, Entrance::Application) %>
-              <th>Оригинал</th>
-              <th>#app</th>
-            <% end %>
+            <th>Приказ о зачислении</th>
           </tr>
         </thead>
         <% a_out_of_competition.each_with_index do |a, i| %>
@@ -84,19 +81,15 @@
             <td class="nowrap"><%= a.number %></td>
             <td><%= a.entrant.full_name %></td>
             <td><%= a.benefits.first.temp_text %></td>
-            <% if can?(:manage, Entrance::Application) %>
-              <td>
-                <% if a.original? %>
-                  <span class="glyphicons ok_2"></span>
-                <% end %>
-              </td>
-              <td><%= a.id %></td>
-            <% end %>
+            <td class="nowrap">
+              <% if a.order %>
+                № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </table>
       <% remaining_places -= a_out_of_competition.size %>
-      <br><br><br><br>
     <% end %>
 
     <%
@@ -106,22 +99,14 @@
     %>
 
     <% if a_special_rights.any? %>
-      <h2>Список поступающих по квоте приема лиц, имеющих особое право</h2>
-      <h3><strong>Доступное количество мест — <%= item.number_quota_o %></strong></h3>
+      <h2>Зачисленные по квоте приема лиц, имеющих особое право</h2>
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
           <th></th>
           <th>Рег. номер</th>
           <th>Поступающий</th>
-          <% exam_names.each do |name| %>
-            <th><%= name %></th>
-          <% end %>
-          <th>Сумма</th>
-          <% if can?(:manage, Entrance::Application) %>
-            <th>Оригинал</th>
-            <th>#app</th>
-        <% end %>
+          <th>Приказ о зачислении</th>
         </tr>
         </thead>
         <% a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
@@ -129,44 +114,28 @@
             <td><%= i + 1 %></td>
             <td class="nowrap"><%= a.number %></td>
             <td><%= a.entrant.full_name %></td>
-            <% a.abitexams.each do |exam| %>
-              <td><%= exam.score %></td>
-            <% end %>
-            <td><%= a.total_score %></td>
-            <% if can?(:manage, Entrance::Application) %>
-              <td>
-                <% if a.original? %>
-                  <span class="glyphicons ok_2"></span>
-                <% end %>
-              </td>
-              <td><%= a.id %></td>
-          <% end %>
+            <td class="nowrap">
+              <% if a.order %>
+                № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </table>
       <% remaining_places -= (a_special_rights.size > item.number_quota_o ? item.number_quota_o : a_special_rights.size) %>
-      <br><br><br><br>
     <% end %>
 
     <% if a_organization.any? %>
-      <h2>Список поступающих по квоте целевого приема</h2>
+      <h2>Зачисленныех по квоте целевого приема</h2>
       <% a_organization.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls| %>
         <h2>Договор № <%= target_item.target_organization.contract_number %> от <%= l target_item.target_organization.contract_date %>, <%= target_item.target_organization.name %></h2>
-        <h3><strong>Доступное количество мест — <%= target_item.number_target_o %></strong></h3>
         <table class="table table-striped table-bordered">
           <thead>
           <tr>
             <th></th>
             <th>Рег. номер</th>
             <th>Поступающий</th>
-            <% exam_names.each do |name| %>
-              <th><%= name %></th>
-            <% end %>
-            <th>Сумма</th>
-            <% if can?(:manage, Entrance::Application) %>
-              <th>Оригинал</th>
-              <th>#app</th>
-          <% end %>
+            <th>Приказ о зачислении</th>
           </tr>
           </thead>
           <% appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
@@ -174,18 +143,11 @@
               <td><%= i + 1 %></td>
               <td class="nowrap"><%= a.number %></td>
               <td><%= a.entrant.full_name %></td>
-              <% a.abitexams.each do |exam| %>
-                <td><%= exam.score %></td>
-              <% end %>
-              <td><%= a.total_score %></td>
-              <% if can?(:manage, Entrance::Application) %>
-                <td>
-                  <% if a.original? %>
-                    <span class="glyphicons ok_2"></span>
-                  <% end %>
-                </td>
-                <td><%= a.id %></td>
-            <% end %>
+              <td class="nowrap">
+                <% if a.order %>
+                  № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </table>
@@ -196,7 +158,11 @@
 
     <% if a_contest.any? %>
       <% unless 12014 == @campaign.id %>
-        <h2>Список поступающих по общему конкурсу</h2>
+        <h2>
+          Конкурсные списки на места в рамках контрольных цифр по общему
+          конкурсу с выделением списков лиц, рекомендованных к зачислению
+          на первом этапе
+        </h2>
         <h3>
           <strong>
             Доступное количество мест — <%= remaining_places %>
@@ -228,14 +194,28 @@
             <th><%= name %></th>
           <% end %>
           <th>Сумма</th>
-          <% if can?(:manage, Entrance::Application) %>
-            <th>Оригинал</th>
-            <th>#app</th>
-        <% end %>
+          <th>Оригинал</th>
         </tr>
         </thead>
+        <% to_enroll = remaining_places %>
+        <% last_found = false %>
+        <% prev_score = 0 %>
         <% a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
-          <tr>
+          <% if to_enroll > 0 %>
+            <tr class="success">
+            <% to_enroll -= 1 %>
+            <% prev_score = a.total_score %>
+          <% elsif 0 == to_enroll && !last_found %>
+            <% # Огого. Совпали баллы. %>
+            <% last_found = true %>
+            <% if prev_score == a.total_score %>
+              <tr class="success">
+            <% else %>
+              <% last_found = true %>
+            <% end %>
+          <% else %>
+            <tr>
+          <% end %>
             <td><%= i + 1 %></td>
             <td class="nowrap"><%= a.number %></td>
             <td><%= a.entrant.full_name %></td>
@@ -243,14 +223,11 @@
               <td><%= exam.score %></td>
             <% end %>
             <td><%= a.total_score %></td>
-            <% if can?(:manage, Entrance::Application) %>
-              <td>
-                <% if a.original? %>
-                  <span class="glyphicons ok_2"></span>
-                <% end %>
-              </td>
-              <td><%= a.id %></td>
-          <% end %>
+            <td>
+              <% if a.original? %>
+                <span class="glyphicons ok_2"></span>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </table>
