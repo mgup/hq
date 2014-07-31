@@ -373,6 +373,8 @@ class Entrance::Application < ActiveRecord::Base
         order.metas.last.update(object: order.id)
         order.metas.last.save!
       end
+      update(status_id: 8, order_id: order.id)
+      save!
     end
   end
 
