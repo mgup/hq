@@ -202,6 +202,7 @@ class Person < ActiveRecord::Base
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.person {
         xml.id_   id
+        xml.foreign student_foreign if student_foreign
         %w(last_name first_name patronym).each do |name|
           xml.send(name) {
             %w(ip rp dp vp tp pp).each do |form|
