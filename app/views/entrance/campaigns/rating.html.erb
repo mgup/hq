@@ -207,7 +207,6 @@
             <% prev_score = a.total_score %>
           <% elsif 0 == to_enroll && !last_found %>
             <% # Огого. Совпали баллы. %>
-            <% last_found = true %>
             <% if prev_score == a.total_score %>
               <tr class="success">
             <% else %>
