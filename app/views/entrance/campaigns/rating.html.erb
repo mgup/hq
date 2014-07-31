@@ -240,6 +240,9 @@
           <% end %>
           <th>Сумма</th>
           <th>Оригинал</th>
+          <% if can?(:manage, Entrance::Application) %>
+            <th></th>
+          <% end %>
         </tr>
         </thead>
         <% to_enroll = remaining_places %>
@@ -274,6 +277,16 @@
                 <span class="glyphicons ok_2"></span>
               <% end %>
             </td>
+            <% if can?(:manage, Entrance::Application) %>
+              <td>
+                <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
+                            class: 'btn btn-default',
+                            title: 'Заявления',
+                            target: :blank do %>
+                  <span class="glyphicons notes"></span>
+                <% end %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       </table>
