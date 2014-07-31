@@ -66,11 +66,16 @@
             <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
               МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
             </fo:block>
-            <fo:block font="14pt PT Serif" font-weight="bold" text-align="center">
-              федеральное государственное бюджетное образовательное учреждение высшего профессионального образования
+            <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
+              федеральное государственное бюджетное образовательное учреждение
+            </fo:block>
+            <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
+               высшего профессионального образования
             </fo:block>
             <fo:block font="14pt PT Serif" font-weight="bold" text-align="center" padding-bottom="3pt">
               &laquo;МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ
+            </fo:block>
+            <fo:block font="14pt PT Serif" font-weight="bold" text-align="center" padding-bottom="3pt">
               ИМЕНИ ИВАНА ФЕДОРОВА&raquo;
             </fo:block>
             <fo:block border-top="3pt solid black" space-after="1pt"></fo:block>
@@ -325,6 +330,18 @@
   <xsl:template match="protocol">
       <!--<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">-->
           <fo:page-sequence master-reference="protocol">
+              <fo:static-content flow-name="oddFoot">
+                  <fo:block>
+                      <xsl:value-of select="/order/id" />&nbsp;&ndash;&nbsp;<xsl:value-of select="/order/revision" />
+                  </fo:block>
+              </fo:static-content>
+
+              <fo:static-content flow-name="evenFoot">
+                  <!--<fo:block text-align="end">-->
+                  <fo:block>
+                      <xsl:value-of select="/order/id" />&nbsp;&ndash;&nbsp;<xsl:value-of select="/order/revision" />
+                  </fo:block>
+              </fo:static-content>
               <fo:flow flow-name="xsl-region-body">
                   <fo:block>
                       <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
@@ -343,32 +360,49 @@
                           <fo:table-body>
                               <fo:table-row>
                                   <fo:table-cell>
-                                      <fo:block font="12pt PT Serif" text-align="end">№ __________________</fo:block>
+                                      <fo:block font="12pt PT Serif" text-align="end">
+                                          <xsl:choose>
+                                              <xsl:when test="not(/order/sign/number)">
+                                                  № __________________
+                                              </xsl:when>
+                                              <xsl:otherwise>
+                                                  № <xsl:value-of select="/order/sign/number" />
+                                              </xsl:otherwise>
+                                          </xsl:choose>
+                                      </fo:block>
                                   </fo:table-cell>
                                   <fo:table-cell>
                                       <fo:block />
                                   </fo:table-cell>
                                   <fo:table-cell>
-                                      <fo:block font="12pt PT Serif" text-align="end">от &laquo;______&raquo; ______________ 2014 г.</fo:block>
+                                      <fo:block font="12pt PT Serif">
+                                          <xsl:choose>
+                                              <xsl:when test="not(/order/sign/date)">
+                                                  от &laquo;______&raquo; ______________ 2014 г.
+                                              </xsl:when>
+                                              <xsl:otherwise>
+                                                  от &laquo;<xsl:value-of select="substring(/order/sign/date, 9, 2)" />&raquo;
+                                                  <xsl:call-template name="month_name">
+                                                      <xsl:with-param name="date" select="substring(/order/sign/date, 6, 2)" />
+                                                  </xsl:call-template>&nbsp;
+                                                  <xsl:value-of select="substring(/order/sign/date, 0, 5)" /> г.
+                                              </xsl:otherwise>
+                                          </xsl:choose>
+                                      </fo:block>
                                   </fo:table-cell>
                               </fo:table-row>
                           </fo:table-body>
                       </fo:table>
                       <fo:block font="11pt PT Serif" space-before="8pt" font-weight="bold">
-                          Направление: <xsl:value-of select="/order/students/student/speciality/new_code" />
+                          <xsl:value-of select="/order/students/student/speciality/new_code" />
                           &laquo;<xsl:value-of select="/order/students/student/speciality/name" />&raquo;
                       </fo:block>
                       <fo:block font="11pt PT Serif" space-before="2pt" font-weight="bold">
-                          Форма обучения: 
                           <xsl:choose>
-                              <xsl:when test="'fulltime' = /order/students/student/group/form">очная</xsl:when>
-                              <xsl:when test="'semitime' = /order/students/student/group/form">очно-заочная</xsl:when>
-                              <xsl:when test="'postal' = /order/students/student/group/form">заочная</xsl:when>
-                          </xsl:choose>
-                      </fo:block>
-                      <fo:block font="11pt PT Serif" space-before="2pt" font-weight="bold">
-                          Основа обучения:
-                          <xsl:if test="1 = /order/students/student/education_source"> бюджет</xsl:if>
+                              <xsl:when test="'fulltime' = /order/students/student/group/form">Очная</xsl:when>
+                              <xsl:when test="'semitime' = /order/students/student/group/form">Очно-заочная</xsl:when>
+                              <xsl:when test="'postal' = /order/students/student/group/form">Заочная</xsl:when>
+                          </xsl:choose> форма обучения, <xsl:if test="1 = /order/students/student/education_source"> бюджет</xsl:if>
                           <xsl:if test="2 = /order/students/student/education_source"> по договорам (внебюджетная)</xsl:if>
                       </fo:block>
                   </fo:block>
@@ -386,7 +420,7 @@
                                   <fo:block>Антипов К.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -397,7 +431,7 @@
                                   <fo:block>Маркелова Т.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -408,7 +442,7 @@
                                   <fo:block>Назаров В.Г.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -419,7 +453,7 @@
                                   <fo:block>Хохлогорская Е.Л.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -430,7 +464,7 @@
                                   <fo:block>Боцман Ю.Ю.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -441,7 +475,7 @@
                                   <fo:block>Ситникова Т.А.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -452,7 +486,7 @@
                                   <fo:block>Алиева Д.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -463,7 +497,7 @@
                                   <fo:block>Иванова И.А.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -474,7 +508,7 @@
                                   <fo:block>Саркисова Е.Ю.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                       </fo:table-body>
@@ -483,21 +517,21 @@
                       Члены приемной комиссии
                   </fo:block>
                   <fo:table font="11pt PT Serif" table-layout="fixed" width="100%" space-before="8pt">
-                      <fo:table-column column-width="proportional-column-width(1)" />
-                      <fo:table-column column-width="proportional-column-width(1)" />
-                      <fo:table-column column-width="proportional-column-width(0.2)" />
-                      <fo:table-column column-width="proportional-column-width(1)" />
-                      <fo:table-column column-width="proportional-column-width(1)" />
-                      <fo:table-column column-width="proportional-column-width(0.2)" />
-                      <fo:table-column column-width="proportional-column-width(1)" />
-                      <fo:table-column column-width="proportional-column-width(1)" />
+                      <fo:table-column column-width="proportional-column-width(0.9)" />
+                      <fo:table-column column-width="proportional-column-width(1.1)" />
+                      <fo:table-column column-width="proportional-column-width(0.3)" />
+                      <fo:table-column column-width="proportional-column-width(0.9)" />
+                      <fo:table-column column-width="proportional-column-width(1.1)" />
+                      <fo:table-column column-width="proportional-column-width(0.3)" />
+                      <fo:table-column column-width="proportional-column-width(0.9)" />
+                      <fo:table-column column-width="proportional-column-width(1.1)" />
                       <fo:table-body>
                           <fo:table-row>
                               <fo:table-cell>
                                   <fo:block>Корытов О.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -506,7 +540,7 @@
                                   <fo:block>Горлов С.Ю.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -515,7 +549,7 @@
                                   <fo:block>Винокур А.И.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -523,7 +557,7 @@
                                   <fo:block>Кулаков В.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -532,7 +566,7 @@
                                   <fo:block>Столяров А.А.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -541,7 +575,7 @@
                                   <fo:block>Сидорова Н.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -549,7 +583,7 @@
                                   <fo:block>Дмитриев Я.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -558,7 +592,7 @@
                                   <fo:block>Миронова Г.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -567,7 +601,7 @@
                                   <fo:block>Перевалова Е.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -575,7 +609,7 @@
                                   <fo:block>Гордеева Е.Е.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -584,7 +618,7 @@
                                   <fo:block>Галицкий Д.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -593,7 +627,7 @@
                                   <fo:block>Шляга В.С.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -601,7 +635,7 @@
                                   <fo:block>Токмаков Б.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -610,7 +644,7 @@
                                   <fo:block>Голева О.П.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -619,7 +653,7 @@
                                   <fo:block>Толутанова Ю.Н.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                           <fo:table-row>
@@ -627,7 +661,7 @@
                                   <fo:block>Яковлев А.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -636,7 +670,7 @@
                                   <fo:block>Яковлев Р.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
                                   <fo:block />
@@ -645,7 +679,7 @@
                                   <fo:block>Самоделова Е.В.</fo:block>
                               </fo:table-cell>
                               <fo:table-cell>
-                                  <fo:block>______________________</fo:block>
+                                  <fo:block> _______________________________</fo:block>
                               </fo:table-cell>
                           </fo:table-row>
                       </fo:table-body>
@@ -660,13 +694,24 @@
 
     <xsl:template match="act">
       <fo:page-sequence master-reference="main">
+        <fo:static-content flow-name="oddFoot">
+          <fo:block>
+            <xsl:value-of select="/order/id" />&nbsp;&ndash;&nbsp;<xsl:value-of select="/order/revision" />
+          </fo:block>
+        </fo:static-content>
+
+        <fo:static-content flow-name="evenFoot">
+          <fo:block>
+            <xsl:value-of select="/order/id" />&nbsp;&ndash;&nbsp;<xsl:value-of select="/order/revision" />
+          </fo:block>
+        </fo:static-content>
         <fo:flow flow-name="xsl-region-body">
           <fo:block font="12pt PT Serif" text-indent="260">
               <fo:block>
                   УТВЕРЖДАЮ
               </fo:block>
               <fo:block space-before="5pt">
-                    ____________________________
+                     _____________________________________
               </fo:block>
               <fo:block>
                     Первый проректор по учебной работе

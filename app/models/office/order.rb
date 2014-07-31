@@ -138,7 +138,7 @@ class Office::Order < ActiveRecord::Base
         phone = Nokogiri::XML::Node.new 'phone', node
         phone.content = user.phone
         name = Nokogiri::XML::Node.new 'name', node
-        name.content = user.short_name
+        name.content = user.short_name_official
         title = Nokogiri::XML::Node.new 'title', node
         title.content = position.title
         department = Nokogiri::XML::Node.new 'department_short_name', node
