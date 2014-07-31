@@ -250,21 +250,28 @@
         <% prev_score = 0 %>
         <% a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
           <% or_class = a.original? ? 'app original' : 'app without_original' %>
-          <% if to_enroll > 0 %>
+
+          <% if item.payed? %>
             <tr class="success <%= or_class %>">
-            <% to_enroll -= 1 %>
-            <% prev_score = a.total_score %>
-          <% elsif 0 == to_enroll && !last_found %>
-            <% # Огого. Совпали баллы. %>
-            <% if prev_score == a.total_score %>
+          <% else %>
+            <% if to_enroll > 0 %>
               <tr class="success <%= or_class %>">
+              <% to_enroll -= 1 %>
+              <% prev_score = a.total_score %>
+            <% elsif 0 == to_enroll && !last_found %>
+              <% # Огого. Совпали баллы. %>
+              <% if prev_score == a.total_score %>
+                <tr class="success <%= or_class %>">
+              <% else %>
+                <tr class="<%= or_class %>">
+                <% last_found = true %>
+              <% end %>
             <% else %>
               <tr class="<%= or_class %>">
-              <% last_found = true %>
             <% end %>
-          <% else %>
-            <tr class="<%= or_class %>">
           <% end %>
+
+
             <td><%= i + 1 %></td>
             <td class="nowrap"><%= a.number %></td>
             <td><%= a.entrant.full_name %></td>
