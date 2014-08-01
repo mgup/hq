@@ -1,4 +1,5 @@
 $ ->
   $('.enroll-link').click ->
-    $(this).hide()
-    $(this).siblings('.loader').show()
+    if confirm($(this).data('question'))
+      $(this).hide()
+      $(this).siblings('.loader').show()

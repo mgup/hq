@@ -235,6 +235,7 @@ class Ability
     can :manage, Entrance::UseCheckResult
 
     can :reject, :entrance_applications
+    can :create, :entrance_orders
   end
 
   def selection_io(user)

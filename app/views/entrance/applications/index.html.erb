@@ -30,12 +30,13 @@
       </th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <% @applications.each do |a| %>
-    <tr>
+    <tr class="appl<%= a.id %>">
       <td class="text-muted"><%= a.id %></td>
-      <td><%= a.number %></td>
+      <td class="nowrap"><%= a.number %></td>
       <td>
         <%= a.direction.new_code %>
         <%= a.direction.name %>
@@ -81,13 +82,28 @@
           </div>
         </td>
 
-        <td>
-          <%= link_to entrance_campaign_entrant_application_path(@campaign, @entrant, a),
-                      method: :delete, class: 'btn btn-danger',
-                      title: 'Отозвать', data: { confirm: 'Вы уверены?' } do %>
-            <span class="glyphicons remove_2"></span>
-          <% end %>
-        </td>
+        <% if a.order %>
+          <td colspan="2">
+            приказ № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
+          </td>
+        <% else %>
+          <td>
+            <%= link_to entrance_campaign_entrant_application_path(@campaign, @entrant, a),
+                        method: :delete, class: 'btn btn-danger',
+                        title: 'Отозвать', data: { confirm: 'Вы уверены?' } do %>
+              <span class="glyphicons remove_2"></span> Отозвать
+            <% end %>
+          </td>
+          <td>
+            <%= link_to reject_entrance_campaign_entrant_application_path(@campaign, a.entrant, a),
+                        class: 'btn btn-danger',
+                        title: 'Отклонить заявление',
+                        remote: true,
+                        data: { confirm: 'ВЫ ТОЧНО ПОНИМАЕТЕ ЧТО И ЗАЧЕМ ВЫ ДЕЛАЕТЕ???!!!' } do %>
+              <span class="glyphicons remove_2"></span> Отклонить
+            <% end %>
+          </td>
+        <% end %>
       <% end %>
     </tr>
   <% end %>

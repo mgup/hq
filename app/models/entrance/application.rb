@@ -98,8 +98,8 @@ class Entrance::Application < ActiveRecord::Base
 
   def self.sort_applications
     lambda do |a, b|
-      sum1 = a.total_score.to_i
-      sum2 = b.total_score.to_i
+      sum1 = a.abitpoints
+      sum2 = b.abitpoints
       # 0
       if sum1 > sum2
         -1

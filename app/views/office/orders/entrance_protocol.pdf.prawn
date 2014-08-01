@@ -9,8 +9,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
     pdf.move_down 4
     pdf.text 'о зачислении', style: :bold, align: :center
-    pdf.table [["№ #{@order.number ? @order.number : '__________________'}",
-               "#{@order.signing_date ? (l @order.signing_date, format: 'от «%d» %b %Y г.') : 'от «____» ______________ 2014 г.'}"]
+    pdf.table [['№ __________________', 'от «____» ______________ 2014 г.']
               ], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
       column(0).width = 600
     end
@@ -51,13 +50,12 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     exams = @item.competitive_group.test_items.order(:entrance_test_priority).collect{ |x| x.exam.name }
     data = [['№ п/п', 'Рег. номер', 'ФИО абитуриента']]
     exams.each {|e|  data.first << e}
-    data.first << 'Сумма баллов' << 'Решение комиссии'
+    data.first << 'Сумма баллов' << 'Оригинал документа об образовании' << 'Решение комиссии'
 
-    index = 0
-    @item.applications.actual.each_with_index do |ap|
+    @item.applications.actual.sort(&Entrance::Application.sort_applications).each_with_index do |ap, index|
       data << ["#{index+1}", ap.number, ap.entrant.full_name]
       ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
-      data.last << ap.abitpoints << (ap.enrolled? ? 'зачислить' : 'не зачислить')
+      data.last << ap.abitpoints << (ap.original? ? 'да' : 'нет') << (ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant) ? 'зачислить' : 'не зачислить')
     end
 
     pdf.move_down 8

@@ -6,6 +6,16 @@
       № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
     <% end %>
 </td>
+<% if can?(:manage, Entrance::Application) %>
+  <td>
+      <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
+                  class: 'btn btn-default',
+                  title: 'Заявления',
+                  target: :blank do %>
+        <span class="glyphicons notes"></span>
+      <% end %>
+  </td>
+<% end %>
 <td>
     <% if current_user %>
       <% if current_user.is?(:developer) && !a.order %>

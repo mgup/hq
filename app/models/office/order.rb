@@ -107,7 +107,7 @@ class Office::Order < ActiveRecord::Base
         # end
         xml.text_
         xml.signature_
-        xml.protocol_
+        # xml.protocol_
         xml.act_
       end
     end

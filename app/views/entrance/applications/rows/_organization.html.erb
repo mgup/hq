@@ -5,14 +5,24 @@
       № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
     <% end %>
 </td>
+<% if can?(:manage, Entrance::Application) %>
+  <td>
+      <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
+                  class: 'btn btn-default',
+                  title: 'Заявления',
+                  target: :blank do %>
+        <span class="glyphicons notes"></span>
+      <% end %>
+  </td>
+<% end %>
 <td>
-    <% if current_user %>
-      <% if current_user.is?(:developer) && !a.order %>
-        <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
-                    data: {confirm: 'Вы уверены, что хотите зачислить этого абитуриента?'}, remote: true %>
-      <% end %>
-      <% if a.order %>
-        <%= a.order.signing_date ? 'зачислен' : 'формируется приказ о зачислении' %>
-      <% end %>
+  <% if current_user %>
+    <% if current_user.is?(:developer) && !a.order %>
+      <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
+                  data: {confirm: 'Вы уверены, что хотите зачислить этого абитуриента?'}, remote: true %>
     <% end %>
+    <% if a.order %>
+      <%= a.order.signing_date ? 'зачислен' : 'формируется приказ о зачислении' %>
+    <% end %>
+  <% end %>
 </td>

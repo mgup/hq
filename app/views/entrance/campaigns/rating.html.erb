@@ -107,6 +107,9 @@
             <th>Поступающий</th>
             <th>Основание</th>
             <th>Приказ о зачислении</th>
+            <% if can?(:manage, Entrance::Application) %>
+              <th></th>
+            <% end %>
             <th></th>
           </tr>
         </thead>
@@ -135,6 +138,9 @@
           <th>Рег. номер</th>
           <th>Поступающий</th>
           <th>Приказ о зачислении</th>
+          <% if can?(:manage, Entrance::Application) %>
+            <th></th>
+          <% end %>
           <th></th>
         </tr>
         </thead>
@@ -159,6 +165,9 @@
             <th>Рег. номер</th>
             <th>Поступающий</th>
             <th>Приказ о зачислении</th>
+            <% if can?(:manage, Entrance::Application) %>
+              <th></th>
+            <% end %>
             <th></th>
           </tr>
           </thead>
@@ -183,6 +192,9 @@
           <th>Рег. номер</th>
           <th>Поступающий</th>
           <th>Приказ о зачислении</th>
+          <% if can?(:manage, Entrance::Application) %>
+            <th></th>
+          <% end %>
         </tr>
         </thead>
         <% a_contest_enrolled.each_with_index do |a, i| %>
@@ -195,6 +207,16 @@
                 № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
               <% end %>
             </td>
+            <% if can?(:manage, Entrance::Application) %>
+              <td>
+                <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
+                            class: 'btn btn-default',
+                            title: 'Заявления',
+                            target: :blank do %>
+                  <span class="glyphicons notes"></span>
+                <% end %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       </table>

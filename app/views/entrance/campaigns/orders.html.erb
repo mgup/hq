@@ -35,7 +35,7 @@
               <%= link_to office_order_show_path(order.id), class: 'btn btn-default', title: 'Распечатать' do %>
                 <span class="glyphicons print"></span>
               <% end %>
-              <%= link_to entrance_protocol_office_order_path(order.id), class: 'btn btn-default', title: 'Распечатать протокол о зачислении' do %>
+              <%= link_to entrance_protocol_office_order_path(order.id, format: :pdf), class: 'btn btn-default', title: 'Распечатать протокол о зачислении' do %>
                 <span class="glyphicons notes_2"></span>
               <% end %>
               <% if order.draft? %>
