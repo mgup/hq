@@ -262,6 +262,8 @@ class Ability
 
   def executive_secretary(user)
     zamestitel_otvetstvennogo_sekretarja(user)
+    can :entrance_protocol, Office::Order
+    can :update, Office::Order
     can :orders, Entrance::Campaign
     can :statistics, Entrance::Contract
     # can :update, Achievement
