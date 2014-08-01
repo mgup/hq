@@ -330,7 +330,7 @@
                 <% end %>
               </td>
             <% end %>
-          <% if can?(:manage, Entrance::Application) %>
+          <% if can?(:reject, :entrance_applications) %>
             <td>
               <%= link_to reject_entrance_campaign_entrant_application_path(@campaign, a.entrant, a),
                           class: 'btn btn-danger',
