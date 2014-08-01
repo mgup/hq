@@ -117,18 +117,20 @@ module Entrance
     end
 
     def contracts_by_direction
+      @renderer.text('Распределение договоров по направлениям')
+
+      data = [['Направление', 'Очная', 'Очно-заочная', 'Заочная']]
       @grouped_by_department.each do |abbreviation, contracts|
         # next unless 'ИПИТ' == abbreviation
 
-        @renderer.text("Статистика договоров #{abbreviation}")
+        data << [{content: "[ #{abbreviation} ]", colspan: 4}]
 
         by_speciality = contracts.group_by do |contract|
           contract.student.group.speciality
         end
 
-        data = [['Направление', 'Очная', 'Очно-заочная', 'Заочная']]
         by_speciality.each do |speciality, contracts|
-          d = [speciality.name, 0, 0, 0]
+          d = ["#{speciality.new_code} #{speciality.name}", 0, 0, 0]
           contracts.each do |contract|
             case contract.student.group.form
             when 'fulltime' then d[1] += 1
@@ -142,8 +144,9 @@ module Entrance
           data << d
         end
 
-        @renderer.table(data)
       end
+
+      @renderer.table data, column_widths: { 1 => 50, 2 => 60, 3 => 60 }
     end
   end
 end

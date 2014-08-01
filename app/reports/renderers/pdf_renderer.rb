@@ -28,8 +28,10 @@ module Renderers
       pdf.image StringIO.new(img), width: pdf.bounds.width
     end
 
-    def table(data)
-      pdf.table data, header: true
+    def table(data, options = {})
+      options[:header] ||= true
+
+      pdf.table data, options
     end
 
     private

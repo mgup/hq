@@ -30,7 +30,7 @@ module Renderers
                            class: 'img-responsive')
     end
 
-    def table(data)
+    def table(data, options = {})
       @result << '<table class="table table-striped">'.html_safe
       @result << '<thead>'.html_safe
       @result << '<tr>'.html_safe
@@ -43,7 +43,11 @@ module Renderers
       data[1..data.size].each do |row|
         @result << '<tr>'.html_safe
         row.each do |d|
-          @result << "<td>#{d}</td>".html_safe
+          if d.is_a?(Hash)
+            @result << "<td #{d.map { |k,v| %Q(#{k}="#{v}") }.join(' ')}>#{d[:content]}</td>".html_safe
+          else
+            @result << "<td>#{d}</td>".html_safe
+          end
         end
         @result << '</tr>'.html_safe
       end
