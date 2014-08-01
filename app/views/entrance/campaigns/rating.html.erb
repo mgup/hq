@@ -57,6 +57,7 @@
        a_out_of_competition = []
        a_special_rights = []
        a_organization = []
+       a_contest_enrolled = []
        a_contest = []
        item.applications.for_rating.each do |a|
          if a.out_of_competition
@@ -68,7 +69,11 @@
              elsif a.competitive_group_target_item
                a_organization << a
              else
-               a_contest << a
+               if a.order_id
+                 a_contest_enrolled << a
+               else
+                 a_contest << a
+               end
              end
            end
          end
@@ -183,6 +188,35 @@
         <% remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size) %>
       <% end %>
       <br><br><br><br>
+    <% end %>
+
+    <% if a_contest_enrolled.any? %>
+      <h2>Зачисленные по общему конкурсу</h2>
+      <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+          <th></th>
+          <th>Рег. номер</th>
+          <th>Поступающий</th>
+          <th>Основание</th>
+          <th>Приказ о зачислении</th>
+        </tr>
+        </thead>
+        <% a_contest_enrolled.each_with_index do |a, i| %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td class="nowrap"><%= a.number %></td>
+            <td><%= a.entrant.full_name %></td>
+            <td><%= a.benefits.first.temp_text %></td>
+            <td class="nowrap">
+              <% if a.order %>
+                № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+      <% remaining_places -= a_contest_enrolled.size %>
     <% end %>
 
     <% if a_contest.any? %>
