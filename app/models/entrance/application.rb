@@ -88,6 +88,7 @@ class Entrance::Application < ActiveRecord::Base
     .joins('LEFT JOIN entrance_exam_results AS pr ON pr.entrant_id = entrance_applications.entrant_id AND ti.exam_id = pr.exam_id AND ti.entrance_test_priority = 1')
     .joins('LEFT JOIN directions AS d ON d.id = i.direction_id')
     .where('status_id != 6')
+    .where('status_id != 5')
     .group('entrance_applications.id')
     .order('benefit_type = 1 DESC')
 	  .order('benefit_type = 4 DESC')

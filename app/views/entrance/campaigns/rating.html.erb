@@ -275,6 +275,9 @@
           <% if can?(:manage, Entrance::Application) %>
             <th></th>
           <% end %>
+          <% if can?(:reject, :entrance_applications) %>
+            <th></th>
+          <% end %>
         </tr>
         </thead>
         <% to_enroll = remaining_places %>
@@ -282,6 +285,7 @@
         <% prev_score = 0 %>
         <% a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
           <% or_class = a.original? ? 'app original' : 'app without_original' %>
+          <% or_class += " appl#{a.id}" %>
 
           <% if item.payed? %>
             <tr class="success <%= or_class %>">
@@ -326,6 +330,17 @@
                 <% end %>
               </td>
             <% end %>
+          <% if can?(:manage, Entrance::Application) %>
+            <td>
+              <%= link_to reject_entrance_campaign_entrant_application_path(@campaign, a.entrant, a),
+                          class: 'btn btn-danger',
+                          title: 'Отклонить заявление',
+                          remote: true,
+                          data: { confirm: 'ВЫ ТОЧНО ПОНИМАЕТЕ ЧТО И ЗАЧЕМ ВЫ ДЕЛАЕТЕ???!!!' } do %>
+                <span class="glyphicons remove_2"></span>
+              <% end %>
+            </td>
+          <% end %>
           </tr>
         <% end %>
       </table>

@@ -324,6 +324,10 @@ HQ::Application.routes.draw do
 
         resources :event_entrants
         resources :applications do
+          member do
+            get 'reject'
+          end
+
           resource :contract
 
           get 'send_to_order', on: :member
