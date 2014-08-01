@@ -198,7 +198,6 @@
           <th></th>
           <th>Рег. номер</th>
           <th>Поступающий</th>
-          <th>Основание</th>
           <th>Приказ о зачислении</th>
         </tr>
         </thead>
@@ -207,7 +206,6 @@
             <td><%= i + 1 %></td>
             <td class="nowrap"><%= a.number %></td>
             <td><%= a.entrant.full_name %></td>
-            <td><%= a.benefits.first.temp_text %></td>
             <td class="nowrap">
               <% if a.order %>
                 № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
