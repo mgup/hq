@@ -199,6 +199,7 @@ HQ::Application.routes.draw do
       get '/', to: 'orders#show', defaults: { format: 'pdf' }, as: :show
       get 'drafts', to: 'orders#drafts', on: :collection
       get 'underways', to: 'orders#underways', on: :collection
+      get 'entrance_protocol', to: 'orders#entrance_protocol', on: :member
     end
     get 'orders/new(/:page)', to: 'orders#new', defaults: { page: 1 }
 
@@ -300,6 +301,7 @@ HQ::Application.routes.draw do
       get 'crimea_rating',     on: :member
       get 'results',     on: :member
       get 'balls',     on: :member
+      get 'orders', on: :collection
 
       resources :dates
       resources :exams do
@@ -324,6 +326,7 @@ HQ::Application.routes.draw do
 
         resources :event_entrants
         resources :applications do
+          get '/enroll', to: 'applications#enroll', on: :member, as: :enroll
           resource :contract
 
           get 'send_to_order', on: :member

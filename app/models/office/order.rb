@@ -33,8 +33,10 @@ class Office::Order < ActiveRecord::Base
 
   scope :drafts, -> { where(order_status: STATUS_DRAFT) }
   scope :underways, -> { where(order_status: STATUS_UNDERWAY) }
+  scope :signed, -> { where(order_status: STATUS_SIGNED) }
 
   scope :entrance, -> { where(order_template: ENTRANCE_TEMPLATE) }
+  scope :from_year_and_month, -> year, month { where('order_editing > ?', DateTime.new(year, month, 1, 0, 0, 0, 0)) }
 
   def draft?
     STATUS_DRAFT == status
@@ -79,6 +81,10 @@ class Office::Order < ActiveRecord::Base
   # Направление обучения, к которому относится приказ.
   def direction
 
+  end
+
+  def competitive_group
+    Entrance::CompetitiveGroup.find(metas.for_entrance.last.text)
   end
 
   def to_nokogiri

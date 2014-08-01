@@ -34,6 +34,10 @@ class Entrance::CampaignsController < ApplicationController
     end
   end
 
+  def orders
+    @orders = Office::Order.entrance.from_year_and_month(2014, 6)
+  end
+
   def print_all
     @department = Department.find(params[:department]) if params[:department]
     @for_aspirants = true if params[:aspirants]

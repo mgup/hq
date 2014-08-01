@@ -1,0 +1,25 @@
+<td class="nowrap"><%= a.number %></td>
+<td><%= a.entrant.full_name %></td>
+<% a.abitexams.each do |exam| %>
+  <td><%= exam.score %></td>
+<% end %>
+<td><%= a.abitpoints %></td>
+<td>
+    <% if a.original? %>
+      <span class="glyphicons ok_2"></span>
+    <% end %>
+</td>
+<td>
+    <% if a.order && a.order.signing_date %>
+      № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
+    <% elsif current_user %>
+      <% if current_user.is?(:developer) && !a.order %>
+        <%= image_tag asset_path('loader.gif'), class: 'loader', style: 'display: none;' %>
+        <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
+                    data: {confirm: 'Вы уверены, что хотите зачислить этого абитуриента?'}, remote: true if (a.original? || a.payed?) && success %>
+      <% end %>
+      <% if a.order %>
+        формируется приказ о зачислении
+      <% end %>
+    <% end %>
+</td>

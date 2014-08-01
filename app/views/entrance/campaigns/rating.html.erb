@@ -73,19 +73,13 @@
             <th>Поступающий</th>
             <th>Основание</th>
             <th>Приказ о зачислении</th>
+            <th></th>
           </tr>
         </thead>
         <% a_out_of_competition.each_with_index do |a, i| %>
-          <tr>
+          <tr id="application_<%= a.id %>">
             <td><%= i + 1 %></td>
-            <td class="nowrap"><%= a.number %></td>
-            <td><%= a.entrant.full_name %></td>
-            <td><%= a.benefits.first.temp_text %></td>
-            <td class="nowrap">
-              <% if a.order %>
-                № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
-              <% end %>
-            </td>
+            <%= render partial: 'entrance/applications/rows/out_of_competition', locals: {a: a} %>
           </tr>
         <% end %>
       </table>
@@ -107,18 +101,13 @@
           <th>Рег. номер</th>
           <th>Поступающий</th>
           <th>Приказ о зачислении</th>
+          <th></th>
         </tr>
         </thead>
         <% a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
-          <tr>
+          <tr id="application_<%= a.id %>">
             <td><%= i + 1 %></td>
-            <td class="nowrap"><%= a.number %></td>
-            <td><%= a.entrant.full_name %></td>
-            <td class="nowrap">
-              <% if a.order %>
-                № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
-              <% end %>
-            </td>
+            <%= render partial: 'entrance/applications/rows/special_rights', locals: {a: a} %>
           </tr>
         <% end %>
       </table>
@@ -136,18 +125,13 @@
             <th>Рег. номер</th>
             <th>Поступающий</th>
             <th>Приказ о зачислении</th>
+            <th></th>
           </tr>
           </thead>
           <% appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
-            <tr>
+            <tr id="application_<%= a.id %>">
               <td><%= i + 1 %></td>
-              <td class="nowrap"><%= a.number %></td>
-              <td><%= a.entrant.full_name %></td>
-              <td class="nowrap">
-                <% if a.order %>
-                  № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
-                <% end %>
-              </td>
+              <%= render partial: 'entrance/applications/rows/organization', locals: {a: a} %>
             </tr>
           <% end %>
         </table>
@@ -165,7 +149,7 @@
         </h2>
         <h3>
           <strong>
-            Доступное количество мест — <%= remaining_places %>
+            Доступное количество мест — <span id="remaining_places"><%= remaining_places %></span>
           </strong>
           <% if item.payed? && 193593 != item.competitive_group.id %>
             <br>
@@ -195,38 +179,32 @@
           <% end %>
           <th>Сумма</th>
           <th>Оригинал</th>
+          <th></th>
         </tr>
         </thead>
         <% to_enroll = remaining_places %>
         <% last_found = false %>
         <% prev_score = 0 %>
         <% a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
+          <% success = false %>
           <% if to_enroll > 0 %>
-            <tr class="success">
+            <tr id="application_<%= a.id %>" class="success">
+            <% success = true %>
             <% to_enroll -= 1 %>
             <% prev_score = a.total_score %>
           <% elsif 0 == to_enroll && !last_found %>
             <% # Огого. Совпали баллы. %>
             <% if prev_score == a.total_score %>
-              <tr class="success">
+              <tr id="application_<%= a.id %>" class="success">
+              <% success = true %>
             <% else %>
               <% last_found = true %>
             <% end %>
           <% else %>
-            <tr>
+            <tr id="application_<%= a.id %>">
           <% end %>
             <td><%= i + 1 %></td>
-            <td class="nowrap"><%= a.number %></td>
-            <td><%= a.entrant.full_name %></td>
-            <% a.abitexams.each do |exam| %>
-              <td><%= exam.score %></td>
-            <% end %>
-            <td><%= a.total_score %></td>
-            <td>
-              <% if a.original? %>
-                <span class="glyphicons ok_2"></span>
-              <% end %>
-            </td>
+            <%= render partial: 'entrance/applications/rows/contest', locals: {a: a, success: success } %>
           </tr>
         <% end %>
       </table>

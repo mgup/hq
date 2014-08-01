@@ -192,7 +192,7 @@ class Ability
 
   def selection(user)
     can :manage, Entrance::Campaign
-
+    cannot :orders, Entrance::Campaign
     can :manage, Entrance::Entrant
     cannot :edit, Entrance::Entrant
     cannot :destroy, Entrance::Entrant
@@ -207,7 +207,7 @@ class Ability
 
   def selection_technical_secretary(user)
     can :manage, Entrance::Campaign
-
+    cannot :orders, Entrance::Campaign
     can :manage,      Entrance::Entrant
     cannot :destroy,  Entrance::Entrant
 
@@ -223,6 +223,7 @@ class Ability
 
   def selection_editor(user)
     can :manage, Entrance::Campaign
+    cannot :orders, Entrance::Campaign
     can :manage, Entrance::Entrant
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
@@ -236,6 +237,7 @@ class Ability
 
   def selection_io(user)
     can :manage, Entrance::Campaign
+    cannot :orders, Entrance::Campaign
     can :manage,      Entrance::Entrant, ioo: true
     cannot :destroy,  Entrance::Entrant
     can :manage, Entrance::ExamResult
@@ -257,6 +259,7 @@ class Ability
 
   def executive_secretary(user)
     zamestitel_otvetstvennogo_sekretarja(user)
+    can :orders, Entrance::Campaign
     can :statistics, Entrance::Contract
     # can :update, Achievement
     # can :validate_selection, Achievement

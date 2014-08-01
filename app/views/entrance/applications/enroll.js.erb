@@ -1,0 +1,29 @@
+var row = $(document.getElementById('application_<%= @application.id %>'));
+var index = row.children('td:first').text();
+
+<% if @application.out_of_competition %>
+  row.html(
+      '<td>' + index + '</td>' + '<%=j raw(render partial: 'entrance/applications/rows/out_of_competition', locals: {a: @application}) %>'
+  );
+<% else %>
+  <% if 0 != @application.pass_min_score? %>
+    <% if @application.special_rights %>
+      row.html(
+              '<td>' + index + '</td>' + '<%=j raw(render partial: 'entrance/applications/rows/special_rights', locals: {a: @application}) %>'
+      );
+    <% elsif @application.competitive_group_target_item %>
+      row.html(
+              '<td>' + index + '</td>' + '<%=j raw(render partial: 'entrance/applications/rows/organization', locals: {a: @application}) %>'
+      );
+    <% else %>
+      row.html(
+              '<td>' + index + '</td>' + '<%=j raw(render partial: 'entrance/applications/rows/contest', locals: {a: @application}) %>'
+      );
+    <% end %>
+  <% end %>
+<% end %>
+
+//TODO Узнать, что представляет собой "доступное количество мест"
+
+//$('#remaining_places').text(1*$('#remaining_places').text() - 1);
+

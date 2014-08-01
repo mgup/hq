@@ -150,6 +150,11 @@ class Entrance::ApplicationsController < ApplicationController
                 notice: 'Заявление успешно отозвано.'
   end
 
+  def enroll
+    @application.enroll
+    respond_to { |format| format.js }
+  end
+
   def print
     respond_to { |format| format.pdf }
   end

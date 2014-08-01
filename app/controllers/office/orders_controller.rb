@@ -13,6 +13,13 @@ class Office::OrdersController < ApplicationController
     @underways = Office::Order.underways
   end
 
+  def entrance_protocol
+    @item = @order.competitive_group.items.first if Office::Order.entrance.include? @order
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   def show
     @order = Office::Order.find(params[:order_id])
     respond_to do |format|
@@ -62,8 +69,13 @@ class Office::OrdersController < ApplicationController
   def edit ; end
 
   def update
-    if @order.update(resource_params)
-      redirect_to orders_path, notice: 'Изменения сохранены.'
+    @order.update(resource_params)
+    if @order.save
+      if can?(:orders, Entrance::Campaign)
+        redirect_to orders_entrance_campaigns_path
+      else
+        redirect_to office_orders_path, notice: 'Изменения сохранены.'
+      end
     else
       render action: :edit
     end
@@ -76,6 +88,6 @@ class Office::OrdersController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:order, {}).permit()
+    params.fetch(:office_order, {}).permit(:editing_date, :status)
   end
 end

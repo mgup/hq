@@ -11,6 +11,8 @@ class Office::OrderMeta < ActiveRecord::Base
              class_name: 'Office::Order',
              foreign_key: :order_meta_order
 
+  scope :for_entrance, -> { where(pattern: 'Конкурсная группа') }
+
   def to_nokogiri
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.meta do

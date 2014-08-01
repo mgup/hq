@@ -130,6 +130,14 @@ class Entrance::Application < ActiveRecord::Base
     exams
   end
 
+  def pass_min_score?
+    passed = true
+    competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).each do |test_item|
+      passed &&= entrant.exam_results.by_exam(test_item.exam.id).last.score >= test_item.min_score
+    end
+    passed
+  end
+
   def self.rating(form = '11', payment = '14', direction = '1887')
     form_method = case form
                     when '10'

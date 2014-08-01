@@ -42,6 +42,11 @@ SimpleNavigation::Configuration.run do |navigation|
                      '<span class="glyphicons notes_2"></span> Регистрационный журнал'.html_safe,
                      register_entrance_campaign_path(Entrance::Campaign::CURRENT)
       end
+      if can?(:orders, Entrance::Campaign)
+        primary.item :entrance_campaign_orders,
+                     '<span class="glyphicons address_book"></span> Приказы о зачислении'.html_safe,
+                     orders_entrance_campaigns_path
+      end
 
       if can?(:manage, Entrance::Entrant)
         # primary.item :entrance_applications,
