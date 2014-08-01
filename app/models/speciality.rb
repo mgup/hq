@@ -50,6 +50,14 @@ class Speciality < ActiveRecord::Base
              end
   end
 
+  def new_code
+    if 2 == code.split('.').size
+      Direction.where('code = ? AND qualification_code = ?', code.split('.')[0], code.split('.')[1]).first.new_code
+    else
+      code
+    end
+  end
+
   def to_xml
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.speciality do

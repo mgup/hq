@@ -73,7 +73,8 @@ SimpleNavigation::Configuration.run do |navigation|
       if can?(:statistics, Entrance::Contract)
         primary.item :entrance_contracts_statistics,
                      '<span class="glyphicons coins"></span> Статистика платного приёма'.html_safe,
-                     statistics_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
+                     paid_enrollment_entrance_campaign_path(Entrance::Campaign::CURRENT)
+                     # statistics_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
       end
     end
 

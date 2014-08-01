@@ -20,4 +20,8 @@ class Renderer
   def image
     fail 'Отсутствует реализация вывода изображений.'
   end
+
+  def table
+    fail 'Отсутствует реализация вывода таблиц.'
+  end
 end

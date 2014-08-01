@@ -9,17 +9,38 @@
       <span class="glyphicons ok_2"></span>
     <% end %>
 </td>
+<% if can?(:manage, Entrance::Application) %>
+  <td>
+      <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
+                  class: 'btn btn-default',
+                  title: 'Заявления',
+                  target: :blank do %>
+        <span class="glyphicons notes"></span>
+      <% end %>
+  </td>
+<% end %>
+<% if can?(:reject, :entrance_applications) %>
+  <td>
+      <%= link_to reject_entrance_campaign_entrant_application_path(@campaign, a.entrant, a),
+                  class: 'btn btn-danger',
+                  title: 'Отклонить заявление',
+                  remote: true,
+                  data: { confirm: 'ВЫ ТОЧНО ПОНИМАЕТЕ ЧТО И ЗАЧЕМ ВЫ ДЕЛАЕТЕ???!!!' } do %>
+        <span class="glyphicons remove_2"></span>
+      <% end %>
+  </td>
+<% end %>
 <td>
-    <% if a.order && a.order.signing_date %>
-      № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
-    <% elsif current_user %>
-      <% if current_user.is?(:developer) && !a.order %>
-        <%= image_tag asset_path('loader.gif'), class: 'loader', style: 'display: none;' %>
-        <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
-                    data: {confirm: 'Вы уверены, что хотите зачислить этого абитуриента?'}, remote: true if (a.original? || a.payed?) && success %>
-      <% end %>
-      <% if a.order %>
-        формируется приказ о зачислении
-      <% end %>
+  <% if a.order && a.order.signing_date %>
+    № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
+  <% elsif current_user %>
+    <% if current_user.is?(:developer) && !a.order %>
+      <%= image_tag asset_path('loader.gif'), class: 'loader', style: 'display: none;' %>
+      <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
+                  data: {confirm: 'Вы уверены, что хотите зачислить этого абитуриента?'}, remote: true if (a.original? || a.payed?) && success %>
     <% end %>
+    <% if a.order %>
+      формируется приказ о зачислении
+    <% end %>
+  <% end %>
 </td>

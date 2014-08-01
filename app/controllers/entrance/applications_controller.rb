@@ -138,6 +138,16 @@ class Entrance::ApplicationsController < ApplicationController
     end
   end
 
+  # Отклонение заявления. Для тех, кто не прошел по конкурсу и т.д.
+  def reject
+    @application.status_id = 5
+    @application.save!
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def destroy
     @application.status_id = 6
     @application.last_deny_date = Date.today

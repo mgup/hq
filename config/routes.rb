@@ -327,6 +327,9 @@ HQ::Application.routes.draw do
         resources :event_entrants
         resources :applications do
           get '/enroll', to: 'applications#enroll', on: :member, as: :enroll
+          member do
+            get 'reject'
+          end
           resource :contract
 
           get 'send_to_order', on: :member

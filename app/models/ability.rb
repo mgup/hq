@@ -233,6 +233,8 @@ class Ability
     cannot :statistics, Entrance::Contract
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
+
+    can :reject, :entrance_applications
   end
 
   def selection_io(user)

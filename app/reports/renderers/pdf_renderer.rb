@@ -28,6 +28,12 @@ module Renderers
       pdf.image StringIO.new(img), width: pdf.bounds.width
     end
 
+    def table(data, options = {})
+      options[:header] ||= true
+
+      pdf.table data, options
+    end
+
     private
 
     def render_report_header
