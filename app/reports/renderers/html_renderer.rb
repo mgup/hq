@@ -29,5 +29,26 @@ module Renderers
       @result << image_tag("data:image/png;base64,#{Base64.encode64(img)}",
                            class: 'img-responsive')
     end
+
+    def table(data)
+      @result << '<table class="table table-striped">'.html_safe
+      @result << '<thead>'.html_safe
+      @result << '<tr>'.html_safe
+      data[0].each do |d|
+        @result << "<th>#{d}</th>".html_safe
+      end
+      @result << '</tr>'.html_safe
+      @result << '</thead>'.html_safe
+
+      data[1..data.size].each do |row|
+        @result << '<tr>'.html_safe
+        row.each do |d|
+          @result << "<td>#{d}</td>".html_safe
+        end
+        @result << '</tr>'.html_safe
+      end
+
+      @result << '</table>'
+    end
   end
 end
