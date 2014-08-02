@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140730092639) do
+ActiveRecord::Schema.define(version: 20140802061901) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -259,7 +259,6 @@ ActiveRecord::Schema.define(version: 20140730092639) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
-    t.integer  "entrant_id"
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
@@ -637,7 +636,6 @@ ActiveRecord::Schema.define(version: 20140730092639) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
-    t.integer  "entrant_id"
   end
 
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
@@ -718,6 +716,7 @@ ActiveRecord::Schema.define(version: 20140730092639) do
     t.integer  "package_id"
     t.integer  "competitive_group_target_item_id"
     t.integer  "order_id"
+    t.boolean  "agree"
   end
 
   add_index "entrance_applications", ["campaign_id"], name: "index_entrance_applications_on_campaign_id", using: :btree
@@ -776,6 +775,7 @@ ActiveRecord::Schema.define(version: 20140730092639) do
     t.string   "delegate_pnumber"
     t.string   "delegate_pdepartment"
     t.date     "delegate_pdate"
+    t.string   "delegate_organization"
     t.string   "delegate_mobile"
     t.string   "delegate_fax"
     t.string   "delegate_inn"
@@ -783,7 +783,6 @@ ActiveRecord::Schema.define(version: 20140730092639) do
     t.string   "delegate_ls"
     t.string   "delegate_bik"
     t.string   "delegate_position"
-    t.string   "delegate_organization"
   end
 
   add_index "entrance_contracts", ["application_id"], name: "index_entrance_contracts_on_application_id", using: :btree

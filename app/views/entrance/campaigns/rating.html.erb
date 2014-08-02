@@ -251,12 +251,123 @@
         </div>
       <% else %>
         <div class="alert alert-success">
-          Лица, из числа рекомендованных к зачислению на первом этапе, должны
-          предоставить оригиналы документов об образовании
-          до 4 августа 17:00 МСК.
+            Лица, из числа рекомендованных к зачислению на первом этапе, должны предоставить оригиналы документов об образовании до 4 августа включительно.
+            Приемная комиссия работает до 17:00 МСК.
         </div>
       <% end %>
 
+      <% if item.payed? %>
+        <% if current_user %>
+        <div class="row">
+            <script>
+              function checkAgree(i){
+                var value = $('input[name=agree]').val();
+                if (value == '1') {
+                  $('.app.disagree').hide();
+                  if (i == '1') {
+                    $('.app.agree.without_contract').hide();
+                    $('.app.agree.contract').show();
+                  } else if (i == '0'){
+                    $('.app.agree.contract').hide();
+                    $('.app.agree.without_contract').show();
+                  } else{
+                    $('.app.agree').show();
+                  }
+                }
+                else if (value == '0') {
+                  $('.app.agree').hide();
+                  if (i == '1') {
+                    $('.app.disagree.without_contract').hide();
+                    $('.app.disagree.contract').show();
+                  } else if (i == '0'){
+                    $('.app.contract.disagree').hide();
+                    $('.app.disagree.without_contract').show();
+                  } else{
+                    $('.app.disagree').show();
+                  }
+                } else {
+                  if (i == '1') {
+                    $('.app.without_contract').hide();
+                    $('.app.contract').show();
+                  } else if (i == '0'){
+                    $('.app.contract').hide();
+                    $('.app.without_contract').show();
+                  } else{
+                    $('.app').show();
+                  }
+                }
+              }
+            </script>
+          <div class="col-sm-12">
+            <label>
+              <input name="contract" type="radio" data-value="10" checked onclick="$('input[name=contract]').val($(this).data('value')); checkAgree($(this).data('value'));"> Заявления независимо от наличия договора
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <label>
+              <input name="contract" type="radio" data-value="1" onclick="$('input[name=contract]').val($(this).data('value')); checkAgree($(this).data('value'));"> Только с договором
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <label>
+              <input name="contract" type="radio" data-value="0" onclick=" $('input[name=contract]').val($(this).data('value')); checkAgree($(this).data('value'));"> Только без договора
+            </label>
+          </div>
+        </div>
+        <div class="row">
+            <script>
+                function checkContract(i){
+                  var value = $('input[name=contract]').val();
+                  if (value == '1') {
+                    $('.app.without_contract').hide();
+                    if (i == '1') {
+                      $('.app.contract.disagree').hide();
+                      $('.app.contract.agree').show();
+                    } else if (i == '0'){
+                      $('.app.contract.agree').hide();
+                      $('.app.contract.disagree').show();
+                    } else{
+                      $('.app.contract').show();
+                    }
+                  }
+                  else if (value == '0') {
+                    $('.app.contract').hide();
+                    if (i == '1') {
+                      $('.app.without_contract.disagree').hide();
+                      $('.app.without_contract.agree').show();
+                    } else if (i == '0'){
+                      $('.app.without_contract.agree').hide();
+                      $('.app.without_contract.disagree').show();
+                    } else{
+                      $('.app.without_contract').show();
+                    }
+                  } else {
+                    if (i == '1') {
+                      $('.app.disagree').hide();
+                      $('.app.agree').show();
+                    } else if (i == '0'){
+                      $('.app.agree').hide();
+                      $('.app.disagree').show();
+                    } else{
+                      $('.app').show();
+                    }
+                  }
+                }
+            </script>
+          <div class="col-sm-12">
+            <label>
+              <input name="agree" type="radio" data-value="10" checked onclick="$('input[name=agree]').val($(this).data('value')); checkContract($(this).data('value'))"> Заявления независимо от наличия согласия
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <label>
+              <input name="agree" type="radio" data-value="1" onclick="$('input[name=agree]').val($(this).data('value')); checkContract($(this).data('value'))"> Только с согласием на зачисление
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <label>
+              <input name="agree" type="radio" data-value="0" onclick="$('input[name=agree]').val($(this).data('value')); checkContract($(this).data('value'))"> Только без согласия на зачисление
+            </label>
+          </div>
+        </div>
+        <% end %>
+      <% else %>
       <div class="row">
         <div class="col-sm-12">
           <label>
@@ -272,7 +383,7 @@
           </label>
         </div>
       </div>
-
+      <% end %>
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -283,7 +394,12 @@
             <th><%= name %></th>
           <% end %>
           <th>Сумма</th>
-          <th>Оригинал</th>
+          <% if item.payed? %>
+            <th>Договор</th>
+            <th>Согласие на зачисление</th>
+          <% else %>
+            <th>Оригинал</th>
+          <% end %>
           <% if can?(:manage, Entrance::Application) %>
             <th></th>
           <% end %>
@@ -297,7 +413,12 @@
         <% last_found = false %>
         <% prev_score = 0 %>
         <% a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
-          <% or_class = a.original? ? 'app original' : 'app without_original' %>
+          <% if item.payed? %>
+              <% or_class = a.contract ? 'app contract' : 'app without_contract' %>
+              <% or_class += (a.agree? ? ' agree' : ' disagree') %>
+          <% else %>
+            <% or_class = a.original? ? 'app original' : 'app without_original' %>
+          <% end %>
           <% or_class += " appl#{a.id}" %>
           <% success = false %>
           <% if item.payed? %>
