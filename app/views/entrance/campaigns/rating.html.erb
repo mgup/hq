@@ -369,17 +369,38 @@
         <% end %>
       <% else %>
       <div class="row">
+        <script>
+          function renumber(i){
+            if (i == 0){
+              $('.app.without_original').each(function(index){
+                var td = $(this).children('td:first');
+                td.html('<strong>'+(index+1)+'</strong> (' + td.data('value') + ')');
+              })
+            } else if (i == 1){
+              $('.app.original').each(function(index){
+                var td = $(this).children('td:first');
+                td.html('<strong>'+(index+1)+'</strong> (' + td.data('value') + ')');
+              })
+            } else {
+              $('.app').each(function(){
+                var td = $(this).children('td:first');
+                td.html(td.data('value'));
+              })
+            }
+
+          }
+        </script>
         <div class="col-sm-12">
           <label>
-            <input name="original" type="radio" checked onclick="$('.app').show();"> Все заявления
+            <input name="original" type="radio" checked onclick="$('.app').show(); renumber(10)"> Все заявления
           </label>
           &nbsp;&nbsp;&nbsp;
           <label>
-            <input name="original" type="radio" onclick="$('.app.original').show(); $('.app.without_original').hide();"> Только с оригиналом
+            <input name="original" type="radio" onclick="$('.app.original').show(); $('.app.without_original').hide(); renumber(1)"> Только с оригиналом
           </label>
           &nbsp;&nbsp;&nbsp;
           <label>
-            <input name="original" type="radio" onclick="$('.app.without_original').show(); $('.app.original').hide();"> Только без оригинала
+            <input name="original" type="radio" onclick="$('.app.without_original').show(); $('.app.original').hide(); renumber(0)"> Только без оригинала
           </label>
         </div>
       </div>
@@ -443,7 +464,7 @@
               <tr id="application_<%= a.id %>" class="<%= or_class %>">
             <% end %>
           <% end %>
-            <td><%= i + 1 %></td>
+            <td data-value="<%= i + 1 %>"><%= i + 1 %></td>
             <%= render partial: 'entrance/applications/rows/contest', locals: {a: a, success: success } %>
           </tr>
         <% end %>

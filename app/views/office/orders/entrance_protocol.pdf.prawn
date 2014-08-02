@@ -50,12 +50,24 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     exams = @item.competitive_group.test_items.order(:entrance_test_priority).collect{ |x| x.exam.name }
     data = [['№ п/п', 'Рег. номер', 'ФИО абитуриента']]
     exams.each {|e|  data.first << e}
-    data.first << 'Сумма баллов' << 'Оригинал документа об образовании' << 'Решение комиссии'
+    data.first << 'Сумма баллов'
+    if @item.payed?
+      data.first << 'Договор' << 'Согласие на зачислении'
+    else
+      data.first << 'Оригинал документа об образовании'
+    end
+    data.first << 'Решение комиссии'
 
     @item.applications.actual.sort(&Entrance::Application.sort_applications).each_with_index do |ap, index|
       data << ["#{index+1}", ap.number, ap.entrant.full_name]
       ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
-      data.last << ap.abitpoints << (ap.original? ? 'да' : 'нет') << (ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant) ? 'зачислить' : 'не зачислить')
+      data.last << ap.abitpoints
+      if @item.payed?
+        data.last << (ap.contract ? "№ #{ap.contract.number}" : '') << (ap.agree? ? 'да' : 'нет')
+      else
+        data.last << (ap.original? ? 'да' : 'нет')
+      end
+      data.last << (ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant) ? 'зачислить' : 'не зачислить')
     end
 
     pdf.move_down 8
