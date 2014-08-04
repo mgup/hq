@@ -190,7 +190,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           0 => 30,
           1 => 60,
           2 => 170,
-          (3 + exams.size) => 50
+          (3 + exams.size) => 50,
+          (5 + exams.size) => 50
       }
       exams.each_with_index do |name, i|
         # Название предмета состоит из одного слова.
