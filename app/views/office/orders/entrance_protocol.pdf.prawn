@@ -138,12 +138,12 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
         success = true
         to_enroll -= 1
-        prev_score = a.total_score
+        prev_score = ap.total_score
       elsif 0 == to_enroll && !last_found
-        if prev_score == a.total_score
+        if prev_score == ap.total_score
           success = true
 
-          if a.original?
+          if ap.original?
             data << ["#{index+1}", ap.number, ap.entrant.full_name]
             ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
             data.last << ap.abitpoints
