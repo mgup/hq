@@ -85,6 +85,24 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       end
     end
 
+    total_places = item.send("number_#{field_payment}_#{field_form}")
+    total_places += item.send("number_quota_#{field_form}")
+    item.competitive_group.target_organizations.each do |org|
+      org.items.where(direction_id: item.direction_id, education_level_id: item.education_level_id).each do |i|
+        total_places += i.send("number_target_#{field_form}")
+      end
+    end
+
+    remaining_places = total_places
+    remaining_places -= a_out_of_competition.size
+    remaining_places -= (a_special_rights.size > item.number_quota_o ? item.number_quota_o : a_special_rights.size)
+    a_organization.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls|
+      remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size)
+    end
+
+    to_enroll = remaining_places
+    last_found = false
+    prev_score = 0
 
     a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |ap, index|
       if to_enroll > 0
