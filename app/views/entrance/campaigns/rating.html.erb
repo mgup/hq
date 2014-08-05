@@ -450,24 +450,32 @@
             <tr id="application_<%= a.id %>" class="success <%= or_class %>">
             <% success = true %>
           <% else %>
-            <% if to_enroll > 0 %>
-              <tr id="application_<%= a.id %>" class="success <%= or_class %>">
-              <% success = true %>
-              <% to_enroll -= 1 %>
-              <% prev_score = a.total_score %>
-            <% elsif 0 == to_enroll && !last_found %>
-              <% # Огого. Совпали баллы. %>
-              <% if prev_score == a.total_score %>
-                <tr id="application_<%= a.id %>" class="success <%= or_class %>">
-                <% success = true %>
-              <% else %>
-                <tr id="application_<%= a.id %>" class="<%= or_class %>">
-                <% last_found = true %>
-              <% end %>
-            <% else %>
-              <tr id="application_<%= a.id %>" class="<%= or_class %>">
-            <% end %>
+
+            <%# if to_enroll > 0 %>
+              <!--<tr id="application_<%#= a.id %>" class="success <%#= or_class %>">-->
+              <%# success = true %>
+              <%# to_enroll -= 1 %>
+              <%# prev_score = a.total_score %>
+            <%# elsif 0 == to_enroll && !last_found %>
+              <%# # Огого. Совпали баллы. %>
+              <%# if prev_score == a.total_score %>
+                <!--<tr id="application_<%#= a.id %>" class="success <%#= or_class %>">-->
+                <%# success = true %>
+              <%# else %>
+                <!--<tr id="application_<%#= a.id %>" class="<%#= or_class %>">-->
+                <%# last_found = true %>
+              <%# end %>
+            <%# else %>
+              <!--<tr id="application_<%#= a.id %>" class="<%#= or_class %>">-->
+            <%# end %>
+          <%# end %>
+
+          <% if remaining_places > 0 %>
+            <tr id="application_<%= a.id %>" class="success <%= or_class %>">
+          <% else %>
+            <tr id="application_<%= a.id %>" class="<%= or_class %>">
           <% end %>
+
             <td data-value="<%= i + 1 %>"><%= i + 1 %></td>
             <%= render partial: 'entrance/applications/rows/contest', locals: {a: a, success: success } %>
           </tr>
