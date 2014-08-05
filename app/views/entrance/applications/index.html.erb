@@ -82,7 +82,7 @@
           </div>
         </td>
 
-        <% if a.order %>
+        <% if a.order && a.order.signing_date %>
           <td colspan="2">
             приказ № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
           </td>
