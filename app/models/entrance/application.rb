@@ -285,80 +285,84 @@ class Entrance::Application < ActiveRecord::Base
   # Внесение абитуриента из заявления в список студентов.
   def enroll
 
-    group = find_group(competitive_group_item, entrant.ioo)
-    if group.is_a?(Hash)
-      fail "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
+    if contract
+      person = a.contract.student.person
     else
-      army = case entrant.military_service
-               when 'not'
-                 Person::ARMY_NOT_RESERVIST
-               when 'conscript'
-                 Person::ARMY_INDUCTEE
-               when 'reservist'
-                 Person::ARMY_RESERVIST
-               when 'free_of_service'
-                 Person::ARMY_NOT_RESERVIST
-               when 'too_young'
-                 Person::ARMY_NOT_RESERVIST
-             end
+      group = find_group(competitive_group_item, entrant.ioo)
+      if group.is_a?(Hash)
+        fail "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
+      else
+        army = case entrant.military_service
+                 when 'not'
+                   Person::ARMY_NOT_RESERVIST
+                 when 'conscript'
+                   Person::ARMY_INDUCTEE
+                 when 'reservist'
+                   Person::ARMY_RESERVIST
+                 when 'free_of_service'
+                   Person::ARMY_NOT_RESERVIST
+                 when 'too_young'
+                   Person::ARMY_NOT_RESERVIST
+               end
 
-      person = Person.create!(
-        birthday: entrant.birthday,
-        birthplace: entrant.birth_place,
-        gender: entrant.male?,
-        homeless: entrant.need_hostel,
-        passport_series: entrant.pseries,
-        passport_number: entrant.pnumber,
-        passport_date: entrant.pdate,
-        passport_department: entrant.pdepartment,
-        phone_mobile: entrant.phone,
-        residence_address: entrant.aaddress,
-        residence_zip: entrant.azip,
-        student_foreign: entrant.other_citizenship?,
-        army: army,
-        last_name_hint: entrant.last_name,
-        first_name_hint: entrant.first_name,
-        patronym_hint: entrant.patronym,
-        student_oldid: 0,
-        student_oldperson: 0,
-        fname_attributes: {
-          ip: entrant.last_name,
-          rp: entrant.last_name,
-          dp: entrant.last_name,
-          vp: entrant.last_name,
-          tp: entrant.last_name,
-          pp: entrant.last_name
-        },
-        iname_attributes: {
-          ip: entrant.first_name,
-          rp: entrant.first_name,
-          dp: entrant.first_name,
-          vp: entrant.first_name,
-          tp: entrant.first_name,
-          pp: entrant.first_name
-        },
-        oname_attributes: {
-          ip: entrant.patronym,
-          rp: entrant.patronym,
-          dp: entrant.patronym,
-          vp: entrant.patronym,
-          tp: entrant.patronym,
-          pp: entrant.patronym
-        },
-        students_attributes: {
-          '0' => {
-            student_group_group: group.id,
-            student_group_yearin: Date.today.year,
-            student_group_tax:  payed? ? Student::PAYMENT_OFF_BUDGET : Student::PAYMENT_BUDGET,
-            student_group_status: Student::STATUS_ENTRANT,
-            student_group_speciality: group.speciality.id,
-            student_group_form: group.form,
-            student_group_oldgroup: 0,
-            student_group_oldstudent: 0,
-            entrant_id: entrant.id
+        person = Person.create!(
+          birthday: entrant.birthday,
+          birthplace: entrant.birth_place,
+          gender: entrant.male?,
+          homeless: entrant.need_hostel,
+          passport_series: entrant.pseries,
+          passport_number: entrant.pnumber,
+          passport_date: entrant.pdate,
+          passport_department: entrant.pdepartment,
+          phone_mobile: entrant.phone,
+          residence_address: entrant.aaddress,
+          residence_zip: entrant.azip,
+          student_foreign: entrant.other_citizenship?,
+          army: army,
+          last_name_hint: entrant.last_name,
+          first_name_hint: entrant.first_name,
+          patronym_hint: entrant.patronym,
+          student_oldid: 0,
+          student_oldperson: 0,
+          fname_attributes: {
+            ip: entrant.last_name,
+            rp: entrant.last_name,
+            dp: entrant.last_name,
+            vp: entrant.last_name,
+            tp: entrant.last_name,
+            pp: entrant.last_name
+          },
+          iname_attributes: {
+            ip: entrant.first_name,
+            rp: entrant.first_name,
+            dp: entrant.first_name,
+            vp: entrant.first_name,
+            tp: entrant.first_name,
+            pp: entrant.first_name
+          },
+          oname_attributes: {
+            ip: entrant.patronym,
+            rp: entrant.patronym,
+            dp: entrant.patronym,
+            vp: entrant.patronym,
+            tp: entrant.patronym,
+            pp: entrant.patronym
+          },
+          students_attributes: {
+            '0' => {
+              student_group_group: group.id,
+              student_group_yearin: Date.today.year,
+              student_group_tax:  payed? ? Student::PAYMENT_OFF_BUDGET : Student::PAYMENT_BUDGET,
+              student_group_status: Student::STATUS_ENTRANT,
+              student_group_speciality: group.speciality.id,
+              student_group_form: group.form,
+              student_group_oldgroup: 0,
+              student_group_oldstudent: 0,
+              entrant_id: entrant.id
+            }
           }
-        }
-      )
+        )
+      end
 
       order = Office::Order.entrance
       .joins(:metas)
