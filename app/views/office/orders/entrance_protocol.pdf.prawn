@@ -111,17 +111,19 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     last_found = false
     prev_score = 0
 
+    i = 0
     a_contest.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each_with_index do |ap, index|
       # if to_enroll > 0
         # Есть места — зачисляем при наличии оригинала
       if @item.payed?
         if ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
-          data << ["#{index+1}", ap.number, ap.entrant.full_name]
+          data << ["#{i+1}", ap.number, ap.entrant.full_name]
           ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
           data.last << ap.abitpoints
           data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           data.last << 'зачислить'
         end
+        i += 1
       else
         if ap.original?
           data << ["#{index+1}", ap.number, ap.entrant.full_name]
