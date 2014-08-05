@@ -75,25 +75,26 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   scope :for_rating, -> do
-    select('CASE b.benefit_kind_id WHEN 1 THEN 1 WHEN 4 THEN 4 ELSE NULL END AS benefit_type')
+    includes(:benefits)
     .select('COALESCE(SUM(r.score), 0) AS total_score')
     .select('MIN(COALESCE(r.score, 0) >= ti.min_score) AS pass_min_score')
-    .select('pr.score AS priority_score')
     .select('entrance_applications.*')
-    .joins('LEFT JOIN entrance_benefits AS b ON b.application_id = entrance_applications.id')
     .joins('LEFT JOIN competitive_group_items AS i ON i.id = entrance_applications.competitive_group_item_id')
     .joins('LEFT JOIN competitive_groups AS g ON g.id = i.competitive_group_id')
     .joins('LEFT JOIN entrance_test_items AS ti ON ti.competitive_group_id = g.id')
     .joins('LEFT JOIN entrance_exam_results AS r ON r.entrant_id = entrance_applications.entrant_id AND ti.exam_id = r.exam_id')
-    .joins('LEFT JOIN entrance_exam_results AS pr ON pr.entrant_id = entrance_applications.entrant_id AND ti.exam_id = pr.exam_id AND ti.entrance_test_priority = 1')
     .joins('LEFT JOIN directions AS d ON d.id = i.direction_id')
     .where('status_id != 6')
     .where('status_id != 5')
     .group('entrance_applications.id')
-    .order('benefit_type = 1 DESC')
-	  .order('benefit_type = 4 DESC')
-    .order('total_score DESC')
-    .order('priority_score DESC')
+    # select('CASE b.benefit_kind_id WHEN 1 THEN 1 WHEN 4 THEN 4 ELSE NULL END AS benefit_type')
+    # .joins('LEFT JOIN entrance_benefits AS b ON b.application_id = entrance_applications.id')
+    # .select('pr.score AS priority_score')
+    # .joins('LEFT JOIN entrance_exam_results AS pr ON pr.entrant_id = entrance_applications.entrant_id AND ti.exam_id = pr.exam_id AND ti.entrance_test_priority = 1')
+    # .order('benefit_type = 1 DESC')
+    # .order('benefit_type = 4 DESC')
+    # .order('total_score DESC')
+    # .order('priority_score DESC')
   end
 
   def self.sort_applications
@@ -112,6 +113,15 @@ class Entrance::Application < ActiveRecord::Base
         when 0 then 0 #fail("Нужна проверка преимущественного права. #{a.inspect} #{b.inspect}")
         end
       end
+    end
+  end
+
+  def self.sort_applications_for_sort_by
+    lambda do |a|
+      res = sprintf('%03d', a.abitpoints.to_s)
+      res += a.abitexams.map{ |e| e ? sprintf('%03d', e.score) : '000' }.join
+
+      res
     end
   end
 

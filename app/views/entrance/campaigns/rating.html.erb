@@ -144,7 +144,7 @@
           <th></th>
         </tr>
         </thead>
-        <% a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
+        <% a_special_rights.each_with_index do |a, i| %>
           <tr id="application_<%= a.id %>">
             <td><%= i + 1 %></td>
             <%= render partial: 'entrance/applications/rows/special_rights', locals: {a: a} %>
@@ -171,7 +171,7 @@
             <th></th>
           </tr>
           </thead>
-          <% appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
+          <% appls.each_with_index do |a, i| %>
             <tr id="application_<%= a.id %>">
               <td><%= i + 1 %></td>
               <%= render partial: 'entrance/applications/rows/organization', locals: {a: a} %>
@@ -433,7 +433,7 @@
         <% to_enroll = remaining_places %>
         <% last_found = false %>
         <% prev_score = 0 %>
-        <% a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i| %>
+        <% a_contest.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each_with_index do |a, i| %>
           <% if item.payed? %>
               <% or_class = a.contract ? 'app contract' : 'app without_contract' %>
               <% or_class += (a.agree? ? ' agree' : ' disagree') %>
