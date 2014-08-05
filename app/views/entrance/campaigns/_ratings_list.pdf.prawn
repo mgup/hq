@@ -4,7 +4,7 @@ item = group.items.first
 
 pdf.bounding_box([0, pdf.cursor], width: 510) do
   pdf.bounding_box([0, pdf.bounds.top], width: 500) do
-    pdf.text 'Конкурсные списки на места в рамках контрольных цифр по общему конкурсу с выделением списков лиц, рекомендованных к зачислению на первом этапе', style: :bold, size: 16
+    pdf.text 'Конкурсные списки на места в рамках контрольных цифр по общему конкурсу с выделением в них списков лиц, рекомендованных приемной комиссией к зачислению на втором этапе с учетом оставшегося количества мест (в том числе мест, освободившихся в связи с непредставлением в установленный срок (отзывом) оригинала документа установленного образца)', style: :bold, size: 14
 
     pdf.text "#{group.items.first.direction.new_code}, #{group.items.first.direction.name}", size: 14
     pdf.text "#{group.items.first.form_name} форма обучения, #{group.items.first.budget_name}", size: 14
@@ -23,11 +23,12 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
 
   # pdf.stroke_bounds
 end
-pdf.move_down 30
+pdf.move_down 70
 
 a_out_of_competition = []
 a_special_rights = []
 a_organization = []
+a_contest_enrolled = []
 a_contest = []
 
 group.items.first.applications.for_rating.each do |a|
@@ -40,7 +41,11 @@ group.items.first.applications.for_rating.each do |a|
       elsif a.competitive_group_target_item
         a_organization << a
       else
-        a_contest << a
+        if a.order && a.order.signed?
+          a_contest_enrolled << a
+        else
+          a_contest << a
+        end
       end
     end
   end
@@ -142,6 +147,10 @@ if a_organization.any?
   end
 end
 
+if a_contest_enrolled.any?
+  remaining_places -= a_contest_enrolled.size
+end
+
 # Общий конкурс.
 if a_contest.any?
   # pdf.text 'Список поступающих по общему конкурсу',
@@ -156,23 +165,23 @@ if a_contest.any?
   last_found = false
   prev_score = 0
 
-  a_contest.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
-    d = [i + 1, a.number, "#{a.entrant.full_name}, #{a.entrant.phone}"] + a.abitexams.map(&:score) + [a.total_score, (a.original? ? '+' : '')]
+  a_contest.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each_with_index do |a, i|
+    d = [i + 1, a.number, "#{a.entrant.full_name}"] + a.abitexams.map(&:score) + [a.total_score, (a.original? ? 'да' : 'нет')]
 
-    if to_enroll > 0
-      to_enroll -= 1
-      prev_score = a.total_score
+    # if to_enroll > 0
+    #   to_enroll -= 1
+    #   prev_score = a.total_score
       d << 'Рекомендован'
-    elsif 0 == to_enroll && !last_found
-      if prev_score == a.total_score
-        d << 'Рекомендован'
-      else
-        last_found = true
-        d << 'Резерв'
-      end
-    else
-      d << 'Резерв'
-    end
+    # elsif 0 == to_enroll && !last_found
+    #   if prev_score == a.total_score
+    #     d << 'Рекомендован'
+    #   else
+    #     last_found = true
+    #     d << 'Резерв'
+    #   end
+    # else
+    #   d << 'Резерв'
+    # end
 
     data << d
   end

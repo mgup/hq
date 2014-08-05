@@ -6,12 +6,14 @@ prawn_document margin: [72.0 * 1.0 / 2.54,
   @campaign.competitive_groups.each do |competitive_group|
     next if competitive_group.items.first.payed?
 
-    next if 6 == competitive_group.items.first.direction.department_id
-    next if 7 == competitive_group.items.first.direction.department_id
+    # next unless 192686 == competitive_group.id
 
-    if 5 == competitive_group.items.first.direction.department_id
-      next unless 193640 == competitive_group.id
-    end
+    # next if 6 == competitive_group.items.first.direction.department_id
+    # next if 7 == competitive_group.items.first.direction.department_id
+    #
+    # if 5 == competitive_group.items.first.direction.department_id
+    #   next unless 193640 == competitive_group.id
+    # end
     # next unless 3 == competitive_group.items.first.direction.department_id
 
     if competitive_group.items.first.applications.for_rating.to_a.size > 0
