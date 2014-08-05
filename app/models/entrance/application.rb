@@ -286,7 +286,7 @@ class Entrance::Application < ActiveRecord::Base
   def enroll
 
     if contract
-      person = a.contract.student.person
+      person = contract.student.person
     else
       group = find_group(competitive_group_item, entrant.ioo)
       if group.is_a?(Hash)
