@@ -180,7 +180,6 @@
         </table>
         <% remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size) %>
       <% end %>
-      <br><br><br><br>
     <% end %>
 
     <% if a_contest_enrolled.any? %>
@@ -221,6 +220,7 @@
         <% end %>
       </table>
       <% remaining_places -= a_contest_enrolled.size %>
+      <br><br><br><br>
     <% end %>
 
     <% if a_contest.any? %>
