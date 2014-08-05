@@ -17,7 +17,7 @@ var index = row.children('td:first').text();
       );
     <% else %>
       row.html(
-              '<td>' + index + '</td>' + '<%=j raw(render partial: 'entrance/applications/rows/contest', locals: {a: @application}) %>'
+              '<td>' + index + '</td>' + '<%=j raw(render partial: 'entrance/applications/rows/contest', locals: { a: @application }) %>'
       );
     <% end %>
   <% end %>

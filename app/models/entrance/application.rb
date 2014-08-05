@@ -287,6 +287,8 @@ class Entrance::Application < ActiveRecord::Base
 
     if contract
       person = contract.student.person
+      student_id = contract.student_id
+      save!
     else
       group = find_group(competitive_group_item, entrant.ioo)
       if group.is_a?(Hash)
@@ -363,43 +365,43 @@ class Entrance::Application < ActiveRecord::Base
           }
         )
       end
-
-      order = Office::Order.entrance
-      .joins(:metas)
-      .where("order_meta.order_meta_pattern = 'Конкурсная группа' && order_meta.order_meta_text = '#{competitive_group_item.competitive_group.id}'").last
-      if order && order.draft?
-        order.students_in_order << Office::OrderStudent.create!(
-            order_student_student: person.id,
-            order_student_student_group_id: person.students.first.id,
-            order_student_cause: 0,
-            order_student_order: order.id
-        )
-      else
-        order = Office::Order.create!(
-            order_status: Office::Order::STATUS_DRAFT,
-            order_template: 16,
-            students_in_order_attributes: {
-              '0' => {
-                order_student_student: person.id,
-                order_student_student_group_id: person.students.first.id,
-                order_student_cause: 0
-              }
-            },
-            metas_attributes: {
-                '0' => {
-                    order_meta_type: 1,
-                    order_meta_pattern: 'Конкурсная группа',
-                    order_meta_object: 0,
-                    order_meta_text: competitive_group_item.competitive_group
-                }
-            }
-        )
-        order.metas.last.update(object: order.id)
-        order.metas.last.save!
-      end
-      update(status_id: 8, order_id: order.id)
-      save!
     end
+
+    order = Office::Order.entrance
+    .joins(:metas)
+    .where("order_meta.order_meta_pattern = 'Конкурсная группа' && order_meta.order_meta_text = '#{competitive_group_item.competitive_group.id}'").last
+    if order && order.draft?
+      order.students_in_order << Office::OrderStudent.create!(
+          order_student_student: person.id,
+          order_student_student_group_id: person.students.first.id,
+          order_student_cause: 0,
+          order_student_order: order.id
+      )
+    else
+      order = Office::Order.create!(
+          order_status: Office::Order::STATUS_DRAFT,
+          order_template: 16,
+          students_in_order_attributes: {
+            '0' => {
+              order_student_student: person.id,
+              order_student_student_group_id: person.students.first.id,
+              order_student_cause: 0
+            }
+          },
+          metas_attributes: {
+              '0' => {
+                  order_meta_type: 1,
+                  order_meta_pattern: 'Конкурсная группа',
+                  order_meta_object: 0,
+                  order_meta_text: competitive_group_item.competitive_group
+              }
+          }
+      )
+      order.metas.last.update(object: order.id)
+      order.metas.last.save!
+    end
+    update(status_id: 8, order_id: order.id)
+    save!
   end
 
   def to_fis
