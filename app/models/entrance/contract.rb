@@ -49,6 +49,10 @@ class Entrance::Contract < ActiveRecord::Base
     end
   end
 
+  def paid?
+    student.total_payments > one_time_payment
+  end
+
   def to_nokogiri
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.contract {

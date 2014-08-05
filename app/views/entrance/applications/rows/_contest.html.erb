@@ -9,6 +9,10 @@
  <td class="nowrap">
    <% if a.contract %>
      № <%= a.contract.number %>
+
+     <% if a.contract.paid? %>
+      <strong class="text-danger">ОПЛАЧЕНО</strong>
+     <% end %>
    <% else %>
      <% c = a.entrant.applications.collect{|app| app.contract}.compact %>
      <% unless c.empty? %>
@@ -19,11 +23,11 @@
      <% end %>
    <% end %>
  </td>
- <td>
-   <% if a.agree? %>
-     <span class="glyphicons ok_2"></span>
-   <% end %>
- </td>
+ <!--<td>-->
+   <!--<%# if a.agree? %>-->
+     <!--<span class="glyphicons ok_2"></span>-->
+   <!--<%# end %>-->
+ <!--</td>-->
 <% else %>
   <td>
     <% if a.original? %>
@@ -66,7 +70,7 @@
     <% if can?(:create, :entrance_orders) && !a.order %>
       <%= image_tag asset_path('loader.gif'), class: 'loader', style: 'display: none;' %>
       <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
-                  data: {question: "Вы уверены, что хотите зачислить абитуриента #{a.entrant.full_name}?"}, remote: true if ((a.original? && !a.payed?) || (a.payed? && a.contract && a.agree)) && success %>
+                  data: {question: "Вы уверены, что хотите зачислить абитуриента #{a.entrant.full_name}?"}, remote: true if ((a.original? && !a.payed?) || (a.payed? && a.contract && a.contract.paid?)) && success %>
     <% end %>
     <% if a.order %>
       формируется приказ о зачислении
