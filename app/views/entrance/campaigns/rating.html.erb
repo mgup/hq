@@ -470,10 +470,11 @@
             <%# end %>
           <%# end %>
 
-          <% if remaining_places > 0 %>
-            <tr id="application_<%= a.id %>" class="success <%= or_class %>">
-          <% else %>
-            <tr id="application_<%= a.id %>" class="<%= or_class %>">
+            <% if remaining_places > 0 %>
+              <tr id="application_<%= a.id %>" class="success <%= or_class %>">
+            <% else %>
+              <tr id="application_<%= a.id %>" class="<%= or_class %>">
+            <% end %>
           <% end %>
 
             <td data-value="<%= i + 1 %>"><%= i + 1 %></td>
