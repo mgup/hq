@@ -122,8 +122,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           data.last << ap.abitpoints
           data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           data.last << 'зачислить'
+          i += 1
         end
-        i += 1
       else
         if ap.original?
           data << ["#{index+1}", ap.number, ap.entrant.full_name]
