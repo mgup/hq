@@ -420,7 +420,9 @@
           <% end %>
           <th>Сумма</th>
           <% if item.payed? %>
-            <th>Договор</th>
+            <% if can?(:manage, Entrance::Application) %>
+              <th>Договор</th>
+            <% end %>
             <!--<th>Согласие на зачисление</th>-->
           <% else %>
             <th>Оригинал</th>

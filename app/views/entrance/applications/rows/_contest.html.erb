@@ -5,6 +5,7 @@
 <% end %>
 <td><%= a.abitpoints %></td>
 
+<% if can?(:manage, Entrance::Application) %>
 <% if a.payed? %>
  <td class="nowrap">
    <% if a.contract %>
@@ -42,7 +43,6 @@
     <% end %>
   </td>
 <% end %>
-<% if can?(:manage, Entrance::Application) %>
   <td>
       <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
                   class: 'btn btn-default',
