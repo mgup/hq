@@ -70,7 +70,7 @@
     <% if can?(:create, :entrance_orders) && !a.order %>
       <%= image_tag asset_path('loader.gif'), class: 'loader', style: 'display: none;' %>
       <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
-                  data: {question: "Вы уверены, что хотите зачислить абитуриента #{a.entrant.full_name}?"}, remote: true if ((a.original? && !a.payed?) || (a.payed? && a.contract && a.contract.paid?)) && success %>
+                  data: {question: "Вы уверены, что хотите зачислить абитуриента #{a.entrant.full_name}?"}, remote: true if ((a.original? && !a.payed? && success) || (a.payed? && a.contract && a.contract.paid?)) %>
     <% end %>
     <% if a.order %>
       формируется приказ о зачислении
