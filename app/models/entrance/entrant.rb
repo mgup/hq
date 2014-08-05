@@ -139,7 +139,20 @@ class Entrance::Entrant < ActiveRecord::Base
       xml.entrant {
         xml.id_  id
         xml.name full_name
-        xml << packed_application.to_nokogiri.root.to_xml
+
+        order_id = nil
+        applications.each do |a|
+          if a.order_id
+            order_id = a.order_id
+          end
+        end
+
+        if order_id
+          competitive_group_id = Office::OrderMeta.where(order_meta_order: order_id).where(order_meta_pattern: 'Конкурсная группа').first.order_meta_text.to_i
+          xml << applications.find_all { |a| a.competitive_group.id == competitive_group_id}.first.to_nokogiri.root.to_xml
+        else
+          xml << packed_application.to_nokogiri.root.to_xml
+        end
       }
     }.doc
   end

@@ -96,9 +96,11 @@ class Office::Order < ActiveRecord::Base
         xml.responsible responsible
         xml.status      status
         xml << template.to_nokogiri.root.to_xml
+
         xml.students do
           students.each { |student| xml << student.to_nokogiri.root.to_xml }
         end
+
         xml.metas do
           metas.each { |meta| xml << meta.to_nokogiri.root.to_xml }
         end
