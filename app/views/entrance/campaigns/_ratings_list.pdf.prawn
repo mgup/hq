@@ -23,7 +23,7 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
 
   # pdf.stroke_bounds
 end
-pdf.move_down 70
+pdf.move_down 100
 
 a_out_of_competition = []
 a_special_rights = []
