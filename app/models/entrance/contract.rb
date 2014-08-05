@@ -50,7 +50,7 @@ class Entrance::Contract < ActiveRecord::Base
   end
 
   def paid?
-    student.total_payments > one_time_payment
+    student.total_payments >= one_time_payment
   end
 
   def to_nokogiri
