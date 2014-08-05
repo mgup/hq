@@ -25,11 +25,11 @@ class Entrance::Application < ActiveRecord::Base
                          comment: "Создано заявление #{application.id}."
   end
 
-  after_update do |application|
-    Entrance::Log.create entrant_id: application.entrant.id,
-                         user_id: User.current.id,
-                         comment: "Обновлено заявление #{[application.number, application.id].join(', ')}."
-  end
+  # after_update do |application|
+  #   Entrance::Log.create entrant_id: application.entrant.id,
+  #                        user_id: User.current.id,
+  #                        comment: "Обновлено заявление #{[application.number, application.id].join(', ')}."
+  # end
 
   # default_scope do
   #   where('status_id != ?', 6)
