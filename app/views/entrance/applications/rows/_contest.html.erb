@@ -5,8 +5,7 @@
 <% end %>
 <td><%= a.abitpoints %></td>
 
-<% if can?(:manage, Entrance::Application) %>
-<% if a.payed? %>
+<% if a.payed? && can?(:manage, Entrance::Application) %>
  <td class="nowrap">
    <% if a.contract %>
      № <%= a.contract.number %>
@@ -24,25 +23,25 @@
      <% end %>
    <% end %>
  </td>
- <!--<td>-->
-   <!--<%# if a.agree? %>-->
-     <!--<span class="glyphicons ok_2"></span>-->
-   <!--<%# end %>-->
- <!--</td>-->
 <% else %>
   <td>
     <% if a.original? %>
       <span class="glyphicons ok_2"></span>
     <% end %>
-    <% c = a.entrant.applications.collect{|app| app.contract}.compact %>
-    <% unless c.empty? %>
-      <% c.each do |contract| %>
-        Был заключён<br>договор № <%= contract.number %><br>
-        по заявлению<br><%= contract.application.number %>
+
+    <% if can?(:manage, Entrance::Application) %>
+      <% c = a.entrant.applications.collect{|app| app.contract}.compact %>
+      <% unless c.empty? %>
+        <% c.each do |contract| %>
+          Был заключён<br>договор № <%= contract.number %><br>
+          по заявлению<br><%= contract.application.number %>
+        <% end %>
       <% end %>
     <% end %>
   </td>
 <% end %>
+
+<% if can?(:manage, Entrance::Application) %>
   <td>
       <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
                   class: 'btn btn-default',

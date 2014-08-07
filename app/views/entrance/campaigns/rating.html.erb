@@ -423,14 +423,12 @@
             <th><%= name %></th>
           <% end %>
           <th>Сумма</th>
-          <% if item.payed? %>
-            <% if can?(:manage, Entrance::Application) %>
-              <th>Договор</th>
-            <% end %>
-            <!--<th>Согласие на зачисление</th>-->
+          <% if item.payed? && can?(:manage, Entrance::Application) %>
+            <th>Договор</th>
           <% else %>
             <th>Оригинал</th>
           <% end %>
+
           <% if can?(:manage, Entrance::Application) %>
             <th></th>
           <% end %>
