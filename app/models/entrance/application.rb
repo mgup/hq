@@ -169,7 +169,7 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def self.direction_stats(campaign, direction)
-    applications = campaign.applications.for_direction(direction)
+    applications = campaign.applications.actual.for_direction(direction)
 
     stats = {}
     [:budget, :paid].each do |payment|
