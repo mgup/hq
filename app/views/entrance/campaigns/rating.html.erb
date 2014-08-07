@@ -241,11 +241,23 @@
           <strong>
             Доступное количество мест — <span id="remaining_places"><%= remaining_places %></span>
           </strong>
-          <% if item.payed? && 193593 != item.competitive_group.id %>
+          <% if item.payed? %>
             <br>
-            <span class="text-danger">
-              <sup>*</sup> минимальный план приема, который может быть увеличен
-            </span>
+            <% if 193593 == item.competitive_group.id %>
+              <div class="alert alert-danger lead">
+                В связи с большим потоком абитуриентов принято решение
+                об увеличении плана приема на места по договорам об образовании
+                на очную форму обучения специальности «Графика».
+                <br>
+                Оформление договоров по графику работы приемной комиссии
+                до 19 августа. Справки по телефону горячей линии:
+                +7 495 276-04-26.
+              </div>
+            <% else %>
+              <span class="text-danger">
+                <sup>*</sup> минимальный план приема, который может быть увеличен
+              </span>
+            <% end %>
           <% end %>
         </h3>
       <% end %>
