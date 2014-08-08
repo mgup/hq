@@ -87,22 +87,28 @@
             приказ № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
           </td>
         <% else %>
-          <td>
-            <%= link_to entrance_campaign_entrant_application_path(@campaign, @entrant, a),
-                        method: :delete, class: 'btn btn-danger',
-                        title: 'Отозвать', data: { confirm: 'Вы уверены?' } do %>
-              <span class="glyphicons remove_2"></span> Отозвать
-            <% end %>
-          </td>
-          <td>
-            <%= link_to reject_entrance_campaign_entrant_application_path(@campaign, a.entrant, a),
-                        class: 'btn btn-danger',
-                        title: 'Отклонить заявление',
-                        remote: true,
-                        data: { confirm: 'ВЫ ТОЧНО ПОНИМАЕТЕ ЧТО И ЗАЧЕМ ВЫ ДЕЛАЕТЕ???!!!' } do %>
-              <span class="glyphicons remove_2"></span> Отклонить
-            <% end %>
-          </td>
+          <% if 5 == a.status_id %>
+            <td colspan="2">Отклонено</td>
+          <% elsif 6 == a.status_id %>
+            <td colspan="2">Отозвано</td>
+          <% else %>
+            <td>
+              <%= link_to entrance_campaign_entrant_application_path(@campaign, @entrant, a),
+                          method: :delete, class: 'btn btn-danger',
+                          title: 'Отозвать', data: { confirm: 'Вы уверены?' } do %>
+                <span class="glyphicons remove_2"></span> Отозвать
+              <% end %>
+            </td>
+            <td>
+              <%= link_to reject_entrance_campaign_entrant_application_path(@campaign, a.entrant, a),
+                          class: 'btn btn-danger',
+                          title: 'Отклонить заявление',
+                          remote: true,
+                          data: { confirm: 'ВЫ ТОЧНО ПОНИМАЕТЕ ЧТО И ЗАЧЕМ ВЫ ДЕЛАЕТЕ???!!!' } do %>
+                <span class="glyphicons remove_2"></span> Отклонить
+              <% end %>
+            </td>
+          <% end %>
         <% end %>
       <% end %>
     </tr>
