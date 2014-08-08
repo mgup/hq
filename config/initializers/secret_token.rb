@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-HQ::Application.config.secret_key_base = 'a8117e4180421730b4660e7c01d0e83cb914f929376fb5ebacdd5569a5a15e2abf486de631ed0483fccee91bed5e83baa0b8b65902534664de38652f57c81190'
+HQ::Application.config.secret_key_base = '9c72c73d4c12ac9c38b83c01ae7c9409d9ed524988072e21c222ae0e310bbb2b51702f6dc505ae3c56fea2cd2747a4be2e0a20537e1e0b7a1868d0382e94e29e'
