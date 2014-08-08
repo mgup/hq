@@ -67,8 +67,10 @@
     № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
   <% elsif can?(:create, :entrance_orders) && !a.order %>
     <%= image_tag asset_path('loader.gif'), class: 'loader', style: 'display: none;' %>
-    <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
-                data: {question: "Вы уверены, что хотите зачислить абитуриента #{a.entrant.full_name}?"}, remote: true if ((a.original? && !a.payed? && success) || (a.payed? && a.contract && a.contract.paid?)) %>
+    <%# if if ((a.original? && !a.payed? && success) || (a.payed? && a.contract && a.contract.paid?)) %>
+      <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',
+                  data: {question: "Вы уверены, что хотите зачислить абитуриента #{a.entrant.full_name}?"}, remote: true %>
+    <%# end %>
   <% elsif can?(:create, :entrance_orders) && a.order %>
     формируется приказ о зачислении
   <% end %>
