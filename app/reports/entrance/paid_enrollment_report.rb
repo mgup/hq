@@ -129,19 +129,34 @@ module Entrance
           contract.student.group.speciality
         end
 
+        data_draft = []
         by_speciality.each do |speciality, contracts|
-          d = ["#{speciality.new_code} #{speciality.name}", 0, 0, 0]
+          d = ["#{speciality.new_code} #{speciality.name}", [0, 0], [0, 0], [0, 0]]
           contracts.each do |contract|
             case contract.student.group.form
-            when 'fulltime' then d[1] += 1
-            when 'semitime' then d[2] += 1
-            when 'postal'   then d[3] += 1
-            when 'distance' then d[3] += 1
+            when 'fulltime' then d[1][0] += 1
+            when 'semitime' then d[2][0] += 1
+            when 'postal'   then d[3][0] += 1
+            when 'distance' then d[3][0] += 1
             else fail 'Неизвестная форма обучения.'
+            end
+
+            if contract.paid?
+              case contract.student.group.form
+                when 'fulltime' then d[1][1] += 1
+                when 'semitime' then d[2][1] += 1
+                when 'postal'   then d[3][1] += 1
+                when 'distance' then d[3][1] += 1
+                else fail 'Неизвестная форма обучения.'
+              end
             end
           end
 
-          data << d
+          data_draft << d
+        end
+
+        data_draft.each do |el|
+          data << [el[0], "#{el[1][0]} (#{el[1][1]})", "#{el[2][0]} (#{el[2][1]})", "#{el[3][0]} (#{el[3][1]})"]
         end
 
       end
