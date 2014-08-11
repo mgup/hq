@@ -12,6 +12,8 @@ class Report::GzguController < ApplicationController
         Entrance::Campaign.find(2014).items.find_all { |i| !i.payed? }.sort_by { |i| "#{i.direction.name} #{i.direction.new_code}" }.each do |item|
           next if item.direction.new_code.split('.')[1] == '06'
 
+          next if [244350,237078,244351].include?(item.id)
+
           xml.lines(id: index) do
             mon_pk_f1_2014_06_23_line(xml, item)
           end
@@ -30,7 +32,7 @@ class Report::GzguController < ApplicationController
 
   def mon_pk_f1_2014_06_23_line(xml, item)
     xml.oo 415
-    # xml.spec "#{item.direction.gzgu} #{item.direction.new_code} #{item.direction.name}"
+    # xml.spec "#{item.id} #{item.direction.new_code} #{item.direction.name}"
     xml.spec item.direction.gzgu
     xml.fo case item.form
            when 11 then 1
@@ -78,8 +80,8 @@ class Report::GzguController < ApplicationController
       quota_applications += 1 if a.benefits.first && 4 == a.benefits.first.benefit_kind_id
       target_applications += 1 unless a.competitive_group_target_item_id.nil?
 
-      if a.order_id
-        case a.order.order_editing.to_date
+      if 8 == a.status_id && a.order_id
+        case (a.order.order_signing || a.order.order_editing).to_date
         when Date.new(2014, 7, 31) then enrolled_07_31 += 1
         when Date.new(2014, 8, 5) then enrolled_08_05 += 1
         when Date.new(2014, 8, 11) then enrolled_08_11 += 1
