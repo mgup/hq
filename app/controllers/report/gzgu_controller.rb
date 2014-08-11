@@ -72,7 +72,7 @@ class Report::GzguController < ApplicationController
     enrolled_with_quota = 0
     enrolled_with_target = 0
     enrolled_with_olymp = 0
-    Entrance::Application.unscoped.where(competitive_group_item_id: item.id).each do |a|
+    item.applications.each do |a|
       all_applications += 1
       quota_applications += 1 if a.benefits.first && 4 == a.benefits.first.benefit_kind_id
       target_applications += 1 unless a.competitive_group_target_item_id.nil?
