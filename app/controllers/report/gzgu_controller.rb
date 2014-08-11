@@ -30,7 +30,8 @@ class Report::GzguController < ApplicationController
 
   def mon_pk_f1_2014_06_23_line(xml, item)
     xml.oo 415
-    xml.spec "#{item.direction.new_code} #{item.direction.name}"
+    # xml.spec "#{item.direction.new_code} #{item.direction.name}"
+    xml.spec item.direction.gzgu
     xml.fo case item.form
            when 11 then 1
            when 12 then 2
@@ -71,7 +72,7 @@ class Report::GzguController < ApplicationController
     enrolled_with_quota = 0
     enrolled_with_target = 0
     enrolled_with_olymp = 0
-    item.applications.each do |a|
+    item.applications.unscoped.each do |a|
       all_applications += 1
       quota_applications += 1 if a.benefits.first && 4 == a.benefits.first.benefit_kind_id
       target_applications += 1 unless a.competitive_group_target_item_id.nil?
