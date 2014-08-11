@@ -30,14 +30,14 @@ class Report::GzguController < ApplicationController
 
   def mon_pk_f1_2014_06_23_line(xml, item)
     xml.oo 415
-    # xml.spec "#{item.direction.new_code} #{item.direction.name}"
-    xml.spec item.direction.gzgu
+    xml.spec "#{item.direction.gzgu} #{item.direction.new_code} #{item.direction.name}"
+    # xml.spec item.direction.gzgu
     xml.fo case item.form
            when 11 then 1
            when 12 then 2
            when 10 then 3
            end
-    xml.ff 1
+    xml.ff (item.payed? ? 2 : 1)
 
     field_payment = item.payed? ? 'paid' : 'budget'
     field_form = case item.form
@@ -66,6 +66,7 @@ class Report::GzguController < ApplicationController
     enrolled_07_31 = 0
     enrolled_08_05 = 0
     enrolled_08_11 = 0
+    enrolled_after = 0
 
     enrolled_without = 0
     enrolled_with_100 = 0
@@ -82,6 +83,7 @@ class Report::GzguController < ApplicationController
         when Date.new(2014, 7, 31) then enrolled_07_31 += 1
         when Date.new(2014, 8, 5) then enrolled_08_05 += 1
         when Date.new(2014, 8, 11) then enrolled_08_11 += 1
+        else enrolled_after += 1
         end
 
         enrolled_without += 1
