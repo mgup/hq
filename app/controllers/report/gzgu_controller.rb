@@ -65,6 +65,7 @@ class Report::GzguController < ApplicationController
     all_applications = 0
     quota_applications = 0
     target_applications = 0
+    after_applications = 0
     enrolled_07_31 = 0
     enrolled_08_05 = 0
     enrolled_08_11 = 0
@@ -76,9 +77,11 @@ class Report::GzguController < ApplicationController
     enrolled_with_target = 0
     enrolled_with_olymp = 0
     item.applications.each do |a|
-      all_applications += 1
-      quota_applications += 1 if a.benefits.first && 4 == a.benefits.first.benefit_kind_id
-      target_applications += 1 unless a.competitive_group_target_item_id.nil?
+      if [4,6,8].include?(a.status_id)
+        all_applications += 1
+        quota_applications += 1 if a.benefits.first && 4 == a.benefits.first.benefit_kind_id
+        target_applications += 1 unless a.competitive_group_target_item_id.nil?
+      end
 
       if 8 == a.status_id && a.order_id
         case (a.order.order_signing || a.order.order_editing).to_date
@@ -108,7 +111,7 @@ class Report::GzguController < ApplicationController
     xml.p2_1 all_applications
     xml.p2_2 quota_applications
     xml.p2_3 target_applications
-    xml.p2_4 0
+    xml.p2_4 after_applications
 
     xml.p3_1 enrolled_07_31
     xml.p3_2 enrolled_08_05
