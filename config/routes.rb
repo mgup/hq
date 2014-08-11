@@ -351,7 +351,9 @@ HQ::Application.routes.draw do
     resources :document_movements
   end
 
-
+  namespace :report do
+    get 'gzgu/mon_pk_f1_2014_06_23', to: 'gzgu#mon_pk_f1_2014_06_23'
+  end
 
   root to: 'dashboard#index'
 
