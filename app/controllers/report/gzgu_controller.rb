@@ -30,8 +30,8 @@ class Report::GzguController < ApplicationController
 
   def mon_pk_f1_2014_06_23_line(xml, item)
     xml.oo 415
-    xml.spec "#{item.direction.gzgu} #{item.direction.new_code} #{item.direction.name}"
-    # xml.spec item.direction.gzgu
+    # xml.spec "#{item.direction.gzgu} #{item.direction.new_code} #{item.direction.name}"
+    xml.spec item.direction.gzgu
     xml.fo case item.form
            when 11 then 1
            when 12 then 2
