@@ -141,6 +141,20 @@ class Entrance::Application < ActiveRecord::Base
     exams
   end
 
+  # Только ЕГЭ.
+  def only_use?
+    only_use = true
+    abitexams.each do |result|
+      only_use &= result.use? unless result.exam.creative?
+    end
+
+    only_use
+  end
+
+  def has_creative_exams?
+    abitexams.find_all { |r| r.exam.creative? }.any?
+  end
+
   def pass_min_score?
     passed = true
     competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).each do |test_item|
