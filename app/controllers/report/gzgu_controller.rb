@@ -67,6 +67,7 @@ class Report::GzguController < ApplicationController
         index = 1
         Entrance::Campaign.find(2014).items.find_all { |i| !i.payed? }.sort_by { |i| "#{i.direction.name} #{i.direction.new_code}" }.each do |item|
           next if item.direction.new_code.split('.')[1] == '06'
+          next if [244350,237078,244351].include?(item.id)
 
           xml.lines(id: index) do
             mon_pk_f2_2014_06_23_line(xml, item)
