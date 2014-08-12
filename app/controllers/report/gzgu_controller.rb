@@ -28,6 +28,32 @@ class Report::GzguController < ApplicationController
     end
   end
 
+  # Форма №1a. Сведения о приеме граждан на обучение по программам аспирантуры,
+  # ординатуры, ассистентуры-стажировки на места за счет федерального бюджета
+  # (приказ Минобрнауки России от 27 января 2013 г. № 1417), бюджетов субъектов
+  # Российской Федерации, местных бюджетов и по договорам об оказании платных
+  # образовательных услуг.
+  def mon_pk_f1a_2014_06_23
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.root(id: 415) do
+        # Выбираем все бюджетные конкурсные группы обычной приемной кампании.
+        index = 1
+        Entrance::Campaign.find(2014).items.sort_by { |i| "#{i.direction.name} #{i.direction.new_code}" }.each do |item|
+          next unless item.direction.new_code.split('.')[1] == '06'
+
+          xml.lines(id: index) do
+            mon_pk_f1a_2014_06_23_line(xml, item)
+          end
+
+          index += 1
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.xml { render xml: builder.to_xml(save_with: Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION).strip }
+    end
+  end
   private
 
   def mon_pk_f1_2014_06_23_line(xml, item)
@@ -125,5 +151,56 @@ class Report::GzguController < ApplicationController
     xml.p4_6 0
     xml.p4_7 0
     xml.p4_8 enrolled_with_olymp
+  end
+
+  def mon_pk_f1a_2014_06_23_line(xml, item)
+    xml.oo 415
+    # xml.spec "#{item.id} #{item.direction.new_code} #{item.direction.name}"
+    xml.spec item.direction.gzgu
+    xml.fo case item.form
+             when 11 then 1
+             when 12 then 2
+             when 10 then 3
+           end
+    xml.ff (item.payed? ? 2 : 1)
+
+    field_payment = item.payed? ? 'paid' : 'budget'
+    field_form = case item.form
+                   when 11 then 'o'
+                   when 12 then 'oz'
+                   when 10 then 'z'
+                 end
+
+    total_places = item.send("number_#{field_payment}_#{field_form}")
+    total_places += item.send("number_quota_#{field_form}")
+    target_places = 0
+    item.competitive_group.target_organizations.each do |org|
+      org.items.where(direction_id: item.direction_id, education_level_id: item.education_level_id).each do |i|
+        total_places += i.send("number_target_#{field_form}")
+        target_places += i.send("number_target_#{field_form}")
+      end
+    end
+
+    xml.p1_1 total_places
+    xml.p1_2 0
+
+    all_applications = 0
+
+    enrolled = 0
+    item.applications.each do |a|
+      all_applications += 1
+
+      if 8 == a.status_id && a.order_id
+        enrolled += 1
+      end
+    end
+
+    xml.p2_1 all_applications
+    xml.p2_2 0
+
+    xml.p3_1 enrolled
+    xml.p3_2 0
+
+    xml.p4 0
   end
 end
