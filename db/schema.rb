@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811080927) do
+ActiveRecord::Schema.define(version: 20140812115354) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -942,7 +942,8 @@ ActiveRecord::Schema.define(version: 20140811080927) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "form",           default: 1, null: false
+    t.integer  "form",           default: 1,     null: false
+    t.boolean  "creative",       default: false
   end
 
   add_index "entrance_exams", ["campaign_id"], name: "index_entrance_exams_on_campaign_id", using: :btree
