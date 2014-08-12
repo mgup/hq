@@ -319,7 +319,7 @@ class Entrance::Application < ActiveRecord::Base
           phone_mobile: entrant.phone,
           residence_address: entrant.aaddress,
           residence_zip: entrant.azip,
-          student_foreign: entrant.other_citizenship?,
+          student_foreign: (1 != entrant.nationality_type_id),
           army: army,
           last_name_hint: entrant.last_name,
           first_name_hint: entrant.first_name,
