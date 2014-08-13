@@ -300,7 +300,7 @@ HQ::Application.routes.draw do
       get 'rating',     on: :member
       get 'crimea_rating',     on: :member
       get 'results',     on: :member
-      get 'balls',     on: :member
+      # get 'balls',     on: :member
       get 'orders', on: :collection
 
       resources :dates
