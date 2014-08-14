@@ -1,0 +1,97 @@
+title = wb.styles.add_style(
+  alignment: { vertical: :center,
+               wrap_text: true },
+  sz: 15, b: true
+)
+header = wb.styles.add_style(
+  alignment: { vertical: :center,
+               wrap_text: true },
+  border: { style: :thin,
+            color: '000000' },
+  b: true
+)
+default = wb.styles.add_style(
+  alignment: { wrap_text: true },
+  border: { style: :thin,
+            color: '000000' }
+)
+
+wb.add_worksheet(name: 'Форма 1а',
+                 page_margins: { top: 1, right: 1, bottom: 1, left: 1 },
+                 page_setup: { orientation: :landscape }) do |sheet|
+  sheet.page_setup.fit_to width: 1, height: 1
+  sheet.add_row(['Форма №1a. Сведения о приеме граждан на обучение по программам аспирантуры, ординатуры, ассистентуры-стажировки на места за счет федерального бюджета (приказ Минобрнауки России от 27 января 2013 г. № 1417), бюджетов субъектов Российской Федерации, местных бюджетов и по договорам об оказании платных образовательных услуг'],
+                style: title, height: 70)
+  sheet.add_row(['Уровень образования',
+                 'Код и наименование НП(С)',
+                 'Форма обучения',
+                 'Форма финансирования',
+                 'Количество мест приема граждан',
+                 'В т.ч. квота целевого приема',
+                 'Количество заявлений на места приема граждан',
+                 'В т.ч. количество заявлений на бюджетные места в пределах целевого приема',
+                 'Количество зачисленных',
+                 'В т.ч. зачисленных в пределах целевого приема',
+                 'Проходной балл зачисленных (по сумме всех вступительных испытаний)'], style: header)
+  sheet.merge_cells('A1:K1')
+
+  @data.each do |level_type, rows1|
+    rows1.each do |direction_id, rows2|
+      rows2.each do |fo, rows3|
+        rows3.each do |ff, line|
+          next if line.empty?
+
+          # Всё, кроме аспирантуры.
+          next unless line[:direction].new_code.split('.')[1] == '06'
+
+          sheet.add_row([line[:education_type_name],
+                         "#{line[:direction].new_code} #{line[:direction].name}",
+                         line[:fo].name,
+                         line[:ff].name,
+                         line[:total_places],
+                         0,
+                         line[:all_applications],
+                         0,
+                         line[:enrolled_all],
+                         0,
+                         line[:pass_points]], style: default)
+        end
+      end
+    end
+  end
+
+  # @data.each do |line|
+  #   # Всё, кроме аспирантуры.
+  #   next if line[:direction].new_code.split('.')[1] == '06'
+  #
+  #   sheet.add_row([line[:education_type_name],
+  #                  "#{line[:direction].new_code} #{line[:direction].name}",
+  #                  line[:fo].name,
+  #                  line[:ff].name,
+  #                  line[:total_places],
+  #                  line[:quota_places],
+  #                  line[:target_places],
+  #                  line[:all_applications],
+  #                  line[:quota_applications],
+  #                  line[:target_applications],
+  #                  line[:after_applications],
+  #                  line[:enrolled_07_31],
+  #                  line[:enrolled_08_05],
+  #                  line[:enrolled_08_11],
+  #                  line[:enrolled_after],
+  #                  line[:enrolled_contest_without_100],
+  #                  line[:enrolled_contest_with_100],
+  #                  line[:enrolled_with_quota],
+  #                  line[:enrolled_with_target],
+  #                  0,
+  #                  0,
+  #                  line[:enrolled_with_olymp]], style: default)
+  # end
+
+  sheet.column_info[0].width = 12
+  sheet.column_info[1].width = 52
+  sheet.column_info[2].width = 17
+  sheet.column_info[3].width = 17
+  sheet.column_info[4].width = 6
+  sheet.column_info[7].width = 11
+end

@@ -80,6 +80,8 @@ class Report::GzguController < ApplicationController
       line[:enrolled_with_target] = 0
       line[:enrolled_with_olymp] = 0
 
+      line[:pass_points] = [0]
+
       if 237075 == item.id
         if polygraf_parsed
           # Второй проход.
@@ -100,6 +102,8 @@ class Report::GzguController < ApplicationController
 
         if 8 == a.status_id && a.order_id
           line[:enrolled_all] += 1
+          line[:pass_points] << a.abitpoints
+
           case (a.order.order_signing || a.order.order_editing).to_date
             when Date.new(2014, 7, 31) then line[:enrolled_07_31] += 1
             when Date.new(2014, 8, 5) then line[:enrolled_08_05] += 1
@@ -137,6 +141,8 @@ class Report::GzguController < ApplicationController
 
         polygraf_parsed = true unless polygraf_parsed
       end
+
+      line[:pass_points] = line[:pass_points].min
 
       data << line
     end
