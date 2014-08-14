@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140813133848) do
+ActiveRecord::Schema.define(version: 20140814094523) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -720,6 +720,7 @@ ActiveRecord::Schema.define(version: 20140813133848) do
     t.integer  "competitive_group_target_item_id"
     t.integer  "order_id"
     t.boolean  "agree"
+    t.boolean  "prikladnoy",                       default: false
   end
 
   add_index "entrance_applications", ["campaign_id"], name: "index_entrance_applications_on_campaign_id", using: :btree
