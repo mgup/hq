@@ -122,8 +122,12 @@ class Report::GzguController < ApplicationController
           exams_use = exams.find_all { |r| r.use? }
           exams_use_creative = exams.find_all { |r| r.use? || r.exam.creative? }
 
-          line[:pass_points] << exams.map { |r| r.score }.sum
-          line[:pass_points_100] << (1.0 * exams.map { |r| r.score }.sum / exams.size)
+          if a.benefits.first && 1 == a.benefits.first.benefit_kind_id
+
+          else
+            line[:pass_points] << exams.map { |r| r.score }.sum
+            line[:pass_points_100] << (1.0 * exams.map { |r| r.score }.sum / exams.size)
+          end
 
           case (a.order.order_signing || a.order.order_editing).to_date
             when Date.new(2014, 7, 31) then line[:enrolled_07_31] += 1
