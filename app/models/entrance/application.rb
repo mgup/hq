@@ -133,6 +133,10 @@ class Entrance::Application < ActiveRecord::Base
     sum
   end
 
+  def avgpoints
+    1.0 * abitpoints / abitexams.size
+  end
+
   def abitexams
     exams = []
     competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).collect{ |x| x.exam }.each do |exam|

@@ -1,0 +1,215 @@
+title = wb.styles.add_style(
+  alignment: { vertical: :center,
+               wrap_text: true },
+  sz: 15, b: true
+)
+header = wb.styles.add_style(
+  alignment: { vertical: :center,
+               wrap_text: true },
+  border: { style: :thin,
+            color: '000000' },
+  b: true
+)
+default = wb.styles.add_style(
+  alignment: { wrap_text: true },
+  border: { style: :thin,
+            color: '000000' }
+)
+
+wb.add_worksheet(name: 'Форма 2',
+                 page_margins: { top: 1, right: 1, bottom: 1, left: 1 },
+                 page_setup: { orientation: :landscape }) do |sheet|
+  sheet.page_setup.fit_to width: 1, height: 1
+  sheet.add_row(['Форма №2. Сведения о среднем балле зачисленных на обучение по программам бакалавриата и специалитета на места за счет федерального бюджета (приказ Минобрнауки России от 30 января 2013 г. № 1424), бюджетов субъектов Российской Федерации, местных бюджетов и по договорам об оказании платных образовательных услуг'],
+                style: title, height: 70)
+  sheet.add_row(['Уровень образования',
+                 'Код и наименование НП(С)',
+                 'Форма обучения',
+                 'Форма финансирования',
+                 'Всего зачисленных на места приема граждан',
+                 'Количество зачисленных абитуриентов в вуз по категориям',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 'Средний балл зачисленных (без учета результата вступительных испытаний, форма которых определяется вузом самостоятельно и дополнительных вступительных испытаний профильной направленности)',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 'Проходной балл по направлению подготовки (специальности), приведенный к 100-бальной шкале'], style: header)
+  sheet.add_row(['',
+                 '',
+                 '',
+                 '',
+                 '',
+                 'по общему конкурсу',
+                 '',
+                 '',
+                 '',
+                 '',
+                 'в пределах квоты целевого приема',
+                 '',
+                 'в пределах квоты приема лиц, имеющих особое право ',
+                 '',
+                 'Победители и призеры олимпиад, члены сборных команд Российской Федерации, участвовавших в международных олимпиадах по общеобразовательным предметам и сформированных в порядке, определяемом Минобрнауки России, чемпионы и призеры Олимпийских игр, Паралимпийских игр и Сурдлимпийских игр, зачисленные без вступительных испытаний',
+                 'по общему конкурсу',
+                 '',
+                 '',
+                 '',
+                 'в пределах квоты целевого приема, имеющих результаты ЕГЭ без учета вступительных испытаний творческой и (или) профессиональной направленности',
+                 'в пределах квоты лиц, имеющих особое право, имеющих результаты ЕГЭ без учета вступительных испытаний творческой и (или) профессиональной направленности'], style: header)
+  sheet.add_row(['',
+                 '',
+                 '',
+                 '',
+                 '',
+                 'всего',
+                 'по общему конкурсу, имеющих результаты ЕГЭ (без победителей и призеров олимпиад, зачисленных по общему конкурсу с учетом 100 баллов ЕГЭ по олимпиадному предмету)',
+                 'победители и призеры олимпиад, зачисленные по общему конкурсу с учетом 100 баллов ЕГЭ по олимпиадному предмету',
+                 'по общему конкурсу, не имеющих результататов ЕГЭ (абитуриенты, сдававшие вступительные испытания, форма которых определяется вузом самостоятельно)',
+                 'по общему конкурсу, имеющих результаты ЕГЭ и сдававших вступительные испытания творческой и (или) профессиональной направленности (без победителей и призеров олимпиад, зачисленных по общему конкурсу с учетом 100 баллов ЕГЭ по олимпиадному предмету)',
+                 'лица, имеющие результаты ЕГЭ',
+                 'лица, не имеющих результатов ЕГЭ',
+                 'имеющие результаты ЕГЭ',
+                 'лица, имеющие особое право, зачисленные вне конкурса, не имеющие результатов ЕГЭ',
+                 '',
+                 'по общему конкурсу, имеющих результаты ЕГЭ без учета вступительных испытаний творческой и (или) профессиональной направленности (без победителей и призеров олимпиад, зачисленных по общему конкурсу с учетом 100 баллов ЕГЭ по олимпиадному предмету)',
+                 'по общему конкурсу, имеющих результаты ЕГЭ и являющихся победителями и призерами олимпиад, зачисленных с учетом 100 баллов ЕГЭ по олимпиадному предмету, без учета вступительных испытаний творческой и (или) профессиональной направленности',
+                 'по общему конкурсу, имеющих результаты ЕГЭ с учетом вступительных испытаний творческой и (или) профессиональной направленности (без победителей и призеров олимпиад, зачисленных по общему конкурсу с учетом 100 баллов ЕГЭ по олимпиадному предмету)',
+                 'по общему конкурсу, имеющих результаты ЕГЭ с учетом вступительных испытаний творческой и (или) профессиональной направленности и являющихся победителями и призерами олимпиад, зачисленных по общему конкурсу с учетом 100 баллов ЕГЭ по олимпиадному предмету',
+                 ''], style: header)
+  sheet.merge_cells('A1:V1')
+  sheet.merge_cells('A2:A4')
+  sheet.merge_cells('B2:B4')
+  sheet.merge_cells('C2:C4')
+  sheet.merge_cells('D2:D4')
+  sheet.merge_cells('E2:E4')
+  sheet.merge_cells('F2:O2')
+  sheet.merge_cells('F3:J3')
+  sheet.merge_cells('K3:L3')
+  sheet.merge_cells('M3:N3')
+  sheet.merge_cells('O3:O4')
+  sheet.merge_cells('P2:U2')
+  sheet.merge_cells('P2:U2')
+  sheet.merge_cells('P3:S3')
+  sheet.merge_cells('T3:T4')
+  sheet.merge_cells('U3:U4')
+  sheet.merge_cells('V2:V4')
+
+  # sheet.merge_cells('E3:E4')
+  # sheet.merge_cells('F3:F4')
+  # sheet.merge_cells('G3:G4')
+  # sheet.merge_cells('H2:K2')
+  # sheet.merge_cells('H3:H4')
+  # sheet.merge_cells('I3:I4')
+  # sheet.merge_cells('J3:J4')
+  # sheet.merge_cells('K3:K4')
+  # sheet.merge_cells('L2:O2')
+  # sheet.merge_cells('L3:L4')
+  # sheet.merge_cells('M3:M4')
+  # sheet.merge_cells('N3:N4')
+  # sheet.merge_cells('O3:O4')
+  # sheet.merge_cells('P2:V2')
+  # sheet.merge_cells('P3:Q3')
+  # sheet.merge_cells('R3:S3')
+  # sheet.merge_cells('T3:V3')
+
+  @data.each do |level_type, rows1|
+    rows1.each do |direction_id, rows2|
+      rows2.each do |fo, rows3|
+        rows3.each do |ff, line|
+          next if line.empty?
+
+          # Всё, кроме аспирантуры.
+          next if line[:direction].new_code.split('.')[1] == '06'
+
+          sheet.add_row([line[:education_type_name],
+                         "#{line[:direction].new_code} #{line[:direction].name}",
+                         line[:fo].name,
+                         line[:ff].name,
+                         line[:enrolled_all],
+                         line[:enrolled_contest],
+                         line[:enrolled_contest_use],
+                         0,
+                         line[:enrolled_contest_university],
+                         line[:enrolled_contest_creative],
+                         line[:enrolled_target_use],
+                         line[:enrolled_target_university],
+                         line[:enrolled_quota_use],
+                         line[:enrolled_quota_university],
+                         line[:enrolled_with_olymp],
+                         line[:contest_use],
+                         0,
+                         line[:contest_use_creative],
+                         0,
+                         line[:target_use],
+                         line[:quota_use],
+                         line[:pass_points_100]], style: default)
+        end
+      end
+    end
+  end
+
+  # @data.each do |line|
+  #   # Всё, кроме аспирантуры.
+  #   next if line[:direction].new_code.split('.')[1] == '06'
+  #
+  #   sheet.add_row([line[:education_type_name],
+  #                  "#{line[:direction].new_code} #{line[:direction].name}",
+  #                  line[:fo].name,
+  #                  line[:ff].name,
+  #                  line[:total_places],
+  #                  line[:quota_places],
+  #                  line[:target_places],
+  #                  line[:all_applications],
+  #                  line[:quota_applications],
+  #                  line[:target_applications],
+  #                  line[:after_applications],
+  #                  line[:enrolled_07_31],
+  #                  line[:enrolled_08_05],
+  #                  line[:enrolled_08_11],
+  #                  line[:enrolled_after],
+  #                  line[:enrolled_contest_without_100],
+  #                  line[:enrolled_contest_with_100],
+  #                  line[:enrolled_with_quota],
+  #                  line[:enrolled_with_target],
+  #                  0,
+  #                  0,
+  #                  line[:enrolled_with_olymp]], style: default)
+  # end
+
+  sheet.column_info[0].width = 12
+  sheet.column_info[1].width = 52
+  sheet.column_info[2].width = 17
+  sheet.column_info[3].width = 17
+  sheet.column_info[4].width = 6
+  sheet.column_info[5].width = 17
+  sheet.column_info[6].width = 17
+  sheet.column_info[7].width = 17
+  sheet.column_info[8].width = 17
+  sheet.column_info[9].width = 17
+  sheet.column_info[10].width = 17
+  sheet.column_info[11].width = 17
+  sheet.column_info[12].width = 17
+  sheet.column_info[13].width = 17
+  sheet.column_info[14].width = 17
+  sheet.column_info[15].width = 17
+  sheet.column_info[16].width = 17
+  sheet.column_info[17].width = 17
+  sheet.column_info[18].width = 17
+  sheet.column_info[19].width = 17
+  sheet.column_info[20].width = 17
+  sheet.column_info[21].width = 17
+
+  # sheet['P4:P4'].each { |c| c.sz = 10 }
+  # sheet['Q4:Q4'].each { |c| c.sz = 8 }
+  # sheet['U4:U4'].each { |c| c.sz = 8 }
+  # sheet['V4:V4'].each { |c| c.sz = 6 }
+end

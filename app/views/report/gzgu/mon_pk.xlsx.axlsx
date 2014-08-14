@@ -3,3 +3,4 @@ wb = xlsx_package.workbook
 
 render partial: 'f1', locals: { wb: wb }
 render partial: 'f1a', locals: { wb: wb }
+render partial: 'f2', locals: { wb: wb }

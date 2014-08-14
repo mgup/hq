@@ -80,7 +80,22 @@ class Report::GzguController < ApplicationController
       line[:enrolled_with_target] = 0
       line[:enrolled_with_olymp] = 0
 
-      line[:pass_points] = [0]
+      line[:pass_points] = []
+      line[:pass_points_100] = []
+
+      line[:enrolled_contest] = 0
+      line[:enrolled_contest_use] = 0
+      line[:enrolled_contest_university] = 0
+      line[:enrolled_contest_creative] = 0
+      line[:enrolled_target_use] = 0
+      line[:enrolled_target_university] = 0
+      line[:enrolled_quota_use] = 0
+      line[:enrolled_quota_university] = 0
+
+      line[:contest_use] = []
+      line[:contest_use_creative] = []
+      line[:target_use] = []
+      line[:quota_use] = []
 
       if 237075 == item.id
         if polygraf_parsed
@@ -102,7 +117,13 @@ class Report::GzguController < ApplicationController
 
         if 8 == a.status_id && a.order_id
           line[:enrolled_all] += 1
-          line[:pass_points] << a.abitpoints
+
+          exams = a.abitexams
+          exams_use = exams.find_all { |r| r.use? }
+          exams_use_creative = exams.find_all { |r| r.use? || r.exam.creative? }
+
+          line[:pass_points] << exams.map { |r| r.score }.sum
+          line[:pass_points_100] << (1.0 * exams.map { |r| r.score }.sum / exams.size)
 
           case (a.order.order_signing || a.order.order_editing).to_date
             when Date.new(2014, 7, 31) then line[:enrolled_07_31] += 1
@@ -113,7 +134,7 @@ class Report::GzguController < ApplicationController
 
           line[:enrolled_contest_without_100] += 1
           if a.benefits.first
-            if [1,3].include?(a.benefits.first.benefit_kind_id)
+            if [1,3,4].include?(a.benefits.first.benefit_kind_id)
               line[:enrolled_contest_without_100] -= 1
             end
 
@@ -124,7 +145,52 @@ class Report::GzguController < ApplicationController
             end
           end
 
-          line[:enrolled_with_target] += 1 unless a.competitive_group_target_item_id.nil?
+          unless a.competitive_group_target_item_id.nil?
+            line[:enrolled_with_target] += 1
+            line[:enrolled_contest_without_100] -= 1
+          end
+
+          if a.competitive_group_target_item_id.nil?
+            if a.benefits.first && [1,4].include?(a.benefits.first.benefit_kind_id)
+              # Зачислен льготник.
+              if 4 == a.benefits.first.benefit_kind_id
+                line[:quota_use] = 1.0 * exams_use.map { |r| r.score } / exams_use.size
+
+                # Квота.
+                if a.only_use?
+                  line[:enrolled_quota_use] += 1
+                else
+                  line[:enrolled_quota_university] += 1
+                end
+              else
+                # line[:enrolled_olymp] += 1
+              end
+            else
+              line[:enrolled_contest] += 1
+              if a.only_use?
+                line[:enrolled_contest_use] += 1
+
+                line[:contest_use] = 1.0 * exams_use.map { |r| r.score } / exams_use.size
+
+                if a.has_creative_exams?
+                  line[:enrolled_contest_creative] += 1
+
+                  line[:contest_use_creative] = 1.0 * exams_use_creative.map { |r| r.score } / exams_use_creative.size
+                end
+              else
+                line[:enrolled_contest_university] += 1
+              end
+            end
+          else
+            # Зачисленный целевик.
+            line[:target_use] = 1.0 * exams_use.map { |r| r.score } / exams_use.size
+
+            if a.only_use?
+              line[:enrolled_target_use] += 1
+            else
+              line[:enrolled_target_university] += 1
+            end
+          end
         end
       end
 
@@ -143,6 +209,11 @@ class Report::GzguController < ApplicationController
       end
 
       line[:pass_points] = line[:pass_points].min
+      line[:pass_points_100] = line[:pass_points_100].min
+      line[:contest_use] = 1.0 * line[:contest_use].sum / line[:contest_use].size
+      line[:contest_use_creative] = 1.0 * line[:contest_use_creative].sum / line[:contest_use_creative].size
+      line[:target_use] = 1.0 * line[:target_use].sum / line[:target_use].size
+      line[:quota_use] = 1.0 * line[:quota_use].sum / line[:quota_use].size
 
       data << line
     end
