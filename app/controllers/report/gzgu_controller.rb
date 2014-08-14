@@ -1,10 +1,26 @@
 class Report::GzguController < ApplicationController
 
   def mon_pk
-    data = []
+    xitems = []
     Entrance::Campaign.find(2014).items.sort_by { |i| "#{i.direction.name} #{i.direction.new_code} #{i.payed? ? '2' : '1'}" }.each do |item|
       # Выкидываем профессиональное обучение, по которому у нас не было набора.
       next if [244350,237078,244351].include?(item.id)
+
+      xitems << item
+
+      if 237075 == item.id
+        # item2 = item.dup
+        # item2.education_type_id = 19
+        xitems << item
+      end
+    end
+    # fail '123'
+
+    data = []
+    polygraf_parsed = false
+    xitems.each do |item|
+      # Выкидываем профессиональное обучение, по которому у нас не было набора.
+      # next if [244350,237078,244351].include?(item.id)
 
       line = {
         # oo: 415,
@@ -25,12 +41,27 @@ class Report::GzguController < ApplicationController
       line[:total_places] = item.send("number_#{field_payment}_#{field_form}")
       line[:total_places] += item.send("number_quota_#{field_form}")
       line[:target_places] = 0
-      item.competitive_group.target_organizations.each do |org|
-        org.items.where(direction_id: item.direction_id, education_level_id: item.education_type_id).each do |i|
-          line[:total_places] += i.send("number_target_#{field_form}")
-          line[:target_places] += i.send("number_target_#{field_form}")
+      if 237075 == item.id
+        if polygraf_parsed
+          # Второй проход.
+
+        else
+          item.competitive_group.target_organizations.each do |org|
+            org.items.where(direction_id: item.direction_id, education_level_id: item.education_type_id).each do |i|
+              line[:total_places] += i.send("number_target_#{field_form}")
+              line[:target_places] += i.send("number_target_#{field_form}")
+            end
+          end
+        end
+      else
+        item.competitive_group.target_organizations.each do |org|
+          org.items.where(direction_id: item.direction_id, education_level_id: item.education_type_id).each do |i|
+            line[:total_places] += i.send("number_target_#{field_form}")
+            line[:target_places] += i.send("number_target_#{field_form}")
+          end
         end
       end
+
       line[:quota_places] = item.number_quota_o
 
       line[:all_applications] = 0
@@ -48,7 +79,19 @@ class Report::GzguController < ApplicationController
       line[:enrolled_with_quota] = 0
       line[:enrolled_with_target] = 0
       line[:enrolled_with_olymp] = 0
-      item.applications.each do |a|
+
+      if 237075 == item.id
+        if polygraf_parsed
+          # Второй проход.
+          appls = item.applications.where('prikladnoy = 1')
+        else
+          appls = item.applications.where('prikladnoy = 0')
+        end
+      else
+        appls = item.applications
+      end
+
+      appls.each do |a|
         if [4,6,8].include?(a.status_id)
           line[:all_applications] += 1
           line[:quota_applications] += 1 if a.benefits.first && 4 == a.benefits.first.benefit_kind_id
@@ -79,6 +122,20 @@ class Report::GzguController < ApplicationController
 
           line[:enrolled_with_target] += 1 unless a.competitive_group_target_item_id.nil?
         end
+      end
+
+      if 237075 == item.id
+        if polygraf_parsed
+          # Второй проход.
+          line[:education_type] = EducationType.find(19).id
+          line[:education_type_name] = EducationType.find(19).name
+          line[:total_places] = 20
+          line[:quota_places] = 0
+        else
+          line[:total_places] = 50
+        end
+
+        polygraf_parsed = true unless polygraf_parsed
       end
 
       data << line
