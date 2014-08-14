@@ -95,7 +95,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     total_places = @item.send("number_#{field_payment}_#{field_form}")
     total_places += @item.send("number_quota_#{field_form}")
     @item.competitive_group.target_organizations.each do |org|
-      org.items.where(direction_id: @item.direction_id, education_level_id: @item.education_level_id).each do |i|
+      org.items.where(direction_id: @item.direction_id, education_type_id: @item.education_type_id).each do |i|
         total_places += i.send("number_target_#{field_form}")
       end
     end
