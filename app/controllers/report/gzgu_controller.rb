@@ -154,7 +154,7 @@ class Report::GzguController < ApplicationController
             if a.benefits.first && [1,4].include?(a.benefits.first.benefit_kind_id)
               # Зачислен льготник.
               if 4 == a.benefits.first.benefit_kind_id
-                line[:quota_use] = 1.0 * exams_use.map { |r| r.score } / exams_use.size
+                line[:quota_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
 
                 # Квота.
                 if a.only_use?
@@ -170,12 +170,12 @@ class Report::GzguController < ApplicationController
               if a.only_use?
                 line[:enrolled_contest_use] += 1
 
-                line[:contest_use] = 1.0 * exams_use.map { |r| r.score } / exams_use.size
+                line[:contest_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
 
                 if a.has_creative_exams?
                   line[:enrolled_contest_creative] += 1
 
-                  line[:contest_use_creative] = 1.0 * exams_use_creative.map { |r| r.score } / exams_use_creative.size
+                  line[:contest_use_creative] << 1.0 * exams_use_creative.map { |r| r.score }.sum / exams_use_creative.size
                 end
               else
                 line[:enrolled_contest_university] += 1
@@ -183,7 +183,7 @@ class Report::GzguController < ApplicationController
             end
           else
             # Зачисленный целевик.
-            line[:target_use] = 1.0 * exams_use.map { |r| r.score } / exams_use.size
+            line[:target_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
 
             if a.only_use?
               line[:enrolled_target_use] += 1
