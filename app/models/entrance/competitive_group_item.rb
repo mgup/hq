@@ -2,7 +2,7 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
 
   belongs_to :competitive_group, class_name: Entrance::CompetitiveGroup
   belongs_to :direction
-  belongs_to :education_level
+  belongs_to :education_type
 
   has_many :applications, class_name: 'Entrance::Application'
   has_many :packed_applications, -> { where(packed: true)}, class_name: 'Entrance::Application'

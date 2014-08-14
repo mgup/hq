@@ -1,30 +1,239 @@
 class Report::GzguController < ApplicationController
+
+  def mon_pk
+    data = []
+    Entrance::Campaign.find(2014).items.sort_by { |i| "#{i.direction.name} #{i.direction.new_code} #{i.payed? ? '2' : '1'}" }.each do |item|
+      # Выкидываем профессиональное обучение, по которому у нас не было набора.
+      next if [244350,237078,244351].include?(item.id)
+
+      line = {
+        # oo: 415,
+        education_type: item.education_type.id,
+        education_type_name: item.education_type.name,
+        direction: item.direction,
+        ff: EducationSource.find(item.payed? ? 15 : 14),
+        fo: EducationForm.find(item.form)
+      }
+
+      field_payment = item.payed? ? 'paid' : 'budget'
+      field_form = case item.form
+                     when 11 then 'o'
+                     when 12 then 'oz'
+                     when 10 then 'z'
+                   end
+
+      line[:total_places] = item.send("number_#{field_payment}_#{field_form}")
+      line[:total_places] += item.send("number_quota_#{field_form}")
+      line[:target_places] = 0
+      item.competitive_group.target_organizations.each do |org|
+        org.items.where(direction_id: item.direction_id, education_level_id: item.education_type_id).each do |i|
+          line[:total_places] += i.send("number_target_#{field_form}")
+          line[:target_places] += i.send("number_target_#{field_form}")
+        end
+      end
+      line[:quota_places] = item.number_quota_o
+
+      line[:all_applications] = 0
+      line[:quota_applications] = 0
+      line[:target_applications] = 0
+      line[:after_applications] = 0
+      line[:enrolled_all] = 0
+      line[:enrolled_07_31] = 0
+      line[:enrolled_08_05] = 0
+      line[:enrolled_08_11] = 0
+      line[:enrolled_after] = 0
+
+      line[:enrolled_contest_without_100] = 0
+      line[:enrolled_contest_with_100] = 0
+      line[:enrolled_with_quota] = 0
+      line[:enrolled_with_target] = 0
+      line[:enrolled_with_olymp] = 0
+      item.applications.each do |a|
+        if [4,6,8].include?(a.status_id)
+          line[:all_applications] += 1
+          line[:quota_applications] += 1 if a.benefits.first && 4 == a.benefits.first.benefit_kind_id
+          line[:target_applications] += 1 unless a.competitive_group_target_item_id.nil?
+        end
+
+        if 8 == a.status_id && a.order_id
+          line[:enrolled_all] += 1
+          case (a.order.order_signing || a.order.order_editing).to_date
+            when Date.new(2014, 7, 31) then line[:enrolled_07_31] += 1
+            when Date.new(2014, 8, 5) then line[:enrolled_08_05] += 1
+            when Date.new(2014, 8, 11) then line[:enrolled_08_11] += 1
+            else line[:enrolled_after] += 1
+          end
+
+          line[:enrolled_contest_without_100] += 1
+          if a.benefits.first
+            if [1,3].include?(a.benefits.first.benefit_kind_id)
+              line[:enrolled_contest_without_100] -= 1
+            end
+
+            case a.benefits.first.benefit_kind_id
+              when 1 then line[:enrolled_with_olymp] += 1
+              when 3 then line[:enrolled_contest_with_100] += 1
+              when 4 then line[:enrolled_with_quota] += 1
+            end
+          end
+
+          line[:enrolled_with_target] += 1 unless a.competitive_group_target_item_id.nil?
+        end
+      end
+
+      data << line
+    end
+
+    # Теперь нужно преобразовать данные и просуммировать цифры по конкурсным
+    # группам СПО и т.д. Делаем такую структуру:
+    # -> Уровень образования
+    #   -> Направление
+    #     -> Форма обучения
+    #       -> Основа обучения
+    @data = {}
+    data.each { |l| @data[l[:education_type]] = {} }
+    data.each { |l| @data[l[:education_type]][l[:direction].id] = {}}
+    data.each { |l| @data[l[:education_type]][l[:direction].id][l[:fo].id] = {}}
+    data.each { |l| @data[l[:education_type]][l[:direction].id][l[:fo].id][l[:ff].id] = {}}
+    data.each do |l|
+      row = @data[l[:education_type]][l[:direction].id][l[:fo].id][l[:ff].id]
+      if row.empty?
+        row = l
+      else
+        row[:total_places] += l[:total_places]
+        row[:target_places] += l[:target_places]
+        row[:quota_places] += l[:quota_places]
+        row[:all_applications] += l[:all_applications]
+        row[:quota_applications] += l[:quota_applications]
+        row[:target_applications] += l[:target_applications]
+        row[:after_applications] += l[:after_applications]
+        row[:enrolled_all] += l[:enrolled_all]
+        row[:enrolled_07_31] += l[:enrolled_07_31]
+        row[:enrolled_08_05] += l[:enrolled_08_05]
+        row[:enrolled_08_11] += l[:enrolled_08_11]
+        row[:enrolled_after] += l[:enrolled_after]
+        row[:enrolled_contest_without_100] += l[:enrolled_contest_without_100]
+        row[:enrolled_contest_with_100] += l[:enrolled_contest_with_100]
+        row[:enrolled_with_quota] += l[:enrolled_with_quota]
+        row[:enrolled_with_target] += l[:enrolled_with_target]
+        row[:enrolled_with_olymp] += l[:enrolled_with_olymp]
+      end
+
+      @data[l[:education_type]][l[:direction].id][l[:fo].id][l[:ff].id] = row
+    end
+  end
+
   # Форма №1. Сведения о приеме граждан на обучение по программам бакалавриата,
   # специалитета и магистратуры на места за счет федерального бюджета (приказ
   # Минобрнауки России от 30 января 2013 г. № 1424), бюджетов субъектов
   # Российской Федерации, местных бюджетов и по договорам об оказании платных
   # образовательных услуг
   def mon_pk_f1_2014_06_23
-    builder = Nokogiri::XML::Builder.new do |xml|
-      xml.root(id: 415) do
-        # Выбираем все бюджетные конкурсные группы обычной приемной кампании.
-        index = 1
-        Entrance::Campaign.find(2014).items.find_all { |i| !i.payed? }.sort_by { |i| "#{i.direction.name} #{i.direction.new_code}" }.each do |item|
-          next if item.direction.new_code.split('.')[1] == '06'
+    @data = []
+    Entrance::Campaign.find(2014).items.find_all { |i| !i.payed? }.sort_by { |i| "#{i.direction.name} #{i.direction.new_code}" }.each do |item|
+      next if item.direction.new_code.split('.')[1] == '06'
+      next if [244350,237078,244351].include?(item.id)
 
-          next if [244350,237078,244351].include?(item.id)
+      line = {
+        oo: 415,
+        spec: item.direction,
+        ff: (item.payed? ? 2 : 1)
+      }
+      line[:fo] = case item.form
+                  when 11 then 1
+                  when 12 then 2
+                  when 10 then 3
+                  end
 
-          xml.lines(id: index) do
-            mon_pk_f1_2014_06_23_line(xml, item)
-          end
+      field_payment = item.payed? ? 'paid' : 'budget'
+      field_form = case item.form
+                     when 11 then 'o'
+                     when 12 then 'oz'
+                     when 10 then 'z'
+                   end
 
-          index += 1
+      line[:total_places] = item.send("number_#{field_payment}_#{field_form}")
+      line[:total_places] += item.send("number_quota_#{field_form}")
+      line[:target_places] = 0
+      item.competitive_group.target_organizations.each do |org|
+        org.items.where(direction_id: item.direction_id, education_level_id: item.education_level_id).each do |i|
+          line[:total_places] += i.send("number_target_#{field_form}")
+          line[:target_places] += i.send("number_target_#{field_form}")
         end
       end
+      line[:quota_places] = item.number_quota_o
+
+      line[:all_applications] = 0
+      line[:quota_applications] = 0
+      line[:target_applications] = 0
+      line[:after_applications] = 0
+      line[:enrolled_07_31] = 0
+      line[:enrolled_08_05] = 0
+      line[:enrolled_08_11] = 0
+      line[:enrolled_after] = 0
+
+      line[:enrolled_without] = 0
+      line[:enrolled_with_100] = 0
+      line[:enrolled_with_quota] = 0
+      line[:enrolled_with_target] = 0
+      line[:enrolled_with_olymp] = 0
+      item.applications.each do |a|
+        if [4,6,8].include?(a.status_id)
+          line[:all_applications] += 1
+          line[:quota_applications] += 1 if a.benefits.first && 4 == a.benefits.first.benefit_kind_id
+          line[:target_applications] += 1 unless a.competitive_group_target_item_id.nil?
+        end
+
+        if 8 == a.status_id && a.order_id
+          case (a.order.order_signing || a.order.order_editing).to_date
+            when Date.new(2014, 7, 31) then line[:enrolled_07_31] += 1
+            when Date.new(2014, 8, 5) then line[:enrolled_08_05] += 1
+            when Date.new(2014, 8, 11) then line[:enrolled_08_11] += 1
+            else line[:enrolled_after] += 1
+          end
+
+          line[:enrolled_without] += 1
+          if a.benefits.first
+            if [1,3].include?(a.benefits.first.benefit_kind_id)
+              line[:enrolled_without] -= 1
+            end
+
+            case a.benefits.first.benefit_kind_id
+              when 1 then line[:enrolled_with_olymp] += 1
+              when 3 then line[:enrolled_with_100] += 1
+              when 4 then line[:enrolled_with_quota] += 1
+            end
+          end
+
+          line[:enrolled_with_target] += 1 unless a.competitive_group_target_item_id.nil?
+        end
+      end
+
+      @data << line
     end
 
+    # builder = Nokogiri::XML::Builder.new do |xml|
+    #   xml.root(id: 415) do
+    #     # Выбираем все бюджетные конкурсные группы обычной приемной кампании.
+    #     index = 1
+    #     Entrance::Campaign.find(2014).items.find_all { |i| !i.payed? }.sort_by { |i| "#{i.direction.name} #{i.direction.new_code}" }.each do |item|
+    #       next if item.direction.new_code.split('.')[1] == '06'
+    #
+    #       next if [244350,237078,244351].include?(item.id)
+    #
+    #       xml.lines(id: index) do
+    #         mon_pk_f1_2014_06_23_line(xml, item)
+    #       end
+    #
+    #       index += 1
+    #     end
+    #   end
+    # end
+
     respond_to do |format|
-      format.xml { render xml: builder.to_xml(save_with: Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION).strip }
+      # format.xml { render xml: builder.to_xml(save_with: Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION).strip }
+      format.xml { render xml: @data.to_xml }
+      format.xlsx
     end
   end
 

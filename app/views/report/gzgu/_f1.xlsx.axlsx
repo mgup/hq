@@ -1,0 +1,190 @@
+title = wb.styles.add_style(
+  alignment: { vertical: :center,
+               wrap_text: true },
+  sz: 15, b: true
+)
+header = wb.styles.add_style(
+  alignment: { vertical: :center,
+               wrap_text: true },
+  border: { style: :thin,
+            color: '000000' },
+  b: true
+)
+default = wb.styles.add_style(
+  alignment: { wrap_text: true },
+  border: { style: :thin,
+            color: '000000' }
+)
+
+wb.add_worksheet(name: 'Форма 1',
+                 page_margins: { top: 1, right: 1, bottom: 1, left: 1 },
+                 page_setup: { orientation: :landscape }) do |sheet|
+  sheet.page_setup.fit_to width: 1, height: 1
+  sheet.add_row(['Форма №1. Сведения о приеме граждан на обучение по программам бакалавриата, специалитета и магистратуры на места за счет федерального бюджета (приказ Минобрнауки России от 30 января 2013 г. № 1424), бюджетов субъектов Российской Федерации, местных бюджетов и по договорам об оказании платных образовательных услуг'],
+                style: title, height: 70)
+  sheet.add_row(['Уровень образования',
+                 'Код и наименование НП(С)',
+                 'Форма обучения',
+                 'Форма финансирования',
+                 'Количество мест приема граждан',
+                 '',
+                 '',
+                 'Количество заявлений, поданных абитуриентами',
+                 '',
+                 '',
+                 '',
+                 'Количество зачисленных абитуриентов по приказам образовательной организации',
+                 '',
+                 '',
+                 '',
+                 'Количество зачисленных абитуриентов по категориям',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 ''], style: header)
+  sheet.add_row(['',
+                 '',
+                 '',
+                 '',
+                 'Всего',
+                 'в т.ч. в пределах квоты приема лиц, имеющих особое право',
+                 'в т.ч. в пределах квоты целевого приема',
+                 'Всего (на 25.07.2014)',
+                 'в т.ч. в пределах квоты приема лиц, имеющих особое право (на 25.07.2014)',
+                 'в т.ч. в пределах квоты целевого приема (на 25.07.2014)',
+                 'Всего после 25.07.2014',
+                 '31.07.2014',
+                 '05.08.2014',
+                 '11.08.2014',
+                 'после 11.08.2014',
+                 'по общему конкурсу',
+                 '',
+                 'в пределах установленных квот',
+                 '',
+                 'без вступительных испытаний',
+                 '',
+                 ''], style: header)
+  sheet.add_row(['',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 '',
+                 'по общему конкурсу (без победителей и призеров олимпиад, зачисленных по общему конкурсу с учетом 100 баллов ЕГЭ по соответствующему предмету)',
+                 'победители и призеры олимпиад школьников, проводимых в порядке, установленном Минобрнауки России, зачисленные по общему конкурсу с учетом 100 баллов ЕГЭ или дополнительного вступительного испытания по соответствующему предмету',
+                 'в пределах квоты приема лиц, имеющих особое право',
+                 'в пределах квоты целевого приема',
+                 'чемпионы и призеры Олимпийских игр, Паралимпийских игр и Сурдлимпийских игр и т.п.',
+                 'победители и призеры заключительного этапа всероссийской олимпиады школьников, члены сборных команд Российской Федерации, участвовавших в международных олимпиадах по общеобразовательным предметам и сформированных в порядке, определяемом Минобрнауки России',
+                 'победители и призеры олимпиад школьников, проводимых в порядке, установленном Минобрнауки России (в случае, если по решению образовательной организации в зависимости от уровня указанной олимпиады победителям и призерам соответствующей олимпиады школьников предоставлено право быть зачисленным в образовательную организацию без вступительных испытаний на направления подготовки (специальности), соответствующие профилю олимпиады)'], style: header)
+  sheet.merge_cells('A1:V1')
+  sheet.merge_cells('A2:A4')
+  sheet.merge_cells('B2:B4')
+  sheet.merge_cells('C2:C4')
+  sheet.merge_cells('D2:D4')
+  sheet.merge_cells('E2:G2')
+  sheet.merge_cells('E3:E4')
+  sheet.merge_cells('F3:F4')
+  sheet.merge_cells('G3:G4')
+  sheet.merge_cells('H2:K2')
+  sheet.merge_cells('H3:H4')
+  sheet.merge_cells('I3:I4')
+  sheet.merge_cells('J3:J4')
+  sheet.merge_cells('K3:K4')
+  sheet.merge_cells('L2:O2')
+  sheet.merge_cells('L3:L4')
+  sheet.merge_cells('M3:M4')
+  sheet.merge_cells('N3:N4')
+  sheet.merge_cells('O3:O4')
+  sheet.merge_cells('P2:V2')
+  sheet.merge_cells('P3:Q3')
+  sheet.merge_cells('R3:S3')
+  sheet.merge_cells('T3:V3')
+
+  @data.each do |level_type, rows1|
+    rows1.each do |direction_id, rows2|
+      rows2.each do |fo, rows3|
+        rows3.each do |ff, line|
+          next if line.empty?
+
+          # Всё, кроме аспирантуры.
+          next if line[:direction].new_code.split('.')[1] == '06'
+
+          sheet.add_row([line[:education_type_name],
+                         "#{line[:direction].new_code} #{line[:direction].name}",
+                         line[:fo].name,
+                         line[:ff].name,
+                         line[:total_places],
+                         line[:quota_places],
+                         line[:target_places],
+                         line[:all_applications],
+                         line[:quota_applications],
+                         line[:target_applications],
+                         line[:after_applications],
+                         line[:enrolled_07_31],
+                         line[:enrolled_08_05],
+                         line[:enrolled_08_11],
+                         line[:enrolled_after],
+                         line[:enrolled_contest_without_100],
+                         line[:enrolled_contest_with_100],
+                         line[:enrolled_with_quota],
+                         line[:enrolled_with_target],
+                         0,
+                         0,
+                         line[:enrolled_with_olymp]], style: default)
+        end
+      end
+    end
+  end
+
+  # @data.each do |line|
+  #   # Всё, кроме аспирантуры.
+  #   next if line[:direction].new_code.split('.')[1] == '06'
+  #
+  #   sheet.add_row([line[:education_type_name],
+  #                  "#{line[:direction].new_code} #{line[:direction].name}",
+  #                  line[:fo].name,
+  #                  line[:ff].name,
+  #                  line[:total_places],
+  #                  line[:quota_places],
+  #                  line[:target_places],
+  #                  line[:all_applications],
+  #                  line[:quota_applications],
+  #                  line[:target_applications],
+  #                  line[:after_applications],
+  #                  line[:enrolled_07_31],
+  #                  line[:enrolled_08_05],
+  #                  line[:enrolled_08_11],
+  #                  line[:enrolled_after],
+  #                  line[:enrolled_contest_without_100],
+  #                  line[:enrolled_contest_with_100],
+  #                  line[:enrolled_with_quota],
+  #                  line[:enrolled_with_target],
+  #                  0,
+  #                  0,
+  #                  line[:enrolled_with_olymp]], style: default)
+  # end
+
+  sheet.column_info[0].width = 12
+  sheet.column_info[1].width = 52
+  sheet.column_info[2].width = 17
+  sheet.column_info[3].width = 17
+  sheet.column_info[4].width = 6
+  sheet.column_info[7].width = 11
+
+  sheet['P4:P4'].each { |c| c.sz = 10 }
+  sheet['Q4:Q4'].each { |c| c.sz = 8 }
+  sheet['U4:U4'].each { |c| c.sz = 8 }
+  sheet['V4:V4'].each { |c| c.sz = 6 }
+end

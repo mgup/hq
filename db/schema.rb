@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140812115354) do
+ActiveRecord::Schema.define(version: 20140813133848) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -336,7 +336,7 @@ ActiveRecord::Schema.define(version: 20140812115354) do
 
   create_table "competitive_group_items", force: true do |t|
     t.integer  "competitive_group_id", null: false
-    t.integer  "education_level_id",   null: false
+    t.integer  "education_type_id",    null: false
     t.integer  "direction_id",         null: false
     t.integer  "number_budget_o"
     t.integer  "number_budget_oz"

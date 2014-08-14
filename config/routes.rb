@@ -352,6 +352,7 @@ HQ::Application.routes.draw do
   end
 
   namespace :report do
+    get 'gzgu/mon_pk',  to: 'gzgu#mon_pk'
     get 'gzgu/mon_pk_f1_2014_06_23',  to: 'gzgu#mon_pk_f1_2014_06_23'
     get 'gzgu/mon_pk_f1a_2014_06_23', to: 'gzgu#mon_pk_f1a_2014_06_23'
     get 'gzgu/mon_pk_f2_2014_06_23',  to: 'gzgu#mon_pk_f2_2014_06_23'
