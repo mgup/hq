@@ -212,29 +212,13 @@ class Report::GzguController < ApplicationController
         polygraf_parsed = true unless polygraf_parsed
       end
 
-      line[:pass_points] = line[:pass_points].min
-      line[:pass_points_100] = line[:pass_points_100].min
-      if line[:contest_use].empty?
-        line[:contest_use] = 0
-      else
-        line[:contest_use] = 1.0 * line[:contest_use].sum / line[:contest_use].size
-      end
-      if line[:contest_use_creative].empty?
-        line[:contest_use_creative] = 0
-      else
-        line[:contest_use_creative] = 1.0 * line[:contest_use_creative].sum / line[:contest_use_creative].size
-      end
-      if line[:target_use].empty?
-        line[:target_use] = 0
-      else
-        line[:target_use] = 1.0 * line[:target_use].sum / line[:target_use].size
-      end
-      if line[:quota_use].empty?
-        line[:quota_use] = 0
-      else
-        line[:quota_use] = 1.0 * line[:quota_use].sum / line[:quota_use].size
-      end
-
+      # if '42.03.03' == line[:direction].new_code
+      #   if 11 == line[:fo].id
+      #     if 14 == line[:ff].id
+      #       fail '123'
+      #     end
+      #   end
+      # end
       data << line
     end
 
@@ -271,9 +255,44 @@ class Report::GzguController < ApplicationController
         row[:enrolled_with_quota] += l[:enrolled_with_quota]
         row[:enrolled_with_target] += l[:enrolled_with_target]
         row[:enrolled_with_olymp] += l[:enrolled_with_olymp]
+        row[:pass_points] += l[:pass_points]
+        row[:pass_points_100] += l[:pass_points_100]
+        row[:contest_use] += l[:contest_use]
+        row[:contest_use_creative] += l[:contest_use_creative]
+        row[:target_use] += l[:target_use]
+        row[:quota_use] += l[:quota_use]
       end
 
       @data[l[:education_type]][l[:direction].id][l[:fo].id][l[:ff].id] = row
+    end
+
+    @data.each do |l|
+      line = @data[l[:education_type]][l[:direction].id][l[:fo].id][l[:ff].id]
+
+      line[:pass_points] = line[:pass_points].min
+      line[:pass_points_100] = line[:pass_points_100].min
+      if line[:contest_use].empty?
+        line[:contest_use] = 0
+      else
+        line[:contest_use] = 1.0 * line[:contest_use].sum / line[:contest_use].size
+      end
+      if line[:contest_use_creative].empty?
+        line[:contest_use_creative] = 0
+      else
+        line[:contest_use_creative] = 1.0 * line[:contest_use_creative].sum / line[:contest_use_creative].size
+      end
+      if line[:target_use].empty?
+        line[:target_use] = 0
+      else
+        line[:target_use] = 1.0 * line[:target_use].sum / line[:target_use].size
+      end
+      if line[:quota_use].empty?
+        line[:quota_use] = 0
+      else
+        line[:quota_use] = 1.0 * line[:quota_use].sum / line[:quota_use].size
+      end
+
+      @data[l[:education_type]][l[:direction].id][l[:fo].id][l[:ff].id] = line
     end
   end
 
