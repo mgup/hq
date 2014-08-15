@@ -315,7 +315,18 @@ class Report::GzguController < ApplicationController
 
                 xml.lines(id: index) do
                   xml.oo 415
-                  xml.spec line[:direction].gzgu
+
+
+                  if '29.03.03' == line[:direction].new_code
+                    if 19 == line[:education_type]
+                      xml.spec 742
+                    else
+                      xml.spec 92
+                    end
+                  else
+                    xml.spec line[:direction].gzgu
+                  end
+
                   xml.fo case line[:fo].id
                            when 11 then 1
                            when 12 then 2
