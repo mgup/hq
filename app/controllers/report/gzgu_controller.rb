@@ -120,7 +120,7 @@ class Report::GzguController < ApplicationController
 
           exams = a.abitexams
           exams_use = exams.find_all { |r| r.use? }
-          exams_use_creative = exams.find_all { |r| r.use? || r.exam.creative? }
+          exams_use_creative = exams.find_all { |r| r.use? || r.exam.creative }
 
           if a.benefits.first && 1 == a.benefits.first.benefit_kind_id
 
