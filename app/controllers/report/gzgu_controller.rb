@@ -216,13 +216,13 @@ class Report::GzguController < ApplicationController
         polygraf_parsed = true unless polygraf_parsed
       end
 
-      if '42.03.03' == line[:direction].new_code
-        if 11 == line[:fo].id
-          if 14 == line[:ff].id
-            fail '123'
-          end
-        end
-      end
+      # if '42.03.03' == line[:direction].new_code
+      #   if 11 == line[:fo].id
+      #     if 14 == line[:ff].id
+      #       fail '123'
+      #     end
+      #   end
+      # end
       data << line
     end
 
