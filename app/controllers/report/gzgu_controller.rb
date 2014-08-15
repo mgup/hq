@@ -158,7 +158,9 @@ class Report::GzguController < ApplicationController
             if a.benefits.first && [1,4].include?(a.benefits.first.benefit_kind_id)
               # Зачислен льготник.
               if 4 == a.benefits.first.benefit_kind_id
-                line[:quota_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
+                if exams_use.size > 0
+                  line[:quota_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
+                end
 
                 # Квота.
                 if a.only_use?
@@ -187,7 +189,9 @@ class Report::GzguController < ApplicationController
             end
           else
             # Зачисленный целевик.
-            line[:target_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
+            if exams_use.size > 0
+              line[:target_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
+            end
 
             if a.only_use?
               line[:enrolled_target_use] += 1
@@ -212,13 +216,13 @@ class Report::GzguController < ApplicationController
         polygraf_parsed = true unless polygraf_parsed
       end
 
-      # if '42.03.03' == line[:direction].new_code
-      #   if 11 == line[:fo].id
-      #     if 14 == line[:ff].id
-      #       fail '123'
-      #     end
-      #   end
-      # end
+      if '42.03.03' == line[:direction].new_code
+        if 11 == line[:fo].id
+          if 14 == line[:ff].id
+            fail '123'
+          end
+        end
+      end
       data << line
     end
 
