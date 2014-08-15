@@ -145,14 +145,9 @@ class Entrance::Application < ActiveRecord::Base
     exams
   end
 
-  # Только ЕГЭ.
+  # Имеющие ЕГЭ (функция названа неверное, потом нужно поправить)
   def only_use?
-    only_use = true
-    abitexams.each do |result|
-      only_use &= result.use? unless result.exam.creative
-    end
-
-    only_use
+    abitexams.find_all { |r| r.use? }.size > 0
   end
 
   def has_creative_exams?
