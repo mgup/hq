@@ -145,13 +145,13 @@ wb.add_worksheet(name: 'Форма 2',
                          line[:enrolled_quota_use],
                          line[:enrolled_quota_university],
                          line[:enrolled_with_olymp],
-                         line[:contest_use],
+                         line[:contest_use].empty? ? 0 : 1.0 * line[:contest_use].sum / line[:contest_use].size,
                          0,
-                         line[:contest_use_creative],
+                         line[:contest_use_creative].empty? ? 0 : 1.0 * line[:contest_use_creative].sum / line[:contest_use_creative].size,
                          0,
-                         line[:target_use],
-                         line[:quota_use],
-                         line[:pass_points_100]], style: default)
+                         line[:target_use].empty? ? 0 : 1.0 * line[:target_use].sum / line[:target_use].size,
+                         line[:quota_use].empty? ? 0 : 1.0 * line[:quota_use].sum / line[:quota_use].size,
+                         line[:pass_points_100].min], style: default)
         end
       end
     end

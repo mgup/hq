@@ -54,7 +54,7 @@ wb.add_worksheet(name: 'Форма 1а',
                          0,
                          line[:enrolled_all],
                          0,
-                         line[:pass_points]], style: default)
+                         line[:pass_points].min], style: default)
         end
       end
     end
