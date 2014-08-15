@@ -149,14 +149,14 @@ class Entrance::Application < ActiveRecord::Base
   def only_use?
     only_use = true
     abitexams.each do |result|
-      only_use &= result.use? unless result.exam.creative?
+      only_use &= result.use? unless result.exam.creative
     end
 
     only_use
   end
 
   def has_creative_exams?
-    abitexams.find_all { |r| r.exam.creative? }.any?
+    abitexams.find_all { |r| r.exam.creative }.size > 0
   end
 
   def pass_min_score?

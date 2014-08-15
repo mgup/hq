@@ -214,10 +214,26 @@ class Report::GzguController < ApplicationController
 
       line[:pass_points] = line[:pass_points].min
       line[:pass_points_100] = line[:pass_points_100].min
-      line[:contest_use] = 1.0 * line[:contest_use].sum / line[:contest_use].size
-      line[:contest_use_creative] = 1.0 * line[:contest_use_creative].sum / line[:contest_use_creative].size
-      line[:target_use] = 1.0 * line[:target_use].sum / line[:target_use].size
-      line[:quota_use] = 1.0 * line[:quota_use].sum / line[:quota_use].size
+      if line[:contest_use].empty?
+        line[:contest_use] = 0
+      else
+        line[:contest_use] = 1.0 * line[:contest_use].sum / line[:contest_use].size
+      end
+      if line[:contest_use_creative].empty?
+        line[:contest_use_creative] = 0
+      else
+        line[:contest_use_creative] = 1.0 * line[:contest_use_creative].sum / line[:contest_use_creative].size
+      end
+      if line[:target_use].empty?
+        line[:target_use] = 0
+      else
+        line[:target_use] = 1.0 * line[:target_use].sum / line[:target_use].size
+      end
+      if line[:quota_use].empty?
+        line[:quota_use] = 0
+      else
+        line[:quota_use] = 1.0 * line[:quota_use].sum / line[:quota_use].size
+      end
 
       data << line
     end
