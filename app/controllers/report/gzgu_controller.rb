@@ -174,14 +174,12 @@ class Report::GzguController < ApplicationController
             else
               line[:enrolled_contest] += 1
               if a.only_use?
-                line[:enrolled_contest_use] += 1
-
-                line[:contest_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
-
                 if a.has_creative_exams?
                   line[:enrolled_contest_creative] += 1
-
                   line[:contest_use_creative] << 1.0 * exams_use_creative.map { |r| r.score }.sum / exams_use_creative.size
+                else
+                  line[:enrolled_contest_use] += 1
+                  line[:contest_use] << 1.0 * exams_use.map { |r| r.score }.sum / exams_use.size
                 end
               else
                 line[:enrolled_contest_university] += 1
