@@ -298,6 +298,62 @@ class Report::GzguController < ApplicationController
     #
     #   @data[l[:education_type]][l[:direction].id][l[:fo].id][l[:ff].id] = line
     # end
+
+    builder_f1 = Nokogiri::XML::Builder.new do |xml|
+      xml.root(id: 415) do
+        # Выбираем все бюджетные конкурсные группы обычной приемной кампании.
+        index = 1
+
+        @data.each do |level_type, rows1|
+          rows1.each do |direction_id, rows2|
+            rows2.each do |fo, rows3|
+              rows3.each do |ff, line|
+                next if line.empty?
+
+                # Всё, кроме аспирантуры.
+                next if line[:direction].new_code.split('.')[1] == '06'
+
+                xml.lines(id: index) do
+                  xml.oo 415
+                  xml.spec line[:direction].gzgu
+                  xml.fo case line[:fo].id
+                           when 11 then 1
+                           when 12 then 2
+                           when 10 then 3
+                         end
+                  xml.ff (14 == line[:ff].id ? 1 : 2)
+                  xml.p1_1 line[:total_places]
+                  xml.p1_2 line[:quota_places]
+                  xml.p1_3 line[:target_places]
+                  xml.p2_1 line[:all_applications]
+                  xml.p2_2 line[:quota_applications]
+                  xml.p2_3 line[:target_applications]
+                  xml.p2_4 line[:after_applications]
+                  xml.p3_1 line[:enrolled_07_31]
+                  xml.p3_2 line[:enrolled_08_05]
+                  xml.p3_3 line[:enrolled_08_11]
+                  xml.p3_4 0
+                  xml.p4_2 line[:enrolled_contest_without_100]
+                  xml.p4_3 line[:enrolled_contest_with_100]
+                  xml.p4_4 line[:enrolled_with_quota]
+                  xml.p4_5 line[:enrolled_with_target]
+                  xml.p4_6 0
+                  xml.p4_7 0
+                  xml.p4_8 line[:enrolled_with_olymp]
+                end
+
+                index += 1
+              end
+            end
+          end
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.xlsx
+      format.xml { render xml: builder_f1.to_xml(save_with: Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION).strip }
+    end
   end
 
   # Форма №1. Сведения о приеме граждан на обучение по программам бакалавриата,
