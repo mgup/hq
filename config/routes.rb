@@ -277,6 +277,7 @@ HQ::Application.routes.draw do
 
   resources :education_prices, only: [:index]
 
+  resources :directions, only: :index
   namespace :entrance do
     resources :items do
       get 'protocols', on: :collection, defaults: { format: :pdf }
