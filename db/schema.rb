@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140814094523) do
+ActiveRecord::Schema.define(version: 20140818104420) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -112,6 +112,14 @@ ActiveRecord::Schema.define(version: 20140814094523) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "allow_education_documents", force: true do |t|
+    t.boolean "original",            default: true
+    t.string  "number"
+    t.date    "date"
+    t.string  "organization"
+    t.integer "entrance_benefit_id"
   end
 
   create_table "appointments", force: true do |t|
@@ -412,6 +420,17 @@ ActiveRecord::Schema.define(version: 20140814094523) do
 
   add_index "curator_task_user", ["curator_task_id"], name: "index_curator_task_user_on_curator_task_id", using: :btree
   add_index "curator_task_user", ["user_id"], name: "index_curator_task_user_on_user_id", using: :btree
+
+  create_table "custom_documents", force: true do |t|
+    t.boolean "original",            default: true
+    t.string  "series"
+    t.string  "number"
+    t.date    "date"
+    t.string  "organization"
+    t.text    "additional_info"
+    t.string  "type_name"
+    t.integer "entrance_benefit_id"
+  end
 
   create_table "department", primary_key: "department_id", force: true do |t|
     t.integer "department_oldid"
@@ -1473,6 +1492,17 @@ ActiveRecord::Schema.define(version: 20140814094523) do
   add_index "mark_final", ["mark_final_exam"], name: "mark_final_exam", using: :btree
   add_index "mark_final", ["mark_final_student", "mark_final_exam"], name: "mark_final_unique", unique: true, using: :btree
 
+  create_table "medical_disability_documents", force: true do |t|
+    t.boolean "original",            default: true
+    t.string  "series"
+    t.string  "number"
+    t.date    "date"
+    t.string  "organization"
+    t.integer "disability_type_id"
+    t.integer "kind"
+    t.integer "entrance_benefit_id"
+  end
+
   create_table "min_ege_marks", force: true do |t|
     t.integer  "common_benefit_item_id", null: false
     t.integer  "use_subject_id",         null: false
@@ -1485,6 +1515,30 @@ ActiveRecord::Schema.define(version: 20140814094523) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "olympic_documents", force: true do |t|
+    t.boolean "original",            default: true
+    t.string  "series"
+    t.string  "number"
+    t.date    "date"
+    t.integer "diploma_type_id"
+    t.integer "olympic_id"
+    t.integer "level_id"
+    t.integer "entrance_benefit_id"
+  end
+
+  create_table "olympic_total_document_subjects", force: true do |t|
+    t.integer "subject_id"
+    t.integer "olympic_total_document_id"
+  end
+
+  create_table "olympic_total_documents", force: true do |t|
+    t.boolean "original",            default: true
+    t.string  "series"
+    t.string  "number"
+    t.integer "diploma_type_id"
+    t.integer "entrance_benefit_id"
   end
 
   create_table "optional", primary_key: "optional_id", force: true do |t|
