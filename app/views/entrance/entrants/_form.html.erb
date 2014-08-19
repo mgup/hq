@@ -43,7 +43,7 @@
       <%= f.label :birthday, class: 'col-sm-2 control-label' %>
       <div class="col-sm-3">
         <%= f.text_field :birthday, class: 'form-control datepicker',
-                         value: @entrant.birthday ? l(@entrant.birthday) : '' %>
+                         value: @entrant.birthday ? l(@entrant.birthday) : '', required: true %>
       </div>
 
       <%= f.label :birth_place, class: 'col-sm-3 control-label' %>
@@ -406,25 +406,27 @@
 <% end %>
 
 <script>
-    var key = $('.required_exam_id:visible').length > 0;
+ // отключаем проверку на "хотя бы одно вступительное испытание"
+//    var key = $('.required_exam_id:visible').length > 0;
+
     $('form').validate({
         messages: {
             "entrance_entrant[phone]": {pattern: 'Неверный формат. Введите телефон в формате: +79001234567, несколько телефонов разделите запятой'}
         }
     });
-    $(document).on('nested:fieldAdded:exam_results', function(){
-        key = true;
-        $('#required_exam_message').hide();
-    });
-    $(document).on('nested:fieldRemoved:exam_results', function(){
-        key = $('.required_exam_id:visible').length > 0;
-        if ($('.required_exam_id:visible').length > 0) $('#required_exam_message').hide();
-        else $('#required_exam_message').show();
-    });
-    $('form').submit(function(e){
-        if (!key ){
-            e.preventDefault();
-            $('#required_exam_message').show();
-        } else $('#required_exam_message').hide();
-    })
+//    $(document).on('nested:fieldAdded:exam_results', function(){
+//        key = true;
+//        $('#required_exam_message').hide();
+//    });
+//    $(document).on('nested:fieldRemoved:exam_results', function(){
+//        key = $('.required_exam_id:visible').length > 0;
+//        if ($('.required_exam_id:visible').length > 0) $('#required_exam_message').hide();
+//        else $('#required_exam_message').show();
+//    });
+//    $('form').submit(function(e){
+//        if (!key ){
+//            e.preventDefault();
+//            $('#required_exam_message').show();
+//        } else $('#required_exam_message').hide();
+//    })
 </script>
