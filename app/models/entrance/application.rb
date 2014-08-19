@@ -157,7 +157,13 @@ class Entrance::Application < ActiveRecord::Base
   def pass_min_score?
     passed = true
     competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).each do |test_item|
-      passed &&= entrant.exam_results.by_exam(test_item.exam.id).last.score >= test_item.min_score
+      if entrant.exam_results.by_exam(test_item.exam.id).last.nil?
+        passed = false
+      elsif entrant.exam_results.by_exam(test_item.exam.id).last.score.nil?
+        passed = false
+      else
+        passed &&= entrant.exam_results.by_exam(test_item.exam.id).last.score >= test_item.min_score
+      end
     end
     passed
   end
