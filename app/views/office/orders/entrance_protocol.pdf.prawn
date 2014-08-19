@@ -112,7 +112,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     prev_score = 0
 
     i = 0
-    a_contest.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each_with_index do |ap, index|
+    a_contest.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each do |ap |
       # if to_enroll > 0
         # Есть места — зачисляем при наличии оригинала
       if @item.payed?

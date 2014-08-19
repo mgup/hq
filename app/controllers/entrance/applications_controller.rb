@@ -23,47 +23,67 @@ class Entrance::ApplicationsController < ApplicationController
     @applications.each do |a|
       @has_original = true if a.original?
     end
-
-    # Находим все подходящие конкурсные группы.
-    entrant_exams = @entrant.exam_results.map { |r| r.exam_id }.sort
-    possible_exams = []
-    (1..entrant_exams.size).each do |n|
-      entrant_exams.combination(n).to_a.each do |combination|
-        possible_exams << combination.sort
-      end
-    end
-    possible_exams.uniq!
-
     @new_applications = []
 
-    @campaign.competitive_groups.each do |g|
-      needed_exams = g.test_items
-      possible_exams.each do |combination|
-        if combination == needed_exams.map { |i| i.exam_id }.sort
-          key = true
-          needed_exams.each do |exam|
-            key &&= (@entrant.exam_results.by_exam(exam.exam_id).first.score ? exam.min_score <= @entrant.exam_results.by_exam(exam.exam_id).first.score : true)
+    if @campaign.id == 32014
+      @campaign.competitive_groups.each do |g|
+        @entrant.applications.each do |a|
+          # Только для неотозванных заявлений.
+          if a.called_back?
+            next
+          else
+            found = true if a.competitive_group_item_id == g.items.first.id
           end
-          found = !key
-          @entrant.applications.each do |a|
-            # Только для неотозванных заявлений.
-            if a.called_back?
-              # Проверяем, что у человека ещё нет заявлений в этой конкурсной группе.
-              next
-            else
-              found = true if a.competitive_group_item_id == g.items.first.id
-            end
-          end
-
-          unless found
-            # Эта конкурсная группа подходит.
-            @new_applications << @entrant.applications.build(
+        end
+        unless found
+          # Эта конкурсная группа подходит.
+          @new_applications << @entrant.applications.build(
               competitive_group_item_id: g.items.first.id,
               campaign_id: @campaign.id
-            )
+          )
+        end
+      end
+    else
+      # Находим все подходящие конкурсные группы.
+      entrant_exams = @entrant.exam_results.map { |r| r.exam_id }.sort
+      possible_exams = []
+      (1..entrant_exams.size).each do |n|
+        entrant_exams.combination(n).to_a.each do |combination|
+          possible_exams << combination.sort
+        end
+      end
+      possible_exams.uniq!
+
+
+      @campaign.competitive_groups.each do |g|
+        needed_exams = g.test_items
+        possible_exams.each do |combination|
+          if combination == needed_exams.map { |i| i.exam_id }.sort
+            key = true
+            needed_exams.each do |exam|
+              key &&= (@entrant.exam_results.by_exam(exam.exam_id).first.score ? exam.min_score <= @entrant.exam_results.by_exam(exam.exam_id).first.score : true)
+            end
+            found = !key
+            @entrant.applications.each do |a|
+              # Только для неотозванных заявлений.
+              if a.called_back?
+                # Проверяем, что у человека ещё нет заявлений в этой конкурсной группе.
+                next
+              else
+                found = true if a.competitive_group_item_id == g.items.first.id
+              end
+            end
+
+            unless found
+              # Эта конкурсная группа подходит.
+              @new_applications << @entrant.applications.build(
+                competitive_group_item_id: g.items.first.id,
+                campaign_id: @campaign.id
+              )
+            end
+          else
+            next
           end
-        else
-          next
         end
       end
     end
