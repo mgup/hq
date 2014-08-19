@@ -27,6 +27,7 @@ class Entrance::ApplicationsController < ApplicationController
 
     if @campaign.id == 32014
       @campaign.competitive_groups.each do |g|
+        found = false
         @entrant.applications.each do |a|
           # Только для неотозванных заявлений.
           if a.called_back?
