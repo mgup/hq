@@ -72,29 +72,38 @@ class Group < ActiveRecord::Base
 
   def support
     case form
-    when 101 then 'очной'
-    when 102 then 'очно-заочной'
-    when 103 then 'заочной'
-    when 105 then 'дистанционной'
+    when 'fulltime' then 'очной'
+    when 'semitime' then 'очно-заочной'
+    when 'postal' then 'заочной'
+    when 'distance' then 'дистанционной'
     else fail 'Неизвестная форма обучения.'
     end
   end
 
   def this_form
     case form
-    when 101 then 'очная'
-    when 102 then 'очно-заочная'
-    when 103 then 'заочная'
-    when 105 then 'дистанционная'
-    else fail 'Неизвестная форма обучения.'
+      when 'fulltime' then 'очная'
+      when 'semitime' then 'очно-заочная'
+      when 'postal' then 'заочная'
+      when 'distance' then 'дистанционная'
+      else fail 'Неизвестная форма обучения.'
     end
   end
 
   def library_form
     case form
-    when 101 then 1
-    when 102 then 2
-    else 3
+      when 'fulltime' then 1
+      when 'semitime' then 2
+      else 3
+    end
+  end
+
+  def number_form
+    case form
+      when 'fulltime' then 101
+      when 'semitime' then 102
+      when 'postal' then 103
+      when 'distance' then 105
     end
   end
 
@@ -153,6 +162,7 @@ class Group < ActiveRecord::Base
         xml.id_ id
         xml.name name
         xml.form form
+        xml.course course
       end
     }.doc
   end

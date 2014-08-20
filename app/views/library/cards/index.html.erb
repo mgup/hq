@@ -67,13 +67,13 @@
                                options_from_collection_for_select(
                                        @student ? Group.filter(course: params[:course],
                                                              speciality: params[:speciality],
-                                                             form: params[:form]) : Group.all,
+                                                             form: @student.group.number_form) : Group.all,
                                        :id, :name, params[:group]
                                ), prompt: 'все группы', class: 'ajax-group form-control' %>
             </div>
             <div class='col col-sm-6'>
                 <%= select_tag 'student',
-                               (@student ? options_from_collection_for_select(@student.group.students, :id, :full_name, params[:student]) : nil),
+                               (@student ? options_from_collection_for_select(@student.group.students.valid_student, :id, :full_name, params[:student]) : nil),
                                 prompt: 'все студенты', class: 'ajax-student form-control' %>
             </div>
         </div>
