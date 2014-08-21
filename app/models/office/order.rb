@@ -110,7 +110,7 @@ class Office::Order < ActiveRecord::Base
         xml.text_
         xml.signature_
         # xml.protocol_
-        xml.act_
+        xml.act_ if template == ENTRANCE_TEMPLATE
       end
     end
 

@@ -18,6 +18,18 @@
         <xsl:value-of select="/order/metas/meta/object[text() = $student]/../pattern[text() = $pattern]/../value" />
     </xsl:template>
 
+    <xsl:template match="meta_date_student">
+        <xsl:variable name="pattern">
+            <xsl:value-of select="@pattern" />
+        </xsl:variable>
+
+        <xsl:variable name="student">
+            <xsl:value-of select="@student" />
+        </xsl:variable>
+
+        <xsl:value-of select="/order/metas/meta/object[text() = $student]/../pattern[text() = $pattern]/../value" />
+    </xsl:template>
+
     <xsl:template match="meta_text_order">
         <xsl:variable name="pattern">
             <xsl:value-of select="@pattern" />
