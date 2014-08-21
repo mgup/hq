@@ -198,7 +198,17 @@
   </xsl:template>
 
   <xsl:template match="iList">
+    <ol style="margin-left: 8em; padding-left: 2em;">
+       <xsl:apply-templates />
+    </ol>
+  </xsl:template>
+
+  <xsl:template match="iListInner">
     <li style="text-indent: 0; margin-bottom: 0.5em;"><xsl:apply-templates /></li>
+  </xsl:template>
+
+  <xsl:template match="pListInner">
+      <li style="text-indent: 0; margin-bottom: 0.5em;"><xsl:apply-templates /></li>
   </xsl:template>
 
   <xsl:template match="table">

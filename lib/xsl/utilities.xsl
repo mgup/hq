@@ -116,6 +116,16 @@
           <xsl:when test="'pp' = $form">заочной</xsl:when>
         </xsl:choose>
       </xsl:when>
+      <xsl:when test="'distance' = $id">
+        <xsl:choose>
+          <xsl:when test="'ip' = $form">заочная</xsl:when>
+          <xsl:when test="'rp' = $form">заочной</xsl:when>
+          <xsl:when test="'dp' = $form">заочной</xsl:when>
+          <xsl:when test="'vp' = $form">заочную</xsl:when>
+          <xsl:when test="'tp' = $form">заочной</xsl:when>
+          <xsl:when test="'pp' = $form">заочной</xsl:when>
+        </xsl:choose>
+      </xsl:when>
     </xsl:choose>
   </xsl:template>
 

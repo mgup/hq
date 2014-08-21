@@ -84,6 +84,54 @@ $ ->
 
     $('#meta' + uid).val($this.attr('data-meta-text'))
 
+
+#Создание мета-блока с датой, связанной со студентом.
+
+@initOrderMetaDateStudent = (uid) ->
+  $this = $('#' + uid)
+  required = ('true' == $this.attr('data-required'))
+
+  text = $this.attr('data-meta-text')
+  isEmpty = ('' == text)
+  if isEmpty
+    text = $this.attr('data-meta-pattern')
+  $this.html(text)
+
+  div = $('<div>', {'class' : 'meta-popover meta-text meta-text-student', 'id'  : uid})
+
+  input = $('<input>', {'type' : 'text', 'id' : 'meta' + uid, 'class' : 'datepicker', 'width' : required ? '234px' : '300px'})
+  div.append(input)
+
+  $('<button>', {'class' : 'btn btn-primary save', 'text'  : 'Сохранить', 'data-uid'  : uid}).appendTo(div)
+
+  if !required
+    div.append(' или ')
+    $('<button>', {'class' : 'btn btn-danger remove', 'text'      : 'Удалить', 'data-uid'  : uid}).appendTo(div)
+
+  div.append(' или ')
+
+  $('<span>', {'class' : 'cancel', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
+
+  $this.popover({'html' : true, 'content' : div})
+
+  $this.on 'click', ->
+    $(this).popover('show')
+    $('.meta-text .save').on 'click', ->
+      metaSaveButtonClick()
+
+    if !required
+      $('#' + uid + ' + div').css('max-width', 340)
+      $('#' + uid + ' + div').css('width', 340)
+
+
+    $('#meta' + uid).val($this.attr('data-meta-text'))
+    $('#meta' + uid).datepicker({
+      format: 'dd.mm.yyyy',
+      language: 'ru-RU'
+    })
+
+#  initEventListeners
+
 #Создание мета-блока с датой, связанной с приказом.
 #@param uid
 
@@ -182,11 +230,12 @@ $ ->
     $('#' + $(this).data('uid')).popover('hide')
 
 
-$('.meta-text .save').on 'click', ->
+@metaSaveButtonClick = ->
   uid = $(this).data('uid')
   $link = $('#' + uid)
 
   text = if $('#meta' + uid).is('select') then $('#meta' + uid + ' option:selected').text() else $('#meta' + uid).val()
+  alert(text)
 
   $link.attr('data-meta-text', text)
   $link.html(text)
@@ -201,6 +250,10 @@ $('.meta-text .save').on 'click', ->
       marker.removeClass('invalid')
       marker.addClass('valid')
 
+$('.meta-text .cancel').on 'click', ->
+  uid = $(this).data('uid')
+  $link = $('#' + uid)
+  $link.popover('hide')
 
 $('.meta-text .remove').on 'click', ->
   uid = $(this).data('uid')

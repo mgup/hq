@@ -36,7 +36,7 @@ class Office::Order < ActiveRecord::Base
   scope :signed, -> { where(order_status: STATUS_SIGNED) }
 
   scope :entrance, -> { where(order_template: ENTRANCE_TEMPLATE) }
-  scope :from_year_and_month, -> year, month { where('order_editing > ?', DateTime.new(year, month, 1, 0, 0, 0, 0)) }
+  scope :from_year_and_month, -> year, month { where('order_editing > ? AND (order_signing > ? OR order_signing IS NULL)', DateTime.new(year, month, 1, 0, 0, 0, 0), DateTime.new(year, month, 1, 0, 0, 0, 0)) }
 
   def draft?
     STATUS_DRAFT == status
@@ -110,7 +110,7 @@ class Office::Order < ActiveRecord::Base
         xml.text_
         xml.signature_
         # xml.protocol_
-        xml.act_
+        xml.act_ if template == ENTRANCE_TEMPLATE
       end
     end
 

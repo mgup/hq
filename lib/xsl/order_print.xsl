@@ -402,6 +402,7 @@
                               <xsl:when test="'fulltime' = /order/students/student/group/form">Очная</xsl:when>
                               <xsl:when test="'semitime' = /order/students/student/group/form">Очно-заочная</xsl:when>
                               <xsl:when test="'postal' = /order/students/student/group/form">Заочная</xsl:when>
+                              <xsl:when test="'distance' = /order/students/student/group/form">Заочная</xsl:when>
                           </xsl:choose> форма обучения, <xsl:if test="1 = /order/students/student/education_source"> бюджет</xsl:if>
                           <xsl:if test="2 = /order/students/student/education_source"> по договорам (внебюджетная)</xsl:if>
                       </fo:block>
@@ -833,6 +834,26 @@
       </fo:list-item-body>
     </fo:list-item>
   </xsl:template>
+
+    <xsl:template match="pListInner">
+        <fo:list-item>
+            <fo:list-item-label end-indent="label-end()">
+                <fo:block>
+                    <xsl:number format="1" />.
+                </fo:block>
+            </fo:list-item-label>
+            <fo:list-item-body start-indent="body-start()">
+                <fo:block>
+                    <xsl:apply-templates />
+                    <!-- Вывод точки с запятой или точки, в зависимости от положения основания в списке. -->
+                    <xsl:choose>
+                        <xsl:when test="position() = last()">.</xsl:when>
+                        <xsl:otherwise>;</xsl:otherwise>
+                    </xsl:choose>
+                </fo:block>
+            </fo:list-item-body>
+        </fo:list-item>
+    </xsl:template>
 
   <xsl:template match="table">
     <fo:table table-layout="fixed" width="100%" border="1pt solid #000000" space-before="10pt">
