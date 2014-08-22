@@ -267,6 +267,7 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
+    t.integer  "entrant_id"
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
@@ -656,6 +657,7 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
+    t.integer  "entrant_id"
   end
 
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
@@ -796,7 +798,6 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string   "delegate_pnumber"
     t.string   "delegate_pdepartment"
     t.date     "delegate_pdate"
-    t.string   "delegate_organization"
     t.string   "delegate_mobile"
     t.string   "delegate_fax"
     t.string   "delegate_inn"
@@ -804,6 +805,7 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string   "delegate_ls"
     t.string   "delegate_bik"
     t.string   "delegate_position"
+    t.string   "delegate_organization"
   end
 
   add_index "entrance_contracts", ["application_id"], name: "index_entrance_contracts_on_application_id", using: :btree
@@ -1646,6 +1648,12 @@ ActiveRecord::Schema.define(version: 20140818104420) do
   add_index "recalc", ["recalc_student_group"], name: "recalc_student_group", using: :btree
   add_index "recalc", ["recalc_year"], name: "recalc_year", using: :btree
 
+  create_table "regions", force: true do |t|
+    t.string  "pseries",  limit: 3, default: "0", null: false
+    t.integer "kladr_id",                         null: false
+    t.string  "name",                             null: false
+  end
+
   create_table "room", primary_key: "room_id", force: true do |t|
     t.integer "room_oldid", null: false
     t.integer "room_flat",  null: false
@@ -1830,7 +1838,7 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string  "student_birthplace",                    limit: 200
     t.integer "student_citizenship"
     t.string  "student_nation",                        limit: 200
-    t.string  "student_pseries",                       limit: 4
+    t.string  "student_pseries",                       limit: 8
     t.string  "student_pnumber",                       limit: 20
     t.date    "student_pdate"
     t.text    "student_pdepartment",                   limit: 16777215

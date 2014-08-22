@@ -475,7 +475,7 @@ class Report::GzguController < ApplicationController
 
     respond_to do |format|
       format.xlsx
-      format.xml { render xml: builder_f2.to_xml(save_with: Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION).strip }
+      format.xml { render xml: builder_f1.to_xml(save_with: Nokogiri::XML::Node::SaveOptions::AS_XML | Nokogiri::XML::Node::SaveOptions::NO_DECLARATION).strip }
     end
   end
 

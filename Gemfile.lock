@@ -153,6 +153,8 @@ GEM
       tilt
     highline (1.6.21)
     hike (1.2.3)
+    honeybadger (1.16.3)
+      json
     htmlentities (4.3.2)
     httparty (0.13.1)
       json (~> 1.8)
@@ -425,6 +427,7 @@ DEPENDENCIES
   faker
   gruff
   hairtrigger
+  honeybadger
   httparty
   inch
   jbuilder

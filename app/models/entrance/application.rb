@@ -303,7 +303,6 @@ class Entrance::Application < ActiveRecord::Base
 
   # Внесение абитуриента из заявления в список студентов.
   def enroll
-
     if contract
       person = contract.student.person
       student_id = contract.student_id
