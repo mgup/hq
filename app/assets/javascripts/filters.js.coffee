@@ -8,11 +8,15 @@ $ ->
 #    $.ajax root+'users_filter?' + params
 #    return false
 
-  $('#filterforprices').submit ->
-    speciality = $('#speciality_name').val()
-    year = $('#year').val()
-    form = $('#form').val()
-    faculty = $('#faculty').val()
-    params = 'speciality_name='+speciality+'&year='+year+'&form='+form+'&faculty='+faculty
-    $.ajax root+'finance/prices_filter?' + params
-    return false
+#  $('#filterforprices').submit ->
+#    speciality = $('#speciality').val()
+#    year = $('#year').val()
+#    form = $('#form').val()
+#    faculty = $('#faculty').val()
+#    params = 'year='+year+'&form='+form+'&faculty='+faculty
+#
+#    if !speciality
+#      params += ('&speciality='+speciality)
+#
+#    $.ajax root+'finance/prices_filter?' + params
+#    return false

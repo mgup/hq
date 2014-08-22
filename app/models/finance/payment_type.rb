@@ -11,7 +11,7 @@ class Finance::PaymentType < ActiveRecord::Base
 
   scope :from_faculty, -> faculty {where(finance_payment_type_speciality: Department.find(faculty).specialities.collect{|s| s.id})}
   scope :from_speciality, -> speciality {where(finance_payment_type_speciality: speciality)}
-  scope :from_speciality_name, -> name {where('speciality.speciality_name LIKE :prefix OR speciality.speciality_code LIKE :prefix', prefix: "%#{name}%")                                            .includes(:speciality)}
+  scope :from_speciality_name, -> name { joins(:speciality).where('speciality.speciality_name LIKE :prefix OR speciality.speciality_code LIKE :prefix', prefix: "%#{name}%")                                            .includes(:speciality)}
   scope :from_year, -> year {where(finance_payment_type_year: year)}
   scope :from_form, -> form {where(finance_payment_type_form: form)}
 
@@ -22,8 +22,8 @@ class Finance::PaymentType < ActiveRecord::Base
     .order(:finance_payment_type_speciality, :finance_payment_type_year)
   end
 
-  scope :filter, -> filters {
-    [:speciality_name, :faculty, :year, :form].inject(all) do |cond, field|
+  scope :my_filter, -> filters {
+    [:speciality, :faculty, :year, :form].inject(all) do |cond, field|
       if filters.include?(field) && !filters[field].empty?
         cond = cond.send "from_#{field.to_s}", filters[field]
       end
