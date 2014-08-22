@@ -105,6 +105,19 @@ class AjaxController < ApplicationController
        })
   end
 
+  def ordermeta
+    if params[:id] == ''
+      meta = Office::OrderMeta.create order_meta_order: params[:order], order_meta_type: params[:type], order_meta_object: params[:object],
+                                      order_meta_pattern: params[:pattern], order_meta_text: params[:text]
+    else
+      meta = Office::OrderMeta.find(params[:id])
+      meta.update order_meta_order: params[:order], order_meta_type: params[:type], order_meta_object: params[:object],
+                  order_meta_pattern: params[:pattern], order_meta_text: params[:text]
+    end
+    meta.save!
+    render({ json: {id: meta.id} })
+  end
+
   def checkpoint
     x = Study::Checkpoint.find(params[:checkpoint_id])
     checkpoint = {type: x.checkpoint_type, date: x.date.strftime("%d.%m.%Y"), name: x.name,

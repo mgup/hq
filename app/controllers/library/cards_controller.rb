@@ -65,9 +65,9 @@ class Library::CardsController < ApplicationController
       query = "SELECT RDR_ID FROM dbo.READERS WHERE MATRIX_STUDENT_GROUP_ID = #{@reader.id}"
     end
     if params[:index]
-      @rdr_id = @client.execute(query).collect{|x| x}[params[:index].to_i]
+      @rdr_id = @client.execute(query).collect{|x| x}[params[:index].to_i]['RDR_ID']
     else
-      @rdr_id = @client.execute(query).last['RDR_ID']
+      @rdr_id = @client.execute(query).collect{|x| x}.last['RDR_ID']
     end
     barcode = Barby::Code128B.new(@rdr_id)
     @blob = Barby::PngOutputter.new(barcode).to_png(height: 65, margin: 0)

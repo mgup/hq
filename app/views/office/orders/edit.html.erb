@@ -2,4 +2,7 @@
   <h1>Приказ <%= order_number(@order) %></h1>
 </div>
 
+<% if can?(:sign, Office::Order) #&& !@order.signed? %>
+  <%= render partial: 'sign_date_number', locals: {order: @order} %>
+<% end %>
 <%= @order.to_html %>
