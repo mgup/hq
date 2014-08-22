@@ -1,7 +1,7 @@
-<%= hidden_field_tag :library_reader, @reader.id, data: {name: @reader.full_name, value: @rdr_id['RDR_ID']} %>
+<%= hidden_field_tag :library_reader, @reader.id, data: {name: @reader.full_name, value: @rdr_id} %>
 <canvas id="canvas_for_library_card"></canvas>
 
-<%= link_to library_print_card_path(rdr_id: @rdr_id['RDR_ID'], last_name: @reader.last_name, first_name: @reader.first_name, patronym: @reader.patronym),
+<%= link_to library_print_card_path(rdr_id: @rdr_id, last_name: @reader.last_name, first_name: @reader.first_name, patronym: @reader.patronym),
             class: 'btn btn-info' do %>
     <span class="glyphicon glyphicon-print"></span> Распечатать
 <% end %>
