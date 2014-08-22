@@ -208,7 +208,7 @@ class Person < ActiveRecord::Base
             %w(ip rp dp vp tp pp).each do |form|
               xml.send("#{form}_", self.send(name, form.to_sym))
             end
-          }
+          } if name
         end
       }
     }.doc

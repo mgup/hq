@@ -273,6 +273,7 @@ HQ::Application.routes.draw do
   get '/ajax/group_students' => 'ajax#group_students'
   get '/ajax/group_exams' => 'ajax#group_exams'
   get '/ajax/orderstudent' => 'ajax#orderstudent'
+  get '/ajax/ordermeta' => 'ajax#ordermeta'
 
 
   resources :education_prices, only: [:index]

@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+      office/order: 'приказ'
+    attributes:
+      office/order:
+        signing_date: 'дата подписания'
+        number: 'номер'

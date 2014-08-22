@@ -1,11 +1,3 @@
-#  Запросы к серверу пока закомментируем
-
-$ ->
-  $('.meta-popover .cancel').on 'click', ->
-      $('#meta' + $(this).data('uid') + '.hasDatepicker').datepicker('destroy')
-      $('#' + $(this).data('uid')).popover('hide')
-
-
 # Создание мета-блока с текстом, связанным со студентом.
 #
 # @param uid
@@ -33,15 +25,23 @@ $ ->
 
   div.append(' или ')
 
-  $('<span>', {'class' : 'cancel', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
+  $('<a>', {'class' : 'cancel', 'href' :  '#', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
 
   $this.popover({'html' : true, 'content' : div})
 
   $this.on 'click', ->
     $(this).popover('show')
+    $('.meta-text .save').on 'click', ->
+      metaSaveButtonClick(this)
+    $('.meta-text .cancel').on 'click', ->
+      metaCancelLinkClick(this)
+      return false
+
     if !required
       $('#' + uid + ' + div').css('max-width', 340)
       $('#' + uid + ' + div').css('width', 340)
+      $('.meta-text .remove').on 'click', ->
+        metaRemoveButtonClick(this)
     $('#meta' + uid).val($this.attr('data-meta-text'))
 
 
@@ -71,17 +71,23 @@ $ ->
 
   div.append(' или ')
 
-  $('<span>', {'class' : 'cancel', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
+  $('<a>', {'class' : 'cancel', 'href' :  '#', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
 
   $this.popover({'html' : true, 'content' : div})
 
   $this.on 'click', ->
     $(this).popover('show')
+    $('.meta-text .save').on 'click', ->
+      metaSaveButtonClick(this)
+    $('.meta-text .cancel').on 'click', ->
+      metaCancelLinkClick(this)
+      return false
 
     if !required
       $('#' + uid + ' + div').css('max-width', 340)
       $('#' + uid + ' + div').css('width', 340)
-
+      $('.meta-text .remove').on 'click', ->
+        metaRemoveButtonClick(this)
     $('#meta' + uid).val($this.attr('data-meta-text'))
 
 
@@ -110,19 +116,23 @@ $ ->
 
   div.append(' или ')
 
-  $('<span>', {'class' : 'cancel', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
+  $('<a>', {'class' : 'cancel', 'href' :  '#', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
 
   $this.popover({'html' : true, 'content' : div})
 
   $this.on 'click', ->
     $(this).popover('show')
     $('.meta-text .save').on 'click', ->
-      metaSaveButtonClick()
+      metaSaveButtonClick(this)
+    $('.meta-text .cancel').on 'click', ->
+      metaCancelLinkClick(this)
+      return false
 
     if !required
       $('#' + uid + ' + div').css('max-width', 340)
       $('#' + uid + ' + div').css('width', 340)
-
+      $('.meta-text .remove').on 'click', ->
+        metaRemoveButtonClick(this)
 
     $('#meta' + uid).val($this.attr('data-meta-text'))
     $('#meta' + uid).datepicker({
@@ -158,21 +168,29 @@ $ ->
 
   div.append(' или ')
 
-  $('<span>', {'class' : 'cancel', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
+  $('<a>', {'class' : 'cancel', 'href' :  '#', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
 
   $this.popover({'html' : true, 'content' : div})
 
   $this.on 'click', ->
     $(this).popover('show')
+    $('.meta-text .save').on 'click', ->
+      metaSaveButtonClick(this)
+    $('.meta-text .cancel').on 'click', ->
+      metaCancelLinkClick(this)
+      return false
 
     if !required
       $('#' + uid + ' + div').css('max-width', 340)
       $('#' + uid + ' + div').css('width', 340)
-
+      $('.meta-text .remove').on 'click', ->
+        metaRemoveButtonClick(this)
 
     $('#meta' + uid).val($this.attr('data-meta-text'))
-    $('#meta' + uid).datepicker({ 'dateFormat': 'dd.mm.yy' })
-    $('#meta' + uid).datepicker($.datepicker.regional['ru'])
+    $('#meta' + uid).datepicker({
+      format: 'dd.mm.yyyy',
+      language: 'ru-RU'
+    })
 
 
 #Создание мета-блока с вариантами текста, связанного с приказом.
@@ -204,17 +222,23 @@ $ ->
 
   div.append(' или ')
 
-  $('<span>', {'class' : 'cancel', 'text' : 'отменить', 'data-uid' : uid}).appendTo(div)
+  $('<a>', {'class' : 'cancel', 'href' :  '#', 'text' : 'отменить', 'data-uid' : uid}).appendTo(div)
 
   $this.popover({'html' : true, 'content' : div})
 
   $this.on 'click', ->
-     $(this).popover('show');
+    $(this).popover('show')
+    $('.meta-text .save').on 'click', ->
+      metaSaveButtonClick(this)
+    $('.meta-text .cancel').on 'click', ->
+      metaCancelLinkClick(this)
+      return false
 
   if !required
     $('#' + uid + ' + div').css('max-width', 340)
     $('#' + uid + ' + div').css('width', 340)
-
+    $('.meta-text .remove').on 'click', ->
+      metaRemoveButtonClick(this)
   $('#meta' + uid).val($this.attr('data-meta-text'))
 
   $('div[data-uid="' + uid + '"] .save').on 'click', ->
@@ -230,17 +254,16 @@ $ ->
     $('#' + $(this).data('uid')).popover('hide')
 
 
-@metaSaveButtonClick = ->
-  uid = $(this).data('uid')
+@metaSaveButtonClick = (object) ->
+  uid = $(object).data('uid')
   $link = $('#' + uid)
 
   text = if $('#meta' + uid).is('select') then $('#meta' + uid + ' option:selected').text() else $('#meta' + uid).val()
-  alert(text)
 
   $link.attr('data-meta-text', text)
   $link.html(text)
 
-  $('#meta' + uid + '.hasDatepicker').datepicker('destroy')
+  $('#meta' + uid + '.datepicker').datepicker('destroy')
   saveMeta(uid)
   $link.popover('hide')
 
@@ -250,13 +273,13 @@ $ ->
       marker.removeClass('invalid')
       marker.addClass('valid')
 
-$('.meta-text .cancel').on 'click', ->
-  uid = $(this).data('uid')
+@metaCancelLinkClick = (object) ->
+  uid = $(object).data('uid')
   $link = $('#' + uid)
   $link.popover('hide')
 
-$('.meta-text .remove').on 'click', ->
-  uid = $(this).data('uid')
+@metaRemoveButtonClick = (object) ->
+  uid = $(object).data('uid')
   $link = $('#' + uid)
 
   $link.attr('data-meta-text', 'null')
@@ -341,17 +364,23 @@ $('.meta-text .remove').on 'click', ->
 
   div.append(' или ')
 
-  $('<span>', {'class' : 'cancel', 'text' : 'отменить', 'data-uid' : uid}).appendTo(div)
+  $('<a>', {'class' : 'cancel', 'href' :  '#', 'text' : 'отменить', 'data-uid' : uid}).appendTo(div)
 
   $this.popover({'html' : true, 'content' : div})
 
   $this.on 'click', ->
     $(this).popover('show')
+    $('.meta-text .save').on 'click', ->
+      metaSaveButtonClick(this)
+    $('.meta-text .cancel').on 'click', ->
+      metaCancelLinkClick(this)
+      return false
 
     if !required
       $('#' + uid + ' + div').css('max-width', 340)
       $('#' + uid + ' + div').css('width', 340)
-
+      $('.meta-text .remove').on 'click', ->
+        metaRemoveButtonClick(this)
     $('#meta' + uid).val($this.attr('data-meta-text'))
 
 
@@ -383,7 +412,7 @@ $('.meta-text .remove').on 'click', ->
 
   div.append(' или ')
 
-  $('<span>', {'class' : 'cancel', 'text' : 'отменить', 'data-uid' : uid}).appendTo(div)
+  $('<a>', {'class' : 'cancel', 'href' :  '#', 'text' : 'отменить', 'data-uid' : uid}).appendTo(div)
 
   $('#' + uid).popover({'html' : true, 'content' : div})
   $('#' + uid).on 'click', ->
@@ -434,16 +463,17 @@ $('.meta-text .remove').on 'click', ->
   data.text    = meta.attr('data-meta-text')
 
 #    Отправляем запрос на сервер.
-#  $.ajax('/order/view/meta', {
-#    'data'      : data,
-#    'dataType'  : 'json',
-#    'type'      : 'post',
-#    'error'     : (jqXHR, textStatus, errorThrown) ->
-##      console.log(jqXHR)
-##      console.log(textStatus)
-##      console.log(errorThrown)
-##      alert('Ошибка. Данные не сохранены. В случае повторения ошибки — обратитесь в отдел информационных систем.')
-#    'success'   : (response) ->
-#      if response.id
-#        $('#' + uid).attr('data-meta-id', response.id)
-#  })
+  $.getJSON $('#matrixHQ').attr('href')+'ajax/ordermeta', {
+    'id':  if ('' == metaId || null == metaId) then null else metaId,
+    'order' : meta.attr('data-meta-order'),
+    'type' : meta.attr('data-meta-type'),
+    'object' : meta.attr('data-meta-object'),
+    'pattern' : meta.attr('data-meta-pattern'),
+    'text' : meta.attr('data-meta-text')
+  }, (meta) ->
+    $('#' + uid).attr('data-meta-id', meta.id)
+  .success ->
+    alert('Информация была успешно сохранена')
+  .error ->
+    alert('Ошибка. Данные не сохранены. В случае повторения ошибки — обратитесь в отдел информационных систем.')
+

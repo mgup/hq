@@ -71,7 +71,9 @@ class Office::OrdersController < ApplicationController
   def update
     @order.update(resource_params)
     if @order.save
-      if can?(:orders, Entrance::Campaign)
+      if can?(:sign, Office::Order) && @order.status == Office::Order::STATUS_SIGNED
+        redirect_to edit_office_order_path(@order)
+      elsif can?(:orders, Entrance::Campaign)
         redirect_to orders_entrance_campaigns_path
       else
         redirect_to office_orders_path, notice: 'Изменения сохранены.'
