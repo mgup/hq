@@ -55,6 +55,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       data.first << 'Договор' #<< 'Согласие на зачислении'
     else
       data.first << 'Оригинал документа об образовании'
+      data.first << 'Категория зачисления'
     end
     data.first << 'Решение комиссии'
 
@@ -133,6 +134,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
             data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           else
             data.last << (ap.original? ? 'да' : 'нет')
+            data.last << 'гослиния'
           end
           data.last << 'зачислить'
           i += 1
@@ -205,7 +207,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           2 => 170,
           (3 + exams.size) => 40,
           (4 + exams.size) => 70,
-          (5 + exams.size) => 50
+          (5 + exams.size) => 55
       }
       exams.each_with_index do |name, i|
         # Название предмета состоит из одного слова.
@@ -213,7 +215,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           column_widths[3 + i] = pdf.width_of(name) + 10
         end
       end
-      pdf.table data, width: pdf.bounds.width, column_widths: column_widths
+      # pdf.table data, width: pdf.bounds.width, column_widths: column_widths
+      pdf.table data, column_widths: column_widths
     end
   end
 end
