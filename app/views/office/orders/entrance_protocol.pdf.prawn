@@ -55,7 +55,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       data.first << 'Договор' #<< 'Согласие на зачислении'
     else
       data.first << 'Оригинал документа об образовании'
-      # data.first << 'Категория зачисления'
+      data.first << 'Категория зачисления'
     end
     data.first << 'Решение комиссии'
 
@@ -134,7 +134,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
             data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           else
             data.last << (ap.original? ? 'да' : 'нет')
-            # data.last << 'гослиния'
+            data.last << 'гослиния'
           end
           data.last << 'зачислить'
           i += 1
