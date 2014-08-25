@@ -12,6 +12,21 @@ $ ->
         ) for speciality in specialities
         $(select).val(specialities[0].id).change()
 
+  updateSpecialitiesAll = (faculty_id) ->
+    $.getJSON root+'study/disciplines/ajax/specialities', {
+      'faculty': faculty_id
+    }, (specialities) ->
+      select = $('.ajax-speciality-all')[0]
+      if select
+        select.options.length = 0
+        select.options.add(
+          new Option('все специальности', '')
+        )
+        select.options.add(
+          new Option("#{speciality.code} #{speciality.name}", speciality.id)
+        ) for speciality in specialities
+#        $(select).val(select.options.first).change()
+
   updateGroups = (groups) ->
       select = $('.ajax-group')[0]
       if select
@@ -38,6 +53,7 @@ $ ->
 
   $('.ajax-faculty').change ->
     updateSpecialities($(this).val())
+    updateSpecialitiesAll($(this).val())
 
 
   $('.ajax-group').change ->

@@ -209,7 +209,7 @@ HQ::Application.routes.draw do
   end
 
   namespace :finance do
-    resources :payment_types, path:  '/price'
+    resources :payment_types
     get '/prices_filter' => 'payment_types#prices_filter'
     get 'print_prices.xlsx', to: 'payment_types#print_prices',
         defaults: { format: 'xlsx' }, as: :print_prices
