@@ -8,7 +8,6 @@
       <%= select_tag 'speciality',
            options_from_collection_for_select(Speciality.all, :id, :full_name, params[:speciality]),
            prompt: 'все специальности', class: 'ajax-speciality-all form-control' %>
-      <%# text_field_tag 'speciality_name', params[:speciality_name], placeholder: 'Специальность', class: 'form-control' %>
     </div>
   </div>
   <div class="row">
@@ -26,8 +25,7 @@
       <%= pill_tabs('form', [['101', 'очная'], ['102', 'очно-заочная'], ['103', 'заочная']], 'form') %>
     </div>
     <div class="col col-lg-3">
-      <%= select_tag 'year', options_for_select(@years), prompt: 'все годы', selected: params[:year], class: 'ajax-speciality-all form-control' %>
-      <%# text_field_tag 'year', params[:year], placeholder: 'Год поступления', class: 'form-control' %>
+      <%= select_tag 'year', options_for_select(@years, params[:year]), prompt: 'все годы', class: 'form-control' %>
     </div>
   </div>
 <% end %>

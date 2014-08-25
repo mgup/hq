@@ -2,8 +2,9 @@ class Finance::PaymentTypesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @payment_types = Finance::PaymentType.my_filter(params)
     @years = @payment_types.collect{|pt| pt.year}.uniq.compact.sort!
+    @payment_types = @payment_types.my_filter(params)
+    @form = params[:form]
     respond_to do |format|
       format.html
       format.pdf

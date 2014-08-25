@@ -4,6 +4,7 @@
 
 <%= render 'filter' %>
 
+<% if @payment_types.any? %>
 <%= link_to 'Распечатать',
             finance_payment_types_path(params.merge({ format: :pdf })),
             target: :blank, class: 'btn btn-success btn-lg' %>
@@ -31,13 +32,13 @@
         <% i = 1 %>
         <td>
           <% price.sum[:by_year].each do %>
-            <%= i %><br><br>
+            <%= i %><br>
             <% i += 1 %>
           <% end %>
         </td>
         <td>
           <% price.sum[:by_year].each_with_index do |x, index| %>
-            <%= price.year + index %><br><br>
+            <%= price.year + index %><br>
           <% end %>
         </td>
         <td class="nowrap">
@@ -50,4 +51,6 @@
     <% end %>
   </tbody>
 </table>
-
+<% else %>
+  <p class="lead">Информации по стоимости обучения не было найдено, попробуйте изменить параметры поиска</p>
+<% end %>
