@@ -4,7 +4,6 @@ class Study::DisciplinesController < ApplicationController
   load_and_authorize_resource except: [:create]
 
   def index
-    raise
   end
 
   def new
