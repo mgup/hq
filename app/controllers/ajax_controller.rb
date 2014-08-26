@@ -30,7 +30,17 @@ class AjaxController < ApplicationController
   end
 
   def groups
-    render({ json: Group.filter(speciality: params[:speciality], form: params[:form], course: params[:course]).inject([]) do |groups, group|
+    filter_groups = Group.all
+    if params[:speciality] && params[:speciality] != ''
+      filter_groups = filter_groups.filter(speciality: params[:speciality])
+    end
+    if params[:form] && params[:form] != ''
+      filter_groups = filter_groups.filter(form: params[:form])
+    end
+    if params[:course] && params[:course] != ''
+      filter_groups = filter_groups.filter(course: params[:course])
+    end
+    render({ json: filter_groups.inject([]) do |groups, group|
       groups << { id: group.id, name: group.name }
       groups
     end })

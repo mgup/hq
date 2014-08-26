@@ -34,7 +34,8 @@ $ ->
         select.options.add(
           new Option(group.name, group.id)
         ) for group in groups
-        $(select).val(groups[0].id).change()
+        if groups.length > 0
+          $(select).val(groups[0].id).change()
 
 
   updateStudents = (group_id) ->

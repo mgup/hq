@@ -13,7 +13,7 @@ class DashboardController < ApplicationController
 
       redirect_to selection_contract_path if current_user.is?(:chief_accountant)
 
-      redirect_to "#{root_url}ciot" if current_user.is?(:ciot)
+      # redirect_to "#{root_url}ciot" if current_user.is?(:ciot)
       redirect_to students_path if current_user.is?(:student_hr)
     end
   end
