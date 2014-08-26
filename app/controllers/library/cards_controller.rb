@@ -21,7 +21,7 @@ class Library::CardsController < ApplicationController
         @users << {id: user.id, name: user.full_name, variants: variants, department: user.departments.collect{|d| d.abbreviation}.join(', ')}
       end
     elsif params[:student_name]
-      students = Person.by_name(params[:student_name]).collect{|p| p.students.first}
+      students = Person.by_name(params[:student_name]).collect{|p| p.students.first}.compact
       @students = []
       students.each do |student|
         variants = @client.execute("SELECT RDR_ID FROM dbo.READERS WHERE NAME = '#{student.full_name}'").collect{|x| x['RDR_ID']}
