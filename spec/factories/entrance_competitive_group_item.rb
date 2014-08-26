@@ -12,7 +12,7 @@ FactoryGirl.define do
     number_quota_oz 0
     number_quota_z 0
     association :competitive_group
-    association :education_level
+    association :education_type
     association :direction
 
     trait :budget_o do
