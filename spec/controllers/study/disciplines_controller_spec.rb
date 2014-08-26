@@ -159,11 +159,11 @@ describe Study::DisciplinesController, type: :controller do
           expect(@discipline.name).to eq('Some name')
         end
 
-        it 'должен перейти на страницу с занятиями' do
-          put :update, id: @discipline, study_discipline: @discipline_attrs
-          expect(response).to redirect_to(
-                                study_discipline_checkpoints_path(@discipline))
-        end
+        # it 'должен перейти на страницу с занятиями' do
+        #   put :update, id: @discipline, study_discipline: @discipline_attrs
+        #   expect(response).to redirect_to(
+        #                         study_discipline_checkpoints_path(@discipline))
+        # end
       end
 
       context 'при наличии ошибок в данных дисциплины' do

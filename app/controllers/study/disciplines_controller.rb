@@ -3,7 +3,9 @@ class Study::DisciplinesController < ApplicationController
   before_filter :load_user_discipline,  only: [:edit, :destroy]
   load_and_authorize_resource except: [:create]
 
-  def index ; end
+  def index
+    raise
+  end
 
   def new
     # Создаём для дисциплины заготовку для итогового испытания

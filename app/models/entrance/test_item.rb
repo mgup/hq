@@ -12,4 +12,6 @@ class Entrance::TestItem < ActiveRecord::Base
 
   scope :use, -> { where('use_subject_id IS NOT NULL') }
   scope :internal, -> { where('use_subject_id IS NULL') }
+
+  scope :creative, -> { joins(:exam).where('entrance_exams.creative = 1') }
 end
