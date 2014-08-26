@@ -8,6 +8,6 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :hostel, 'Общежитие'.html_safe, student_hostel_path(@student)
     primary.item :orders, 'Приказы'.html_safe, student_orders_path(@student)
     primary.item :documents, 'Документы'.html_safe, student_documents_path(@student)
-    primary.item :grants, 'ЦСПиВР'.html_safe, student_grants_path(@student)
+    primary.item :grants, 'ЦСПиВР'.html_safe, person_social_documents_path(@person)
   end
 end

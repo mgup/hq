@@ -15,6 +15,8 @@ class Finance::PaymentType < ActiveRecord::Base
   scope :from_year, -> year {where(finance_payment_type_year: year)}
   scope :from_form, -> form {where(finance_payment_type_form: form)}
 
+  scope :with_prices, -> {joins(:prices)}
+
   acts_as_xlsx
 
   default_scope do

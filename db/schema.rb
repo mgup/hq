@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818104420) do
+ActiveRecord::Schema.define(version: 20140826125505) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -132,8 +132,8 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.integer "archive_order",                                                          null: false
     t.integer "student_id",                                                             null: false
     t.integer "student_status",                                                         null: false
-    t.integer "student_oldid",                                                          null: false
-    t.integer "student_oldperson",                                                      null: false
+    t.integer "student_oldid"
+    t.integer "student_oldperson"
     t.boolean "student_homeless",                                       default: false, null: false
     t.boolean "student_gender",                                         default: false, null: false
     t.integer "student_fname",                                                          null: false
@@ -208,10 +208,10 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.integer  "student_group_id",                                                                    null: false
     t.integer  "student_group_student",                                                               null: false
     t.integer  "student_group_infin"
-    t.integer  "student_group_oldstudent",                                                            null: false
+    t.integer  "student_group_oldstudent"
     t.integer  "student_group_group",                                                                 null: false
     t.integer  "student_group_yearin"
-    t.integer  "student_group_oldgroup",                                                              null: false
+    t.integer  "student_group_oldgroup"
     t.string   "student_group_record",              limit: 11
     t.integer  "student_group_tax",                                                     default: 1,   null: false
     t.text     "student_group_contract_customer"
@@ -267,7 +267,6 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
-    t.integer  "entrant_id"
   end
 
   add_index "archive_student_group", ["archive_student_group_order"], name: "archive_student_group_order", using: :btree
@@ -657,7 +656,6 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string   "last_sign_in_ip"
     t.string   "ciot_login"
     t.string   "ciot_password"
-    t.integer  "entrant_id"
   end
 
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
@@ -798,6 +796,7 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string   "delegate_pnumber"
     t.string   "delegate_pdepartment"
     t.date     "delegate_pdate"
+    t.string   "delegate_organization"
     t.string   "delegate_mobile"
     t.string   "delegate_fax"
     t.string   "delegate_inn"
@@ -805,7 +804,6 @@ ActiveRecord::Schema.define(version: 20140818104420) do
     t.string   "delegate_ls"
     t.string   "delegate_bik"
     t.string   "delegate_position"
-    t.string   "delegate_organization"
   end
 
   add_index "entrance_contracts", ["application_id"], name: "index_entrance_contracts_on_application_id", using: :btree
@@ -1648,12 +1646,6 @@ ActiveRecord::Schema.define(version: 20140818104420) do
   add_index "recalc", ["recalc_student_group"], name: "recalc_student_group", using: :btree
   add_index "recalc", ["recalc_year"], name: "recalc_year", using: :btree
 
-  create_table "regions", force: true do |t|
-    t.string  "pseries",  limit: 3, default: "0", null: false
-    t.integer "kladr_id",                         null: false
-    t.string  "name",                             null: false
-  end
-
   create_table "room", primary_key: "room_id", force: true do |t|
     t.integer "room_oldid", null: false
     t.integer "room_flat",  null: false
@@ -1770,6 +1762,24 @@ ActiveRecord::Schema.define(version: 20140818104420) do
 
   create_table "schedule_subject", primary_key: "schedule_subject_id", force: true do |t|
     t.string "schedule_subject_name", limit: 200, default: "", null: false
+  end
+
+  create_table "social_document_types", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "social_documents", force: true do |t|
+    t.integer  "student_id"
+    t.integer  "social_document_type_id"
+    t.string   "number"
+    t.string   "department"
+    t.date     "start_date"
+    t.date     "expire_date"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "speciality", primary_key: "speciality_id", force: true do |t|

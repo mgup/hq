@@ -28,7 +28,7 @@ prawn_document margin: [40.34645669291339, 35.34645669291339,
     pdf.move_down 10
 
     pdf.font_size 11 do
-      @payment_types.from_faculty(faculty.id).each do |price|
+      @payment_types.from_faculty(faculty.id).order('finance_payment_type_form').each do |price|
         pdf.move_down 10
         pdf.font_size 13 do
           pdf.table [[price.speciality.full_name, "#{price.year}", price.form_of_study]],
@@ -38,16 +38,20 @@ prawn_document margin: [40.34645669291339, 35.34645669291339,
           end
         end
         pdf.move_down 5
-        price.sum[:by_year].each_with_index do |sum, index|
-          pdf.text "#{index + 1}   #{price.year + index}   #{number_to_currency(sum[1])}"
+        pdf.table [[price.sum[:by_year].each_with_index.map{|sum, index| "#{index + 1}   #{price.year + index}   #{number_to_currency(sum[1])}\n"}.join,
+                   "#{number_to_currency(price.sum[:total])}"]],
+                    cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
+          column(0).width = 150
+          column(1).style valign: :center, size: 14, style: :bold
         end
-        pdf.stroke do
-          pdf.move_down 3
-          pdf.line_width 0.5
-          pdf.horizontal_rule
-        end
-        pdf.move_down 3
-        pdf.text "#{number_to_currency(price.sum[:total])}", style: :bold
+
+        # pdf.stroke do
+        #   pdf.move_down 3
+        #   pdf.line_width 0.5
+        #   pdf.horizontal_rule
+        # end
+        # pdf.move_down 3
+        # pdf.text "#{number_to_currency(price.sum[:total])}", style: :bold
 
       # data << [price.speciality.faculty.abbreviation, price.speciality.full_name, "#{price.year}", price.form_of_study,
       #          '',

@@ -71,6 +71,8 @@ class Person < ActiveRecord::Base
   has_many :students, primary_key: :student_id, foreign_key: :student_group_student, dependent: :destroy
   accepts_nested_attributes_for :students
 
+  has_many :documents, class_name: 'Social::Document', foreign_key: :student_id, primary_key: :student_id
+
   scope :from_flat, -> flat { joins(:room).where(room: {room_flat: flat})}
 
   scope :by_name, -> (name) {

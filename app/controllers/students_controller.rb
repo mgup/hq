@@ -22,9 +22,9 @@ class StudentsController < ApplicationController
   def study
   end
 
-  def grants
-    @document = Document::Doc.new
-  end
+  # def grants
+  #   @document = Social::Document.new
+  # end
 
   def orders
   end

@@ -94,7 +94,8 @@ class Study::DisciplinesController < ApplicationController
 
             @discipline.destroy_semester_work    if ('1' != params[:has_semester_work] and @discipline.semester_work)
             @discipline.destroy_semester_project if ('1' != params[:has_semester_project] and @discipline.semester_project)
-            if current_user.disciplines.include? @discipline
+
+            if Study::Discipline.with_brs.include_teacher(current_user).include? @discipline
               redirect_to study_discipline_checkpoints_path(@discipline), notice: 'Изменения успешно сохранены.'
             else
               redirect_to study_disciplines_path, notice: 'Изменения успешно сохранены.'

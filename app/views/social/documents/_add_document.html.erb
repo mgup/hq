@@ -12,7 +12,7 @@
           </div>
           <p><%= @student.person.full_name %></p>
         </div>
-        <%= form_for @document, url: student_social_documents_path(@student), class: 'form-horizontal' do |f| %>
+        <%= form_for @document, url: person_social_documents_path(@student), class: 'form-horizontal' do |f| %>
           <div class="row">
             <%= hidden_field_tag :student, @student.id %>
             <%= f.hidden_field :student_id, value: @student.person.id%>
@@ -23,10 +23,10 @@
           </div>
           <div class="row">
             <div class="col-sm-3">
-              <%= f.label :document_type %>
+              <%= f.label :social_document_type_id %>
             </div>
             <div class="col-sm-9">
-              <%= f.select :document_type, options_from_collection_for_select(Social::DocumentType.all,
+              <%= f.select :social_document_type_id, options_from_collection_for_select(Social::DocumentType.all,
                            :id, :name, f.object.type), prompt: 'выберите тип документа', class: 'form-control'%>
             </div>
           </div>

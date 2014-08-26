@@ -3,7 +3,7 @@ class Finance::PaymentTypesController < ApplicationController
 
   def index
     @years = @payment_types.collect{|pt| pt.year}.uniq.compact.sort!
-    @payment_types = @payment_types.my_filter(params)
+    @payment_types = @payment_types.with_prices.my_filter(params)
     @form = params[:form]
     respond_to do |format|
       format.html
