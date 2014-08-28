@@ -87,6 +87,7 @@ class Student < ActiveRecord::Base
                           association_foreign_key: 'exam_student_exam'
 
   delegate :education_form, to: :group
+  delegate :deeds, to: :person
 
   default_scope do
     joins(:person)
@@ -110,15 +111,15 @@ class Student < ActiveRecord::Base
 
   scope :second_higher, -> { where(student_group_group: Group.second_higher) }
 
-  scope :filter, -> filters {
+  scope :my_filter, -> filters {
     cond = all
 
-    if filters.key?(:name)
+    if filters.key?(:name) && filters[:name] != ''
       names = filters[:name].split(' ').map { |n| "%#{n}%" }
       cond = cond.where(
         ['last_name_hint LIKE ?', 'first_name_hint LIKE ?', 'patronym_hint LIKE ?'][0..(names.size-1)].join(' AND ') + ' OR ' +
         ['first_name_hint LIKE ?', 'last_name_hint LIKE ?', 'patronym_hint LIKE ?'][0..(names.size-1)].join(' AND ') + ' OR ' +
-        ['first_name_hint LIKE ?', 'patronym_hint LIKE ?', 'last_name_hint LIKE ?'][0..(names.size-1)].join(' AND '), *names, *names, *names)
+        ['first_name_hint LIKE ?', 'patronym_hint LIKE ?', 'last_name_hint LIKE ?'][0..(names.size-1)].join(' AND '), *names, *names, *names,)
 
     end
 

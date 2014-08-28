@@ -1,0 +1,11 @@
+ru:
+  activerecord:
+    models:
+      social/document: 'документ'
+    attributes:
+      social/document:
+        number: 'номер'
+        department: 'кем выдан'
+        social_document_type_id: 'тип документа'
+        start_date: 'с'
+        expire_date: 'по'

@@ -10,11 +10,11 @@ class My::StudentsController < ApplicationController
   load_and_authorize_resource
 
   def show
-    @sessions = []
-    @student.subjects.each do |s|
-      @sessions << {year: s.year, semester: s.semester, term: s.term}
-    end
-    @sessions = @sessions.uniq()
+    # @sessions = []
+    # @student.subjects.each do |s|
+    #   @sessions << {year: s.year, semester: s.semester, term: s.term}
+    # end
+    # @sessions = @sessions.uniq()
   end
 
   private

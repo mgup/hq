@@ -61,7 +61,7 @@
 
     <div class="col-sm-4 col-sm-offset-1">
       <%= multiselect_tag :speciality, title: 'Все специальности', collection: Speciality.all,
-                          value: :id, text: :name, current: params[:speciality] ? params[:speciality].map(&:to_i) : [],
+                          value: :id, text: :full_name, current: params[:speciality] ? params[:speciality].map(&:to_i) : [],
                           pl1: 'Выбрана %c специальность',
                           pl2: 'Выбрано %c специальности',
                           pl5: 'Выбрано %c специальностей' %>

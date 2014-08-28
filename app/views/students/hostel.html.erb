@@ -6,13 +6,14 @@
 
 <p class="lead"><%= @student.person.hostel_status[:status] %></p>
 
+<% unless @student.person.hostel_st == Person::HOSTEL_STATUS_NOT || @student.person.hostel_st == Person::HOSTEL_STATUS_EVICTSELF %>
 <legend>Информация по общежитию</legend>
 <div class="row">
   <div class="col-sm-4">
     <label>Общежитие</label>
   </div>
   <div class="col-sm-8">
-    <p class="form-control-static"><%= @student.person.room.flat.hostel.short_name %></p>
+    <p class="form-control-static"><%= @student.person.room.flat.hostel.short_name if @student.person.room%></p>
   </div>
 </div>
 <div class="row">
@@ -20,7 +21,7 @@
     <label>Квартира</label>
    </div>
   <div class="col-sm-8">
-    <p class="form-control-static"><%= @student.person.room.flat.number %></p>
+    <p class="form-control-static"><%= @student.person.room.flat.number if @student.person.room %></p>
   </div>
 </div>
 <div class="row">
@@ -28,7 +29,9 @@
     <label>Комната</label>
   </div>
   <div class="col-sm-8">
-    <p class="form-control-static"><%= @student.person.room.seats %>-х местная</p>
+    <% if @student.person.room %>
+      <p class="form-control-static"><%= @student.person.room.seats %>-х местная</p>
+    <% end %>
   </div>
 </div>
 
@@ -37,3 +40,5 @@
 
 <legend>Информация по договору</legend>
 <p>Надо подождать =(</p>
+
+<% end %>

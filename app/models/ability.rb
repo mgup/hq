@@ -169,6 +169,10 @@ class Ability
     cannot :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
     can :without_med, User
     can :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
+    can :manage, Social::Document
+    can :manage, Social::DocumentType
+    can :read, Student
+    can :study, Student
   end
 
   def soc_support(user)

@@ -4,7 +4,13 @@ class StudentsController < ApplicationController
   before_filter :find_student, only: [:documents, :study, :grants, :orders, :hostel]
 
   def index
-    @students = @students.includes([:person, :group]).filter(params).page(params[:page])
+    # raise params.inspect
+    @students = @students.includes([:person, :group]).my_filter(params)
+    if @students.page(params[:page]).empty?
+      @students = @students.page(1)
+    else
+      @students = @students.page(params[:page])
+    end
 
     #@students = Student.in_group_at_date 35, '2013-02-24'
     #@students = Student.in_group_at_date 547, '2011-02-24'

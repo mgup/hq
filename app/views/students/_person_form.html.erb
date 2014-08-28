@@ -1,4 +1,5 @@
-<%= form_for @person, url: (@person.id ? @person : persons_path),  html: { class: 'form-horizontal' } do |f| %>
+<%= form_for @person, url: (@person.id ? @person : persons_path),  html: { class: 'form-horizontal student-and-person-form' },
+    data: { value: @student.id, type: (@person.id ? 'edit' : 'new') } do |f| %>
   <legend>Персональная информация</legend>
   <div class="row">
     <div class="col col-lg-12">
@@ -28,7 +29,7 @@
         </div>
         <div class='col-sm-8'>
           <label class="radio" for="student-gender-1">
-            <%= f.radio_button :gender, true, id: 'student-gender-1'%> Мужской
+            <%= f.radio_button :gender, true, id: 'student-gender-1' %> Мужской
           </label>
           <label class="radio" for="student-gender-0">
             <%= f.radio_button :gender, false, id: 'student-gender-0' %> Женский
@@ -38,7 +39,7 @@
       <div class="row">
         <div class="col-sm-3"><%= f.label :homeless, class: 'control-label' %></div>
         <div class="col-sm-9">
-          <%= f.check_box :homeless %>
+          <%= f.check_box :homeless, class: 'student-btn' %>
         </div>
       </div>
     </div>

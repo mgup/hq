@@ -56,6 +56,7 @@ class Person < ActiveRecord::Base
   alias_attribute :benefits, :student_benefits
   alias_attribute :army, :student_army
   alias_attribute :army_voenkom, :student_army_voenkom
+  alias_attribute :hostel_st, :student_hostel_status
 
 
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname, dependent: :destroy
@@ -71,7 +72,7 @@ class Person < ActiveRecord::Base
   has_many :students, primary_key: :student_id, foreign_key: :student_group_student, dependent: :destroy
   accepts_nested_attributes_for :students
 
-  has_many :documents, class_name: 'Social::Document', foreign_key: :student_id, primary_key: :student_id
+  has_many :deeds, class_name: 'Social::Document', foreign_key: :student_id, primary_key: :student_id
 
   scope :from_flat, -> flat { joins(:room).where(room: {room_flat: flat})}
 

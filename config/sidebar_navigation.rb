@@ -128,8 +128,11 @@ SimpleNavigation::Configuration.run do |navigation|
 
     # ======================================
     if user_signed_in?
-      if current_user.is?(:developer)
+      if can? :read, Student
         primary.item :nav_group_lists, 'Списки', class: 'nav-header disabled'
+        primary.item :students,  'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+      end
+      if current_user.is?(:developer)
         primary.item :roles,        'Роли'.html_safe, roles_path, icon: 'tags', highlights_on: -> { 'roles' == params[:controller] }
         primary.item :appointments, 'Должности'.html_safe, appointments_path, icon: 'tags'
         primary.item :departments,  'Структура'.html_safe, departments_path, icon: 'list', highlights_on: -> { 'departments' == params[:controller] }
@@ -149,7 +152,6 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :event_categories, 'Категории событий', event_categories_path, icon: 'th-list'
 
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
-        primary.item :students,     'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
         primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
       end
@@ -257,6 +259,9 @@ SimpleNavigation::Configuration.run do |navigation|
       end
       if can? :manage, EventDate
         primary.item :dates,    'Профосмотр (выбор даты)'.html_safe, event_dates_path(1), icon: 'calendar'
+      end
+      if can? :manage, Social::DocumentType
+        primary.item :social_document_types,  '<span class="glyphicons notes_2"></span> Типы справок/документов'.html_safe, social_document_types_path, highlights_on: -> { 'social/document_types' == params[:controller] }
       end
     end
 

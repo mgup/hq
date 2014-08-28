@@ -2,9 +2,13 @@
 <br>
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
+  <% if current_user.is? :developer %>
+    <button style="margin-top: -25px;" data-type="<%= @student.id ? 'edit' : 'new' %>" data-value="<%= @student.id %>" class="pull-right btn btn-sm btn-info edit-student-person">Редактировать</button>
+  <% end %>
 </div>
 
-<%= form_for @student, html: { class: 'form-horizontal' } do |f| %>
+<%= form_for @student, html: { class: 'form-horizontal student-and-person-form' },
+    data: { value: @student.id, type: (@student.id ? 'edit' : 'new') } do |f| %>
   <legend>Группа студента</legend>
   <div class="row">
     <div class="col-sm-3"><%= label_tag :faculty, 'Институт' %></div>

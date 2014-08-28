@@ -1,0 +1,7 @@
+ru:
+  activerecord:
+    models:
+      social/document_type: 'тип документа'
+    attributes:
+      social/document_type:
+        name: 'название'

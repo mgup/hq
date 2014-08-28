@@ -99,12 +99,14 @@ HQ::Application.routes.draw do
     end
   end
 
-  resources :persons do
-    namespace :social do
-      resources :documents
-    end
+  namespace :social do
+    resources :document_types
   end
+  resources :persons
   resources :students do
+    namespace :social do
+        resources :deeds, controller: 'documents'
+    end
     get 'documents' => 'students#documents'
     get 'orders' => 'students#orders'
     get 'study' => 'students#study'
