@@ -9,6 +9,9 @@ class Social::Document < ActiveRecord::Base
   scope :actual, -> { where(status: 1) }
   scope :archive, -> { where(status: 2) }
 
+  scope :till_date, -> date { where('expire_date > ? OR expire_date IS NULL', Date.parse(date)) }
+  scope :with_types, -> types { where('social_document_type_id IN (?)', types) }
+
   def eternal?
     expire_date.nil?
   end

@@ -1,12 +1,41 @@
 class Social::DocumentsController < ApplicationController
-  load_and_authorize_resource :student
+  load_and_authorize_resource :student, except: :list
   before_filter :load_deeds, only: :index
   before_filter :load_deed, only: :update
 
   def index
     authorize! :index, Social::Document
+    @archive = @documents.archive
     @documents = @documents.actual
     @document = Social::Document.new
+  end
+
+  def list
+    authorize! :index, Social::Document
+    @documents = Social::Document.all
+
+    if params[:date] && params[:date]!=''
+      @documents = @documents.till_date(params[:date])
+    end
+
+    if params[:actual]
+      unless params[:archive]
+        @documents = @documents.actual
+      end
+    else
+      if params[:archive]
+        @documents = @documents.archive
+      else
+        @documents = []
+      end
+    end
+
+    params[:types] ||= []
+
+    unless params[:types].empty? || params[:types] == ['']
+      @documents = @documents.with_types(params[:types])
+    end
+
   end
 
   def create

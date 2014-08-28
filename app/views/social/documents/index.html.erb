@@ -4,16 +4,16 @@
 <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
 </div>
 
-<% if @student.person.benefits_free? %>
-  <p class="lead">У студента нет льгот</p>
-<% elsif @student.is_valid? %>
+<%# if @student.person.benefits_free? %>
+  <!--<p class="lead">У студента нет льгот</p>-->
+<%# elsif @student.is_valid? %>
   <%= link_to '#addDocumentModal', class: 'btn btn-primary pull-right', data: {toggle: 'modal'} do %>
-    <span class="glyphicon glyphicon-plus"></span> Добавить студенту справку
+    <span class="glyphicon glyphicon-plus"></span> Добавить студенту справку/документ
   <% end %>
 
   <h3>Справки студента</h3>
   <% if @documents.empty? %>
-     <p class="lead">Ни одной справки не было найдено</p>
+     <p class="lead">Ни одной справки/документа не было найдено</p>
   <% else %>
     <br><br>
     <div class="panel-group" id="accordionHelperSocials">
@@ -29,13 +29,13 @@
         <div class="panel-body">
           <ul class="list-unstyled">
             <li>
-              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 success"></div> — справка действительна<br><br>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 success"></div> — документ действителен<br><br>
             </li>
             <li>
-              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 warning"></div> — срок действия справки истечёт меньше через месяц<br><br>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 warning"></div> — срок действия документа истечёт меньше через месяц<br><br>
             </li>
             <li>
-              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 danger"></div> — срок действия справки истек<br><br>
+              <div style="width: 50px; height: 20px; margin-right: 10px" class="col-sm-1 danger"></div> — срок действия документа истек<br><br>
             </li>
           </ul>
         </div>
@@ -47,9 +47,9 @@
         <thead>
           <tr>
             <th rowspan="2">#</th>
-            <th rowspan="2">Тип справки</th>
+            <th rowspan="2">Тип справки/документа</th>
             <th rowspan="2">Номер</th>
-            <th rowspan="2">Орган, выдавший справку</th>
+            <th rowspan="2">Орган, выдавший справку/документ</th>
             <th class="text-center" colspan="2">Действительна</th>
             <th rowspan="2"></th>
           </tr>
@@ -82,6 +82,36 @@
         </tbody>
      </table>
   <% end %>
-<% end %>
+<%# end %>
 
 <%= render 'add_document' %>
+
+<br><br>
+<button id="show_archive_documents" class="btn btn-default">Архив</button>
+<table id="archive_documents_table" class="table table-hover" style="display: none;">
+    <thead>
+    <tr>
+        <th rowspan="2">#</th>
+        <th rowspan="2">Тип справки/документа</th>
+        <th rowspan="2">Номер</th>
+        <th rowspan="2">Орган, выдавший справку/документ</th>
+        <th class="text-center" colspan="2">Действительна</th>
+    </tr>
+    <tr>
+        <th class="text-center">с</th>
+        <th class="text-center">по</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @archive.each do |document| %>
+      <tr>
+          <td><%= document.id %></td>
+          <td><%= document.type.name %></td>
+          <td><%= document.number %></td>
+          <td><%= document.department %></td>
+          <td class="text-center"><%= l document.start_date %></td>
+          <td class="text-center"><%= l document.expire_date %></td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>

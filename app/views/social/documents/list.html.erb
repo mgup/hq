@@ -1,0 +1,30 @@
+<div class="page-header">
+    <h1>Документы/справки студентов</h1>
+</div>
+
+<%= render 'filter' %>
+
+<% if @documents.empty? %>
+  <p class="lead">Ни одного документа/справки не было найдено. Попробуйте изменить параметры поиска.</p>
+<% else %>
+ <table class="table">
+     <thead>
+        <tr>
+            <th>#</th>
+            <th>Студент</th>
+            <th>Справка/документ</th>
+            <th>Действительна до</th>
+        </tr>
+     </thead>
+     <tbody>
+      <% @documents.each do |document| %>
+        <tr class="<%= 'active' if document.archive? %>" style="<%= 'color: #aaa' if document.archive? %>">
+          <td><%= document.id %></td>
+          <td><%= document.person.full_name %> <small><%= document.person.students.collect{|s| s.group.name}.join(', ') %></small></td>
+          <td><%= document.type.name %>, №<%= document.number %></td>
+          <td><%= document.eternal? ? 'бессрочно' : (document.expire_date.future? ? (l document.expire_date) : 'срок действия справки истёк') %></td>
+        </tr>
+      <% end %>
+     </tbody>
+ </table>
+<% end %>

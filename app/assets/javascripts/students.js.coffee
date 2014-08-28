@@ -15,3 +15,6 @@ $ ->
       $(this).addClass('active')
       $('.student-and-person-form[data-value="'+$(this).data('value')+'"] input').prop('disabled', false)
       $('.student-and-person-form[data-value="'+$(this).data('value')+'"] select').prop('disabled', false)
+
+  $('#show_archive_documents').click ->
+    $('#archive_documents_table').toggle()

@@ -101,6 +101,9 @@ HQ::Application.routes.draw do
 
   namespace :social do
     resources :document_types
+    resources :documents, only: [] do
+      get 'list', on: :collection
+    end
   end
   resources :persons
   resources :students do

@@ -163,6 +163,11 @@ class Ability
   def soc_support_boss(user)
     soc_support(user)
     soc_support_vedush(user)
+    can :manage, Curator::TaskUser
+    can :manage, Curator::Task
+    can :manage, Curator::TaskType
+    can :manage, Hostel::Offense
+    can :manage, Hostel::Report
   end
 
   def soc_support_vedush(user)

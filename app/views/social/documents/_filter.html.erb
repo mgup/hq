@@ -1,0 +1,41 @@
+<%= form_tag nil, method: :get, class: 'form-horizontal' do %>
+  <div class="form-group">
+      <div class="col-sm-4">
+          <%= text_field_tag :date, params[:date], class: 'datepicker form-control',
+                             placeholder: 'дд.мм.гггг' %>
+      </div>
+      <div class="col-sm-6">
+          <%= text_field_tag :last_name, params[:last_name], class: 'form-control',
+                             placeholder: 'Фамилия студента' %>
+      </div>
+      <div class="col-sm-2">
+          <%= submit_tag 'Поиск', class: 'btn btn-primary form-control' %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="col-sm-12">
+          <%= multiselect_tag :types, title: 'Тип документа/справки', collection: Social::DocumentType.all,
+                              value: :id, text: :name,
+                              current: (params[:types].map(&:to_i) == [0] ? [] : params[:types].map(&:to_i)),
+                              pl1: 'Выбран %c тип',
+                              pl2: 'Выбрано %c типа',
+                              pl5: 'Выбрано %c типов' %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="col-sm-8">
+          <div class="checkbox">
+              <label>
+                  <%= check_box_tag :actual, '1', '1' == params[:actual], class: 'social_documents_check' %> Документы/справки, не отправленные в архив
+              </label>
+          </div>
+          <div class="checkbox">
+              <label>
+                  <%= check_box_tag :archive, '1', '1' == params[:archive], class: 'social_documents_check' %> Архивные документы/справки
+              </label>
+          </div>
+      </div>
+  </div>
+<% end %>
