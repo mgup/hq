@@ -7,6 +7,10 @@
 <% if @documents.empty? %>
   <p class="lead">Ни одного документа/справки не было найдено. Попробуйте изменить параметры поиска.</p>
 <% else %>
+  <%= link_to list_social_documents_path(params.merge({ format: :xlsx })
+              ), class: 'btn btn-default' do %>
+    <span class="glyphicons print"></span> Распечатать .xlsx
+  <% end %>
  <table class="table">
      <thead>
         <tr>

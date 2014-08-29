@@ -1,0 +1,24 @@
+wb = xlsx_package.workbook
+style_shout = wb.styles.add_style sz: 13, b: true, alignment: { horizontal: :center, vertical: :center }
+style = wb.styles.add_style sz: 12, alignment: { horizontal: :center, vertical: :center }
+  wb.add_worksheet(name: 'Документы и справки') do |sheet|
+    sheet.add_row ['№', 'Фамилия', 'Имя', 'Отчество', 'Группа', 'Тип справки/документа', 'Номер', 'Выдана', 'Срок действия', '']
+    sheet.add_row ['', '', '', '', '', '', '', '', 'с', 'по']
+    sheet.merge_cells('A1:A2')
+    sheet.merge_cells('B1:B2')
+    sheet.merge_cells('C1:C2')
+    sheet.merge_cells('D1:D2')
+    sheet.merge_cells('E1:E2')
+    sheet.merge_cells('F1:F2')
+    sheet.merge_cells('G1:G2')
+    sheet.merge_cells('H1:H2')
+    sheet.merge_cells('I1:J1')
+    sheet['A1:J2'].each do |cell|
+      cell.style = style_shout
+    end
+
+    @documents.each do |d|
+      sheet.add_row ["#{d.id}", "#{d.person.last_name}", "#{d.person.first_name}", "#{d.person.patronym}",
+                     "#{d.person.students.collect{|s| s.group.name}.join(', ')}", "#{d.type.name} - [#{d.type.id}]", "#{d.number}", "#{d.department}", "#{l d.start_date}", "#{d.eternal? ? 'бессрочно' : l(d.expire_date)}"]
+    end
+end

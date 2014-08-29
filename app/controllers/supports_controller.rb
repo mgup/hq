@@ -22,9 +22,17 @@ class SupportsController < ApplicationController
     find_student
     causes = My::SupportCause.find(params[:causes].split(','))
     reasons = []
+    documents = []
+    @can_print = true
     causes.each do |c|
       reasons << c.reasons.collect{|r| r.id}
+      c.document_types.each do |dt|
+        d = @student.person.deeds.actual.find_from_type(dt).collect{|x| x.id}
+        @can_print &&= !d.empty?
+        documents << d
+      end
     end
+    @documents = Social::Document.find(documents.flatten.uniq)
     @reasons = My::SupportReason.find(reasons)
     respond_to do |format|
       format.js

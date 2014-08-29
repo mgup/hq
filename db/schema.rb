@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140828115151) do
+ActiveRecord::Schema.define(version: 20140829100103) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -2062,6 +2062,11 @@ ActiveRecord::Schema.define(version: 20140828115151) do
     t.text "support_cause_title",    null: false
     t.text "support_cause_pattern",  null: false
     t.text "support_cause_patternf"
+  end
+
+  create_table "support_cause_document_types", force: true do |t|
+    t.integer "support_cause_id"
+    t.integer "social_document_type_id"
   end
 
   create_table "support_cause_reason", primary_key: "support_cause_reason_id", force: true do |t|

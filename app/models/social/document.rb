@@ -9,8 +9,15 @@ class Social::Document < ActiveRecord::Base
   scope :actual, -> { where(status: 1) }
   scope :archive, -> { where(status: 2) }
 
-  scope :till_date, -> date { where('expire_date > ? OR expire_date IS NULL', Date.parse(date)) }
+  scope :till_date, -> date { where('expire_date <= ? OR expire_date IS NULL', Date.parse(date)) }
+  scope :after_date, -> date { where('expire_date > ? OR expire_date IS NULL', Date.parse(date)) }
   scope :with_types, -> types { where('social_document_type_id IN (?)', types) }
+
+  scope :with_last_name, -> (last_name) {
+    joins(:person).where('last_name_hint LIKE ?', "#{last_name}%")
+  }
+
+  scope :find_from_type, -> type_id { where(social_document_type_id: type_id) }
 
   def eternal?
     expire_date.nil?

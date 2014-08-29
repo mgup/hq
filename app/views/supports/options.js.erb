@@ -1,3 +1,2 @@
-$('#preventModal').html("<%= escape_javascript (render partial: 'support_modal',
-    locals: {student: @student, reasons: @reasons}).html_safe %>");
-$('#preventionSupport').modal('show');
+$('#preventModal #preventSupportImg').replaceWith("<%= escape_javascript (render partial: 'support_modal',
+    locals: {student: @student, reasons: @reasons, documents: @documents, can_print: @can_print}).html_safe %>");

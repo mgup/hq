@@ -14,8 +14,17 @@ class Social::DocumentsController < ApplicationController
     authorize! :index, Social::Document
     @documents = Social::Document.all
 
+    unless params[:actual] || params[:archive]
+      params[:actual] = '1'
+      params[:archive] = '1'
+    end
+
     if params[:date] && params[:date]!=''
-      @documents = @documents.till_date(params[:date])
+      @documents = @documents.after_date(params[:date])
+    end
+
+    if params[:pdate] && params[:pdate]!=''
+      @documents = @documents.till_date(params[:pdate])
     end
 
     if params[:actual]
@@ -34,6 +43,15 @@ class Social::DocumentsController < ApplicationController
 
     unless params[:types].empty? || params[:types] == ['']
       @documents = @documents.with_types(params[:types])
+    end
+
+    if params[:last_name] && params[:last_name]!=''
+      @documents = @documents.with_last_name(params[:last_name])
+    end
+
+    respond_to do |format|
+      format.html
+      format.xlsx
     end
 
   end
