@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       notify_honeybadger exception
       render_error 500, exception
     }
-    rescue_from ActionController::RoutingError, ActionController::UnknownController, ::AbstractController::ActionNotFound, ActiveRecord::RecordNotFound, with: lambda { |exception|
+    rescue_from ActionController::RoutingError, ActionController::UnknownController, ActionController::InvalidAuthenticityToken, ::AbstractController::ActionNotFound, ActiveRecord::RecordNotFound, with: lambda { |exception|
       render_error 404, exception
     }
   end
