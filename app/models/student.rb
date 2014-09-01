@@ -1,5 +1,8 @@
 class Student < ActiveRecord::Base
+  include Filterable
+
   include ActionView::Helpers::NumberHelper
+
   PAYMENT_BUDGET = 1
   PAYMENT_OFF_BUDGET = 2
 
@@ -12,6 +15,7 @@ class Student < ActiveRecord::Base
   MARK_PRACTICAL_PERFECT    = 2003
 
   STATUS_STUDENT            = 101
+  STATUS_COMPLETE           = 106
   STATUS_DEBTOR             = 107
   STATUS_ENTRANT            = 100
 
