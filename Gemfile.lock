@@ -223,6 +223,7 @@ GEM
     prawn (1.2.1)
       pdf-core (~> 0.2.5)
       ttfunk (~> 1.2.0)
+    prawn-table (0.1.1)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -442,6 +443,7 @@ DEPENDENCIES
   nested_form
   numbers_and_words
   prawn
+  prawn-table
   pry-rails
   quiet_assets
   rack-mini-profiler
