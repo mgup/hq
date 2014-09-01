@@ -4,7 +4,9 @@
         <%= select_tag :year_term,
                        options_for_select(
                            [['2013/2014, 2-й семестр', '2013-2'],
-                            ['2013/2014, 1-й семестр', '2013-1']],
+                            ['2013/2014, 1-й семестр', '2013-1'],
+                            ['2014/2015, 1-й семестр', '2014-1'],
+                            ['2014/2015, 2-й семестр', '2014-2']],
                            "#{params[:year]}-#{params[:term]}"),
                        class: 'form-control',
                        onchange: %q(document.location = '/study/' + $(this).val() + '/plans';) %>
