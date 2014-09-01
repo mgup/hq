@@ -171,7 +171,7 @@ class Study::DisciplinesController < ApplicationController
 ")
     respond_to do |format|
       format.xlsx {
-        response.headers['Content-Disposition'] = 'attachment; filename="' + "Заполнение БРС на #{Date.today.strftime("%d.%m.%Y")}.xlsx" + '"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + "Заполнение БРС на #{Date.today.strftime('%d.%m.%Y')}.xlsx" + '"'
       }
     end
   end
