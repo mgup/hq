@@ -42,13 +42,13 @@ class Ability
 
       can :manage, User, user_id: user.id
 
-      if user.is?(:zamestitel_otvetstvennogo_sekretarja)
-        can :index, :selection_contracts
-      end
+      # if user.is?(:zamestitel_otvetstvennogo_sekretarja)
+      #   # can :index, :selection_contracts
+      # end
 
-      if user.is?(:chief_accountant)
-        can :index, :selection_contracts
-      end
+      # if user.is?(:chief_accountant)
+      #   can :index, :selection_contracts
+      # end
 
       #if user.is?(:lecturer)
         # can :manage, Study::Exam

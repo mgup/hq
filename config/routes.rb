@@ -263,7 +263,9 @@ HQ::Application.routes.draw do
     get 'reopen', on: :member
   end
 
-  get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
+
+  # Информация о платном приёме
+  # get 'selection/contract(/:page)', to: 'selection#contract', defaults: { page: 1 }, as: :selection_contract
 
   get 'schedule/data/departments' => 'schedule/data#departments'
   get 'schedule/data/rooms' => 'schedule/data#rooms'
@@ -364,6 +366,8 @@ HQ::Application.routes.draw do
   end
 
   namespace :report do
+    get 'structure/report', to: 'structure#report', defaults: { format: :xlsx }
+
     get 'gzgu/mon_pk',  to: 'gzgu#mon_pk'
     get 'gzgu/mon_pk_f1_2014_06_23',  to: 'gzgu#mon_pk_f1_2014_06_23'
     get 'gzgu/mon_pk_f1a_2014_06_23', to: 'gzgu#mon_pk_f1a_2014_06_23'

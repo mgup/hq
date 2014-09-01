@@ -9,7 +9,15 @@
       [crimea_rating_entrance_campaign_path(Entrance::Campaign::CRIMEA, 
         direction: params[:direction], utf8: '✓',
         form: params[:form], payment: params[:payment]),
-        Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name]
+        Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name],
+      [rating_entrance_campaign_path(22014,
+                                     direction: params[:direction], utf8: '✓',
+                                     form: params[:form], payment: params[:payment]),
+       Entrance::Campaign.find(22014).name],
+      [rating_entrance_campaign_path(32014,
+                                     direction: params[:direction], utf8: '✓',
+                                     form: params[:form], payment: params[:payment]),
+       Entrance::Campaign.find(32014).name]
     ], 'campaign', class:  'super-tabs') %>
   </div>
 </div>
