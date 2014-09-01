@@ -162,9 +162,9 @@ SimpleNavigation::Configuration.run do |navigation|
       if (can? :index, :selection_contracts) or (can? :index, :payment_types)
         primary.item :nav_group_selection, 'Платный приём', class: 'nav-header disabled'
       end
-      if can? :index, :selection_contracts
-        primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
-      end
+      # if can? :index, :selection_contracts
+      #   primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
+      # end
       if can? :index, :payment_types
         primary.item :prices,    'Стоимость обучения'.html_safe, finance_payment_types_path, icon: 'credit-card', highlights_on: -> { params[:controller].include?('payment_types') }
       end
