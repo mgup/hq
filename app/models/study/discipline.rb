@@ -72,6 +72,7 @@ class Study::Discipline < ActiveRecord::Base
   scope :by_term, -> year, term {
     where(subject_year: year, subject_semester: term)
   }
+
   scope :now, -> { by_term(CURRENT_STUDY_YEAR, CURRENT_STUDY_TERM) }
 
   scope :include_teacher, -> user {

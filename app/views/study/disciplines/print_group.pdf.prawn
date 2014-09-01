@@ -11,7 +11,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.move_down 13
 
   data = [['№', 'Студент', '#', '', '', '', '']]
-  @discipline.group.students.valid_for_today.each_with_index do |s, index|
+  @students.each_with_index do |s, index|
     data << [index + 1, s.person.full_name, s.id, '', '', '', '']
   end
 

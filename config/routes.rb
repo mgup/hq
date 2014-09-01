@@ -135,6 +135,14 @@ HQ::Application.routes.draw do
       get 'plans', to: 'plans#index'
       get 'control', to: 'exams#control'
     end
+    resources :groups, path:  '/group' do
+      get '/progress' => 'progress#index'
+      get '/progress/discipline/:discipline' => 'progress#discipline', as: :discipline
+      get '/progress/change_discipline' => 'progress#change_discipline'
+      get '/print_progress.pdf', to: 'progress#print_progress', defaults: { format: 'pdf' }, as: :print_progress
+      resources :students, path:  '/student'
+      get '/student/:id/discipline/:discipline' => 'students#discipline', as: :progress_discipline
+    end
 
     get 'exammarks/:id/ajax_update' => 'exam_marks#ajax_update'
     resources :disciplines do
@@ -166,14 +174,7 @@ HQ::Application.routes.draw do
     #get '/analyse' => 'analyse#index'
     #get '/chase' => 'chase#index'
 
-    resources :groups, path:  '/group' do
-      get '/progress' => 'progress#index'
-      get '/progress/discipline/:discipline' => 'progress#discipline', as: :discipline
-      get '/progress/change_discipline' => 'progress#change_discipline'
-      get '/print_progress.pdf', to: 'progress#print_progress', defaults: { format: 'pdf' }, as: :print_progress
-      resources :students, path:  '/student'
-      get '/student/:id/discipline/:discipline' => 'students#discipline', as: :progress_discipline
-    end
+
 
     get '/plans' => 'plans#index'
     #get '/plans/:exam_id/updatedate' => 'plans#updatedate'
