@@ -91,6 +91,8 @@ class Student < ActiveRecord::Base
                           association_foreign_key: 'exam_student_exam'
 
   delegate :education_form, to: :group
+  delegate :course,         to: :group
+  delegate :speciality,     to: :group
   delegate :deeds, to: :person
 
   default_scope do
@@ -188,10 +190,6 @@ GROUP BY `group`
   # нужно найти все valid? и заменить
   def is_valid?
     STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status
-  end
-
-  def course
-    group.course
   end
 
   def entrance_order
