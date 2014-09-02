@@ -216,7 +216,7 @@ ORDER BY
 	student_iname_ip ASC,
 	student_oname_ip ASC
 ), { group: group, date: date.strftime('%Y-%m-%d'), year: date.strftime('%Y')  }]))
-    raise date.strftime('%Y-%m-%d').inspect
+    # raise date.strftime('%Y-%m-%d').inspect
     find(ids.to_a.collect{|x| x[0]}.split(','))
   }
 
