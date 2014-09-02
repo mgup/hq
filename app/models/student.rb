@@ -186,6 +186,7 @@ FROM (
 	WHERE
 		`student_group`.`student_group_status` IN (101, 107)
 		AND `student_group`.`student_group_group` = :group
+    AND `student_group`.`student_group_yearin` < :year
 	GROUP BY `student_group`.`student_group_id`
 	HAVING
 		AVG(COALESCE(`archive`.`student_group_group`, :group)) = :group
@@ -202,6 +203,7 @@ FROM (
 		`archive_student_group`.`student_group_status` IN (101, 107)
 		AND `archive_student_group`.`student_group_group` = :group
 		AND `order`.`order_signing` > :date
+    AND `archive_student_group`.`student_group_yearin` < :year
 ) AS `studentss`
 JOIN student_group ON studentss.student_group_id = student_group.student_group_id
 JOIN student ON student_group.student_group_student = student_id
@@ -213,8 +215,8 @@ ORDER BY
 	student_fname_ip ASC,
 	student_iname_ip ASC,
 	student_oname_ip ASC
-), { group: group, date: date.strftime('%Y-%m-%d') }]))
-    # raise ids.to_a.inspect
+), { group: group, date: date.strftime('%Y-%m-%d'), year: date.strftime('%Y')  }]))
+    raise date.strftime('%Y-%m-%d').inspect
     find(ids.to_a.collect{|x| x[0]}.split(','))
   }
 

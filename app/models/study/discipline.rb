@@ -106,6 +106,10 @@ class Study::Discipline < ActiveRecord::Base
     exams.where(exam_type: work) != []
   end
 
+  def autumn?
+    semester == 1
+  end
+
   def control
     exams.where(exam_type: [0,1,9]).first
   end
