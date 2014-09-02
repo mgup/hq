@@ -1,20 +1,22 @@
 class Study::StudentsController < ApplicationController
-
-  load_resource
+  # load_resource :group
+  load_resource :student
   skip_before_filter :authenticate_user! , only: [:show, :discipline]
+  before_filter :year_term_params
 
   def show
     authorize! :show, :student_progress
     dates = []
     @rows = []
-    @student.checkpoints.each do |checkpoint|
+    @group = @student.group_at_date(Date.new((@term == 1 ? @year : @year+1), (@term == 1 ? 9 : 4), 15))
+    @student.checkpoints_by_term(@year, @term).each do |checkpoint|
        dates << checkpoint.date
     end
     dates.uniq!
     dates.sort.each do |date|
       row = []
       row << date
-      @student.disciplines.each do |discipline|
+      @student.disciplines_by_term(@year, @term).each do |discipline|
         marks = []
         marks << discipline
         Study::Checkpoint.by_discipline(discipline).by_date(date).each do |checkpoint|
@@ -31,11 +33,19 @@ class Study::StudentsController < ApplicationController
   def discipline
     authorize! :show, :student_discipline_progress
     @student = Student. find params[:id]
+    @group = @student.group_at_date(Date.new((@term == 1 ? @year : @year+1), (@term == 1 ? 9 : 4), 15))
     @discipline = Study::Discipline.find params[:discipline]
     @checkpoints = @discipline.classes.order(:checkpoint_date)
   end
 
   private
+
+  def year_term_params
+    params[:year] ||= Study::Discipline::CURRENT_STUDY_YEAR
+    params[:term] ||= Study::Discipline::CURRENT_STUDY_TERM
+    @year = params[:year].to_i
+    @term = params[:term].to_i
+  end
 
   def student_params
     params.require(:students)

@@ -7,7 +7,7 @@ class Study::ProgressController < ApplicationController
     @discipline_students = []
     @students.each do |student|
       @discipline_students << {student: student,
-                               progress: student.result()}
+                               progress: student.result(nil, params[:year].to_i, params[:term].to_i)}
     end
   end
 

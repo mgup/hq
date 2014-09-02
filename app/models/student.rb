@@ -372,7 +372,7 @@ LIMIT 1 ")
   end
 
 
-  def ball(discipline = nil)
+  def ball(discipline = nil, y = nil, t = nil)
     if discipline
       l1, p1, n1 = 0.0, 0.0, 0.0
       return 0.0 if discipline.classes.count == 0
@@ -408,7 +408,7 @@ LIMIT 1 ")
       (l1+p1+n1).round 2
     else
       ball = 0.0
-      disciplines.each do |d|
+      disciplines_by_term(y, t).each do |d|
         ball+=ball(d)
       end
       ball
@@ -436,17 +436,17 @@ LIMIT 1 ")
     end
   end
 
-  def result(discipline = nil)
+  def result(discipline = nil, y = nil, t = nil)
     if discipline
       current = ball(discipline)
       ball = discipline.current_ball != 0 ? 100*(current/discipline.current_ball) : 0.0
       current_progress = current
     else
-      current = ball()
-      current_progress = (disciplines.size != 0 ? (current/disciplines.size) : 0)
+      current = ball(nil, y, t)
+      current_progress = (disciplines_by_term(y,t).size != 0 ? (current/disciplines_by_term(y,t).size) : 0)
       ball = 0
-      disciplines.each do |d|
-        ball+=100*(current_progress/d.current_ball)/disciplines.size if d.current_ball != 0
+      disciplines_by_term(y,t).each do |d|
+        ball+=100*(current_progress/d.current_ball)/disciplines_by_term(y,t).size if d.current_ball != 0
       end
     end
     if discipline and discipline.final_exam and discipline.final_exam.test?

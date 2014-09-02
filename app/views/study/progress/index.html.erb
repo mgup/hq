@@ -10,7 +10,7 @@
                           ['2013/2014, 2-й семестр', '2013-2'],
                           ['2013/2014, 1-й семестр', '2013-1']],
                          "#{params[:year]}-#{params[:term]}"),
-        class: 'form-control', data: { value: @group.id}, disabled: true,
+        class: 'form-control', data: { value: @group.id},  #disabled: true,
                          onchange: %q(document.location = '/study/group/' + $(this).data('value') + '/progress?year=' + $(this).val().split('-')[0] + '&term=' + $(this).val().split('-')[1];) %>
     </div>
   </div>
