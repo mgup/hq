@@ -161,15 +161,65 @@ class Student < ActiveRecord::Base
 
   scope :in_group_at_date, -> group, date {
     group = group.id if group.is_a?(Group)
-
+# SELECT GROUP_CONCAT(student) AS student_group_id, `group` AS student_group_group
+# FROM timeline
+# WHERE change_date >= :date and `group` = :group
+# GROUP BY `group`
     ids = self.connection.execute(sanitize_sql([%q(
-SELECT GROUP_CONCAT(student) AS student_group_id, `group` AS student_group_group
-FROM timeline
-WHERE change_date >= :date and `group` = :group
-GROUP BY `group`
-                               ), { group: group, date: date.strftime('%Y-%m-%d') }]))
-
-    find(ids.to_a[0][0].split(','))
+SELECT student_group.*, student.*, `group`.*,
+	fword.dictionary_ip AS student_fname_ip,
+	iword.dictionary_ip AS student_iname_ip,
+	oword.dictionary_ip AS student_oname_ip
+FROM (
+	SELECT
+		`student_group`.`student_group_id`
+	FROM `student_group`
+	LEFT JOIN (
+		SELECT archive_student_group.*
+		FROM `archive_student_group`
+		JOIN `order`
+			ON
+				`order`.`order_id` = `archive_student_group`.`archive_student_group_order`
+				AND `order_signing` >= :date
+		ORDER BY order.order_signing DESC, order.order_id DESC
+		LIMIT 1
+	) AS `archive`
+		ON `archive`.`student_group_id` = `student_group`.`student_group_id`
+	WHERE
+		`student_group`.`student_group_status` IN (101, 107)
+		AND `student_group`.`student_group_group` = :group
+    AND `student_group`.`student_group_yearin` < :year
+	GROUP BY `student_group`.`student_group_id`
+	HAVING
+		AVG(COALESCE(`archive`.`student_group_group`, :group)) = :group
+		AND COUNT(DISTINCT `archive`.`student_group_group`) <= 1
+	UNION
+	SELECT
+		`student_group`.`student_group_id`
+	FROM `student_group`
+	JOIN `archive_student_group`
+		ON `archive_student_group`.`student_group_id` = `student_group`.`student_group_id`
+	JOIN `order`
+		ON `order`.`order_id` = `archive_student_group`.`archive_student_group_order`
+	WHERE
+		`archive_student_group`.`student_group_status` IN (101, 107)
+		AND `archive_student_group`.`student_group_group` = :group
+		AND `order`.`order_signing` > :date
+    AND `archive_student_group`.`student_group_yearin` < :year
+) AS `studentss`
+JOIN student_group ON studentss.student_group_id = student_group.student_group_id
+JOIN student ON student_group.student_group_student = student_id
+JOIN `group` ON group_id = student_group_group
+JOIN dictionary AS fword ON fword.dictionary_id = student.student_fname
+JOIN dictionary AS iword ON iword.dictionary_id = student.student_iname
+JOIN dictionary AS oword ON oword.dictionary_id = student.student_oname
+ORDER BY
+	student_fname_ip ASC,
+	student_iname_ip ASC,
+	student_oname_ip ASC
+), { group: group, date: date.strftime('%Y-%m-%d'), year: date.strftime('%Y')  }]))
+    # raise date.strftime('%Y-%m-%d').inspect
+    find(ids.to_a.collect{|x| x[0]}.split(','))
   }
 
   scope :with_contract, -> {
@@ -180,6 +230,23 @@ GROUP BY `group`
 
   def speciality
     group.speciality
+  end
+
+
+  def group_at_date(date)
+    date = date.strftime('%Y-%m-%d')
+    group_id = ActiveRecord::Base.connection.execute(
+"SELECT `group`.*, `order`.order_signing as 'date'  FROM `group`
+JOIN `archive_student_group` ON `archive_student_group`.student_group_group = `group`.group_id AND `archive_student_group`.student_group_id = #{id}
+JOIN `order` ON `order`.order_id = `archive_student_group`.archive_student_group_order
+WHERE `order`.order_signing >= '#{date}'
+UNION
+SELECT `group`.*, '#{Date.today.strftime('%Y-%m-%d')}' as date
+FROM `group`
+JOIN `student_group` ON `student_group`.student_group_group = `group`.group_id AND `student_group`.student_group_id = #{id}
+ORDER BY 'date' DESC
+LIMIT 1 ")
+    Group.find(group_id.to_a[0][0])
   end
 
   # Факультет, на котором обучается студент.
@@ -250,7 +317,19 @@ GROUP BY `group`
   end
 
   def checkpoints
-    Study::Checkpoint.where(checkpoint_subject: disciplines.collect{|d| d.id})
+    Study::Checkpoint.where(checkpoint_subject: disciplines.collect{ |d| d.id })
+  end
+
+  def disciplines_by_term(y,t)
+    if y == Study::Discipline::CURRENT_STUDY_YEAR && t == Study::Discipline::CURRENT_STUDY_TERM
+      group.disciplines.now.with_brs
+    else
+      group_at_date(Date.new(t == 1 ? y : y+1, t == 1 ? 10 : 4, 15)).disciplines.by_term(y,t).with_brs
+    end
+  end
+
+  def checkpoints_by_term(y,t)
+    Study::Checkpoint.where(checkpoint_subject: disciplines_by_term(y,t).collect{ |d| d.id })
   end
 
   #def discipline_marks(discipline)
@@ -262,8 +341,15 @@ GROUP BY `group`
   #end
 
   def discipline_marks(discipline = nil)
+    if !discipline || discipline.is_active?
+        date_group = group
+    else
+        date_group = group_at_date(Date.new((discipline.semester == 1 ? discipline.year : discipline.year+1), (discipline.semester == 1 ? 9 : 4), 15))
+    end
+
     dmarks = []
-    group.group_marks(discipline).each_with_object([]){|mark, a| a << mark if mark[2] == id}.each do |mark|
+    # raise group.group_marks(discipline).inspect
+    date_group.group_marks(discipline).each_with_object([]){|mark, a| a << mark if mark[2] == id}.each do |mark|
       dmarks << {mark: mark[3], checkpoint: mark[8]}
     end
     dmarks
@@ -286,7 +372,7 @@ GROUP BY `group`
   end
 
 
-  def ball(discipline = nil)
+  def ball(discipline = nil, y = nil, t = nil)
     if discipline
       l1, p1, n1 = 0.0, 0.0, 0.0
       return 0.0 if discipline.classes.count == 0
@@ -322,7 +408,7 @@ GROUP BY `group`
       (l1+p1+n1).round 2
     else
       ball = 0.0
-      disciplines.each do |d|
+      disciplines_by_term(y, t).each do |d|
         ball+=ball(d)
       end
       ball
@@ -350,17 +436,17 @@ GROUP BY `group`
     end
   end
 
-  def result(discipline = nil)
+  def result(discipline = nil, y = nil, t = nil)
     if discipline
       current = ball(discipline)
       ball = discipline.current_ball != 0 ? 100*(current/discipline.current_ball) : 0.0
       current_progress = current
     else
-      current = ball()
-      current_progress = (disciplines.size != 0 ? (current/disciplines.size) : 0)
+      current = ball(nil, y, t)
+      current_progress = (disciplines_by_term(y,t).size != 0 ? (current/disciplines_by_term(y,t).size) : 0)
       ball = 0
-      disciplines.each do |d|
-        ball+=100*(current_progress/d.current_ball)/disciplines.size if d.current_ball != 0
+      disciplines_by_term(y,t).each do |d|
+        ball+=100*(current_progress/d.current_ball)/disciplines_by_term(y,t).size if d.current_ball != 0
       end
     end
     if discipline and discipline.final_exam and discipline.final_exam.test?

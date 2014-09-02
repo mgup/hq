@@ -1,0 +1,21 @@
+<div class="modal fade" id="addBenefit" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Добавить студенту федеральную льготу</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_for person, class: 'form-horizontal' do |f| %>
+          <label>Студент:</label> <%= person.full_name %>
+          <%= f.label :benefits %>
+          <%= f.select :benefits, {}, {prompt: 'выберите тип льготы'}, class: 'form-control'%>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <%= submit_tag 'Сохранить', class: 'btn btn-primary' %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>

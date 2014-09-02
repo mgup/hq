@@ -4,6 +4,7 @@ class Study::DisciplinesController < ApplicationController
   load_and_authorize_resource except: [:create]
 
   def index
+
   end
 
   def new
@@ -132,6 +133,11 @@ class Study::DisciplinesController < ApplicationController
   def print_group
     authorize! :manage, Study::Discipline
     @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
+    if @discipline.is_active?
+      @students = @discipline.group.students.valid_for_today
+    else
+      @students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 11 : 5), 15))
+    end
     respond_to do |format|
       format.pdf
     end

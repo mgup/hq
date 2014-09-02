@@ -162,11 +162,9 @@ class Entrance::FisController < ApplicationController
       # то создаём для них пустую проверку.
       grouped_results = r.group_by { |h| h.values_at(:pseries, :pnumber) }
       entrants.each do |e|
-        found = grouped_results.find_all do |pdata, _|
-          pdata == [e.pseries, e.pnumber]
+        unless grouped_results.find_all { |pdata, _| pdata == [e.pseries, e.pnumber] }.any?
+          e.checks.create(date: Date.today)
         end
-
-        e.checks.create(date: Date.today) unless found
       end
     end
 

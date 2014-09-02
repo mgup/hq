@@ -1,7 +1,9 @@
 class Study::Discipline < ActiveRecord::Base
-  STUDY_START = { 2013 => { 1 => Date.new(2013,  9,  4), 2 => Date.new(2014,  1,  13) },
+  STUDY_START = { 2012 => { 1 => Date.new(2012,  9,  1), 2 => Date.new(2013,  1,  13) },
+                  2013 => { 1 => Date.new(2013,  9,  4), 2 => Date.new(2014,  1,  13) },
                   2014 => { 1 => Date.new(2014,  9,  1), 2 => Date.new(2015,  1,  13) } }
-  STUDY_END   = { 2013 => { 1 => Date.new(2013, 12, 31), 2 => Date.new(2014,  6,  30) },
+  STUDY_END   = { 2012 => { 1 => Date.new(2012, 12, 31), 2 => Date.new(2013,  6,  30) },
+                  2013 => { 1 => Date.new(2013, 12, 31), 2 => Date.new(2014,  6,  30) },
                   2014 => { 1 => Date.new(2014, 12, 31), 2 => Date.new(2015,  6,  30) }}
   CURRENT_STUDY_YEAR  = 2014
   CURRENT_STUDY_TERM  = 1
@@ -72,6 +74,7 @@ class Study::Discipline < ActiveRecord::Base
   scope :by_term, -> year, term {
     where(subject_year: year, subject_semester: term)
   }
+
   scope :now, -> { by_term(CURRENT_STUDY_YEAR, CURRENT_STUDY_TERM) }
 
   scope :include_teacher, -> user {
@@ -101,6 +104,10 @@ class Study::Discipline < ActiveRecord::Base
   def has?(type)
     work = (type == 'work' ? 2 : 3)
     exams.where(exam_type: work) != []
+  end
+
+  def autumn?
+    semester == 1
   end
 
   def control

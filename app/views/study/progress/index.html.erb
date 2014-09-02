@@ -1,6 +1,20 @@
 <div class="page-header">
   <h1>Успеваемость <small><%= @group.name %></small></h1>
 </div>
+<%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
+  <div class='row'>
+    <div class="col col-sm-3">
+      <%= select_tag :year_term,
+                     options_for_select(
+                         [['2014/2015, 1-й семестр', '2014-1'],
+                          ['2013/2014, 2-й семестр', '2013-2'],
+                          ['2013/2014, 1-й семестр', '2013-1']],
+                         "#{params[:year]}-#{params[:term]}"),
+        class: 'form-control', data: { value: @group.id},  #disabled: true,
+                         onchange: %q(document.location = '/study/group/' + $(this).data('value') + '/progress?year=' + $(this).val().split('-')[0] + '&term=' + $(this).val().split('-')[1];) %>
+    </div>
+  </div>
+<% end %>
 <% if @disciplines != [] %>
 <%= hidden_field_tag :progress_group, @group.id %>
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name),

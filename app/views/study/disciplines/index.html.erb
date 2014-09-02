@@ -16,10 +16,10 @@
   <table class="table table-striped navigation_trip" id='show_disciplines' data-input="#show_disciplines" data-content='Ваши дисциплины будут отражаться тут.'>
     <tbody>
     <% @disciplines.each do |d| %>
-      <% next unless d.is_active? %>
+      <%# next unless d.is_active? %>
       <tr>
         <td class="text-muted"><%= d.id %></td>
-        <td>
+        <td class="<%= 'text-muted' unless d.is_active?%>">
           <h4 style="margin-top: 0;"><%= d.name %></h4>
           <p>
             <strong><%= d.group.name %></strong>,
@@ -47,11 +47,13 @@
                                 position: 'w'} do %>
               <span class="glyphicon glyphicon-<%= d.checkpoints.empty? ? 'calendar' : 'list-alt' %>"></span> Внести данные
             <% end %>
-            <br><br>
-            <%= link_to edit_study_discipline_path(d), class: 'btn btn-default edit_discipline navigation_trip',
-                        data: { input: '.edit_discipline', content: 'Вы можете редактировать созданные дисциплины.',
-                                position: 'w'} do %>
-              <span class="glyphicon glyphicon-edit"></span>  Редактировать
+            <% if d.is_active? %>
+              <br><br>
+              <%= link_to edit_study_discipline_path(d), class: 'btn btn-default edit_discipline navigation_trip',
+                          data: { input: '.edit_discipline', content: 'Вы можете редактировать созданные дисциплины.',
+                                  position: 'w'} do %>
+                <span class="glyphicon glyphicon-edit"></span>  Редактировать
+              <% end %>
             <% end %>
             <% if d.checkpoints.empty? %>
               <br><br>

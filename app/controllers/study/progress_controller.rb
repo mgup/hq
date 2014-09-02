@@ -4,17 +4,15 @@ class Study::ProgressController < ApplicationController
 
   def index
     authorize! :index, :progress
-    find_group
     @discipline_students = []
     @students.each do |student|
       @discipline_students << {student: student,
-                               progress: student.result()}
+                               progress: student.result(nil, params[:year].to_i, params[:term].to_i)}
     end
   end
 
   def print_progress
     authorize! :index, :progress
-    find_group
     respond_to do |format|
       format.pdf
     end
@@ -22,7 +20,6 @@ class Study::ProgressController < ApplicationController
 
   def discipline
     authorize! :index, :progress
-    find_group
     @discipline_students = []
     @discipline = Study::Discipline.find(params[:discipline])
     @students.each do |student|
@@ -56,9 +53,17 @@ class Study::ProgressController < ApplicationController
   private
 
   def find_group
+    params[:year] ||= Study::Discipline::CURRENT_STUDY_YEAR
+    params[:term] ||= Study::Discipline::CURRENT_STUDY_TERM
+    year = params[:year].to_i
+    term = params[:term].to_i
     @group = Group.find(params[:group_id])
-    @students =  @group.students.valid_for_today.includes([:person, :group])
-    @disciplines = Study::Discipline.now.from_group(@group).with_brs
+    if year == Study::Discipline::CURRENT_STUDY_YEAR
+      @students =  @group.students.valid_for_today.includes([:person, :group])
+    else
+      @students =  Student.in_group_at_date(@group, Date.new((term == 1 ? year : year+1), (term == 1 ? 9 : 4), 15))
+    end
+    @disciplines = Study::Discipline.by_term(year, term).from_group(@group).with_brs
   end
 
 end

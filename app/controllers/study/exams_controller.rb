@@ -9,7 +9,13 @@ class Study::ExamsController < ApplicationController
 
   def edit ; end
 
-  def show ; end
+  def show
+    if @discipline.is_active?
+      @students = @discipline.group.students.valid_for_today
+    else
+      @students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+    end
+  end
 
   def update
     #raise resource_params.inspect

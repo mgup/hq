@@ -10,6 +10,8 @@
   <% date = false %>
 <% end %>
 
+<% date = false %>
+
 <% if false %>
 <%= link_to link, id: 'printProgress', class: 'btn btn-info navigation_trip',
             data: { input: '#printProgress', content: "Вы можете распечатать текущую успеваемость #{group.name} #{discipline ? ('по дисциплине ' + discipline.name) : 'по всем предметам'}.",
@@ -66,7 +68,7 @@
       </td>
       <% end %>
       <td>
-        <%= link_to  study_group_student_path(group.id, student[:student].id), class: 'btn btn-default student_progress navigation_trip', title: 'Подробнее',
+        <%= link_to  study_group_student_path(group.id, student[:student].id, year: params[:year], term: params[:term]), class: 'btn btn-default student_progress navigation_trip', title: 'Подробнее',
                     data: { input: '.student_progress:first-child', content: 'Пройдите по ссылке, чтобы узнать успеваемость отдельного студента.',
                             position: 'w'} do %>
           <span class='glyphicon glyphicon-search'></span></a>

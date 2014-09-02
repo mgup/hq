@@ -1,11 +1,11 @@
 <ul class="breadcrumb">
   <li><a href='/study/group'>Успеваемость</a></li>
-  <li><a href="<%= study_group_progress_path(params[:group_id]) %>">Группа</a></li>
-  <li><a href="/study/group/<%= params[:group_id] %>/student/<%= @student.id %>">Студент</a></li>
+  <li><a href="<%= study_group_progress_path(@group, year: @year, term: @term) %>">Группа</a></li>
+  <li><a href="/study/group/<%= params[:group_id] %>/student/<%= @student.id %>?year=<%= @year %>&term=<%= @term %>">Студент</a></li>
   <li class="active"><%= @discipline.name %></li>
 </ul>
 <div class="page-header">
-  <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
+  <h1><%= @student.person.full_name %> <small><%= @group.name %></small></h1>
   <h2><%= @discipline.name %></h2>
 </div>
 
@@ -46,12 +46,12 @@
   </tbody>
 </table>
 
-<%= link_to "/study/group/#{params[:group_id]}/student/#{@student.id}", class: 'btn btn-default navigation_trip', id: 'back_to_student',
+<%= link_to "/study/group/#{params[:group_id]}/student/#{@student.id}?year=#{@year}&term=#{@term}", class: 'btn btn-default navigation_trip', id: 'back_to_student',
             data: { input: '#back_to_student', content: 'Вы можете вернуться на страницу с успеваемостью этого студента по всем дисциплинам',
                     position: 's'} do %>
   <span class="glyphicon glyphicon-list-alt"></span> Назад ко всем дисциплинам
 <% end %>
-<%= link_to "/study/group/#{params[:group_id]}/progress", class: 'btn btn-default navigation_trip', id: 'back_to_group',
+<%= link_to study_group_progress_path(@group, year: @year, term: @term), class: 'btn btn-default navigation_trip', id: 'back_to_group',
             data: { input: '#back_to_group', content: 'или посмотреть успеваемость всей группы.',
                     position: 's'} do %>
   <span class="glyphicon glyphicon-backward"></span> Назад к группе
