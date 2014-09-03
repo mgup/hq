@@ -79,6 +79,7 @@ HQ::Application.routes.draw do
 
   namespace :library do
     get '/cards', to: 'cards#index', as: :cards
+    get '/cards/print_all', to: 'cards#print_all', as: :print_all_cards
     get '/cards/students/:student/create', to: 'cards#create', as: :create_student_card
     get '/cards/students/:student/print', to: 'cards#print', as: :print_student_card
     get '/cards/users/:user/create', to: 'cards#create', as: :create_user_card

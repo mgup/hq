@@ -88,6 +88,15 @@ class Library::CardsController < ApplicationController
     end
   end
 
+  def print_all
+    authorize! :show, :library
+    @group = Group.find(params[:group]) if params[:group]
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
+  end
+
   private
 
   def connect_to_db

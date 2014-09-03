@@ -157,6 +157,10 @@ class Student < ActiveRecord::Base
     cond
   }
 
+  def entrance_order
+    orders.where('order_template = 16').last
+  end
+
   scope :in_group_at_date, -> group, date {
     group = group.id if group.is_a?(Group)
 # SELECT GROUP_CONCAT(student) AS student_group_id, `group` AS student_group_group
@@ -186,7 +190,6 @@ FROM (
 	WHERE
 		`student_group`.`student_group_status` IN (101, 107)
 		AND `student_group`.`student_group_group` = :group
-    AND `student_group`.`student_group_yearin` < :year
 	GROUP BY `student_group`.`student_group_id`
 	HAVING
 		AVG(COALESCE(`archive`.`student_group_group`, :group)) = :group
@@ -203,7 +206,6 @@ FROM (
 		`archive_student_group`.`student_group_status` IN (101, 107)
 		AND `archive_student_group`.`student_group_group` = :group
 		AND `order`.`order_signing` > :date
-    AND `archive_student_group`.`student_group_yearin` < :year
 ) AS `studentss`
 JOIN student_group ON studentss.student_group_id = student_group.student_group_id
 JOIN student ON student_group.student_group_student = student_id
@@ -215,9 +217,9 @@ ORDER BY
 	student_fname_ip ASC,
 	student_iname_ip ASC,
 	student_oname_ip ASC
-), { group: group, date: date.strftime('%Y-%m-%d'), year: date.strftime('%Y')  }]))
+), { group: group, date: date.strftime('%Y-%m-%d') }]))
     # raise date.strftime('%Y-%m-%d').inspect
-    find(ids.to_a.collect{|x| x[0]}.split(','))
+    find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless x.entrance_order.signing_date > date}
   }
 
   scope :with_contract, -> {
@@ -261,9 +263,7 @@ LIMIT 1 ")
     group.course
   end
 
-  def entrance_order
-    orders.where('order_template = 16').last
-  end  
+
 
   # Обучается ли студент на бюджетной основе?
   def budget?
@@ -503,5 +503,21 @@ LIMIT 1 ")
 
   def to_xml
     to_nokogiri.to_xml
+  end
+
+  def rdr_id
+    client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'],
+                                 dataserver: '192.168.200.36:1433', database: '[marc 1.11]')
+    if admission_year < 2012
+      query = "SELECT RDR_ID FROM dbo.READERS WHERE NAME = '#{full_name}'"
+    else
+      query = "SELECT RDR_ID FROM dbo.READERS WHERE MATRIX_STUDENT_GROUP_ID = #{id}"
+    end
+    rdr = client.execute(query).collect{|x| x}
+    if rdr.empty?
+      return false
+    else
+      return rdr.last['RDR_ID']
+    end
   end
 end

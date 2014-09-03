@@ -190,7 +190,8 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       if can? :manage, :library
         primary.item :library, 'Библиотека', class: 'nav-header disabled'
-        primary.item :library_cards, 'Создать читательский билет'.html_safe, library_cards_path, icon: 'book', highlights_on: -> { params[:controller].include?('library') }
+        primary.item :library_cards, 'Создать читательский билет'.html_safe, library_cards_path, icon: 'book', highlights_on: -> { params[:controller].include?('library') && params[:action] != 'print_all' }
+        primary.item :print_library_cards, '<span class="glyphicons print"></span> Печать читательских билетов'.html_safe, library_print_all_cards_path
       end
     end
 

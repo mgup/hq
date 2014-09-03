@@ -1,0 +1,61 @@
+<div class="page-header">
+    <h1>Библиотека <small>Печать читательских билетов</small></h1>
+</div>
+
+<%= form_tag nil, method: :get, class: 'filter-block' do |f| %>
+  <div class='row'>
+      <div class='col col-lg-10'>
+          <%= hidden_field_tag :faculty, params[:faculty],  class: 'ajax-faculty hidden-pill-values' %>
+          <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
+      </div>
+  </div>
+
+  <div class='row'>
+      <div class='col col-lg-6'>
+          <%= select_tag 'speciality',
+                         options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name, params[:speciality]),
+                         prompt: 'все специальности', class: 'ajax-speciality form-control' %>
+      </div>
+
+      <div class='col col-lg-2'>
+          <%= select_tag :course, options_for_select([1,2,3,4,5,6], params[:course]), class: 'ajax-course form-control' %>
+      </div>
+
+      <div class='col col-lg-4'>
+          <%= select_tag :form, options_for_select([['очная', '101'], ['очно-заочная', '102'], ['заочная', '103'],
+                                                    ['дистанционная', '105']], params[:form]), class: 'ajax-form form-control' %>
+      </div>
+  </div>
+  <div class='row'>
+      <div class='col col-sm-3'>
+          <%= select_tag :group, content_tag(:option,'все группы', value: '') +options_from_collection_for_select(Group.includes(:speciality), :id, :name, params[:group]), { class: 'ajax-group form-control navigation_trip' } %>
+      </div>
+      <div class='col col-sm-2'>
+          <%= submit_tag 'Найти группу', class: 'btn btn-info' %>
+      </div>
+  </div>
+<% end %>
+
+<% if @group %>
+  <h3><%= @group.name %>  <%= link_to '<span class="glyphicons print"></span> Распечатать имеющиеся билеты на всю группу'.html_safe,
+                                      library_print_all_cards_path(params.merge({ format: :pdf })),
+                                      target: :blank, class: 'btn btn-primary' %></h3>
+
+  <ol>
+  <% @group.students.valid_for_today.each do |student| %>
+      <li><%= student.full_name %>
+          <% rdr = student.rdr_id %>
+          <% if rdr %>
+          <%= link_to library_print_card_path(rdr_id: student.rdr_id, last_name: student.last_name, first_name: student.first_name, patronym: student.patronym),
+                                                 class: 'btn btn-sm' do %>
+                                        <span class="glyphicon glyphicon-print"></span>
+                                      <% end %>
+          <% else %>
+            <a href="<%= library_create_student_card_path(student: student) %>" class="btn btn-success btn-sm" role="button">Создать читательский билет</a>
+          <% end %>
+      </li>
+  <% end %>
+  </ol>
+<% else %>
+  <p class="lead">Выберите группу для печати читательских билетов</p>
+<% end %>
