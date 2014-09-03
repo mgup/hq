@@ -91,6 +91,8 @@ class Student < ActiveRecord::Base
                           association_foreign_key: 'exam_student_exam'
 
   delegate :education_form, to: :group
+  delegate :course,         to: :group
+  delegate :speciality,     to: :group
   delegate :deeds, to: :person
 
   default_scope do
@@ -263,6 +265,9 @@ LIMIT 1 ")
     group.course
   end
 
+  def entrance_order
+    orders.where('order_template = 16').last
+  end  
 
 
   # Обучается ли студент на бюджетной основе?
