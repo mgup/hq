@@ -37,7 +37,7 @@
         <%# Обрабатываем персональные ведомости на пересдачу. Больше их делать
             нельзя, но старые всё равно нужно показывать. %>
         <% if repeat.students.empty? %>
-          <li><%= repeat.deprecated_student.full_name %></li>
+          <li><%= repeat.deprecated_student.full_name if repeat.deprecated_student %></li>
         <% end %>
       </ul>
     </dd>
