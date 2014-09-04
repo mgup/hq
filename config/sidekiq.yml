@@ -1,1 +1,4 @@
 :concurrency: 16
+:queues:
+  - default
+  - rollbar
