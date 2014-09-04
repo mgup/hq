@@ -23,9 +23,10 @@ render partial: 'sheet',
 
 # Обработка передаваемых студентов.
 @students.each do |student|
+  # @type [Student] student
   wb.worksheets.each_with_index do |worksheet, index|
     # Определяем, должен ли студент учитываться на данном листе отчёта.
-    if @student_filters[index].call(student)
+    if @worksheet_filters[index].call(student)
       # По коду направления определяем колонку, к которой принадлежит студент.
       student_speciality = student.speciality.full_name
       column_letter = nil

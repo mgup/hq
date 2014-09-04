@@ -5,7 +5,7 @@ class Report::StructureController < ApplicationController
 
     @students = get_all_students
 
-    @student_filters = {
+    @worksheet_filters = {
       0 => proc { |_| true },
       1 => proc { |student| student.group.fulltime? },
       2 => proc { |student| student.group.semitime? },
