@@ -51,6 +51,7 @@ gem 'jquery-validation-rails'
 # gem 'morpher', github: 'mgup/morpher', branch: :master
 
 gem 'honeybadger'
+gem 'rollbar'
 gem 'dotenv-rails'
 gem 'tiny_tds'
 gem 'activerecord-sqlserver-adapter'
