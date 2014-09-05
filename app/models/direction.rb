@@ -19,6 +19,10 @@ class Direction < ActiveRecord::Base
     "#{new_code} #{name}"
   end
 
+  def aspirant?
+    qualification_code == 70
+  end
+
   def full_description
     "#{code+'.'+qualification_code.to_s+', ' if code} #{new_code if new_code} #{name}"
   end
