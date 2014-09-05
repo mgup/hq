@@ -117,6 +117,7 @@
             <th>Приказ о зачислении</th>
             <% if can?(:manage, Entrance::Application) %>
               <th></th>
+              <th>Сумма баллов</th>
             <% end %>
             <th></th>
           </tr>
@@ -148,6 +149,7 @@
           <th>Приказ о зачислении</th>
           <% if can?(:manage, Entrance::Application) %>
             <th></th>
+            <th>Сумма баллов</th>
           <% end %>
           <th></th>
         </tr>
@@ -175,6 +177,7 @@
             <th>Приказ о зачислении</th>
             <% if can?(:manage, Entrance::Application) %>
               <th></th>
+              <th>Сумма баллов</th>
             <% end %>
             <th></th>
           </tr>
@@ -201,6 +204,7 @@
           <th>Приказ о зачислении</th>
           <% if can?(:manage, Entrance::Application) %>
             <th></th>
+            <th>Сумма баллов</th>
           <% end %>
         </tr>
         </thead>
@@ -223,6 +227,7 @@
                   <span class="glyphicons notes"></span>
                 <% end %>
               </td>
+              <td><%= a.abitpoints %></td>
             <% end %>
           </tr>
         <% end %>
