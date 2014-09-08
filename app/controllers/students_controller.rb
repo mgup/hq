@@ -84,6 +84,10 @@ class StudentsController < ApplicationController
     end
   end
 
+  def quality
+    @students = @students.valid_for_today.full_time_study.group_by{|st| st.speciality}.group_by{|sp, students| sp.faculty}
+  end
+
   def resource_params
     params.fetch(:student, {}).permit(
     )
