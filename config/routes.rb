@@ -317,6 +317,7 @@ HQ::Application.routes.draw do
       get 'results',     on: :member
       # get 'balls',     on: :member
       get 'orders', on: :collection
+      get 'numbers', on: :collection
 
       resources :dates
       resources :exams do

@@ -2,11 +2,12 @@
   <div class="row">
       <%= f.label :signing_date, class: 'control-label col col-sm-2' %>
       <div class="col col-sm-2">
-          <%= f.text_field :signing_date, value: (f.object.signing_date ? l(f.object.signing_date, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
+          <%= f.text_field :signing_date, value: (f.object.signing_date ? l(f.object.signing_date, format: '%d.%m.%Y') : ''), class: 'form-control datepicker',
+          disabled: f.object.signed? %>
       </div>
       <%= f.label :number, class: 'control-label col col-sm-1' %>
       <div class="col col-sm-2">
-          <%= f.text_field :number, class: 'form-control' %>
+          <%= f.text_field :number, class: 'form-control', disabled: f.object.signed? %>
       </div>
       <%= f.hidden_field :status, value: 3 %>
       <%= f.submit 'Сохранить', class: 'btn btn-primary', data: {confirm: 'Вы уверены, что внесли верные данные?'} %>

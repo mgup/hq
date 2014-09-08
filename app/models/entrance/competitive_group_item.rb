@@ -40,6 +40,10 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
     (number_paid_o > 0 || number_paid_oz > 0 || number_paid_z > 0) ? 'по договорам' : 'бюджет'
   end
 
+  def budget
+    (number_paid_o > 0 || number_paid_oz > 0 || number_paid_z > 0) ? 2 : 1
+  end
+
   def distance?
     number_budget_z > 0 || number_paid_z > 0 || number_quota_z > 0
   end
