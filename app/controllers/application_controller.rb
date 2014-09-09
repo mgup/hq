@@ -21,7 +21,6 @@ class ApplicationController < ActionController::Base
 
   unless Rails.application.config.consider_all_requests_local
     rescue_from Exception, with: lambda { |exception|
-      notify_honeybadger exception
       Rollbar.report_exception(exception)
       render_error 500, exception
     }
