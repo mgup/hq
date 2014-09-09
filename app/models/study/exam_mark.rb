@@ -17,7 +17,7 @@ class Study::ExamMark < ActiveRecord::Base
   belongs_to :exam, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :mark_exam
 
   scope :by_student, -> student { where(mark_student_group: student) }
-
+  scope :from_year_and_semester, -> year, semester { joins(:exam).joins(exam: :discipline).where('subject.subject_year = ? AND subject.subject_semester = ?', year, semester)}
   def result
     case value
       when VALUE_NEYAVKA

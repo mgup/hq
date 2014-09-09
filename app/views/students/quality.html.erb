@@ -1,0 +1,36 @@
+<div class="page-header">
+    <h1>Показатели качества знаний студентов (очная форма обучения)</h1>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th rowspan="2">Факультет</th>
+        <th rowspan="2">Направление/специальность</th>
+        <th rowspan="2">Всего</th>
+        <th colspan="3">Успевающие</th>
+        <th rowspan="2">Неуспевающие</th>
+    </tr>
+    <tr>
+        <th>5</th>
+        <th>5 и 4</th>
+        <th>3</th>
+    </tr>
+    </thead>
+    <% @students.each do |faculty, specialities| %>
+      <% specialities.each do |speciality, students| %>
+        <tr>
+            <% if speciality == specialities.first.first %>
+              <td rowspan="<%= specialities.size %>"><%= faculty.abbreviation %></td>
+            <% end %>
+            <td><%= speciality.full_name %></td>
+            <td><%= students.size %></td>
+            <% st = students.group_by{|st| st.exam_progress(2013, 2).to_s} %>
+            <td><%= st['5'] ? st['5'].size : '–' %></td>
+            <td><%= st['4'] ? st['4'].size : '–' %></td>
+            <td><%= st['3'] ? st['3'].size : '–' %></td>
+            <td><%= st['2'] ? st['2'].size : '–' %></td>
+        </tr>
+      <% end %>
+    <% end %>
+</table>

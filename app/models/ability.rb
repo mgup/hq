@@ -275,6 +275,7 @@ class Ability
     can :entrance_protocol, Office::Order
     can :update, Office::Order
     can :orders, Entrance::Campaign
+    can :numbers, Entrance::Campaign
     can :statistics, Entrance::Contract
     # can :update, Achievement
     # can :validate_selection, Achievement

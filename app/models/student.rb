@@ -68,6 +68,9 @@ class Student < ActiveRecord::Base
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_student
   has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_student_group
 
+  has_many :exam_marks, class_name: 'Study::ExamMark', foreign_key: :mark_student_group, primary_key: :student_group_id
+  has_many :final_marks, class_name: 'Study::FinalMark', foreign_key: :mark_final_student, primary_key: :student_group_id
+
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
 
@@ -116,6 +119,7 @@ class Student < ActiveRecord::Base
   scope :entrants, -> { where(student_group_status: 100) }
 
   scope :second_higher, -> { where(student_group_group: Group.second_higher) }
+  scope :full_time_study, -> { where(student_group_form: 101) }
 
   scope :my_filter, -> filters {
     cond = all
@@ -523,6 +527,36 @@ LIMIT 1 ")
       return false
     else
       return rdr.last['RDR_ID']
+    end
+  end
+
+  def exam_progress(year, semester)
+    val_2 = []
+    val_3 = []
+    val_4 = []
+    val_5 = []
+    final_marks.from_year_and_semester(year, semester).each do |mark|
+      val_2 << mark if (mark.value == Study::ExamMark::VALUE_2 || mark.value == Study::ExamMark::VALUE_NEZACHET || mark.value == Study::ExamMark::VALUE_NEDOPUSCHEN)
+      val_3 << mark if mark.value == Study::ExamMark::VALUE_3
+      val_4 << mark if mark.value == Study::ExamMark::VALUE_4
+      val_5 << mark if (mark.value == Study::ExamMark::VALUE_5 || mark.value == Study::ExamMark::VALUE_ZACHET)
+    end
+    exam_marks.from_year_and_semester(year, semester).each do |mark|
+      val_2 << mark if (mark.value == Study::ExamMark::VALUE_2 || mark.value == Study::ExamMark::VALUE_NEZACHET || mark.value == Study::ExamMark::VALUE_NEDOPUSCHEN)
+      val_3 << mark if mark.value == Study::ExamMark::VALUE_3
+      val_4 << mark if mark.value == Study::ExamMark::VALUE_4
+      val_5 << mark if (mark.value == Study::ExamMark::VALUE_5 || mark.value == Study::ExamMark::VALUE_ZACHET)
+    end
+    if !val_2.empty?
+      return 2
+    elsif !val_3.empty?
+      return 3
+    elsif !val_4.empty?
+      return 4
+    elsif !val_5.empty?
+      return 5
+    else
+      return nil
     end
   end
 end

@@ -14,9 +14,14 @@ class Direction < ActiveRecord::Base
   scope :for_aspirants, -> { where('new_code LIKE "%.06.%"') }
   scope :not_aspirants, -> { where('new_code NOT LIKE "%.06.%"') }
   scope :from_department, -> department_id { where(department_id: department_id) }
+  scope :all_campaigns, -> { where('department_id IS NOT NULL') }
 
   def description
     "#{new_code} #{name}"
+  end
+
+  def aspirant?
+    qualification_code == 70
   end
 
   def full_description
