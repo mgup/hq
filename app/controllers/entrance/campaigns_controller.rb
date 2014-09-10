@@ -94,7 +94,11 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def report
-    @applications = applications_from_filters(form: false, payment: false)
+    @applications = @campaign.applications.
+      find_all { |a| 8 == a.status_id && [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) }
+      # find_all { |a| %w(03 05).include?(a.direction.new_code.split('.')[1]) }.
+      # find_all { |a| [11, 12].include?(a.form) }.
+      # find_all { |a| !a.payed? }
 
     respond_to do |format|
       format.html
