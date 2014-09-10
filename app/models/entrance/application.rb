@@ -466,6 +466,7 @@ class Entrance::Application < ActiveRecord::Base
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
         end
+        unless benefits.empty?
         xml.ApplicationCommonBenefit do
           xml.UID benefits.first.id
           xml.CompetitiveGroupID competitive_group_item.competitive_group.id
@@ -586,7 +587,7 @@ class Entrance::Application < ActiveRecord::Base
             end
           end
         end
-
+        end
         has_scores = false
         results = entrant.exam_results.in_competitive_group(competitive_group)
         results.each do |r|
