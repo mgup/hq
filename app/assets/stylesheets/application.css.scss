@@ -18,18 +18,10 @@
  *= require_tree .
  */
 
+@import 'bootstrap-sprockets';
 @import 'bootstrap';
 @import 'bootstrap.override';
 @import 'bootstrap-datepicker';
-
-@font-face {
-  font-family: 'Glyphicons Halflings';
-  src: image-url('glyphicons/glyphicons-halflings-regular.eot');
-  src: image-url('glyphicons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
-    image-url('glyphicons/glyphicons-halflings-regular.woff') format('woff'),
-    image-url('glyphicons/glyphicons-halflings-regular.ttf') format('truetype'),
-    image-url('glyphicons/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
-}
 
 @font-face {
   font-family: 'Glyphicons Regular';

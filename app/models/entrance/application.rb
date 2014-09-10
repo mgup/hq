@@ -455,9 +455,7 @@ class Entrance::Application < ActiveRecord::Base
         xml.ApplicationDocuments do
           xml.IdentityDocument do
             xml.OriginalReceived true
-            unless entrant.pseries.blank?
-              xml.DocumentSeries  entrant.pseries
-            end
+            xml.DocumentSeries  entrant.pseries.blank? ? 'б/с' : entrant.pseries
             xml.DocumentNumber  entrant.pnumber
             xml.DocumentDate    entrant.pdate.iso8601
             xml.IdentityDocumentTypeID  entrant.identity_document_type_id
@@ -599,7 +597,7 @@ class Entrance::Application < ActiveRecord::Base
           xml.EntranceTestResults do
             results.each do |r|
               if r.score
-                xml << r.to_fis(competitive_group_id: competitive_group.id).to_xml
+                xml << r.to_fis(competitive_group_id: competitive_group.id).xpath('/EntranceTestResult').to_xml.to_str
               end
             end
           end

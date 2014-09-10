@@ -1,5 +1,5 @@
 class Entrance::CampaignsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating, :report]
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
@@ -94,7 +94,11 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def report
-    @applications = applications_from_filters(form: false, payment: false)
+    @applications = @campaign.applications.
+      find_all { |a| 8 == a.status_id && [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) }
+      # find_all { |a| %w(03 05).include?(a.direction.new_code.split('.')[1]) }.
+      # find_all { |a| [11, 12].include?(a.form) }.
+      # find_all { |a| !a.payed? }
 
     respond_to do |format|
       format.html
@@ -106,9 +110,7 @@ class Entrance::CampaignsController < ApplicationController
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.Applications do
             @applications.each do |application|
-              unless application.entrant.pnumber.blank?
-                xml << application.to_fis.xpath('/Application').to_xml.to_str
-              end
+              xml << application.to_fis.xpath('/Application').to_xml.to_str
             end
           end
         end
