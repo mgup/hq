@@ -468,6 +468,126 @@ class Entrance::Application < ActiveRecord::Base
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
         end
+        xml.ApplicationCommonBenefit do
+          xml.UID benefits.first.id
+          xml.CompetitiveGroupID competitive_group_item.competitive_group.id
+          xml.DocumentTypeID  benefits.first.document_type_id
+          xml.BenefitKindID  benefits.first.benefit_kind_id
+          xml.DocumentReason do
+            if benefits.first.olympic_document
+              xml.OlympicDocument do
+                xml.UID benefits.first.olympic_document.id
+                xml.OriginalReceived true
+                xml.DocumentNumber benefits.first.olympic_document.number
+                xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
+                xml.OlympicID benefits.first.olympic_document.olympic_id
+                xml.LevelID benefits.first.olympic_document.level_id
+              end
+            elsif benefits.first.medical_disability_document
+              xml.MedicalDocuments do
+                xml.BenefitDocument do
+                  if benefits.first.medical_disability_document.medical?
+                    xml.MedicalDocument do
+                      xml.UID benefits.first.medical_disability_document.id
+                      xml.OriginalReceived true
+                      xml.DocumentNumber benefits.first.medical_disability_document.number
+                      xml.DocumentDate benefits.first.medical_disability_document.date
+                      xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                    end
+                  else
+                    xml.DisabilityDocument do
+                      xml.UID benefits.first.medical_disability_document.id
+                      xml.OriginalReceived true
+                      xml.DocumentSeries benefits.first.medical_disability_document.series
+                      xml.DocumentNumber benefits.first.medical_disability_document.number
+                      xml.DocumentDate benefits.first.medical_disability_document.date
+                      xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                      xml.DisabilityTypeID benefits.first.medical_disability_document.disability_type_id
+                    end
+                  end
+                end
+                xml.AllowEducationDocument do
+                  xml.UID benefits.first.allow_education_document.id
+                  xml.OriginalReceived true
+                  xml.DocumentNumber benefits.first.allow_education_document.number
+                  xml.DocumentDate benefits.first.allow_education_document.date
+                  xml.DocumentOrganization benefits.first.allow_education_document.organization
+                end
+              end
+            elsif benefits.first.custom_document
+              xml.CustomDocument do
+                xml.UID benefits.first.custom_document.id
+                xml.OriginalReceived true
+                xml.DocumentSeries benefits.first.custom_document.series
+                xml.DocumentNumber benefits.first.custom_document.number
+                xml.DocumentDate benefits.first.custom_document.date
+                xml.DocumentOrganization benefits.first.custom_document.organization
+                xml.DocumentTypeNameText benefits.first.custom_document.type_name
+              end
+            end
+          end
+        end
+        xml.ApplicationCommonBenefits do
+          xml.ApplicationCommonBenefit do
+            xml.UID benefits.first.id
+            xml.CompetitiveGroupID competitive_group_item.competitive_group.id
+            xml.DocumentTypeID  benefits.first.document_type_id
+            xml.BenefitKindID  benefits.first.benefit_kind_id
+            xml.DocumentReason do
+              if benefits.first.olympic_document
+                xml.OlympicDocument do
+                  xml.UID benefits.first.olympic_document.id
+                  xml.OriginalReceived true
+                  xml.DocumentNumber benefits.first.olympic_document.number
+                  xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
+                  xml.OlympicID benefits.first.olympic_document.olympic_id
+                  xml.LevelID benefits.first.olympic_document.level_id
+                end
+              elsif benefits.first.medical_disability_document
+                xml.MedicalDocuments do
+                  xml.BenefitDocument do
+                    if benefits.first.medical_disability_document.medical?
+                      xml.MedicalDocument do
+                        xml.UID benefits.first.medical_disability_document.id
+                        xml.OriginalReceived true
+                        xml.DocumentNumber benefits.first.medical_disability_document.number
+                        xml.DocumentDate benefits.first.medical_disability_document.date
+                        xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                      end
+                    else
+                      xml.DisabilityDocument do
+                        xml.UID benefits.first.medical_disability_document.id
+                        xml.OriginalReceived true
+                        xml.DocumentSeries benefits.first.medical_disability_document.series
+                        xml.DocumentNumber benefits.first.medical_disability_document.number
+                        xml.DocumentDate benefits.first.medical_disability_document.date
+                        xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                        xml.DisabilityTypeID benefits.first.medical_disability_document.disability_type_id
+                      end
+                    end
+                  end
+                  xml.AllowEducationDocument do
+                    xml.UID benefits.first.allow_education_document.id
+                    xml.OriginalReceived true
+                    xml.DocumentNumber benefits.first.allow_education_document.number
+                    xml.DocumentDate benefits.first.allow_education_document.date
+                    xml.DocumentOrganization benefits.first.allow_education_document.organization
+                  end
+                end
+              elsif benefits.first.custom_document
+                xml.CustomDocument do
+                  xml.UID benefits.first.custom_document.id
+                  xml.OriginalReceived true
+                  xml.DocumentSeries benefits.first.custom_document.series
+                  xml.DocumentNumber benefits.first.custom_document.number
+                  xml.DocumentDate benefits.first.custom_document.date
+                  xml.DocumentOrganization benefits.first.custom_document.organization
+                  xml.DocumentTypeNameText benefits.first.custom_document.type_name
+                end
+              end
+            end
+          end
+        end
 
         has_scores = false
         results = entrant.exam_results.in_competitive_group(competitive_group)
