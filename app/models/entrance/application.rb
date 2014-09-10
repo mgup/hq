@@ -479,7 +479,7 @@ class Entrance::Application < ActiveRecord::Base
           xml.EntranceTestResults do
             results.each do |r|
               if r.score
-                xml << r.to_fis(competitive_group_id: competitive_group.id).to_xml
+                xml << r.to_fis(competitive_group_id: competitive_group.id).xpath('/EntranceTestResult').to_xml.to_str
               end
             end
           end
