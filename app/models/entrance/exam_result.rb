@@ -90,7 +90,7 @@ class Entrance::ExamResult < ActiveRecord::Base
     if exam.use_subject_id
       xml.SubjectID exam.use_subject_id
     else
-      xml.Subject_name exam.name
+      xml.SubjectName exam.name
     end
   end
 end
