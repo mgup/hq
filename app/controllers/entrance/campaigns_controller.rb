@@ -108,25 +108,27 @@ class Entrance::CampaignsController < ApplicationController
       end
       format.xml do
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
-          xml.Applications do
-            @applications.each do |application|
-              xml << application.to_fis.xpath('/Application').to_xml.to_str
+          xml.PackageData do
+            xml.Applications do
+              @applications.each do |application|
+                xml << application.to_fis.xpath('/Application').to_xml.to_str
+              end
             end
-          end
-          xml.OrdersOfAdmission do
-            @applications.each do |application|
-              xml.OrderOfAdmission do
-                xml.Application do
-                  xml.ApplicationNumber application.number
-                  xml.RegistrationDate created_at.iso8601
+            xml.OrdersOfAdmission do
+              @applications.each do |application|
+                xml.OrderOfAdmission do
+                  xml.Application do
+                    xml.ApplicationNumber application.number
+                    xml.RegistrationDate created_at.iso8601
+                  end
+                  xml.DirectionID application.direction.id
+                  xml.EducationFormID application.competitive_group_item.form
+                  xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : 14)
+                  xml.EducationLevelID application.competitive_group_item.education_type_id
+                  xml.IsBeneficiary application.benefits.any?
+                  xml.IsForeigner (1 != application.entrant.nationality_type_id)
+                  xml.CompetitiveGroupID application.competitive_group.id
                 end
-                xml.DirectionID application.direction.id
-                xml.EducationFormID application.competitive_group_item.form
-                xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : 14)
-                xml.EducationLevelID application.competitive_group_item.education_type_id
-                xml.IsBeneficiary application.benefits.any?
-                xml.IsForeigner (1 != application.entrant.nationality_type_id)
-                xml.CompetitiveGroupID application.competitive_group.id
               end
             end
           end
