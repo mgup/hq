@@ -127,7 +127,7 @@ class Entrance::CampaignsController < ApplicationController
                   xml.EducationLevelID application.competitive_group_item.education_type_id
                   xml.IsBeneficiary application.benefits.any?
                   # xml.IsForeigner (1 != application.entrant.nationality_type_id)
-                  xml.CompetitiveGroupID application.competitive_group.id
+                  xml.CompetitiveGroupUID application.competitive_group.id
                 end
               end
             end
