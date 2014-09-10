@@ -119,7 +119,7 @@ class Entrance::CampaignsController < ApplicationController
                 xml.OrderOfAdmission do
                   xml.Application do
                     xml.ApplicationNumber application.number
-                    xml.RegistrationDate created_at.iso8601
+                    xml.RegistrationDate application.created_at.iso8601
                   end
                   xml.DirectionID application.direction.id
                   xml.EducationFormID application.competitive_group_item.form
