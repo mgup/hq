@@ -496,7 +496,7 @@ class Entrance::Application < ActiveRecord::Base
                     xml.DisabilityDocument do
                       xml.UID benefits.first.medical_disability_document.id
                       xml.OriginalReceived true
-                      xml.DocumentSeries benefits.first.medical_disability_document.series
+                      xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
                       xml.DocumentNumber benefits.first.medical_disability_document.number
                       xml.DocumentDate benefits.first.medical_disability_document.date
                       xml.DocumentOrganization benefits.first.medical_disability_document.organization
@@ -516,7 +516,7 @@ class Entrance::Application < ActiveRecord::Base
               xml.CustomDocument do
                 xml.UID benefits.first.custom_document.id
                 xml.OriginalReceived true
-                xml.DocumentSeries benefits.first.custom_document.series
+                xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
                 xml.DocumentNumber benefits.first.custom_document.number
                 xml.DocumentDate benefits.first.custom_document.date
                 xml.DocumentOrganization benefits.first.custom_document.organization
@@ -556,7 +556,7 @@ class Entrance::Application < ActiveRecord::Base
                       xml.DisabilityDocument do
                         xml.UID benefits.first.medical_disability_document.id
                         xml.OriginalReceived true
-                        xml.DocumentSeries benefits.first.medical_disability_document.series
+                        xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
                         xml.DocumentNumber benefits.first.medical_disability_document.number
                         xml.DocumentDate benefits.first.medical_disability_document.date
                         xml.DocumentOrganization benefits.first.medical_disability_document.organization
@@ -576,7 +576,7 @@ class Entrance::Application < ActiveRecord::Base
                 xml.CustomDocument do
                   xml.UID benefits.first.custom_document.id
                   xml.OriginalReceived true
-                  xml.DocumentSeries benefits.first.custom_document.series
+                  xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
                   xml.DocumentNumber benefits.first.custom_document.number
                   xml.DocumentDate benefits.first.custom_document.date
                   xml.DocumentOrganization benefits.first.custom_document.organization
