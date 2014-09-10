@@ -1,5 +1,5 @@
 class Entrance::CampaignsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating, :report]
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
@@ -111,6 +111,23 @@ class Entrance::CampaignsController < ApplicationController
           xml.Applications do
             @applications.each do |application|
               xml << application.to_fis.xpath('/Application').to_xml.to_str
+            end
+          end
+          xml.OrdersOfAdmission do
+            @applications.each do |application|
+              xml.OrderOfAdmission do
+                xml.Application do
+                  xml.ApplicationNumber application.number
+                  xml.RegistrationDate created_at.iso8601
+                end
+                xml.DirectionID application.direction.id
+                xml.EducationFormID application.competitive_group_item.form
+                xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : 14)
+                xml.EducationLevelID application.competitive_group_item.education_type_id
+                xml.IsBeneficiary application.benefits.any?
+                xml.IsForeigner (1 != application.entrant.nationality_type_id)
+                xml.CompetitiveGroupID application.competitive_group.id
+              end
             end
           end
         end
