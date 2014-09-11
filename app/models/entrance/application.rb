@@ -436,7 +436,7 @@ class Entrance::Application < ActiveRecord::Base
         end
         xml.RegistrationDate  created_at.iso8601
         xml.NeedHostel        entrant.need_hostel
-        xml.StatusID          status_id
+        xml.StatusID          7 # status_id
         xml.SelectedCompetitiveGroups do
           xml.CompetitiveGroupID competitive_group_item.competitive_group.id
         end
@@ -528,7 +528,11 @@ class Entrance::Application < ActiveRecord::Base
         end
         xml.ApplicationCommonBenefits do
           xml.ApplicationCommonBenefit do
-            xml.UID benefits.first.id
+            # ФИС требует, чтобы льготы передаваемые через
+            # ApplicationCommonBenefits и ApplicationCommonBenefit имели
+            # различные UID. Надеюсь, что у нас не скоро будет 100000
+            # абитуриентов со льготами.
+            xml.UID (benefits.first.id + 100000)
             xml.CompetitiveGroupID competitive_group_item.competitive_group.id
             xml.DocumentTypeID  benefits.first.document_type_id
             xml.BenefitKindID  benefits.first.benefit_kind_id
