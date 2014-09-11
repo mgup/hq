@@ -95,10 +95,13 @@ class Entrance::CampaignsController < ApplicationController
 
   def report
     @applications = @campaign.applications.
-      find_all { |a| 8 == a.status_id && [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) }
+      find_all { |a| 8 == a.status_id && [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) }.
+      find_all { |a| (a.number.include?('14-ГД') || a.number.include?('14-ЖД')) && 12922 != a.id }
       # find_all { |a| %w(03 05).include?(a.direction.new_code.split('.')[1]) }.
       # find_all { |a| [11, 12].include?(a.form) }.
       # find_all { |a| !a.payed? }
+
+    # fail '123'
 
     respond_to do |format|
       format.html

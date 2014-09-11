@@ -62,7 +62,7 @@ class Entrance::ExamResult < ActiveRecord::Base
         xml.ResultValue         score
         xml.ResultSourceTypeID  self[:form]
 
-        xml.EntranceTestTypeID  exam.creative? ? 2 : 1
+        xml.EntranceTestTypeID  exam.creative ? 2 : 1
 
         xml.CompetitiveGroupID  opts[:competitive_group_id]
         xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
