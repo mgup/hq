@@ -436,7 +436,7 @@ class Entrance::Application < ActiveRecord::Base
         end
         xml.RegistrationDate  created_at.iso8601
         xml.NeedHostel        entrant.need_hostel
-        xml.StatusID          7 # status_id
+        xml.StatusID          4 # status_id
         xml.SelectedCompetitiveGroups do
           xml.CompetitiveGroupID competitive_group_item.competitive_group.id
         end
