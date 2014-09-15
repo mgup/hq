@@ -1,5 +1,5 @@
 class Entrance::CampaignsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating, :report]
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 
@@ -96,9 +96,12 @@ class Entrance::CampaignsController < ApplicationController
   def report
     @applications = @campaign.applications.
       find_all { |a| 8 == a.status_id && [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) }
+      # find_all { |a| !a.number.include?('14-ОД') && a.benefits.empty? }
       # find_all { |a| %w(03 05).include?(a.direction.new_code.split('.')[1]) }.
       # find_all { |a| [11, 12].include?(a.form) }.
       # find_all { |a| !a.payed? }
+
+    # fail '123'
 
     respond_to do |format|
       format.html
@@ -108,9 +111,29 @@ class Entrance::CampaignsController < ApplicationController
       end
       format.xml do
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
-          xml.Applications do
-            @applications.each do |application|
-              xml << application.to_fis.xpath('/Application').to_xml.to_str
+          xml.PackageData do
+            # xml.Applications do
+            #   @applications.each do |application|
+            #     xml << application.to_fis.xpath('/Application').to_xml.to_str
+            #   end
+            # end
+            xml.OrdersOfAdmission do
+              @applications.each do |application|
+                xml.OrderOfAdmission do
+                  xml.Application do
+                    xml.ApplicationNumber application.number
+                    xml.RegistrationDate application.created_at.iso8601
+                  end
+                  xml.DirectionID application.direction.id
+                  xml.EducationFormID application.competitive_group_item.form
+                  xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : 14)
+                  xml.EducationLevelID application.competitive_group_item.education_type_id
+                  xml.IsBeneficiary application.benefits.any?
+                  unless Date.new(2014, 7, 31) == application.order.signing_date
+                    xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date) ? 1 : 2)
+                  end
+                end
+              end
             end
           end
         end
