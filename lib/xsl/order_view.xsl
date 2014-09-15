@@ -45,7 +45,7 @@
           </tr>
         </tbody>
       </table>
-      <p style="margin-bottom: 0; width: 45%; text-align: justify;"><xsl:value-of select="order_template/name" /></p>
+      <p style="margin-bottom: 0; width: 40%; text-align: left;"><xsl:value-of select="order_template/name" /></p>
       <p style="margin-bottom: 0;">
         <xsl:value-of select="students/student/speciality/faculty/short" />
       </p>
@@ -91,13 +91,13 @@
     <div style="margin: 25px 0 0 25px;">
       Основания:
     </div>
-    <ul style="margin: 0 0 0 25px;">
+    <ul style="margin: 0 0 0 25px; padding: 0; list-style-type: none;">
       <xsl:apply-templates select="./reason" />
     </ul>
   </xsl:template>
 
   <xsl:template match="reason">
-    <li class="reason" style="text-align: justify;"><xsl:apply-templates />
+    <li class="reason" style="text-align: justify;">– <xsl:apply-templates />
       <xsl:choose>
         <xsl:when test="position() = last()">.</xsl:when>
         <xsl:otherwise>;</xsl:otherwise>
@@ -192,7 +192,7 @@
   </xsl:template>
 
   <xsl:template match="sList">
-    <ol style="padding-left: 2em;">
+    <ol style="margin: 10px 0 0 0; padding-left: 4em;">
       <xsl:apply-templates />
     </ol>
   </xsl:template>
