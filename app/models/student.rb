@@ -133,30 +133,30 @@ class Student < ActiveRecord::Base
 
     end
 
-    if filters.key?(:status)
+    if filters.key?(:status) && filters[:status] != ''
       cond = cond.where(student_group_status: filters[:status])
     end
 
-    if filters.key?(:course)
+    if filters.key?(:course) && filters[:course] != ''
       cond = cond.where(student_group_group: Group.filter(course: filters[:course]))
     end
 
-    if filters.key?(:group)
+    if filters.key?(:group) && filters[:group] != ''
       cond = cond.where(student_group_group: filters[:group])
     end
 
-    if filters.key?(:speciality)
+    if filters.key?(:speciality) && filters[:speciality] != ''
       cond = cond.where(student_group_group: Group.filter(speciality: filters[:speciality]))
     end
-    if filters.key?(:faculty)
+    if filters.key?(:faculty) && filters[:faculty] != ''
       cond = cond.where(student_group_group: Group.filter(faculty: filters[:faculty]))
     end
 
-    if filters.key?(:form)
+    if filters.key?(:form) && filters[:form] != ''
       cond = cond.where(student_group_group: Group.filter(form: filters[:form]))
     end
 
-    if filters.key?(:finance)
+    if filters.key?(:finance) && filters[:finance] != ''
       cond = cond.where(student_group_tax: filters[:finance])
     end
 

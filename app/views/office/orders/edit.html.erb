@@ -2,7 +2,20 @@
   <h1>Приказ <%= order_number(@order) %></h1>
 </div>
 
-<% if can?(:sign, Office::Order) #&& !@order.signed? %>
+<% if can?(:sign, Office::Order) && @order.underway? %>
   <%= render partial: 'sign_date_number', locals: {order: @order} %>
-<% end %>
+<% elsif @order.draft? %>
+  <div class="col-sm-offset-5">
+  <%= form_for @order, url: office_order_path(@order) do |f| %>
+      <%= f.hidden_field :status, value: Office::Order::STATUS_UNDERWAY %>
+      <button type="submit" class="btn btn-warning">
+          <span class="glyphicons pen"></span> Отправить на подпись
+      </button>
+    <% end %>
+  <% end %>
+  </div>
 <%= @order.to_html %>
+
+<div class="col-sm-offset-1">
+  <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к черновикам'.html_safe, office_drafts_path, class: 'btn btn-default' %>
+</div>

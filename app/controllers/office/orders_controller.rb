@@ -2,7 +2,12 @@ class Office::OrdersController < ApplicationController
   load_and_authorize_resource class: 'Office::Order'
 
   def index
-    @orders = @orders.page(params[:page])
+    @order_students = Office::OrderStudent.my_filter(params.merge(status: '3'))
+    if @order_students.page(params[:page]).empty?
+      @order_students = @order_students.page(1)
+    else
+      @order_students = @order_students.page(params[:page])
+    end
   end
 
   def drafts
@@ -55,12 +60,21 @@ class Office::OrdersController < ApplicationController
   end
 
   def new
-    @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception]).filter(params).page(params[:page])
+    @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception]).my_filter(params).page(params[:page])
   end
 
   def create
+    students = {}
+    params[:exceptions].each_with_index do |ex, i|
+      student = Student.find(ex)
+      students.merge! i => {order_student_student: student.person.id, order_student_student_group_id: student.id, order_student_cause: 0}
+    end
+    # raise students.inspect
+    @order = Office::Order.create status: 1, responsible: current_user.positions.first.id, order_template: params[:template],
+                                  order_department:  current_user.positions.first.department.id,
+                                  students_in_order_attributes: students
     if @order.save
-      redirect_to orders_path, notice: 'Проект приказа успешно создан.'
+      redirect_to office_orders_path, notice: 'Проект приказа успешно создан.'
     else
       render action: :new
     end
@@ -90,6 +104,7 @@ class Office::OrdersController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:office_order, {}).permit(:editing_date, :status)
+    params.fetch(:office_order, {}).permit(:number, :editing_date, :signing_date, :status, :responsible, :template,
+                 students_in_order_attributes: [:order_student_student, :order_student_student_group_id, :order_student_cause])
   end
 end

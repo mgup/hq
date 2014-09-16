@@ -39,6 +39,30 @@ class Office::Order < ActiveRecord::Base
   scope :entrance, -> { where(order_template: ENTRANCE_TEMPLATE) }
   scope :from_year_and_month, -> year, month { where('order_editing > ? AND (order_signing > ? OR order_signing IS NULL)', DateTime.new(year, month, 1, 0, 0, 0, 0), DateTime.new(year, month, 1, 0, 0, 0, 0)) }
 
+  scope :my_filter, -> filters {
+    cond = all
+
+    if filters.key?(:template) && filters[:template] != ''
+      cond = cond.where(order_template: filters[:template])
+    end
+
+    if filters.key?(:status) && filters[:status] != ''
+      cond = cond.where(order_status: filters[:status].to_i)
+    end
+
+    if filters.key?(:from_date) && filters[:from_date] != ''
+      cond = cond. where('order_editing > ? AND (order_signing > ? OR order_signing IS NULL)', DateTime.strptime(filters[:from_date], '%d.%m.%Y'), DateTime.strptime(filters[:from_date], '%d.%m.%Y'))
+    end
+
+    if filters.key?(:till_date) && filters[:till_date] != ''
+      cond = cond. where('order_editing < ? AND (order_signing < ? OR order_signing IS NULL)', DateTime.strptime(filters[:till_date], '%d.%m.%Y'), DateTime.strptime(filters[:till_date], '%d.%m.%Y'))
+    end
+
+    cond
+  }
+
+
+
   def draft?
     STATUS_DRAFT == status
   end

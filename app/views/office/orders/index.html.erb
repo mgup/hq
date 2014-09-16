@@ -2,29 +2,41 @@
   <h1>Приказы по контингенту</h1>
 </div>
 
-<%= paginate_with_info @orders %>
+<%= render partial: 'filters', locals: {url: office_orders_path} %>
+
+<%= paginate_with_info @order_students %>
 
 <table class="table table-striped">
   <thead>
   <tr>
     <th>#</th>
     <th>Номер</th>
-    <th>Дата</th>
     <th>Тип</th>
+    <th>Фамилия</th>
+    <th>Имя</th>
+    <th>Отчество</th>
+    <th>Факультет</th>
+    <th>Группа</th>
+    <th>Дата</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
-  <% @orders.each do |order| %>
+  <% @order_students.each do |ost| %>
     <tr>
-      <td><%= order.id %>&ndash;<%= order.version %></td>
-      <td><%= order.number if order.signed? %></td>
-      <td>
-        <%= l (order.signed? ? order.signing_date.to_date : order.editing_date) %>
-      </td>
-      <td><%= order.template.name %></td>
+      <td><%= ost.order.id %>&ndash;<%= ost.order.version %></td>
+      <td><%= ost.order.number %></td>
+      <td><%= ost.order.template.name if ost.order.template %></td>
+      <td><%= ost.person.last_name %></td>
+      <td><%= ost.person.first_name %></td>
+      <td><%= ost.person.patronym %></td>
+      <td><%= ost.student.group.speciality.faculty.abbreviation %></td>
+      <td><%= ost.student.group.name %></td>
+      <td><%= l ost.order.signing_date.to_date %></td>
+      <td></td>
     </tr>
   <% end %>
   </tbody>
 </table>
 
-<%= paginate @orders %>
+<%= paginate @order_students %>

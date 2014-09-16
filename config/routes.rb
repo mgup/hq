@@ -213,6 +213,7 @@ HQ::Application.routes.draw do
       get 'underways', to: 'orders#underways', on: :collection
       get 'entrance_protocol', to: 'orders#entrance_protocol', on: :member
     end
+    get 'drafts', to: 'orders#drafts'
     get 'orders/new(/:page)', to: 'orders#new', defaults: { page: 1 }
 
     resources :order_templates do

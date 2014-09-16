@@ -391,7 +391,7 @@
 @initOrderMetaAcademicYear = (uid) ->
   currentYear = parseInt($('#' + uid).attr('data-meta-text'))
   if isNaN(currentYear) || '' == currentYear
-    currentYear = 2013
+    currentYear = 2014
 
   $('#' + uid).attr('data-meta-text', currentYear)
 
@@ -443,7 +443,7 @@
   #      Прячем мета-блок.
       $('#' + $(this).data('uid')).popover('hide')
 
-    $('.meta-text .cancel').on 'click', ->
+    $('.meta-academic-year .cancel').on 'click', ->
       metaCancelLinkClick(this)
       return false
 

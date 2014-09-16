@@ -69,15 +69,15 @@ $ ->
 
       template = ''
       if $('#order_template')[0]
-        template = "template=" + $('#order_template option:selected').val()
+        template = 'template=' + $('#order_template option:selected').val() + '&'
 
 #      Добавляем в дату массив исключений (если мы создаем приказ).
       exceptions = ""
       $('div#create_order table>tbody>tr>td:nth-child(1)').each ->
-        exceptions = exceptions + "&exception[]=" + $(this).text()
+        exceptions = exceptions + '&exception[]=' + $(this).text()
       if null == url
         currentPage = 1 if currentPage == ''
-        totalData = href + currentPage + '/?&' + template + data + exceptions
+        totalData = href + currentPage + '/?' + template + data + exceptions
         history.pushState( null, null, totalData)
       else
         totalData = url
