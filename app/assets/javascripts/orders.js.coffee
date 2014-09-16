@@ -60,7 +60,7 @@
 
   div = $('<div>', {'class' : 'meta-popover meta-text meta-text-order', 'data-uid'  : 'uid'})
 
-  input = $('<textarea>', {'rows' : 5, 'id' : 'meta' + uid, 'width' : required ? '234px' : '300px'})
+  input = $('<textarea>', {'rows' : 5, 'class': 'form-control', 'id' : 'meta' + uid, 'width' : required ? '234px' : '300px'})
   div.append(input)
 
   $('<button>', {'class' : 'btn btn-primary save', 'text'  : 'Сохранить', 'data-uid'  : uid}).appendTo(div)
@@ -105,7 +105,7 @@
 
   div = $('<div>', {'class' : 'meta-popover meta-text meta-text-student', 'id'  : uid})
 
-  input = $('<input>', {'type' : 'text', 'id' : 'meta' + uid, 'class' : 'datepicker', 'width' : required ? '234px' : '300px'})
+  input = $('<input>', {'type' : 'text', 'id' : 'meta' + uid, 'class' : 'form-control datepicker', 'width' : required ? '234px' : '300px'})
   div.append(input)
 
   $('<button>', {'class' : 'btn btn-primary save', 'text'  : 'Сохранить', 'data-uid'  : uid}).appendTo(div)
@@ -157,7 +157,7 @@
 
   div = $('<div>', {'class' : 'meta-popover meta-text meta-text-order', 'data-uid'  : 'uid'})
 
-  input = $('<input>', {'type' : 'text', 'id' : 'meta' + uid, 'class' : 'datepicker', 'width' : required ? '234px' : '300px'})
+  input = $('<input>', {'type' : 'text', 'id' : 'meta' + uid, 'class' : 'datepicker form-control', 'width' : required ? '234px' : '300px'})
   div.append(input)
 
   $('<button>', {'class' : 'btn btn-primary save', 'text'  : 'Сохранить', 'data-uid'  : uid}).appendTo(div)
@@ -200,17 +200,20 @@
   $this = $('#' + uid)
   required = ('true' == $this.attr('data-required'))
 
+  options = $this.attr('data-meta-options').split('|')
+  optionsText = $this.attr('data-meta-options-text').split('|')
+
   text = $this.attr('data-meta-text')
   isEmpty = ('' == text)
   if isEmpty
     text = $this.attr('data-meta-pattern')
+  else
+    text = options[optionsText.indexOf(text)]
   $this.html(text)
 
   div = $('<div>', {'class' : 'meta-popover meta-select meta-text-order', 'data-uid'  : uid})
 
-  select = $('<select>', {'id' : 'meta' + uid, 'width' : required ? '234px' : '300px'})
-  options = $this.attr('data-meta-options').split('|')
-  optionsText = $this.attr('data-meta-options-text').split('|')
+  select = $('<select>', {'id' : 'meta' + uid, 'class': 'form-control', 'width' : required ? '234px' : '300px'})
   $('<option>', {'value' : optionsText[i], 'html' : options[i]}).appendTo(select) for i in [(options.length - 1)..0]
   div.append(select)
 
@@ -228,9 +231,19 @@
 
   $this.on 'click', ->
     $(this).popover('show')
-    $('.meta-text .save').on 'click', ->
-      metaSaveButtonClick(this)
-    $('.meta-text .cancel').on 'click', ->
+    $('#meta'+$this.attr('id')+' option[value="'+$this.attr('data-meta-text')+'"]').prop('selected', true)
+    $('.meta-select .save').on 'click', ->
+      selectedOption = $('#meta' + $(this).data('uid')).val()
+      $('#' + $(this).data('uid')).attr('data-meta-text', selectedOption)
+      $('#' + $(this).data('uid')).html($('#meta'+$(this).data('uid')+' option[value="'+selectedOption+'"]').text())
+
+      #      Отправляем данные в базу.
+      saveMeta($(this).data('uid'))
+
+      #      Прячем мета-блок.
+      $('#' + $(this).data('uid')).popover('hide')
+
+    $('.meta-select .cancel').on 'click', ->
       metaCancelLinkClick(this)
       return false
 
@@ -240,18 +253,6 @@
     $('.meta-text .remove').on 'click', ->
       metaRemoveButtonClick(this)
   $('#meta' + uid).val($this.attr('data-meta-text'))
-
-  $('div[data-uid="' + uid + '"] .save').on 'click', ->
-#      Сохраняем выбранное значение в качестве значения мета-блока.
-    selectedOption = $('#meta' + $(this).data('uid')).val()
-    $('#' + $(this).data('uid')).attr('data-meta-text', selectedOption)
-    $('#' + $(this).data('uid')).html(selectedOption)
-
-#      Отправляем данные в базу.
-    saveMeta($(this).data('uid'))
-
-#      Прячем мета-блок.
-    $('#' + $(this).data('uid')).popover('hide')
 
 
 @metaSaveButtonClick = (object) ->
@@ -311,7 +312,7 @@
 
   div = $('<div>', {'class' : 'meta-popover meta-text meta-text-student', 'data-uid'  : 'uid'})
 
-  input = $('<select>', {'id' : 'meta' + uid, 'width' : required ? '234px' : '300px'})
+  input = $('<select>', {'id' : 'meta' + uid, 'class': 'form-control', 'width' : required ? '234px' : '300px'})
 
 #     Загрузка списка сотрудников подразделения.
   data = { 'department' : $this.attr('data-meta-department') }
@@ -403,7 +404,7 @@
   if '' == metaId || null == metaId
     saveMeta(uid)
 
-  select = $('<select>', {'class': 'meta' + uid})
+  select = $('<select>', {'class': 'form-control meta' + uid})
 
   $('<option>', {'value' : year, 'html'  : year + '/' + (year + 1)}).appendTo(select) for year in [(currentYear + 1)..2010]
   div.append(select)
@@ -425,22 +426,26 @@
 #        вариант затирался текущим сохранённым.
 
     currentValue = parseInt($('#' + uid).attr('data-meta-text'))
-    $('.meta-popover[data-uid"=' + uid + '"] option').each ->
+    $('.meta-popover[data-uid="' + uid + '"] option').each ->
       if currentValue == $(this).val()
         $(this).attr('selected', 'selected')
         $('#' + $(this).data('uid')).html(currentValue + '/' + (currentValue + 1))
 
-  $('.meta-academic-year .save').on 'click', ->
-#      Сохраняем выбранное значение в качестве значения мета-блока.
-    selectedYear = parseInt($('.meta' + $(this).data('uid')).val())
-    $('#' + $(this).data('uid')).attr('data-meta-text', selectedYear)
-    $('#' + $(this).data('uid')).html(selectedYear + '/' + (selectedYear + 1))
+    $('.meta-academic-year .save').on 'click', ->
+  #      Сохраняем выбранное значение в качестве значения мета-блока.
+      selectedYear = parseInt($('.meta' + $(this).data('uid')).val())
+      $('#' + $(this).data('uid')).attr('data-meta-text', selectedYear)
+      $('#' + $(this).data('uid')).html(selectedYear + '/' + (selectedYear + 1))
 
-#      Отправляем данные в базу.
-    saveMeta($(this).data('uid'))
+  #      Отправляем данные в базу.
+      saveMeta($(this).data('uid'))
 
-#      Прячем мета-блок.
-    $('#' + $(this).data('uid')).popover('hide')
+  #      Прячем мета-блок.
+      $('#' + $(this).data('uid')).popover('hide')
+
+    $('.meta-text .cancel').on 'click', ->
+      metaCancelLinkClick(this)
+      return false
 
 
 #Сохранение мета-данных в базу.

@@ -6,6 +6,7 @@ class Office::Order < ActiveRecord::Base
   STATUS_SIGNED   = 3
 
   ENTRANCE_TEMPLATE = 16
+  PROBATION_TEMPLATE = 40
 
   alias_attribute :id,      :order_id
   alias_attribute :version, :order_revision
@@ -99,6 +100,12 @@ class Office::Order < ActiveRecord::Base
 
         xml.students do
           students.each { |student| xml << student.to_nokogiri.root.to_xml }
+        end
+
+        if template.id == PROBATION_TEMPLATE
+          xml.groups do
+            students.first.group.speciality.groups.filter(course: students.first.group.course+1).each { |group| xml << group.to_nokogiri_empty.root.to_xml }
+          end
         end
 
         xml.metas do
