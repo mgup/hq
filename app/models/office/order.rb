@@ -46,16 +46,16 @@ class Office::Order < ActiveRecord::Base
       cond = cond.where(order_template: filters[:template])
     end
 
-    if filters.key?(:status) && filters[:status] != ''
-      cond = cond.where(order_status: filters[:status].to_i)
+    if filters.key?(:order_status) && filters[:order_status] != ''
+      cond = cond.where(order_status: filters[:order_status].to_i)
     end
 
     if filters.key?(:from_date) && filters[:from_date] != ''
-      cond = cond. where('order_editing > ? AND (order_signing > ? OR order_signing IS NULL)', DateTime.strptime(filters[:from_date], '%d.%m.%Y'), DateTime.strptime(filters[:from_date], '%d.%m.%Y'))
+      cond = cond. where('order_editing >= ? AND (order_signing >= ? OR order_signing IS NULL)', DateTime.strptime(filters[:from_date], '%d.%m.%Y'), DateTime.strptime(filters[:from_date], '%d.%m.%Y'))
     end
 
     if filters.key?(:till_date) && filters[:till_date] != ''
-      cond = cond. where('order_editing < ? AND (order_signing < ? OR order_signing IS NULL)', DateTime.strptime(filters[:till_date], '%d.%m.%Y'), DateTime.strptime(filters[:till_date], '%d.%m.%Y'))
+      cond = cond. where('(order_editing <= ? AND order_signing IS NULL) OR order_signing <= ?', DateTime.strptime(filters[:till_date], '%d.%m.%Y'), DateTime.strptime(filters[:till_date], '%d.%m.%Y'))
     end
 
     cond

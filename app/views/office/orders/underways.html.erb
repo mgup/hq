@@ -2,4 +2,10 @@
   <h1>Приказы на подписи</h1>
 </div>
 
+<%= render partial: 'filters', locals: {url: office_underways_path, ost: false} %>
+
+<%= paginate_with_info @underways %>
+
 <%= render partial: 'unsigned_table', locals: { orders: @underways } %>
+
+<%= paginate @underways %>

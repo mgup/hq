@@ -284,8 +284,8 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :nav_group_orders, 'Приказы', class: 'nav-header disabled'
         primary.item :office_orders, raw('Работа с приказами <span class="caret"></span>'), office_orders_path, icon: 'file', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' } do |orders|
           orders.dom_class = 'dropdown-menu'
-          orders.item :orders_drafts, 'Черновики приказов', drafts_office_orders_path, icon: 'paperclip'
-          orders.item :orders_underways, 'Приказы на подписи', underways_office_orders_path, icon: 'time'
+          orders.item :orders_drafts, 'Черновики приказов', office_drafts_path, icon: 'paperclip'
+          orders.item :orders_underways, 'Приказы на подписи', office_underways_path, icon: 'time'
 
           orders.item :order_templates, 'Шаблоны', office_order_templates_path, icon: 'list'
         end

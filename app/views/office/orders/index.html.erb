@@ -2,7 +2,7 @@
   <h1>Приказы по контингенту</h1>
 </div>
 
-<%= render partial: 'filters', locals: {url: office_orders_path} %>
+<%= render partial: 'filters', locals: {url: office_orders_path, ost: true} %>
 
 <%= paginate_with_info @order_students %>
 
@@ -12,9 +12,13 @@
     <th>#</th>
     <th>Номер</th>
     <th>Тип</th>
-    <th>Фамилия</th>
-    <th>Имя</th>
-    <th>Отчество</th>
+    <% if params[:group_by_number] == '1' %>
+      <th>Количество студентов</th>
+    <% else %>
+      <th>Фамилия</th>
+      <th>Имя</th>
+      <th>Отчество</th>
+    <% end %>
     <th>Факультет</th>
     <th>Группа</th>
     <th>Дата</th>
@@ -22,19 +26,37 @@
   </tr>
   </thead>
   <tbody>
-  <% @order_students.each do |ost| %>
+  <% if @order_students.empty? %>
     <tr>
-      <td><%= ost.order.id %>&ndash;<%= ost.order.version %></td>
-      <td><%= ost.order.number %></td>
-      <td><%= ost.order.template.name if ost.order.template %></td>
-      <td><%= ost.person.last_name %></td>
-      <td><%= ost.person.first_name %></td>
-      <td><%= ost.person.patronym %></td>
-      <td><%= ost.student.group.speciality.faculty.abbreviation %></td>
-      <td><%= ost.student.group.name %></td>
-      <td><%= l ost.order.signing_date.to_date %></td>
-      <td></td>
+        <td class="text-center" colspan="<%= params[:group_by_number] == '1' ? 8 : 10 %>">Ни одного приказа не было найдено. Попробуйте изменить параметры поиска.</td>
     </tr>
+  <% else %>
+    <% @order_students.each do |ost| %>
+      <tr>
+        <td class="nowrap"><%= ost.order.full_id %></td>
+        <td><%= ost.order.number %></td>
+        <td><%= ost.order.template.name if ost.order.template %></td>
+        <% if params[:group_by_number] == '1' %>
+            <td>
+                Всего: <%= order_details(ost.order) %>
+            </td>
+        <% else %>
+        <td><%= ost.person.last_name %></td>
+        <td><%= ost.person.first_name %></td>
+        <td><%= ost.person.patronym %></td>
+        <% end %>
+        <td><%= ost.student.group.speciality.faculty.abbreviation %></td>
+        <td class="nowrap"><%= ost.student.group.name %></td>
+        <td><%= l ost.order.signing_date.to_date %></td>
+        <td class="nowrap">
+          <%= link_for_order(ost.order) %>
+          <br>
+          <%= link_to office_order_show_path(ost.order.id) do %>
+            <span class="glyphicons print"></span> Распечатать
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
   <% end %>
   </tbody>
 </table>

@@ -479,6 +479,19 @@
     $('#' + uid).attr('data-meta-id', meta.id)
   .success ->
     alert('Информация была успешно сохранена')
+    checkForSign()
   .error ->
     alert('Ошибка. Данные не сохранены. В случае повторения ошибки — обратитесь в отдел информационных систем.')
+    checkForSign()
 
+
+
+@checkForSign = ->
+  key = true
+  $('.order-meta[data-required="true"]').each ->
+    key = key && ($(this).attr('data-meta-text') != '')
+  if key
+    $('#pushToSign').prop('disabled', false)
+
+$ ->
+  checkForSign()

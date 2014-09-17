@@ -8,7 +8,7 @@
   <div class="col-sm-offset-5">
   <%= form_for @order, url: office_order_path(@order) do |f| %>
       <%= f.hidden_field :status, value: Office::Order::STATUS_UNDERWAY %>
-      <button type="submit" class="btn btn-warning">
+      <button id="pushToSign" disabled type="submit" class="btn btn-warning">
           <span class="glyphicons pen"></span> Отправить на подпись
       </button>
     <% end %>

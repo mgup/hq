@@ -2,7 +2,11 @@ class Office::OrdersController < ApplicationController
   load_and_authorize_resource class: 'Office::Order'
 
   def index
-    @order_students = Office::OrderStudent.my_filter(params.merge(status: '3'))
+    params[:from_date]  ||= "01.01.#{Date.today.year}"
+    @order_students = Office::OrderStudent.my_filter(params.merge(order_status: Office::Order::STATUS_SIGNED))
+    if params[:group_by_number] == '1'
+      @order_students = @order_students.group(:order_student_order)
+    end
     if @order_students.page(params[:page]).empty?
       @order_students = @order_students.page(1)
     else
@@ -11,11 +15,25 @@ class Office::OrdersController < ApplicationController
   end
 
   def drafts
-    @drafts = Office::Order.drafts
+    params[:from_date]  ||= "01.01.#{Date.today.year}"
+    @order_students = Office::OrderStudent.my_filter(params.merge(order_status: Office::Order::STATUS_DRAFT))
+    @drafts = Office::Order.where(id: @order_students.collect{|x| x.order.id}.uniq)
+    if @drafts.page(params[:page]).empty?
+      @drafts = @drafts.page(1)
+    else
+      @drafts = @drafts.page(params[:page])
+    end
   end
 
   def underways
-    @underways = Office::Order.underways
+    params[:from_date]  ||= "01.01.#{Date.today.year}"
+    @order_students = Office::OrderStudent.my_filter(params.merge(order_status: Office::Order::STATUS_UNDERWAY))
+    @underways = Office::Order.where(id: @order_students.collect{|x| x.order.id}.uniq)
+    if @underways.page(params[:page]).empty?
+      @underways = @underways.page(1)
+    else
+      @underways = @underways.page(params[:page])
+    end
   end
 
   def entrance_protocol

@@ -1,29 +1,38 @@
 <table class="table table-striped">
-  <thead>
-  <tr>
-    <th>#</th>
-    <th>Редактировался</th>
-    <th>Тип приказа</th>
-    <th colspan="2"></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% orders.each do |order| %>
+    <thead>
     <tr>
-      <td><%= order.id %>&ndash;<%= order.version %></td>
-      <td>
-        <%= l (order.signed? ? order.signing_date.to_date : order.editing_date) %>
-      </td>
-      <td><%= order.template.name %></td>
-      <td>
-        <%= link_for_order(order) %>
-      </td>
-      <td>
-        <%= link_to "#{office_order_path(order)}.pdf" do %>
-          <span class='glyphicon glyphicon-print'></span> Распечатать приказ
-        <% end %>
-      </td>
+        <th>#</th>
+        <th>Тип</th>
+        <th>Количество студентов</th>
+        <th>Факультет</th>
+        <th>Группа</th>
+        <th>Последнее редактирование</th>
+        <th></th>
     </tr>
-  <% end %>
-  </tbody>
+    </thead>
+    <tbody>
+    <% if orders.empty? %>
+      <tr>
+          <td class="text-center" colspan="7">Ни одного приказа не было найдено. Попробуйте изменить параметры поиска.</td>
+      </tr>
+    <% else %>
+      <% orders.each do |order| %>
+        <tr>
+            <td class="nowrap"><%= order.full_id %></td>
+            <td><%= order.template.name if order.template %></td>
+            <td>Всего: <%= order_details(order) %></td>
+            <% if order.students.empty? %>
+              <td></td><td></td>
+            <% else %>
+              <td><%= order.students.first.group.speciality.faculty.abbreviation %></td>
+              <td class="nowrap"><%= order.students.first.group.name %></td>
+            <% end %>
+            <td><%= l order.editing_date %></td>
+            <td class="nowrap">
+              <%= link_for_order(order) %>
+            </td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
 </table>
