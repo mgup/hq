@@ -32,7 +32,7 @@
             <td><%= order.number %></td>
             <td><%= order.competitive_group.name %></td>
             <td>
-              <%= link_to office_order_path(order.id), class: 'btn btn-default', title: 'Распечатать' do %>
+              <%= link_to office_order_path(order.id, format: :pdf), class: 'btn btn-default', title: 'Распечатать' do %>
                 <span class="glyphicons print"></span>
               <% end %>
               <%= link_to entrance_protocol_office_order_path(order.id, format: :pdf), class: 'btn btn-default', title: 'Распечатать протокол о зачислении' do %>
