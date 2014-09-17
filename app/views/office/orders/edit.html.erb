@@ -11,11 +11,21 @@
       <button id="pushToSign" disabled type="submit" class="btn btn-warning">
           <span class="glyphicons pen"></span> Отправить на подпись
       </button>
-    <% end %>
   <% end %>
   </div>
+<% end %>
 <%= @order.to_html %>
 
-<div class="col-sm-offset-1">
-  <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к черновикам'.html_safe, office_drafts_path, class: 'btn btn-default' %>
-</div>
+<% if @order.draft? %>
+  <div class="col-sm-offset-1">
+    <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к черновикам'.html_safe, office_drafts_path, class: 'btn btn-default' %>
+  </div>
+<% elsif @order.underway? %>
+  <div class="col-sm-offset-1">
+      <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к приказам на подписи'.html_safe, office_underways_path, class: 'btn btn-default' %>
+  </div>
+<% else %>
+  <div class="col-sm-offset-1">
+      <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к приказам'.html_safe, office_orders_path, class: 'btn btn-default' %>
+  </div>
+<% end %>

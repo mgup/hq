@@ -2,8 +2,8 @@
   <div class='row'>
     <div class='col col-sm-6'>
       <%= hidden_field_tag :faculty, params[:faculty],
-                           class: 'hidden-pill-values' %>
-      <%= pill_tabs('faculty', Department.faculties.collect { |f| [f.id, f.abbreviation] },
+                           class: 'ajax-faculty hidden-pill-values' %>
+      <%= pill_tabs('faculty', @faculties.collect { |f| [f.id, f.abbreviation] },
                       'faculty') %>
     </div>
   </div>

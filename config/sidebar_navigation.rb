@@ -252,7 +252,7 @@ SimpleNavigation::Configuration.run do |navigation|
       if can? :manage, My::Support
         primary.item :social_applications, 'Заявления на мат. помощь', social_applications_path, icon: 'file'
         primary.item :support, 'СПИСКИ по заявлениям'.html_safe,  lists_social_applications_path, icon: 'list'
-        primary.item :support_form, 'Оставить заявление на мат. помощь', 'http://matrix3.mgup.ru/my/support', icon: 'ok'
+        # primary.item :support_form, 'Оставить заявление на мат. помощь', 'http://matrix3.mgup.ru/my/support', icon: 'ok'
       end
       if can? :manage, Event.new(event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY)
         primary.item :event,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
@@ -280,14 +280,17 @@ SimpleNavigation::Configuration.run do |navigation|
 
     # ======================================
     if user_signed_in?
-      if current_user.is?(:developer)
+      if can? :manage, Office::Order
         primary.item :nav_group_orders, 'Приказы', class: 'nav-header disabled'
         primary.item :office_orders, raw('Работа с приказами <span class="caret"></span>'), office_orders_path, icon: 'file', class: 'dropdown',  link: { :'data-toggle' => 'dropdown', :'class' => 'dropdown-toggle' } do |orders|
           orders.dom_class = 'dropdown-menu'
+          orders.item :new_order, 'Создать проект приказа', new_office_order_path, icon: 'plus'
           orders.item :orders_drafts, 'Черновики приказов', office_drafts_path, icon: 'paperclip'
           orders.item :orders_underways, 'Приказы на подписи', office_underways_path, icon: 'time'
-
-          orders.item :order_templates, 'Шаблоны', office_order_templates_path, icon: 'list'
+          orders.item :orders, 'Подписанные приказы', office_orders_path, icon: 'folder-open'
+          if current_user.is? :developer
+            orders.item :order_templates, 'Шаблоны', office_order_templates_path, icon: 'list'
+          end
         end
       end
     end

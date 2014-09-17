@@ -6,6 +6,9 @@
 
   <xsl:template match="meta_academic_year">
     <xsl:variable name="uid" select="generate-id(.)" />
+    <xsl:variable name="isRequired">
+      <xsl:value-of select="'required' = @required" />
+    </xsl:variable>
     <xsl:element name="span">
       <xsl:attribute name="class">meta-marker valid</xsl:attribute>
       &lowast;
@@ -40,6 +43,9 @@
       <xsl:attribute name="data-meta-type">0</xsl:attribute>
       <xsl:attribute name="data-meta-object">
         <xsl:value-of select="/order/id" />
+      </xsl:attribute>
+      <xsl:attribute name="data-required">
+        <xsl:value-of select="$isRequired" />
       </xsl:attribute>
       <xsl:attribute name="data-meta-pattern">Учебный год</xsl:attribute>
 

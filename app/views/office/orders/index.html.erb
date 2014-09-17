@@ -49,8 +49,6 @@
         <td class="nowrap"><%= ost.student.group.name %></td>
         <td><%= l ost.order.signing_date.to_date %></td>
         <td class="nowrap">
-          <%= link_for_order(ost.order) %>
-          <br>
           <%= link_to office_order_show_path(ost.order.id) do %>
             <span class="glyphicons print"></span> Распечатать
           <% end %>

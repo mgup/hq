@@ -427,8 +427,8 @@
 
     currentValue = parseInt($('#' + uid).attr('data-meta-text'))
     $('.meta-popover[data-uid="' + uid + '"] option').each ->
-      if currentValue == $(this).val()
-        $(this).attr('selected', 'selected')
+      if currentValue == parseInt($(this).val())
+        $(this).prop('selected', true)
         $('#' + $(this).data('uid')).html(currentValue + '/' + (currentValue + 1))
 
     $('.meta-academic-year .save').on 'click', ->

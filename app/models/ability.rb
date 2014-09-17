@@ -198,6 +198,8 @@ class Ability
     can :manage, Study::Discipline
     can :manage, Study::Exam
     can :manage, Study::Repeat
+    can :manage, Office::Order
+    cannot :sign, Office::Order
   end
 
   def selection(user)

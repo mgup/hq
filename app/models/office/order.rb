@@ -20,16 +20,16 @@ class Office::Order < ActiveRecord::Base
                         foreign_key: :order_template
 
   has_many :students_in_order, class_name: 'Office::OrderStudent',
-           foreign_key: :order_student_order
+           foreign_key: :order_student_order, dependent: :destroy
   accepts_nested_attributes_for :students_in_order
   has_many :students, class_name: 'Student', through: :students_in_order
 
   has_many :order_reasons, class_name: 'Office::OrderReason',
-           foreign_key: :order_reason_order
+           foreign_key: :order_reason_order, dependent: :destroy
   has_many :reasons, class_name: 'Office::Reason', through: :order_reasons
 
   has_many :metas, class_name: 'Office::OrderMeta',
-           foreign_key: :order_meta_order, primary_key: :order_id
+           foreign_key: :order_meta_order, primary_key: :order_id, dependent: :destroy
   accepts_nested_attributes_for :metas
 
   scope :drafts, -> { where(order_status: STATUS_DRAFT) }
@@ -141,7 +141,9 @@ class Office::Order < ActiveRecord::Base
         xml.text_
         xml.signature_
         # xml.protocol_
-        xml.act_
+        if template.id == ENTRANCE_TEMPLATE
+          xml.act_
+        end
       end
     end
 

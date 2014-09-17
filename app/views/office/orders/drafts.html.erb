@@ -2,6 +2,14 @@
   <h1>Черновики приказов</h1>
 </div>
 
+<div class="row">
+  <div class="col col-sm-12">
+  <%= link_to new_office_order_path, class: 'btn btn-success btn-lg pull-right' do %>
+    Создать проект приказа
+  <% end %>
+  </div>
+</div>
+
 <%= render partial: 'filters', locals: {url: office_drafts_path, ost: false} %>
 
 <%= paginate_with_info @drafts %>

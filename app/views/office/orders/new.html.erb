@@ -7,7 +7,7 @@
 <%= select_tag 'order_template',
       options_from_collection_for_select(Office::OrderTemplate.all, :id, :name, params[:template]),
       class: 'form-control' %>
-
+<br>
 <%= render 'students/filters' %>
 
 <div id="create_order">

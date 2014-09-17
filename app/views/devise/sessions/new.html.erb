@@ -42,11 +42,16 @@
       <span class="glyphicon glyphicon-search"></span> Посмотреть успеваемость
     <% end %>
     <hr>
+    <h2>Заявления на материальную помощь</h2>
+    <%= link_to supports_students_path, class: 'btn btn-info btn-lg col-md-offset-3' do %>
+      <span class="glyphicon glyphicon-file"></span> Оставить
+    <% end %>
+    <hr>
     <h2>Актуальные мероприятия</h2>
     <p class="lead text-justify">
 
     </p>
-    <%= link_to actual_events_path, class: 'btn btn-info btn-lg col-md-offset-3' do %>
+    <%= link_to actual_events_path, class: 'btn btn-default btn-lg col-md-offset-3' do %>
       <span class="glyphicon glyphicon-eye-open"></span> Посмотреть
     <% end %>
   </div>

@@ -30,6 +30,18 @@
             <td><%= l order.editing_date %></td>
             <td class="nowrap">
               <%= link_for_order(order) %>
+              <% if can?(:sign, Office::Order) && order.underway? && order.template.current_xsl %>
+                <br>
+                <%= link_to edit_office_order_path(order) do %>
+                  <span class="glyphicon glyphicon-edit"></span> Редактировать
+                <% end %>
+              <% elsif order.draft? %>
+                  <br>
+                  <%= link_to office_order_path(order), method: :delete, class: 'text-danger',
+                              data: {confirm: 'Вы уверены, что хотите удалить этот проект приказа?'} do %>
+                    <span class="glyphicon glyphicon-remove"></span> Удалить
+                  <% end %>
+              <% end %>
             </td>
         </tr>
       <% end %>

@@ -12,13 +12,15 @@ module Office::OrderHelper
   def link_for_order(order)
     options = { class: 'nowrap' }
 
-    if order.draft?
-      link_to edit_office_order_path(order), options do
-        raw('<span class="glyphicon glyphicon-edit"></span> Редактировать')
-      end
-    else
-      link_to office_order_path(order), options do
-        raw('<span class="glyphicon glyphicon-file"></span> Посмотреть')
+    if order.template.current_xsl
+      if order.draft?
+        link_to edit_office_order_path(order), options do
+          raw('<span class="glyphicon glyphicon-edit"></span> Редактировать')
+        end
+      else
+        link_to office_order_path(order, format: :pdf), options do
+          raw('<span class="glyphicon glyphicon-file"></span> Посмотреть')
+        end
       end
     end
   end

@@ -208,7 +208,7 @@ HQ::Application.routes.draw do
 
   namespace :office do
     resources :orders do
-      get '/', to: 'orders#show', defaults: { format: 'pdf' }, as: :show
+      # get '/', to: 'orders#show', defaults: { format: 'pdf' }, as: :show
       # get 'drafts', to: 'orders#drafts', on: :collection
       # get 'underways', to: 'orders#underways', on: :collection
       get 'entrance_protocol', to: 'orders#entrance_protocol', on: :member

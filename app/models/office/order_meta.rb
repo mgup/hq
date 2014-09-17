@@ -19,7 +19,11 @@ class Office::OrderMeta < ActiveRecord::Base
         xml.id_      id
         xml.type     type
         xml.object   object
+        if pattern == 'Группа' && order.template.id == Office::Order::PROBATION_TEMPLATE
+          xml.value  Group.find(text).name
+        else
         xml.value    text
+        end
         xml.pattern  pattern
       end
     end

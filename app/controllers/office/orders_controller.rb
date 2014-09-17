@@ -1,5 +1,6 @@
 class Office::OrdersController < ApplicationController
   load_and_authorize_resource class: 'Office::Order'
+  before_filter :find_faculties, only: [:index, :drafts, :underways]
 
   def index
     params[:from_date]  ||= "01.01.#{Date.today.year}"
@@ -44,7 +45,6 @@ class Office::OrdersController < ApplicationController
   end
 
   def show
-    @order = Office::Order.find(params[:order_id])
     respond_to do |format|
       format.pdf {
         filename = "Приказ №#{@order.id}"
@@ -107,6 +107,8 @@ class Office::OrdersController < ApplicationController
         redirect_to edit_office_order_path(@order)
       elsif can?(:orders, Entrance::Campaign)
         redirect_to orders_entrance_campaigns_path
+      elsif @order.underway?
+        redirect_to office_underways_path, notice: 'Изменения сохранены.'
       else
         redirect_to office_orders_path, notice: 'Изменения сохранены.'
       end
@@ -118,11 +120,22 @@ class Office::OrdersController < ApplicationController
   def destroy
     @order.destroy
 
-    redirect_to roles_path
+    redirect_to office_drafts_path
   end
 
   def resource_params
     params.fetch(:office_order, {}).permit(:number, :editing_date, :signing_date, :status, :responsible, :template,
                  students_in_order_attributes: [:order_student_student, :order_student_student_group_id, :order_student_cause])
+  end
+
+  private
+
+  def find_faculties
+    @faculties = Department.faculties
+    unless current_user.is?(:developer)
+      user_departments = current_user.departments_ids
+      @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
+    end
+    params[:faculty] ||= @faculties.first.id
   end
 end
