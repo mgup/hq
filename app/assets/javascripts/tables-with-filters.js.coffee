@@ -17,6 +17,7 @@ $ ->
     getData = ->
       query = location.href
       vars = query.split("&")
+      $('#createOrderWithStudents').attr('href', (root + 'office/orders?template=' + $('#createOrderWithStudents').data('value')))
       for i in vars
         pair = i.split("=")
 
@@ -32,6 +33,7 @@ $ ->
               row = '<tr><td class="id">' + data.id + '</td>' + '<td>' + data.fname + '</td>' + '<td>' + data.iname + '</td>' + '<td>' + data.oname + '</td>' + '<td>' + data.faculty + '</td>' + '<td>' + data.group + '</td>' + '<td class="image">' + '<a class="btn btn-default orderremove" href="#">' + '<span class="glyphicon glyphicon-arrow-down"></span>' + '</a></td></tr>'
               orderTable.append(row)
               checkCount()
+          $('#createOrderWithStudents').attr('href', ($('#createOrderWithStudents').attr('href') + "&exception[]=#{pair[1]}"))
 
 #    Если у нас есть элемент - добавление студентов в приказ,
 #    то смотрим его, считаем в нем количество студентов,
@@ -79,6 +81,7 @@ $ ->
         currentPage = 1 if currentPage == ''
         totalData = href + currentPage + '/?' + template + data + exceptions
         history.pushState( null, null, totalData)
+        $('#createOrderWithStudents').attr('href', (root+'office/orders?'+template+exceptions))
       else
         totalData = url
 

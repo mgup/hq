@@ -83,7 +83,7 @@ class Office::OrdersController < ApplicationController
 
   def create
     students = {}
-    params[:exceptions].each_with_index do |ex, i|
+    params[:exception].each_with_index do |ex, i|
       student = Student.find(ex)
       students.merge! i => {order_student_student: student.person.id, order_student_student_group_id: student.id, order_student_cause: 0}
     end

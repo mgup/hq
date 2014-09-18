@@ -13,5 +13,5 @@
   <tbody>
   </tbody>
 </table>
-<%= link_to 'Создать приказ', office_orders_path(exceptions: params[:exception], template: params[:template]), method: :post,
-            class: 'btn btn-success pull-right margin-bottom' %>
+<%= link_to 'Создать приказ', office_orders_path(exception: params[:exception], template: params[:template]), method: :post,
+            class: 'btn btn-success pull-right margin-bottom', id: 'createOrderWithStudents', data: {value: params[:template]} %>
