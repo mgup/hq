@@ -92,7 +92,7 @@ class Office::OrdersController < ApplicationController
                                   order_department:  current_user.positions.first.department.id,
                                   students_in_order_attributes: students
     if @order.save
-      redirect_to office_orders_path, notice: 'Проект приказа успешно создан.'
+      redirect_to office_drafts_path, notice: 'Проект приказа успешно создан.'
     else
       render action: :new
     end
