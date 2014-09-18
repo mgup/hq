@@ -3,8 +3,8 @@ class Report::StructureController < ApplicationController
   def report
     @directions = get_all_actual_directions
 
-    # @students = get_all_students
-    @students = []
+    @students = get_all_students
+    # @students = []
 
     @worksheet_filters = {
       0 => proc { |_| true },
