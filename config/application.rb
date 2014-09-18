@@ -28,5 +28,9 @@ module HQ
     config.autoload_paths += Dir["#{config.root}/lib"]
 
     config.assets.paths << "#{Rails.root}/app/assets/docs"
+
+    config.exceptions_app = -> (env) do
+      ExceptionController.action(:show).call(env)
+    end
   end
 end

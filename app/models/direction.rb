@@ -20,7 +20,7 @@ class Direction < ActiveRecord::Base
     "#{new_code} #{name}"
   end
 
-  def bachelor?
+  def master?
     '04' == new_code.split('.')[1]
   end
 

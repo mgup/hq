@@ -379,6 +379,7 @@ HQ::Application.routes.draw do
     get 'gzgu/mon_pk_f2_2014_06_23',  to: 'gzgu#mon_pk_f2_2014_06_23'
   end
 
+  get '/404', to: 'errors#error_404'
   root to: 'dashboard#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
