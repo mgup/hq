@@ -17,6 +17,7 @@ class Student < ActiveRecord::Base
   STATUS_STUDENT            = 101
   STATUS_COMPLETE           = 106
   STATUS_DEBTOR             = 107
+  STATUS_TRANSFERRED_DEBTOR = 108
   STATUS_ENTRANT            = 100
 
   self.table_name = 'student_group'
@@ -109,9 +110,10 @@ class Student < ActiveRecord::Base
   end
 
   scope :valid, -> { where(student_group_status: [self::STATUS_STUDENT,
+                                                  self::STATUS_TRANSFERRED_DEBTOR,
                                                   self::STATUS_DEBTOR]) }
 
-  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_DEBTOR]) }
+  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR]) }
   scope :valid_student, -> { where(student_group_status: STATUS_STUDENT)}
   scope :with_group, -> { joins(:group) }
 
@@ -262,7 +264,7 @@ LIMIT 1 ")
 
   # нужно найти все valid? и заменить
   def is_valid?
-    STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status
+    STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status
   end
 
   def course

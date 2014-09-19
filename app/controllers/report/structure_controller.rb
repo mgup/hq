@@ -29,6 +29,7 @@ class Report::StructureController < ApplicationController
       where('student_group_status IN (?)',
             [Student::STATUS_STUDENT,
              Student::STATUS_COMPLETE,
+             Student::STATUS_TRANSFERRED_DEBTOR,
              Student::STATUS_DEBTOR]).
       group(:speciality_id)
   end
@@ -38,6 +39,7 @@ class Report::StructureController < ApplicationController
       where('student_group_status IN (?)',
             [Student::STATUS_STUDENT,
              Student::STATUS_COMPLETE,
+             Student::STATUS_TRANSFERRED_DEBTOR,
              Student::STATUS_DEBTOR])
   end
 end
