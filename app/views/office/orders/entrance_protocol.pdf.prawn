@@ -120,7 +120,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         if ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
           data << ["#{i+1}", ap.number, ap.entrant.full_name]
           ap.abitexams.collect{|x| (@item.direction ? (x.score/20) : x.score) }.each{ |x| data.last << x }
-          data.last << ap.abitpoints
+          data.last << (@item.direction ? (ap.abitpoints/20) : ap.abitpoints)
           data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           data.last << 'зачислить'
           i += 1
@@ -129,12 +129,13 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         if ap.original? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
           data << ["#{i+1}", ap.number, ap.entrant.full_name]
           ap.abitexams.collect{|x| (@item.direction ? (x.score/20) : x.score) }.each{ |x| data.last << x }
-          data.last << ap.abitpoints
+          data.last << (@item.direction ? (ap.abitpoints/20) : ap.abitpoints)
           if @item.payed?
             data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           else
             data.last << (ap.original? ? 'да' : 'нет')
-            data.last << 'гослиния'
+            data.last << 'по конкурсу'
+            # data.last << 'гослиния'
           end
           data.last << 'зачислить'
           i += 1
