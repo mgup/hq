@@ -1,6 +1,6 @@
 class Office::OrdersController < ApplicationController
   load_and_authorize_resource class: 'Office::Order'
-  before_filter :find_faculties, only: [:index, :drafts, :underways]
+  before_filter :find_faculties, only: [:new, :index, :drafts, :underways]
 
   def index
     params[:from_date]  ||= "01.01.#{Date.today.year}"
@@ -78,6 +78,7 @@ class Office::OrdersController < ApplicationController
   end
 
   def new
+    params[:course] ||= 1
     @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception]).my_filter(params).page(params[:page])
   end
 

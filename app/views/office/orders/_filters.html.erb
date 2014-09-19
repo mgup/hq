@@ -1,4 +1,4 @@
-<%= form_tag nil, method: :get, class: 'filter-block' do %>
+<%= form_tag nil, method: :get, class: 'filter-block form-horizontal' do %>
   <div class='row'>
     <div class='col col-sm-6'>
       <%= hidden_field_tag :faculty, params[:faculty],
@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <%= label_tag :type_of_search, 'Студент', class: 'col col-sm-1' %>
+    <%= label_tag :type_of_search, 'ФИО студента', class: 'col col-sm-2 control-label' %>
     <div class="col-sm-6">
       <%= text_field_tag :name, params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control' %>
     </div>
@@ -27,24 +27,26 @@
     </div>
   </div>
   <div class="row">
-    <%= label_tag :template, 'Тип', class: 'col col-sm-1' %>
+    <%= label_tag :template, 'Тип приказа', class: 'col col-sm-2 control-label' %>
     <div class="col-sm-6">
       <%= select_tag 'template',
                 options_from_collection_for_select(Office::OrderTemplate.all, :id, :name, params[:template]),
-                     prompt: 'все типы приказов', class: 'form-control' %>
+                     prompt: 'все типы приказов', class: 'form-control', style: 'width: 104% !important' %>
     </div>
     <% if ost %>
-    <div class="col-sm-5">
-      <label><%= check_box_tag :group_by_number, '1', '1' == params[:group_by_number] %> Группировать по номеру приказа</label>
+    <div class="col-sm-4">
+      <label class="control-label"><%= check_box_tag :group_by_number, '1', '1' == params[:group_by_number] %> Группировать по номеру приказа</label>
     </div>
     <% end %>
   </div>
   <div class="row">
-    <%= label_tag :from_date, 'С', class: 'col col-sm-1 control-label' %>
+    <%= label_tag :from_date, "#{ost ? 'Был подписан' : 'Редактировался'} с", class: 'col col-sm-2 control-label' %>
     <div class="col-sm-3">
       <%= text_field_tag :from_date, params[:from_date], placeholder: 'дд.мм.гггг', class: 'datepicker form-control' %>
     </div>
-    <%= label_tag :till_date, 'По', class: 'col col-sm-1 control-label' %>
+    <div style="float: left;">
+      <%= label_tag :till_date, 'по', class: 'control-label'%>
+    </div>
     <div class="col-sm-3">
       <%= text_field_tag :till_date, params[:till_date], placeholder: 'дд.мм.гггг', class: 'datepicker form-control' %>
     </div>

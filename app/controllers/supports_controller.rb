@@ -9,7 +9,9 @@ class SupportsController < ApplicationController
 
   # проблема: нужно и для студентов, и для сотрудников..
 
-  def index ; end
+  def index
+    @faculties = Department.faculties
+  end
 
   def new
     #authorize! :manage, Student

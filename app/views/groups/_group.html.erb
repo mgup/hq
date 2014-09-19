@@ -1,23 +1,23 @@
 <div class='row'>
   <div class='col col-lg-10'>
-    <%= hidden_field_tag :faculty, nil,  class: 'ajax-faculty' %>
-    <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
+    <%= hidden_field_tag :faculty, params[:faculty],  class: 'ajax-faculty hidden-pill-values' %>
+    <%= pill_tabs('faculty', @faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
   </div>
 </div>
 
 <div class='row'>
   <div class='col col-lg-6'>
     <%= select_tag 'speciality',
-                   options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name),
+                   options_from_collection_for_select((@faculties.length > 1 ? Speciality.includes(:faculty) : @faculties.first.specialities), :id, :full_name, params[:speciality]),
                    prompt: 'все специальности', class: 'ajax-speciality form-control' %>
   </div>
 
   <div class='col col-lg-2'>
-    <%= select_tag :course, options_for_select([1,2,3,4,5,6]), class: 'ajax-course form-control' %>
+    <%= select_tag :course, options_for_select([1,2,3,4,5,6], params[:course]), class: 'ajax-course form-control' %>
   </div>
 
   <div class='col col-lg-4'>
     <%= select_tag :form, options_for_select([['очная', '101'], ['очно-заочная', '102'], ['заочная', '103'],
-                                              ['дистанционная', '105']]), class: 'ajax-form form-control' %>
+                                              ['дистанционная', '105']], params[:form]), class: 'ajax-form form-control' %>
   </div>
 </div>
