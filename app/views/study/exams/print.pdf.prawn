@@ -21,7 +21,8 @@ prawn_document margin: [28, 20, 28, 28],
   elsif @exam.validation?
     pdf.text_box "ВЕДОМОСТЬ КОНТРОЛЯ УСПЕВАЕМОСТИ", at: [160, 842 - 70]
   else
-     pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [120, 842 - 70]
+    pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [120, 842 - 70]
+    # pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № XXXX", at: [120, 842 - 70]
   end
 
   group = @exam.discipline.group
@@ -34,7 +35,9 @@ prawn_document margin: [28, 20, 28, 28],
       pdf.text_box "Форма контроля: #{@exam.name}", at: [0, 750 - 15]
     end
     pdf.text_box "Дисциплина: #{@discipline.name}", at: [0, 750 - 30]
+    # pdf.text_box "Дисциплина: Название дисциплины", at: [0, 750 - 30]
     pdf.text_box "Фамилия, имя, отчество преподавателя(лей): #{@discipline.lead_teacher ? @discipline.lead_teacher.full_name : ''}", at: [0, 750 - 45]
+    # pdf.text_box "Фамилия, имя, отчество преподавателя(лей): Фамилия Имя Отчество", at: [0, 750 - 45]
     pdf.text_box "Семестр: #{@exam.discipline.semester == 1 ? 'I' : 'II'}", at: [370, 750]
     if @exam.is_repeat?
       pdf.text_box "Дата выдачи: #{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [370, 750 - 15]
@@ -42,8 +45,10 @@ prawn_document margin: [28, 20, 28, 28],
       pdf.text_box "Контрольная дата: #{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [370, 750 - 15]
     else
       pdf.text_box "Дата проведения: #{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [370, 750 - 15]
+      # pdf.text_box "Дата проведения: #{l Date.today }", at: [370, 750 - 15]
     end
     pdf.text_box "Группа: #{group.name}", at: [370, 750 - 30]
+    # pdf.text_box "Группа: Буквенно-цифровой шифр группы", at: [370, 750 - 30]
   end
 
 
@@ -190,8 +195,10 @@ prawn_document margin: [28, 20, 28, 28],
             if @exam.test? #зачёт
               if student.ball(@discipline) < 55
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
+                # tableData << [index+1, 'Фамилия Имя Отчество', 'XXXXX', '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
               else
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', student.ball(@discipline), 'зачтено', '']
+                # tableData << [index+1, 'Фамилия Имя Отчество', 'XXXXX', '', '', '', '', '', '', '', '', student.ball(@discipline), 'зачтено', '']
                 pdf.move_to [position_x + 242, position_y - 5.4]
                 pdf.line_to [position_x + 249, position_y - 12.4]
                 pdf.move_to [position_x + 249, position_y - 5.4]
@@ -199,6 +206,7 @@ prawn_document margin: [28, 20, 28, 28],
               end
             elsif @exam.exam? #экзамен
               tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
+              # tableData << [index+1, 'Фамилия Имя Отчество', 'XXXXX', '', '', '', '', '', '', '', '', '', '', '']
             else #дифференцированный зачёт
               if student.ball(@discipline) < 85
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
@@ -308,6 +316,7 @@ prawn_document margin: [28, 20, 28, 28],
     pdf.text '«МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА»', align: :center
     pdf.move_down 10
     pdf.text "ПРИЛОЖЕНИЕ К ЭКЗАМЕНАЦИОННОЙ ВЕДОМОСТИ № #{@exam.id}", align: :center
+    # pdf.text "ПРИЛОЖЕНИЕ К ЭКЗАМЕНАЦИОННОЙ ВЕДОМОСТИ № XXXX", align: :center
     if @exam.exam?
       pdf.font_size 10 do
         pdf.text_box 'Семестр:', at: [0, 750 - 25]
@@ -323,6 +332,7 @@ prawn_document margin: [28, 20, 28, 28],
 
         pdf.text_box "#{@exam.discipline.semester}, #{@exam.discipline.year}-#{@exam.discipline.year+1} учебного года", at: [42, 750 - 25]
         pdf.text_box "#{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [(@exam.is_repeat? ? 431 : 450), 750 - 25]
+        # pdf.text_box "#{l Date.today }", at: [(@exam.is_repeat? ? 431 : 450), 750 - 25]
          if @exam.is_repeat?
             pdf.text_box " #{@exam.repeat_type}", at: [77, 750 - 40]
          else
@@ -330,8 +340,11 @@ prawn_document margin: [28, 20, 28, 28],
          end
 
         pdf.text_box "#{@discipline.name}", at: [59, 750 - 55]
+        # pdf.text_box "Название дисциплины", at: [59, 750 - 55]
         pdf.text_box "#{group.name}", at: [405, 750 - 40]
+        # pdf.text_box "Буквенно-цифровой шифр группы", at: [405, 750 - 40]
         pdf.text_box "#{@discipline.lead_teacher.full_name}", at: [199, 750 - 70]
+        # pdf.text_box "Фамилия Имя Отчество", at: [199, 750 - 70]
       end
 
       applicationTable = [[{content: '№', rowspan: 2}, {content: 'Фамилия, имя, отчество', rowspan: 2},
@@ -354,11 +367,22 @@ prawn_document margin: [28, 20, 28, 28],
           applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
         else
           @discipline.group.students.valid_for_today.each_with_index do |student, index|
-            result_5 = @discipline.final_exam.predication(5, student.ball(@discipline))
-            result_4 = @discipline.final_exam.predication(4, student.ball(@discipline))
-            result_3 = @discipline.final_exam.predication(3, student.ball(@discipline))
-            result_2 = @discipline.final_exam.predication(2, student.ball(@discipline))
+            # # Для примера
+            # if student.ball(@discipline) == 0.0
+            #   ball = rand(100)*1.0
+            #   result_5 = @discipline.final_exam.predication(5, ball)
+            #   result_4 = @discipline.final_exam.predication(4, ball)
+            #   result_3 = @discipline.final_exam.predication(3, ball)
+            #   result_2 = @discipline.final_exam.predication(2, ball)
+            # else
+            ball = student.ball(@discipline)
+            result_5 = @discipline.final_exam.predication(5, ball)
+            result_4 = @discipline.final_exam.predication(4, ball)
+            result_3 = @discipline.final_exam.predication(3, ball)
+            result_2 = @discipline.final_exam.predication(2, ball)
+            # end
             applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+            # applicationTable << [index+1, 'Фамилия Имя Отчество', 'XXXXX', ball, "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
           end
         end
         pdf.move_down 80
@@ -380,6 +404,7 @@ prawn_document margin: [28, 20, 28, 28],
 
         pdf.text_box "#{@exam.discipline.semester}, #{@exam.discipline.year}-#{@exam.discipline.year+1} учебного года", at: [42, 500 - 25]
         pdf.text_box "#{@exam.date ? (l @exam.date) : 'неизвестно'}", at: [(@exam.is_repeat? ? 631 : 650), 500 - 25]
+        # pdf.text_box "#{l Date.today}", at: [(@exam.is_repeat? ? 631 : 650), 500 - 25]
          if @exam.is_repeat?
             pdf.text_box " #{@exam.repeat_type}", at: [77, 500 - 40]
          else
@@ -387,8 +412,11 @@ prawn_document margin: [28, 20, 28, 28],
          end
 
         pdf.text_box "#{@discipline.name}", at: [59, 500 - 55]
+        # pdf.text_box "Название дисциплины", at: [59, 500 - 55]
         pdf.text_box "#{group.name}", at: [605, 500 - 40]
+        # pdf.text_box "Буквенно-цифровой шифр группы", at: [605, 500 - 40]
         pdf.text_box "#{@discipline.lead_teacher.full_name}", at: [199, 500 - 70]
+        # pdf.text_box "Фамилия Имя Отчество", at: [199, 500 - 70]
       end
 
       applicationTable = [[{content: '№', rowspan: 2}, {content: 'Фамилия, имя, отчество', rowspan: 2},
@@ -429,6 +457,7 @@ prawn_document margin: [28, 20, 28, 28],
               next
             end
             applicationTable << [index, student.person.full_name, student.id, student.ball(@discipline)]
+            # applicationTable << [index, 'Фамилия Имя Отчество', 'XXXXX', student.ball(@discipline)]
             @discipline.checkpoints.each do |checkpoint|
               applicationTable[applicationTable.length - 1] << "#{checkpoint.min}/#{checkpoint.max}"
               applicationTable[applicationTable.length - 1] << "#{checkpoint.marks.by_student(student).last ? checkpoint.marks.by_student(student).last.mark : 0}"
