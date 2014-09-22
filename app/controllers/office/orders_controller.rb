@@ -89,7 +89,7 @@ class Office::OrdersController < ApplicationController
       students.merge! i => {order_student_student: student.person.id, order_student_student_group_id: student.id, order_student_cause: 0}
     end
     # raise students.inspect
-    @order = Office::Order.create status: 1, responsible: current_user.positions.first.id, order_template: params[:template],
+    @order = Office::Order.create status: 1, responsible: current_user.positions.where(acl_position_role: [16,33]).first.id, order_template: params[:template],
                                   order_department:  current_user.positions.first.department.id,
                                   students_in_order_attributes: students
     if @order.save
