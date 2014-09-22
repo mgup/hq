@@ -1,50 +1,90 @@
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Тип</th>
-        <th>Количество студентов</th>
-        <th>Факультет</th>
-        <th>Группа</th>
-        <th>Последнее редактирование</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% if orders.empty? %>
-      <tr>
-          <td class="text-center" colspan="7">Ни одного приказа не было найдено. Попробуйте изменить параметры поиска.</td>
-      </tr>
-    <% else %>
-      <% orders.each do |order| %>
-        <tr>
-            <td class="nowrap"><%= order.full_id %></td>
-            <td><%= order.template.name if order.template %></td>
-            <td>Всего: <%= order_details(order) %></td>
-            <% if order.students.empty? %>
-              <td></td><td></td>
-            <% else %>
-              <td><%= order.students.first.group.speciality.faculty.abbreviation %></td>
-              <td class="nowrap"><%= order.students.first.group.name %></td>
-            <% end %>
-            <td><%= l order.editing_date %></td>
-            <td class="nowrap">
-              <%= link_for_order(order) %>
-              <% if can?(:sign, Office::Order) && order.underway? && order.template.current_xsl %>
-                <br>
-                <%= link_to edit_office_order_path(order) do %>
-                  <span class="glyphicon glyphicon-edit"></span> Редактировать
-                <% end %>
-              <% elsif order.draft? %>
-                  <br>
-                  <%= link_to office_order_path(order), method: :delete, class: 'text-danger',
-                              data: {confirm: 'Вы уверены, что хотите удалить этот проект приказа?'} do %>
-                    <span class="glyphicon glyphicon-remove"></span> Удалить
-                  <% end %>
-              <% end %>
-            </td>
-        </tr>
-      <% end %>
+<% if orders.empty? %>
+   <p class="lead">Ни одного приказа не было найдено. Попробуйте изменить параметры поиска.</p>
+<% else %>
+  <% orders.each do |order| %>
+    <% if order == orders.first %>
+    <br><br>
     <% end %>
-    </tbody>
-</table>
+    <div class="row <%= 'text-danger' if Date.today.mjd - order.editing_date.to_date.mjd > (order.draft? ? 7 : 14) %>">
+      <div class="col col-sm-1"><%= order.id %></div>
+      <div class="col col-sm-1"><%= order.students.first.group.speciality.faculty.abbreviation unless order.students.empty? %></div>
+      <div class="col col-sm-4">
+        <p style="margin-bottom: 0;"><strong><%= order.template.name if order.template %></strong></p>
+        <p style="margin-top: 0;"><%= order_details(order) %> (<%= order.students.first.group.name unless order.students.empty? %>)</p>
+      </div>
+      <div class="col col-sm-4">Редактировался: <strong><%= l order.editing_date, format: '%d.%m.%Y, %H:%M' %></strong></div>
+      <div class="col col-sm-2">
+        <%= link_for_order(order) %>
+        <% if order.underway? %>
+          <br>
+        <% end %>
+        <% if can?(:sign, Office::Order) && order.underway? && order.template.current_xsl %>
+          <%= link_to edit_office_order_path(order) do %>
+            <span class="glyphicon glyphicon-edit"></span> Редактировать
+          <% end %>
+        <% elsif order.draft? %>
+          <%= link_to office_order_path(order, format: :pdf) do %>
+            <span class="glyphicon glyphicon-print"></span> Распечатать
+          <% end %>
+          <br>
+          <%= link_to office_order_path(order), method: :delete, class: 'text-danger',
+                      data: {confirm: 'Вы уверены, что хотите удалить этот проект приказа?'} do %>
+            <span class="glyphicon glyphicon-remove"></span> Удалить
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+
+<!--<table class="table table-striped">-->
+    <!--<thead>-->
+    <!--<tr>-->
+        <!--<th>#</th>-->
+        <!--<th>Тип</th>-->
+        <!--<th>Количество студентов</th>-->
+        <!--<th>Факультет</th>-->
+        <!--<th>Группа</th>-->
+        <!--<th>Последнее редактирование</th>-->
+        <!--<th></th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<%# if orders.empty? %>-->
+      <!--<tr>-->
+          <!--<td class="text-center" colspan="7">Ни одного приказа не было найдено. Попробуйте изменить параметры поиска.</td>-->
+      <!--</tr>-->
+    <!--<%# else %>-->
+      <!--<%# orders.each do |order| %>-->
+        <!--<tr>-->
+            <!--<td class="nowrap"><%# order.full_id %></td>-->
+            <!--<td><%# order.template.name if order.template %></td>-->
+            <!--<td>Всего: <%# order_details(order) %></td>-->
+            <!--<%# if order.students.empty? %>-->
+              <!--<td></td><td></td>-->
+            <!--<%# else %>-->
+              <!--<td><%# order.students.first.group.speciality.faculty.abbreviation %></td>-->
+              <!--<td class="nowrap"><%# order.students.first.group.name %></td>-->
+            <!--<%# end %>-->
+            <!--<td><%# l order.editing_date %></td>-->
+            <!--<td class="nowrap">-->
+              <!--<%# link_for_order(order) %>-->
+              <!--<%# if can?(:sign, Office::Order) && order.underway? && order.template.current_xsl %>-->
+                <!--<br>-->
+                <!--<%# link_to edit_office_order_path(order) do %>-->
+                  <!--<span class="glyphicon glyphicon-edit"></span> Редактировать-->
+                <!--<%# end %>-->
+              <!--<%# elsif order.draft? %>-->
+                  <!--<br>-->
+                  <%# link_to office_order_path(order), method: :delete, class: 'text-danger',
+                              data: {confirm: 'Вы уверены, что хотите удалить этот проект приказа?'} do %>
+                    <!--<span class="glyphicon glyphicon-remove"></span> Удалить-->
+                  <!--<%# end %>-->
+              <!--<%# end %>-->
+            <!--</td>-->
+        <!--</tr>-->
+      <!--<%# end %>-->
+    <!--<%# end %>-->
+    <!--</tbody>-->
+<!--</table>-->

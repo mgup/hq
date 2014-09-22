@@ -8,7 +8,45 @@
       options_from_collection_for_select(Office::OrderTemplate.all, :id, :name, params[:template]),
       class: 'form-control' %>
 <br>
-<%= render 'students/filters' %>
+<%= form_tag nil, method: :get, class: 'filter-block', id: 'formstudentsearch', class: 'filters' do %>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= text_field_tag 'name', params[:name], placeholder: 'Фамилия, имя, отчество', class: 'form-control' %>
+    </div>
+    <div class="col-sm-4">
+      <%= multiselect_tag :status, title: 'Все статусы', collection: Status.all,
+                          value: :id, text: :name, current: params[:status] ? params[:status].map(&:to_i) : [],
+                          pl1: 'Выбран %c статус',
+                          pl2: 'Выбрано %c статуса',
+                          pl5: 'Выбрано %c статусов' %>
+    </div>
+    <div class="col-sm-4">
+      <% finance = [] %>
+      <% [{type: 'бюджетная', key:  1}, {type: 'внебюджетная', key: 2}].each do |fin| %>
+        <% finance << (OpenStruct.new fin) %>
+      <% end %>
+      <%= multiselect_tag :finance, title: 'Все основы', collection: finance,
+                          value: :key, text: :type, current: params[:finance] ? params[:finance].map(&:to_i) : [],
+                          pl1: 'Выбрана %c основа обучения',
+                          pl2: 'Выбрано %c основы обучения',
+                          pl5: 'Выбрано %c основ обучения' %>
+    </div>
+  </div>
+  <%= render 'groups/group', locals: { faculties: @faculties } %>
+  <div class="row">
+    <div class="col col-sm-2 pull-right">
+      <%= submit_tag 'Искать', class: 'btn btn-primary' %>
+      <%= link_to students_path, class: 'form_reset btn btn-danger pull-right' do %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </div>
+    <div class="col-sm-4">
+      <%= select_tag :group,
+          options_from_collection_for_select((@faculties.length > 1 ? Group.all : @faculties.first.groups), :id, :name, params[:group]),
+                            prompt: 'все группы', class: 'ajax-group form-control' %>
+    </div>
+  </div>
+<% end %>
 
 <div id="create_order">
   <%= render 'create_order' %>

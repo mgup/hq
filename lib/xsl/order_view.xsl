@@ -20,7 +20,7 @@
             <td style="border: none; width: 34%;">
               <xsl:choose>
                 <xsl:when test="not(./sign/date)">
-                  от &laquo;___&raquo; _______________ 2013 г.
+                  от &laquo;___&raquo; _______________ 2014 г.
                 </xsl:when>
                 <xsl:otherwise>
                   от &laquo;<xsl:value-of select="substring(./sign/date, 9, 2)" />&raquo;
