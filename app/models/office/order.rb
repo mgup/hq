@@ -168,6 +168,7 @@ class Office::Order < ActiveRecord::Base
       elsif !(node.xpath('position').empty? || node.xpath('position').inner_text == '')
         users = users.from_position(node.xpath('position').inner_text)
         position = Position.find(node.xpath('position').inner_text)
+        users = [position.user] if users.empty?
       elsif !(node.xpath('department').empty? || node.xpath('department').inner_text == '')
         users = users.from_department(node.xpath('department').inner_text)
       end
@@ -205,6 +206,7 @@ class Office::Order < ActiveRecord::Base
         else
           users = users.from_role(node.xpath('role').inner_text)
           position = Position.from_role(node.xpath('role').inner_text).first
+          users = [position.user] if users.empty?
         end
       elsif !(node.xpath('position').empty? || node.xpath('position').inner_text == '')
         users = users.from_position(node.xpath('position').inner_text)
