@@ -7,26 +7,30 @@ $ ->
         this.checked = null
       this.checked = true
 
-  $('.support_reasons').click ->
-    causes = []
-    $('.support_reasons').each ->
-      if this.checked
-        causes.push $(this).val()
-    all_causes = causes
+#  $('.support_reasons').click ->
+#    causes = []
+#    $('.support_reasons').each ->
+#      if this.checked
+#        causes.push $(this).val()
+#    all_causes = causes
 
   $('#supportPreventModal').click (e) ->
     e.preventDefault()
     key = true
     support = false
+    causes = []
     $('.support_reasons').each ->
-      if this.checked
+      if $(this).prop('checked') == true
         support = true
+        causes.push $(this).val()
+    all_causes = causes
     if support
       $('.form-control').each ->
         key*=($(this).val() != '')
         if ($(this).val() == '') then $(this).closest('.row').addClass('has-error') else $(this).closest('.row').removeClass('has-error')
       if key
         $.ajax "#{root}students/#{$('#my_support_support_student').val()}/supports/options?causes=#{all_causes}"
+        $('#preventionSupport').modal('show');
       else
         alert('Не все поля заполнены!')
     else
