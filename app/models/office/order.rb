@@ -153,11 +153,12 @@ class Office::Order < ActiveRecord::Base
   def to_xml
     xml = to_nokogiri
 
-    xml.css('employee').each do |node|
+    xml.css('employee').each_with_index do |node, i|
+      # raise node.xpath('position').inspect if i == 2
       # role = Role.by_name(node.xpath('role').inner_text).first
       users = User.all
-      if !node.xpath('role').empty?
-        if !node.xpath('department').empty?
+      if !(node.xpath('role').inner_text == '' || node.xpath('role').empty?)
+        if !(node.xpath('department').inner_text == '' || node.xpath('department').empty?)
           position = Position.from_role(node.xpath('role').inner_text).
             where('acl_position_department = ?', node.xpath('department').inner_text).first
           users = [position.user]
@@ -165,11 +166,10 @@ class Office::Order < ActiveRecord::Base
           users = users.from_role(node.xpath('role').inner_text)
           position = Position.from_role(node.xpath('role').inner_text).first
         end
-      elsif !(node.xpath('position').empty? || node.xpath('position').inner_text == '')
-        users = users.from_position(node.xpath('position').inner_text)
+      elsif !(node.xpath('position').inner_text == '' || node.xpath('position').empty?)
         position = Position.find(node.xpath('position').inner_text)
-        users = [position.user] if users.empty?
-      elsif !(node.xpath('department').empty? || node.xpath('department').inner_text == '')
+        users = [position.user]
+      elsif !(node.xpath('department').inner_text == '' || node.xpath('department').empty?)
         users = users.from_department(node.xpath('department').inner_text)
       end
 
