@@ -106,10 +106,12 @@ class Office::OrdersController < ApplicationController
     if @order.save
       if can?(:sign, Office::Order) && @order.status == Office::Order::STATUS_SIGNED
         redirect_to edit_office_order_path(@order)
-      elsif can?(:orders, Entrance::Campaign)
+      elsif can?(:orders, Entrance::Campaign) && @order.underway?
         redirect_to orders_entrance_campaigns_path
       elsif @order.underway?
         redirect_to office_underways_path, notice: 'Изменения сохранены.'
+      elsif @order.draft?
+        redirect_to office_drafts_path, notice: 'Изменения сохранены.'
       else
         redirect_to office_orders_path, notice: 'Изменения сохранены.'
       end

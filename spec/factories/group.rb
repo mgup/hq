@@ -10,5 +10,11 @@ FactoryGirl.define do
     form           { 101 + rand(3) }
     group_active true
     association :speciality, factory: :speciality, strategy: :build
+
+    callback(:after_build, :after_stub) do |group|
+      5.times do
+        group.students << build(:student, group: group)
+      end
+    end
   end
 end
