@@ -29,8 +29,8 @@ module HQ
 
     config.assets.paths << "#{Rails.root}/app/assets/docs"
 
-    config.exceptions_app = -> (env) do
-      ExceptionController.action(:show).call(env)
-    end
+    # config.exceptions_app = -> (env) do
+    #   ExceptionController.action(:show).call(env)
+    # end
   end
 end

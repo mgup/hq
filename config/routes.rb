@@ -380,6 +380,7 @@ HQ::Application.routes.draw do
   end
 
   get 'fractals-radial', to: 'fractals#radial'
+  get 'test-exception', to: 'dashboard#test_exception'
 
   get '/404', to: 'errors#error_404'
   root to: 'dashboard#index'
