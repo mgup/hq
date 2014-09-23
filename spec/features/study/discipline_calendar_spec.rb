@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Вывод списка группы для ввода оценок' do
   background 'Преподаватель' do
-    @discipline = create(:exam, :final, discipline: create(:discipline, semester: 1)).discipline
+    @discipline = create(:exam, :final, discipline: create(:discipline, semester: 1, group: create(:group, :with_students))).discipline
     as_user(@discipline.lead_teacher)
   end
 
