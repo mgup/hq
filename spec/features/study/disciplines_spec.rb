@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Просмотр дисциплин' do
   background 'Преподаватель' do
-    @discipline = create(:exam, :final).discipline
+    @discipline = create(:exam, :final, discipline: create(:discipline, group: create(:group, :with_students))).discipline
     as_user(@discipline.lead_teacher)
   end
 

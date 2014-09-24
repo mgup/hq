@@ -2,8 +2,10 @@
    <p class="lead">Ни одного приказа не было найдено. Попробуйте изменить параметры поиска.</p>
 <% else %>
   <% orders.each do |order| %>
-    <% if order == orders.first %>
+    <% if order != orders.first %>
     <br><br>
+    <% else %>
+    <br>
     <% end %>
     <div class="row <%= 'text-danger' if Date.today.mjd - order.editing_date.to_date.mjd > (order.draft? ? 7 : 14) %>">
       <div class="col col-sm-1"><%= order.id %></div>
@@ -30,6 +32,15 @@
           <%= link_to office_order_path(order), method: :delete, class: 'text-danger',
                       data: {confirm: 'Вы уверены, что хотите удалить этот проект приказа?'} do %>
             <span class="glyphicon glyphicon-remove"></span> Удалить
+          <% end %>
+        <% end %>
+        <% if order.underway? %>
+          <br>
+          <%= form_for order, url: office_order_path(order) do |f| %>
+            <%= f.hidden_field :status, value: Office::Order::STATUS_DRAFT %>
+            <button data-confirm="Вы уверены, что хотите вернуть приказ #<%= order.id %> в черновики?" type="submit" class="btn btn-primary btn-sm">
+               Вернуть в черновики
+            </button>
           <% end %>
         <% end %>
       </div>
