@@ -26,7 +26,7 @@
             <%= study_year(d.year) %> учебный год, <%= study_semester(d.semester) %>
           </p>
 
-          <p>Ведущий преподаватель: <%= d.lead_teacher.full_name %></p>
+          <p>Ведущий преподаватель: <%= d.lead_teacher.full_name if d.lead_teacher %></p>
           <% unless d.assistant_teachers.empty? %>
             <p>Дополнительные преподаватели:</p>
             <ul>
