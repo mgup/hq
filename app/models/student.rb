@@ -165,6 +165,8 @@ class Student < ActiveRecord::Base
     cond
   }
 
+  scope :not_aspirants, -> { where(student_group_group: Group.filter(speciality: Speciality.not_aspirants.collect{|x| x.id}))}
+
   def entrance_order
     orders.where('order_template = 16').last
   end
