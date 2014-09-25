@@ -61,6 +61,8 @@ gem 'sidetiq'
 gem 'sinatra', require: nil
 gem 'numbers_and_words'
 
+# gem 'mysql2psql'
+
 group :development do
   gem 'thin'
   #gem 'debugger'
