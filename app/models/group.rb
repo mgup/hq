@@ -48,6 +48,10 @@ class Group < ActiveRecord::Base
     joins(:speciality).where(speciality: { speciality_faculty: faculty })
   }
 
+  scope :with_students, -> {joins(:students).where(student_group: {student_group_status: [Student::STATUS_STUDENT,
+                                                                    Student::STATUS_TRANSFERRED_DEBTOR,
+                                                                    Student::STATUS_DEBTOR]}).uniq}
+
   scope :second_higher, -> { where(group_second_higher: true) }
 
   def self.without_graduate

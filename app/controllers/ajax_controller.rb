@@ -30,7 +30,7 @@ class AjaxController < ApplicationController
   end
 
   def groups
-    filter_groups = Group.all
+    filter_groups = Group.with_students
     if params[:speciality] && params[:speciality] != ''
       filter_groups = filter_groups.filter(speciality: params[:speciality])
     end
