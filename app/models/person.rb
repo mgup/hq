@@ -73,6 +73,7 @@ class Person < ActiveRecord::Base
   accepts_nested_attributes_for :students
 
   has_many :deeds, class_name: 'Social::Document', foreign_key: :student_id, primary_key: :student_id
+  has_many :archive_persons, class_name: 'Archive::Person', foreign_key: :student_id, primary_key: :student_id
 
   scope :from_flat, -> flat { joins(:room).where(room: {room_flat: flat})}
 
