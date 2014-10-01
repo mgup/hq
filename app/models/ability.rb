@@ -169,6 +169,8 @@ class Ability
     can :manage, Curator::TaskType
     can :manage, Hostel::Offense
     can :manage, Hostel::Report
+    can :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
+    can :manage, EventDateClaim
   end
 
   def soc_support_vedush(user)
