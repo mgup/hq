@@ -37,7 +37,7 @@ class EventsController < ApplicationController
   def actual
     params[:page] ||= 1
     authorize! :actual, :events
-    @events = Event.publications
+    @events = Event.publications.reverse
     unless params[:year] || params[:month]
       @year = Date.today.year
       @month = Date.today.month

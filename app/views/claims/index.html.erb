@@ -20,21 +20,23 @@
   <th>Группа</th>
   <th>Телефон</th>
   <th>Электронная почта</th>
+  <th>Комментарий</th>
   <th></th>
 </tr>
 </thead>
 <tbody>
   <% @events.each do |event, index| %>
     <% next if event.claims.empty? %>
-    <tr><td colspan="5" class="text-center"><%= event.name %></td></tr>
+    <tr><td colspan="6" class="text-center"><%= event.name %></td></tr>
     <% claims = params[:accepted] == '1' ? event.claims.accepted : event.claims %>
     <% claims.each_with_index do |claim, index| %>
     <tr class="<%= 'success' if claim.accepted? %> ">
       <td><%= index + 1 %></td>
       <td><%= claim.fname %> <%= claim.iname %> <%= claim.oname %></td>
-      <td><%= claim.group.name %></td>
+      <td><%= claim.group.name if claim.group %></td>
       <td><%= claim.phone %></td>
       <td><%= claim.email %></td>
+      <td><%= claim.comment %></td>
       <td>
         <% unless claim.accepted? %>
           <%= form_for claim, url: event_claim_path(event, claim) do |f| %>

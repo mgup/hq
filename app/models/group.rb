@@ -66,10 +66,10 @@ class Group < ActiveRecord::Base
 
   def study_length
     speciality.send case form
-                    when 101 then :speciality_olength
-                    when 102 then :speciality_ozlength
-                    when 103 then :speciality_zlength
-                    when 105 then :speciality_zlength
+                    when 'fulltime' then :speciality_olength
+                    when 'semitime' then :speciality_ozlength
+                    when 'postal' then :speciality_zlength
+                    when 'distance' then :speciality_zlength
                     else fail 'Неизвестная форма обучения.'
                     end
   end

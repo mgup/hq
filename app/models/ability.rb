@@ -185,6 +185,10 @@ class Ability
 
   def soc_support(user)
     can :manage, My::Support
+    can :manage, Social::Document
+    can :manage, Social::DocumentType
+    can :read, Student
+    can :study, Student
   end
 
   def faculty_employee(user)
@@ -272,12 +276,17 @@ class Ability
     can :manage, Entrance::Exam
 
     can :mark, Entrance::ExamResult
+    can :entrance_protocol, Office::Order
+    can :update, Office::Order
+    can :show, Office::Order
+    can :orders, Entrance::Campaign
   end
 
   def executive_secretary(user)
     zamestitel_otvetstvennogo_sekretarja(user)
     can :entrance_protocol, Office::Order
     can :update, Office::Order
+    can :show, Office::Order
     can :orders, Entrance::Campaign
     can :numbers, Entrance::Campaign
     can :statistics, Entrance::Contract

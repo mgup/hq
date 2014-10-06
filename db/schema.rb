@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140829100103) do
+ActiveRecord::Schema.define(version: 20141006122123) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -1127,6 +1127,7 @@ ActiveRecord::Schema.define(version: 20140829100103) do
     t.integer  "group_id"
     t.integer  "event_id"
     t.integer  "status"
+    t.text     "comment"
   end
 
   add_index "event_date_claim", ["event_id"], name: "index_event_date_claim_on_event_id", using: :btree
@@ -1406,6 +1407,7 @@ ActiveRecord::Schema.define(version: 20140829100103) do
     t.integer "hostel_payment_type_yearsum",             null: false
     t.integer "hostel_payment_type_active",  limit: 1,   null: false
     t.date    "hostel_payment_type_date",                null: false
+    t.integer "hostel_payment_type_hostel"
   end
 
   add_index "hostel_payment_type", ["hostel_payment_type_status"], name: "hostel_payment_type_status", using: :btree
@@ -1648,6 +1650,12 @@ ActiveRecord::Schema.define(version: 20140829100103) do
   add_index "recalc", ["recalc_student_group"], name: "recalc_student_group", using: :btree
   add_index "recalc", ["recalc_year"], name: "recalc_year", using: :btree
 
+  create_table "regions", force: true do |t|
+    t.string  "pseries",  limit: 3, default: "0", null: false
+    t.integer "kladr_id",                         null: false
+    t.string  "name",                             null: false
+  end
+
   create_table "room", primary_key: "room_id", force: true do |t|
     t.integer "room_oldid", null: false
     t.integer "room_flat",  null: false
@@ -1850,7 +1858,7 @@ ActiveRecord::Schema.define(version: 20140829100103) do
     t.string  "student_birthplace",                    limit: 200
     t.integer "student_citizenship"
     t.string  "student_nation",                        limit: 200
-    t.string  "student_pseries",                       limit: 4
+    t.string  "student_pseries",                       limit: 8
     t.string  "student_pnumber",                       limit: 20
     t.date    "student_pdate"
     t.text    "student_pdepartment",                   limit: 16777215
