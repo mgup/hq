@@ -128,7 +128,7 @@ class Office::Order < ActiveRecord::Base
 
         if template.id == PROBATION_TEMPLATE
           xml.groups do
-            students.first.group.speciality.groups.filter(course: students.first.group.course+1).each { |group| xml << group.to_nokogiri_empty.root.to_xml }
+            students.first.group.speciality.groups.filter(course: students.first.group.course + 1).sort_by { |x| x.name }.reverse.each { |group| xml << group.to_nokogiri_empty.root.to_xml }
           end
         end
 
