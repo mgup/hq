@@ -10,6 +10,6 @@ FactoryGirl.define do
     speciality_olength { 0 }
     speciality_zlength { 0 }
     speciality_ozlength { 0 }
-    association :faculty, factory: :department, strategy: :build
+    association :faculty, factory: [:department, :faculty], strategy: :build
   end
 end
