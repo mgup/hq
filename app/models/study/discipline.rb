@@ -1,10 +1,4 @@
 class Study::Discipline < ActiveRecord::Base
-  STUDY_START = { 2012 => { 1 => Date.new(2012,  9,  1), 2 => Date.new(2013,  1,  13) },
-                  2013 => { 1 => Date.new(2013,  9,  4), 2 => Date.new(2014,  1,  13) },
-                  2014 => { 1 => Date.new(2014,  9,  1), 2 => Date.new(2015,  1,  13) } }
-  STUDY_END   = { 2012 => { 1 => Date.new(2012, 12, 31), 2 => Date.new(2013,  6,  30) },
-                  2013 => { 1 => Date.new(2013, 12, 31), 2 => Date.new(2014,  6,  30) },
-                  2014 => { 1 => Date.new(2014, 12, 31), 2 => Date.new(2015,  6,  30) }}
   CURRENT_STUDY_YEAR  = 2014
   CURRENT_STUDY_TERM  = 1
 
