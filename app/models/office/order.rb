@@ -147,57 +147,9 @@ class Office::Order < ActiveRecord::Base
       end
     end
 
-    Nokogiri::XSLT(template.current_xsl.stylesheet).transform(builder.doc)
-  end
-
-  def to_xml
-    xml = to_nokogiri
+    xml = Nokogiri::XSLT(template.current_xsl.stylesheet).transform(builder.doc)
 
     xml.css('employee').each_with_index do |node, i|
-      # raise node.xpath('position').inspect if i == 2
-      # role = Role.by_name(node.xpath('role').inner_text).first
-      users = User.all
-      if !(node.xpath('role').inner_text == '' || node.xpath('role').empty?)
-        if !(node.xpath('department').inner_text == '' || node.xpath('department').empty?)
-          position = Position.from_role(node.xpath('role').inner_text).
-            where('acl_position_department = ?', node.xpath('department').inner_text).first
-          users = [position.user]
-        else
-          users = users.from_role(node.xpath('role').inner_text)
-          position = Position.from_role(node.xpath('role').inner_text).first
-        end
-      elsif !(node.xpath('position').inner_text == '' || node.xpath('position').empty?)
-        position = Position.find(node.xpath('position').inner_text)
-        users = [position.user]
-      elsif !(node.xpath('department').inner_text == '' || node.xpath('department').empty?)
-        users = users.from_department(node.xpath('department').inner_text)
-      end
-
-      unless users.empty? || users == User.all || users.nil?
-        user = users.first
-        id = Nokogiri::XML::Node.new 'id', node
-        id.content = user.id
-        phone = Nokogiri::XML::Node.new 'phone', node
-        phone.content = user.phone
-        name = Nokogiri::XML::Node.new 'name', node
-        name.content = user.short_name_official
-        title = Nokogiri::XML::Node.new 'title', node
-        title.content = position.title
-        department = Nokogiri::XML::Node.new 'department_short_name', node
-        department.content = position.department.short_name_rp
-        node << id << phone << name << title << department
-      end
-    end
-    xml.to_xml
-  end
-
-  def to_html
-    xslt = Nokogiri::XSLT(File.read('lib/xsl/order_view.xsl'))
-    xml = to_nokogiri
-
-    xml.css('employee').each_with_index do |node, i|
-      # raise node.xpath('position').inspect if i == 2
-      # role = Role.by_name(node.xpath('role').inner_text).first
       users = User.all
       if !(node.xpath('role').inner_text == '' || node.xpath('role').empty?)
         if !(node.xpath('department').inner_text == '' || node.xpath('department').empty?)
@@ -230,6 +182,16 @@ class Office::Order < ActiveRecord::Base
         node << id << phone << name << title << department
       end
     end
+    xml
+  end
+
+  def to_xml
+    to_nokogiri.to_xml
+  end
+
+  def to_html
+    xslt = Nokogiri::XSLT(File.read('lib/xsl/order_view.xsl'))
+    xml = to_nokogiri
     xslt.transform(xml).root.to_html.html_safe
   end
 end
