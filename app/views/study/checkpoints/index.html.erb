@@ -39,6 +39,15 @@
   <span class='glyphicon glyphicon-eye-open'></span> Успеваемость
 <% end %>
 
+<% if @students.empty? %>
+  <br><br>
+  <div class="alert alert-info">
+      <p class="lead">В выбранной вами группе не найдено ни одного студента, возможно, вам необходимо перейти к странице редактирования карты дисциплины. Проверьте номер направления.</p>
+      <%= link_to edit_study_discipline_path(@discipline), class: 'btn btn-info' do %>
+        <span class="glyphicon glyphicon-edit"></span> Редактировать дисциплину
+      <% end %>
+  </div>
+<% else %>
 <div id="not-full-classes">
   <%= render partial: 'not_full', locals: {classes: @classes, discipline: @discipline} %>
 </div>
@@ -60,3 +69,4 @@
   <div id="forModalChange"></div>
   <a data-toggle="modal" href="#changeDate"  class="hidden" id="changeDateModalBtn"></a>
 </div>
+<% end %>

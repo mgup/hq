@@ -3,7 +3,7 @@ class Social::ApplicationsController < ApplicationController
 
   def index
     params[:year]  ||= 2014
-    params[:month] ||= 6
+    params[:month] ||= 10
     params[:accepted] ||= 0
     params[:deferred] ||= 0
     params[:empty] ||= 0
@@ -45,7 +45,7 @@ class Social::ApplicationsController < ApplicationController
 
   def lists
     params[:year]  ||= 2014
-    params[:month] ||= 6
+    params[:month] ||= 10
     params[:accepted] ||= 0
     params[:deferred] ||= 0
 
@@ -75,7 +75,7 @@ class Social::ApplicationsController < ApplicationController
 
   def close_receipt
     params[:year]  ||= 2014
-    params[:month] ||= 6
+    params[:month] ||= 10
     applications = @applications.where(support_year:  params[:year])
     applications = applications.where(support_month: params[:month])
     applications = applications.where(accepted: false)
@@ -90,7 +90,7 @@ class Social::ApplicationsController < ApplicationController
 
   def print_list
     params[:year]  ||= 2014
-    params[:month] ||= 6
+    params[:month] ||= 10
     params[:accepted] ||= 0
     params[:deferred] ||= 0
 

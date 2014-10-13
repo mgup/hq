@@ -84,6 +84,7 @@ class Student < ActiveRecord::Base
   has_many :choices, class_name: My::Choice, through: :selections
 
   has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_student_group_id
+  has_many :archive_students, class_name: 'Archive::Student', foreign_key: :student_group_id
   has_many :orders, class_name: Office::Order, through: :students_in_order
 
   has_many :visitor_event_dates, as: :visitor
