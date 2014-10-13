@@ -134,8 +134,11 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
             data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           else
             data.last << (ap.original? ? 'да' : 'нет')
-            data.last << 'по конкурсу'
-            # data.last << 'гослиния'
+            if ap.campaign_id == 32014
+              data.last << 'гослиния'
+            else
+              data.last << 'по конкурсу'
+            end
           end
           data.last << 'зачислить'
           i += 1
