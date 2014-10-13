@@ -14,6 +14,8 @@ HQ::Application.routes.draw do
      [Sidekiq::Queue.new.latency < 30 ? 'OK' : 'UHOH' ]]
   }
 
+  root to: 'dashboard#index'
+
   # Выпуски (группы выпускников).
   resources :graduates do
     get 'students', on: :member
@@ -382,8 +384,7 @@ HQ::Application.routes.draw do
   get 'fractals-radial', to: 'fractals#radial'
   get 'test-exception', to: 'dashboard#test_exception'
 
-  get '/404', to: 'errors#error_404'
-  root to: 'dashboard#index'
+  get '*', to: 'errors#error_404'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
