@@ -102,17 +102,17 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   def lecture_weight
-    (seminars.count > 0 ? 5.0 : 20.0)/lectures.count
+    lectures.empty? ? 0 : (seminars.count > 0 ? 5.0 : 20.0)/lectures.count
   end
 
   def seminar_weight
-    (lectures.count > 0 ? 15.0 : 20.0)/seminars.count
+    seminars.empty? ? 0 : (lectures.count > 0 ? 15.0 : 20.0)/seminars.count
   end
 
   def current_ball
-  [lectures.not_future.count*lecture_weight,
+  lessons = [lectures.not_future.count*lecture_weight,
    seminars.not_future.count*seminar_weight,
-   checkpoints.not_future.collect { |c| c.max }.sum].sum.round 2
+   checkpoints.not_future.collect { |c| c.max }.sum].sum.round(2)
   end
 
   def is_active?
