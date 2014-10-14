@@ -97,5 +97,7 @@ class Study::CheckpointsController < ApplicationController
 
   def load_discipline
     @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
+  rescue
+    render 'errors/error404', status: :not_found
   end
 end
