@@ -59,6 +59,13 @@ class Speciality < ActiveRecord::Base
     end
   end
 
+  def calculate_payment_types(year)
+    payments = payment_types.from_year(year)
+    payments.empty? ? nil : { year: year, full_time: payments.from_form(101).last,
+              part_time: payments.from_form(102).last, abcsentia: payments.from_form(103).last,
+              distance: payments.from_form(105).last }
+  end
+
   def to_xml
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.speciality do
