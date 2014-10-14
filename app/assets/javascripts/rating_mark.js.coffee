@@ -1,7 +1,6 @@
 $ ->
   root = $('#matrixHQ').attr('href')
-  $('.examBall').change ->
-    $('.results').change()
+
   $('.examBall').keyup ->
     exam = parseInt($(this).val())
     if (exam < 0 || exam > 100)
@@ -18,10 +17,10 @@ $ ->
         'discipline': $(this).data('value')
       },
       (data) ->
+        div.empty()
         div.append("<span class='label label-#{data.final.span}'>#{data.final.mark}</span>")
         $("#finalSumBall#{data.student}").val(data.final.ball)
         $("##{data.student}_final_mark").val(data.final.value)
-        div.trigger('liszt:updated')
       $("#loader#{$(this).data('student')}").hide()
 
   $(".results").change ->

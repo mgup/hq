@@ -23,14 +23,14 @@ module Study::CheckpointmarkHelper
 
   def mark_progress(ball, progress, type = nil)
     if type == Study::Exam::TYPE_TEST
-      case ball.round
+      case progress.round
         when 0..100
           {ball: ball, progress: progress, mark: 'не зачтено', short: 'незачёт', color: 'danger'}
         when 55..100
           {ball: ball, progress: progress, mark: 'зачтено', short: 'зачёт', color: 'success'}
       end
     else
-      case ball.round
+      case progress.round
         when 0..54
           {ball: ball, progress: progress, mark: 'недопущен', short: 'недопущен', color: 'danger'}
         when  55..69
