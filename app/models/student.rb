@@ -391,7 +391,7 @@ LIMIT 1 ")
     end
   end
 
-  def result(discipline = nil, y = nil, t = nil)
+  def result(discipline = nil, y = Study::Discipline::CURRENT_STUDY_YEAR, t = Study::Discipline::CURRENT_STUDY_TERM)
     if discipline
       score = ball(discipline)
       mark_progress(score, score, discipline.final_exam.type)

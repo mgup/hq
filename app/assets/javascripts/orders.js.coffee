@@ -469,12 +469,12 @@
 
 #    Отправляем запрос на сервер.
   $.getJSON $('#matrixHQ').attr('href')+'ajax/ordermeta', {
-    'id':  if ('' == metaId || null == metaId) then null else metaId,
-    'order' : meta.attr('data-meta-order'),
-    'type' : meta.attr('data-meta-type'),
-    'object' : meta.attr('data-meta-object'),
-    'pattern' : meta.attr('data-meta-pattern'),
-    'text' : meta.attr('data-meta-text')
+    'order_meta_id':  if ('' == metaId || null == metaId) then null else metaId,
+    'order_meta_order' : meta.attr('data-meta-order'),
+    'order_meta_type' : meta.attr('data-meta-type'),
+    'order_meta_object' : meta.attr('data-meta-object'),
+    'order_meta_pattern' : meta.attr('data-meta-pattern'),
+    'order_meta_text' : meta.attr('data-meta-text')
   }, (meta) ->
     $('#' + uid).attr('data-meta-id', meta.id)
   .success ->

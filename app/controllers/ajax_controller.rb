@@ -1,4 +1,5 @@
 class AjaxController < ApplicationController
+  include Study::MarkHelper
   skip_before_filter :authenticate_user!
 
   def specialities
@@ -135,57 +136,15 @@ class AjaxController < ApplicationController
     render({ json: checkpoint })
   end
 
-  def users
-    render({ json: User.filter(params).inject([]) do |users, user|
-      users << { id: user.id, name: user.full_name, positions: user.positions.collect{|position| position.title}.push(user.user_position == nil ? [] : user.user_position.split(', ')).flatten.compact.uniq.join(', '),
-                username: user.username, phone: (user.phone == nil ? '' : user.phone),
-                departments: (user.departments.collect{|department| department.abbreviation} << (Department.find(user.user_department).abbreviation if Department.exists?(user.user_department))).compact.uniq.join(', ')
-                                  }
-      users
-    end })
-  end
-
   def count_final
     discipline = Study::Discipline.find(params[:discipline])
     student = Student.find(params[:student])
     current = student.ball(discipline)
     if params[:reason]
-      result = case params[:reason]
-                 when '1'
-                   {ball: 0, mark: 'неявка', value: Study::ExamMark::VALUE_NEYAVKA, span: 'danger'}
-                 when '9'
-                   {ball: 0, mark: 'недопущен', value: Study::ExamMark::VALUE_NEDOPUSCHEN, span: 'danger'}
-               end
+      result = mark_count(0, 0, params[:reason])
     else
       final = params[:ball].to_f * discipline.final_exam.weight / 100.0 + (1.0 - discipline.final_exam.weight / 100.0) * current
-      if params[:ball].to_f < 55
-        result = {ball: params[:ball], mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
-      else
-        result = if final >= 85
-                   {ball: params[:ball], mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success'}
-                 elsif final >= 70
-                   {ball: params[:ball], mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info'}
-                 elsif final >= 55
-                   {ball: params[:ball], mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning'}
-                 else
-                   {ball: params[:ball], mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
-                 end
-      end
-
-      #if params[:ball].to_f >= 55
-      #  result = case final
-      #             #when 0..54
-      #             #  {ball: final.round, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
-      #             when 55..69.999999
-      #               {ball: final, mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning'}
-      #             when 70..84.999999
-      #               {ball: final, mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info'}
-      #             when 85..100
-      #               {ball: final, mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success'}
-      #           end
-      #else
-      #  result = {ball: final, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger'}
-      #end
+      result = mark_count(params[:ball], final)
     end
     render({ json: {student: student.id, final: result} })
   end
