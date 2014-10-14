@@ -16,6 +16,9 @@ HQ::Application.routes.draw do
 
   root to: 'dashboard#index'
 
+  match '/404' => 'errors#error404', via: [:get, :post, :patch, :delete]
+  match '/500' => 'errors#error500', via: [:get, :post, :patch, :delete]
+
   # Выпуски (группы выпускников).
   resources :graduates do
     get 'students', on: :member
@@ -383,8 +386,6 @@ HQ::Application.routes.draw do
 
   get 'fractals-radial', to: 'fractals#radial'
   get 'test-exception', to: 'dashboard#test_exception'
-
-  get '*', to: 'errors#error_404'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
