@@ -3,6 +3,7 @@ class GroupsController < ApplicationController
 
   def index
     authorize! :index, :groups
+    @faculties = Department.faculties
   end
 
   def print_group

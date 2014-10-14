@@ -98,7 +98,8 @@ class Student < ActiveRecord::Base
   delegate :education_form, to: :group
   delegate :course,         to: :group
   delegate :speciality,     to: :group
-  delegate :deeds, to: :person
+  delegate :deeds, :last_name, :first_name, :patronym, :full_name, to: :person
+
 
   default_scope do
     joins(:person)
@@ -168,10 +169,6 @@ class Student < ActiveRecord::Base
 
   scope :not_aspirants, -> { where(student_group_group: Group.filter(speciality: Speciality.not_aspirants.collect{|x| x.id}))}
 
-  def entrance_order
-    orders.where('order_template = 16').last
-  end
-
   scope :in_group_at_date, -> group, date {
     group = group.id if group.is_a?(Group)
 # SELECT GROUP_CONCAT(student) AS student_group_id, `group` AS student_group_group
@@ -239,10 +236,6 @@ ORDER BY
     .order('document.document_create_date DESC')
   }
 
-  def speciality
-    group.speciality
-  end
-
 
   def group_at_date(date)
     date = date.strftime('%Y-%m-%d')
@@ -270,14 +263,9 @@ LIMIT 1 ")
     STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status
   end
 
-  def course
-    group.course
-  end
-
   def entrance_order
     orders.where('order_template = 16').last
-  end  
-
+  end
 
   # Обучается ли студент на бюджетной основе?
   def budget?
@@ -348,45 +336,18 @@ LIMIT 1 ")
     Study::Checkpoint.where(checkpoint_subject: disciplines_by_term(y,t).collect{ |d| d.id })
   end
 
-  #def discipline_marks(discipline)
-  #  dmarks = []
-  #  marks.by_discipline(discipline).each do |mark|
-  #    dmarks << {mark: mark.mark, checkpoint: mark.checkpoint}
-  #  end
-  #  dmarks.reverse.uniq{|m| m[:checkpoint]}
-  #end
-
-  def discipline_marks(discipline = nil)
-    if !discipline || discipline.is_active?
-        date_group = group
+  def discipline_marks(discipline)
+    if discipline.is_active?
+     date_group = group
     else
-        date_group = group_at_date(Date.new((discipline.semester == 1 ? discipline.year : discipline.year+1), (discipline.semester == 1 ? 9 : 4), 15))
+     date_group = group_at_date(Date.new((discipline.semester == 1 ? discipline.year : discipline.year+1), (discipline.semester == 1 ? 9 : 4), 15))
     end
-
     dmarks = []
-    # raise group.group_marks(discipline).inspect
-    date_group.group_marks(discipline).each_with_object([]){|mark, a| a << mark if mark[2] == id}.each do |mark|
-      dmarks << {mark: mark[3], checkpoint: mark[8]}
+    date_group.group_marks(discipline).each_with_object([]){ |mark, a| a << mark if mark[2] == id }.each do |mark|
+      dmarks << { mark: mark[3], checkpoint: mark[8] }
     end
     dmarks
   end
-
-  def full_name
-    person.full_name
-  end
-
-  def last_name
-    person.last_name
-  end
-
-  def first_name
-    person.first_name
-  end
-
-  def patronym
-    person.patronym
-  end
-
 
   def ball(discipline = nil, y = Study::Discipline::CURRENT_STUDY_YEAR, t = Study::Discipline::CURRENT_STUDY_TERM)
     if discipline

@@ -2,7 +2,6 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                         28.34645669291339, 56.692913386],
                filename: "Справка для #{@student.person.full_name(:rp)}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
-
   render 'pdf/header', pdf: pdf, title: ''
 
   pdf.move_down 15
@@ -30,7 +29,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   pdf.font_size 12 do
     pdf.move_down 40
-    pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} действительно является студентом <u>#{@student.group.course}</u> курса <u>#{@student.group.support}</u> формы обучения <u>#{institute.join(' ')}</u> по #{@student.group.speciality.specialist? ? 'специальности' : 'направлению'} <u>#{@student.group.speciality.code}</u> - «<u>#{@student.group.speciality.name}»</u> ФГБОУ ВПО «Московский государственный университет печати имени Ивана Федорова»#{tax}.", inline_format: true
+    pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} действительно является студентом <u>#{@student.group.course}</u> курса <u>#{study_form_name(@student.group.form, :rp)}</u> формы обучения <u>#{institute.join(' ')}</u> по #{@student.group.speciality.specialist? ? 'специальности' : 'направлению'} <u>#{@student.group.speciality.code}</u> - «<u>#{@student.group.speciality.name}»</u> ФГБОУ ВПО «Московский государственный университет печати имени Ивана Федорова»#{tax}.", inline_format: true
     pdf.move_down 25
 
    if params[:orders]
