@@ -19,6 +19,6 @@ class DashboardController < ApplicationController
   end
 
   def test_exception
-    fail 'Ошибка.'
+    fail 'Ошибка'
   end
 end
