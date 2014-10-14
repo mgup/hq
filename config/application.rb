@@ -29,7 +29,6 @@ module HQ
 
     config.assets.paths << "#{Rails.root}/app/assets/docs"
 
-    require Rails.root.join('lib/custom_public_exceptions')
     config.exceptions_app = CustomPublicExceptions.new(Rails.public_path)
   end
 end
