@@ -21,7 +21,12 @@ module Filterable
           # Во-вторых, база и так выдаст ошибку, мы её увидим и тогда
           # смотри «во-первых».
           # if self.attribute_names.include?(field)
-            query.where(field => value)
+            method = "find_all_by_#{field}"
+            if self.respond_to?(method)
+              query.send(method, value)
+            else
+              query.where(field => value)
+            end
           # else
           #   query
           # end
