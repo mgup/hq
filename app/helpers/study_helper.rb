@@ -28,4 +28,71 @@ module StudyHelper
       tags.join.html_safe
     end
   end
+
+  def study_form_name(form, p = :ip)
+    case form
+      when 'fulltime'
+        case p
+          when :ip
+            'очная'
+          when :rp
+            'очной'
+          when :dp
+            'очной'
+          when :vp
+            'очную'
+          when :tp
+            'очной'
+          when :pp
+            'очной'
+        end
+      when 'semitime'
+        case p
+          when :ip
+            'очно-заочная'
+          when :rp
+            'очно-заочной'
+          when :dp
+            'очно-заочной'
+          when :vp
+            'очно-заочную'
+          when :tp
+            'очно-заочной'
+          when :pp
+            'очно-заочной'
+        end
+      when 'postal'
+        case p
+          when :ip
+            'заочная'
+          when :rp
+            'заочной'
+          when :dp
+            'заочной'
+          when :vp
+            'заочную'
+          when :tp
+            'заочной'
+          when :pp
+            'заочной'
+        end
+      when 'distance'
+        case p
+          when :ip
+            'дистанционная'
+          when :rp
+            'дистанционной'
+          when :dp
+            'дистанционной'
+          when :vp
+            'дистанционную'
+          when :tp
+            'дистанционной'
+          when :pp
+            'дистанционной'
+        end
+      else fail 'Неизвестная форма обучения.'
+    end
+
+  end
 end

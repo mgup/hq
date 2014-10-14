@@ -74,26 +74,6 @@ class Group < ActiveRecord::Base
                     end
   end
 
-  def support
-    case form
-    when 'fulltime' then 'очной'
-    when 'semitime' then 'очно-заочной'
-    when 'postal' then 'заочной'
-    when 'distance' then 'дистанционной'
-    else fail 'Неизвестная форма обучения.'
-    end
-  end
-
-  def this_form
-    case form
-      when 'fulltime' then 'очная'
-      when 'semitime' then 'очно-заочная'
-      when 'postal' then 'заочная'
-      when 'distance' then 'дистанционная'
-      else fail 'Неизвестная форма обучения.'
-    end
-  end
-
   def library_form
     case form
       when 'fulltime' then 1
