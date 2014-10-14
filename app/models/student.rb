@@ -226,8 +226,13 @@ ORDER BY
 	student_iname_ip ASC,
 	student_oname_ip ASC
 ), { group: group, date: date.strftime('%Y-%m-%d') }]))
-    # raise date.strftime('%Y-%m-%d').inspect
-    find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless x.entrance_order.nil? || x.entrance_order.signing_date > date}
+
+    # Проверяем, что в группе есть студенты.
+    if ids.any?
+      find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless x.entrance_order.nil? || x.entrance_order.signing_date > date}
+    else
+      none
+    end
   }
 
   scope :with_contract, -> {
