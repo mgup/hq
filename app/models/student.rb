@@ -1,7 +1,7 @@
 class Student < ActiveRecord::Base
   include Filterable
-
   include ActionView::Helpers::NumberHelper
+  include Study::CheckpointmarkHelper
 
   PAYMENT_BUDGET = 1
   PAYMENT_OFF_BUDGET = 2
@@ -388,7 +388,7 @@ LIMIT 1 ")
   end
 
 
-  def ball(discipline = nil, y = nil, t = nil)
+  def ball(discipline = nil, y = Study::Discipline::CURRENT_STUDY_YEAR, t = Study::Discipline::CURRENT_STUDY_TERM)
     if discipline
       marks = discipline_marks(discipline).collect { |mark|
         if mark[:checkpoint] == 3
@@ -409,41 +409,8 @@ LIMIT 1 ")
         end
       }.compact
       marks.empty? ? 0.00 : marks.sum.round(2)
-
-      # l1, p1, n1 = 0.0, 0.0, 0.0
-      # return 0.0 if discipline.classes.count == 0
-      # l = discipline.lectures.count
-      # p = discipline.seminars.count
-      # if l == 0
-      #   sum_p = 20.0
-      #   sum_l = 0.0
-      # elsif p == 0
-      #   sum_p = 0.0
-      #   sum_l = 20.0
-      # else
-      #   sum_p = 15.0
-      #   sum_l = 5.0
-      # end
-      # discipline_marks(discipline).each do |mark|
-      #   result = case mark[:mark]
-      #              when MARK_LECTURE_ATTEND
-      #                (sum_l/l)
-      #              when MARK_PRACTICAL_FAIR
-      #                (sum_p/(3*p))
-      #              when MARK_PRACTICAL_GOOD
-      #                ((sum_p*2)/(3*p))
-      #              when MARK_PRACTICAL_PERFECT
-      #                (sum_p/p)
-      #              else
-      #                0
-      #            end
-      #   l1 += result if mark[:checkpoint] == 1
-      #   p1 += result if mark[:checkpoint] == 2
-      #   n1 += mark[:mark] if mark[:checkpoint] == 3
-      # end
-      # (l1+p1+n1).round 2
     else
-      disciplines_by_term(2014,1).collect{|d| ball(d)}.sum
+      disciplines_by_term(y,t).collect{|d| ball(d)}.sum
     end
   end
 
@@ -457,48 +424,20 @@ LIMIT 1 ")
 
   def got_all_marks(discipline = nil)
     if discipline
-      #group.group_marks(discipline).collect{|m| m[2] == id}.length >= discipline.classes.not_future.length
-      discipline.classes.count != 0 && marks.by_discipline(discipline).group(:checkpoint_mark_checkpoint).length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
+      discipline.classes.count != 0 && marks.by_discipline(discipline).group(:checkpoint_mark_checkpoint).length >= discipline.classes.not_future.length
     else
-      key = true
-      disciplines.each do |d|
-        key = (key and got_all_marks(d))
-      end
-      key
+      disciplines.collect { |d| got_all_marks(d) }.all?
     end
   end
 
   def result(discipline = nil, y = nil, t = nil)
     if discipline
-      current = ball(discipline)
-      ball = discipline.current_ball != 0 ? 100*(current/discipline.current_ball) : 0.0
-      current_progress = current
+      score = ball(discipline)
+      mark_progress(score, score, discipline.final_exam.type)
     else
-      current = ball(nil, y, t)
-      current_progress = (disciplines_by_term(y,t).size != 0 ? (current/disciplines_by_term(y,t).size) : 0)
-      ball = 0
-      disciplines_by_term(y,t).each do |d|
-        ball+=100*(current_progress/d.current_ball)/disciplines_by_term(y,t).size if d.current_ball != 0
-      end
-    end
-    if discipline and discipline.final_exam and discipline.final_exam.test?
-      case ball.round
-        when 0..100
-          {ball: current, progress: current_progress, mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}
-        when 55..100
-          {ball: current, progress: current_progress, mark: 'зачтено', short: 'зачёт', color: 'success', width: ball}
-      end
-    else
-      case ball.round
-        when 0..54
-          {ball: current, progress: current_progress, mark: 'недопущен', short: 'недопущен', color: 'danger', width: ball}
-        when  55..69
-          {ball: current, progress: current_progress, mark: 'удовлетворительно', short: 'удовл.', color: 'warning', width: ball}
-        when 70..85
-          {ball: current, progress: current_progress, mark: 'хорошо', short: 'хорошо', color: 'info', width: ball}
-        when 86..100
-          {ball: current, progress: current_progress, mark: 'отлично', short: 'отлично', color: 'success', width: ball}
-      end
+      score = ball(nil, y, t)
+      progress = (disciplines_by_term(y,t).size != 0 ? (score/disciplines_by_term(y,t).size) : 0)
+      mark_progress(score, progress)
     end
   end
 
