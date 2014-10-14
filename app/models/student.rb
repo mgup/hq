@@ -390,44 +390,60 @@ LIMIT 1 ")
 
   def ball(discipline = nil, y = nil, t = nil)
     if discipline
-      l1, p1, n1 = 0.0, 0.0, 0.0
-      return 0.0 if discipline.classes.count == 0
-      l = discipline.lectures.count
-      p = discipline.seminars.count
-      if l == 0
-        sum_p = 20.0
-        sum_l = 0.0
-      elsif p == 0
-        sum_p = 0.0
-        sum_l = 20.0
-      else
-        sum_p = 15.0
-        sum_l = 5.0
-      end
-      discipline_marks(discipline).each do |mark|
-        result = case mark[:mark]
-                   when MARK_LECTURE_ATTEND
-                     (sum_l/l)
-                   when MARK_PRACTICAL_FAIR
-                     (sum_p/(3*p))
-                   when MARK_PRACTICAL_GOOD
-                     ((sum_p*2)/(3*p))
-                   when MARK_PRACTICAL_PERFECT
-                     (sum_p/p)
-                   else
-                     0
-                 end
-        l1 += result if mark[:checkpoint] == 1
-        p1 += result if mark[:checkpoint] == 2
-        n1 += mark[:mark] if mark[:checkpoint] == 3
-      end
-      (l1+p1+n1).round 2
+      marks = discipline_marks(discipline).collect { |mark|
+        if mark[:checkpoint] == 3
+          mark[:mark]
+        else
+          case mark[:mark]
+          when MARK_LECTURE_ATTEND
+            discipline.lecture_weight
+          when MARK_PRACTICAL_FAIR
+            discipline.seminar_weight/3
+          when MARK_PRACTICAL_GOOD
+            discipline.seminar_weight*2/3
+          when MARK_PRACTICAL_PERFECT
+            discipline.seminar_weight
+          else
+            0
+          end
+        end
+      }.compact
+      marks.empty? ? 0.00 : marks.sum.round(2)
+
+      # l1, p1, n1 = 0.0, 0.0, 0.0
+      # return 0.0 if discipline.classes.count == 0
+      # l = discipline.lectures.count
+      # p = discipline.seminars.count
+      # if l == 0
+      #   sum_p = 20.0
+      #   sum_l = 0.0
+      # elsif p == 0
+      #   sum_p = 0.0
+      #   sum_l = 20.0
+      # else
+      #   sum_p = 15.0
+      #   sum_l = 5.0
+      # end
+      # discipline_marks(discipline).each do |mark|
+      #   result = case mark[:mark]
+      #              when MARK_LECTURE_ATTEND
+      #                (sum_l/l)
+      #              when MARK_PRACTICAL_FAIR
+      #                (sum_p/(3*p))
+      #              when MARK_PRACTICAL_GOOD
+      #                ((sum_p*2)/(3*p))
+      #              when MARK_PRACTICAL_PERFECT
+      #                (sum_p/p)
+      #              else
+      #                0
+      #            end
+      #   l1 += result if mark[:checkpoint] == 1
+      #   p1 += result if mark[:checkpoint] == 2
+      #   n1 += mark[:mark] if mark[:checkpoint] == 3
+      # end
+      # (l1+p1+n1).round 2
     else
-      ball = 0.0
-      disciplines_by_term(y, t).each do |d|
-        ball+=ball(d)
-      end
-      ball
+      disciplines_by_term(2014,1).collect{|d| ball(d)}.sum
     end
   end
 
@@ -467,9 +483,9 @@ LIMIT 1 ")
     end
     if discipline and discipline.final_exam and discipline.final_exam.test?
       case ball.round
-        when 0..54
+        when 0..100
           {ball: current, progress: current_progress, mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}
-        when 55..Float::INFINITY
+        when 55..100
           {ball: current, progress: current_progress, mark: 'зачтено', short: 'зачёт', color: 'success', width: ball}
       end
     else
@@ -480,7 +496,7 @@ LIMIT 1 ")
           {ball: current, progress: current_progress, mark: 'удовлетворительно', short: 'удовл.', color: 'warning', width: ball}
         when 70..85
           {ball: current, progress: current_progress, mark: 'хорошо', short: 'хорошо', color: 'info', width: ball}
-        when 86..Float::INFINITY
+        when 86..100
           {ball: current, progress: current_progress, mark: 'отлично', short: 'отлично', color: 'success', width: ball}
       end
     end
@@ -536,32 +552,19 @@ LIMIT 1 ")
   end
 
   def exam_progress(year, semester)
-    val_2 = []
-    val_3 = []
-    val_4 = []
-    val_5 = []
-    final_marks.from_year_and_semester(year, semester).each do |mark|
-      val_2 << mark if (mark.value == Study::ExamMark::VALUE_2 || mark.value == Study::ExamMark::VALUE_NEZACHET || mark.value == Study::ExamMark::VALUE_NEDOPUSCHEN)
-      val_3 << mark if mark.value == Study::ExamMark::VALUE_3
-      val_4 << mark if mark.value == Study::ExamMark::VALUE_4
-      val_5 << mark if (mark.value == Study::ExamMark::VALUE_5 || mark.value == Study::ExamMark::VALUE_ZACHET)
-    end
-    exam_marks.from_year_and_semester(year, semester).each do |mark|
-      val_2 << mark if (mark.value == Study::ExamMark::VALUE_2 || mark.value == Study::ExamMark::VALUE_NEZACHET || mark.value == Study::ExamMark::VALUE_NEDOPUSCHEN)
-      val_3 << mark if mark.value == Study::ExamMark::VALUE_3
-      val_4 << mark if mark.value == Study::ExamMark::VALUE_4
-      val_5 << mark if (mark.value == Study::ExamMark::VALUE_5 || mark.value == Study::ExamMark::VALUE_ZACHET)
-    end
-    if !val_2.empty?
-      return 2
-    elsif !val_3.empty?
-      return 3
-    elsif !val_4.empty?
-      return 4
-    elsif !val_5.empty?
-      return 5
+    marks = (final_marks.from_year_and_semester(year, semester).collect { |m| m.value } + exam_marks.from_year_and_semester(year, semester).collect { |m| m.value }).uniq
+    case
+    when marks.include?(Study::ExamMark::VALUE_2) || marks.include?(Study::ExamMark::VALUE_NEZACHET) || marks.include?(Study::ExamMark::VALUE_NEDOPUSCHEN)
+      2
+    when marks.include?(Study::ExamMark::VALUE_3)
+      3
+    when marks.include?(Study::ExamMark::VALUE_4)
+      4
+    when marks.include?(Study::ExamMark::VALUE_5)
+      5
     else
-      return nil
+      nil
     end
+
   end
 end
