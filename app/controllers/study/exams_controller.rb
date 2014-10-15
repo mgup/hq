@@ -65,21 +65,22 @@ module Study
       not_processed = Study::Exam.not_processed
       Department.faculties.each do |faculty|
         groups = []
-        originals, mass, individual, originals_c, mass_c, individual_c = 0, 0, 0, 0, 0, 0
-        #not_processed = Study::Exam.from_faculty(faculty.id).not_processed
+        all, control = [Hash.new(0)] * 2
         faculty.groups.each do |group|
           all_exams = group.exams.by_term(params[:year],params[:term])
-          exams = not_processed.by_group(group.id).by_term(params[:year],params[:term])
+          exams = not_processed.by_group(group.id).by_term(params[:year], params[:term])
           groups << {group: group, exams: exams} unless exams.empty?
-          originals += all_exams.originals.length
-          mass += all_exams.mass.length
-          individual += all_exams.individual.length
-          originals_c += exams.originals.length
-          mass_c += exams.mass.length
-          individual_c += exams.individual.length
+          {
+            basic: :originals,
+            mass: :mass,
+            individual: :individual
+          }.each do |key, method|
+            all[key] += all_exams.send(method).length
+            control[key] += exams.send(method).length
+          end
         end
-        @exams_without_form << {faculty: faculty, groups: groups, all: {basic: originals, mass: mass, individual: individual},
-                                                                  control: {basic: originals_c, mass: mass_c, individual: individual_c}}
+        @exams_without_form << {faculty: faculty, groups: groups, all: all,
+                                                                  control: control}
       end
     end
 
