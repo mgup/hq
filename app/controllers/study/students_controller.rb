@@ -33,6 +33,7 @@ class Study::StudentsController < ApplicationController
   def discipline
     authorize! :show, :student_discipline_progress
     @discipline = Study::Discipline.find params[:discipline]
+
     @checkpoints = @discipline.classes.order(:checkpoint_date)
   end
 

@@ -16,6 +16,7 @@ class Study::PlansController < ApplicationController
     else
       if params[:group]
         @group = Group.find(params[:group])
+
         unless user_departments.include?(@group.speciality.faculty.id)
           redirect_to study_plans_path
         end
