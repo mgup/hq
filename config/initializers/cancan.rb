@@ -5,6 +5,11 @@ module CanCan
     end
   end
 
+  # Этот monkey-patch необходим для того, чтобы в Rollbar не отправлялись
+  # сообщения об ошибках в том случае, если ресурс был не найден. Эту ошибку
+  # могут вызвать всякие разные роботы и нам не очень важно все их видеть.
+  # Если ресурс не найден, то значит просто не надо было заходить по этому
+  # адресу.
   module ModelAdapters
     class ActiveRecordAdapter < AbstractAdapter
       def self.find(model_class, id)
