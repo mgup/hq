@@ -12,12 +12,17 @@ class Study::PlansController < ApplicationController
     @groups = Group.where(group_speciality: @specialities.map { |s| s.id })
 
     if current_user.is?(:developer)
-      @group = Group.find(params[:group]) if params[:group]
+      begin
+        @group = Group.find(params[:group]) if params[:group]
+      rescue ActiveRecord::RecordNotFound
+        render 'errors/error404', status: :not_found
+        return
+      end
     else
       if params[:group]
         begin
           @group = Group.find(params[:group])
-        rescue
+        rescue ActiveRecord::RecordNotFound
           render 'errors/error404', status: :not_found
           return
         end
