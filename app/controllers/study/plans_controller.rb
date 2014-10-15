@@ -15,7 +15,13 @@ class Study::PlansController < ApplicationController
       @group = Group.find(params[:group]) if params[:group]
     else
       if params[:group]
-        @group = Group.find(params[:group])
+        begin
+          @group = Group.find(params[:group])
+        rescue
+          render 'errors/error404', status: :not_found
+          return
+        end
+
         unless user_departments.include?(@group.speciality.faculty.id)
           redirect_to study_plans_path
         end
