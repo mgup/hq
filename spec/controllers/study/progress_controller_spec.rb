@@ -6,6 +6,7 @@ describe Study::ProgressController, type: :controller do
         :group, speciality: FactoryGirl.create(:speciality, id: 2 + rand(7)))
 
     @discipline = FactoryGirl.create(:discipline, group: @group)
+    create(:exam, :final, discipline: @discipline)
   end
 
   describe 'GET #index' do
