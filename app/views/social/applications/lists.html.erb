@@ -92,9 +92,7 @@
       <% end %>
     </tbody>
   </table>
-  <%= link_to 'Распечатать', print_list_social_applications_path(year: params[:year], month: params[:month],
-                             accepted: params[:accepted], deferred: params[:deferred],
-                             strict: params[:strict], causes: params[:causes]), class: 'btn btn-primary btn-lg' %>
+  <%= link_to 'Распечатать', lists_social_applications_path(params.merge({ format: :xlsx })), class: 'btn btn-primary btn-lg' %>
 <% else %>
   <p class="lead">Нет ни одного заявления.</p>
 <% end %>
