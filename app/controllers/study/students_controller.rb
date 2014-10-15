@@ -34,7 +34,14 @@ class Study::StudentsController < ApplicationController
     authorize! :show, :student_discipline_progress
     @student = Student. find params[:id]
     @group = @student.group_at_date(Date.new((@term == 1 ? @year : @year+1), (@term == 1 ? 9 : 4), 15))
-    @discipline = Study::Discipline.find params[:discipline]
+
+    begin
+      @discipline = Study::Discipline.find params[:discipline]
+    rescue ActiveRecord::RecordNotFound
+      render 'errors/error404', status: :not_found
+      return
+    end
+
     @checkpoints = @discipline.classes.order(:checkpoint_date)
   end
 
