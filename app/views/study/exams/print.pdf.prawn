@@ -1,4 +1,3 @@
-require "prawn/table"
 prawn_document margin: [28, 20, 28, 28],
                filename: "Ведомость № #{@exam.id}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
@@ -19,7 +18,7 @@ prawn_document margin: [28, 20, 28, 28],
   if @exam.is_repeat?
     pdf.text_box "ДОПОЛНИТЕЛЬНАЯ ЭКЗАМЕНАЦИОННАЯ (ЗАЧЕТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [68, 842 - 70]
   elsif @exam.validation?
-    pdf.text_box "ВЕДОМОСТЬ КОНТРОЛЯ УСПЕВАЕМОСТИ", at: [160, 842 - 70]
+    pdf.text_box 'ВЕДОМОСТЬ КОНТРОЛЯ УСПЕВАЕМОСТИ', at: [160, 842 - 70]
   else
     pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [120, 842 - 70]
     # pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № XXXX", at: [120, 842 - 70]
@@ -271,8 +270,8 @@ prawn_document margin: [28, 20, 28, 28],
          column(0).width = 24
          column(1).width = 174.28 + 26 #157
          column(2).width = 40 #35
-         8.times.each do |i|
-           column(i+3).width = 15
+         (3..10).each do |i|
+           column(i).width = 15
          end
          column(11).width = 40 + 7
          column(12).width = 48 #60
