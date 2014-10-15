@@ -58,12 +58,7 @@ class Study::ProgressController < ApplicationController
     year = params[:year].to_i
     term = params[:term].to_i
 
-    begin
-      @group = Group.find(params[:group_id])
-    rescue ActiveRecord::RecordNotFound
-      render 'errors/error404', status: :not_found
-      return
-    end
+    @group = Group.find(params[:group_id])
 
     if year == Study::Discipline::CURRENT_STUDY_YEAR
       @students =  @group.students.valid_for_today.includes([:person, :group])

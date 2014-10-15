@@ -12,20 +12,10 @@ class Study::PlansController < ApplicationController
     @groups = Group.where(group_speciality: @specialities.map { |s| s.id })
 
     if current_user.is?(:developer)
-      begin
-        @group = Group.find(params[:group]) if params[:group]
-      rescue ActiveRecord::RecordNotFound
-        render 'errors/error404', status: :not_found
-        return
-      end
+      @group = Group.find(params[:group]) if params[:group]
     else
       if params[:group]
-        begin
-          @group = Group.find(params[:group])
-        rescue ActiveRecord::RecordNotFound
-          render 'errors/error404', status: :not_found
-          return
-        end
+        @group = Group.find(params[:group])
 
         unless user_departments.include?(@group.speciality.faculty.id)
           redirect_to study_plans_path
