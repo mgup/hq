@@ -147,7 +147,12 @@ prawn_document margin: [28, 20, 28, 28],
            good = 0
            fair = 0
            bad = 0
-           @discipline.group.students.valid_for_today.each_with_index do |student, index|
+           if @discipline.is_active?
+             group_students = @discipline.group.students.valid_for_today
+           else
+             group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+           end
+           group_students.each_with_index do |student, index|
              position_x = x_pos
              ball = student.result(@discipline)
              case ball[:width].round
@@ -189,7 +194,12 @@ prawn_document margin: [28, 20, 28, 28],
               position_y -= 15
            end
         else #оригинальная форма контроля
-          @discipline.group.students.valid_for_today.each_with_index do |student, index|
+          if @discipline.is_active?
+            group_students = @discipline.group.students.valid_for_today
+          else
+            group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+          end
+          group_students.each_with_index do |student, index|
             position_x = x_pos
             if @exam.test? #зачёт
               if student.ball(@discipline) < 55
@@ -249,7 +259,12 @@ prawn_document margin: [28, 20, 28, 28],
             @exam.students.each { |s| st << s.student }
           end
         else
-          @discipline.group.students.valid_for_today.each { |s| st << s }
+          if @discipline.is_active?
+            group_students = @discipline.group.students.valid_for_today
+          else
+            group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+          end
+          group_students.each { |s| st << s }
         end
 
         st.each_with_index do |student, index|
@@ -288,8 +303,13 @@ prawn_document margin: [28, 20, 28, 28],
            pdf.move_down 18
         else
           if @exam.validation?
+            if @discipline.is_active?
+              group_students = @discipline.group.students.valid_for_today
+            else
+              group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+            end
             footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
-                              [@discipline.group.students.valid_for_today.length, excellent, good, fair, bad, '—', '—', '—', '—', (5*excellent + 4*good + 3*fair + 2*bad)/@discipline.group.students.valid_for_today.length]]
+                              [group_students.length, excellent, good, fair, bad, '—', '—', '—', '—', (5*excellent + 4*good + 3*fair + 2*bad)/group_students.length]]
           else
             footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']]
@@ -365,7 +385,12 @@ prawn_document margin: [28, 20, 28, 28],
           result_2 = @discipline.final_exam.predication(2, @exam.student.ball(@discipline))
           applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
         else
-          @discipline.group.students.valid_for_today.each_with_index do |student, index|
+          if @discipline.is_active?
+            group_students = @discipline.group.students.valid_for_today
+          else
+            group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+          end
+          group_students.each_with_index do |student, index|
             # # Для примера
             # if student.ball(@discipline) == 0.0
             #   ball = rand(100)*1.0
@@ -451,7 +476,12 @@ prawn_document margin: [28, 20, 28, 28],
           end
         else
           index = 1
-          @discipline.group.students.valid_for_today.each do |student|
+          if @discipline.is_active?
+            group_students = @discipline.group.students.valid_for_today
+          else
+            group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+          end
+          group_students.each do |student|
             if (!(student.ball(@discipline) < 55) && @exam.test?) || (!(student.ball(@discipline) < 85) && @exam.graded_test?)
               next
             end
