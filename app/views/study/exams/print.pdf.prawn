@@ -247,7 +247,7 @@ prawn_document margin: [28, 20, 28, 28],
                       {content: pdf.text_box('Неуд.', at: [x_pos + 314, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
                       {content: pdf.text_box('Недопущ.', at: [x_pos + 329, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
                       {content: pdf.text_box('Неявка', at: [x_pos + 344, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: 'Результат', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], ['Цифрой', 'Прописью']]
+                      {content: 'Результат', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], %w(Цифрой Прописью)]
 
         position_y = y_pos
 
