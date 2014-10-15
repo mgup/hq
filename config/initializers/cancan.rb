@@ -4,4 +4,14 @@ module CanCan
       @controller.send(:resource_params)
     end
   end
+
+  module ModelAdapters
+    class ActiveRecordAdapter < AbstractAdapter
+      def self.find(model_class, id)
+        Rollbar.silenced do
+          model_class.find(id)
+        end
+      end
+    end
+  end
 end
