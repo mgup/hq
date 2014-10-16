@@ -6,11 +6,7 @@ class Study::CheckpointsController < ApplicationController
   def index
     redirect_to new_study_discipline_checkpoint_path(@discipline) if @checkpoints.empty?
     @classes = @discipline.classes
-    if @discipline.is_active?
-      @students = @discipline.group.students.valid_for_today
-    else
-      @students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
-    end
+    @students = @discipline.students
   end
 
   def new ; end
@@ -97,7 +93,5 @@ class Study::CheckpointsController < ApplicationController
 
   def load_discipline
     @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
-  rescue
-    render 'errors/error404', status: :not_found
   end
 end

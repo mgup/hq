@@ -88,6 +88,14 @@ class Study::Discipline < ActiveRecord::Base
 
   scope :with_brs, ->{where(subject_brs:  true)}
 
+  def students
+    if is_active?
+      group.students.valid_for_today
+    else
+      Student.in_group_at_date(group, Date.new((1 == semester ? year : year + 1), (1 == semester ? 9 : 4), 15))
+    end
+  end
+
   def has?(type)
     work = (type == 'work' ? 2 : 3)
     exams.where(exam_type: work) != []
