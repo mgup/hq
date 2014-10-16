@@ -30,29 +30,29 @@ module Renderers
                            class: 'img-responsive')
     end
 
-    def table(data, options = {})
+    def table(data, _options = {})
       @result << '<table class="table table-striped">'.html_safe
-      @result << '<thead>'.html_safe
-      @result << '<tr>'.html_safe
-      data[0].each do |d|
-        @result << "<th>#{d}</th>".html_safe
+      @result << content_tag(:thead) do
+        content_tag(:tr, data[0].map { |d| content_tag(:th, d) }.join.html_safe)
       end
-      @result << '</tr>'.html_safe
-      @result << '</thead>'.html_safe
 
-      data[1..data.size].each do |row|
-        @result << '<tr>'.html_safe
-        row.each do |d|
-          if d.is_a?(Hash)
-            @result << "<td #{d.map { |k,v| %Q(#{k}="#{v}") }.join(' ')}>#{d[:content]}</td>".html_safe
-          else
-            @result << "<td>#{d}</td>".html_safe
-          end
+      data[1..-1].each do |row|
+        @result << content_tag(:tr) do
+          row.map { |d| table_cell(d) }.join.html_safe
         end
-        @result << '</tr>'.html_safe
       end
 
       @result << '</table>'
+    end
+
+    private
+
+    def table_cell(data)
+      if data.is_a?(Hash)
+        content_tag(:td, data[:content], data)
+      else
+        content_tag(:td, data)
+      end
     end
   end
 end

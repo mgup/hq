@@ -79,8 +79,10 @@ module Study
             control[key] += exams.send(method).length
           end
         end
-        @exams_without_form << {faculty: faculty, groups: groups, all: all,
-                                                                  control: control}
+        @exams_without_form << { faculty: faculty,
+                                 groups: groups,
+                                 all: all,
+                                 control: control }
       end
     end
 
