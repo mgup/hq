@@ -3,11 +3,15 @@ class Speciality < ActiveRecord::Base
 
   default_scope { order(:speciality_name, :speciality_code) }
 
-  alias_attribute :id,      :speciality_id
-  alias_attribute :code,    :speciality_code
-  alias_attribute :name,    :speciality_name
-  alias_attribute :type,    :speciality_ntype
-  alias_attribute :suffix,  :speciality_short_name
+  {
+    id: :id,
+    code: :code,
+    name: :name,
+    type: :ntype,
+    suffix: :short_name
+  }.each do |a, name|
+    alias_attribute a, "speciality_#{name}".to_sym
+  end
 
   belongs_to :faculty,
              class_name: 'Department',
