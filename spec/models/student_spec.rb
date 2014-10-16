@@ -61,9 +61,5 @@ describe Student do
     it 'с датами мероприятий' do
       expect have_many(:dates).class_name('EventDate').through(:visitor_event_dates)
     end
-
-    it 'с таблицей, обеспечивающей связь с дипломом' do
-      expect have_one(:graduate_student)
-    end
   end
 end

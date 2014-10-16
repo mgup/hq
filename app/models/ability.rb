@@ -192,12 +192,6 @@ class Ability
   end
 
   def faculty_employee(user)
-    # Выпускников пока закрываем
-    #can :manage, Graduate
-    #can :manage, GraduateStudent
-    #can :manage, GraduateSubject
-    #can :manage, GraduateMark
-
     can :manage, :plans
 
     # Подумать, как совместить это с тем, что Дирекция не преподаватель!!!

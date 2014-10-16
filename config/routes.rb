@@ -19,15 +19,6 @@ HQ::Application.routes.draw do
   match '/404' => 'errors#error404', via: [:get, :post, :patch, :delete]
   match '/500' => 'errors#error500', via: [:get, :post, :patch, :delete]
 
-  # Выпуски (группы выпускников).
-  resources :graduates do
-    get 'students', on: :member
-
-    resources :graduate_students
-  end
-
-  resources :blanks
-
   devise_for :users, controllers: { registrations: 'users' }
     as :user do
       get 'user/edit' => 'devise/registrations#edit', as: 'user_profile'

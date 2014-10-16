@@ -54,16 +54,6 @@ class Group < ActiveRecord::Base
 
   scope :second_higher, -> { where(group_second_higher: true) }
 
-  def self.without_graduate
-    joins('LEFT JOIN graduates ON graduates.group_id = group.group_id')
-    .where('graduates.id IS NULL')
-  end
-
-  # Поиск всех групп с выпускниками.
-  def self.for_graduate
-    Group.all.without_graduate.select { |g| g.study_length == g.course }
-  end
-
   def study_length
     speciality.send case form
                     when 'fulltime' then :speciality_olength
