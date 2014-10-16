@@ -207,18 +207,10 @@ class Person < ActiveRecord::Base
       xml.person {
         xml.id_   id
         xml.foreign student_foreign if student_foreign
-        %w(last_name first_name patronym).each do |name|
-          xml.send(name) {
-            %w(ip rp dp vp tp pp).each do |form|
-              xml.send("#{form}_", self.send(name, form.to_sym))
-            end
-          } if name
-        end
+        name_to_nokogiri.children[0].children.each { |part| xml << part.to_xml }
       }
     }.doc
   end
 
-  def to_xml
-    to_nokogiri.to_xml
-  end
+  delegate :to_xml, to: :to_nokogiri
 end

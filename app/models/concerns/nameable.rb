@@ -70,4 +70,21 @@ module Nameable
     name = send(:name) if name.empty? && respond_to?(:name)
     name
   end
+
+  # Вывод имени в виде XML.
+  def name_to_nokogiri
+    builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
+      xml.name do
+        %w(last_name first_name patronym).each do |part|
+          xml.send(part) {
+            %w(ip rp dp vp tp pp).each do |form|
+              xml.send("#{form}_", self.send(part, form.to_sym))
+            end
+          } if part
+        end
+      end
+    end
+
+    builder.doc
+  end
 end
