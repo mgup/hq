@@ -66,8 +66,8 @@ class Speciality < ActiveRecord::Base
               distance: payments.from_form(105).last }
   end
 
-  def to_xml
-    builder = Nokogiri::XML::Builder.new do |xml|
+  def to_nokogiri
+    builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
       xml.speciality do
         xml.id_   id
         xml.code  code
@@ -78,19 +78,8 @@ class Speciality < ActiveRecord::Base
       end
     end
 
-    builder.doc.to_xml
+    builder.doc
   end
 
-  def to_nokogiri
-    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
-      xml.speciality do
-        xml.id_   id
-        xml.code  code
-        xml.new_code new_code
-        xml.name  name
-        xml.type type
-        xml << faculty.to_nokogiri.root.to_xml
-      end
-    }.doc
-  end
+  delegate :to_xml, to: :to_nokogiri
 end
