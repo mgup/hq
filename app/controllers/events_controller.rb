@@ -10,7 +10,7 @@ class EventsController < ApplicationController
   def actual
     params[:page] ||= 1
     authorize! :actual, :events
-    @events = Event.publications.reverse
+    @events = Event.publications
     find_events_and_dates(@events, params[:name], params[:year], params[:month], params[:day])
     @events = @events.reverse
     @events = Kaminari.paginate_array(@events).page(params[:page]).per(5)
