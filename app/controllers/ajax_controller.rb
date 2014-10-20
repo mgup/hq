@@ -33,13 +33,13 @@ class AjaxController < ApplicationController
   def groups
     filter_groups = Group.with_students
     if params[:speciality] && params[:speciality] != ''
-      filter_groups = filter_groups.filter(speciality: params[:speciality])
+      filter_groups = filter_groups.where(group_speciality: params[:speciality])
     end
     if params[:form] && params[:form] != ''
-      filter_groups = filter_groups.filter(form: params[:form])
+      filter_groups = filter_groups.where(form: params[:form])
     end
     if params[:course] && params[:course] != ''
-      filter_groups = filter_groups.filter(course: params[:course])
+      filter_groups = filter_groups.where(course: params[:course])
     end
     render({ json: filter_groups.inject([]) do |groups, group|
       groups << { id: group.id, name: group.name }
