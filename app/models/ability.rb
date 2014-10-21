@@ -169,6 +169,10 @@ class Ability
     can :manage, Curator::TaskType
     can :manage, Hostel::Offense
     can :manage, Hostel::Report
+    soc_support_event(user)
+  end
+
+  def soc_support_event(user)
     can :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
     can :manage, EventDateClaim
   end
