@@ -380,7 +380,7 @@ LIMIT 1 ")
 
   def progress(discipline = nil)
     if discipline
-      100*ball(discipline)/discipline.current_ball
+      discipline.current_ball ? 100*ball(discipline)/discipline.current_ball : 0.0
     else
       (disciplines.count != 0 ? (ball(nil)/disciplines.count) : 0)
     end

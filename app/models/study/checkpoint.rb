@@ -36,7 +36,7 @@ class Study::Checkpoint < ActiveRecord::Base
   scope :control, -> {where(checkpoint_type: TYPE_CHECKPOINT )}
   scope :lectures, -> {where(checkpoint_type: TYPE_LECTURE )}
   scope :practicals, -> {where(checkpoint_type: TYPE_SEMINAR)}
-  scope :not_future, -> {where("checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}'")}
+  scope :not_future, -> {where("checkpoint_date <= '#{Date.today.strftime('%Y-%m-%d')}'")}
   scope :not_full, -> discipline { where("checkpoint_subject = #{discipline.id} AND checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}' AND
         (SELECT COUNT(DISTINCT checkpoint_mark_student)
         FROM checkpoint_mark JOIN student_group ON student_group_id = checkpoint_mark_student
