@@ -155,7 +155,7 @@ prawn_document margin: [28, 20, 28, 28],
            group_students.each_with_index do |student, index|
              position_x = x_pos
              ball = student.result(@discipline)
-             case ball[:width].round
+             case ball[:progress].round
                 when 0..54
                   pdf.move_to [position_x + 317, position_y - 5.4]
                   pdf.line_to [position_x + 324, position_y - 12.4]
@@ -177,7 +177,7 @@ prawn_document margin: [28, 20, 28, 28],
                    pdf.line_to [position_x + 287, position_y - 12.4]
                    result = 'хорошо'
                    good += 1
-                when 86..Float::INFINITY
+                when 86..100
                    pdf.move_to [position_x + 272, position_y - 5.4]
                    pdf.line_to [position_x + 279, position_y - 12.4]
                    pdf.move_to [position_x + 279, position_y - 5.4]

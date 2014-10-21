@@ -28,7 +28,15 @@ module Study
 
     def update
       @exam.update(resource_params)
-      redirect_to study_discipline_checkpoints_path(@discipline) if @exam.save
+
+      if @exam.save
+        respond_to do |format|
+          format.js
+          format.html do
+            redirect_to study_discipline_checkpoints_path(@discipline)
+          end
+        end
+      end
     end
 
     def updatedate

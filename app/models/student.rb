@@ -380,7 +380,7 @@ LIMIT 1 ")
 
   def progress(discipline = nil)
     if discipline
-      ball(discipline)
+      100*ball(discipline)/discipline.current_ball
     else
       (disciplines.count != 0 ? (ball(nil)/disciplines.count) : 0)
     end
@@ -396,8 +396,7 @@ LIMIT 1 ")
 
   def result(discipline = nil, y = Study::Discipline::CURRENT_STUDY_YEAR, t = Study::Discipline::CURRENT_STUDY_TERM)
     if discipline
-      score = ball(discipline)
-      mark_progress(score, score, discipline.final_exam.type)
+      mark_progress(ball(discipline), progress(discipline), discipline.final_exam.type)
     else
       score = ball(nil, y, t)
       progress = (disciplines_by_term(y,t).size != 0 ? (score/disciplines_by_term(y,t).size) : 0)

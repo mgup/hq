@@ -167,7 +167,7 @@ class Study::DisciplinesController < ApplicationController
     (SELECT COUNT(*) FROM checkpoint WHERE checkpoint_subject = subject_id AND checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}') AS `Прошло занятий`,
     (SELECT COUNT(*) FROM checkpoint WHERE checkpoint_subject = subject_id AND checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}' AND (SELECT COUNT(*) FROM checkpoint_mark WHERE checkpoint_mark_checkpoint = checkpoint_id > 0) AND (SELECT COUNT(DISTINCT checkpoint_mark_student) FROM checkpoint_mark WHERE checkpoint_mark_checkpoint = checkpoint_id) >= (SELECT COUNT(*) FROM student_group WHERE student_group_group = group_id AND student_group_status = '101')) AS `Оценки`
     FROM subject JOIN user ON user_id = subject_teacher JOIN
-    department ON department_id = user.user_department JOIN `group` ON group_id = subject_group JOIN checkpoint ON checkpoint_subject =
+    department ON department.department_id = user.user_department JOIN `group` ON group_id = subject_group JOIN checkpoint ON checkpoint_subject =
     subject_id WHERE subject_year = #{Study::Discipline::CURRENT_STUDY_YEAR} AND subject_semester = #{Study::Discipline::CURRENT_STUDY_TERM} GROUP BY
     subject_id ORDER BY department_sname ASC, group_course ASC, group_name ASC, group_number ASC, subject_name ASC;
 ")
