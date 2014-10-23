@@ -20,21 +20,45 @@ wb.add_worksheet(name: sheet_name,
                                  bottom: 0.393700787,
                                  header: 0,
                                  footer: 0 },
-                 page_setup: { orientation: :landscape }) do |sheet|
+                 page_setup: { orientation: :landscape }) do
+  # @type [Axlsx::Worksheet] sheet
+  |sheet|
   sheet.page_setup.fit_to(width: 1, height: 1)
   sheet.add_row(["#{sheet_name} (на #{l(Time.now)})"], style: header_style)
-  sheet.add_row(['Курс', 'Основа'],
-                style: [title_rotated_style, title_rotated_style])
 
-  sheet.add_row(['', ''] + directions.map { |d| d.full_name },
-                style: direction_style)
+  # Массив с буквами колонок, которые будут заняты под направления.
+  directions_letters = ('C'..'ZZ').lazy.take(directions.size).to_a
+
+  # Заголовки столбцов.
+  grouped_directions = directions.group_by { |d| d.faculty.abbreviation }
+  titles = %w(Курс Основа)
+  grouped_directions.each do |faculty_abbreviation, directions|
+    titles += [faculty_abbreviation]
+    titles += [''] * (directions.size - 1)
+  end
+  sheet.add_row(titles, style: [title_rotated_style, title_rotated_style])
+
+  # Склеиваем ячейки с названиями институтов.
+  current_index = 0
+  grouped_directions.each_with_index do |(_, directions), index|
+    sheet["#{directions_letters[index]}2"].merge(sheet.rows[1].cells[3 + directions.size])
+
+    current_index += directions.size
+  end
+
+  # Названия направлений.
+  directions_titles = ['', '']
+  grouped_directions.each do |_, directions|
+    directions_titles += directions.map { |d| d.full_name }
+  end
+  sheet.add_row(directions_titles, style: direction_style)
 
   row_index = 4
   (1..6).each do |course|
     %w(б в).each do |form|
       sheet.add_row(
         [course, form] + [0] * directions.size +
-          ["=#{('C'..'ZZ').lazy.take(directions.size).to_a.map { |c| "#{c}#{row_index}" }.join(' + ')}"] +
+          ["=#{directions_letters.map { |c| "#{c}#{row_index}" }.join(' + ')}"] +
           [''],
         style: data_style
       )
@@ -45,24 +69,19 @@ wb.add_worksheet(name: sheet_name,
 
   # Всего, по направлениям.
   %w(б в).each_with_index do |form, index|
-    sheet.add_row(
-      ['Всего', form] +
-        ('C'..'ZZ').lazy.take(directions.size).to_a.map do |c|
-          if 0 == index
-            "=#{(4..15).find_all(&:even?).map { |i| "#{c}#{i}" }.join(' + ')}"
-          else
-            "=#{(4..15).find_all(&:odd?).map { |i| "#{c}#{i}" }.join(' + ')}"
-          end
-        end,
-      style: data_style
-    )
+    sums = directions_letters.map do |c|
+      if 0 == index
+        "=#{(4..15).find_all(&:even?).map { |i| "#{c}#{i}" }.join(' + ')}"
+      else
+        "=#{(4..15).find_all(&:odd?).map { |i| "#{c}#{i}" }.join(' + ')}"
+      end
+    end
+
+    sheet.add_row(['Всего', form] + sums, style: data_style)
   end
 
   sheet.add_row(
-    %w(Всего Всего) +
-      ('C'..'ZZ').lazy.take(directions.size).to_a.map do |c|
-        "=#{c}16 + #{c}17"
-      end,
+    %w(Всего Всего) + directions_letters.map { |c| "=#{c}16 + #{c}17" },
     style: data_style
   )
 

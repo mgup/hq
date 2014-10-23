@@ -22,24 +22,25 @@ render partial: 'sheet',
                  directions: @directions }
 
 # Обработка передаваемых студентов.
-@students.each do |student|
+@students.each do
   # @type [Student] student
+  |student|
   wb.worksheets.each_with_index do |worksheet, index|
     # Определяем, должен ли студент учитываться на данном листе отчёта.
     if @worksheet_filters[index].call(student)
       # По коду направления определяем колонку, к которой принадлежит студент.
       student_speciality = student.speciality.full_name
       column_letter = nil
-      ('C'..'ZZ').lazy.take(@directions.size).to_a.each do |c|
-        if student_speciality == worksheet.name_to_cell("#{c}3").value
-          column_letter = c
+      ('C'..'ZZ').lazy.take(@directions.size).to_a.each do |letter|
+        if student_speciality == worksheet.name_to_cell("#{letter}3").value
+          column_letter = letter
         end
       end
 
       if column_letter.nil?
         fail 'Неизвестная специальность.'
       else
-        # Плюсуем студента к таблице.
+        # Плюсуем студента к найденной ячейке.
         cell = worksheet.name_to_cell(
           column_letter +
             ((student.budget? ? 0 : 1) + 2 * (1 + student.course)).to_s
