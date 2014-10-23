@@ -1,5 +1,7 @@
 header_style = wb.styles.add_style(sz: 18, b: true)
-title_style = wb.styles.add_style(sz: 10, b: true)
+department_style = wb.styles.add_style(
+  sz: 14, b: true, alignment: { horizontal: :center, vertical: :center }
+)
 title_rotated_style = wb.styles.add_style(
   sz: 10, b: true, alignment: { text_rotation: 90 },
   border: { style: :thin, color: '000000' }
@@ -27,23 +29,28 @@ wb.add_worksheet(name: sheet_name,
   sheet.add_row(["#{sheet_name} (на #{l(Time.now)})"], style: header_style)
 
   # Массив с буквами колонок, которые будут заняты под направления.
-  directions_letters = ('C'..'ZZ').lazy.take(directions.size).to_a
+  directions_letters = ('C'..'ZZ').lazy.take(directions.length).to_a
 
   # Заголовки столбцов.
   grouped_directions = directions.group_by { |d| d.faculty.abbreviation }
   titles = %w(Курс Основа)
   grouped_directions.each do |faculty_abbreviation, directions|
     titles += [faculty_abbreviation]
-    titles += [''] * (directions.size - 1)
+    titles += [''] * (directions.length - 1)
   end
-  sheet.add_row(titles, style: [title_rotated_style, title_rotated_style])
+  sheet.add_row(
+    titles + ['На курсе', 'Итого'],
+    style: [title_rotated_style] * 2 +
+             [department_style] * directions.length +
+             [title_rotated_style] * 2
+  )
 
   # Склеиваем ячейки с названиями институтов.
-  current_index = 0
-  grouped_directions.each_with_index do |(_, directions), index|
-    sheet["#{directions_letters[index]}2"].merge(sheet.rows[1].cells[3 + directions.size])
+  index = 0
+  grouped_directions.each do |_, directions|
+    sheet["#{directions_letters[index]}2"].merge(sheet.rows[1].cells[1 + index + directions.length])
 
-    current_index += directions.size
+    index += directions.length
   end
 
   # Названия направлений.
@@ -57,7 +64,7 @@ wb.add_worksheet(name: sheet_name,
   (1..6).each do |course|
     %w(б в).each do |form|
       sheet.add_row(
-        [course, form] + [0] * directions.size +
+        [course, form] + [0] * directions.length +
           ["=#{directions_letters.map { |c| "#{c}#{row_index}" }.join(' + ')}"] +
           [''],
         style: data_style
@@ -85,10 +92,10 @@ wb.add_worksheet(name: sheet_name,
     style: data_style
   )
 
-  (3 + directions.size).times { sheet.rows[0].add_cell('') }
-  sheet['A1'].merge(sheet.rows[0].cells[3 + directions.size])
+  (3 + directions.length).times { sheet.rows[0].add_cell('') }
+  sheet['A1'].merge(sheet.rows[0].cells[3 + directions.length])
 
-  (2 + directions.size).times do |index|
+  (2 + directions.length).times do |index|
     sheet.column_info[index].width = 3
   end
 end
