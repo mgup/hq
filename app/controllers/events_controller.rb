@@ -101,7 +101,7 @@ class EventsController < ApplicationController
     end
     @dates = @dates.flatten.uniq.sort_by{|d| d,m,y=d.split('.');[y,m,d]}
 
-    @events = @events.from_name(params[:name]) if name
+    @events = @events.from_name(name) if name
 
     if day
       month = @month < 10 ? "0#{@month}" : @month
