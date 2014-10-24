@@ -63,5 +63,5 @@ pdf.font_size 11 do
   pdf.text 'М. П.', align: :center
 
   pdf.move_down 30
-  pdf.text "Дата выдачи: 26.07.2014     Личное дело: #{entrant.packed_application.number}     Регистрационный номер: #{check.id}", align: :center
+  pdf.text "Дата выдачи: #{l check.date}     Личное дело: #{entrant.packed_application.number}     Регистрационный номер: #{check.id}", align: :center
 end
