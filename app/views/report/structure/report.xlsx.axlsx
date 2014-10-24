@@ -38,7 +38,7 @@ render partial: 'sheet',
       end
 
       if column_letter.nil?
-        fail 'Неизвестная специальность.'
+        # fail 'Неизвестная специальность.'
       else
         # Плюсуем студента к найденной ячейке.
         cell = worksheet.name_to_cell(
