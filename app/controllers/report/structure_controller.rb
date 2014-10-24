@@ -41,8 +41,8 @@ class Report::StructureController < ApplicationController
             [Student::STATUS_STUDENT,
              Student::STATUS_COMPLETE,
              Student::STATUS_TRANSFERRED_DEBTOR,
-             Student::STATUS_DEBTOR]).
-      with_group.where('group_course = 1'). # FIXME Убрать этот запрос.
-      where('group_speciality != 1')
+             Student::STATUS_DEBTOR])#.
+      # with_group.where('group_course = 1'). # FIXME Убрать этот запрос.
+      # where('group_speciality != 1')
   end
 end

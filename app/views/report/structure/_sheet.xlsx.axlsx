@@ -3,7 +3,7 @@ department_style = wb.styles.add_style(
   sz: 14, b: true, alignment: { horizontal: :center, vertical: :center }
 )
 title_rotated_style = wb.styles.add_style(
-  sz: 10, b: true, alignment: { text_rotation: 90 },
+  sz: 10, b: true, alignment: { text_rotation: 90, horizontal: :center },
   border: { style: :thin, color: '000000' }
 )
 direction_style = wb.styles.add_style(
@@ -63,10 +63,20 @@ wb.add_worksheet(name: sheet_name,
   row_index = 4
   (1..6).each do |course|
     %w(б в).each do |form|
+      total_in_row = directions_letters.map { |c| "#{c}#{row_index}" }.
+        join(' + ')
+
+      total = if 'б' == form
+                letter = ('C'..'ZZ').lazy.take(directions.length + 1).to_a.last
+                "= #{letter}#{row_index} + #{letter}#{row_index + 1}"
+              else
+                ''
+              end
+
       sheet.add_row(
         [course, form] + [0] * directions.length +
-          ["=#{directions_letters.map { |c| "#{c}#{row_index}" }.join(' + ')}"] +
-          [''],
+          ["= #{total_in_row}"] +
+          [total],
         style: data_style
       )
 
@@ -84,7 +94,12 @@ wb.add_worksheet(name: sheet_name,
       end
     end
 
-    sheet.add_row(['Всего', form] + sums, style: data_style)
+    total_in_row = '= ' + directions_letters.map { |c| "#{c}#{row_index}" }.
+      join(' + ')
+
+    sheet.add_row(['Всего', form] + sums + [total_in_row], style: data_style)
+
+    row_index += 1
   end
 
   sheet.add_row(
