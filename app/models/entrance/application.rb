@@ -446,7 +446,7 @@ class Entrance::Application < ActiveRecord::Base
         end
         xml.FinSourceAndEduForms do
           xml.FinSourceEduForm do
-            xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
+            xml.FinanceSourceID (competitive_group_item.payed? ? 15 : ( competitive_group_target_item_id.nil? ? 14 : 16))
             xml.EducationFormID     competitive_group_item.form
             xml.CompetitiveGroupID  competitive_group_item.competitive_group.id
             xml.CompetitiveGroupItemID  competitive_group_item_id
