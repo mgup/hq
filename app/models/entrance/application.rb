@@ -451,6 +451,10 @@ class Entrance::Application < ActiveRecord::Base
             xml.CompetitiveGroupID  competitive_group_item.competitive_group.id
             xml.CompetitiveGroupItemID  competitive_group_item_id
             xml.Priority            1
+
+            unless competitive_group_target_item_id.nil?
+              xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+            end
           end
         end
         xml.ApplicationDocuments do
