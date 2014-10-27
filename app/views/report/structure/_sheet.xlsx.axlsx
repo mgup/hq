@@ -15,7 +15,7 @@ data_style = wb.styles.add_style(
   border: { style: :thin, color: '000000' }
 )
 center_style = wb.styles.add_style(
-    sz: 7, alignment: { horizontal: :center, vertical: :center }
+    sz: 7, alignment: { horizontal: :center, vertical: :center }, nowrap: true
 )
 
 wb.add_worksheet(name: sheet_name,
@@ -47,14 +47,6 @@ wb.add_worksheet(name: sheet_name,
              [department_style] * directions.length +
              [title_rotated_style] * 2
   )
-
-  # Склеиваем ячейки с названиями институтов.
-  index = 0
-  grouped_directions.each do |_, directions|
-    sheet["#{directions_letters[index]}2"].merge(sheet.rows[1].cells[1 + index + directions.length])
-
-    index += directions.length
-  end
 
   # Названия направлений.
   directions_titles = ['', '']
@@ -113,6 +105,41 @@ wb.add_worksheet(name: sheet_name,
     style: center_style
   )
   sheet['A18'].merge(sheet.rows[17].cells[1])
+
+  %w(б в).each_with_index do |form, index|
+    i = 0
+    sum = []
+    grouped_directions.each do |_, directions|
+      sum[i] = '= '
+      val = []
+      directions.each_with_index do |_, ind|
+        val << "#{directions_letters[i+ind]}#{16 + index}"
+      end
+      sum[i] += val.join(' + ')
+      i += directions.length
+    end
+    sum[i] = ''
+    sheet.add_row(
+        ['Всего по фак.', form] + sum,
+        style: center_style
+    )
+  end
+
+  sheet.add_row(
+      ['Итого по фак.', 'Итого по фак.'] + directions_letters.map { |c| "=#{c}19 + #{c}20" },
+      style: center_style
+  )
+  sheet['A21'].merge(sheet.rows[20].cells[1])
+
+  # Склеиваем ячейки с названиями институтов.
+  [2,19,20,21].each do |row|
+    index = 0
+    grouped_directions.each do |_, directions|
+      sheet["#{directions_letters[index]}#{row}"].merge(sheet.rows[row-1].cells[1 + index + directions.length])
+      index += directions.length
+    end
+  end
+
 
   (3 + directions.length).times { sheet.rows[0].add_cell('') }
   sheet['A1'].merge(sheet.rows[0].cells[3 + directions.length])
