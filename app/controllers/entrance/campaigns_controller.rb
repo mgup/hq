@@ -119,18 +119,20 @@ class Entrance::CampaignsController < ApplicationController
             # end
             xml.OrdersOfAdmission do
               @applications.each do |application|
-                xml.OrderOfAdmission do
-                  xml.Application do
-                    xml.ApplicationNumber application.number
-                    xml.RegistrationDate application.created_at.iso8601
-                  end
-                  xml.DirectionID application.direction.id
-                  xml.EducationFormID application.competitive_group_item.form
-                  xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
-                  xml.EducationLevelID application.competitive_group_item.education_type_id
-                  xml.IsBeneficiary application.benefits.any?
-                  unless Date.new(2014, 7, 31) == application.order.signing_date
-                    xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date) ? 1 : 2)
+                unless application.competitive_group_target_item_id.nil?
+                  xml.OrderOfAdmission do
+                    xml.Application do
+                      xml.ApplicationNumber application.number
+                      xml.RegistrationDate application.created_at.iso8601
+                    end
+                    xml.DirectionID application.direction.id
+                    xml.EducationFormID application.competitive_group_item.form
+                    xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
+                    xml.EducationLevelID application.competitive_group_item.education_type_id
+                    xml.IsBeneficiary application.benefits.any?
+                    unless Date.new(2014, 7, 31) == application.order.signing_date
+                      xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date) ? 1 : 2)
+                    end
                   end
                 end
               end
