@@ -89,10 +89,14 @@ class Entrance::ExamResult < ActiveRecord::Base
   private
 
   def fis_entrance_test_subject(xml)
-    if exam.use_subject_id
-      xml.SubjectID exam.use_subject_id
-    else
+    if 12014 == entrant.campaign_id
       xml.SubjectName exam.name
+    else
+      if exam.use_subject_id
+        xml.SubjectID exam.use_subject_id
+      else
+        xml.SubjectName exam.name
+      end
     end
   end
 end
