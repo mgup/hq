@@ -102,6 +102,8 @@ class Entrance::CampaignsController < ApplicationController
       # find_all { |a| !a.payed? }
     @applications = Entrance::Application.where(status_id: 8).find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 2014 == a.campaign.id }
 
+    @applications = @applications.find_all { |a| '44.03.04' == a.direction.new_code }
+
     # fail '123'
 
     respond_to do |format|
@@ -129,7 +131,8 @@ class Entrance::CampaignsController < ApplicationController
                     xml.DirectionID application.direction.id
                     xml.EducationFormID application.competitive_group_item.form
                     xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
-                    xml.EducationLevelID application.competitive_group_item.education_type_id
+                    # xml.EducationLevelID application.competitive_group_item.education_type_id
+                    xml.EducationLevelID 2
                     xml.IsBeneficiary application.benefits.any?
                     unless Date.new(2014, 7, 31) == application.order.signing_date
                       xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date) ? 1 : 2)
