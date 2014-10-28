@@ -94,15 +94,7 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def report
-    # @applications = @campaign.applications.
-    #   find_all { |a| 8 == a.status_id && [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) }
-      # find_all { |a| !a.number.include?('14-ОД') && a.benefits.empty? }
-      # find_all { |a| %w(03 05).include?(a.direction.new_code.split('.')[1]) }.
-      # find_all { |a| [11, 12].include?(a.form) }.
-      # find_all { |a| !a.payed? }
     @applications = Entrance::Application.where(status_id: 8).find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 2014 == a.campaign.id }
-
-    # fail '123'
 
     respond_to do |format|
       format.html
@@ -130,7 +122,7 @@ class Entrance::CampaignsController < ApplicationController
                   xml.EducationFormID application.competitive_group_item.form
                   xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
 
-                  if '44.03.04' == a.direction.new_code
+                  if '44.03.04' == application.direction.new_code
                     xml.EducationLevelID 2
                   else
                     xml.EducationLevelID application.competitive_group_item.education_type_id
