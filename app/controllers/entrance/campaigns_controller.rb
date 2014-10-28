@@ -120,7 +120,7 @@ class Entrance::CampaignsController < ApplicationController
             # end
             xml.OrdersOfAdmission do
               @applications.each do |application|
-                unless application.competitive_group_target_item_id.nil?
+                if application.competitive_group_target_item_id.nil?
                   xml.OrderOfAdmission do
                     xml.Application do
                       xml.ApplicationNumber application.number
