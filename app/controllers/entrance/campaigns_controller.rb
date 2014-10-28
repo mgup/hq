@@ -130,7 +130,7 @@ class Entrance::CampaignsController < ApplicationController
 
                   xml.IsBeneficiary application.benefits.any?
                   unless Date.new(2014, 7, 31) == application.order.signing_date
-                    xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date) ? 1 : 2)
+                    xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date || 12014 == a.campaign.id || 22014 == a.campaign.id) ? 1 : 2)
                   end
                 end
               end
