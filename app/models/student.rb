@@ -104,6 +104,10 @@ class Student < ActiveRecord::Base
     .order('last_name_hint, first_name_hint, patronym_hint')
   end
 
+  scope :transferred_debtors, -> do
+    where(student_group_status: self::STATUS_TRANSFERRED_DEBTOR)
+  end
+
   # ! В одном месте для таких случаев предложили наглый выход !
   def readonly?
     false

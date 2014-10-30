@@ -96,6 +96,15 @@ class Study::Discipline < ActiveRecord::Base
     end
   end
 
+  # Список студентов, которые потенциально могут пересдавать эту дисциплину.
+  def students_for_repeat
+    Student.my_filter(
+      status: Student::STATUS_TRANSFERRED_DEBTOR,
+      speciality: group.speciality.id,
+      course: group.course + 1
+    )
+  end
+
   def has?(type)
     work = (type == 'work' ? 2 : 3)
     exams.where(exam_type: work) != []
