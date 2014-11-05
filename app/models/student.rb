@@ -123,6 +123,8 @@ class Student < ActiveRecord::Base
 
   scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR]) }
   scope :valid_student, -> { where(student_group_status: STATUS_STUDENT)}
+
+  scope :actual, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_EXPELED},#{self::STATUS_GRADUATE})") }
   scope :with_group, -> { joins(:group) }
 
   scope :off_budget, -> { where(student_group_tax: PAYMENT_OFF_BUDGET) }
@@ -478,5 +480,28 @@ LIMIT 1 ")
       nil
     end
 
+  end
+
+  def status_name
+    case status
+    when STATUS_ENTRANT
+      'абитуриент'
+    when STATUS_STUDENT
+      'студент'
+    when STATUS_EXPELED
+      'отчисленный'
+    when STATUS_SABBATICAL
+      'академический отпуск'
+    when STATUS_GRADUATE
+      'выпускник'
+    when STATUS_POSTGRADUATE
+      'аспирант'
+    when STATUS_COMPLETE
+      'окончивший'
+    when STATUS_DEBTOR
+      'должник'
+    when STATUS_TRANSFERRED_DEBTOR
+      'переведённый должник'
+    end
   end
 end
