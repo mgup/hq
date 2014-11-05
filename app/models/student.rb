@@ -14,11 +14,15 @@ class Student < ActiveRecord::Base
   MARK_PRACTICAL_GOOD       = 2002
   MARK_PRACTICAL_PERFECT    = 2003
 
+  STATUS_ENTRANT            = 100
   STATUS_STUDENT            = 101
+  STATUS_EXPELED            = 102
+  STATUS_SABBATICAL         = 103
+  STATUS_GRADUATE           = 104
+  STATUS_POSTGRADUATE       = 105
   STATUS_COMPLETE           = 106
   STATUS_DEBTOR             = 107
   STATUS_TRANSFERRED_DEBTOR = 108
-  STATUS_ENTRANT            = 100
 
   self.table_name = 'student_group'
 
