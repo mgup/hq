@@ -64,6 +64,8 @@ gem 'numbers_and_words'
 # gem 'mysql2psql'
 
 group :development do
+  gem 'spring'
+
   gem 'thin'
   #gem 'debugger'
   gem 'better_errors'
@@ -72,10 +74,9 @@ group :development do
   gem 'brakeman', require: false
   gem 'rails-erd'
 
-  gem 'capistrano', '~> 3.2.0'
+  gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
-  gem 'capistrano-rails', '~> 1.1.0'
   gem 'capistrano-sidekiq'
   gem 'sextant'
   gem 'quiet_assets'
