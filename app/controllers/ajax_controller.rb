@@ -86,8 +86,8 @@ class AjaxController < ApplicationController
   def group_students
     render({ json: Group.filter(speciality: params[:speciality], form: params[:form], faculty: params[:faculty], course: params[:course]).inject([]) do |groups, group|
       students = []
-      group.students.valid_for_today.each_with_index do |student, index|
-        students << { id: student.id, index: index+1, fullname: student.person.full_name, budget: (student.budget? ? 1 : 0) }
+      group.students.actual.each_with_index do |student, index|
+        students << { id: student.id, index: index+1, fullname: student.person.full_name, status: student.status_name }
       end
       groups << { id: group.id, name: group.name, students: students }
       groups
