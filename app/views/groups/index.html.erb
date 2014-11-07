@@ -1,9 +1,46 @@
 <div class="page-header">
-  <h1>Распределение студентов по группам</h1>
+  <h1>Учебные группы</h1>
 </div>
 
+<%= form_tag nil, method: :get, class: 'filters' do %>
+  <div class="row">
+    <div class="col col-lg-12">
+      <%= pills(:faculty,
+                Department.faculties.collect {|f| [f.id, f.abbreviation ]},
+                params[:faculty]) %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-lg-12">
+      <%= pills(:education_form,
+                [[101, 'очная'],
+                 [102, 'очно-заочная'],
+                 [103, 'заочная'],
+                 [105, 'дистанционная']],
+                params[:education_form]) %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-lg-12">
+      <%= pills(:course, [1,2,3,4,5,6], params[:course]) %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col col-lg-12">
+      <%= select_tag 'speciality',
+                     options_from_collection_for_select(Speciality.includes(:faculty), :id, :full_name),
+                     prompt: 'все специальности', class: 'ajax-speciality form-control' %>
+    </div>
+  </div>
+<% end %>
+
+<%= params.inspect %>
+
 <form class='form-horizontal' action='' method='post' id='formpullgroupstudents'>
-  <%= render 'group' %>
+  <%#= render 'group' %>
 </form>
 
 <table id="studentsByGroups">

@@ -26,6 +26,10 @@ HQ::Application.routes.draw do
     end
   devise_for :students
 
+  resources :groups
+
+  # ==========================================================================
+
   # Мониторинг состояния сервера.
   get 'system/stats'
 
@@ -81,10 +85,6 @@ HQ::Application.routes.draw do
     get '/cards/users/:user/create', to: 'cards#create', as: :create_user_card
     get '/cards/users/:user/print', to: 'cards#print', as: :print_user_card
     get '/cards/print_card.pdf', to: 'cards#print_card', defaults: { format: 'pdf' }, as: :print_card
-  end
-
-  resources :groups do
-    get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
   end
 
   namespace :hostel do

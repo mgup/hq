@@ -25,78 +25,84 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     end
 
-    primary.item :nav_group_entrance, 'Приёмная кампания',
-                 class: 'nav-header disabled'
-
-    primary.item :entrance_campaign_applications,
-                 '<span class="glyphicons notes_2"></span> Поданные заявления'.html_safe,
-                 applications_entrance_campaign_path(Entrance::Campaign::CURRENT)
-
-    if user_signed_in?
-      primary.item :entrance_campaign_report,
-                   '<span class="glyphicons adjust_alt"></span> Статистика'.html_safe,
-                   report_entrance_campaign_path(Entrance::Campaign::CURRENT)
-
-      if can?(:register, Entrance::Campaign)
-        primary.item :entrance_campaign_register,
-                     '<span class="glyphicons notes_2"></span> Регистрационный журнал'.html_safe,
-                     register_entrance_campaign_path(Entrance::Campaign::CURRENT)
-      end
-      if can?(:orders, Entrance::Campaign)
-        primary.item :entrance_campaign_orders,
-                     '<span class="glyphicons address_book"></span> Приказы о зачислении'.html_safe,
-                     orders_entrance_campaigns_path
-      end
-
-      if can?(:manage, Entrance::Entrant)
-        # primary.item :entrance_applications,
-        #              '<span class="glyphicons skull"></span> Заявления'.html_safe,
-        #              dashboard_entrance_campaign_path(Entrance::Campaign::CURRENT)
-
-        primary.item :new_entrance_application, 'Абитуриенты',
-                     entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
-      end
-
-      # primary.item :new_entrants_results,
-      #              '<span class="glyphicons charts"></span> Результаты внутренних вступительных испытаний'.html_safe,
-      #              entrance_campaign_exam_exam_results_path(
-      #                Entrance::Campaign::CURRENT,
-      #                Entrance::Exam.first
-      #              )
-
-      if can?(:manage, Entrance::Exam)
-        primary.item :new_entrants_results,
-                     '<span class="glyphicons charts"></span> Результаты вступительных испытаний'.html_safe,
-                     results_entrance_campaign_path(Entrance::Campaign::CURRENT)
-      end
-
-      if can?(:statistics, Entrance::Contract)
-        primary.item :entrance_contracts_statistics,
-                     '<span class="glyphicons coins"></span> Статистика платного приёма'.html_safe,
-                     paid_enrollment_entrance_campaign_path(Entrance::Campaign::CURRENT)
-                     # statistics_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
-      end
-    end
-
-    primary.item :rating,
-                 '<span class="glyphicons charts"></span> Рейтинги и приказы о зачислении'.html_safe,
+    primary.item :nav_group_entrance,
+                 raw('Приёмная кампания <span class="caret"></span>'),
                  rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
-                 highlights_on: -> { (params[:action] == 'rating' || params[:action] == 'crimea_rating') && params[:controller] == 'entrance/campaigns'}
+                 icon: 'file', class: 'dropdown',
+                 link: { :'data-toggle' => 'dropdown',
+                         :'class' => 'dropdown-toggle' } do |entrance|
+      entrance.dom_class = 'dropdown-menu'
 
-    primary.item :entrance_dates, 'Сроки проведения',
-                 entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
+      entrance.item :entrance_campaign_applications,
+                   '<span class="glyphicons notes_2"></span> Поданные заявления'.html_safe,
+                   applications_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
-    primary.item :entrance_events, 'Вступительные испытания',
-                 entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: 1)
+      if user_signed_in?
+        entrance.item :entrance_campaign_report,
+                     '<span class="glyphicons adjust_alt"></span> Статистика'.html_safe,
+                     report_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
-    # primary.item :entrants_results,
-    #              '<span class="glyphicons inbox"></span> Результаты вступительных испытаний'.html_safe,
-    #              balls_entrance_campaign_path(Entrance::Campaign::CURRENT)
+        if can?(:register, Entrance::Campaign)
+          entrance.item :entrance_campaign_register,
+                       '<span class="glyphicons notes_2"></span> Регистрационный журнал'.html_safe,
+                       register_entrance_campaign_path(Entrance::Campaign::CURRENT)
+        end
+        if can?(:orders, Entrance::Campaign)
+          entrance.item :entrance_campaign_orders,
+                       '<span class="glyphicons address_book"></span> Приказы о зачислении'.html_safe,
+                       orders_entrance_campaigns_path
+        end
 
-    primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
-                 entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
+        if can?(:manage, Entrance::Entrant)
+          # primary.item :entrance_applications,
+          #              '<span class="glyphicons skull"></span> Заявления'.html_safe,
+          #              dashboard_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
-    primary.item :education_prices, 'Стоимость обучения', education_prices_path
+          entrance.item :new_entrance_application, 'Абитуриенты',
+                       entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
+        end
+
+        # primary.item :new_entrants_results,
+        #              '<span class="glyphicons charts"></span> Результаты внутренних вступительных испытаний'.html_safe,
+        #              entrance_campaign_exam_exam_results_path(
+        #                Entrance::Campaign::CURRENT,
+        #                Entrance::Exam.first
+        #              )
+
+        if can?(:manage, Entrance::Exam)
+          entrance.item :new_entrants_results,
+                       '<span class="glyphicons charts"></span> Результаты вступительных испытаний'.html_safe,
+                       results_entrance_campaign_path(Entrance::Campaign::CURRENT)
+        end
+
+        if can?(:statistics, Entrance::Contract)
+          entrance.item :entrance_contracts_statistics,
+                       '<span class="glyphicons coins"></span> Статистика платного приёма'.html_safe,
+                       paid_enrollment_entrance_campaign_path(Entrance::Campaign::CURRENT)
+          # statistics_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
+        end
+      end
+
+      entrance.item :rating,
+                   '<span class="glyphicons charts"></span> Рейтинги и приказы о зачислении'.html_safe,
+                   rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
+                   highlights_on: -> { (params[:action] == 'rating' || params[:action] == 'crimea_rating') && params[:controller] == 'entrance/campaigns'}
+
+      entrance.item :entrance_dates, 'Сроки проведения',
+                   entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
+
+      entrance.item :entrance_events, 'Вступительные испытания',
+                   entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: 1)
+
+      # primary.item :entrants_results,
+      #              '<span class="glyphicons inbox"></span> Результаты вступительных испытаний'.html_safe,
+      #              balls_entrance_campaign_path(Entrance::Campaign::CURRENT)
+
+      entrance.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
+                   entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
+
+      entrance.item :education_prices, 'Стоимость обучения', education_prices_path
+    end
 
     # ======================================
     primary.item :nav_group_study, 'Учёба', class: 'nav-header disabled'
@@ -130,7 +136,9 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       if can? :read, Student
         primary.item :nav_group_lists, 'Списки', class: 'nav-header disabled'
-        primary.item :students,  'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+        primary.item :students, 'Студенты', students_path, icon: 'user'
+        primary.item :groups, 'Группы', groups_path, icon: 'user'
+
       end
       if current_user.is?(:developer)
         primary.item :roles,        'Роли'.html_safe, roles_path, icon: 'tags', highlights_on: -> { 'roles' == params[:controller] }
@@ -153,7 +161,6 @@ SimpleNavigation::Configuration.run do |navigation|
 
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
-        primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
       end
     end
 

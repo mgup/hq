@@ -74,4 +74,19 @@ class ApplicationController < ActionController::Base
       format.pdf { render body: report.render(format: :pdf) }
     end
   end
+
+  # Создаёт параметры по-умолчанию для основных полей, которые используются
+  # в фильтрах (институт, форма обучения, курс, направление и прочие).
+  def initialize_filters_defaults
+    params[:faculty]        ||= 7
+
+    params[:education_form] ||= 101
+
+    params[:course]         ||= 1
+
+    unless params[:speciality]
+      speciality_id = Department.find(params[:faculty]).specialities.first.id
+      params[:speciality] = speciality_id
+    end
+  end
 end
