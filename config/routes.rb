@@ -203,15 +203,16 @@ HQ::Application.routes.draw do
   end
 
   namespace :office do
-    resources :orders, only: [:show],
-                       defaults: { format: 'pdf' },
-                       constraints: { format: /(pdf|xml)/ }
     resources :orders, except: [:show] do
       # get '/', to: 'orders#show', defaults: { format: 'pdf' }, as: :show
       # get 'drafts', to: 'orders#drafts', on: :collection
       # get 'underways', to: 'orders#underways', on: :collection
       get 'entrance_protocol', to: 'orders#entrance_protocol', on: :member
     end
+    resources :orders, only: [:show],
+                       defaults: { format: 'pdf' },
+                       constraints: { format: /(pdf|xml)/ }
+
 
     get 'drafts', to: 'orders#drafts'
     get 'underways', to: 'orders#underways'
