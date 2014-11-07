@@ -79,7 +79,9 @@ class Office::OrdersController < ApplicationController
 
   def new
     params[:course] ||= 1
-    @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception]).my_filter(params).page(params[:page])
+    params[:template] ||= 40
+    @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception])
+                       .my_filter(params).from_template(Office::OrderTemplate.find(params[:template])).page(params[:page])
   end
 
   def create

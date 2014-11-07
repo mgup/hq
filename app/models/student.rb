@@ -54,7 +54,7 @@ class Student < ActiveRecord::Base
 
 
   alias_attribute :id,              :student_group_id
-  alias_attribute :status,          :student_group_status
+  # alias_attribute :status,          :student_group_status
   alias_attribute :record,          :student_group_record
   alias_attribute :abit,            :student_group_abit
   alias_attribute :abitpoints,      :student_group_abitpoints
@@ -69,6 +69,7 @@ class Student < ActiveRecord::Base
   belongs_to :person, class_name: Person, primary_key: :student_id, foreign_key: :student_group_student
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :student_group_group
   belongs_to :entrant, class_name: Entrance::Entrant
+  belongs_to :status, class_name: EducationStatus, foreign_key: :student_group_status
 
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_student
   has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_student_group
@@ -174,6 +175,8 @@ class Student < ActiveRecord::Base
 
     cond
   }
+
+  scope :from_template, -> template { where(student_group_status: template.statuses.collect{ |s| s.id }) }
 
   scope :not_aspirants, -> { where(student_group_group: Group.filter(speciality: Speciality.not_aspirants.collect{|x| x.id}))}
 
@@ -483,25 +486,6 @@ LIMIT 1 ")
   end
 
   def status_name
-    case status
-    when STATUS_ENTRANT
-      'абитуриент'
-    when STATUS_STUDENT
-      'студент'
-    when STATUS_EXPELED
-      'отчисленный'
-    when STATUS_SABBATICAL
-      'академический отпуск'
-    when STATUS_GRADUATE
-      'выпускник'
-    when STATUS_POSTGRADUATE
-      'аспирант'
-    when STATUS_COMPLETE
-      'окончивший'
-    when STATUS_DEBTOR
-      'должник'
-    when STATUS_TRANSFERRED_DEBTOR
-      'переведённый должник'
-    end
+    status.name
   end
 end
