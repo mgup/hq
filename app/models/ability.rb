@@ -204,6 +204,7 @@ class Ability
     can :manage, Study::Repeat
     can :manage, Office::Order
     cannot :sign, Office::Order
+    can :index, :groups
   end
 
   def selection(user)

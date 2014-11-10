@@ -4,6 +4,10 @@ class GroupsController < ApplicationController
   def index
     authorize! :index, :groups
     @faculties = Department.faculties
+    unless current_user.is?(:developer)
+      user_departments = current_user.departments_ids
+      @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
+    end
   end
 
   def print_group
