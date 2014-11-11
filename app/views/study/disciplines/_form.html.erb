@@ -2,7 +2,9 @@
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:year) %>">
     <%= f.label :subject_year, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.select :subject_year, options_for_select([["#{Study::Discipline::CURRENT_STUDY_YEAR}/#{Study::Discipline::CURRENT_STUDY_YEAR+1}", Study::Discipline::CURRENT_STUDY_YEAR]], Study::Discipline::CURRENT_STUDY_YEAR), {}, { class: 'form-control' } %>
+      <%= f.select :subject_year, options_for_select([["#{Study::Discipline::CURRENT_STUDY_YEAR}/#{Study::Discipline::CURRENT_STUDY_YEAR+1}", Study::Discipline::CURRENT_STUDY_YEAR],
+                                                      ['2013/2014', 2013],
+                                                      ['2012/2013', 2012]], f.object.subject_year), {}, { class: 'form-control' } %>
     </div>
   </div>
 

@@ -33,9 +33,9 @@ prawn_document margin: [28, 20, 28, 28],
     else
       pdf.text_box "Форма контроля: #{@exam.name}", at: [0, 750 - 15]
     end
-    pdf.text_box "Дисциплина: #{@discipline.name}", at: [0, 750 - 30]
+    pdf.text_box "Дисциплина: #{@discipline.name}", at: [0, 750 - 30], width: 365
     # pdf.text_box "Дисциплина: Название дисциплины", at: [0, 750 - 30]
-    pdf.text_box "Фамилия, имя, отчество преподавателя(лей): #{@discipline.lead_teacher ? @discipline.lead_teacher.full_name : ''}", at: [0, 750 - 45]
+    pdf.text_box "Фамилия, имя, отчество преподавателя(лей): #{@discipline.lead_teacher ? @discipline.lead_teacher.full_name : ''}", at: [0, 750 - 58]
     # pdf.text_box "Фамилия, имя, отчество преподавателя(лей): Фамилия Имя Отчество", at: [0, 750 - 45]
     pdf.text_box "Семестр: #{@exam.discipline.semester == 1 ? 'I' : 'II'}", at: [370, 750]
     if @exam.is_repeat?
@@ -302,7 +302,7 @@ prawn_document margin: [28, 20, 28, 28],
            end
            pdf.move_down 18
         else
-          if @exam.validation?
+          if @exam.validation? && @discipline.brs?
             if @discipline.is_active?
               group_students = @discipline.group.students.valid_for_today
             else
