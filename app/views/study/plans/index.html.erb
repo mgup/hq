@@ -16,6 +16,14 @@
     <%= render partial: 'study/disciplines/manage', layout: 'layouts/modal',
                locals: { discipline: @new_discipline } %>
   <% end %>
+
+  <h2>Документы</h2>
+    <% if @group.form != 101 && params[:year] == Study::Discipline::CURRENT_STUDY_YEAR.to_s %>
+      <%= link_to '#calloz_modal', class: 'btn btn-primary', data: {toggle: 'modal'} do %>
+        <span class="glyphicon glyphicon-print"></span> Распечатать справки-вызов
+      <% end %>
+      <%= render partial: 'calloz' %>
+    <% end %>
 <% end %>
 
 <script>
