@@ -18,11 +18,14 @@
   <% end %>
 
   <h2>Документы</h2>
-    <% if @group.form != 101 && params[:year] == Study::Discipline::CURRENT_STUDY_YEAR.to_s %>
-      <%= link_to '#calloz_modal', class: 'btn btn-primary', data: {toggle: 'modal'} do %>
-        <span class="glyphicon glyphicon-print"></span> Распечатать справки-вызов
+    <% unless @group.fulltime? %>
+      <%= link_to '#session_call_modal', class: 'btn btn-primary',
+                                         data: { toggle: 'modal' } do %>
+        <span class="glyphicon glyphicon-print"></span>
+        Распечатать справки-вызов
       <% end %>
-      <%= render partial: 'calloz' %>
+
+      <%= render partial: 'study/plans/modals/session_call' %>
     <% end %>
 <% end %>
 

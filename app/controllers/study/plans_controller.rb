@@ -39,23 +39,4 @@ class Study::PlansController < ApplicationController
   def updatediscipline
 
   end
-
-  def calloz
-    @group = Group.find(params[:group])
-    @typecall = case params[:typecall]
-                when '1' then 'прохождения вступительных испытаний'
-                when '2' then 'промежуточной аттестации'
-                when '3' then 'государственной итоговой аттестации'
-                when '4' then 'итоговой аттестации'
-                when '5' then 'подготовки и защиты выпускной квалификационной работы и/или сдачи итоговых государственных экзаменов'
-                when '6' then 'завершения диссертации на соискание ученой степени кандидата наук'
-                end
-    @from = Date.parse params[:from]
-    @to = Date.parse params[:to]
-    @days = (@to - @from).to_i
-    respond_to do |format|
-      format.pdf
-    end
-  end
-
 end

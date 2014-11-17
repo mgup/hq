@@ -44,7 +44,7 @@ class Speciality < ActiveRecord::Base
   end
 
   def full_name
-    code + ' ' + name
+    %Q(#{code} «#{name}»)
   end
 
   def group_name_suffix

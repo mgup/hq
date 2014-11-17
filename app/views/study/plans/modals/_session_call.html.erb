@@ -1,19 +1,25 @@
-<div class="modal fade" id="calloz_modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="session_call_modal" tabindex="-1"
+     role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close"
+                data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
         <h4 class="modal-title">Создание справок-вызов</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag study_plans_calloz_path, method: :get, target: :blank, class: 'filters' do %>
+        <%= form_tag session_call_group_path(@group), method: :get,
+                     target: :blank, class: 'filters' do %>
         <%= hidden_field_tag :group, @group.id %>
+
         <div class="row">
           <div class="col-sm-3">
             <%= label_tag :from, 'Дата начала отпуска:' %>
           </div>
           <div class="col-sm-3">
-            <%= text_field_tag :from, (l Date.today),
+            <%= text_field_tag :from, l(Date.today),
                                pattern: '\d{1,2}.\d{1,2}.\d{4}',
                                class: 'form-control datepicker' %>
           </div>
@@ -21,7 +27,7 @@
             <%= label_tag :to, 'Дата окончания отпуска:' %>
           </div>
           <div class="col-sm-3">
-            <%= text_field_tag :to, (l (Date.today + 26.days)),
+            <%= text_field_tag :to, l(Date.today + 26.days),
                                pattern: '\d{1,2}.\d{1,2}.\d{4}',
                                class: 'form-control datepicker'  %>
           </div>

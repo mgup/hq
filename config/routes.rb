@@ -84,6 +84,10 @@ HQ::Application.routes.draw do
   end
 
   resources :groups do
+    member do
+      get 'session_call', defaults: { format: 'pdf' }
+    end
+
     get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
   end
 
@@ -131,9 +135,9 @@ HQ::Application.routes.draw do
                                      term: Study::Discipline::CURRENT_STUDY_TERM } do
       # Учебные планы.
       get 'plans', to: 'plans#index'
-      get 'plans/calloz' => 'plans#calloz', defaults: { format: 'pdf' }
       get 'control', to: 'exams#control'
     end
+
     resources :groups, path:  '/group' do
       get '/progress' => 'progress#index'
       get '/progress/discipline/:discipline' => 'progress#discipline', as: :discipline
