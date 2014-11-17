@@ -39,4 +39,6 @@ class Study::PlansController < ApplicationController
   def updatediscipline
 
   end
+
 end
+

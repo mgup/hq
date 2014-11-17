@@ -3,14 +3,13 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                page_size: 'A4', page_layout: :portrait do |pdf|
   render 'pdf/font', pdf: pdf
 
-  @group.students.valid_for_today.each_with_index do |student, index|
+  @students.each_with_index do |student, index|
     pdf.start_new_page if index > 0
 
-    pdf.move_down 30
+    pdf.move_down 50
 
     pdf.font_size 12 do
-      pdf.text 'СПРАВКА-ВЫЗОВ', align: :center, style: :bold
-      pdf.text 'от «____» ___________________ 20_______ г.  № __________,', align: :center, style: :bold
+      pdf.text "СПРАВКА-ВЫЗОВ № #{student.proofs.last.id} от #{l student.proofs.last.date} г.,", align: :center, style: :bold
       pdf.text 'дающая право на предоставление гарантий и компенсаций работникам, совмещающим работу с получением образования', align: :center, style: :bold
     end
 

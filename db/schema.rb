@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141107122252) do
+ActiveRecord::Schema.define(version: 20141117101836) do
 
   create_table "achievement_periods", force: true do |t|
     t.integer  "year",                       null: false
@@ -1598,6 +1598,14 @@ ActiveRecord::Schema.define(version: 20141107122252) do
     t.timestamp "post_time",              null: false
   end
 
+  create_table "proofs", force: true do |t|
+    t.date    "date"
+    t.date    "from"
+    t.date    "to"
+    t.integer "student_group_id"
+    t.integer "ref_type"
+  end
+
   create_table "ratings", force: true do |t|
     t.integer  "year"
     t.integer  "user_id"
@@ -1880,6 +1888,7 @@ ActiveRecord::Schema.define(version: 20141107122252) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
+    t.text    "employer"
   end
 
   add_index "student", ["student_fname"], name: "studentFname", using: :btree

@@ -29,7 +29,11 @@ class GroupsController < ApplicationController
                 end
     @from = Date.parse(params[:from])
     @to = Date.parse(params[:to])
-    @days = (@to - @from).to_i
+    @days = (@to - @from).to_i + 1
+    @students = Student.where(student_group_id: params[:students_ids])
+    @students.each do |student|
+      student.proofs << Proof.create(date: Date.today, from: @from, to: @to, ref_type: 'session_call')
+    end
 
     respond_to do |format|
       format.pdf

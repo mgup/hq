@@ -11,7 +11,7 @@
       </div>
       <div class="modal-body">
         <%= form_tag session_call_group_path(@group), method: :get,
-                     target: :blank, class: 'filters' do %>
+                     target: :blank do %>
         <%= hidden_field_tag :group, @group.id %>
 
         <div class="row">
@@ -48,6 +48,17 @@
                            class: 'form-control' %>
           </div>
         </div>
+        <label>Включённые студенты</label>
+        <% @group.students.valid.each do |student| %>
+            <div class="checkbox">
+              <%= label_tag 'students_ids[]' do %>
+                  <%= check_box_tag 'students_ids[]', student.id %> <%= student.full_name %>
+              <% end %>
+              <div id="person_<%= student.person.id %>">
+                <% render partial: 'persons/employer_field', locals: { person: student.person } %>
+              </div>
+            </div>
+        <% end %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>

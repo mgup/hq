@@ -77,6 +77,8 @@ class Student < ActiveRecord::Base
   has_many :exam_marks, class_name: 'Study::ExamMark', foreign_key: :mark_student_group, primary_key: :student_group_id
   has_many :final_marks, class_name: 'Study::FinalMark', foreign_key: :mark_final_student, primary_key: :student_group_id
 
+  has_many :proofs, foreign_key: :student_group_id, primary_key: :student_group_id
+
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
 
