@@ -106,7 +106,9 @@ HQ::Application.routes.draw do
       get 'list', on: :collection
     end
   end
-  resources :persons
+  resources :persons do
+    get 'create_employer', to: 'persons#create_employer', on: :member
+  end
   resources :students do
     namespace :social do
         resources :deeds, controller: 'documents'

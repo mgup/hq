@@ -55,7 +55,7 @@
                   <%= check_box_tag 'students_ids[]', student.id %> <%= student.full_name %>
               <% end %>
               <div id="person_<%= student.person.id %>">
-                <% render partial: 'persons/employer_field', locals: { person: student.person } %>
+                <%= render partial: 'persons/employer_field', locals: { person: student.person } %>
               </div>
             </div>
         <% end %>

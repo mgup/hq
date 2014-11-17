@@ -2,15 +2,13 @@
     <div class="col-sm-2">
       Работодатель
     </div>
-    <%= form_for person, remote: true, html: { class: 'form-inline' } do |f| %>
-      <div class="col-sm-8">
-        <%= f.text_field :employer, class: 'form-control' %>
-      </div>
-      <div class="col-sm-1">
-        <%= f.button type: :submit, class: 'btn btn-default',
-                                 title: 'Сохранить' do %>
-          <span class="glyphicon glyphicon-floppy-disk"></span>
-        <% end %>
-      </div>
-    <% end %>
+    <div class="col-sm-8">
+      <%= text_field_tag "employer_#{person.id}", person.employer, class: 'form-control' %>
+    </div>
+    <div class="col-sm-1">
+      <%= button_tag class: 'btn btn-default save_employer',
+                     title: 'Сохранить', data: {value: person.id} do %>
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+      <% end %>
+    </div>
 </div>
