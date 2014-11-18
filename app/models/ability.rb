@@ -197,6 +197,8 @@ class Ability
 
   def faculty_employee(user)
     can :manage, :plans
+    can :create_employer, Person
+    can :manage, Proof
 
     # Подумать, как совместить это с тем, что Дирекция не преподаватель!!!
     can :manage, Study::Discipline
@@ -204,6 +206,7 @@ class Ability
     can :manage, Study::Repeat
     can :manage, Office::Order
     cannot :sign, Office::Order
+    can :manage, Group
     can :index, :groups
   end
 
