@@ -206,7 +206,7 @@ class Ability
     can :manage, Study::Repeat
     can :manage, Office::Order
     cannot :sign, Office::Order
-    can :session_call, Group
+    can :manage, Group
     can :index, :groups
   end
 
