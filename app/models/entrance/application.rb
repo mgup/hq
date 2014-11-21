@@ -194,7 +194,7 @@ class Entrance::Application < ActiveRecord::Base
     [:budget, :paid].each do |payment|
       stats[payment] = {}
       [:o, :oz, :z].each do |form|
-        stats[payment][form] = { total: 0, original: 0 }
+        stats[payment][form] = { total: 0, original: 0, enrolled: 0 }
       end
     end
 
@@ -212,6 +212,7 @@ class Entrance::Application < ActiveRecord::Base
 
       stats[payment_form][form][:total] += 1
       stats[payment_form][form][:original] += 1 if app.original?
+      stats[payment_form][form][:enrolled] += 1 if app.status_id == 8
     end
 
     stats
@@ -285,7 +286,7 @@ class Entrance::Application < ActiveRecord::Base
             row << if stats[p][f][:total].zero?
                      ''
                    else
-                     "#{stats[p][f][:total]} (#{stats[p][f][:original]})"
+                     "#{stats[p][f][:total]} (#{stats[p][f][:original]}) — #{stats[p][f][:enrolled]}"
                    end
           end
         end

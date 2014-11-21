@@ -32,7 +32,7 @@
     <% f[:applications].each do |row| %>
       <tr>
         <% row.each do |field| %>
-            <td><%= field %></td>
+            <td class="nowrap"><%= field.html_safe %></td>
         <% end %>
       </tr>
     <% end %>
