@@ -14,7 +14,7 @@
                              class: 'form-control', disabled: true %>
             <div class="form-group">
               <%= f.label :date, class: 'control-label' %>
-              <%= f.text_field :date, value: (l checkpoint.date), class: 'form-control datepicker', required: true %>
+              <%= f.text_field :date, value: (l checkpoint.date), class: 'form-control datepick', required: true %>
             </div>
           </div>
           <div class="modal-footer">
@@ -30,7 +30,7 @@
   $(function(){
     $('.edit_study_checkpoint').submit(function(e){
       var data = $(this).serialize();
-      var str = $(this).find('.datepicker').val();
+      var str = $(this).find('.datepick').val();
       if (str != ''){
         var m = str.match(/(\d{2}).(\d{2}).(\d{4})/);
         if ( m ){
@@ -38,8 +38,8 @@
             url: $(this).attr('action'),
             data: data
           });
-        } else $(this).find('.datepicker').parent().addClass('has-error');
-      } else $(this).find('.datepicker').parent().addClass('has-error');
+        } else $(this).find('.datepick').parent().addClass('has-error');
+      } else $(this).find('.datepick').parent().addClass('has-error');
       e.preventDefault();
     })
   })
