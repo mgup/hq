@@ -324,7 +324,6 @@ class Entrance::Application < ActiveRecord::Base
                  when 'too_young'
                    Person::ARMY_NOT_RESERVIST
                end
-
         person = Person.create!(
           birthday: entrant.birthday,
           birthplace: entrant.birth_place,
@@ -337,7 +336,7 @@ class Entrance::Application < ActiveRecord::Base
           phone_mobile: entrant.phone,
           residence_address: entrant.aaddress,
           residence_zip: entrant.azip,
-          student_foreign: (1 != entrant.nationality_type_id),
+          student_foreign: (1 != entrant.nationality_type_id.to_i),
           army: army,
           last_name_hint: entrant.last_name,
           first_name_hint: entrant.first_name,

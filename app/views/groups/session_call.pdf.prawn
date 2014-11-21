@@ -17,7 +17,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     pdf.font_size 11 do
       pdf.move_down 20
-      if student.person.employer
+      if student.person.employer && student.person.employer != ''
         pdf.text "Работодателю #{student.person.employer}"
       else
         pdf.text 'Работодателю _______________________________________________________________________________________________'
