@@ -1,65 +1,35 @@
-title:            Matrix2
-description:      Штука для помощи универу  
-disqus_shortname: 
-#Your site's domain goes here. Leave localhost server or blank when working locally.
-url:              http://localhost:4000
+# Jekyll configuration
 
-# Owner/author information
-owner:
-  name:           Matrix2
-  avatar:         avatar1.jpg
-  bio:            1 2 3 
-  email:          you@email.com
-  # Social networking links used in footer. Update and remove as you like.
-  twitter:        
-  facebook:       
-  github:         
-  stackexchange:  
-  linkedin:       
-  instagram:      
-  flickr:         
-  tumblr:         
-  # For Google Authorship https://plus.google.com/authorship
-  # google plus id, include the '+', eg +mmistakes
-  google_plus:
+name: My blog
+description: A jekyll theme
 
-# Background image to be tiled on all pages
-background: 
+# url is currently only used only for the RSS feed in feed.xml
+url: http://scotte.github.io
 
-# Analytics and webmaster tools stuff goes here
-google_analytics:   
-google_verify:      
-# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
-bing_verify:         
+# baseurl will often be '', but for a project page on gh-pages, it needs to
+# be the project name.
+# *** IMPORTANT: If your local "jekyll serve" throws errors change this to '' or
+#     run it like so: jekyll serve --baseurl=''
+baseurl: /jekyll-clean
 
-# Links to include in top navigation
-# For external links add external: true
-links:
-  - title: Для разработчиков
-    url: /developers/test
-  - title: External Link
-    url: http://mademistakes.com
-    external: true
+# This can be '' to hide the Github nav button
+github: 'scotte/jekyll-clean'
 
-# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone:    Europe/Moscow
-future:      true
+# Set this to your UA-# value, or '' to disable the block completely
+gaaccount: ''
+
+# Set this to your disqus shortname to enable comments. Note that the 'comments'
+# setting below must also be true. Individual posts can override 'comments' to
+# disable on a post-by-post basis
+disqus: ''
+comments: true
+
+permalink: /:year/:month/:title
+paginate: 3
+
 highlighter: pygments
-markdown:    kramdown
+markdown: redcarpet
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
 
-# https://github.com/mojombo/jekyll/wiki/Permalinks
-permalink:   /:categories/:title/
-
-# Amount of post to show on home page
-paginate:
-
-kramdown:
-  auto_ids: true
-  footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..6
-  use_coderay: true
-
-
-include: [".htaccess"]
-exclude: ["lib", "config.rb", "Capfile", "config", "Gemfile", "Gemfile.lock", "README.md", "LICENSE", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
+exclude: ['README.md', 'LICENSE']
