@@ -3,7 +3,7 @@ name: Matrix2
 ##Изначальный адрес на сайт
 url: http://localhost:4000
 ##Markdown processor
-markdown: redcarpet
+markdown: kramdown
 ##syntax highlighter
 highlighter: rouge
 
