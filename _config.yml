@@ -1,37 +1,65 @@
-##Название сайта ( site title )
-name: Matrix2
-##Изначальный адрес на сайт
-url: http://localhost:4000
-##Markdown processor
-markdown: redcarpet
-##syntax highlighter
-highlighter: rouge
+title:            Matrix2
+description:      Штука для помощи универу  
+disqus_shortname: 
+#Your site's domain goes here. Leave localhost server or blank when working locally.
+url:              http://localhost:4000
 
-##define base_url for valid usage in sitemap.xml and robots.txt
-#base_url: http://gituser.github.io (or http://example.com)
-sass:
-  sass_dir: _sass
-  style: :compressed
-paginate: 1
-paginate_path: "page:num"
-##The website description (to be used in meta tags)
-description: Модуль информационный системы университета
-##Some frequently used keywords on your website
-keywords: some, relevant, keywords, for, usage, in metatags
+# Owner/author information
+owner:
+  name:           Matrix2
+  avatar:         avatar1.jpg
+  bio:            1 2 3 
+  email:          you@email.com
+  # Social networking links used in footer. Update and remove as you like.
+  twitter:        
+  facebook:       
+  github:         
+  stackexchange:  
+  linkedin:       
+  instagram:      
+  flickr:         
+  tumblr:         
+  # For Google Authorship https://plus.google.com/authorship
+  # google plus id, include the '+', eg +mmistakes
+  google_plus:
 
-##define this for disqus comment support
-#disqus: disqusdomain
+# Background image to be tiled on all pages
+background: 
 
-##set this to enable google analytics
-#ga_id: analyticsID
-#ga_domain: analyticsDomain
+# Analytics and webmaster tools stuff goes here
+google_analytics:   
+google_verify:      
+# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
+bing_verify:         
 
-##Some commonly used links
+# Links to include in top navigation
+# For external links add external: true
 links:
-  facebook: 
-  twitter: 
-  email: 
-  github: 
+  - title: Для разработчиков
+    url: /developers/test
+  - title: External Link
+    url: http://mademistakes.com
+    external: true
 
-##put desired image in img/ directory and set the value accordingly. If not defined, a placeholder image will be used.
-about_image: placeholder.jpg
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:    Europe/Moscow
+future:      true
+highlighter: pygments
+markdown:    kramdown
+
+# https://github.com/mojombo/jekyll/wiki/Permalinks
+permalink:   /:categories/:title/
+
+# Amount of post to show on home page
+paginate:
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  use_coderay: true
+
+
+include: [".htaccess"]
+exclude: ["lib", "config.rb", "Capfile", "config", "Gemfile", "Gemfile.lock", "README.md", "LICENSE", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
