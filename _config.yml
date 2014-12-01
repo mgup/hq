@@ -1,0 +1,37 @@
+##Название сайта ( site title )
+name: Matrix2
+##Изначальный адрес на сайт
+url: http://localhost:4000
+##Markdown processor
+markdown: redcarpet
+##syntax highlighter
+highlighter: rouge
+
+##define base_url for valid usage in sitemap.xml and robots.txt
+#base_url: http://gituser.github.io (or http://example.com)
+sass:
+  sass_dir: _sass
+  style: :compressed
+paginate: 1
+paginate_path: "page:num"
+##The website description (to be used in meta tags)
+description: Модуль информационный системы университета
+##Some frequently used keywords on your website
+keywords: some, relevant, keywords, for, usage, in metatags
+
+##define this for disqus comment support
+#disqus: disqusdomain
+
+##set this to enable google analytics
+#ga_id: analyticsID
+#ga_domain: analyticsDomain
+
+##Some commonly used links
+links:
+  facebook: 
+  twitter: 
+  email: 
+  github: 
+
+##put desired image in img/ directory and set the value accordingly. If not defined, a placeholder image will be used.
+about_image: placeholder.jpg
