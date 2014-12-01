@@ -1,21 +1,23 @@
 header_style = wb.styles.add_style(sz: 18, b: true)
 department_style = wb.styles.add_style(
-  sz: 14, b: true, alignment: { horizontal: :center, vertical: :center }
+  sz: 14, b: true, alignment: { horizontal: :center, vertical: :center },
+  border: { style: :thin, color: '000000' }
 )
 title_rotated_style = wb.styles.add_style(
   sz: 10, b: true, alignment: { text_rotation: 90, horizontal: :center },
+  border: { style: :thin, color: '000000' }
+)
+title_rotated_center_style = wb.styles.add_style(
+  sz: 10, b: true, alignment: { text_rotation: 90, horizontal: :center, vertical: :center },
   border: { style: :thin, color: '000000' }
 )
 direction_style = wb.styles.add_style(
   sz: 8, alignment: { text_rotation: 90 },
   border: { style: :thin, color: '000000' }
 )
-data_style = wb.styles.add_style(
-  num_fmt: 3, sz: 7,
-  border: { style: :thin, color: '000000' }
-)
 center_style = wb.styles.add_style(
-    sz: 7, alignment: { horizontal: :center, vertical: :center }, nowrap: true
+    sz: 7, alignment: { horizontal: :center, vertical: :center, wrap_text: true },
+    border: { style: :thin, color: '000000' }
 )
 
 wb.add_worksheet(name: sheet_name,
@@ -32,6 +34,7 @@ wb.add_worksheet(name: sheet_name,
   sheet.add_row(["#{sheet_name} (на #{l(Time.now)})"], style: header_style)
 
   # Массив с буквами колонок, которые будут заняты под направления.
+  letters = ('C'..'ZZ').lazy.take(directions.length+2).to_a
   directions_letters = ('C'..'ZZ').lazy.take(directions.length).to_a
 
   # Заголовки столбцов.
@@ -45,7 +48,7 @@ wb.add_worksheet(name: sheet_name,
     titles + ['На курсе', 'Итого'],
     style: [title_rotated_style] * 2 +
              [department_style] * directions.length +
-             [title_rotated_style] * 2
+             [title_rotated_center_style] * 2
   )
 
   # Названия направлений.
@@ -53,7 +56,13 @@ wb.add_worksheet(name: sheet_name,
   grouped_directions.each do |_, directions|
     directions_titles += directions.map { |d| d.full_name }
   end
+  2.times do
+    directions_titles << ''
+  end
   sheet.add_row(directions_titles, style: direction_style)
+
+  sheet["#{letters[directions.length]}2"].merge(sheet.rows[2].cells[directions.length+2])
+  sheet["#{letters[directions.length+1]}2"].merge(sheet.rows[2].cells[directions.length+3])
 
   row_index = 4
   (1..6).each do |course|
@@ -94,14 +103,14 @@ wb.add_worksheet(name: sheet_name,
     total_in_row = '= ' + directions_letters.map { |c| "#{c}#{row_index}" }.
       join(' + ')
 
-    sheet.add_row(['Всего', form] + sums + [total_in_row], style: center_style)
+    sheet.add_row(['Всего', form] + sums + [total_in_row] + [''], style: center_style)
 
     row_index += 1
   end
   sheet['A16'].merge(sheet.rows[16].cells[0])
 
   sheet.add_row(
-    %w(Всего Всего) + directions_letters.map { |c| "=#{c}16 + #{c}17" },
+    %w(Всего Всего) + letters.map { |c| "=#{c}16 + #{c}17" },
     style: center_style
   )
   sheet['A18'].merge(sheet.rows[17].cells[1])
@@ -118,7 +127,7 @@ wb.add_worksheet(name: sheet_name,
       sum[i] += val.join(' + ')
       i += directions.length
     end
-    sum[i] = ''
+    sum[i-1] = ''
     sheet.add_row(
         ['Всего по фак.', form] + sum,
         style: center_style
@@ -127,7 +136,7 @@ wb.add_worksheet(name: sheet_name,
 
   sheet.add_row(
       ['Итого по фак.', 'Итого по фак.'] + directions_letters.map { |c| "=#{c}19 + #{c}20" },
-      style: center_style
+      style: center_style, height: 30
   )
   sheet['A21'].merge(sheet.rows[20].cells[1])
 
@@ -146,5 +155,12 @@ wb.add_worksheet(name: sheet_name,
 
   (2 + directions.length).times do |index|
     sheet.column_info[index].width = 3
+  end
+
+  (4..15).step(2).each do |r|
+    sheet["#{letters[directions.length+1]}#{r}"].merge(sheet.rows[r].cells[directions.length+3])
+  end
+  (16..18).each do |r|
+    sheet["#{letters[directions.length]}#{r}"].merge(sheet.rows[r-1].cells[directions.length+3])
   end
 end
