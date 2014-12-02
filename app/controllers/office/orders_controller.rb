@@ -85,20 +85,20 @@ class Office::OrdersController < ApplicationController
   end
 
   def create
-    students = {}
-    params[:exception].each_with_index do |ex, i|
-      student = Student.find(ex)
-      students.merge! i => {order_student_student: student.person.id, order_student_student_group_id: student.id, order_student_cause: 0}
+    count = 0
+    students_in_order = Student.where(student_group_id: params[:exception])
+    students_in_order.group_by(&:group).each do |_, group_students|
+      if Office::OrderTemplate.find(params[:template]).template_check_tax
+        group_students.group_by(&:payment).each do |_, payment_students|
+          create_order_with_students(params[:template], payment_students)
+          count += 1
+        end
+      else
+        create_order_with_students(params[:template], group_students)
+        count += 1
+      end
     end
-    # raise students.inspect
-    @order = Office::Order.create status: 1, responsible: current_user.positions.where(acl_position_role: [16,33]).first.id, order_template: params[:template],
-                                  order_department:  current_user.positions.first.department.id,
-                                  students_in_order_attributes: students
-    if @order.save
-      redirect_to office_drafts_path, notice: 'Проект приказа успешно создан.'
-    else
-      render action: :new
-    end
+    redirect_to office_drafts_path, notice: "#{count > 1 ? 'Проекты приказов' : 'Проект приказа'} успешно создан#{'ы' if count > 1}."
   end
 
   def edit ; end
@@ -142,5 +142,16 @@ class Office::OrdersController < ApplicationController
       @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
     end
     params[:faculty] ||= @faculties.first.id
+  end
+
+  def create_order_with_students(template, students)
+    order_students = {}
+    students.each_with_index do |student, i|
+      order_students.merge! i => {order_student_student: student.person.id, order_student_student_group_id: student.id, order_student_cause: 0}
+    end
+    order = Office::Order.create status: 1, responsible: current_user.positions.where(acl_position_role: [16,33]).first.id, order_template: template,
+                                  order_department:  current_user.positions.first.department.id,
+                                  students_in_order_attributes: order_students
+    order.save
   end
 end
