@@ -1,7 +1,7 @@
 ##Название сайта ( site title )
 name: Matrix2
 ##Изначальный адрес на сайт
-url: http://mgup.github.io/hq/
+url: http://mgup.github.io/hq
 ##Markdown processor
 markdown: redcarpet
 ##syntax highlighter
