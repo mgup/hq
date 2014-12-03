@@ -7,8 +7,7 @@ permalink: /teachers/nav/
 
 1. <a href="{{ site.url }}/teachers/faq/"> То что нужно знать</a>
 
-2. Создание дисциплины в 3 этапа:
-
+2. Создание дисциплины в 3 этапа:  
 
 + <a href="{{ site.url }}/teachers/1/"> Этап 1 - Создание.</a>  
 - <a href="{{ site.url }}/teachers/2/"> Этап 2 - Заполнение основных данных. </a>  
