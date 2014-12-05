@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
 
   def index
     @faculties = Department.faculties
-    unless current_user.is?(:developer)
+    unless current_user.is?(:developer) || current_user.is?(:student_hr)
       user_departments = current_user.departments_ids
       @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
     end
