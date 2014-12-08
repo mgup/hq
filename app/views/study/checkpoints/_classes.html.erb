@@ -29,7 +29,7 @@
             <% end %>
           <% end %>
         <% else %>
-          <% if !checkpoint.is_checkpoint? %>
+          <% if checkpoint.marks.length == 0 && !checkpoint.is_checkpoint? %>
             <%= link_to study_discipline_checkpoint_path(discipline, checkpoint), method: :delete, confirm: 'Вы уверены?',
                         class: 'btn btn-danger delete_checkpoint hidden-print' do %>
               <span class="glyphicon glyphicon-remove"></span> Удалить
