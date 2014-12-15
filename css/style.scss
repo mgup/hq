@@ -549,14 +549,14 @@ th {
   }
 }
 
-@import url(http://fonts.googleapis.com/css?family=Philosopher:400,400italic,700,700italic&subset=Cyrillic);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300subset=latin,cyrillic,cyrillic-ext);
 
 html, body {
         //max-width:42em;
         background:#ffffff;
 	}
 body {
-	font: 1.3em "Philosopher", Palatino, Times;
+	font: 1.3em "Open+Sans", Palatino, Times;
 	color: #000000;
 	line-height: 1.5;
 	text-align: justify;
