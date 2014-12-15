@@ -549,14 +549,14 @@ th {
   }
 }
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300subset=latin,cyrillic,cyrillic-ext);
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,400italic&subset=latin,cyrillic,cyrillic-ext);
 
 html, body {
         //max-width:42em;
         background:#ffffff;
 	}
 body {
-	font: 1.3em "Open+Sans", Palatino, Times;
+	font: 1.3em "PT+Sans", Palatino, Times;
 	color: #000000;
 	line-height: 1.5;
 	text-align: justify;
