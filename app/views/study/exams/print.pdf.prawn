@@ -202,7 +202,7 @@ prawn_document margin: [28, 20, 28, 28],
           group_students.each_with_index do |student, index|
             position_x = x_pos
             if @exam.test? #зачёт
-              if student.ball(@discipline) < 55 && !pass_discipline?(@discipline)
+              if student.ball(@discipline) < 55 && !student.pass_discipline?(@discipline)
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
                 # tableData << [index+1, 'Фамилия Имя Отчество', 'XXXXX', '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
               else
@@ -456,7 +456,7 @@ prawn_document margin: [28, 20, 28, 28],
         if @exam.is_mass_repeat? || @exam.is_individual_repeat?
           index = 1
           @exam.students.each do |student|
-            if (!(student.student.ball(@discipline) < 55) && @exam.test? && pass_discipline?(@discipline))
+            if (!(student.student.ball(@discipline) < 55) && @exam.test? && student.pass_discipline?(@discipline))
               next
             end
             applicationTable << [index, student.student.person.full_name, student.student.id, student.student.ball(@discipline)]
@@ -482,7 +482,7 @@ prawn_document margin: [28, 20, 28, 28],
             group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
           end
           group_students.each do |student|
-            if (!(student.ball(@discipline) < 55) && pass_discipline?(@discipline) && @exam.test?) || (!(student.ball(@discipline) < 85) && pass_discipline?(@discipline) && @exam.graded_test?)
+            if (!(student.ball(@discipline) < 55) && student.pass_discipline?(@discipline) && @exam.test?) || (!(student.ball(@discipline) < 85) && student.pass_discipline?(@discipline) && @exam.graded_test?)
               next
             end
             applicationTable << [index, student.person.full_name, student.id, student.ball(@discipline)]
