@@ -85,6 +85,12 @@ class StudentsController < ApplicationController
     params.fetch(:student, {}).permit()
   end
 
+  def soccard
+    respond_to do |format|
+      format.xml { render xml: @students.soccard.to_soccard }
+    end
+  end
+
   private
 
   def find_student

@@ -128,6 +128,7 @@ class Student < ActiveRecord::Base
   scope :valid_student, -> { where(student_group_status: STATUS_STUDENT)}
 
   scope :actual, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_EXPELED},#{self::STATUS_GRADUATE})") }
+  scope :soccard, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_ENTRANT},#{self::STATUS_POSTGRADUATE})") }
   scope :with_group, -> { joins(:group) }
 
   scope :off_budget, -> { where(student_group_tax: PAYMENT_OFF_BUDGET) }
@@ -281,6 +282,10 @@ LIMIT 1 ")
     STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status
   end
 
+  def is_debtor?
+    STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status
+  end
+
   def entrance_order
     orders.where('order_template = 16').last
   end
@@ -352,6 +357,15 @@ LIMIT 1 ")
 
   def checkpoints_by_term(y,t)
     Study::Checkpoint.where(checkpoint_subject: disciplines_by_term(y,t).collect{ |d| d.id })
+  end
+
+  def pass_discipline?(discipline)
+    pass = true
+    discipline.checkpoints.each do |checkpoint|
+      mark = checkpoint.marks.by_student(self).last
+      pass &&= (mark.mark >= checkpoint.min)
+    end
+    pass
   end
 
   def discipline_marks(discipline)
@@ -487,7 +501,101 @@ LIMIT 1 ")
 
   end
 
+  def self.to_soccard
+    doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
+      xml.file do
+        xml.fileInfo do
+          xml.fileSender ''
+          xml.version ''
+          xml.recordCount self.all.length
+        end
+        xml.recordList do
+          self.all.each_with_index do |student, index|
+            xml.record do
+              xml.recordId index+1
+              xml.clientInfo do
+                xml.name do
+                  xml.lastName student.last_name
+                  xml.firstName student.first_name
+                  xml.middleName student.patronym
+                end
+                xml.dateOfBirth I18n.l(student.person.birthday, format: '%Y-%m-%d') if student.person.birthday
+                xml.sex (student.person.male? ? 1 : 2)
+                xml.document do
+                  xml.code (student.person.foreign ? 10 : 21)
+                  xml.series student.person.passport_series
+                  xml.number student.person.passport_number
+                  xml.issuedBy student.person.passport_department
+                end
+                xml.registrationAddress do
+                  xml.addressText (student.person.registration_address ? student.person.registration_address : student.person.residence_address)
+                  xml.cityName ''
+                  xml.cityCode ''
+                end
+                xml.residenceAddress do
+                  xml.addressText student.person.residence_address
+                  xml.cityName ''
+                  xml.cityCode ''
+                end
+              end
+              xml.universityInfo do
+                xml.universityCode '028'
+                xml.status do
+                  xml.code student.soccard_status
+                  xml.date I18n.l(student.last_status_order.order_signing, format: '%Y-%m-%d') if student.last_status_order
+                end
+                xml.startDate I18n.l(student.start_date_order.order_signing, format: '%Y-%m-%d') if student.start_date_order
+                xml.course student.group.course
+                xml.educationType student.group.soccard_form
+              end
+            end
+          end
+        end
+      end
+    end
+
+    doc.to_xml
+  end
+
   def status_name
     status.name
+  end
+
+  def start_date_order
+    orders.signed.my_filter(template: [1,2,16,17]).order(:order_signing).last
+  end
+
+  def last_status_order
+    case status.id
+    when 103
+      orders.signed.my_filter(template: [11,24,26,28]).order(:order_signing).last
+    when 102
+      orders.signed.my_filter(template: 14).order(:order_signing).last
+    when 104
+      orders.signed.my_filter(template: 20).order(:order_signing).last
+    when 100
+      nil
+    when 105
+      nil
+    else
+      orders.signed.my_filter(template: [1,2,3,16,17,25]).order(:order_signing).last
+    end
+  end
+
+  def soccard_status
+    case status.id
+    when 103
+      2
+    when 102
+      3
+    when 104
+      4
+    when 100
+      fail
+    when 105
+      fail
+    else
+      1
+    end
   end
 end

@@ -4,34 +4,64 @@ wb = xlsx_package.workbook
 render partial: 'sheet',
        locals: { wb: wb,
                  sheet_name: 'Бак., спец., все формы',
-                 directions: @directions }
+                 directions: @bac }
 
 render partial: 'sheet',
        locals: { wb: wb,
                  sheet_name: 'Бак., спец., очная',
-                 directions: @directions }
+                 directions: @bac }
 
 render partial: 'sheet',
        locals: { wb: wb,
                  sheet_name: 'Бак., спец., очно-заочная',
-                 directions: @directions }
+                 directions: @bac }
 
 render partial: 'sheet',
        locals: { wb: wb,
                  sheet_name: 'Бак., спец., заочная',
-                 directions: @directions }
+                 directions: @bac }
+
+render partial: 'sheet',
+       locals: { wb: wb,
+                 sheet_name: 'Бак., спец., должники',
+                 directions: @bac }
+
+render partial: 'sheet',
+       locals: { wb: wb,
+                 sheet_name: 'Магистры',
+                 directions: @mag } unless @mag.empty?
+
+render partial: 'sheet',
+       locals: { wb: wb,
+                 sheet_name: 'Дистанционное',
+                 directions: @ioo } unless @ioo.empty?
+
+render partial: 'sheet',
+       locals: { wb: wb,
+                 sheet_name: 'Второе высшее',
+                 directions: @second } unless @second.empty?
 
 # Обработка передаваемых студентов.
 @students.each do
   # @type [Student] student
   |student|
   wb.worksheets.each_with_index do |worksheet, index|
+    directions = case index
+                 when 5
+                   @mag
+                 when 6
+                   @ioo
+                 when 7
+                   @second
+                 else
+                   @bac
+                 end
     # Определяем, должен ли студент учитываться на данном листе отчёта.
     if @worksheet_filters[index].call(student)
       # По коду направления определяем колонку, к которой принадлежит студент.
       student_speciality = student.speciality.full_name
       column_letter = nil
-      ('C'..'ZZ').lazy.take(@directions.size).to_a.each do |letter|
+      ('C'..'ZZ').lazy.take(directions.size).to_a.each do |letter|
         if student_speciality == worksheet.name_to_cell("#{letter}3").value
           column_letter = letter
         end

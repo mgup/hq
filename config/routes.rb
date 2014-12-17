@@ -113,6 +113,7 @@ HQ::Application.routes.draw do
     namespace :social do
         resources :deeds, controller: 'documents'
     end
+    get 'soccard', to: 'students#soccard', on: :collection
     get 'documents' => 'students#documents'
     get 'orders' => 'students#orders'
     get 'study' => 'students#study'

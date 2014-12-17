@@ -81,6 +81,15 @@ class Group < ActiveRecord::Base
     end
   end
 
+  def soccard_form
+    case form
+    when 'fulltime' then 'DAYTIME'
+    when 'semitime' then 'EVENING_TIME'
+    when 'postal' then 'DISTANT'
+    when 'distance' then 'DISTANT_ONLINE'
+    end
+  end
+
   def name
     n = [case form
      when 'fulltime' then 'Д'
@@ -152,5 +161,9 @@ class Group < ActiveRecord::Base
         xml.name name
       end
     }.doc
+  end
+
+  def second_higher?
+    group_second_higher == 1
   end
 end

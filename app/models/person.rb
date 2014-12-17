@@ -39,6 +39,7 @@ class Person < ActiveRecord::Base
   alias_attribute :birthday, :student_birthday
   alias_attribute :birthplace, :student_birthplace
   alias_attribute :gender, :student_gender
+  alias_attribute :foreign, :student_foreign
   alias_attribute :homeless, :student_homeless
   alias_attribute :passport_series,     :student_pseries
   alias_attribute :passport_number,     :student_pnumber
