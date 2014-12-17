@@ -202,7 +202,7 @@ prawn_document margin: [28, 20, 28, 28],
           group_students.each_with_index do |student, index|
             position_x = x_pos
             if @exam.test? #зачёт
-              if student.ball(@discipline) < 55 && !student.pass_discipline?(@discipline)
+              if student.ball(@discipline) < 55 || !student.pass_discipline?(@discipline)
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
                 # tableData << [index+1, 'Фамилия Имя Отчество', 'XXXXX', '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
               else
@@ -217,7 +217,7 @@ prawn_document margin: [28, 20, 28, 28],
               tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
               # tableData << [index+1, 'Фамилия Имя Отчество', 'XXXXX', '', '', '', '', '', '', '', '', '', '', '']
             else #дифференцированный зачёт
-              if student.ball(@discipline) < 85
+              if student.ball(@discipline) < 85 || !student.pass_discipline?(@discipline)
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
               else
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', student.ball(@discipline), 'отлично', '']
