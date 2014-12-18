@@ -3,7 +3,7 @@
   <%= marks_form.hidden_field :id, class: 'final_mark_id' %>
   <%= marks_form.hidden_field :mark_date, value: (l Date.today) %>
   <%= marks_form.hidden_field :mark_student_group, value: student %>
-  <%= marks_form.hidden_field :mark_value, id: "#{student}_final_mark" %>
+  <%= marks_form.hidden_field :mark_value, id: "#{student}_final_mark", required: true %>
   <%= marks_form.hidden_field :mark_date, value: Date.today %>
   <%= marks_form.hidden_field :mark_final, value: true %>
   <%= marks_form.hidden_field :mark_rating, value: false %>

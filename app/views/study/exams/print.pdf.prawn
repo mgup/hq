@@ -456,7 +456,7 @@ prawn_document margin: [28, 20, 28, 28],
         if @exam.is_mass_repeat? || @exam.is_individual_repeat?
           index = 1
           @exam.students.each do |student|
-            if (!(student.student.ball(@discipline) < 55) && @exam.test? && student.pass_discipline?(@discipline))
+            if (!(student.student.ball(@discipline) < 55) && @exam.test? && student.student.pass_discipline?(@discipline))
               next
             end
             applicationTable << [index, student.student.person.full_name, student.student.id, student.student.ball(@discipline)]
