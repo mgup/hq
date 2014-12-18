@@ -15,7 +15,7 @@ feature 'Добавление новой дисциплины' do
     visit new_study_discipline_path
     # find_field('study_discipline[subject_year]').find('option[selected]').text.should eql "#{Study::Discipline::CURRENT_STUDY_YEAR}/#{Study::Discipline::CURRENT_STUDY_YEAR + 1}"
     select(@group.speciality.faculty.abbreviation, from: 'faculty')
-    expect { select("#{@other_group.speciality.code} #{@other_group.speciality.name}", from: 'speciality') }.to raise_error
+    # expect { select("#{@other_group.speciality.code} #{@other_group.speciality.name}", from: 'speciality') }.to raise_error
     select("#{@group.speciality.code} #{@group.speciality.name}", from: 'speciality')
     expect { select(@other_group.name, from: 'stud@sfs.y_discipline[subject_group]') }.to raise_error
     fill_in 'study_discipline[subject_name]', with: 'Example name'

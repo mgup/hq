@@ -32,7 +32,7 @@ class Study::Mark < ActiveRecord::Base
 
   def create_new
     mark = Study::Mark.find(self.id)
-    Study::Mark.create(mark.attributes.merge(mark: self.mark, id: Study::Mark.last.id+1, created_at: DateTime.now, updated_at: DateTime.now, retake: true,  checkpoint_mark_submitted: DateTime.now))
+    Study::Mark.create(mark.attributes.merge(mark: self.mark, id: '', created_at: DateTime.now, updated_at: DateTime.now, retake: true,  checkpoint_mark_submitted: DateTime.now))
     self.mark = self.mark_was
   end
 
