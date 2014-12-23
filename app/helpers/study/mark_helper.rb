@@ -8,7 +8,7 @@ module Study::MarkHelper
         { ball: 0, mark: 'недопущен', value: Study::ExamMark::VALUE_NEDOPUSCHEN, span: 'danger' }
       end
     else
-      case result
+      case result.round
       when 85..100
         { ball: ball, mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success' }
       when 70..84
