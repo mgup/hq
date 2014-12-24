@@ -143,11 +143,11 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   def brs?
-    classes.any?
+    classes.any? && subject_brs
   end
 
   def not_brs?
-    classes.empty?
+    classes.empty? && !subject_brs
   end
 
   def add_semester_work
