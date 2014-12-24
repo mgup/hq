@@ -363,7 +363,7 @@ LIMIT 1 ")
     pass = true
     discipline.checkpoints.each do |checkpoint|
       mark = checkpoint.marks.by_student(self).last
-      pass &&= (mark.mark >= checkpoint.min)
+      pass &&= (mark ? mark.mark >= checkpoint.min : false)
     end
     pass
   end
