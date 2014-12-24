@@ -21,7 +21,7 @@ class Study::MarksController < ApplicationController
 
   def ajax_update
     @mark = Study::Mark.find(params[:id])
-    @new = Study::Mark.create(@mark.attributes.merge(mark: params[:mark], id: Study::Mark.last.id+1,
+    @new = Study::Mark.create(@mark.attributes.merge(mark: params[:mark], id: nil,
                               created_at: DateTime.now, updated_at: DateTime.now, retake: true,
                               checkpoint_mark_submitted: DateTime.now))
     if @mark.checkpoint.is_checkpoint?

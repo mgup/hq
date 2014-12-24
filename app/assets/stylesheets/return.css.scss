@@ -1,0 +1,21 @@
+#return_up {
+  position: fixed;
+  cursor: pointer;
+  width: 30px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(100,100,100,0);
+
+  &:hover {
+    background-color: rgba(100,100,100,0.1);
+  }
+
+  span {
+    position: fixed;
+    top: 10rem;
+    left: 0;
+    margin: 0 8px;
+    display: block;
+  }
+}
