@@ -210,6 +210,11 @@ class Ability
     can :index, :groups
   end
 
+  def ioo(user)
+    faculty_employee(user)
+    cannot :manage, Office::Order
+  end
+
   def selection(user)
     can :manage, Entrance::Campaign
     cannot :orders, Entrance::Campaign

@@ -53,6 +53,7 @@ class Group < ActiveRecord::Base
                                                                     Student::STATUS_DEBTOR]}).uniq}
 
   scope :second_higher, -> { where(group_second_higher: true) }
+  scope :distance, -> { where(group_form: 105) }
 
   def study_length
     speciality.send case form
