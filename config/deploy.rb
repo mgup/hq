@@ -1,5 +1,4 @@
 # config valid only for Capistrano 3.1
-lock '3.2.1'
 
 set :rollbar_token, 'c2cbae55b8e543e785d35ea7f72e909b'
 set :rollbar_env, Proc.new { fetch :stage }
