@@ -496,8 +496,12 @@ prawn_document margin: [28, 20, 28, 28],
           end
         end
         pdf.move_down 80
-        pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2} do
-          # column(3).width = 50
+        if @discipline.checkpoints.length > 6
+          pdf.font_size 9 do
+            pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2}
+          end
+        else
+          pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2}
         end
 
         if @exam.graded_test?
