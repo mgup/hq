@@ -497,7 +497,7 @@ prawn_document margin: [28, 20, 28, 28],
         end
         pdf.move_down 80
         pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2} do
-          column(3).width = 50
+          # column(3).width = 50
         end
 
         if @exam.graded_test?
