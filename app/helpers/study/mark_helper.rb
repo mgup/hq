@@ -13,7 +13,7 @@ module Study::MarkHelper
         { ball: ball, mark: 'отлично', value: Study::ExamMark::VALUE_5, span: 'success' }
       when 70..84
         { ball: ball, mark: 'хорошо', value: Study::ExamMark::VALUE_4, span: 'info' }
-      when 69..55
+      when 55..69
         { ball: ball, mark: 'удовлетворительно', value: Study::ExamMark::VALUE_3, span: 'warning' }
       else { ball: ball, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger' }
       end
