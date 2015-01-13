@@ -149,7 +149,7 @@ class Office::OrdersController < ApplicationController
     students.each_with_index do |student, i|
       order_students.merge! i => {order_student_student: student.person.id, order_student_student_group_id: student.id, order_student_cause: 0}
     end
-    order = Office::Order.create status: 1, responsible: current_user.positions.where(acl_position_role: [16,33]).first.id, order_template: template,
+    order = Office::Order.create status: 1, responsible: current_user.positions.where(acl_position_role: [2,16,33]).first.id, order_template: template,
                                   order_department:  current_user.positions.first.department.id,
                                   students_in_order_attributes: order_students
     order.save
