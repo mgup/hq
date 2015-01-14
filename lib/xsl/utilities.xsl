@@ -2,6 +2,22 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="xml" version="1.0" indent="yes" encoding="UTF-8" />
 
+  <!-- Склеивание элементов через разделитель. -->
+  <xsl:template name="join" >
+    <xsl:param name="values" select="''"/>
+    <xsl:param name="separator" select="','"/>
+    <xsl:for-each select="$values">
+      <xsl:choose>
+        <xsl:when test="position() = 1">
+          <xsl:value-of select="."/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat($separator, .) "/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+  </xsl:template>
+
   <!-- Имя месяца по номеру. -->
   <xsl:template name="month_name">
     <xsl:param name="date" />

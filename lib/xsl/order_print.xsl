@@ -293,6 +293,11 @@
 
   </xsl:template>
 
+  <xsl:template match="user_name">
+    <xsl:param name="form">ip</xsl:param>
+    <xsl:value-of select="./name" />
+  </xsl:template>
+
   <!-- Рассылка -->
   <xsl:template match="dispatch">
     <fo:block font="12pt PT Serif" margin-top="20pt" padding-top="10pt">

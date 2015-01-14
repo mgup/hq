@@ -53,7 +53,7 @@ gem 'jquery-validation-rails'
 gem 'rollbar'
 gem 'dotenv-rails'
 gem 'tiny_tds'
-gem 'activerecord-sqlserver-adapter'
+# gem 'activerecord-sqlserver-adapter'
 
 gem 'httparty'
 gem 'sidekiq'

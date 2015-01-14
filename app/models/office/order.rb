@@ -182,6 +182,20 @@ class Office::Order < ActiveRecord::Base
         node << id << phone << name << title << department
       end
     end
+
+    xml.css('user_name').each do |node|
+      users = User.all
+      users = users.from_role(node.xpath('role').inner_text)
+
+      unless users.empty? || users == User.all || users.nil?
+        user = users.first
+        id = Nokogiri::XML::Node.new 'id', node
+        id.content = user.id
+        name = Nokogiri::XML::Node.new 'name', node
+        name.content = user.short_name_official(node.xpath('form').inner_text)
+        node << id << name
+      end
+    end
     xml
   end
 

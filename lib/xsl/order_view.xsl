@@ -179,6 +179,11 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="user_name">
+    <xsl:param name="form">ip</xsl:param>
+    <xsl:value-of select="./name" />
+  </xsl:template>
+
   <xsl:template match="lBlock">
     <div style="text-indent: 2em; margin-top: 1em; text-align: justify;">
       <xsl:apply-templates />
