@@ -18,7 +18,7 @@ permalink: /teachers/faq/
 
 <center> ![Добавить занятие.]({{ site.url }}/teachers/img/faq/2.png "Добавление занятия") 
 
-	щёлкнув на которую у вас откроется поле <center></center>
+ щёлкнув на которую у вас откроется поле 
 
 ![Поле добавления.]({{ site.url }}/teachers/img/faq/3.png "Поле добавления") </center> 
 
