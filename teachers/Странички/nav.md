@@ -6,7 +6,6 @@ permalink: /teachers/nav/
 Выберите вашу проблему, и, пожалуйста, прочтите FAQ:
 
 1. <a href="{{ site.url }}/teachers/documents/"> Основные документы. </a>
-
 2. Создание дисциплины в 3 этапа:  
 
 + <a href="{{ site.url }}/teachers/1/"> Этап 1 - Создание.</a>  
