@@ -238,7 +238,7 @@
               </xsl:call-template><xsl:value-of select="substring(./employee/title, 2)" />
             </fo:block>
           </fo:table-cell>
-          <fo:table-cell>
+          <fo:table-cell display-align="after">
             <fo:block font="12pt PT Serif" text-align="end">
               <xsl:value-of select="./employee/name" />
             </fo:block>
