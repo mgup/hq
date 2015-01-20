@@ -506,7 +506,7 @@ LIMIT 1 ")
       xml.file do
         xml.fileInfo do
           xml.fileSender ''
-          xml.version ''
+          xml.version 1
           xml.recordCount self.all.length
         end
         xml.recordList do
@@ -525,17 +525,14 @@ LIMIT 1 ")
                   xml.code (student.person.foreign ? 10 : 21)
                   xml.series student.person.passport_series
                   xml.number student.person.passport_number
+                  xml.issueDate student.person.passport_date
                   xml.issuedBy student.person.passport_department
                 end
                 xml.registrationAddress do
                   xml.addressText (student.person.registration_address ? student.person.registration_address : student.person.residence_address)
-                  xml.cityName ''
-                  xml.cityCode ''
                 end
                 xml.residenceAddress do
                   xml.addressText student.person.residence_address
-                  xml.cityName ''
-                  xml.cityCode ''
                 end
               end
               xml.universityInfo do

@@ -87,7 +87,7 @@ class StudentsController < ApplicationController
 
   def soccard
     respond_to do |format|
-      format.xml { render xml: @students.soccard.to_soccard }
+      format.xml { render xml: @students.valid_for_today.to_soccard } #FIXME заменить скоуп на soccard
     end
   end
 
