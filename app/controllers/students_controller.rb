@@ -87,8 +87,12 @@ class StudentsController < ApplicationController
 
   def soccard
     respond_to do |format|
-      format.xml { render xml: @students.valid_for_today.to_soccard } #FIXME заменить скоуп на soccard
+      format.xml { render xml: @students.valid_for_today.where('student_group_group != 434').to_soccard } #FIXME заменить скоуп на soccard
     end
+  end
+
+  def soccard_mistakes
+    @students = @students.valid_for_today.where('student_group_group != 434')
   end
 
   private

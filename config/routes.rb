@@ -114,6 +114,7 @@ HQ::Application.routes.draw do
         resources :deeds, controller: 'documents'
     end
     get 'soccard', to: 'students#soccard', on: :collection
+    get 'soccard_mistakes', to: 'students#soccard_mistakes', on: :collection
     get 'documents' => 'students#documents'
     get 'orders' => 'students#orders'
     get 'study' => 'students#study'

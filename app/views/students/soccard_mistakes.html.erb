@@ -1,0 +1,37 @@
+<div class="page-header">
+  <h1>Данные для соццард</h1>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>№</th>
+      <th>ФИО</th>
+      <th>Факультет</th>
+      <th>Группа</th>
+      <th>ФАМИЛИЯ</th>
+      <th>ИМЯ</th>
+      <th>ДЕНЬ РОЖДЕНИЯ</th>
+      <th>НОМЕР ПАССПОРТА</th>
+      <th>КЕМ ВЫДАН ПАССПОРТ</th>
+      <th>АДРЕС</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @students.each do |student| %>
+      <% next if student.valid_for_soccard? %>
+        <tr>
+          <td><%= student.id %></td>
+          <td><%= student.full_name %></td>
+          <td><%= student.faculty.abbreviation %></td>
+          <td><%= student.group.name %></td>
+          <td class="<%= student.last_name.present? ? 'success' : 'danger' %>"><%= student.last_name.present? ? '+' : '–' %></td>
+          <td class="<%= student.first_name.present? ? 'success' : 'danger' %>"><%= student.first_name.present? ? '+' : '–' %></td>
+          <td class="<%= student.person.birthday.present? ? 'success' : 'danger' %>"><%= student.person.birthday.present? ? '+' : '–' %></td>
+          <td class="<%= student.person.passport_number.present? ? 'success' : 'danger' %>"><%= student.person.passport_number.present? ? '+' : '–' %></td>
+          <td class="<%= student.person.passport_department.present? ? 'success' : 'danger' %>"><%= student.person.passport_department.present? ? '+' : '–' %></td>
+          <td class="<%= student.person.residence_address.present? ? 'success' : 'danger' %>"><%= student.person.residence_address.present? ? '+' : '–' %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -595,4 +595,8 @@ LIMIT 1 ")
       1
     end
   end
+
+  def valid_for_soccard?
+    last_name.present? && first_name.present? && person.birthday.present? && person.passport_number.present? && person.passport_department.present? && person.residence_address.present?
+  end
 end
