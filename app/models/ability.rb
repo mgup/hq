@@ -78,6 +78,7 @@ class Ability
         can :index, :groups
 
         can :reference, Student.valid_for_today
+        can :soccard_mistakes, Student
       end
 
     end
