@@ -159,10 +159,6 @@ GEM
       activesupport (>= 4.1.0)
     gruff (0.5.1)
       rmagick
-    hairtrigger (0.2.4)
-      activerecord (>= 2.3)
-      ruby2ruby (~> 2.0.6)
-      ruby_parser (~> 3.2.2)
     haml (4.0.6)
       tilt
     highline (1.6.21)
@@ -454,7 +450,6 @@ DEPENDENCIES
   factory_girl_rails
   faker
   gruff
-  hairtrigger
   httparty
   inch
   jbuilder
