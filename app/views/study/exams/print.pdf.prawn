@@ -372,19 +372,27 @@ prawn_document margin: [28, 20, 28, 28],
       pdf.font_size 10 do
         if @exam.is_mass_repeat? || @exam.is_individual_repeat?
           @exam.students.each_with_index do |student, index|
+            if student.student.ball(@discipline) < 55 || !student.student.pass_discipline?(@discipline)
+              applicationTable << [index+1, student.student.person.full_name, student.student.id, student.student.ball(@discipline), '—', '—', '—', '0 — 100']
+            else
             result_5 = @discipline.final_exam.predication(5, student.student.ball(@discipline))
             result_4 = @discipline.final_exam.predication(4, student.student.ball(@discipline))
             result_3 = @discipline.final_exam.predication(3, student.student.ball(@discipline))
             result_2 = @discipline.final_exam.predication(2, student.student.ball(@discipline))
             applicationTable << [index+1, student.student.person.full_name, student.student.id, student.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+            end
           end
         elsif @exam.student
-          result_5 = @discipline.final_exam.predication(5, @exam.student.ball(@discipline))
-          result_4 = @discipline.final_exam.predication(4, @exam.student.ball(@discipline))
-          result_3 = @discipline.final_exam.predication(3, @exam.student.ball(@discipline))
-          result_2 = @discipline.final_exam.predication(2, @exam.student.ball(@discipline))
-          applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
-        else
+          if @exam.student.ball(@discipline) < 55 || !@exam.student.pass_discipline?(@discipline)
+            applicationTable << [index+1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), '—', '—', '—', '0 — 100']
+          else
+            result_5 = @discipline.final_exam.predication(5, @exam.student.ball(@discipline))
+            result_4 = @discipline.final_exam.predication(4, @exam.student.ball(@discipline))
+            result_3 = @discipline.final_exam.predication(3, @exam.student.ball(@discipline))
+            result_2 = @discipline.final_exam.predication(2, @exam.student.ball(@discipline))
+            applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+          end
+          else
           if @discipline.is_active?
             group_students = @discipline.group.students.valid_for_today
           else
@@ -399,13 +407,17 @@ prawn_document margin: [28, 20, 28, 28],
             #   result_3 = @discipline.final_exam.predication(3, ball)
             #   result_2 = @discipline.final_exam.predication(2, ball)
             # else
-            ball = student.ball(@discipline)
-            result_5 = @discipline.final_exam.predication(5, ball)
-            result_4 = @discipline.final_exam.predication(4, ball)
-            result_3 = @discipline.final_exam.predication(3, ball)
-            result_2 = @discipline.final_exam.predication(2, ball)
+            if student.ball(@discipline) < 55 || !student.pass_discipline?(@discipline)
+              applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline), '—', '—', '—', '0 — 100']
+            else
+              ball = student.ball(@discipline)
+              result_5 = @discipline.final_exam.predication(5, ball)
+              result_4 = @discipline.final_exam.predication(4, ball)
+              result_3 = @discipline.final_exam.predication(3, ball)
+              result_2 = @discipline.final_exam.predication(2, ball)
             # end
-            applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+              applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+            end
             # applicationTable << [index+1, 'Фамилия Имя Отчество', 'XXXXX', ball, "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
           end
         end
