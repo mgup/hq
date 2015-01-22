@@ -101,3 +101,5 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rubocop', require: false
 end
+
+gem 'rubyXL'
