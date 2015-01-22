@@ -47,7 +47,7 @@
         <span class="glyphicon glyphicon-edit"></span> Редактировать дисциплину
       <% end %>
   </div>
-<% elsif @discipline.year == Study::Discipline::CURRENT_STUDY_YEAR && @discipline.semester == 2 && Study::Discipline::CURRENT_STUDY_TERM == 1 %>
+<% elsif false #@discipline.year == Study::Discipline::CURRENT_STUDY_YEAR && @discipline.semester == 2 && Study::Discipline::CURRENT_STUDY_TERM == 1 %>
     <br><br>
     <div class="alert alert-info">
       <p class="lead">Данная дисциплина относится к следующему семестру, вы не можете вносить результаты студентов по ней, возможно, вам необходимо перейти к странице редактирования карты дисциплины.</p>

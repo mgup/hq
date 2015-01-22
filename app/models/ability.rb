@@ -78,6 +78,7 @@ class Ability
         can :index, :groups
 
         can :reference, Student.valid_for_today
+        can :soccard_mistakes, Student
       end
 
     end
@@ -170,6 +171,7 @@ class Ability
     can :manage, Hostel::Offense
     can :manage, Hostel::Report
     soc_support_event(user)
+    can :soccard_mistakes, Student
   end
 
   def soc_support_event(user)

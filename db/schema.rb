@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150114091716) do
+ActiveRecord::Schema.define(version: 20150115130912) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -1344,10 +1344,9 @@ ActiveRecord::Schema.define(version: 20150114091716) do
   add_index "group", ["group_speciality"], name: "groupSpeciality", using: :btree
 
   create_table "hostel", primary_key: "hostel_id", force: :cascade do |t|
-    t.string  "hostel_name",       limit: 200, null: false
-    t.string  "hostel_short_name", limit: 200
-    t.string  "hostel_address",    limit: 200, null: false
-    t.integer "department_id",     limit: 4
+    t.string "hostel_name",       limit: 200, null: false
+    t.string "hostel_short_name", limit: 200
+    t.string "hostel_address",    limit: 200, null: false
   end
 
   create_table "hostel_offense", force: :cascade do |t|
