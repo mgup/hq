@@ -1,4 +1,8 @@
 HQ::Application.routes.draw do
+
+  resources :phonebook
+  get 'phonebook/index'
+
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.is?(:developer) } do
     mount Sidekiq::Web => '/sidekiq'
@@ -381,6 +385,8 @@ HQ::Application.routes.draw do
 
   get '/404', to: 'errors#error_404'
   root to: 'dashboard#index'
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

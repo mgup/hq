@@ -154,6 +154,7 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
         primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
+        primary.item :phonebook,  'Телефонная книга'.html_safe,  phonebook_index_path , icon: 'list'
       end
     end
 
