@@ -35,7 +35,7 @@ gem 'gruff'
 gem 'chunky_png'
 gem 'barby'
 gem 'nested_form' #, github: 'ryanb/nested_form'
-gem 'hairtrigger'
+# gem 'hairtrigger'
 gem 'axlsx_rails'
 gem 'acts_as_xlsx'
 gem 'ace-rails-ap'
@@ -101,3 +101,5 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rubocop', require: false
 end
+
+gem 'rubyXL'

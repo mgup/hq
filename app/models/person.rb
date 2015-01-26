@@ -167,44 +167,44 @@ class Person < ActiveRecord::Base
     end
   end
 
-  trigger.before(:insert) do
-    %q(
-         SET
-            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_fname = dictionary.dictionary_id
-                                  LIMIT 1),
-            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_iname = dictionary.dictionary_id
-                                  LIMIT 1),
-            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_oname = dictionary.dictionary_id
-                                  LIMIT 1)
-       )
-  end
-
-  trigger.before(:update) do |t|
-    t.where('NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
-             NEW.student_oname <> OLD.student_oname') do
-      %q(
-         SET
-            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_fname = dictionary.dictionary_id
-                                  LIMIT 1),
-            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_iname = dictionary.dictionary_id
-                                  LIMIT 1),
-            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_oname = dictionary.dictionary_id
-                                  LIMIT 1)
-       )
-    end
-  end
+  # trigger.before(:insert) do
+  #   %q(
+  #        SET
+  #           NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_fname = dictionary.dictionary_id
+  #                                 LIMIT 1),
+  #           NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_iname = dictionary.dictionary_id
+  #                                 LIMIT 1),
+  #           NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_oname = dictionary.dictionary_id
+  #                                 LIMIT 1)
+  #      )
+  # end
+  #
+  # trigger.before(:update) do |t|
+  #   t.where('NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
+  #            NEW.student_oname <> OLD.student_oname') do
+  #     %q(
+  #        SET
+  #           NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_fname = dictionary.dictionary_id
+  #                                 LIMIT 1),
+  #           NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_iname = dictionary.dictionary_id
+  #                                 LIMIT 1),
+  #           NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_oname = dictionary.dictionary_id
+  #                                 LIMIT 1)
+  #      )
+  #   end
+  # end
 
 
   def to_nokogiri
