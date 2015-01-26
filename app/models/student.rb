@@ -505,7 +505,7 @@ LIMIT 1 ")
     doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
       xml.file do
         xml.fileInfo do
-          xml.fileSender ''
+          xml.fileSender '028'
           xml.version 1
           xml.recordCount self.all.length
         end
@@ -537,6 +537,8 @@ LIMIT 1 ")
               end
               xml.universityInfo do
                 xml.universityCode '028'
+                xml.facultyCode student.faculty.soccard_name
+                xml.facultyName student.faculty.name
                 xml.status do
                   xml.code student.soccard_status
                   xml.date I18n.l(student.last_status_order.order_signing, format: '%Y-%m-%d') if student.last_status_order

@@ -86,4 +86,17 @@ class Department < ActiveRecord::Base
   def to_xml
     to_nokogiri.to_xml
   end
+
+  def soccard_name
+    case id
+    when IPIT
+      '02801'
+    when IIDIZH
+      '02802'
+    when IKIM
+      '02803'
+    when IGRIK
+      '02804'
+    end
+  end
 end
