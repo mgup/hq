@@ -78,6 +78,7 @@ class Ability
         can :index, :groups
 
         can :reference, Student.valid_for_today
+        can :soccard_mistakes, Student
       end
 
     end
@@ -169,6 +170,13 @@ class Ability
     can :manage, Curator::TaskType
     can :manage, Hostel::Offense
     can :manage, Hostel::Report
+    soc_support_event(user)
+    can :soccard_mistakes, Student
+  end
+
+  def soc_support_event(user)
+    can :manage, Event, event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY
+    can :manage, EventDateClaim
   end
 
   def soc_support_vedush(user)
@@ -183,16 +191,16 @@ class Ability
 
   def soc_support(user)
     can :manage, My::Support
+    can :manage, Social::Document
+    can :manage, Social::DocumentType
+    can :read, Student
+    can :study, Student
   end
 
   def faculty_employee(user)
-    # Выпускников пока закрываем
-    #can :manage, Graduate
-    #can :manage, GraduateStudent
-    #can :manage, GraduateSubject
-    #can :manage, GraduateMark
-
     can :manage, :plans
+    can :create_employer, Person
+    can :manage, Proof
 
     # Подумать, как совместить это с тем, что Дирекция не преподаватель!!!
     can :manage, Study::Discipline
@@ -200,6 +208,13 @@ class Ability
     can :manage, Study::Repeat
     can :manage, Office::Order
     cannot :sign, Office::Order
+    can :manage, Group
+    can :index, :groups
+  end
+
+  def ioo(user)
+    faculty_employee(user)
+    cannot :manage, Office::Order
   end
 
   def selection(user)
@@ -270,12 +285,17 @@ class Ability
     can :manage, Entrance::Exam
 
     can :mark, Entrance::ExamResult
+    can :entrance_protocol, Office::Order
+    can :update, Office::Order
+    can :show, Office::Order
+    can :orders, Entrance::Campaign
   end
 
   def executive_secretary(user)
     zamestitel_otvetstvennogo_sekretarja(user)
     can :entrance_protocol, Office::Order
     can :update, Office::Order
+    can :show, Office::Order
     can :orders, Entrance::Campaign
     can :numbers, Entrance::Campaign
     can :statistics, Entrance::Contract

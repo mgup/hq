@@ -2,6 +2,10 @@
   <h1>Черновики приказов</h1>
 </div>
 
+<% flash.each do |_, msg| %>
+    <%= content_tag :div, msg, class: 'alert alert-info' %>
+<% end %>
+
 <div class="row">
   <div class="col col-sm-12">
   <%= link_to new_office_order_path, class: 'btn btn-success btn-lg pull-right' do %>

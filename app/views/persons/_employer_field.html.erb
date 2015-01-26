@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-sm-2">
+      Работодатель
+    </div>
+    <div class="col-sm-8">
+      <%= text_field_tag "employer_#{person.id}", person.employer, class: 'form-control' %>
+    </div>
+    <div class="col-sm-1">
+      <%= button_tag class: 'btn btn-default save_employer',
+                     title: 'Сохранить', data: {value: person.id} do %>
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+      <% end %>
+    </div>
+</div>

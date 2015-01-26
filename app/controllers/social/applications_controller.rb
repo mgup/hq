@@ -2,10 +2,7 @@ class Social::ApplicationsController < ApplicationController
   load_and_authorize_resource class: My::Support
 
   def index
-    params[:year]  ||= 2014
-    params[:month] ||= 6
-    params[:accepted] ||= 0
-    params[:deferred] ||= 0
+    init_params
     params[:empty] ||= 0
 
     @applications = @applications.where(support_year:  params[:year])
@@ -17,23 +14,10 @@ class Social::ApplicationsController < ApplicationController
       @close = 0
     end
 
-    unless params[:accepted].to_i.zero?
-      @applications = @applications.where(accepted: true)
-    end
-
-    unless params[:deferred].to_i.zero?
-      @applications = @applications.where(deferred: true)
-    end
+    find_a_d_or_from_causes(@applications, params[:accepted], params[:deferred], params[:causes], params[:strict])
 
     unless params[:empty].to_i.zero?
       @applications = @applications.open
-    end
-
-    params[:causes] ||= []
-    params[:strict] ||= 0
-
-    unless params[:causes].empty? || params[:causes] == ['']
-      @applications = @applications.with_causes(params[:causes], !params[:strict].to_i.zero?)
     end
 
     if params[:last_name]
@@ -44,38 +28,27 @@ class Social::ApplicationsController < ApplicationController
   end
 
   def lists
-    params[:year]  ||= 2014
-    params[:month] ||= 6
-    params[:accepted] ||= 0
-    params[:deferred] ||= 0
+    init_params
 
     @applications = @applications.where(support_year:  params[:year])
     @applications = @applications.where(support_month: params[:month])
 
-    unless params[:accepted].to_i.zero?
-      @applications = @applications.where(accepted: true)
-    end
-
-    unless params[:deferred].to_i.zero?
-      @applications = @applications.where(deferred: true)
-    end
-
-    params[:causes] ||= []
-    params[:strict] ||= 0
-
-    unless params[:causes].empty? || params[:causes] == ['']
-      @applications = @applications.with_causes(params[:causes], !params[:strict].to_i.zero?)
-    end
+    find_a_d_or_from_causes(@applications, params[:accepted], params[:deferred], params[:causes], params[:strict])
 
     params[:lists] ||= []
     unless params[:lists].empty? || params[:lists] == ['']
       @applications = @applications.send("list_#{params[:lists]}")
     end
+
+    respond_to do |format|
+      format.html
+      format.xlsx
+    end
   end
 
   def close_receipt
     params[:year]  ||= 2014
-    params[:month] ||= 6
+    params[:month] ||= 10
     applications = @applications.where(support_year:  params[:year])
     applications = applications.where(support_month: params[:month])
     applications = applications.where(accepted: false)
@@ -88,33 +61,30 @@ class Social::ApplicationsController < ApplicationController
     redirect_to social_applications_path
   end
 
-  def print_list
+  private
+
+  def init_params
     params[:year]  ||= 2014
-    params[:month] ||= 6
+    params[:month] ||= 10
     params[:accepted] ||= 0
     params[:deferred] ||= 0
+    params[:causes] ||= []
+    params[:strict] ||= 0
+  end
 
-    @applications = @applications.where(support_year:  params[:year])
-    @applications = @applications.where(support_month: params[:month])
-
-    unless params[:accepted].to_i.zero?
+  def find_a_d_or_from_causes(apps, accepted = 0, deferred = 0, causes = [], strict = 0)
+    @applications = apps
+    unless accepted.to_i.zero?
       @applications = @applications.where(accepted: true)
     end
 
-    unless params[:deferred].to_i.zero?
+    unless deferred.to_i.zero?
       @applications = @applications.where(deferred: true)
     end
 
-    params[:causes] ||= []
-    params[:strict] ||= 0
-
-    unless params[:causes].empty? || params[:causes] == ['']
-      @applications = @applications.with_causes(params[:causes], !params[:strict].to_i.zero?)
-    end
-
-    params[:lists] ||= []
-    unless params[:lists].empty? || params[:lists] == ['']
-      @applications = @applications.send("list_#{params[:lists]}")
+    unless causes.empty? || causes == ['']
+      @applications = @applications.with_causes(causes, !strict.to_i.zero?)
     end
   end
+
 end

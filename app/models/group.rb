@@ -48,46 +48,21 @@ class Group < ActiveRecord::Base
     joins(:speciality).where(speciality: { speciality_faculty: faculty })
   }
 
+  scope :with_students, -> {joins(:students).where(student_group: {student_group_status: [Student::STATUS_STUDENT,
+                                                                    Student::STATUS_TRANSFERRED_DEBTOR,
+                                                                    Student::STATUS_DEBTOR]}).uniq}
+
   scope :second_higher, -> { where(group_second_higher: true) }
-
-  def self.without_graduate
-    joins('LEFT JOIN graduates ON graduates.group_id = group.group_id')
-    .where('graduates.id IS NULL')
-  end
-
-  # Поиск всех групп с выпускниками.
-  def self.for_graduate
-    Group.all.without_graduate.select { |g| g.study_length == g.course }
-  end
+  scope :distance, -> { where(group_form: 105) }
 
   def study_length
     speciality.send case form
-                    when 101 then :speciality_olength
-                    when 102 then :speciality_ozlength
-                    when 103 then :speciality_zlength
-                    when 105 then :speciality_zlength
+                    when 'fulltime' then :speciality_olength
+                    when 'semitime' then :speciality_ozlength
+                    when 'postal' then :speciality_zlength
+                    when 'distance' then :speciality_zlength
                     else fail 'Неизвестная форма обучения.'
                     end
-  end
-
-  def support
-    case form
-    when 'fulltime' then 'очной'
-    when 'semitime' then 'очно-заочной'
-    when 'postal' then 'заочной'
-    when 'distance' then 'дистанционной'
-    else fail 'Неизвестная форма обучения.'
-    end
-  end
-
-  def this_form
-    case form
-      when 'fulltime' then 'очная'
-      when 'semitime' then 'очно-заочная'
-      when 'postal' then 'заочная'
-      when 'distance' then 'дистанционная'
-      else fail 'Неизвестная форма обучения.'
-    end
   end
 
   def library_form
@@ -107,15 +82,28 @@ class Group < ActiveRecord::Base
     end
   end
 
+  def soccard_form
+    case form
+    when 'fulltime' then 'DAYTIME'
+    when 'semitime' then 'EVENING_TIME'
+    when 'postal' then 'DISTANT'
+    when 'distance' then 'DISTANT_ONLINE'
+    end
+  end
+
   def name
-    [case form
+    n = [case form
      when 'fulltime' then 'Д'
      when 'semitime' then 'В'
      when 'postal'   then 'З'
      when 'distance' then 'З'
      else fail 'Неизвестная форма обучения.'
      end,
-     group_name[1], speciality.group_name_suffix, "-#{course}-#{number}"].join
+     group_name[1], speciality.group_name_suffix]
+    n << 'Д' if form == 'distance'
+    n << 'В' if group_second_higher == 1
+    n << "-#{course}-#{number}"
+    n.join
   end
 
   # TODO: Нужно переделать (возможно удалить). Этот вариант мне не нравится.
@@ -174,5 +162,9 @@ class Group < ActiveRecord::Base
         xml.name name
       end
     }.doc
+  end
+
+  def second_higher?
+    group_second_higher == 1
   end
 end

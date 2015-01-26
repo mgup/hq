@@ -94,14 +94,7 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def report
-    @applications = @campaign.applications.
-      find_all { |a| 8 == a.status_id && [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) }
-      # find_all { |a| !a.number.include?('14-ОД') && a.benefits.empty? }
-      # find_all { |a| %w(03 05).include?(a.direction.new_code.split('.')[1]) }.
-      # find_all { |a| [11, 12].include?(a.form) }.
-      # find_all { |a| !a.payed? }
-
-    # fail '123'
+    @applications = Entrance::Application.where(status_id: 8).find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 32014 != a.campaign.id }
 
     respond_to do |format|
       format.html
@@ -117,6 +110,7 @@ class Entrance::CampaignsController < ApplicationController
             #     xml << application.to_fis.xpath('/Application').to_xml.to_str
             #   end
             # end
+
             xml.OrdersOfAdmission do
               @applications.each do |application|
                 xml.OrderOfAdmission do
@@ -126,11 +120,17 @@ class Entrance::CampaignsController < ApplicationController
                   end
                   xml.DirectionID application.direction.id
                   xml.EducationFormID application.competitive_group_item.form
-                  xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : 14)
-                  xml.EducationLevelID application.competitive_group_item.education_type_id
+                  xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
+
+                  if '44.03.04' == application.direction.new_code
+                    xml.EducationLevelID 2
+                  else
+                    xml.EducationLevelID application.competitive_group_item.education_type_id
+                  end
+
                   xml.IsBeneficiary application.benefits.any?
                   unless Date.new(2014, 7, 31) == application.order.signing_date
-                    xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date) ? 1 : 2)
+                    xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date || 12014 == application.campaign.id || 22014 == application.campaign.id) ? 1 : 2)
                   end
                 end
               end

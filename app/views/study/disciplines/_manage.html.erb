@@ -29,7 +29,8 @@
     <%= f.label :department_id, class: 'col-sm-3 control-label' %>
     <div class="col-sm-9">
       <%= f.select :department_id, options_from_collection_for_select(
-          Department.academic, :id, :name, discipline.department_id), {}, class: 'ajax-subdepartment form-control' %>
+          Department.academic, :id, :name, discipline.department.present? ? discipline.department_id : (discipline.lead_teacher.departments.academic.first.id if discipline.lead_teacher)),
+                   {}, class: 'ajax-subdepartment form-control' %>
     </div>
   </div>
 
@@ -39,10 +40,11 @@
       <%= f.select :subject_teacher,
                    discipline.department.present? ?
                        options_from_collection_for_select(
-                               User.teachers.from_subdepartment(discipline.department_id.to_s), :id, :full_name
+                               User.teachers.from_subdepartment(discipline.department_id.to_s), :id, :full_name,
+                               discipline.subject_teacher
                        ) :
                        options_from_collection_for_select(
-                           User.teachers, :id, :full_name
+                           User.teachers, :id, :full_name, discipline.subject_teacher
                        ),
                    {}, class: 'form-control ajax-teacher' %>
     </div>

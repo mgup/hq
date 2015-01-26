@@ -1,0 +1,5 @@
+$(document).trigger('matrix.study.discipline.update', [<%= @discipline.id %>]);
+
+$(document.getElementById('<%= dom_id(@discipline) %>')).replaceWith(
+        '<%=j raw(render partial: 'study/plans/discipline', locals: { discipline: @discipline }) %>'
+);

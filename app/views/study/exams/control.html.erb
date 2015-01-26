@@ -56,7 +56,7 @@
                     <h3><%= group[:group].name %></h3>
                     <ul>
                     <% group[:exams].each do |exam| %>
-                        <li><%= l exam.date %> — <%= exam.id %> — <%= exam.discipline.name %> <%= exam.is_individual_repeat? ? "(#{exam.student.person.full_name})" : (exam.is_mass_repeat? ? '<span style="color: red;">(ведомость на несколько человек)</span>'.html_safe : '') %> </li>
+                        <li><%= l exam.date %> — <%= exam.id %> — <%= exam.discipline.name %> <%= exam.is_individual_repeat? ? "(#{exam.student ? exam.student.person.full_name : exam.students.first.student.person.full_name})" : (exam.is_mass_repeat? ? '<span style="color: red;">(ведомость на несколько человек)</span>'.html_safe : '') %> </li>
                     <% end %>
                     </ul>
                 <% end %>

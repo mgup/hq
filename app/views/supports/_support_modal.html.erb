@@ -1,7 +1,7 @@
 <div id="replacedDiv">
 <div class="modal-body">
   <%= student.person.first_name %>, в связи с вашим выбором причин в заявлении вам
-  придется предоставить в Центр социальной поддержки и воспитательной работы (каб. 1222)
+  необходимо предоставить в Центр социальной поддержки и воспитательной работы (каб. 1222)
   следующие документы:
   <ul>
     <li>копия паспорта (страницы 2-3 и 4-5)</li>
@@ -9,18 +9,18 @@
         <li><%= reason.pattern %></li>
     <% end %>
   </ul>
-  <br>
+  <!-- <br>
   Предоставленные вами документы в ЦСПиВР:
   <ul>
-    <% documents.each do |document| %>
-      <li><%= document.type.name %> №<%= document.number %></li>
-    <% end %>
-  </ul>
+    <%# documents.each do |document| %>
+      <li><%# document.type.name %> №<%# document.number %></li>
+    <%# end %>
+  </ul> -->
   <p>Внимание! Если у Вас не хватает документов для подтверждения оснований, измените причины, по которым Вы претендуете на материальную помощь.</p>
 </div>
 <div class="modal-footer">
   <button id="remindButton" type="button" class="btn btn-default" data-dismiss="modal">Изменить заявление</button>
-  <%= submit_tag 'Зарегистрировать заявление', class: 'btn btn-primary', id: 'submitSupport', disabled: !@can_print %>
+  <%= submit_tag 'Зарегистрировать заявление', class: 'btn btn-primary', id: 'submitSupport' %>
 </div>
 </div>
 

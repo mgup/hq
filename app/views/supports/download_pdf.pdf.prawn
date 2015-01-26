@@ -12,7 +12,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.text '«Московский государственный университет'
     pdf.text 'печати имени Ивана Федорова»'
     pdf.text 'К. В. Антипову'
-    pdf.text "от студента #{@student.group.course} курса #{@student.group.support} формы обучения"
+    pdf.text "от студента #{@student.group.course} курса #{study_form_name(@student.group.form, :rp)} формы обучения"
     pdf.text "#{@student.group.speciality.faculty.abbreviation}, группы #{@student.group.name}"
     pdf.font 'PTSerif', size: 11, style: :bold do
       pdf.text "#{@student.person.full_name(:rp)},"

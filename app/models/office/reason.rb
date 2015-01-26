@@ -18,9 +18,5 @@ class Office::Reason < ActiveRecord::Base
     }.doc
   end
 
-  def to_xml
-    to_nokogiri.to_xml
-  end
-
-
+  delegate :to_xml, to: :to_nokogiri
 end

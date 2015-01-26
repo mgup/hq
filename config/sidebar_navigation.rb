@@ -132,6 +132,9 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :nav_group_lists, 'Списки', class: 'nav-header disabled'
         primary.item :students,  'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
       end
+      if can? :index, :groups
+        primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
+      end
       if current_user.is?(:developer)
         primary.item :roles,        'Роли'.html_safe, roles_path, icon: 'tags', highlights_on: -> { 'roles' == params[:controller] }
         primary.item :appointments, 'Должности'.html_safe, appointments_path, icon: 'tags'
@@ -153,7 +156,6 @@ SimpleNavigation::Configuration.run do |navigation|
 
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
-        primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }
         primary.item :phonebook,  'Телефонная книга'.html_safe,  phonebook_index_path , icon: 'list'
       end
     end
@@ -173,17 +175,14 @@ SimpleNavigation::Configuration.run do |navigation|
 
     # ======================================
     if user_signed_in?
-      if (can? :manage, :plans) or (can? :manage, Graduate)
+      if can?(:manage, :plans)
         primary.item :nav_group_institutes, 'Дирекции', class: 'nav-header disabled'
       end
-      if can? :manage, :plans
+      if can?(:manage, :plans)
         primary.item :plans, 'Учебные планы'.html_safe, study_plans_path, icon: 'bell'
       end
-      if can? :manage, :all
+      if can?(:manage, :all)
         primary.item :control, 'Контроль ведомостей'.html_safe, study_control_path, icon: 'warning-sign'
-      end
-      if can? :manage, Graduate
-        primary.item :graduates, 'Выпускники', graduates_path, icon: 'folder-open'
       end
     end
 

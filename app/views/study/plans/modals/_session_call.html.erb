@@ -1,0 +1,71 @@
+<div class="modal fade" id="session_call_modal" tabindex="-1"
+     role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close"
+                data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title">Создание справок-вызов</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag session_call_group_path(@group), method: :get,
+                     target: :blank do %>
+        <%= hidden_field_tag :group, @group.id %>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <%= label_tag :from, 'Дата начала отпуска:' %>
+          </div>
+          <div class="col-sm-3">
+            <%= text_field_tag :from, l(Date.today),
+                               pattern: '\d{1,2}.\d{1,2}.\d{4}',
+                               class: 'form-control datepicker' %>
+          </div>
+          <div class="col-sm-3">
+            <%= label_tag :to, 'Дата окончания отпуска:' %>
+          </div>
+          <div class="col-sm-3">
+            <%= text_field_tag :to, l(Date.today + 26.days),
+                               pattern: '\d{1,2}.\d{1,2}.\d{4}',
+                               class: 'form-control datepicker'  %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <%= label_tag :to, 'Предоставляются гарантии и компенсации для:' %>
+          </div>
+          <div class="col-sm-7">
+            <%= select_tag :typecall,
+                           options_for_select(
+                                   [['прохождения вступительных испытаний', 1],
+                                    ['промежуточной аттестации', 2],
+                                    ['государственной итоговой аттестации', 3],
+                                    ['итоговой аттестации', 4],
+                                    ['подготовки и защиты выпускной квалификационной работы и/или сдачи итоговых государственных экзаменов', 5],
+                                    ['завершения диссертации на соискание ученой степени кандидата наук', 6]]),
+                           class: 'form-control' %>
+          </div>
+        </div>
+        <label>Включённые студенты</label>
+        <% @group.students.valid.each do |student| %>
+            <div class="checkbox">
+              <%= label_tag 'students_ids[]' do %>
+                  <%= check_box_tag 'students_ids[]', student.id %> <%= student.full_name %>
+              <% end %>
+              <div id="person_<%= student.person.id %>">
+                <%= render partial: 'persons/employer_field', locals: { person: student.person } %>
+              </div>
+            </div>
+        <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+          <%= submit_tag 'Распечатать справки-вызов', class: 'btn btn-primary' %>
+        <% end %>
+        </div>
+        </div>
+  </div>
+</div>
+

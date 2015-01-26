@@ -27,7 +27,7 @@ class ClaimsController < ApplicationController
 
   def resource_params
     params.fetch(:event_date_claim, {}).permit(
-        :fname, :status, :iname, :oname, :email, :phone, :group_id, :event_id
+        :fname, :status, :iname, :oname, :email, :phone, :comment, :group_id, :event_id
     )
   end
 

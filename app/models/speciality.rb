@@ -3,11 +3,15 @@ class Speciality < ActiveRecord::Base
 
   default_scope { order(:speciality_name, :speciality_code) }
 
-  alias_attribute :id,      :speciality_id
-  alias_attribute :code,    :speciality_code
-  alias_attribute :name,    :speciality_name
-  alias_attribute :type,    :speciality_ntype
-  alias_attribute :suffix,  :speciality_short_name
+  {
+    id: :id,
+    code: :code,
+    name: :name,
+    type: :ntype,
+    suffix: :short_name
+  }.each do |a, name|
+    alias_attribute a, "speciality_#{name}".to_sym
+  end
 
   belongs_to :faculty,
              class_name: 'Department',
@@ -22,9 +26,10 @@ class Speciality < ActiveRecord::Base
   scope :from_direction, -> direction do
     where("speciality_code = '#{direction.code+'.'+direction.qualification_code.to_s}' || speciality_code = '#{direction.new_code}'")
   end
-  scope :active, -> { where('speciality_id NOT IN (1,27)')}
+  scope :active, -> { where('speciality_id NOT IN (1,27)') }
   scope :masters, -> { where(speciality_ntype: 2) }
-  scope :not_masters, -> {where(speciality_ntype: [0,1])}
+  scope :not_masters, -> { where(speciality_ntype: [0,1]) }
+  scope :not_aspirants, -> { where(speciality_ntype: [0,1,2]) }
 
   def bachelor?
     1 == type
@@ -39,7 +44,7 @@ class Speciality < ActiveRecord::Base
   end
 
   def full_name
-    code + ' ' + name
+    %Q(#{code} «#{name}»)
   end
 
   def group_name_suffix
@@ -58,31 +63,25 @@ class Speciality < ActiveRecord::Base
     end
   end
 
-  def to_xml
-    builder = Nokogiri::XML::Builder.new do |xml|
+  def calculate_payment_types(year)
+    payments = payment_types.from_year(year)
+    payments.empty? ? nil : { year: year, full_time: payments.from_form(101).last,
+              part_time: payments.from_form(102).last, abcsentia: payments.from_form(103).last,
+              distance: payments.from_form(105).last }
+  end
+
+  def to_nokogiri
+    builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
       xml.speciality do
-        xml.id_   id
-        xml.code  code
-        xml.new_code new_code
-        xml.name  name
-        xml.type type
+        [:id, :code, :new_code, :name, :type].each do |field|
+          xml.send(field, send(field))
+        end
         xml << faculty.to_nokogiri.root.to_xml
       end
     end
 
-    builder.doc.to_xml
+    builder.doc
   end
 
-  def to_nokogiri
-    Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
-      xml.speciality do
-        xml.id_   id
-        xml.code  code
-        xml.new_code new_code
-        xml.name  name
-        xml.type type
-        xml << faculty.to_nokogiri.root.to_xml
-      end
-    }.doc
-  end
+  delegate :to_xml, to: :to_nokogiri
 end

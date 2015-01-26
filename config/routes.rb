@@ -18,14 +18,10 @@ HQ::Application.routes.draw do
      [Sidekiq::Queue.new.latency < 30 ? 'OK' : 'UHOH' ]]
   }
 
-  # Выпуски (группы выпускников).
-  resources :graduates do
-    get 'students', on: :member
+  root to: 'dashboard#index'
 
-    resources :graduate_students
-  end
-
-  resources :blanks
+  match '/404' => 'errors#error404', via: [:get, :post, :patch, :delete]
+  match '/500' => 'errors#error500', via: [:get, :post, :patch, :delete]
 
   devise_for :users, controllers: { registrations: 'users' }
     as :user do
@@ -92,6 +88,10 @@ HQ::Application.routes.draw do
   end
 
   resources :groups do
+    member do
+      get 'session_call', defaults: { format: 'pdf' }
+    end
+
     get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
   end
 
@@ -110,11 +110,15 @@ HQ::Application.routes.draw do
       get 'list', on: :collection
     end
   end
-  resources :persons
+  resources :persons do
+    get 'create_employer', to: 'persons#create_employer', on: :member
+  end
   resources :students do
     namespace :social do
         resources :deeds, controller: 'documents'
     end
+    get 'soccard', to: 'students#soccard', on: :collection
+    get 'soccard_mistakes', to: 'students#soccard_mistakes', on: :collection
     get 'documents' => 'students#documents'
     get 'orders' => 'students#orders'
     get 'study' => 'students#study'
@@ -141,6 +145,7 @@ HQ::Application.routes.draw do
       get 'plans', to: 'plans#index'
       get 'control', to: 'exams#control'
     end
+
     resources :groups, path:  '/group' do
       get '/progress' => 'progress#index'
       get '/progress/discipline/:discipline' => 'progress#discipline', as: :discipline
@@ -211,12 +216,17 @@ HQ::Application.routes.draw do
   end
 
   namespace :office do
-    resources :orders do
+    resources :orders, except: [:show] do
       # get '/', to: 'orders#show', defaults: { format: 'pdf' }, as: :show
       # get 'drafts', to: 'orders#drafts', on: :collection
       # get 'underways', to: 'orders#underways', on: :collection
       get 'entrance_protocol', to: 'orders#entrance_protocol', on: :member
     end
+    resources :orders, only: [:show],
+                       defaults: { format: 'pdf' },
+                       constraints: { format: /(pdf|xml)/ }
+
+
     get 'drafts', to: 'orders#drafts'
     get 'underways', to: 'orders#underways'
     get 'orders/new(/:page)', to: 'orders#new', defaults: { page: 1 }
@@ -383,8 +393,8 @@ HQ::Application.routes.draw do
     get 'gzgu/mon_pk_f2_2014_06_23',  to: 'gzgu#mon_pk_f2_2014_06_23'
   end
 
-  get '/404', to: 'errors#error_404'
-  root to: 'dashboard#index'
+  get 'fractals-radial', to: 'fractals#radial'
+  get 'test-exception', to: 'dashboard#test_exception'
 
 
 

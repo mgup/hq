@@ -4,17 +4,10 @@ class StudentsController < ApplicationController
   before_filter :find_student, only: [:documents, :study, :grants, :orders, :hostel]
 
   def index
-    # raise params.inspect
-    @students = @students.includes([:person, :group]).my_filter(params)
-    if @students.page(params[:page]).empty?
-      @students = @students.page(1)
-    else
-      @students = @students.page(params[:page])
-    end
+    @students = @students.joins(:group).my_filter(params)
 
-    #@students = Student.in_group_at_date 35, '2013-02-24'
-    #@students = Student.in_group_at_date 547, '2011-02-24'
-    #@students = Student.in_group_at_date 959, Time.now
+    params[:page] ||= 1
+    @students = @students.page(params[:page])
   end
 
   def show
@@ -89,8 +82,17 @@ class StudentsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:student, {}).permit(
-    )
+    params.fetch(:student, {}).permit()
+  end
+
+  def soccard
+    respond_to do |format|
+      format.xml { render xml: @students.valid_for_today.where('student_group_group != 434').my_filter(form: 101).to_soccard } #FIXME заменить скоуп на soccard
+    end
+  end
+
+  def soccard_mistakes
+    @students = @students.valid_for_today.where('student_group_group != 434').my_filter(form: 101)
   end
 
   private

@@ -1,7 +1,7 @@
 class Student < ActiveRecord::Base
   include Filterable
-
   include ActionView::Helpers::NumberHelper
+  include Study::CheckpointmarkHelper
 
   PAYMENT_BUDGET = 1
   PAYMENT_OFF_BUDGET = 2
@@ -14,11 +14,15 @@ class Student < ActiveRecord::Base
   MARK_PRACTICAL_GOOD       = 2002
   MARK_PRACTICAL_PERFECT    = 2003
 
+  STATUS_ENTRANT            = 100
   STATUS_STUDENT            = 101
+  STATUS_EXPELED            = 102
+  STATUS_SABBATICAL         = 103
+  STATUS_GRADUATE           = 104
+  STATUS_POSTGRADUATE       = 105
   STATUS_COMPLETE           = 106
   STATUS_DEBTOR             = 107
   STATUS_TRANSFERRED_DEBTOR = 108
-  STATUS_ENTRANT            = 100
 
   self.table_name = 'student_group'
 
@@ -50,7 +54,7 @@ class Student < ActiveRecord::Base
 
 
   alias_attribute :id,              :student_group_id
-  alias_attribute :status,          :student_group_status
+  # alias_attribute :status,          :student_group_status
   alias_attribute :record,          :student_group_record
   alias_attribute :abit,            :student_group_abit
   alias_attribute :abitpoints,      :student_group_abitpoints
@@ -65,12 +69,15 @@ class Student < ActiveRecord::Base
   belongs_to :person, class_name: Person, primary_key: :student_id, foreign_key: :student_group_student
   belongs_to :group, class_name: Group, primary_key: :group_id, foreign_key: :student_group_group
   belongs_to :entrant, class_name: Entrance::Entrant
+  belongs_to :status, class_name: EducationStatus, foreign_key: :student_group_status
 
   has_many :marks, class_name: Study::Mark, foreign_key: :checkpoint_mark_student
   has_many :exams, class_name: Study::Exam, primary_key: :exam_id, foreign_key: :exam_student_group
 
   has_many :exam_marks, class_name: 'Study::ExamMark', foreign_key: :mark_student_group, primary_key: :student_group_id
   has_many :final_marks, class_name: 'Study::FinalMark', foreign_key: :mark_final_student, primary_key: :student_group_id
+
+  has_many :proofs, foreign_key: :student_group_id, primary_key: :student_group_id
 
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :student_group_id, foreign_key: :student_group_id
   has_many :documents, class_name: Document::Doc, :through => :document_students
@@ -84,12 +91,11 @@ class Student < ActiveRecord::Base
   has_many :choices, class_name: My::Choice, through: :selections
 
   has_many :students_in_order, class_name: Office::OrderStudent, foreign_key: :order_student_student_group_id
+  has_many :archive_students, class_name: 'Archive::Student', foreign_key: :student_group_id
   has_many :orders, class_name: Office::Order, through: :students_in_order
 
   has_many :visitor_event_dates, as: :visitor
   has_many :dates, through: :visitor_event_dates
-
-  has_one :graduate_student
 
   has_and_belongs_to_many :study_repeats, class_name: 'Study::Repeat', join_table: 'exam_student', foreign_key: 'exam_student_student_group',
                           association_foreign_key: 'exam_student_exam'
@@ -97,11 +103,16 @@ class Student < ActiveRecord::Base
   delegate :education_form, to: :group
   delegate :course,         to: :group
   delegate :speciality,     to: :group
-  delegate :deeds, to: :person
+  delegate :deeds, :last_name, :first_name, :patronym, :full_name, to: :person
+
 
   default_scope do
     joins(:person)
     .order('last_name_hint, first_name_hint, patronym_hint')
+  end
+
+  scope :transferred_debtors, -> do
+    where(student_group_status: self::STATUS_TRANSFERRED_DEBTOR)
   end
 
   # ! В одном месте для таких случаев предложили наглый выход !
@@ -115,6 +126,9 @@ class Student < ActiveRecord::Base
 
   scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR]) }
   scope :valid_student, -> { where(student_group_status: STATUS_STUDENT)}
+
+  scope :actual, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_EXPELED},#{self::STATUS_GRADUATE})") }
+  scope :soccard, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_ENTRANT},#{self::STATUS_POSTGRADUATE})") }
   scope :with_group, -> { joins(:group) }
 
   scope :off_budget, -> { where(student_group_tax: PAYMENT_OFF_BUDGET) }
@@ -165,9 +179,9 @@ class Student < ActiveRecord::Base
     cond
   }
 
-  def entrance_order
-    orders.where('order_template = 16').last
-  end
+  scope :from_template, -> template { where(student_group_status: template.statuses.collect{ |s| s.id }) }
+
+  scope :not_aspirants, -> { where(student_group_group: Group.filter(speciality: Speciality.not_aspirants.collect{|x| x.id}))}
 
   scope :in_group_at_date, -> group, date {
     group = group.id if group.is_a?(Group)
@@ -226,8 +240,13 @@ ORDER BY
 	student_iname_ip ASC,
 	student_oname_ip ASC
 ), { group: group, date: date.strftime('%Y-%m-%d') }]))
-    # raise date.strftime('%Y-%m-%d').inspect
-    find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless x.entrance_order.nil? || x.entrance_order.signing_date > date}
+
+    # Проверяем, что в группе есть студенты.
+    if ids.any?
+      find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless x.entrance_order.nil? || x.entrance_order.signing_date > date}
+    else
+      none
+    end
   }
 
   scope :with_contract, -> {
@@ -235,10 +254,6 @@ ORDER BY
     .where({ document: { document_type: Document::Doc::TYPE_CONTRACT }})
     .order('document.document_create_date DESC')
   }
-
-  def speciality
-    group.speciality
-  end
 
 
   def group_at_date(date)
@@ -267,14 +282,13 @@ LIMIT 1 ")
     STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status
   end
 
-  def course
-    group.course
+  def is_debtor?
+    STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status
   end
 
   def entrance_order
     orders.where('order_template = 16').last
-  end  
-
+  end
 
   # Обучается ли студент на бюджетной основе?
   def budget?
@@ -345,92 +359,59 @@ LIMIT 1 ")
     Study::Checkpoint.where(checkpoint_subject: disciplines_by_term(y,t).collect{ |d| d.id })
   end
 
-  #def discipline_marks(discipline)
-  #  dmarks = []
-  #  marks.by_discipline(discipline).each do |mark|
-  #    dmarks << {mark: mark.mark, checkpoint: mark.checkpoint}
-  #  end
-  #  dmarks.reverse.uniq{|m| m[:checkpoint]}
-  #end
-
-  def discipline_marks(discipline = nil)
-    if !discipline || discipline.is_active?
-        date_group = group
-    else
-        date_group = group_at_date(Date.new((discipline.semester == 1 ? discipline.year : discipline.year+1), (discipline.semester == 1 ? 9 : 4), 15))
+  def pass_discipline?(discipline)
+    pass = true
+    discipline.checkpoints.each do |checkpoint|
+      mark = checkpoint.marks.by_student(self).last
+      pass &&= (mark ? mark.mark >= checkpoint.min : false)
     end
+    pass
+  end
 
+  def discipline_marks(discipline)
+    if discipline.is_active?
+     date_group = group
+    else
+     date_group = group_at_date(Date.new((discipline.semester == 1 ? discipline.year : discipline.year+1), (discipline.semester == 1 ? 10 : 4), 15))
+    end
     dmarks = []
-    # raise group.group_marks(discipline).inspect
-    date_group.group_marks(discipline).each_with_object([]){|mark, a| a << mark if mark[2] == id}.each do |mark|
-      dmarks << {mark: mark[3], checkpoint: mark[8]}
+    date_group.group_marks(discipline).each_with_object([]){ |mark, a| a << mark if mark[2] == id }.each do |mark|
+      dmarks << { mark: mark[3], checkpoint: mark[8] }
     end
     dmarks
   end
 
-  def full_name
-    person.full_name
-  end
-
-  def last_name
-    person.last_name
-  end
-
-  def first_name
-    person.first_name
-  end
-
-  def patronym
-    person.patronym
-  end
-
-
-  def ball(discipline = nil, y = nil, t = nil)
+  def ball(discipline = nil, y = Study::Discipline::CURRENT_STUDY_YEAR, t = Study::Discipline::CURRENT_STUDY_TERM)
     if discipline
-      l1, p1, n1 = 0.0, 0.0, 0.0
-      return 0.0 if discipline.classes.count == 0
-      l = discipline.lectures.count
-      p = discipline.seminars.count
-      if l == 0
-        sum_p = 20.0
-        sum_l = 0.0
-      elsif p == 0
-        sum_p = 0.0
-        sum_l = 20.0
-      else
-        sum_p = 15.0
-        sum_l = 5.0
-      end
-      discipline_marks(discipline).each do |mark|
-        result = case mark[:mark]
-                   when MARK_LECTURE_ATTEND
-                     (sum_l/l)
-                   when MARK_PRACTICAL_FAIR
-                     (sum_p/(3*p))
-                   when MARK_PRACTICAL_GOOD
-                     ((sum_p*2)/(3*p))
-                   when MARK_PRACTICAL_PERFECT
-                     (sum_p/p)
-                   else
-                     0
-                 end
-        l1 += result if mark[:checkpoint] == 1
-        p1 += result if mark[:checkpoint] == 2
-        n1 += mark[:mark] if mark[:checkpoint] == 3
-      end
-      (l1+p1+n1).round 2
+      marks = discipline_marks(discipline).collect { |mark|
+        if mark[:checkpoint] == 3
+          mark[:mark]
+        else
+          case mark[:mark]
+          when MARK_LECTURE_ATTEND
+            discipline.lecture_weight
+          when MARK_PRACTICAL_FAIR
+            discipline.seminar_weight/3
+          when MARK_PRACTICAL_GOOD
+            discipline.seminar_weight*2/3
+          when MARK_PRACTICAL_PERFECT
+            discipline.seminar_weight
+          else
+            0
+          end
+        end
+      }.compact
+      marks.empty? ? 0.00 : marks.sum.round(2)
     else
-      ball = 0.0
-      disciplines_by_term(y, t).each do |d|
-        ball+=ball(d)
-      end
-      ball
+      disciplines_by_term(y,t).collect{|d| ball(d)}.sum
     end
   end
 
   def progress(discipline = nil)
     if discipline
-      ball(discipline)
+      r = (discipline.current_ball == 0 ? 0.0 : 100*ball(discipline)/discipline.current_ball)
+      r = 100.0 if r > 100
+      r
     else
       (disciplines.count != 0 ? (ball(nil)/disciplines.count) : 0)
     end
@@ -438,48 +419,19 @@ LIMIT 1 ")
 
   def got_all_marks(discipline = nil)
     if discipline
-      #group.group_marks(discipline).collect{|m| m[2] == id}.length >= discipline.classes.not_future.length
-      discipline.classes.count != 0 && marks.by_discipline(discipline).group(:checkpoint_mark_checkpoint).length >= discipline.classes.each_with_object([]){|checkpoint, a| a << checkpoint unless checkpoint.date.future? }.length
+      discipline.classes.count != 0 && marks.by_discipline(discipline).group(:checkpoint_mark_checkpoint).length >= discipline.classes.not_future.length
     else
-      key = true
-      disciplines.each do |d|
-        key = (key and got_all_marks(d))
-      end
-      key
+      disciplines.collect { |d| got_all_marks(d) }.all?
     end
   end
 
-  def result(discipline = nil, y = nil, t = nil)
+  def result(discipline = nil, y = Study::Discipline::CURRENT_STUDY_YEAR, t = Study::Discipline::CURRENT_STUDY_TERM)
     if discipline
-      current = ball(discipline)
-      ball = discipline.current_ball != 0 ? 100*(current/discipline.current_ball) : 0.0
-      current_progress = current
+      mark_progress(ball(discipline), progress(discipline), discipline.final_exam.type)
     else
-      current = ball(nil, y, t)
-      current_progress = (disciplines_by_term(y,t).size != 0 ? (current/disciplines_by_term(y,t).size) : 0)
-      ball = 0
-      disciplines_by_term(y,t).each do |d|
-        ball+=100*(current_progress/d.current_ball)/disciplines_by_term(y,t).size if d.current_ball != 0
-      end
-    end
-    if discipline and discipline.final_exam and discipline.final_exam.test?
-      case ball.round
-        when 0..54
-          {ball: current, progress: current_progress, mark: 'не зачтено', short: 'незачёт', color: 'danger', width: ball}
-        when 55..Float::INFINITY
-          {ball: current, progress: current_progress, mark: 'зачтено', short: 'зачёт', color: 'success', width: ball}
-      end
-    else
-      case ball.round
-        when 0..54
-          {ball: current, progress: current_progress, mark: 'недопущен', short: 'недопущен', color: 'danger', width: ball}
-        when  55..69
-          {ball: current, progress: current_progress, mark: 'удовлетворительно', short: 'удовл.', color: 'warning', width: ball}
-        when 70..85
-          {ball: current, progress: current_progress, mark: 'хорошо', short: 'хорошо', color: 'info', width: ball}
-        when 86..Float::INFINITY
-          {ball: current, progress: current_progress, mark: 'отлично', short: 'отлично', color: 'success', width: ball}
-      end
+      score = ball(nil, y, t)
+      progress = (disciplines_by_term(y,t).size != 0 ? (score/disciplines_by_term(y,t).size) : 0)
+      mark_progress(score, progress)
     end
   end
 
@@ -533,32 +485,118 @@ LIMIT 1 ")
   end
 
   def exam_progress(year, semester)
-    val_2 = []
-    val_3 = []
-    val_4 = []
-    val_5 = []
-    final_marks.from_year_and_semester(year, semester).each do |mark|
-      val_2 << mark if (mark.value == Study::ExamMark::VALUE_2 || mark.value == Study::ExamMark::VALUE_NEZACHET || mark.value == Study::ExamMark::VALUE_NEDOPUSCHEN)
-      val_3 << mark if mark.value == Study::ExamMark::VALUE_3
-      val_4 << mark if mark.value == Study::ExamMark::VALUE_4
-      val_5 << mark if (mark.value == Study::ExamMark::VALUE_5 || mark.value == Study::ExamMark::VALUE_ZACHET)
-    end
-    exam_marks.from_year_and_semester(year, semester).each do |mark|
-      val_2 << mark if (mark.value == Study::ExamMark::VALUE_2 || mark.value == Study::ExamMark::VALUE_NEZACHET || mark.value == Study::ExamMark::VALUE_NEDOPUSCHEN)
-      val_3 << mark if mark.value == Study::ExamMark::VALUE_3
-      val_4 << mark if mark.value == Study::ExamMark::VALUE_4
-      val_5 << mark if (mark.value == Study::ExamMark::VALUE_5 || mark.value == Study::ExamMark::VALUE_ZACHET)
-    end
-    if !val_2.empty?
-      return 2
-    elsif !val_3.empty?
-      return 3
-    elsif !val_4.empty?
-      return 4
-    elsif !val_5.empty?
-      return 5
+    marks = (final_marks.from_year_and_semester(year, semester).collect { |m| m.value } + exam_marks.from_year_and_semester(year, semester).collect { |m| m.value }).uniq
+    case
+    when marks.include?(Study::ExamMark::VALUE_2) || marks.include?(Study::ExamMark::VALUE_NEZACHET) || marks.include?(Study::ExamMark::VALUE_NEDOPUSCHEN)
+      2
+    when marks.include?(Study::ExamMark::VALUE_3)
+      3
+    when marks.include?(Study::ExamMark::VALUE_4)
+      4
+    when marks.include?(Study::ExamMark::VALUE_5)
+      5
     else
-      return nil
+      nil
     end
+
+  end
+
+  def self.to_soccard
+    doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
+      xml.file do
+        xml.fileInfo do
+          xml.fileSender ''
+          xml.version 1
+          xml.recordCount self.all.length
+        end
+        xml.recordList do
+          self.all.each_with_index do |student, index|
+            xml.record do
+              xml.recordId index+1
+              xml.clientInfo do
+                xml.name do
+                  xml.lastName student.last_name
+                  xml.firstName student.first_name
+                  xml.middleName student.patronym
+                end
+                xml.dateOfBirth I18n.l(student.person.birthday, format: '%Y-%m-%d') if student.person.birthday
+                xml.sex (student.person.male? ? 1 : 2)
+                xml.document do
+                  xml.code (student.person.foreign ? 10 : 21)
+                  xml.series student.person.passport_series
+                  xml.number student.person.passport_number
+                  xml.issueDate student.person.passport_date
+                  xml.issuedBy student.person.passport_department
+                end
+                xml.registrationAddress do
+                  xml.addressText (student.person.registration_address ? student.person.registration_address : student.person.residence_address)
+                end
+                xml.residenceAddress do
+                  xml.addressText student.person.residence_address
+                end
+              end
+              xml.universityInfo do
+                xml.universityCode '028'
+                xml.status do
+                  xml.code student.soccard_status
+                  xml.date I18n.l(student.last_status_order.order_signing, format: '%Y-%m-%d') if student.last_status_order
+                end
+                xml.startDate I18n.l(student.start_date_order.order_signing, format: '%Y-%m-%d') if student.start_date_order
+                xml.course student.group.course
+                xml.educationType student.group.soccard_form
+              end
+            end
+          end
+        end
+      end
+    end
+
+    doc.to_xml
+  end
+
+  def status_name
+    status.name
+  end
+
+  def start_date_order
+    orders.signed.my_filter(template: [1,2,16,17]).order(:order_signing).last
+  end
+
+  def last_status_order
+    case status.id
+    when 103
+      orders.signed.my_filter(template: [11,24,26,28]).order(:order_signing).last
+    when 102
+      orders.signed.my_filter(template: 14).order(:order_signing).last
+    when 104
+      orders.signed.my_filter(template: 20).order(:order_signing).last
+    when 100
+      nil
+    when 105
+      nil
+    else
+      orders.signed.my_filter(template: [1,2,3,16,17,25]).order(:order_signing).last
+    end
+  end
+
+  def soccard_status
+    case status.id
+    when 103
+      2
+    when 102
+      3
+    when 104
+      4
+    when 100
+      fail
+    when 105
+      fail
+    else
+      1
+    end
+  end
+
+  def valid_for_soccard?
+    last_name.present? && first_name.present? && person.birthday.present? && person.passport_number.present? && person.passport_department.present? && person.residence_address.present?
   end
 end

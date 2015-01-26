@@ -20,7 +20,7 @@
           <div class="row">
             <%= f.label :date, class: 'col-sm-3' %>
             <div class="col col-sm-5">
-              <%= f.text_field :date, class: 'form-control', placeholder: 'дд.мм.гггг', pattern: '\d{1,2}.\d{1,2}.\d{4}', required: true %>
+              <%= f.text_field :date, class: 'form-control datepick', placeholder: 'дд.мм.гггг', pattern: '\d{1,2}.\d{1,2}.\d{4}', required: true %>
             </div>
           </div>
           </div>
@@ -35,5 +35,18 @@
 <script>
   $(function(){
     $('#pillcheckpoint_type a:first').tab('show');
+    $('.new_study_checkpoint').submit(function(e){
+      var str = $(this).find('.datepick').val();
+      if (str != ''){
+          var m = str.match(/(\d{2}).(\d{2}).(\d{4})/);
+          if ( !m ){
+              e.preventDefault();
+              $(this).find('.datepick').parent().addClass('has-error');
+          }
+      } else {
+          e.preventDefault();
+          $(this).find('.datepick').parent().addClass('has-error');
+      }
+    })
   })
 </script>

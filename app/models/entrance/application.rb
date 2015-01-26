@@ -194,7 +194,7 @@ class Entrance::Application < ActiveRecord::Base
     [:budget, :paid].each do |payment|
       stats[payment] = {}
       [:o, :oz, :z].each do |form|
-        stats[payment][form] = { total: 0, original: 0 }
+        stats[payment][form] = { total: 0, original: 0, enrolled: 0 }
       end
     end
 
@@ -212,6 +212,7 @@ class Entrance::Application < ActiveRecord::Base
 
       stats[payment_form][form][:total] += 1
       stats[payment_form][form][:original] += 1 if app.original?
+      stats[payment_form][form][:enrolled] += 1 if app.status_id == 8
     end
 
     stats
@@ -285,7 +286,7 @@ class Entrance::Application < ActiveRecord::Base
             row << if stats[p][f][:total].zero?
                      ''
                    else
-                     "#{stats[p][f][:total]} (#{stats[p][f][:original]})"
+                     "#{stats[p][f][:total]} (#{stats[p][f][:original]}) — #{stats[p][f][:enrolled]}"
                    end
           end
         end
@@ -324,7 +325,6 @@ class Entrance::Application < ActiveRecord::Base
                  when 'too_young'
                    Person::ARMY_NOT_RESERVIST
                end
-
         person = Person.create!(
           birthday: entrant.birthday,
           birthplace: entrant.birth_place,
@@ -337,7 +337,7 @@ class Entrance::Application < ActiveRecord::Base
           phone_mobile: entrant.phone,
           residence_address: entrant.aaddress,
           residence_zip: entrant.azip,
-          student_foreign: (1 != entrant.nationality_type_id),
+          student_foreign: (1 != entrant.nationality_type_id.to_i),
           army: army,
           last_name_hint: entrant.last_name,
           first_name_hint: entrant.first_name,
@@ -446,11 +446,25 @@ class Entrance::Application < ActiveRecord::Base
         end
         xml.FinSourceAndEduForms do
           xml.FinSourceEduForm do
-            xml.FinanceSourceID     (competitive_group_item.payed? ? 15 : 14)
+            xml.FinanceSourceID (competitive_group_item.payed? ? 15 : ( competitive_group_target_item_id.nil? ? 14 : 16))
             xml.EducationFormID     competitive_group_item.form
             xml.CompetitiveGroupID  competitive_group_item.competitive_group.id
             xml.CompetitiveGroupItemID  competitive_group_item_id
             xml.Priority            1
+
+            unless competitive_group_target_item_id.nil?
+              # xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+              xml.TargetOrganizationUID case competitive_group_target_item.target_organization.name
+                                        when 'ФАПМК'
+                                          '2014-1'
+                                        when 'Министерство образования и науки Республики Тыва'
+                                          '2014-2'
+                                        when 'Министерство образования и науки Республики Бурятия'
+                                          '2014-3'
+                                        when 'Министерство образования, науки и по делам молодежи КБР'
+                                          '2014-4'
+                                        end
+            end
           end
         end
         xml.ApplicationDocuments do

@@ -34,9 +34,9 @@
       </div>
 
       <div class='col col-sm-2'>
+        <% forms = current_user.is?(:ioo) ? [%w(дистанционная 105)] : [%w(очная 101), %w(очно-заочная 102), %w(заочная 103), %w(дистанционная 105)] %>
           <%= select_tag :form,
-                         options_for_select([%w(очная 101), %w(очно-заочная 102),
-                                             %w(заочная 103), %w(дистанционная 105)], params[:form]),
+                         options_for_select(forms, params[:form]),
                          class: 'ajax-form form-control' %>
       </div>
 

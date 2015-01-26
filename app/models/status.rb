@@ -16,7 +16,7 @@ class Status
     statuses << Status.new(104, 'выпускник')
     statuses << Status.new(105, 'аспирант')
     statuses << Status.new(106, 'окончивший')
-    statuses << Status.new(107, 'должник')
+    statuses << Status.new(108, 'переведенный должник')
 
     statuses
   end

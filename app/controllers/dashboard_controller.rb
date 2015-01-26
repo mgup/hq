@@ -17,4 +17,8 @@ class DashboardController < ApplicationController
       redirect_to students_path if current_user.is?(:student_hr)
     end
   end
+
+  def test_exception
+    fail 'Ошибка'
+  end
 end

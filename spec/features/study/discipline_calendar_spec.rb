@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Вывод списка группы для ввода оценок' do
   background 'Преподаватель' do
-    @discipline = create(:exam, :final, discipline: create(:discipline, semester: 2)).discipline
+    @discipline = create(:exam, :final, discipline: create(:discipline, semester: 1, group: create(:group, :with_students))).discipline
     as_user(@discipline.lead_teacher)
   end
 
@@ -34,13 +34,13 @@ feature 'Вывод списка группы для ввода оценок' do
   scenario 'по клику на календарь должны появляться спрятанные формы (лекции)', js: true, driver: :webkit do
     visit study_discipline_checkpoints_path(@discipline)
     within '.lectures' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     expect(page).to have_css('.lecture_fields')
 
     within '.lecture_fields' do
-      expect(page).to have_css('input[value="13.02.2015"]', visible: false)
+      expect(page).to have_css('input[value="13.09.2014"]', visible: false)
       expect(page).to have_css('input[value="false"]', visible: false)
     end
   end
@@ -49,12 +49,12 @@ feature 'Вывод списка группы для ввода оценок' do
     visit study_discipline_checkpoints_path(@discipline)
 
     within '.lectures' do
-      find('td[data-date="13.02.2015"]').click
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     within('.lecture_fields', visible: false) do
-      expect(page).to have_css('input[value="13.02.2015"]', visible: false)
+      expect(page).to have_css('input[value="13.09.2014"]', visible: false)
       expect(page).to have_css('input[value="1"]', visible: false)
     end
   end
@@ -63,11 +63,11 @@ feature 'Вывод списка группы для ввода оценок' do
     visit study_discipline_checkpoints_path(@discipline)
 
     within '.lectures' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     within '.checkpoints' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     within '.checkpoint_fields' do
@@ -90,11 +90,11 @@ feature 'Вывод списка группы для ввода оценок' do
     visit study_discipline_checkpoints_path(@discipline)
 
     within '.seminars' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     within '.checkpoints' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     within '.checkpoint_fields' do
@@ -117,13 +117,13 @@ feature 'Вывод списка группы для ввода оценок' do
     visit study_discipline_checkpoints_path(@discipline)
 
     within '.checkpoints' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     expect(page).to have_css('.checkpoint_fields')
 
     within '.checkpoint_fields' do
-      expect(page).to have_css('input[data-date="13.02.2015"]')
+      expect(page).to have_css('input[data-date="13.09.2014"]')
       expect(page).to have_content('Дата')
       expect(page).to have_content('Название')
       expect(page).to have_content('Описание')
@@ -136,7 +136,7 @@ feature 'Вывод списка группы для ввода оценок' do
     visit study_discipline_checkpoints_path(@discipline)
 
     within '.checkpoints' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     within '.checkpoint_fields' do
@@ -154,7 +154,7 @@ feature 'Вывод списка группы для ввода оценок' do
 
     within 'table' do
       expect(page).to have_content('Example name')
-      expect(page).to have_content('13.02.2015')
+      expect(page).to have_content('13.09.2014')
       # expect(page).to have_content('Внести результаты')
     end
   end
@@ -163,7 +163,7 @@ feature 'Вывод списка группы для ввода оценок' do
     visit study_discipline_checkpoints_path(@discipline)
 
     within '.checkpoints' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     within '.checkpoint_fields' do
@@ -181,7 +181,7 @@ feature 'Вывод списка группы для ввода оценок' do
     visit study_discipline_checkpoints_path(@discipline)
 
     within '.checkpoints' do
-      find('td[data-date="13.02.2015"]').click
+      find('td[data-date="13.09.2014"]').click
     end
 
     within '.checkpoint_fields' do

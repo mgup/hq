@@ -35,28 +35,29 @@ class Person < ActiveRecord::Base
 
   self.table_name = 'student'
 
-  alias_attribute :id, :student_id
-  alias_attribute :birthday, :student_birthday
-  alias_attribute :birthplace, :student_birthplace
-  alias_attribute :gender, :student_gender
-  alias_attribute :homeless, :student_homeless
-  alias_attribute :passport_series,     :student_pseries
-  alias_attribute :passport_number,     :student_pnumber
-  alias_attribute :passport_date,       :student_pdate
+  alias_attribute :id,                       :student_id
+  alias_attribute :birthday,                 :student_birthday
+  alias_attribute :birthplace,               :student_birthplace
+  alias_attribute :gender,                   :student_gender
+  alias_attribute :foreign,                  :student_foreign
+  alias_attribute :homeless,                 :student_homeless
+  alias_attribute :passport_series,          :student_pseries
+  alias_attribute :passport_number,          :student_pnumber
+  alias_attribute :passport_date,            :student_pdate
   alias_attribute :passport_department,      :student_pdepartment
   alias_attribute :passport_department_code, :student_pcode
-  alias_attribute :passport_code, :student_pcode
-  alias_attribute :registration_address, :student_registration_address
-  alias_attribute :registration_zip, :student_registration_zip
-  alias_attribute :residence_address, :student_residence_address
-  alias_attribute :residence_zip, :student_residence_zip
-  alias_attribute :phone_home, :student_phone_home
-  alias_attribute :email, :student_email
-  alias_attribute :phone_mobile, :student_phone_mobile
-  alias_attribute :benefits, :student_benefits
-  alias_attribute :army, :student_army
-  alias_attribute :army_voenkom, :student_army_voenkom
-  alias_attribute :hostel_st, :student_hostel_status
+  alias_attribute :passport_code,            :student_pcode
+  alias_attribute :registration_address,     :student_registration_address
+  alias_attribute :registration_zip,         :student_registration_zip
+  alias_attribute :residence_address,        :student_residence_address
+  alias_attribute :residence_zip,            :student_residence_zip
+  alias_attribute :phone_home,               :student_phone_home
+  alias_attribute :email,                    :student_email
+  alias_attribute :phone_mobile,             :student_phone_mobile
+  alias_attribute :benefits,                 :student_benefits
+  alias_attribute :army,                     :student_army
+  alias_attribute :army_voenkom,             :student_army_voenkom
+  alias_attribute :hostel_st,                :student_hostel_status
 
 
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname, dependent: :destroy
@@ -73,6 +74,7 @@ class Person < ActiveRecord::Base
   accepts_nested_attributes_for :students
 
   has_many :deeds, class_name: 'Social::Document', foreign_key: :student_id, primary_key: :student_id
+  has_many :archive_persons, class_name: 'Archive::Person', foreign_key: :student_id, primary_key: :student_id
 
   scope :from_flat, -> flat { joins(:room).where(room: {room_flat: flat})}
 
@@ -98,6 +100,10 @@ class Person < ActiveRecord::Base
       when FEMALE
         'женский'
     end
+  end
+
+  def hostel
+    room.flat.hostel
   end
 
   def benefits_free?
@@ -161,63 +167,56 @@ class Person < ActiveRecord::Base
     end
   end
 
-  trigger.before(:insert) do
-    %q(
-         SET
-            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_fname = dictionary.dictionary_id
-                                  LIMIT 1),
-            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_iname = dictionary.dictionary_id
-                                  LIMIT 1),
-            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_oname = dictionary.dictionary_id
-                                  LIMIT 1)
-       )
-  end
-
-  trigger.before(:update) do |t|
-    t.where('NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
-             NEW.student_oname <> OLD.student_oname') do
-      %q(
-         SET
-            NEW.last_name_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_fname = dictionary.dictionary_id
-                                  LIMIT 1),
-            NEW.first_name_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_iname = dictionary.dictionary_id
-                                  LIMIT 1),
-            NEW.patronym_hint = (SELECT dictionary.dictionary_ip
-                                  FROM dictionary
-                                  JOIN student ON NEW.student_oname = dictionary.dictionary_id
-                                  LIMIT 1)
-       )
-    end
-  end
+  # trigger.before(:insert) do
+  #   %q(
+  #        SET
+  #           NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_fname = dictionary.dictionary_id
+  #                                 LIMIT 1),
+  #           NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_iname = dictionary.dictionary_id
+  #                                 LIMIT 1),
+  #           NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_oname = dictionary.dictionary_id
+  #                                 LIMIT 1)
+  #      )
+  # end
+  #
+  # trigger.before(:update) do |t|
+  #   t.where('NEW.student_fname <> OLD.student_fname OR NEW.student_iname <> OLD.student_iname OR
+  #            NEW.student_oname <> OLD.student_oname') do
+  #     %q(
+  #        SET
+  #           NEW.last_name_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_fname = dictionary.dictionary_id
+  #                                 LIMIT 1),
+  #           NEW.first_name_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_iname = dictionary.dictionary_id
+  #                                 LIMIT 1),
+  #           NEW.patronym_hint = (SELECT dictionary.dictionary_ip
+  #                                 FROM dictionary
+  #                                 JOIN student ON NEW.student_oname = dictionary.dictionary_id
+  #                                 LIMIT 1)
+  #      )
+  #   end
+  # end
 
 
   def to_nokogiri
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.person {
         xml.id_   id
+        xml.hostel hostel.address if student_room
         xml.foreign student_foreign if student_foreign
-        %w(last_name first_name patronym).each do |name|
-          xml.send(name) {
-            %w(ip rp dp vp tp pp).each do |form|
-              xml.send("#{form}_", self.send(name, form.to_sym))
-            end
-          } if name
-        end
+        name_to_nokogiri.children[0].children.each { |part| xml << part.to_xml }
       }
     }.doc
   end
 
-  def to_xml
-    to_nokogiri.to_xml
-  end
+  delegate :to_xml, to: :to_nokogiri
 end

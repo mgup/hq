@@ -21,8 +21,8 @@ module Study::CheckpointHelper
         end
         tags << '</tr>'.html_safe
 
-        first_day = Study::Discipline::STUDY_START[discipline.year][discipline.semester]
-        last_day  = Study::Discipline::STUDY_END[discipline.year][discipline.semester]
+        first_day = Kernel.const_get("MGUP_STUDY_START_#{discipline.year}_#{discipline.semester}")
+        last_day  = Kernel.const_get("MGUP_STUDY_END_#{discipline.year}_#{discipline.semester}")
         (first_day..last_day).each do |d|
           # Если первый день семестра выпадает не на понедельник — добавляем
           # в начало строки пустые ячейки.

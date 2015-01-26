@@ -16,6 +16,17 @@
     <%= render partial: 'study/disciplines/manage', layout: 'layouts/modal',
                locals: { discipline: @new_discipline } %>
   <% end %>
+
+  <h2>Документы</h2>
+    <% unless @group.fulltime? %>
+      <%= link_to '#session_call_modal', class: 'btn btn-primary',
+                                         data: { toggle: 'modal' } do %>
+        <span class="glyphicon glyphicon-print"></span>
+        Распечатать справки-вызов
+      <% end %>
+
+      <%= render partial: 'study/plans/modals/session_call' %>
+    <% end %>
 <% end %>
 
 <script>

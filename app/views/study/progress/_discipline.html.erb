@@ -1,16 +1,10 @@
 <% link = study_group_print_progress_path  %>
 <% if discipline %>
   <% link << "?discipline=#{discipline.id}" %>
-  <% if discipline.final_exam %>
-    <% date = discipline.final_exam.exam? %>
-  <% else %>
-    <% date = false %>
-  <% end %>
+  <% date = discipline.final_exam.exam? %>
 <% else %>
   <% date = false %>
 <% end %>
-
-<% date = false %>
 
 <% if false %>
 <%= link_to link, id: 'printProgress', class: 'btn btn-info navigation_trip',

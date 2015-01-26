@@ -65,29 +65,14 @@ class Department < ActiveRecord::Base
   def payment_types(year = nil)
     types = []
     if year
-      specialities.includes(:payment_types).each do |s|
-        years=[]
-        payments = s.payment_types.from_year(year)
-        years << {year: year, full_time: payments.from_form(101).last,
-                  part_time: payments.from_form(102).last, abcsentia: payments.from_form(103).last,
-                  distance: payments.from_form(105).last}  if payments != []
-        types << { name: s.name + "\n" + s.code, prices: years}
-      end
-      types.compact.uniq
+      specialities.includes(:payment_types).map { |s| types << { name: s.name + "\n" + s.code, prices: [s.calculate_payment_types(year)].compact} }
     else
       specialities.includes(:payment_types).each do |s|
-        years = []
-        s.payment_types.collect{ |type| type.year}.uniq.each do |year|
-          payments = s.payment_types.from_year(year)
-          years << {year: year, full_time: payments.from_form(101).last,
-                    part_time: payments.from_form(102).last, abcsentia: payments.from_form(103).last,
-                    distance: payments.from_form(105).last}  if payments != []
-        end
-        types << { name: s.name + "\n" + s.code, prices: years} if years != []
+        years = s.payment_types.collect{ |type| type.year}.uniq.collect { |year| s.calculate_payment_types(year) }
+        types << { name: s.name + "\n" + s.code, prices: years} unless years.empty?
       end
-
-      types.compact.uniq
     end
+    types.compact.uniq
   end
 
   def to_nokogiri

@@ -7,12 +7,29 @@ module Filterable
   # Методы-класса, которые добавляются в расширяемую модель.
   module ClassMethods
     def filter(conditions)
-      conditions.reduce(all) do |query, (field, value)|
-        method = "find_all_by_#{field}"
-        if self.respond_to?(method)
-          query.send(method, value)
+      skipped_keys = ['utf8']
+
+      conditions.reduce(@relation) do |query, (field, value)|
+        if skipped_keys.include?(field) || value.blank?
+          query
         else
-          query.where(field => value)
+          # Заменяем все псевдонимы на оригинальные названия полей.
+          field ||= self.attribute_aliases[field]
+
+          # По-хорошему, здесь надо бы сделать проверку на существование полей.
+          # Но, во-первых, сфигали их запрашивать, если их не существует?
+          # Во-вторых, база и так выдаст ошибку, мы её увидим и тогда
+          # смотри «во-первых».
+          # if self.attribute_names.include?(field)
+            method = "find_all_by_#{field}"
+            if self.respond_to?(method)
+              query.send(method, value)
+            else
+              query.where(field => value)
+            end
+          # else
+          #   query
+          # end
         end
       end
     end

@@ -75,7 +75,12 @@
                     <span class="glyphicons inbox"></span>
                   </button>
                 <% end %>
+                <br><br>
               <% end %>
+              <%= link_to "#editDocumentModal_#{document.id}", class: 'btn btn-default pull-right', title: 'Редактировать', data: {toggle: 'modal'} do %>
+                  <span class="glyphicon glyphicon-edit"></span>
+              <% end %>
+              <%= render 'add_document', document: document, url: student_social_deed_path(@student, document) %>
             </td>
           </tr>
         <% end %>
@@ -84,7 +89,7 @@
   <% end %>
 <%# end %>
 
-<%= render 'add_document' %>
+<%= render 'add_document', document: @document, url: student_social_deeds_path(@student) %>
 
 <br><br>
 <button id="show_archive_documents" class="btn btn-default">Архив</button>

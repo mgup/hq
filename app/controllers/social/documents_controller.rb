@@ -19,11 +19,11 @@ class Social::DocumentsController < ApplicationController
       params[:archive] = '1'
     end
 
-    if params[:date] && params[:date]!=''
+    if params[:date] && params[:date] != ''
       @documents = @documents.after_date(params[:date])
     end
 
-    if params[:pdate] && params[:pdate]!=''
+    if params[:pdate] && params[:pdate] != ''
       @documents = @documents.till_date(params[:pdate])
     end
 

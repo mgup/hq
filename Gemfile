@@ -35,7 +35,7 @@ gem 'gruff'
 gem 'chunky_png'
 gem 'barby'
 gem 'nested_form' #, github: 'ryanb/nested_form'
-gem 'hairtrigger'
+# gem 'hairtrigger'
 gem 'axlsx_rails'
 gem 'acts_as_xlsx'
 gem 'ace-rails-ap'
@@ -53,7 +53,7 @@ gem 'jquery-validation-rails'
 gem 'rollbar'
 gem 'dotenv-rails'
 gem 'tiny_tds'
-gem 'activerecord-sqlserver-adapter'
+# gem 'activerecord-sqlserver-adapter'
 
 gem 'httparty'
 gem 'sidekiq'
@@ -61,7 +61,11 @@ gem 'sidetiq'
 gem 'sinatra', require: nil
 gem 'numbers_and_words'
 
+# gem 'mysql2psql'
+
 group :development do
+  gem 'spring'
+
   gem 'thin'
   #gem 'debugger'
   gem 'better_errors'
@@ -70,10 +74,9 @@ group :development do
   gem 'brakeman', require: false
   gem 'rails-erd'
 
-  gem 'capistrano', '~> 3.2.0'
+  gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
-  gem 'capistrano-rails', '~> 1.1.0'
   gem 'capistrano-sidekiq'
   gem 'sextant'
   gem 'quiet_assets'
@@ -98,3 +101,5 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rubocop', require: false
 end
+
+gem 'rubyXL'

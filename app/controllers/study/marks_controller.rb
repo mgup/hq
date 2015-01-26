@@ -21,7 +21,7 @@ class Study::MarksController < ApplicationController
 
   def ajax_update
     @mark = Study::Mark.find(params[:id])
-    @new = Study::Mark.create(@mark.attributes.merge(mark: params[:mark], id: Study::Mark.last.id+1,
+    @new = Study::Mark.create(@mark.attributes.merge(mark: params[:mark], id: nil,
                               created_at: DateTime.now, updated_at: DateTime.now, retake: true,
                               checkpoint_mark_submitted: DateTime.now))
     if @mark.checkpoint.is_checkpoint?
@@ -63,16 +63,6 @@ class Study::MarksController < ApplicationController
 
   def load_discipline
     @discipline = Study::Discipline.include_teacher(current_user).find(params[:discipline_id])
-    if @discipline.is_active?
-      @students = @discipline.group.students.valid_for_today
-    else
-      @students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
-    end
+    @students = @discipline.students
   end
-
-  #def find_chekpoint
-  #  @checkpoint = Study::Checkpoint.find(params[:checkpoint_id])
-  #  @discipline = Study::Discipline.find(params[:discipline_id])
-  #  @students = Student.where(student_group_group: @checkpoint.discipline.group)
-  #end
 end

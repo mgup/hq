@@ -3,15 +3,14 @@ require 'rails_helper'
 feature 'Ввод оценок за занятия' do
   background 'Преподаватель' do
     # понять, куда это перенести
-    @fd = create(:department, name: 'First Department', abbreviation: 'FD', department_role: 'faculty')
-    ffs = create(:speciality, name: 'Empty', suffix: 'fdf', faculty: @fd)
-    @fss = create(:speciality, name: 'First department second speciality', faculty: @fd)
-    @group = create(:group, speciality: @fss)
+    fd = create(:department, name: 'First Department', abbreviation: 'FD', department_role: 'faculty')
+    fss = create(:speciality, name: 'First department second speciality', faculty: fd)
+    @group = create(:group, speciality: fss)
     @student = create(:student, group: @group)
 
-    @user = create(:user, :lecturer)
-    as_user(@user)
-    @discipline = create(:discipline, lead_teacher: @user, group: @group)
+    user = create(:user, :lecturer)
+    as_user(user)
+    @discipline = create(:discipline, lead_teacher: user, group: @group)
     create(:exam, :final, discipline: @discipline)
     @checkpoint =  create(:checkpoint, :control, discipline: @discipline)
     @lecture = create(:checkpoint, :lecture, discipline: @discipline)

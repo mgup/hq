@@ -1,10 +1,4 @@
 class Study::Discipline < ActiveRecord::Base
-  STUDY_START = { 2012 => { 1 => Date.new(2012,  9,  1), 2 => Date.new(2013,  1,  13) },
-                  2013 => { 1 => Date.new(2013,  9,  4), 2 => Date.new(2014,  1,  13) },
-                  2014 => { 1 => Date.new(2014,  9,  1), 2 => Date.new(2015,  1,  13) } }
-  STUDY_END   = { 2012 => { 1 => Date.new(2012, 12, 31), 2 => Date.new(2013,  6,  30) },
-                  2013 => { 1 => Date.new(2013, 12, 31), 2 => Date.new(2014,  6,  30) },
-                  2014 => { 1 => Date.new(2014, 12, 31), 2 => Date.new(2015,  6,  30) }}
   CURRENT_STUDY_YEAR  = 2014
   CURRENT_STUDY_TERM  = 1
 
@@ -78,19 +72,12 @@ class Study::Discipline < ActiveRecord::Base
   scope :now, -> { by_term(CURRENT_STUDY_YEAR, CURRENT_STUDY_TERM) }
 
   scope :include_teacher, -> user {
-    if user.is?(:subdepartment_assistant)
+    if user.is?(:subdepartment_assistant) || user.is?(:subdepartment)
       # Определяем его кафедру.
-      dep_ids = user.positions.from_role(:subdepartment_assistant.to_s).map { |p| p.department.id }
+      dep_ids = user.positions.from_role(['subdepartment_assistant', 'subdepartment']).map { |p| p.department.id }
       users = User.in_department(dep_ids).with_role(Role.select(:acl_role_id).where(acl_role_name: ['lecturer', 'subdepartment']))
       ids = users.map { |u| u.id }.push(user.id)
 
-      includes(:assistant_teachers).references(:assistant_teachers)
-      .where('subject_teacher IN (?) OR subject_teacher.teacher_id IN (?)', ids, ids).references(:subject_teacher)
-    elsif user.is?(:subdepartment)
-      # Определяем его кафедру.
-      dep_ids = user.positions.from_role(:subdepartment.to_s).map { |p| p.department.id }
-      users = User.in_department(dep_ids).with_role(Role.select(:acl_role_id).where(acl_role_name: ['lecturer', 'subdepartment']))
-      ids = users.map { |u| u.id }.push(user.id)
       includes(:assistant_teachers).references(:assistant_teachers)
       .where('subject_teacher IN (?) OR subject_teacher.teacher_id IN (?)', ids, ids).references(:subject_teacher)
     else
@@ -100,6 +87,23 @@ class Study::Discipline < ActiveRecord::Base
   }
 
   scope :with_brs, ->{where(subject_brs:  true)}
+
+  def students
+    if is_active?
+      group.students.valid_for_today
+    else
+      Student.in_group_at_date(group, Date.new((1 == semester ? year : year + 1), (1 == semester ? 9 : 4), 15))
+    end
+  end
+
+  # Список студентов, которые потенциально могут пересдавать эту дисциплину.
+  def students_for_repeat
+    Student.my_filter(
+      status: Student::STATUS_TRANSFERRED_DEBTOR,
+      speciality: group.speciality.id,
+      course: group.course + 1
+    )
+  end
 
   def has?(type)
     work = (type == 'work' ? 2 : 3)
@@ -114,30 +118,18 @@ class Study::Discipline < ActiveRecord::Base
     exams.where(exam_type: [0,1,9]).first
   end
 
+  def lecture_weight
+    lectures.empty? ? 0 : (seminars.count > 0 ? 5.0 : 20.0)/lectures.count
+  end
+
+  def seminar_weight
+    seminars.empty? ? 0 : (lectures.count > 0 ? 15.0 : 20.0)/seminars.count
+  end
+
   def current_ball
-    l1, p1, n1 = 0.0, 0.0, 0.0
-    l = lectures.count
-    p = seminars.count
-    if l == 0
-      sum_p = 20.0
-      sum_l = 0.0
-    elsif p == 0
-      sum_p = 0.0
-      sum_l = 20.0
-    else
-      sum_p = 15.0
-      sum_l = 5.0
-    end
-    classes.each do |checkpoint|
-      unless checkpoint.date.future?
-        l1 += (sum_l/l) if checkpoint.lecture?
-        p1 += (sum_p/p) if checkpoint.seminar?
-        if checkpoint.is_checkpoint?
-          n1 += (checkpoint.max? ? checkpoint.max : 0.0)
-        end
-      end
-    end
-    (l1+p1+n1).round 2
+  lessons = [lectures.not_future.count*lecture_weight,
+   seminars.not_future.count*seminar_weight,
+   checkpoints.not_future.collect { |c| c.max }.sum].sum.round(2)
   end
 
   def is_active?
@@ -151,11 +143,11 @@ class Study::Discipline < ActiveRecord::Base
   end
 
   def brs?
-    classes.any?
+    classes.any? && subject_brs
   end
 
   def not_brs?
-    classes.empty?
+    classes.empty? && !subject_brs
   end
 
   def add_semester_work

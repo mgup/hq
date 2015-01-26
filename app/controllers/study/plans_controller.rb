@@ -3,7 +3,7 @@ class Study::PlansController < ApplicationController
     authorize! :index, :plans
 
     @faculties = Department.faculties
-    unless current_user.is?(:developer)
+    unless current_user.is?(:developer) || current_user.is?(:ioo)
       user_departments = current_user.departments_ids
       @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
     end
@@ -11,11 +11,16 @@ class Study::PlansController < ApplicationController
     @specialities = Speciality.where(speciality_faculty: @faculties.map { |f| f.id })
     @groups = Group.where(group_speciality: @specialities.map { |s| s.id })
 
-    if current_user.is?(:developer)
+    if current_user.is?(:ioo)
+      @groups = @groups.distance
+    end
+
+    if current_user.is?(:developer) || current_user.is?(:ioo)
       @group = Group.find(params[:group]) if params[:group]
     else
       if params[:group]
         @group = Group.find(params[:group])
+
         unless user_departments.include?(@group.speciality.faculty.id)
           redirect_to study_plans_path
         end
@@ -40,3 +45,4 @@ class Study::PlansController < ApplicationController
   end
 
 end
+

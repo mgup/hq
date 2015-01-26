@@ -28,4 +28,8 @@ module StudyHelper
       tags.join.html_safe
     end
   end
+
+  def study_form_name(form, p = :ip)
+    t "form.#{form}.#{p}"
+  end
 end

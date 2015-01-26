@@ -15,9 +15,9 @@
             <%= f.text_field :fname, class: 'form-control' %>
           </div>
           <br><br>
-          <label class="col-sm-3">Имя</label>
+          <label class="col-sm-3">Имя*</label>
           <div class="col-sm-9">
-            <%= f.text_field :iname, class: 'form-control' %>
+            <%= f.text_field :iname, class: 'form-control', required: true %>
           </div>
           <br><br>
           <label class="col-sm-3">Отчество</label>
@@ -32,9 +32,14 @@
                        {}, class: 'form-control' %>
           </div>
           <br><br>
-          <label class="col-sm-3">Телефон</label>
+          <label class="col-sm-3">Комментарий к заявке</label>
           <div class="col-sm-9">
-            <%= f.text_field :phone, class: 'form-control', placeholder: '+7 916 123-45-67' %>
+              <%= f.text_area :comment, class: 'form-control' %>
+          </div>
+          <br><br><br>
+          <label class="col-sm-3">Телефон*</label>
+          <div class="col-sm-9">
+            <%= f.text_field :phone, class: 'form-control', placeholder: '+7 916 123-45-67', required: true %>
           </div>
           <br><br>
           <label class="col-sm-3">Электронная почта</label>

@@ -19,20 +19,20 @@ class ApplicationController < ActionController::Base
 
   # before_filter :authorize_developer
 
-  unless Rails.application.config.consider_all_requests_local
-    rescue_from ActionController::RoutingError,
-                ActionController::UnknownController,
-                ActionController::InvalidAuthenticityToken,
-                ::AbstractController::ActionNotFound,
-                ActiveRecord::RecordNotFound, with: lambda { |exception|
-      render_error 404, exception
-    }
-
-    rescue_from Exception, with: lambda { |exception|
-      Rollbar.report_exception(exception)
-      render_error 500, exception
-    }
-  end
+  # unless Rails.application.config.consider_all_requests_local
+  #   rescue_from ActionController::RoutingError,
+  #               ActionController::UnknownController,
+  #               ActionController::InvalidAuthenticityToken,
+  #               ::AbstractController::ActionNotFound,
+  #               ActiveRecord::RecordNotFound, with: lambda { |exception|
+  #     render_error 404, exception
+  #   }
+  #
+  #   rescue_from Exception, with: lambda { |exception|
+  #     Rollbar.report_exception(exception)
+  #     render_error 500, exception
+  #   }
+  # end
 
   before_filter :enable_profiler unless Rails.env.test?
 

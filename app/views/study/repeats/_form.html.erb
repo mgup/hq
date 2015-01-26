@@ -28,5 +28,16 @@
     </div>
   <% end %>
 
-  <%= f.submit 'Создать дополнительную ведомость', class: 'btn btn-primary' %>
+  <label>Переведенные должники</label>
+  <%= f.collection_check_boxes :student_ids, @discipline.students_for_repeat,
+                               :id, :full_name do |builder| %>
+    <div class="checkbox">
+      <%= builder.label do %>
+          <%= builder.check_box %> <%= builder.text %>
+      <% end %>
+    </div>
+  <% end %>
+
+
+<%= f.submit 'Создать дополнительную ведомость', class: 'btn btn-primary' %>
 <% end %>

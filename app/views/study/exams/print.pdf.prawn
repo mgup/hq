@@ -1,4 +1,3 @@
-require "prawn/table"
 prawn_document margin: [28, 20, 28, 28],
                filename: "Ведомость № #{@exam.id}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
@@ -19,7 +18,7 @@ prawn_document margin: [28, 20, 28, 28],
   if @exam.is_repeat?
     pdf.text_box "ДОПОЛНИТЕЛЬНАЯ ЭКЗАМЕНАЦИОННАЯ (ЗАЧЕТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [68, 842 - 70]
   elsif @exam.validation?
-    pdf.text_box "ВЕДОМОСТЬ КОНТРОЛЯ УСПЕВАЕМОСТИ", at: [160, 842 - 70]
+    pdf.text_box 'ВЕДОМОСТЬ КОНТРОЛЯ УСПЕВАЕМОСТИ', at: [160, 842 - 70]
   else
     pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № #{@exam.id}", at: [120, 842 - 70]
     # pdf.text_box "ЭКЗАМЕНАЦИОННАЯ (ЗАЧЁТНАЯ) ВЕДОМОСТЬ № XXXX", at: [120, 842 - 70]
@@ -34,9 +33,9 @@ prawn_document margin: [28, 20, 28, 28],
     else
       pdf.text_box "Форма контроля: #{@exam.name}", at: [0, 750 - 15]
     end
-    pdf.text_box "Дисциплина: #{@discipline.name}", at: [0, 750 - 30]
+    pdf.text_box "Дисциплина: #{@discipline.name}", at: [0, 750 - 30], width: 365
     # pdf.text_box "Дисциплина: Название дисциплины", at: [0, 750 - 30]
-    pdf.text_box "Фамилия, имя, отчество преподавателя(лей): #{@discipline.lead_teacher ? @discipline.lead_teacher.full_name : ''}", at: [0, 750 - 45]
+    pdf.text_box "Фамилия, имя, отчество преподавателя(лей): #{@discipline.lead_teacher ? @discipline.lead_teacher.full_name : ''}", at: [0, 750 - 58]
     # pdf.text_box "Фамилия, имя, отчество преподавателя(лей): Фамилия Имя Отчество", at: [0, 750 - 45]
     pdf.text_box "Семестр: #{@exam.discipline.semester == 1 ? 'I' : 'II'}", at: [370, 750]
     if @exam.is_repeat?
@@ -148,10 +147,15 @@ prawn_document margin: [28, 20, 28, 28],
            good = 0
            fair = 0
            bad = 0
-           @discipline.group.students.valid_for_today.each_with_index do |student, index|
+           if @discipline.is_active?
+             group_students = @discipline.group.students.valid_for_today
+           else
+             group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+           end
+           group_students.each_with_index do |student, index|
              position_x = x_pos
              ball = student.result(@discipline)
-             case ball[:width].round
+             case ball[:progress].round
                 when 0..54
                   pdf.move_to [position_x + 317, position_y - 5.4]
                   pdf.line_to [position_x + 324, position_y - 12.4]
@@ -173,7 +177,7 @@ prawn_document margin: [28, 20, 28, 28],
                    pdf.line_to [position_x + 287, position_y - 12.4]
                    result = 'хорошо'
                    good += 1
-                when 86..Float::INFINITY
+                when 86..100
                    pdf.move_to [position_x + 272, position_y - 5.4]
                    pdf.line_to [position_x + 279, position_y - 12.4]
                    pdf.move_to [position_x + 279, position_y - 5.4]
@@ -190,10 +194,15 @@ prawn_document margin: [28, 20, 28, 28],
               position_y -= 15
            end
         else #оригинальная форма контроля
-          @discipline.group.students.valid_for_today.each_with_index do |student, index|
+          if @discipline.is_active?
+            group_students = @discipline.group.students.valid_for_today
+          else
+            group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+          end
+          group_students.each_with_index do |student, index|
             position_x = x_pos
             if @exam.test? #зачёт
-              if student.ball(@discipline) < 55
+              if student.ball(@discipline) < 55 || !student.pass_discipline?(@discipline)
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
                 # tableData << [index+1, 'Фамилия Имя Отчество', 'XXXXX', '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
               else
@@ -208,7 +217,7 @@ prawn_document margin: [28, 20, 28, 28],
               tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', '', '', '']
               # tableData << [index+1, 'Фамилия Имя Отчество', 'XXXXX', '', '', '', '', '', '', '', '', '', '', '']
             else #дифференцированный зачёт
-              if student.ball(@discipline) < 85
+              if student.ball(@discipline) < 85 || !student.pass_discipline?(@discipline)
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', "#{student.ball(@discipline)}+", '', '']
               else
                 tableData << [index+1, student.person.full_name, student.id, '', '', '', '', '', '', '', '', student.ball(@discipline), 'отлично', '']
@@ -238,7 +247,7 @@ prawn_document margin: [28, 20, 28, 28],
                       {content: pdf.text_box('Неуд.', at: [x_pos + 314, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
                       {content: pdf.text_box('Недопущ.', at: [x_pos + 329, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
                       {content: pdf.text_box('Неявка', at: [x_pos + 344, y_pos], rotate: 90, size: size, width: 100), rowspan: 2},
-                      {content: 'Результат', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], ['Цифрой', 'Прописью']]
+                      {content: 'Результат', colspan: 2}, {content: 'Подпись экзаменатора', rowspan: 2}], %w(Цифрой Прописью)]
 
         position_y = y_pos
 
@@ -250,7 +259,12 @@ prawn_document margin: [28, 20, 28, 28],
             @exam.students.each { |s| st << s.student }
           end
         else
-          @discipline.group.students.valid_for_today.each { |s| st << s }
+          if @discipline.is_active?
+            group_students = @discipline.group.students.valid_for_today
+          else
+            group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+          end
+          group_students.each { |s| st << s }
         end
 
         st.each_with_index do |student, index|
@@ -271,8 +285,8 @@ prawn_document margin: [28, 20, 28, 28],
          column(0).width = 24
          column(1).width = 174.28 + 26 #157
          column(2).width = 40 #35
-         8.times.each do |i|
-           column(i+3).width = 15
+         (3..10).each do |i|
+           column(i).width = 15
          end
          column(11).width = 40 + 7
          column(12).width = 48 #60
@@ -288,9 +302,14 @@ prawn_document margin: [28, 20, 28, 28],
            end
            pdf.move_down 18
         else
-          if @exam.validation?
+          if @exam.validation? && @discipline.brs?
+            if @discipline.is_active?
+              group_students = @discipline.group.students.valid_for_today
+            else
+              group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+            end
             footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
-                              [@discipline.group.students.valid_for_today.length, excellent, good, fair, bad, '—', '—', '—', '—', (5*excellent + 4*good + 3*fair + 2*bad)/@discipline.group.students.valid_for_today.length]]
+                              [group_students.length, excellent, good, fair, bad, '—', '—', '—', '—', (5*excellent + 4*good + 3*fair + 2*bad)/group_students.length]]
           else
             footData = [['Явилось', 'Отлично', 'Хорошо', 'Удовл.', 'Неуд.', 'Зачтено', 'Не зачтено', 'Недопущ.', 'Неявка', 'Ср. балл'],
                       [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']]
@@ -353,20 +372,33 @@ prawn_document margin: [28, 20, 28, 28],
       pdf.font_size 10 do
         if @exam.is_mass_repeat? || @exam.is_individual_repeat?
           @exam.students.each_with_index do |student, index|
+            if student.student.ball(@discipline) < 55 || !student.student.pass_discipline?(@discipline)
+              applicationTable << [index+1, student.student.person.full_name, student.student.id, student.student.ball(@discipline), '—', '—', '—', '0 — 100']
+            else
             result_5 = @discipline.final_exam.predication(5, student.student.ball(@discipline))
             result_4 = @discipline.final_exam.predication(4, student.student.ball(@discipline))
             result_3 = @discipline.final_exam.predication(3, student.student.ball(@discipline))
             result_2 = @discipline.final_exam.predication(2, student.student.ball(@discipline))
             applicationTable << [index+1, student.student.person.full_name, student.student.id, student.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+            end
           end
         elsif @exam.student
-          result_5 = @discipline.final_exam.predication(5, @exam.student.ball(@discipline))
-          result_4 = @discipline.final_exam.predication(4, @exam.student.ball(@discipline))
-          result_3 = @discipline.final_exam.predication(3, @exam.student.ball(@discipline))
-          result_2 = @discipline.final_exam.predication(2, @exam.student.ball(@discipline))
-          applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
-        else
-          @discipline.group.students.valid_for_today.each_with_index do |student, index|
+          if @exam.student.ball(@discipline) < 55 || !@exam.student.pass_discipline?(@discipline)
+            applicationTable << [index+1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), '—', '—', '—', '0 — 100']
+          else
+            result_5 = @discipline.final_exam.predication(5, @exam.student.ball(@discipline))
+            result_4 = @discipline.final_exam.predication(4, @exam.student.ball(@discipline))
+            result_3 = @discipline.final_exam.predication(3, @exam.student.ball(@discipline))
+            result_2 = @discipline.final_exam.predication(2, @exam.student.ball(@discipline))
+            applicationTable << [1, @exam.student.person.full_name, @exam.student.id, @exam.student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+          end
+          else
+          if @discipline.is_active?
+            group_students = @discipline.group.students.valid_for_today
+          else
+            group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+          end
+          group_students.each_with_index do |student, index|
             # # Для примера
             # if student.ball(@discipline) == 0.0
             #   ball = rand(100)*1.0
@@ -375,13 +407,17 @@ prawn_document margin: [28, 20, 28, 28],
             #   result_3 = @discipline.final_exam.predication(3, ball)
             #   result_2 = @discipline.final_exam.predication(2, ball)
             # else
-            ball = student.ball(@discipline)
-            result_5 = @discipline.final_exam.predication(5, ball)
-            result_4 = @discipline.final_exam.predication(4, ball)
-            result_3 = @discipline.final_exam.predication(3, ball)
-            result_2 = @discipline.final_exam.predication(2, ball)
+            if student.ball(@discipline) < 55 || !student.pass_discipline?(@discipline)
+              applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline), '—', '—', '—', '0 — 100']
+            else
+              ball = student.ball(@discipline)
+              result_5 = @discipline.final_exam.predication(5, ball)
+              result_4 = @discipline.final_exam.predication(4, ball)
+              result_3 = @discipline.final_exam.predication(3, ball)
+              result_2 = @discipline.final_exam.predication(2, ball)
             # end
-            applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+              applicationTable << [index+1, student.person.full_name, student.id, student.ball(@discipline), "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
+            end
             # applicationTable << [index+1, 'Фамилия Имя Отчество', 'XXXXX', ball, "#{result_5[:min]} — #{result_5[:max]}", "#{result_4[:min]} — #{result_4[:max]}", "#{result_3[:min]} — #{result_3[:max]}", "#{result_2[:min]} — #{result_2[:max]}"]
           end
         end
@@ -432,7 +468,7 @@ prawn_document margin: [28, 20, 28, 28],
         if @exam.is_mass_repeat? || @exam.is_individual_repeat?
           index = 1
           @exam.students.each do |student|
-            if (!(student.student.ball(@discipline) < 55) && @exam.test?)
+            if (!(student.student.ball(@discipline) < 55) && @exam.test? && student.student.pass_discipline?(@discipline))
               next
             end
             applicationTable << [index, student.student.person.full_name, student.student.id, student.student.ball(@discipline)]
@@ -452,8 +488,13 @@ prawn_document margin: [28, 20, 28, 28],
           end
         else
           index = 1
-          @discipline.group.students.valid_for_today.each do |student|
-            if (!(student.ball(@discipline) < 55) && @exam.test?) || (!(student.ball(@discipline) < 85) && @exam.graded_test?)
+          if @discipline.is_active?
+            group_students = @discipline.group.students.valid_for_today
+          else
+            group_students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
+          end
+          group_students.each do |student|
+            if (!(student.ball(@discipline) < 55) && student.pass_discipline?(@discipline) && @exam.test?) || (!(student.ball(@discipline) < 85) && student.pass_discipline?(@discipline) && @exam.graded_test?)
               next
             end
             applicationTable << [index, student.person.full_name, student.id, student.ball(@discipline)]
@@ -467,8 +508,18 @@ prawn_document margin: [28, 20, 28, 28],
           end
         end
         pdf.move_down 80
-        pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2} do
-          column(3).width = 50
+        if @discipline.checkpoints.length > 5
+          if @discipline.checkpoints.length > 10
+            pdf.font_size 6 do
+              pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2}
+            end
+          else
+            pdf.font_size 9 do
+              pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2}
+            end
+          end
+        else
+          pdf.table applicationTable, width: pdf.bounds.width, cell_style: { padding: 2}
         end
 
         if @exam.graded_test?

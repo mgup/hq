@@ -9,15 +9,18 @@
         <%= form_for checkpoint, url: update_date_study_discipline_checkpoint_path(checkpoint.discipline, checkpoint),
                      class: 'form-horizontal' do |f| %>
           <%= f.hidden_field :id %>
-          <label>Занятие</label>
+          <label class="control-label">Занятие</label>
           <%= text_field_tag :lesson, checkpoint.is_checkpoint? ? checkpoint.name : checkpoint.lessonname,
                              class: 'form-control', disabled: true %>
-          <%= f.label :date %>
-          <%= f.text_field :date, value: (l checkpoint.date), class: 'form-control datepicker', required: true %>
+            <div class="form-group">
+              <%= f.label :date, class: 'control-label' %>
+              <%= f.text_field :date, value: (l checkpoint.date), class: 'form-control datepick', required: true %>
+            </div>
+            <%= submit_tag 'Сохранить изменения', class: 'btn btn-primary' %>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-            <%= submit_tag 'Изменить', class: 'btn btn-primary' %>
+
         <% end %>
         </div>
         </div>
@@ -28,10 +31,16 @@
   $(function(){
     $('.edit_study_checkpoint').submit(function(e){
       var data = $(this).serialize();
-      $.ajax({
-        url: $(this).attr('action'),
-        data: data
-      });
+      var str = $(this).find('.datepick').val();
+      if (str != ''){
+        var m = str.match(/(\d{2}).(\d{2}).(\d{4})/);
+        if ( m ){
+          $.ajax({
+            url: $(this).attr('action'),
+            data: data
+          });
+        } else $(this).find('.datepick').parent().addClass('has-error');
+      } else $(this).find('.datepick').parent().addClass('has-error');
       e.preventDefault();
     })
   })

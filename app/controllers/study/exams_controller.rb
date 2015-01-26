@@ -1,115 +1,135 @@
-class Study::ExamsController < ApplicationController
-  before_filter :load_discipline, except: :control
-  load_and_authorize_resource :discipline, except: :control
-  load_and_authorize_resource through: :discipline, except: [:create, :control]
+module Study
+  class ExamsController < ApplicationController
+    before_action :load_discipline, except: :control
+    load_and_authorize_resource :discipline, except: :control
+    load_and_authorize_resource through: :discipline,
+                                except: [:create, :control]
 
-  def index ; end
+    def index ; end
 
-  def new ; end
+    def new ; end
 
-  def edit ; end
+    def edit ; end
 
-  def show
-    if @discipline.is_active?
-      @students = @discipline.group.students.valid_for_today
-    else
-      @students = Student.in_group_at_date(@discipline.group, Date.new((@discipline.semester == 1 ? @discipline.year : @discipline.year+1), (@discipline.semester == 1 ? 9 : 4), 15))
-    end
-  end
-
-  def update
-    #raise resource_params.inspect
-    @exam.update(resource_params)
-    if @exam.save
-      redirect_to study_discipline_checkpoints_path(@discipline)
-    end
-  end
-
-  def updatedate
-    @exam.update(resource_params)
-    redirect_to study_plans_path(faculty: @exam.discipline.group.speciality.faculty.id,
-                                 speciality: @exam.discipline.group.speciality.id,
-                                 course: @exam.discipline.group.course,
-                                 form: @exam.discipline.group.form,
-                                 group: @exam.discipline.group.id)
-  end
-
-  def destroy
-    @exam.destroy
-    redirect_to study_plans_path(faculty: @exam.discipline.group.speciality.faculty.id,
-                                 speciality: @exam.discipline.group.speciality.id,
-                                 course: @exam.discipline.group.course,
-                                 form: @exam.discipline.group.form,
-                                 group: @exam.discipline.group.id)
-  end
-
-  def create
-    exam = params[:study_exam]
-    if exam.include?(:exam_group)
-      #raise resource_params.inspect
-      @exam = Study::Exam.create(resource_params)
-    elsif exam.include?(:exam_student_group)
-      @exam = Study::Exam.create exam_subject: exam[:exam_subject], parent: exam[:parent], exam_type: exam[:exam_type],
-                                 weight: exam[:weight], exam_student: exam[:exam_student], exam_student_group: exam[:exam_student_group],
-                                 repeat: exam[:repeat], date: exam[:date]
-    end
-    redirect_to study_plans_path(faculty: @exam.discipline.group.speciality.faculty.id,
-                                 speciality: @exam.discipline.group.speciality.id,
-                                 course: @exam.discipline.group.course,
-                                 form: @exam.discipline.group.form,
-                                 group: @exam.discipline.group.id)
-  end
-
-  def control
-    @exams_without_form = []
-    not_processed = Study::Exam.not_processed
-    Department.faculties.each do |faculty|
-      groups = []
-      originals, mass, individual, originals_c, mass_c, individual_c = 0, 0, 0, 0, 0, 0
-      #not_processed = Study::Exam.from_faculty(faculty.id).not_processed
-      faculty.groups.each do |group|
-        all_exams = group.exams.by_term(params[:year],params[:term])
-        exams = not_processed.by_group(group.id).by_term(params[:year],params[:term])
-        groups << {group: group, exams: exams} unless exams.empty?
-        originals += all_exams.originals.length
-        mass += all_exams.mass.length
-        individual += all_exams.individual.length
-        originals_c += exams.originals.length
-        mass_c += exams.mass.length
-        individual_c += exams.individual.length
+    def show
+      @students = if @discipline.is_active?
+        @discipline.group.students.valid_for_today
+      else
+        Student.in_group_at_date(
+          @discipline.group,
+          Date.new(
+            1 == @discipline.semester ? @discipline.year : @discipline.year + 1,
+            1 == @discipline.semester ? 9 : 4,
+            15
+          )
+        )
       end
-      @exams_without_form << {faculty: faculty, groups: groups, all: {basic: originals, mass: mass, individual: individual},
-                                                                control: {basic: originals_c, mass: mass_c, individual: individual_c}}
     end
-  end
 
-  def print
-    load_discipline
-    respond_to do |format|
-      format.pdf
+    def update
+      @exam.update(resource_params)
+
+      if @exam.save
+        respond_to do |format|
+          format.js
+          format.html do
+            redirect_to study_discipline_checkpoints_path(@discipline)
+          end
+        end
+      end
     end
-  end
 
-  def repeats
+    def updatedate
+      @exam.update(resource_params)
+      redirect_to path_for_plans(@exam.discipline.group)
+    end
 
-  end
+    def destroy
+      @exam.destroy
+      redirect_to path_for_plans(@exam.discipline.group)
+    end
 
-  def resource_params
-    params.fetch(:study_exam, {}).permit(
-      :id, :date, :exam_subject, :parent, :exam_type, :weight, :exam_group, :exam_student,
-      :exam_student_group, :repeat, :exam_date,
-      final_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value,
-                               :mark_final],
-      rating_marks_attributes: [:id, :mark_date, :mark_student_group, :mark_value,
-                                :mark_rating, :mark_final],
-      students_attributes: [:id, :exam_student_student, :exam_student_student_group,
-                            :'_destroy']
-    )
-  end
+    def create
+      exam = params[:study_exam]
+      @exam = if exam.include?(:exam_group)
+        Study::Exam.create(resource_params)
+      elsif exam.include?(:exam_student_group)
+        Study::Exam.create(
+          exam_subject: exam[:exam_subject],
+          parent: exam[:parent],
+          exam_type: exam[:exam_type],
+          weight: exam[:weight],
+          exam_student: exam[:exam_student],
+          exam_student_group: exam[:exam_student_group],
+          repeat: exam[:repeat],
+          date: exam[:date])
+      end
 
-  private
+      redirect_to path_for_plans(@exam.discipline.group)
+    end
 
-  def load_discipline
-    @discipline = Study::Discipline.find(params[:discipline_id])
+    def control
+      @exams_without_form = []
+      not_processed = Study::Exam.not_processed
+      Department.faculties.each do |faculty|
+        groups = []
+        all, control = [Hash.new(0)] * 2
+        faculty.groups.each do |group|
+          all_exams = group.exams.by_term(params[:year],params[:term])
+          exams = not_processed.by_group(group.id).by_term(params[:year], params[:term])
+          groups << {group: group, exams: exams} unless exams.empty?
+          {
+            basic: :originals,
+            mass: :mass,
+            individual: :individual
+          }.each do |key, method|
+            all[key] += all_exams.send(method).length
+            control[key] += exams.send(method).length
+          end
+        end
+        @exams_without_form << { faculty: faculty,
+                                 groups: groups,
+                                 all: all,
+                                 control: control }
+      end
+    end
+
+    def print
+      load_discipline
+      respond_to { |format| format.pdf }
+    end
+
+    def repeats ; end
+
+    def resource_params
+      params.fetch(:study_exam, {}).permit(
+        :id, :date, :exam_subject, :parent, :exam_type, :weight, :exam_group,
+        :exam_student, :exam_student_group, :repeat, :exam_date,
+        final_marks_attributes: [
+          :id, :mark_date, :mark_student_group, :mark_value, :mark_final
+        ],
+        rating_marks_attributes: [
+          :id, :mark_date, :mark_student_group, :mark_value, :mark_rating,
+          :mark_final
+        ],
+        students_attributes: [
+          :id, :exam_student_student, :exam_student_student_group, :'_destroy'
+        ]
+      )
+    end
+
+    private
+
+    def load_discipline
+      @discipline = Study::Discipline.find(params[:discipline_id])
+    end
+
+    def path_for_plans(group)
+      study_plans_path(faculty: group.speciality.faculty.id,
+                       speciality: group.speciality.id,
+                       course: group.course,
+                       form: group.form,
+                       group: group.id)
+    end
   end
 end

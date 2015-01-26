@@ -18,8 +18,7 @@ $ ->
         )
         ul = group.find('ul')
         $(this.students).map ->
-          budget = if this.budget == 0 then 'no-budget-students' else ''
-          ul.append('<li class="'+budget+'"><a href="#" style="color: black;"><strong>'+this.index+'</strong>  '+this.fullname+'</a></li>')
+          ul.append('<li><a href="#" style="color: black;"><strong>'+this.index+'</strong>  '+this.fullname+'<br><small class="text-muted">'+this.status+'</small></a></li>')
 
 
       element.trigger('liszt:updated')
