@@ -591,7 +591,7 @@ LIMIT 1 ")
         # Придумываем студенту дату зачисления.
 
         orr = orders.build(order_signing: "#{Date.today.year - course}-09-01")
-        fail '123'
+        # fail '123'
       end
 
       orr
