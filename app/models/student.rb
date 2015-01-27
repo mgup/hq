@@ -532,7 +532,14 @@ LIMIT 1 ")
                   xml.code (student.person.foreign ? 10 : 21)
                   xml.series student.person.passport_series
                   xml.number student.person.passport_number
-                  xml.issueDate student.person.passport_date
+
+                  # Проверка!
+                  if student.person.passport_date.present?
+                    xml.issueDate student.person.passport_date
+                  else
+                    xml.issueDate '2010-01-01'
+                  end
+
                   xml.issuedBy student.person.passport_department
                 end
                 xml.registrationAddress do
