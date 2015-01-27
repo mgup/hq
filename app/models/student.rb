@@ -570,7 +570,15 @@ LIMIT 1 ")
   end
 
   def start_date_order
-    orders.signed.my_filter(template: [1,2,16,17]).order(:order_signing).last
+    orr = orders.signed.my_filter(template: [1,2,16,17]).order(:order_signing).last
+    unless orr
+      # Придумываем студенту дату зачисления.
+
+      orr = orders.build(order_signing: "#{Date.today.year - course}-09-01")
+      # fail '123'
+    end
+
+    orr
   end
 
   def last_status_order
