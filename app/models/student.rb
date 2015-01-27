@@ -504,12 +504,19 @@ LIMIT 1 ")
   def self.to_soccard
     doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
       xml.file do
+        xml.parent.namespace = xml.parent.add_namespace_definition('tns', 'http://university.sm.msr.com/schemas/incoming')
+        # xml.parent.namespace = 'tns'
+        # xml.parent.namespace = xml.parent.namespace_definitions.find{ |ns| 'tns' == ns.prefix }
+        # xml['tns'].child
+
         xml.fileInfo do
+          xml.parent.namespace = nil
           xml.fileSender '028'
-          xml.version 1
+          xml.version '1.1.3'
           xml.recordCount self.all.length
         end
         xml.recordList do
+          xml.parent.namespace = nil
           self.all.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
@@ -553,6 +560,8 @@ LIMIT 1 ")
       end
     end
 
+    # fail '123'
+
     doc.to_xml
   end
 
@@ -577,7 +586,15 @@ LIMIT 1 ")
     when 105
       nil
     else
-      orders.signed.my_filter(template: [1,2,3,16,17,25]).order(:order_signing).last
+      orr = orders.signed.my_filter(template: [1,2,3,16,17,25]).order(:order_signing).last
+      unless orr
+        # Придумываем студенту дату зачисления.
+
+        orr = orders.build(order_signing: "#{Date.today.year - course}-09-01")
+        fail '123'
+      end
+
+      orr
     end
   end
 
@@ -599,6 +616,7 @@ LIMIT 1 ")
   end
 
   def valid_for_soccard?
-    last_name.present? && first_name.present? && person.birthday.present? && person.passport_number.present? && person.passport_department.present? && person.residence_address.present?
+    last_name.present? && first_name.present? && person.birthday.present? && person.passport_number.present? && person.passport_department.present? && person.residence_address.present? &&
+      last_status_order
   end
 end

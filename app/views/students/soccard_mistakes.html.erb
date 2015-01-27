@@ -15,6 +15,7 @@
       <th>НОМЕР ПАСПОРТА</th>
       <th>КЕМ ВЫДАН ПАСПОРТ</th>
       <th>АДРЕС</th>
+      <th>ДАТА ПОСЛЕДНЕГО ИЗМЕНЕНИЯ СТАТУСА</th>
     </tr>
   </thead>
   <tbody>
@@ -31,6 +32,7 @@
           <td class="<%= student.person.passport_number.present? ? 'success' : 'danger' %>"><%= student.person.passport_number.present? ? '+' : '–' %></td>
           <td class="<%= student.person.passport_department.present? ? 'success' : 'danger' %>"><%= student.person.passport_department.present? ? '+' : '–' %></td>
           <td class="<%= student.person.residence_address.present? ? 'success' : 'danger' %>"><%= student.person.residence_address.present? ? '+' : '–' %></td>
+          <td class="<%= student.last_status_order ? 'success' : 'danger' %>"><%= student.last_status_order ? '+' : '–' %></td>
         </tr>
     <% end %>
   </tbody>
