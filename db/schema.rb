@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150115130912) do
+ActiveRecord::Schema.define(version: 20150128094923) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -1637,6 +1637,35 @@ ActiveRecord::Schema.define(version: 20150115130912) do
     t.string  "name",     limit: 255,               null: false
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.integer  "id_r",                 limit: 4
+    t.integer  "number_review",        limit: 4
+    t.date     "date_registration"
+    t.integer  "status",               limit: 4
+    t.integer  "appointments_id",      limit: 4
+    t.string   "contract_number",      limit: 255
+    t.date     "contract_date"
+    t.date     "contract_expires"
+    t.integer  "order_type",           limit: 4
+    t.text     "author",               limit: 65535
+    t.text     "title",                limit: 65535
+    t.integer  "university_id",        limit: 4
+    t.integer  "university_auth_id",   limit: 4
+    t.float    "cost",                 limit: 24
+    t.float    "total_cost",           limit: 24
+    t.float    "sheet_number",         limit: 24
+    t.integer  "evaluation",           limit: 4
+    t.string   "auth_contract_number", limit: 255
+    t.date     "date_auth_university"
+    t.date     "date_auth_contract"
+    t.date     "date_review"
+    t.date     "date_accounting"
+    t.integer  "paid",                 limit: 4
+    t.text     "note",                 limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "room", primary_key: "room_id", force: :cascade do |t|
     t.integer "room_oldid", limit: 4, null: false
     t.integer "room_flat",  limit: 4, null: false
@@ -2202,6 +2231,12 @@ ActiveRecord::Schema.define(version: 20150115130912) do
   create_table "template_student_group_statuses", force: :cascade do |t|
     t.integer "template_id",         limit: 4
     t.integer "education_status_id", limit: 4
+  end
+
+  create_table "universities", force: :cascade do |t|
+    t.text     "name",       limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "use_olympics", force: :cascade do |t|
