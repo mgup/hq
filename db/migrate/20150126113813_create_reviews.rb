@@ -1,10 +1,10 @@
 class CreateReviews < ActiveRecord::Migration
   def change
-    create_table :reviews do |t|
+    create_table :reviews, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8' do |t|
       t.integer :id_r
       t.integer :number_review # номер рецензии
       t.date :date_registration # дата регистрации рецензии
-      t.column :status, :integer # стутус (выполнен, в процессе, просрочен)
+      t.column :status, :integer # статус (выполнен, в процессе, просрочен)
       t.integer :appointments_id # должность!
       t.string :contract_number # номер контракта
       t.date :contract_date # дата регистрации контракта
