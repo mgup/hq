@@ -199,7 +199,6 @@ ActiveRecord::Schema.define(version: 20150115130912) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
-    t.text    "employer",                              limit: 65535
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
@@ -589,7 +588,6 @@ ActiveRecord::Schema.define(version: 20150115130912) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
-    t.text    "employer",                              limit: 65535
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
