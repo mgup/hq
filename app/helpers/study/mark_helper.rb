@@ -7,6 +7,8 @@ module Study::MarkHelper
       when '9'
         { ball: 0, mark: 'недопущен', value: Study::ExamMark::VALUE_NEDOPUSCHEN, span: 'danger' }
       end
+    elsif ball < 55
+      { ball: ball, mark: 'неудовлетворительно', value: Study::ExamMark::VALUE_2, span: 'danger' }
     else
       case result.floor
       when 85..100
