@@ -52,7 +52,8 @@ gem 'jquery-validation-rails'
 
 gem 'rollbar'
 gem 'dotenv-rails'
-gem 'tiny_tds'
+# gem 'tiny_tds'
+gem 'tiny_tds', github: 'rails-sqlserver/tiny_tds'
 # gem 'activerecord-sqlserver-adapter'
 
 gem 'httparty'
