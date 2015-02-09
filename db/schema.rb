@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150128094923) do
+ActiveRecord::Schema.define(version: 20150209112327) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -1646,7 +1646,7 @@ ActiveRecord::Schema.define(version: 20150128094923) do
     t.string   "contract_number",      limit: 255
     t.date     "contract_date"
     t.date     "contract_expires"
-    t.integer  "order_type",           limit: 4
+    t.integer  "ordt",                 limit: 4
     t.text     "author",               limit: 65535
     t.text     "title",                limit: 65535
     t.integer  "university_id",        limit: 4

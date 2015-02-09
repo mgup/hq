@@ -9,7 +9,7 @@ class CreateReviews < ActiveRecord::Migration
       t.string :contract_number # номер контракта
       t.date :contract_date # дата регистрации контракта
       t.date :contract_expires # дата истечения контракта
-      t.column :order_type, :integer # тип заказа (физ лицо, юр лицо)
+      t.column :ordt, :integer # тип заказа (физ лицо, юр лицо)
       t.text :author # автор
       t.text :title # название
       t.integer :university_id # вуз!
@@ -27,6 +27,5 @@ class CreateReviews < ActiveRecord::Migration
       t.text :note # примечание
       t.timestamps
     end
-
   end
 end
