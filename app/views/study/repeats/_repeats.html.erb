@@ -11,7 +11,7 @@
 <dl>
   <% @repeats.each do |repeat| %>
     <dt>
-      #<%= repeat.id %> <%= l repeat.date %>, <%= repeat_type(repeat) %>
+      #<%= repeat.id %> <%= l(repeat.date) if repeat.date %>, <%= repeat_type(repeat) %>
     </dt>
     <dd>
       <ul>
