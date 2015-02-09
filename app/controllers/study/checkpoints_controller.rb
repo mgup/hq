@@ -39,6 +39,8 @@ class Study::CheckpointsController < ApplicationController
                                    name: study_checkpoint[:name], details: study_checkpoint[:details],
                                    max: study_checkpoint[:max], min: study_checkpoint[:min])
       redirect_to study_discipline_checkpoints_path(@discipline)
+    else
+      redirect_to study_discipline_checkpoints_path(@discipline)
     end
   end
 

@@ -173,6 +173,7 @@ class Study::Discipline < ActiveRecord::Base
     return true if checkpoints.length == 0
     max_sum = 0
     checkpoints.each do |c|
+      return false if c.max.nil?
       max_sum += c.max unless c.marked_for_destruction?
     end
     if 80 != max_sum
@@ -185,6 +186,7 @@ class Study::Discipline < ActiveRecord::Base
     return true if checkpoints.length == 0
     min_sum = 0
     checkpoints.each do |c|
+      return false if c.min.nil?
       min_sum += c.min unless c.marked_for_destruction?
     end
     if 44 != min_sum

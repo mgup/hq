@@ -87,17 +87,21 @@ class Study::Checkpoint < ActiveRecord::Base
   private
 
   def min_should_be_less_than_max
-    if !marked_for_destruction? && min >= max
-      errors.add(:'minmax',
+    if !min.nil? && !max.nil?
+      if !marked_for_destruction? && min >= max
+        errors.add(:'minmax',
                  'Минимальный зачётный балл должен быть меньше, чем максимальный балл.')
+      end
     end
   end
 
   def mark_should_be_less_than_max
     marks.each do |m|
-      if m.mark > max or m.mark < 0
-        errors.add("#{m.id}",
+      if !min.nil? && !max.nil?
+        if m.mark > max or m.mark < 0
+          errors.add("#{m.id}",
                    'Балл за контрольную точку должен быть меньше, чем максимальный балл, и больше 0.')
+        end
       end
     end
   end
