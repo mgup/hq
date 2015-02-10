@@ -1,7 +1,7 @@
 class Review < ActiveRecord::Base
   belongs_to :appointment # связь с должностями
-  belongs_to :review_u, foreign_key: "university_id"
-  belongs_to :review_a, foreign_key: "university_auth_id"
+  belongs_to :university, foreign_key: :university_id
+  belongs_to :university_author, class: University, foreign_key: :university_auth_id
 
   enum status: {
       runs: 0, # в работе
@@ -21,4 +21,5 @@ class Review < ActiveRecord::Base
       yes: 0,
       no: 1
   }
+
 end

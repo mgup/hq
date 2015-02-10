@@ -1,5 +1,8 @@
 HQ::Application.routes.draw do
 
+  resources :reviews
+  get 'reviews/index'
+
   resources :phonebook
   get 'phonebook/index'
 
