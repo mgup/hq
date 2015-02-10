@@ -23,6 +23,8 @@ class Office::Order < ActiveRecord::Base
            foreign_key: :order_student_order, dependent: :destroy
   accepts_nested_attributes_for :students_in_order
   has_many :students, class_name: 'Student', through: :students_in_order
+  
+  has_many :archive_students, class_name: 'Archive::Student', foreign_key: :archive_student_group_order, primary_key: :order_id
 
   has_many :order_reasons, class_name: 'Office::OrderReason',
            foreign_key: :order_reason_order, dependent: :destroy
@@ -123,7 +125,11 @@ class Office::Order < ActiveRecord::Base
         xml << template.to_nokogiri.root.to_xml
 
         xml.students do
-          students.each { |student| xml << student.to_nokogiri.root.to_xml }
+          if signed?
+           archive_students.each { |archive| xml << archive.to_nokogiri.root.to_xml } 
+          else
+            students.each { |student| xml << student.to_nokogiri.root.to_xml }
+          end
         end
 
         if template.id == PROBATION_TEMPLATE

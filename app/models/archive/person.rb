@@ -1,4 +1,4 @@
-class Archive::Person < ActiveRecord::Base
+class Archive::Person < Person
   self.table_name = 'archive_student'
 
   alias_attribute :id,  :archive_student_id
