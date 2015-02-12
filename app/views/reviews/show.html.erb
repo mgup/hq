@@ -2,20 +2,19 @@
   <h1>Рецензирование изданий</h1>
   <h3>Просмотр рецензии № <%= @review.number_review %></h3>
 </div>
-
 <dl class="dl-horizontal">
   <dt>Номер рецензии</dt>
   <dd><%= @review.number_review %></dd>
   <dt>Дата регистрации</dt>
-  <dd><%= @review.date_registration %></dd>
+  <dd><%= l(@review.date_registration) if @review.date_registration %></dd>
   <dt>Cтатус</dt>
   <dd><%= @review.status %></dd>
   <dt>Номер договора</dt>
   <dd><%= @review.contract_number %></dd>
   <dt>Дата договора</dt>
-  <dd><%= @review.contract_date %></dd>
+  <dd><%= l(@review.contract_date) if @review.contract_date %></dd>
   <dt>Окончание контракта</dt>
-  <dd><%= @review.contract_expires %></dd>
+  <dd><%= l(@review.contract_expires) if @review.contract_expires %></dd>
   <dt>Заказчик</dt>
   <dd><%= @review.ordt %></dd>
   <dt>Автор</dt>
@@ -24,31 +23,37 @@
   <dd><%= @review.university.name %></dd>
   <dt>Название пособия</dt>
   <dd><%= @review.title %></dd>
-  <dt>Количетсво авторских листов</dt>
-  <dd><%= @review.sheet_number %></dd>
+  <dt>К-во авторских листов</dt>
+  <dd><%= @review.sheet_number.to_s(:rounded, :precision => 2) %></dd>
   <dt>Уполномоченный ВУЗ</dt>
   <dd><%= @review.university_author.name %></dd>
   <dt>Стоимость рецензии</dt>
-  <dd><%= @review.cost %></dd>
+  <dd><%= @review.cost.to_s(:rounded, :precision => 2) %></dd>
   <dt>Общая стоимость</dt>
-  <dd><%= @review.total_cost %></dd>
+  <dd><%= @review.total_cost.to_s(:rounded, :precision => 2) %></dd>
   <dt>Договор с упол. ВУЗом</dt>
   <dd><%= @review.auth_contract_number %></dd>
   <dt>Вид рецензии</dt>
   <dd><%= @review.evaluation %></dd>
   <dt>Отправка в ВУЗ</dt>
-  <dd><%= @review.date_auth_university %></dd>
+  <dd><%= l(@review.date_auth_university) if @review.date_auth_university %></dd>
   <dt>Отправка авт. договора</dt>
-  <dd><%= @review.date_auth_contract %></dd>
+  <dd><%= l(@review.date_auth_contract) if @review.date_auth_contract %></dd>
   <dt>Отправка бух. документов</dt>
-  <dd><%= @review.date_accounting %></dd>
+  <dd><%= l(@review.date_accounting) if @review.date_accounting %></dd>
   <dt>Отправка рецензии</dt>
-  <dd><%= @review.date_review %></dd>
+  <dd><%= l(@review.date_review) if @review.date_review %></dd>
   <dt>Оплачено</dt>
   <dd><%= @review.paid %></dd>
   <dt>Примечение</dt>
   <dd><%= @review.note %></dd>
   </dl>
 <br>
-<%= link_to 'редактировать', edit_review_path(:id) %>
-<%= link_to 'назад к структуре', reviews_path %>
+
+<div class="row">
+  <div class="col col-lg-10 col-offset-2">
+    <%= link_to 'Изменить', edit_review_path(@review),class: 'btn btn-warning' %>
+    или
+    <%= link_to 'назад к структуре', reviews_path, class: 'btn btn-primary' %>
+  </div>
+</div>

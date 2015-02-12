@@ -1,0 +1,193 @@
+<%= form_for @review, url: review_path(@review), method: :patch, html: { class: 'form-horizontal' } do |f| %>
+
+    <div class="row">
+      <%= f.label :number_review, 'Номер рецензии', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :number_review, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :date_registration, 'Дата регистрации change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :date_registration, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :status, 'Cтатус change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :status, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :contract_number, 'Номер договора', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :contract_number, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :contract_date, 'Дата договора change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :contract_date, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :ordt, 'Тип заказа change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :ordt, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :author, 'Автор', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :author, class: 'form-control' %>
+        <span class="help-block">
+
+      </span>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <%= f.label :title, 'Название пособия', class: 'col col-lg-2 control-label'%>
+      <div class="col col-lg-10">
+        <%= f.text_field :title,  class: 'form-control' %>
+        <span class="help-block">
+
+        </span>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <%= f.label :university_id, 'ID change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :university_id, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <%= f.label :university_auth_id, 'ID change auth', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :university_auth_id, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :sheet_number, 'Количество авторских листов', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :sheet_number, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :evaluation, 'Тип отзыва change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :evaluation, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :date_auth_university, 'Дата отправки в уполномоченный ВУЗ change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :date_auth_university, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :date_auth_contract, 'Дата отправки авторского договора change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :date_auth_contract, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :date_review, 'Дата отправки рецензии change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :date_review, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :date_accounting, 'Дата отправки бух. документов change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :date_accounting, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :paid, 'Оплачено change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :paid, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :note, 'Примечание change', class: 'col col-lg-2 control-label' %>
+      <div class="col col-lg-10">
+        <%= f.text_field :note, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-lg-10 col-offset-2">
+        <%= f.submit "Сохранить изменения", class: 'btn btn-warning' %>
+        или
+        <%= link_to 'назад к структуре', reviews_path, class: 'btn btn-primary' %>
+      </div>
+    </div>
+<%end%>

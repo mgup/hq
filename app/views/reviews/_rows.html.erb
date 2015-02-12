@@ -1,25 +1,79 @@
-<% departments.each do |department| %>
-  <tr>
-    <td class="text-muted"><%= department.id %></td>
-    <td style="padding-left: <%= 15 * (level - 1) %>px;">
-      <%= '&lfloor;'.html_safe if level > 1 %>
-      <%= department.name %>
-    </td>
-    <td class="nowrap">
-      <%=department.phone %>
-    </td>
-    <td>
-      <%= link_to 'показать', phonebook_path(department)%>
-    </td>
-    <td><% if can? :manage, @phonebook %>
-          <%= link_to edit_department_path(department.id), class: 'btn btn-default' do%>
-              <span class="glyphicon glyphicon-edit"></span>
-          <% end %>
-        <% end %>
-    </td>
-  </tr>
-  <% if department.subdepartments.any? %>
-    <%= render partial: 'phonebook/rows',
-               locals: { departments: department.subdepartments, level: (level + 2) } %>
-  <% end %>
+<% @reviews.each do |review| %>
+    <% if review.status == 'завершен' then %>
+        <tr class="success">
+          <td><%= review.number_review %></td>
+          <td><%= l(review.date_registration) if review.date_registration %></td>
+          <td><%= review.contract_number %></td>
+          <td><%= l(review.contract_date) if review.contract_date %></td>
+          <td><%= review.ordt %></td>
+          <td><%= review.author %></td>
+          <td><%= review.university.name if review.university %></td>
+          <td><%= review.title %></td>
+          <td><%= review.university_author ? review.university_author.name : '-'  %></td>
+          <td><%= l(review.date_auth_university) if review.date_auth_university%></td>
+          <td><%= review.evaluation%></td>
+          <td>
+            <%= link_to 'Show', review_path(review),class: 'btn btn-primary' %>
+          </td>
+          <td>
+            <%= link_to 'Edit', edit_review_path(review),class: 'btn btn-warning' %>
+          </td>
+          <td>
+            <%= link_to 'Del', review_path(review), class: 'btn btn-danger',
+                        method: :delete,
+                        data: { confirm: 'Вы уверна? Запись будет удалена!' } %>
+          </td>
+        </tr>
+    <% else  if review.status == 'обработка' then %>
+        <tr>
+          <td><%= review.number_review %></td>
+          <td><%= l(review.date_registration) if review.date_registration %></td>
+          <td><%= review.contract_number %></td>
+          <td><%= l(review.contract_date) if review.contract_date %></td>
+          <td><%= review.ordt %></td>
+          <td><%= review.author %></td>
+          <td><%= review.university.name if review.university %></td>
+          <td><%= review.title %></td>
+          <td><%= review.university_author ? review.university_author.name : '-'  %></td>
+          <td><%= l(review.date_auth_university) if review.date_auth_university%></td>
+          <td><%= review.evaluation%></td>
+          <td>
+            <%= link_to 'Show', review_path(review),class: 'btn btn-primary' %>
+          </td>
+          <td>
+            <%= link_to 'Edit', edit_review_path(review),class: 'btn btn-warning' %>
+          </td>
+          <td>
+            <%= link_to 'Del', review_path(review), class: 'btn btn-danger',
+                        method: :delete,
+                        data: { confirm: 'Вы уверна? Запись будет удалена!' } %>
+          </td>
+        </tr>
+    <% else %>
+        <tr class="error">
+          <td><%= review.number_review %></td>
+          <td><%= l(review.date_registration) if review.date_registration %></td>
+          <td><%= review.contract_number %></td>
+          <td><%= l(review.contract_date) if review.contract_date %></td>
+          <td><%= review.ordt %></td>
+          <td><%= review.author %></td>
+          <td><%= review.university.name if review.university %></td>
+          <td><%= review.title %></td>
+          <td><%= review.university_author ? review.university_author.name : '-'  %></td>
+          <td><%= l(review.date_auth_university) if review.date_auth_university%></td>
+          <td><%= review.evaluation%></td>
+          <td>
+            <%= link_to 'Show', review_path(review),class: 'btn btn-primary' %>
+          </td>
+          <td>
+            <%= link_to 'Edit', edit_review_path(review),class: 'btn btn-warning' %>
+          </td>
+          <td>
+            <%= link_to 'Del', review_path(review), class: 'btn btn-danger',
+                        method: :delete,
+                        data: { confirm: 'Вы уверна? Запись будет удалена!' } %>
+          </td>
+        </tr>
+    <% end %>
+    <% end %>
 <% end %>

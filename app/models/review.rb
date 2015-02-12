@@ -3,23 +3,23 @@ class Review < ActiveRecord::Base
   belongs_to :university, foreign_key: :university_id
   belongs_to :university_author, class: University, foreign_key: :university_auth_id
 
-  enum status: {
-      runs: 0, # в работе
-      completed: 1, # завершена
-      expired: 2 # истек срок договора
+  enum status: {    # статус рецензии
+      обработка: 0,
+      завершен: 1,
+      истек: 2
   }
-  enum ordt: {
-      indi: 0, # физ лицо
-      gr_a: 1 # юр лицо
+  enum ordt: {    # тип заказа
+      физ_лицо: 0,
+      юр_лицо: 1
   }
-  enum evaluation: {
-      positive: 0, # +
-      negative: 1, # -
-      undefined: 2 # ?
+  enum evaluation: {    # тип отзыва на рецензию
+      '+' => 0,
+      '-' => 1,
+      undefined: 2
   }
-  enum paid: {
-      yes: 0,
-      no: 1
+  enum paid: {    # оплата
+      оплачено: 0,
+      'нет оплаты' => 1
   }
 
 end

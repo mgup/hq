@@ -1,11 +1,9 @@
 class ReviewsController < ApplicationController
-  authorize_resource
 
-  def new
-
-  end
-
-  def edit
+  def index
+    @reviews = Review.all
+    params[:page] ||= 1
+    @reviews = @reviews.page(params[:page])
 
   end
 
@@ -13,11 +11,38 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
   end
 
-  def index
-    @reviews = Review.all
-    params[:page] ||= 1
-    @reviews = @reviews.page(params[:page])
+  def new
+    @review = Review.new
+  end
 
+  def edit
+    @review = Review.find(params[:id])
+  end
+
+  def create
+    @review = Review.new(resource_params)
+    if @review.save
+      redirect_to @review
+    else
+      render 'new'
+    end
+  end
+
+  def update
+    @review = Review.find(params[:id])
+
+    if @review.update(article_params)
+      redirect_to @review
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    @review = Review.find(params[:id])
+    @review.destroy
+
+    redirect_to articles_path
   end
 
   def resource_params
