@@ -243,7 +243,7 @@ ORDER BY
 
     # Проверяем, что в группе есть студенты.
     if ids.any?
-      find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless (x.entrance_order.nil? && x.admission_year > 2009) || x.entrance_order.signing_date > date}
+      find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless ((x.entrance_order.nil?|| x.entrance_order.signing_date > date) && x.admission_year > 2009) }
     else
       none
     end
