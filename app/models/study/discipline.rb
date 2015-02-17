@@ -89,10 +89,10 @@ class Study::Discipline < ActiveRecord::Base
   scope :with_brs, ->{where(subject_brs:  true)}
 
   def students
-    if is_active?
+    if is_active? && semester == CURRENT_STUDY_TERM
       group.students.valid_for_today
     else
-      Student.in_group_at_date(group, Date.new((1 == semester ? year : year + 1), (1 == semester ? 9 : 4), 15))
+      Student.in_group_at_date(group, Date.new((autumn? ? year : year+1), (autumn? ? 11 : 5), 15))
     end
   end
 
