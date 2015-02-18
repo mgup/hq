@@ -62,7 +62,14 @@
         <% @documents.each do |document| %>
           <tr class="<%= document.expire_date ? (document.expire_date.future? ? (document.expire_date.mjd - Date.today.mjd > 30 ? 'success' : 'warning') : 'danger') : 'success' %>">
             <td><%= document.id %></td>
-            <td><%= document.type.name %></td>
+            <td>
+							<%= document.type.name %> <%= "(#{document.form_name})" if document.form %>
+							<% if document.comment %>
+							<div class="text-muted view-better">
+								Примечание: <%= document.comment %>
+							</div>
+							<% end %>
+						</td>
             <td><%= document.number %></td>
             <td><%= document.department %></td>
             <td class="text-center"><%= l document.start_date %></td>

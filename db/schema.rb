@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150115130912) do
+ActiveRecord::Schema.define(version: 20150218123338) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 20150115130912) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
+    t.text    "employer",                              limit: 65535
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
@@ -588,6 +589,7 @@ ActiveRecord::Schema.define(version: 20150115130912) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
+    t.text    "employer",                              limit: 65535
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
@@ -1765,6 +1767,8 @@ ActiveRecord::Schema.define(version: 20150115130912) do
     t.integer  "status",                  limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "form",                    limit: 4
+    t.text     "comment",                 limit: 65535
   end
 
   create_table "speciality", primary_key: "speciality_id", force: :cascade do |t|

@@ -27,8 +27,8 @@
               <%= f.label :social_document_type_id %>
             </div>
             <div class="col-sm-9">
-              <%= f.select :social_document_type_id, options_from_collection_for_select(Social::DocumentType.all,
-                           :id, :name, selected: (f.object.type ? f.object.type.id : nil)), {prompt: 'выберите тип документа'}, class: 'form-control'%>
+              <%= f.select :social_document_type_id, options_from_collection_for_select(Social::DocumentType.order(:name),
+                           :id, :name_with_id, selected: (f.object.type ? f.object.type.id : nil)), {prompt: 'выберите тип документа'}, class: 'form-control'%>
             </div>
           </div>
           <div class="row">
@@ -49,7 +49,26 @@
           </div>
           <div class="row">
             <div class="col-sm-3">
-              <%= label_tag :timedate, 'Действительна' %>
+              <%= f.label :form, 'форма предоставления' %>
+            </div>
+            <div class="col-sm-9">
+              <%= f.select :form, options_for_select([['выберите форму предоставления', nil], ['Копия (нотариус)', :notarius],
+																					 ['Копия (ЦСПиВР)', :soc],
+																					 ['Ксерокопия', :copy],
+																					 ['Оригинал', :original]], selected: f.object.form), {}, class: 'form-control'%>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <%= f.label :comment, 'примечание' %>
+            </div>
+            <div class="col-sm-9">
+              <%= f.text_area :comment, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <%= label_tag :timedate, 'действительна' %>
             </div>
           </div>
           <div class="row">

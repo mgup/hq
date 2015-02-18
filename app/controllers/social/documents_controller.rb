@@ -82,7 +82,7 @@ class Social::DocumentsController < ApplicationController
 
   def resource_params
     params.fetch(:social_document, {}).permit(:student_id, :social_document_type_id, :number,
-                                              :department, :start_date, :expire_date, :status)
+                                              :department, :start_date, :expire_date, :status, :comment, :form)
   end
 
 end
