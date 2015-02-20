@@ -172,6 +172,7 @@ class Ability
     can :manage, Hostel::Report
     soc_support_event(user)
     can :soccard_mistakes, Student
+    can :delete, Social::Document
   end
 
   def soc_support_event(user)
@@ -184,6 +185,7 @@ class Ability
     can :without_med, User
     can :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
     can :manage, Social::Document
+    cannot :delete, Social::Document
     can :manage, Social::DocumentType
     can :read, Student
     can :study, Student
@@ -192,6 +194,7 @@ class Ability
   def soc_support(user)
     can :manage, My::Support
     can :manage, Social::Document
+    cannot :delete, Social::Document
     can :manage, Social::DocumentType
     can :read, Student
     can :study, Student

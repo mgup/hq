@@ -52,6 +52,7 @@
             <th rowspan="2">Орган, выдавший справку/документ</th>
             <th class="text-center" colspan="2">Действительна</th>
             <th rowspan="2"></th>
+						<th rowspan="2"></th>
           </tr>
           <tr>
             <th class="text-center">с</th>
@@ -89,6 +90,13 @@
               <% end %>
               <%= render 'add_document', document: document, url: student_social_deed_path(@student, document) %>
             </td>
+						<td>
+							<% if can?(:delete, Social::Document) %>
+								<%= link_to student_social_deed_path(@student, document), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', data: {confirm: 'Вы уверены?'} do %>
+			          <span class="glyphicon glyphicon-remove"></span>
+			        	<% end %>
+							<% end %>
+						</td>
           </tr>
         <% end %>
         </tbody>
@@ -108,6 +116,7 @@
         <th rowspan="2">Номер</th>
         <th rowspan="2">Орган, выдавший справку/документ</th>
         <th class="text-center" colspan="2">Действительна</th>
+				<th rowspan="2"></th>
     </tr>
     <tr>
         <th class="text-center">с</th>
@@ -123,6 +132,13 @@
           <td><%= document.department %></td>
           <td class="text-center"><%= l document.start_date %></td>
           <td class="text-center"><%= l document.expire_date %></td>
+					<td>
+						<% if can?(:delete, Social::Document) %>
+							<%= link_to student_social_deed_path(@student, document), method: :delete, class: 'btn btn-danger pull-right', title: 'Удалить', data: {confirm: 'Вы уверены?'} do %>
+		          <span class="glyphicon glyphicon-remove"></span>
+		        	<% end %>
+						<% end %>
+					</td>
       </tr>
     <% end %>
     </tbody>
