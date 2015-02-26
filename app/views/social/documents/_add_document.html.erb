@@ -27,7 +27,7 @@
               <%= f.label :social_document_type_id %>
             </div>
             <div class="col-sm-9">
-              <%= f.select :social_document_type_id, options_from_collection_for_select(Social::DocumentType.order(:name),
+              <%= f.select :social_document_type_id, options_from_collection_for_select(Social::DocumentType.order(:id),
                            :id, :name_with_id, selected: (f.object.type ? f.object.type.id : nil)), {prompt: 'выберите тип документа'}, class: 'form-control'%>
             </div>
           </div>
