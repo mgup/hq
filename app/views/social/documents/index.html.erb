@@ -73,7 +73,7 @@
 						</td>
             <td><%= document.number %></td>
             <td><%= document.department %></td>
-            <td class="text-center"><%= l document.start_date %></td>
+            <td class="text-center"><%= document.start_date ? (l document.start_date) : '<span style="color: #a00;">введите дату!</span>'.html_safe %></td>
             <td class="text-center"><%= document.eternal? ? 'бессрочно' : (l document.expire_date) %></td>
             <td>
               <% unless document.actual_for_today? %>
