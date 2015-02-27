@@ -65,7 +65,7 @@
             <td><%= document.id %></td>
             <td>
 							<%= document.type.name %> <%= "(#{document.form_name})" if document.form %>
-							<% unless document.comment.empty? %>
+							<% if document.comment %>
 							<div class="text-muted view-better">
 								Примечание: <%= document.comment %>
 							</div>
