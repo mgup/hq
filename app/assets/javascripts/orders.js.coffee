@@ -242,6 +242,7 @@
 
       #      Прячем мета-блок.
       $('#' + $(this).data('uid')).popover('hide')
+      $('.meta-select .save').off('click')
 
     $('.meta-select .cancel').on 'click', ->
       metaCancelLinkClick(this)
@@ -319,44 +320,6 @@
   if $this.attr('data-meta-roles')
     data.roles = $this.attr('data-meta-roles').split(',')
 
-#  $.ajax('/utility/ajax/users', {
-#      'data'      : data,
-#      'dataType'  : 'json',
-#      'type'      : 'post',
-#      'error'     : (jqXHR, textStatus, errorThrown) ->
-##        alert('Ошибка при запросе списка сотрудников. В случае повторения ошибки — обратитесь в отдел информационных систем.')
-#      'success'   : (response) ->
-#          $(response).each ->
-#            mask = $this.attr('data-meta-mask')
-#            mask = mask.replace('{' + field + '}', this[field]) for field in this
-#            mask = mask.replace(' ,', '')
-##              Обрабатывает маску с выбором варианта.
-##              Сначала меняем {title/position} на #XXXposition}.
-#            mask = mask.replace('{' + field + '/', '#' + this[field]) for field in this
-##              Если первая замена не сработала (соответствующее поле
-##              было пустое), то меняем #position} на YYY.
-#            mask = mask.replace('#' + field + '}', this[field]) for field in this
-##               Если первая замена сработала, то убираем лишнее поле из
-##               маски — #XXXposition} -> #XXX.
-#            mask = mask.replace(field + '}', '') for field in this
-#
-#            mask = mask.replace('#', '')
-#
-#            mask = $.trim(mask)
-#            if ',' == mask[mask.length - 1]
-#              mask = mask.substring(0, mask.length - 1)
-#
-#            option = $('<option>', {
-#              'value'         : this.id,
-#              'data-name'     : this.name,
-#              'data-title'    : this.title,
-#              'data-position' : this.position,
-#              'data-text'     : mask
-#            }).html(mask)
-#            input.append(option)
-#  })
-#  div.append(input)
-
   $('<button>', {'class' : 'btn btn-primary save', 'text' : 'Сохранить', 'data-uid' : uid}).appendTo(div)
 
   if !required
@@ -373,6 +336,7 @@
     $(this).popover('show')
     $('.meta-text .save').on 'click', ->
       metaSaveButtonClick(this)
+      $('.meta-text .save').off('click')
     $('.meta-text .cancel').on 'click', ->
       metaCancelLinkClick(this)
       return false
@@ -442,10 +406,72 @@
 
   #      Прячем мета-блок.
       $('#' + $(this).data('uid')).popover('hide')
+      $('.meta-academic-year .save').off('click')
 
     $('.meta-academic-year .cancel').on 'click', ->
       metaCancelLinkClick(this)
       return false
+			
+			
+			
+			
+#Создание мета-блока с вариантами текста, связанного с приказом.
+#@param uid
+
+@initOrderReasonMultySelect = (uid) ->
+  $this = $('#' + uid)
+  required = ('true' == $this.attr('data-required'))
+
+  options = $this.attr('data-reason-options').split('|')
+  optionsText = $this.attr('data-reason-options-text').split('|')
+
+  text = $this.attr('data-reason-text')
+  isEmpty = ('' == text)
+  if isEmpty
+    text = $this.attr('data-reason-pattern')
+  else
+    text = options[optionsText.indexOf(text)]
+  $this.html(text)
+
+  div = $('<div>', {'class' : 'reason-popover reason-select reason-text-order', 'data-uid'  : uid})
+
+  select = $('<select>', {'id' : 'reason' + uid, 'class': 'form-control', 'multiple': true, 'width' : required ? '234px' : '300px'})
+  $('<option>', {'value' : optionsText[i], 'html' : options[i]}).appendTo(select) for i in [(options.length - 1)..0]
+  div.append(select)
+
+  $('<button>', {'class' : 'btn btn-primary save', 'text' : 'Сохранить', 'data-uid' : uid}).appendTo(div)
+
+  if !required
+    div.append(' или ')
+    $('<button>', {'class' : 'btn btn-danger remove', 'text' : 'Удалить', 'data-uid'  : uid}).appendTo(div)
+
+  div.append(' или ')
+
+  $('<a>', {'class' : 'cancel', 'href' :  '#', 'text' : 'отменить', 'data-uid' : uid}).appendTo(div)
+
+  $this.popover({'html' : true, 'content' : div})
+
+  $this.on 'click', ->
+    $(this).popover('show')
+    $('#reason'+$this.attr('id')+' option[value="'+$this.attr('data-reason-text')+'"]').prop('selected', true)
+    $('.reason-select .save').on 'click', (event) ->
+      selectedOption = $('#reason' + $(this).data('uid')).val()
+      $('#' + $(this).data('uid')).attr('data-reason-text', selectedOption)
+      saveReason($(this).data('uid'))
+      $('#' + $(this).data('uid')).popover('hide')
+      event.preventDefault()
+      $('.reason-select .save').off('click')
+
+    $('.reason-select .cancel').on 'click', (event) ->
+      metaCancelLinkClick(this)
+      event.preventDefault()
+      
+  if !required
+    $('#' + uid + ' + div').css('max-width', 340)
+    $('#' + uid + ' + div').css('width', 340)
+    $('.meta-text .remove').on 'click', ->
+      metaRemoveButtonClick(this)
+  $('#reason' + uid).val($this.attr('data-reason-text'))
 
 
 #Сохранение мета-данных в базу.
@@ -485,13 +511,30 @@
     checkForSign()
 
 
+@saveReason = (uid) ->
+  reason = $('#' + uid)
+
+  #    Отправляем запрос на сервер.
+  $.getJSON $('#matrixHQ').attr('href')+'ajax/orderreason', {
+    'order'   : reason.attr('data-reason-order'),
+    'reasons' : reason.attr('data-reason-text').split(',')
+  }, (reasons) ->
+    $('#' + uid).html(reasons.text)
+  .success ->
+    alert('Информация была успешно сохранена')
+    checkForSign()
+  .error ->
+    alert('Ошибка. Данные не сохранены. В случае повторения ошибки — обратитесь в отдел информационных систем.')
+    checkForSign()
 
 @checkForSign = ->
-  key = true
-  $('.order-meta[data-required="true"]').each ->
-    key = key && ($(this).attr('data-meta-text') != '')
-  if key
-    $('#pushToSign').prop('disabled', false)
+		key = true
+		$('.order-meta[data-required="true"]').each ->
+			key = key && ($(this).attr('data-meta-text') != '')
+		$('.order-reason[data-required="true"]').each ->
+			key = key && ($(this).attr('data-reason-text') != '')
+		if key
+			$('#pushToSign').prop('disabled', false)
 
 $ ->
   checkForSign()

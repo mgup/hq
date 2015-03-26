@@ -425,7 +425,7 @@
     <xsl:element name="script">
       <xsl:attribute name="type">text/javascript</xsl:attribute>
       $(function() {
-      initOrderMetaTextOrder('<xsl:value-of select="$uid" />');
+        initOrderMetaTextOrder('<xsl:value-of select="$uid" />');
       });
     </xsl:element>
   </xsl:template>

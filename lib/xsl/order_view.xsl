@@ -7,6 +7,7 @@
 
   <xsl:include href="lib/xsl/utilities.xsl" />
   <xsl:include href="lib/xsl/metas_view.xsl" />
+	<xsl:include href="lib/xsl/reasons_view.xsl" />
 
   <xsl:template match="order">
     <div class="order-view" style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
@@ -90,9 +91,31 @@
   <xsl:template match="reasons">
     <div style="margin: 25px 0 0 25px;">
       Основания:
+      <xsl:element name="reason_multy_select">
+        <xsl:attribute name="pattern">Основание(я)</xsl:attribute>
+        <xsl:attribute name="title">Выберите основание(я)</xsl:attribute>
+        <xsl:attribute name="required">required</xsl:attribute>
+        <xsl:attribute name="options-text">
+            <xsl:for-each select="/order/order_template/reasons/reason">
+                <xsl:value-of select="./id"/>
+                <xsl:if test="not(position()=last())">
+                    <xsl:text>|</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:attribute>
+        <xsl:attribute name="options">
+            <xsl:for-each select="/order/order_template/reasons/reason">
+                <xsl:value-of select="./pattern"/>
+                <xsl:if test="not(position()=last())">
+                    <xsl:text>|</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:attribute>
+    </xsl:element>
     </div>
     <ul style="margin: 0 0 0 25px; padding: 0; list-style-type: none;">
       <xsl:apply-templates select="./reason" />
+      <xsl:apply-templates select="order_reasons/reason" />
     </ul>
   </xsl:template>
 

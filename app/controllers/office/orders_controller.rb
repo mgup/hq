@@ -87,16 +87,21 @@ class Office::OrdersController < ApplicationController
   def create
     count = 0
     students_in_order = Student.where(student_group_id: params[:exception])
-    students_in_order.group_by(&:group).each do |_, group_students|
-      if Office::OrderTemplate.find(params[:template]).template_check_tax
-        group_students.group_by(&:payment).each do |_, payment_students|
-          create_order_with_students(params[:template], payment_students)
+    if Office::OrderTemplate.find(params[:template]).template_check_speciality
+      students_in_order.group_by(&:group).each do |_, group_students|
+        if Office::OrderTemplate.find(params[:template]).template_check_tax
+          group_students.group_by(&:payment).each do |_, payment_students|
+            create_order_with_students(params[:template], payment_students)
+            count += 1
+          end
+        else
+          create_order_with_students(params[:template], group_students)
           count += 1
         end
-      else
-        create_order_with_students(params[:template], group_students)
-        count += 1
       end
+    else
+      create_order_with_students(params[:template], students_in_order)
+      count = 1
     end
     redirect_to office_drafts_path, notice: "#{count > 1 ? 'Проекты приказов' : 'Проект приказа'} успешно создан#{'ы' if count > 1}."
   end

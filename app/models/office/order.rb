@@ -141,9 +141,9 @@ class Office::Order < ActiveRecord::Base
         xml.metas do
           metas.each { |meta| xml << meta.to_nokogiri.root.to_xml }
         end
-        # xml.reasons do
-        #   reasons.each { |reason| xml << reason.to_nokogiri.root.to_xml }
-        # end
+        xml.order_reasons do
+          reasons.each { |reason| xml.reason reason.pattern }
+        end
         xml.text_
         xml.signature_
         # xml.protocol_

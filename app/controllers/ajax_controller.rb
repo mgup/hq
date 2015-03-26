@@ -128,6 +128,12 @@ class AjaxController < ApplicationController
     meta.save!
     render({ json: {id: meta.id} })
   end
+  
+  def orderreason
+    order = Office::Order.find(params[:order])
+    order.reasons = Office::Reason.find(params[:reasons])
+    render({ json: {text: order.reasons.collect {|reason| reason.pattern}.join(', ')} })
+  end
 
   def checkpoint
     x = Study::Checkpoint.find(params[:checkpoint_id])
