@@ -7,6 +7,9 @@ class Office::Order < ActiveRecord::Base
 
   ENTRANCE_TEMPLATE = 16
   PROBATION_TEMPLATE = 40
+  REPRIMAND_TEMPLATE = 43
+  
+  RESPONSIBLE_POSITION_ROLES = [2,16,27,30,33]
 
   alias_attribute :id,      :order_id
   alias_attribute :version, :order_revision
@@ -146,6 +149,7 @@ class Office::Order < ActiveRecord::Base
         end
         xml.text_
         xml.signature_
+        xml.dispatch_
         # xml.protocol_
         if template.id == ENTRANCE_TEMPLATE
           xml.act_

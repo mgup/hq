@@ -9,10 +9,10 @@
     <% end %>
     <div class="row <%= 'text-danger' if Date.today.mjd - order.editing_date.to_date.mjd > (order.draft? ? 7 : 14) %>">
       <div class="col col-sm-1"><%= order.id %></div>
-      <div class="col col-sm-1"><%= order.students.first.group.speciality.faculty.abbreviation unless order.students.empty? %></div>
+      <div class="col col-sm-1"><%= order.students.collect {|s| s.group.speciality.faculty.abbreviation}.uniq.join(' ') unless order.students.empty? %></div>
       <div class="col col-sm-4">
         <p style="margin-bottom: 0;"><strong><%= order.template.name if order.template %></strong></p>
-        <p style="margin-top: 0;"><%= order_details(order) %> (<%= order.students.first.group.name unless order.students.empty? %>)</p>
+        <p style="margin-top: 0;"><%= order_details(order) %> (<%= order.students.collect {|s| s.group.name}.uniq.join(', ') unless order.students.empty? %>)</p>
       </div>
       <div class="col col-sm-4">Редактировался: <strong><%= l order.editing_date, format: '%d.%m.%Y, %H:%M' %></strong></div>
       <div class="col col-sm-2">

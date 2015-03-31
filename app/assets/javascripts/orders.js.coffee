@@ -430,7 +430,7 @@
   if isEmpty
     text = $this.attr('data-reason-pattern')
   else
-    text = options[optionsText.indexOf(text)]
+    text = $this.attr('data-reason-text')
   $this.html(text)
 
   div = $('<div>', {'class' : 'reason-popover reason-select reason-text-order', 'data-uid'  : uid})

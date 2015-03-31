@@ -79,6 +79,8 @@ class Ability
 
         can :reference, Student.valid_for_today
         can :soccard_mistakes, Student
+        
+        can :work, :all_faculties
       end
 
     end
@@ -173,6 +175,7 @@ class Ability
     soc_support_event(user)
     can :soccard_mistakes, Student
     can :delete, Social::Document
+    
   end
 
   def soc_support_event(user)
@@ -189,6 +192,9 @@ class Ability
     can :manage, Social::DocumentType
     can :read, Student
     can :study, Student
+    
+    can :manage, Office::Order, order_template: Office::Order::REPRIMAND_TEMPLATE
+    can :work, :all_faculties
   end
 
   def soc_support(user)
@@ -198,6 +204,9 @@ class Ability
     can :manage, Social::DocumentType
     can :read, Student
     can :study, Student
+    
+    can :manage, Office::Order, order_template: Office::Order::REPRIMAND_TEMPLATE
+    can :work, :all_faculties
   end
 
   def faculty_employee(user)

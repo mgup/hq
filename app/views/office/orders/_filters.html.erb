@@ -30,7 +30,7 @@
     <%= label_tag :template, 'Тип приказа', class: 'col col-sm-2 control-label' %>
     <div class="col-sm-6">
       <%= select_tag 'template',
-                options_from_collection_for_select(Office::OrderTemplate.all, :id, :name, params[:template]),
+                options_from_collection_for_select(@templates, :id, :name, params[:template]),
                      prompt: 'все типы приказов', class: 'form-control', style: 'width: 104% !important' %>
     </div>
     <% if ost %>
