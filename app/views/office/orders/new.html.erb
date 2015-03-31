@@ -5,7 +5,7 @@
 <p>Для создания проекта приказа выберите сначала шаблон приказа, который Вы собираетесь создать. После этого выберите студентов, на которых создается данный приказ.</p>
 
 <%= select_tag 'order_template',
-      options_from_collection_for_select(Office::OrderTemplate.all, :id, :name, params[:template]),
+      options_from_collection_for_select(@templates, :id, :name, params[:template]),
       class: 'form-control' %>
 <br>
 <%= form_tag nil, method: :get, class: 'filter-block', id: 'formstudentsearch', class: 'filters' do %>

@@ -134,34 +134,24 @@
                     </fo:block>
                   </fo:table-cell>
                 </fo:table-row>
-                <fo:table-row>
-                  <fo:table-cell>
-                    <fo:block font="12pt PT Serif" font-weight="bold">
-                      <xsl:value-of select="students/student/speciality/faculty/short" />
-                    </fo:block>
-                  </fo:table-cell>
-                </fo:table-row>
-                <fo:table-row>
-                  <fo:table-cell>
-                    <fo:block font="12pt PT Serif" font-weight="bold">
-                      <xsl:call-template name="form_name">
-                        <xsl:with-param name="id" select="students/student/group/form" />
-                      </xsl:call-template>
-                      форма обучения
-                    </fo:block>
-                  </fo:table-cell>
-                </fo:table-row>
-                <!--<fo:table-row>-->
-                <!--<fo:table-cell>-->
-                <!--<fo:block font="12pt PT Serif">-->
-                <!--<xsl:call-template name="form_name">-->
-                <!--<xsl:with-param name="id" select="/order/form" />-->
-                <!--</xsl:call-template>-->
-                <!--форма обучения-->
-                <!--</fo:block>-->
-                <!--</fo:table-cell>-->
-                <!--</fo:table-row>-->
-                <!--<xsl:if test="payment">-->
+                <xsl:if test="'true' = order_template/check_group">
+                  <fo:table-row>
+                    <fo:table-cell>
+                      <fo:block font="12pt PT Serif" font-weight="bold">
+                        <xsl:value-of select="students/student/speciality/faculty/short" />
+                      </fo:block>
+                    </fo:table-cell>
+                  </fo:table-row>
+                  <fo:table-row>
+                    <fo:table-cell>
+                      <fo:block font="12pt PT Serif" font-weight="bold">
+                        <xsl:call-template name="form_name">
+                          <xsl:with-param name="id" select="students/student/group/form" />
+                        </xsl:call-template>
+                        форма обучения
+                      </fo:block>
+                    </fo:table-cell>
+                  </fo:table-row>
                   <fo:table-row>
                     <fo:table-cell>
                       <fo:block font="12pt PT Serif" font-weight="bold">
@@ -171,7 +161,7 @@
                       </fo:block>
                     </fo:table-cell>
                   </fo:table-row>
-                <!--</xsl:if>-->
+                </xsl:if>
               </fo:table-body>
             </fo:table>
           </fo:block>
@@ -200,7 +190,7 @@
       Основания:
     </fo:block>
     <fo:list-block margin-left="20pt">
-      <xsl:apply-templates select="./reason" />
+      <xsl:apply-templates select="./reason | /order/order_reasons/reason" />
     </fo:list-block>
   </xsl:template>
 
@@ -300,14 +290,16 @@
 
   <!-- Рассылка -->
   <xsl:template match="dispatch">
-    <fo:block font="12pt PT Serif" margin-top="20pt" padding-top="10pt">
-      Рассылка:
-    </fo:block>
-    <fo:list-block margin-left="20pt">
-      <xsl:apply-templates select="./department" />
-    </fo:list-block>
+    <xsl:if test="count(./department) > 0">
+      <fo:block font="12pt PT Serif" margin-top="160pt" padding-top="10pt">
+        Рассылка:
+      </fo:block>
+      <fo:list-block margin-left="20pt">
+        <xsl:apply-templates select="./department" />
+      </fo:list-block>
+    </xsl:if>
   </xsl:template>
-
+  
   <xsl:template match="department">
     <fo:list-item>
       <fo:list-item-label end-indent="label-end()">
