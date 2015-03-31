@@ -151,8 +151,8 @@ class Office::OrdersController < ApplicationController
   end
   
   def find_templates
-    @templates = (current_user.is?(:soc_support_vedush) || current_user.is?(:soc_support_boss)) ? Office::OrderTemplate.where(template_id: Office::Order::REPRIMAND_TEMPLATE) : Office::OrderTemplate.all
-    if (current_user.is?(:soc_support_vedush) || current_user.is?(:soc_support_boss))
+    @templates = (current_user.is?(:soc_support) || current_user.is?(:soc_support_vedush) || current_user.is?(:soc_support_boss)) ? Office::OrderTemplate.where(template_id: Office::Order::REPRIMAND_TEMPLATE) : Office::OrderTemplate.all
+    if (current_user.is?(:soc_support) || current_user.is?(:soc_support_vedush) || current_user.is?(:soc_support_boss))
       params[:template] = Office::Order::REPRIMAND_TEMPLATE
     end
   end
