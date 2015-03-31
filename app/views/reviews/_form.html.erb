@@ -1,8 +1,8 @@
-<%= form_for @review, url: review_path(@review), method: :patch, html: { class: 'form-horizontal' } do |f| %>
+<%= form_for @review, html: { class: 'form-horizontal' } do |f| %>
 
     <div class="row">
       <%= f.label :number_review, 'Номер рецензии', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
+      <div class="col col-sm-2">
         <%= f.text_field :number_review, class: 'form-control' %>
         <span class="help-block">
 
@@ -11,28 +11,24 @@
     </div>
 
     <div class="row">
-      <%= f.label :date_registration, 'Дата регистрации change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :date_registration, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :date_registration, 'Дата регистрации', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :status, 'Cтатус change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :status, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :status, 'Cтатус', class: 'control-label col col-sm-2' %>
+      <div class='col col-sm-2'>
+        <%= f.select :status,
+                       options_for_select(%w(обработка завершен истек), params[:status]),{ include_blank: true },
+                       class: 'ajax-form form-control' %>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :contract_number, 'Номер договора', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
+      <div class="col col-sm-2">
         <%= f.text_field :contract_number, class: 'form-control' %>
         <span class="help-block">
 
@@ -41,28 +37,24 @@
     </div>
 
     <div class="row">
-      <%= f.label :contract_date, 'Дата договора change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :contract_date, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :contract_date, 'Дата договора', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.text_field :contract_date, value: (f.object.contract_date ? l(f.object.contract_date, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :ordt, 'Тип заказа change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :ordt, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :ordt, 'Заказчик', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.select :ordt,
+                     options_for_select([%w(физ.лицо физ), %w(юр.лицо юр)],params[:ordt]), { include_blank: true },
+                     class: 'ajax-form form-control' %>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :author, 'Автор', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
+      <div class="col col-sm-6">
         <%= f.text_field :author, class: 'form-control' %>
         <span class="help-block">
 
@@ -70,10 +62,16 @@
       </div>
     </div>
 
+    <div class="row">
+      <%= f.label :university, 'Учебное заведение', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.collection_select(:university_id, University.all, :id, :name, { include_blank: true }, class: 'form-control') %>
+      </div>
+    </div>
 
     <div class="row">
       <%= f.label :title, 'Название пособия', class: 'col col-lg-2 control-label'%>
-      <div class="col col-lg-10">
+      <div class="col col-sm-6">
         <%= f.text_field :title,  class: 'form-control' %>
         <span class="help-block">
 
@@ -81,31 +79,9 @@
       </div>
     </div>
 
-
-    <div class="row">
-      <%= f.label :university_id, 'ID change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :university_id, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
-      </div>
-    </div>
-
-
-    <div class="row">
-      <%= f.label :university_auth_id, 'ID change auth', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :university_auth_id, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
-      </div>
-    </div>
-
     <div class="row">
       <%= f.label :sheet_number, 'Количество авторских листов', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
+      <div class="col col-sm-2">
         <%= f.text_field :sheet_number, class: 'form-control' %>
         <span class="help-block">
 
@@ -114,68 +90,68 @@
     </div>
 
     <div class="row">
-      <%= f.label :evaluation, 'Тип отзыва change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :evaluation, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :university_author, 'Уполномоченный вуз', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.collection_select(:university_auth_id, University.all, :id, :name, { include_blank: true }, class: 'form-control') %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :date_auth_university, 'Дата отправки в уполномоченный ВУЗ change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :date_auth_university, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :auth_contract_number, 'Договор с уполн. вузом', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.text_field :auth_contract_number, class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :date_auth_contract, 'Дата отправки авторского договора change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :date_auth_contract, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :evaluation, 'Тип отзыва', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.select :evaluation,
+                     options_for_select([%w(+ +), %w(- -), %w(нет неопр)], params[:evaluation]), { include_blank: true },
+                     class: 'ajax-form form-control' %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :date_review, 'Дата отправки рецензии change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :date_review, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :date_auth_university, 'Дата отправки в уполн. вуз', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.text_field :date_auth_university, value: (f.object.date_auth_university ? l(f.object.date_auth_university, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :date_accounting, 'Дата отправки бух. документов change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :date_accounting, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :date_auth_contract, 'Дата отправки авторского договора', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.text_field :date_auth_contract, value: (f.object.date_auth_contract ? l(f.object.date_auth_contract, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :paid, 'Оплачено change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
-        <%= f.text_field :paid, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
+      <%= f.label :date_review, 'Дата отправки рецензии', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.text_field :date_review, value: (f.object.date_review ? l(f.object.date_review, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :note, 'Примечание change', class: 'col col-lg-2 control-label' %>
-      <div class="col col-lg-10">
+      <%= f.label :date_accounting, 'Дата отправки бухгалтерских документов', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%= f.text_field :date_accounting, value: (f.object.date_accounting ? l(f.object.date_accounting, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :paid, 'Оплачено', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-2">
+        <%=  f.select :paid,
+                       options_for_select(%w(да нет), params[:paid]), { include_blank: true },
+                       class: 'ajax-form form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :note, 'Примечание', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-6">
         <%= f.text_field :note, class: 'form-control' %>
         <span class="help-block">
 

@@ -1,5 +1,7 @@
 HQ::Application.routes.draw do
 
+  resources :universities
+
   resources :reviews
   get 'reviews/index'
 
