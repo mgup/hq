@@ -1,0 +1,46 @@
+<div class="page-header">
+  <h1>Рецензирование изданий</h1>
+  <h3>Cписок всех рецензий</h3>
+</div>
+
+<div class="row">
+  <div class="col col-lg-10 col-offset-2">
+    <%= link_to 'Новая рецензия', new_review_path, class: 'btn btn-primary' %>
+    <%= link_to 'Экспорт в Excel', reviews_path(format: 'xls'), class: 'btn btn-info' %>
+    <%= link_to 'Список ВУЗов', universities_path, class: 'btn btn-primary' %>
+    <%= form_tag reviews_path, :method => 'get' do %>
+        <p>
+          <%= text_field_tag :search, params[:search] %>
+          <%= submit_tag "поиск", :name => nil %>
+        </p>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>№ рец.</th>
+    <th>Дата регистрации</th>
+    <th>№ договора</th>
+    <th>Дата договора</th>
+    <th>Тип заказа</th>
+    <th>Автор</th>
+    <th>Учебное заведение</th>
+    <th>Название пособия</th>
+    <th>Уполномоченный вуз</th>
+    <th>Дата отправки в вуз</th>
+    <th>Тип отзыва</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <%= render partial: 'rows' %>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate_with_info @reviews_page %>
+</div>

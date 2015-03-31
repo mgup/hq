@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">ID</Data></Cell>
+        <Cell><Data ss:Type="String">Имя</Data></Cell>
+      </Row>
+      <% @universities.each do |university| %>
+          <Row>
+            <Cell><Data ss:Type="Number"><%= university.id %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= university.name %></Data></Cell>
+          </Row>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
