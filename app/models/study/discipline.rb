@@ -92,7 +92,7 @@ class Study::Discipline < ActiveRecord::Base
     if is_active? && semester == CURRENT_STUDY_TERM
       group.students.valid_for_today
     else
-      Student.in_group_at_date(group, Date.new((autumn? ? year : year+1), (autumn? ? 11 : 5), 15))
+      Student.in_group_at_date(group, Date.new((autumn? ? year : year + 1), (autumn? ? 11 : 5), 15))
     end
   end
 
