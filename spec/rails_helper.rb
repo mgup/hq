@@ -47,4 +47,12 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  config.before :each, :js, type: :feature do |example|
+    if example.metadata[:js]
+      page.driver.allow_url('www.google.com')
+      page.driver.allow_url('yandex.st')
+      page.driver.allow_url('www.google-analytics.com')
+    end
+  end
 end
