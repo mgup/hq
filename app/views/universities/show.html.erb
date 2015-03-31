@@ -1,0 +1,11 @@
+<div class="page-header">
+  <h1>Список университетов</h1>
+  <h3><%= @university.name %> успешно создан!</h3>
+</div>
+<br>
+<div class="row">
+  <div class="col col-lg-10 col-offset-2">
+    <%= link_to 'Изменить', edit_university_path(@university),class: 'btn btn-warning' %>
+    или
+    <%= link_to 'назад к структуре', universities_path, class: 'btn btn-primary' %>  </div>
+</div>
