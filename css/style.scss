@@ -693,59 +693,15 @@ article {
 } /* @iPhone */
 
 
-$body-width: 1000px;
+$body-width: auto;
 $padding-left: 100px;
 $nav-back-color: #333838;
 $single-post-padding: 5px;
 
-.button {
-  display : inline-block;
-  cursor : pointer;
-  
-  border-style : solid;
-  border-width : 1px;
-  padding : 2px;
-  box-shadow : 0 1px 2px rgba(0,0,0,.6);
-  font-size : 9pt;
-  font-weight : bold;
-  color : #fff;
-  text-shadow : 0 1px 3px rgba(0,0,0,.4);
-  font-family : sans-serif;
-  text-decoration : none;
-}
-
-.button.blue {
-  border-color : #2989d8;
-  background: #2989d8;
-  background: -moz-linear-gradient(top, #2989d8 0%, #1e5799 100%);
-  background: -webkit-gradient(linear, left top, left bottom, 
-    color-stop(0%,#2989d8), color-stop(100%,#1e5799));
-  background: -webkit-linear-gradient(top, #2989d8 0%,#1e5799 100%);
-  background: -o-linear-gradient(top, #2989d8 0%,#1e5799 100%);
-  background: -ms-linear-gradient(top, #2989d8 0%,#1e5799 100%);
-  background: linear-gradient(top, #2989d8 0%,#1e5799 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( 
-    startColorstr='#2989d8', endColorstr='#1e5799',GradientType=0 );
-}
-
-.button.green {
-  border-color: #8fc800;
-  background: #8fc800;
-  background: -moz-linear-gradient(top, #8fc800 0%, #438c00 100%);
-  background: -webkit-gradient(linear, left top, left bottom, 
-    color-stop(0%,#8fc800), color-stop(100%,#438c00));
-  background: -webkit-linear-gradient(top, #8fc800 0%,#438c00 100%);
-  background: -o-linear-gradient(top, #8fc800 0%,#438c00 100%);
-  background: -ms-linear-gradient(top, #8fc800 0%,#438c00 100%);
-  background: linear-gradient(top, #8fc800 0%,#438c00 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( 
-    startColorstr='#8fc800', endColorstr='#438c00',GradientType=0 );
-}
-
-
 
 body{
 	text-align: left;
+	text-decoration: none;
 }
 
 .wrap .grid,
@@ -761,76 +717,46 @@ a{
 	margin-bottom: 0.01em;
 	font-size: 4em;
 	text-align: center;
-	text-shadow: 0px 0px 0.1px black
 }
 
 .main-nav{
 	overflow: auto;
-	padding: 0;
-	margin: 10;
+	padding: 0px;
+	margin-bottom: 25px;
 	background-color: $nav-back-color;
-	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 
 
 	ul{
 		list-style: none;
 		display: inline-block;
-		margin: 0;
-		padding: 10;
+		margin: 0px;
+		padding: 0px;
 		li{
 			position: relative;
 			display: inline-block;
-			padding: 0;
+			right: 0px; /* Положение от правого края */
+			padding: 0px;
 			margin-right: -4px;
 			text-transform: uppercase;
 
 			a{
 				display: inline-block;
-				padding: 15px 20px;
+				vertical-align: top; 
+				padding: 15px 10px;
 				border-bottom: 4px solid transparent;
 				color: #ddd;
 				text-decoration: none;
 
 				&:hover{
-					background-color: darken($nav-back-color, 10%);
+					background-color: darken($nav-back-color, 5%);
 					border-bottom: 4px solid #1AC9DB;
-					box-shadow: 0 0 5px rgba(0,0,0,0.5);
 				}
 			}
 		}
 	}
 }
 
-.alt2{ 
-	margin: 0px;  padding: 2px;  border: 0px inset;
-}
-.smallfont{
-	margin-bottom:2px;
-}
-.spoil{
-	margin:10px; margin-top:5px;
-}
 
-.headroom{
-	&.headroom--top{
-		position: relative;
-	}
-	&.headroom--not-top{
-		position: relative;
-		top: 0;
-		left: 0;
-		right: 0;
-		-webkit-box-shadow: 0 8px 6px -6px #115464;
-		-moz-box-shadow: 0 8px 6px -6px #115464;
-		box-shadow: 0 8px 6px -6px #115464;
-	}
-	&.headroom--unpinned{
-		display: none;
-	}
-	&.headroom-pinned{
-		display: block;
-	}
-}
 
 .content{
 	margin-top: 1em;
@@ -851,10 +777,6 @@ a{
 	.button{
 		color: #fff;
 	}
-}
-
-details { 
-    display: block;
 }
 
 #home{
@@ -905,7 +827,7 @@ details {
 }
 
 .unit.posts, .posts{
-	padding: 0;
+	padding: 0px;
 	h2{
 		font-size: 2em;
 		margin: 0 0 0.2em 0;
@@ -925,11 +847,13 @@ details {
 	padding-left: $single-post-padding*2;
 	background-color: #ffffff;
 	border: 1px solid #cccccc;
-	-webkit-box-shadow: 0px 1px 5px rgba(0,0,0,0.4);
-	box-shadow: 0px 1px 5px rgba(0,0,0,0.4);
+
+	a{
+		text-decoration: none;
+   }
 
 	p{
-		margin: 1.2em 0;
+		margin: 0px 0px;
 		font-size: .9em;
 	}
 }
@@ -961,35 +885,19 @@ article{
 	footer{
 		margin-top: 5px;
 		border-top: 1px solid #ccc;
+		text-decoration: none;
 	}
-}
-
-#home{
-	.sidebar{
-		padding: 0;
-		padding-left: 0px;
-
-	}
-}
-
-.paginator{
-	text-align: center;
-}
-
-.meta{
-	font-size: 0.8em;
-	font-weight: bold;
 }
 
 
 .site-footer{
 	border-top: 1px solid #ccc;
-	padding-top: 0em;
 	text-align: center;
     padding: 10px; /* Поля вокруг текста */
     background: transparent; /* Цвет фона */
     color: #111; /* Цвет текста */
     font-size: 16pt;
+    text-decoration: none;
 }
 
 
@@ -1039,4 +947,16 @@ article{
 	a.share{
 		display: none;
 	}
+}
+
+.splCont {
+	display:none;
+	margin-left: 0.6em;
+	padding-left: 0.6em;
+	margin-right: 0.6em;
+	padding-right: 0.6em;
+	border-left: 1px solid #777;
+	border-right: 1px solid #777;
+	border-top: 3px solid #777;
+	border-bottom: 3px solid #777
 }

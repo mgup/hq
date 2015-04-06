@@ -1,0 +1,56 @@
+div#faq{
+    clear: both;
+    margin: 0;
+}
+div#faq div.section{
+    clear: both;
+    margin: 0 0 30px;
+}
+div#faq div.section div.section-title{
+    clear: both;
+    font-family: Tahoma;
+    font-size: 16px;
+    font-weight: bold;
+    color: #676767;
+    margin: 0 0 10px 7px;
+}
+div#faq div.section div.faq-element{
+    clear: both;
+    margin: 0 0 10px 10px;
+}
+div#faq div.section div.faq-element div.faq-title{
+    background: url("../images/promo/a-promo.png") no-repeat 0 5px;
+    padding: 0 0 0 10px;
+    margin: 0 0 0 10px;
+}
+div#faq div.section div.faq-element div.faq-title a{
+    font-family: Trebuchet MS;
+    font-size: 14px;
+    line-height: 16px;
+    color: #00aeef;
+    border-bottom: 1px dotted #00aeef;
+    text-decoration: none;
+    cursor: pointer;
+}
+div#faq div.section div.faq-element div.faq-title a:hover,
+div#faq div.section div.faq-element div.faq-title a.active{
+    border: 0;
+}
+div#faq div.section div.faq-element div.faq-text{
+    margin: 10px 0 30px 30px;
+    display: none;
+}
+div#faq div.section div.faq-element div.faq-text p{
+    font-family: Trebuchet MS;
+    font-size: 14px;
+    font-style: italic;
+    color: #555;
+    margin: 0 0 10px;
+}
+div#faq div.section div.faq-element div.faq-text ol{
+    list-style: decimal;
+    margin: 5px 0 25px 40px;
+}
+div#faq div.section div.faq-element div.faq-text ol li{
+    padding: 0;
+}
