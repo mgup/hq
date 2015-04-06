@@ -8,5 +8,5 @@ permalink: /priem/nav/
  1. <a href="{{ site.url }}/priem/1"> Основные даты.</a> 
  2. <a href="{{ site.url }}/priem/2"> Документы необходимые для подачи заявления. </a>
  3. <a href="{{ site.url }}/priem/3"> Как формируются конкурсные списки. </a>
-
+ 4. <a href="{{ site.url }}/priem/4"> Основная документация. </a>
 
