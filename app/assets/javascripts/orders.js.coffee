@@ -531,8 +531,6 @@
 		key = true
 		$('.order-meta[data-required="true"]').each ->
 			key = key && ($(this).attr('data-meta-text') != '')
-		$('.order-reason[data-required="true"]').each ->
-			key = key && ($(this).attr('data-reason-text') != '')
 		if key
 			$('#pushToSign').prop('disabled', false)
 
