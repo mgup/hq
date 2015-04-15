@@ -76,6 +76,7 @@ class Ability
         can :manage, Office::Order
         can :manage, :student
         can :index, :groups
+        can :manage, Group
 
         can :reference, Student.valid_for_today
         can :soccard_mistakes, Student
