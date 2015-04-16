@@ -1,5 +1,4 @@
 class UniversitiesController < ApplicationController
-
   authorize_resource
 
   def index
@@ -8,7 +7,7 @@ class UniversitiesController < ApplicationController
     respond_to do |format|
       format.html
       format.csv
-      format.xls  #{ send_data @universities.to_csv(col_sep: "\t") }
+      format.xls  # { send_data @universities.to_csv(col_sep: "\t") }
     end
   end
 
@@ -29,7 +28,7 @@ class UniversitiesController < ApplicationController
     if @university.save
       redirect_to universities_path
     else
-      render 'new'
+      render action: :new
     end
   end
 
@@ -38,7 +37,7 @@ class UniversitiesController < ApplicationController
     if @university.update(resource_params)
       redirect_to universities_path
     else
-      render 'edit'
+      render action: :edit
     end
   end
 
@@ -51,6 +50,6 @@ class UniversitiesController < ApplicationController
 
   def resource_params
     params.fetch(:university, {}).permit(
-        :name)
+      :name)
   end
 end
