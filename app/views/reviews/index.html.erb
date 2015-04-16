@@ -1,26 +1,35 @@
 <div class="page-header">
   <h1>Рецензирование изданий</h1>
-  <h3>Cписок всех рецензий</h3>
 </div>
-
 <div class="row">
-  <div class="col col-lg-10 col-offset-2">
-    <%= link_to 'Новая рецензия', new_review_path, class: 'btn btn-primary' %>
-    <%= link_to 'Экспорт в Excel', reviews_path(format: 'xls'), class: 'btn btn-info' %>
-    <%= link_to 'Список ВУЗов', universities_path, class: 'btn btn-primary' %>
-    <%= form_tag reviews_path, :method => 'get' do %>
-        <p>
-          <%= text_field_tag :search, params[:search] %>
-          <%= submit_tag "поиск", :name => nil %>
-        </p>
-    <% end %>
+  <div class="col col-lg-10">
+      <%= link_to 'Новая рецензия', new_review_path, class: 'btn btn-primary' %>
+      <%= link_to 'Экспорт в Excel 2007', reviews_path(format: 'xlsx'), class: 'btn btn-info' %>
+      <%= link_to 'Список вузов', universities_path, class: 'btn btn-primary' %>
   </div>
+ </div>
+<div class="row">
+  <%= form_tag search_results_path, method: 'get' do %>
+    <div class="col col-sm-4">
+        <%= text_field_tag :search_keywords, nil, placeholder: 'Введите запрос', class: 'form-control' %>
+    </div>
+    <div class="col col-sm-3">
+      <%= text_field_tag :start_date, nil, placeholder: 'Начальная дата', class: 'form-control datepicker' %>
+    </div>
+    <div class="col col-sm-3">
+      <%= text_field_tag :end_date, nil, placeholder: 'Конечная дата', class: 'form-control datepicker' %>
+    </div>
+    <div class="col col-sm-2">
+        <%= submit_tag 'Поиск' , class: 'btn btn-primary'%>
+    </div>
+  <% end %>
 </div>
-
+<div class="row"><h3>Ближайшие контракты</h3>
+</div>
 <table class="table table-condensed">
   <thead>
   <tr>
-    <th>№ рец.</th>
+    <th>№ рец</th>
     <th>Дата регистрации</th>
     <th>№ договора</th>
     <th>Дата договора</th>
@@ -28,7 +37,36 @@
     <th>Автор</th>
     <th>Учебное заведение</th>
     <th>Название пособия</th>
-    <th>Уполномоченный вуз</th>
+    <th>Общая стоимость</th>
+    <th>Стоимость рецензии</th>
+    <th>Уполн. вуз</th>
+    <th>Дата отправки в вуз</th>
+    <th>Тип отзыва</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+      <%= render partial: 'rows_1' %>
+  </tbody>
+</table>
+<div class="row"><h3>Список всех рецензий</h3>
+</div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>№ рец</th>
+    <th>Дата регистрации</th>
+    <th>№ договора</th>
+    <th>Дата договора</th>
+    <th>Тип заказа</th>
+    <th>Автор</th>
+    <th>Учебное заведение</th>
+    <th>Название пособия</th>
+    <th>Общая стоимость</th>
+    <th>Стоимость рецензии</th>
+    <th>Уполн. вуз</th>
     <th>Дата отправки в вуз</th>
     <th>Тип отзыва</th>
     <th></th>
@@ -40,7 +78,13 @@
   <%= render partial: 'rows' %>
   </tbody>
 </table>
-
 <div>
   <%= paginate_with_info @reviews_page %>
+</div>
+<div class="row">
+  <div class="col col-lg-12">
+    <div>Количество рецензий  <%= Review.count %></div>
+    <div>Стоимость рецензирования  <%= sprintf('%8.2f',Review.sum(:cost)) %></div>
+    <div>Стоимость рецензирования<%= sprintf('%8.2f',Review.sum(:total_cost))%></div>
+  </div>
 </div>

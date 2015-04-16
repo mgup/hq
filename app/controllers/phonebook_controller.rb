@@ -1,5 +1,4 @@
 class PhonebookController < ApplicationController
-
   before_filter :load_departments, only: :index
   before_filter :load_department, except: :index
 
@@ -9,7 +8,6 @@ class PhonebookController < ApplicationController
   end
 
   private
-
   def load_departments
     @departments = Department.active
   end
@@ -18,6 +16,4 @@ class PhonebookController < ApplicationController
     @department = Department.find(params[:id])
     @positions = @department.positions.for_phonebook
   end
-
-
 end

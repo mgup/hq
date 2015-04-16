@@ -20,12 +20,13 @@
     <div class="row">
       <%= f.label :status, 'Cтатус', class: 'control-label col col-sm-2' %>
       <div class='col col-sm-2'>
-        <%= f.select :status,
-                       options_for_select(%w(обработка завершен истек), params[:status]),{ include_blank: true },
-                       class: 'ajax-form form-control' %>
+        <% stat = [] %>
+        <% [{type: 'обработка', key:  'обработка'}, {type: 'завершен', key: 'завершен'},{type: 'истек', key: 'истек'} ].each do |fin| %>
+            <% stat << (OpenStruct.new fin) %>
+        <% end %>
+        <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @review.status), {}, class: 'form-control' %>
       </div>
     </div>
-
     <div class="row">
       <%= f.label :contract_number, 'Номер договора', class: 'col col-lg-2 control-label' %>
       <div class="col col-sm-2">
@@ -39,16 +40,21 @@
     <div class="row">
       <%= f.label :contract_date, 'Дата договора', class: 'control-label col col-sm-2' %>
       <div class="col col-sm-2">
-        <%= f.text_field :contract_date, value: (f.object.contract_date ? l(f.object.contract_date, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
+        <%= f.text_field :contract_date, value: (f.object.contract_date ? l(f.object.contract_date, format: '%d.%m.%Y') : ''),class: 'form-control datepicker' %>
+        <span class="help-block">
+          <%= f.label :sheet_number, 'обязательное поле' %>
+        </span>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :ordt, 'Заказчик', class: 'control-label col col-sm-2' %>
       <div class="col col-sm-2">
-        <%= f.select :ordt,
-                     options_for_select([%w(физ.лицо физ), %w(юр.лицо юр)],params[:ordt]), { include_blank: true },
-                     class: 'ajax-form form-control' %>
+        <% ordtt = [] %>
+        <% [{type: 'физ.лицо', key:  'физ'}, {type: 'юр.лицо', key: 'юр'}].each do |fin| %>
+            <% ordtt << (OpenStruct.new fin) %>
+        <% end %>
+        <%= f.select :ordt, options_from_collection_for_select(ordtt, :key, :type, @review.ordt), {include_blank: true}, class: 'form-control' %>
       </div>
     </div>
 
@@ -82,17 +88,17 @@
     <div class="row">
       <%= f.label :sheet_number, 'Количество авторских листов', class: 'col col-lg-2 control-label' %>
       <div class="col col-sm-2">
-        <%= f.text_field :sheet_number, class: 'form-control' %>
+        <%= f.text_field :sheet_number ,class: 'form-control' %>
         <span class="help-block">
-
-    </span>
+            <%= f.label :sheet_number, 'обязательное поле' %>
+        </span>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :university_author, 'Уполномоченный вуз', class: 'col col-lg-2 control-label' %>
       <div class="col col-sm-10">
-        <%= f.collection_select(:university_auth_id, University.all, :id, :name, { include_blank: true }, class: 'form-control') %>
+        <%= f.collection_select(:university_auth_id, University.all, :id, :name, { include_blank: false}, class: 'form-control') %>
       </div>
     </div>
 
@@ -106,9 +112,11 @@
     <div class="row">
       <%= f.label :evaluation, 'Тип отзыва', class: 'control-label col col-sm-2' %>
       <div class="col col-sm-2">
-        <%= f.select :evaluation,
-                     options_for_select([%w(+ +), %w(- -), %w(нет неопр)], params[:evaluation]), { include_blank: true },
-                     class: 'ajax-form form-control' %>
+        <% eval = [] %>
+        <% [{type: '+', key:  '+'}, {type: '-', key: '-'}, {type: 'нет', key: 'неопр'}].each do |fin| %>
+            <% eval << (OpenStruct.new fin) %>
+        <% end %>
+        <%= f.select :evaluation, options_from_collection_for_select(eval, :key, :type, @review.evaluation), {include_blank: true}, class: 'form-control' %>
       </div>
     </div>
 
@@ -143,9 +151,11 @@
     <div class="row">
       <%= f.label :paid, 'Оплачено', class: 'control-label col col-sm-2' %>
       <div class="col col-sm-2">
-        <%=  f.select :paid,
-                       options_for_select(%w(да нет), params[:paid]), { include_blank: true },
-                       class: 'ajax-form form-control' %>
+        <% paidd= [] %>
+        <% [{type: 'да', key:  'да'}, {type: 'нет', key: 'нет'}].each do |fin| %>
+            <% paidd << (OpenStruct.new fin) %>
+        <% end %>
+        <%= f.select :paid, options_from_collection_for_select(paidd, :key, :type, @review.paid), {include_blank: true }, class: 'form-control' %>
       </div>
     </div>
 

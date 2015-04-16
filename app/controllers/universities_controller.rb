@@ -1,5 +1,7 @@
 class UniversitiesController < ApplicationController
 
+  authorize_resource
+
   def index
     @universities = University.all
     @universities_page = @universities.page(params[:page])

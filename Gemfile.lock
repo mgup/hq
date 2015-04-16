@@ -330,9 +330,6 @@ GEM
     ruby2ruby (2.1.3)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
-    rubyXL (3.1.0)
-      nokogiri (>= 1.4.4)
-      rubyzip (>= 1.0.0)
     ruby_parser (3.5.0)
       sexp_processor (~> 4.1)
     rubyzip (1.0.0)
@@ -479,7 +476,6 @@ DEPENDENCIES
   rollbar
   rspec-rails
   rubocop
-  rubyXL
   russian
   sass-rails
   sextant
