@@ -8,6 +8,7 @@ class PhonebookController < ApplicationController
   end
 
   private
+
   def load_departments
     @departments = Department.active
   end
