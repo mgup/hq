@@ -73,7 +73,7 @@ class EventsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:event, {}).permit(:name, :description, :booking, :hasclaims, :status, :event_category_id,
+    params.fetch(:event, {}).permit(:name, :description, :place, :booking, :hasclaims, :status, :event_category_id,
                  dates_attributes: [:id, :date, :time_start, :time_end, :max_visitors, :'_destroy'])
   end
 

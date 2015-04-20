@@ -34,9 +34,28 @@
       <%= paginate_with_info @events %>
     </div>
     <% @events.each do |event| %>
-      <h2><a href="<%= more_event_path(event) %>" class="header-link"><%= event.name %></a> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h2>
+      <h2><a href="<%= more_event_path(event) %>" class="header-link"><%= event.name %></a> <small>Дата публикации: <%= l event.created_at, format: '%d.%m.%Y' %></small></h2>
+	  <% if event.dates.length > 0 %>
+	  	<div>
+		  <% if event.dates.length > 1 %>
+		  	<h4>Даты мероприятия:</h4>
+		  	<% event.dates.each do |d| %>
+		  		<p><%= l d.date, format: '%d %b %Y' %>, <%= l d.time_start, format: '%H:%M' %><%= "–#{l d.time_end, format: '%H:%M'}" if d.time_end %></p>
+		  	  <% end %>
+		  <% else %>
+		  	<strong>Дата мероприятия:</strong> <%= l event.dates.first.date, format: '%d %b %Y' %>, <%= l event.dates.first.time_start, format: '%H:%M' %><%= "–#{l event.dates.first.time_end, format: '%H:%M'}" if event.dates.first.time_end %>
+		  <% end %>
+		  <br>	
+	 	</div>
+	  <% end %>
+	  
+	  <% if event.place %>
+	  	<div><strong>Место проведения:</strong> <%= event.place %></div>
+		<br>
+	  <% end %>
+	  
       <% if event.description.length > 500 %>
-      <div><%= raw event.description.truncate(500) %></div>
+      <div class="event-style"><%= raw event.description.truncate(500) %></div>
       <%= link_to '<p class="lead">Читать далее</p>'.html_safe, more_event_path(event) %>
       <% else %>
         <div><%= raw event.description %></div>
