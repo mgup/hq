@@ -155,7 +155,7 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :event_categories, 'Категории событий', event_categories_path, icon: 'th-list'
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
-        primary.item :phonebook, 'Телефонная книга'.html_safe, phonebook_index_path , icon: 'list'
+        primary.item :phonebook, 'Телефонная книга'.html_safe, phonebook_index_path, icon: 'list'
       end
     end
     # ======================================
