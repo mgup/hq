@@ -487,8 +487,8 @@ Style/WordArray:
 Metrics/AbcSize:
   Description: A calculated magnitude based on number of assignments, branches, and
     conditions.
-  Enabled: false
-  Max: 15
+  Enabled: true
+  Max: 30
 Metrics/BlockNesting:
   Description: Avoid excessive block nesting
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#three-is-the-number-thou-shalt-count
@@ -507,8 +507,8 @@ Metrics/CyclomaticComplexity:
 Metrics/LineLength:
   Description: Limit lines to 80 characters.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#80-character-limits
-  Enabled: false
-  Max: 80
+  Enabled: true
+  Max: 100
   AllowURI: true
   URISchemes:
   - http

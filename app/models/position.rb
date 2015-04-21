@@ -18,7 +18,11 @@ class Position < ActiveRecord::Base
 
   scope :from_role, -> role { joins(:role).where(acl_role: { acl_role_name: role }) }
 
-  scope :for_phonebook, -> { joins(:role, :user).where('acl_role.acl_role_id NOT IN (34,21,37,5,31,35,36)').where('user.user_active = 1') }
+  scope :for_phonebook, -> {
+    joins(:role, :user)
+    .where('acl_role.acl_role_id NOT IN (34,21,37,5,31,35,36)')
+    .where('user.user_active = 1')
+  }
 
   def info
     "#{appointment.title}, #{department.abbreviation}" unless appointment.nil?
