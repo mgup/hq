@@ -7,7 +7,7 @@ class UniversitiesController < ApplicationController
     respond_to do |format|
       format.html
       format.csv
-      format.xls  # { send_data @universities.to_csv(col_sep: "\t") }
+      format.xls
     end
   end
 
