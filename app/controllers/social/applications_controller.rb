@@ -64,8 +64,8 @@ class Social::ApplicationsController < ApplicationController
   private
 
   def init_params
-    params[:year]  ||= 2014
-    params[:month] ||= 10
+    params[:year]  ||= 2015
+    params[:month] ||= 3
     params[:accepted] ||= 0
     params[:deferred] ||= 0
     params[:causes] ||= []

@@ -7,5 +7,6 @@ FactoryGirl.define do
     student_group_oldstudent { 0 }
     student_group_oldgroup { 0 }
     student_group_status { 101 }
+    student_group_yearin { 2010 }
   end
 end

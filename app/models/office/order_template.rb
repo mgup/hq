@@ -23,6 +23,7 @@ module Office
         xml.order_template do
           xml.id_ id
           xml.name name
+          xml.check_group template_check_speciality
 
           [:reasons, :causes].each do |name|
             xml.send(name) do

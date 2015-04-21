@@ -1,7 +1,7 @@
 class Social::DocumentsController < ApplicationController
   load_and_authorize_resource :student, except: :list
   before_filter :load_deeds, only: :index
-  before_filter :load_deed, only: :update
+  before_filter :load_deed, only: [:update, :destroy]
 
   def index
     authorize! :index, Social::Document
@@ -69,6 +69,12 @@ class Social::DocumentsController < ApplicationController
     @document.save
     redirect_to student_social_deeds_path(@student)
   end
+  
+  def destroy
+    authorize! :delete, Social::Document
+    @document.destroy
+    redirect_to student_social_deeds_path(@student)
+  end
 
   private
 
@@ -82,7 +88,7 @@ class Social::DocumentsController < ApplicationController
 
   def resource_params
     params.fetch(:social_document, {}).permit(:student_id, :social_document_type_id, :number,
-                                              :department, :start_date, :expire_date, :status)
+                                              :department, :start_date, :expire_date, :status, :comment, :form)
   end
 
 end

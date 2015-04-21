@@ -210,7 +210,7 @@ FROM (
 	) AS `archive`
 		ON `archive`.`student_group_id` = `student_group`.`student_group_id`
 	WHERE
-		`student_group`.`student_group_status` IN (101, 107)
+		`student_group`.`student_group_status` IN (101, 108)
 		AND `student_group`.`student_group_group` = :group
 	GROUP BY `student_group`.`student_group_id`
 	HAVING
@@ -225,7 +225,7 @@ FROM (
 	JOIN `order`
 		ON `order`.`order_id` = `archive_student_group`.`archive_student_group_order`
 	WHERE
-		`archive_student_group`.`student_group_status` IN (101, 107)
+		`archive_student_group`.`student_group_status` IN (101, 108)
 		AND `archive_student_group`.`student_group_group` = :group
 		AND `order`.`order_signing` > :date
 ) AS `studentss`
@@ -243,7 +243,7 @@ ORDER BY
 
     # Проверяем, что в группе есть студенты.
     if ids.any?
-      find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless x.entrance_order.nil? || x.entrance_order.signing_date > date}
+      find(ids.to_a.collect{|x| x[0]}.split(',')).each_with_object([]){|x,a| a << x unless ((x.entrance_order.nil?|| x.entrance_order.signing_date > date) && x.admission_year > 2009) }
     else
       none
     end

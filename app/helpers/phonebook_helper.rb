@@ -6,6 +6,4 @@ module PhonebookHelper
       position.department.phone
     end
   end
-
-
 end

@@ -1,6 +1,7 @@
 class Office::OrdersController < ApplicationController
   load_and_authorize_resource class: 'Office::Order'
   before_filter :find_faculties, only: [:new, :index, :drafts, :underways]
+  before_filter :find_templates, only: [:new, :index, :drafts, :underways]
 
   def index
     params[:from_date]  ||= "01.01.#{Date.today.year}"
@@ -79,7 +80,7 @@ class Office::OrdersController < ApplicationController
 
   def new
     params[:course] ||= 1
-    params[:template] ||= 40
+    params[:template] ||= current_user.is?(:soc_support_boss) ? Office::Order::REPRIMAND_TEMPLATE : 40
     @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception])
                        .my_filter(params).from_template(Office::OrderTemplate.find(params[:template])).page(params[:page])
   end
@@ -87,16 +88,21 @@ class Office::OrdersController < ApplicationController
   def create
     count = 0
     students_in_order = Student.where(student_group_id: params[:exception])
-    students_in_order.group_by(&:group).each do |_, group_students|
-      if Office::OrderTemplate.find(params[:template]).template_check_tax
-        group_students.group_by(&:payment).each do |_, payment_students|
-          create_order_with_students(params[:template], payment_students)
+    if Office::OrderTemplate.find(params[:template]).template_check_speciality
+      students_in_order.group_by(&:group).each do |_, group_students|
+        if Office::OrderTemplate.find(params[:template]).template_check_tax
+          group_students.group_by(&:payment).each do |_, payment_students|
+            create_order_with_students(params[:template], payment_students)
+            count += 1
+          end
+        else
+          create_order_with_students(params[:template], group_students)
           count += 1
         end
-      else
-        create_order_with_students(params[:template], group_students)
-        count += 1
       end
+    else
+      create_order_with_students(params[:template], students_in_order)
+      count = 1
     end
     redirect_to office_drafts_path, notice: "#{count > 1 ? 'Проекты приказов' : 'Проект приказа'} успешно создан#{'ы' if count > 1}."
   end
@@ -137,11 +143,18 @@ class Office::OrdersController < ApplicationController
 
   def find_faculties
     @faculties = Department.faculties
-    unless current_user.is?(:developer)
+    unless current_user.is?(:developer) || can?(:work, :all_faculties)
       user_departments = current_user.departments_ids
       @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
     end
     params[:faculty] ||= @faculties.first.id
+  end
+  
+  def find_templates
+    @templates = (current_user.is?(:soc_support) || current_user.is?(:soc_support_vedush) || current_user.is?(:soc_support_boss)) ? Office::OrderTemplate.where(template_id: Office::Order::REPRIMAND_TEMPLATE) : Office::OrderTemplate.all
+    if (current_user.is?(:soc_support) || current_user.is?(:soc_support_vedush) || current_user.is?(:soc_support_boss))
+      params[:template] = Office::Order::REPRIMAND_TEMPLATE
+    end
   end
 
   def create_order_with_students(template, students)
@@ -149,7 +162,7 @@ class Office::OrdersController < ApplicationController
     students.each_with_index do |student, i|
       order_students.merge! i => {order_student_student: student.person.id, order_student_student_group_id: student.id, order_student_cause: 0}
     end
-    order = Office::Order.create status: 1, responsible: current_user.positions.where(acl_position_role: [2,16,33]).first.id, order_template: template,
+    order = Office::Order.create status: 1, responsible: current_user.positions.where(acl_position_role: Office::Order::RESPONSIBLE_POSITION_ROLES).first.id, order_template: template,
                                   order_department:  current_user.positions.first.department.id,
                                   students_in_order_attributes: order_students
     order.save

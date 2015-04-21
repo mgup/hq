@@ -7,6 +7,9 @@ class Office::Order < ActiveRecord::Base
 
   ENTRANCE_TEMPLATE = 16
   PROBATION_TEMPLATE = 40
+  REPRIMAND_TEMPLATE = 43
+  
+  RESPONSIBLE_POSITION_ROLES = [2,16,25,27,30,33]
 
   alias_attribute :id,      :order_id
   alias_attribute :version, :order_revision
@@ -23,6 +26,8 @@ class Office::Order < ActiveRecord::Base
            foreign_key: :order_student_order, dependent: :destroy
   accepts_nested_attributes_for :students_in_order
   has_many :students, class_name: 'Student', through: :students_in_order
+  
+  has_many :archive_students, class_name: 'Archive::Student', foreign_key: :archive_student_group_order, primary_key: :order_id
 
   has_many :order_reasons, class_name: 'Office::OrderReason',
            foreign_key: :order_reason_order, dependent: :destroy
@@ -123,7 +128,11 @@ class Office::Order < ActiveRecord::Base
         xml << template.to_nokogiri.root.to_xml
 
         xml.students do
-          students.each { |student| xml << student.to_nokogiri.root.to_xml }
+          if signed?
+           archive_students.each { |archive| xml << archive.to_nokogiri.root.to_xml } 
+          else
+            students.each { |student| xml << student.to_nokogiri.root.to_xml }
+          end
         end
 
         if template.id == PROBATION_TEMPLATE
@@ -135,11 +144,12 @@ class Office::Order < ActiveRecord::Base
         xml.metas do
           metas.each { |meta| xml << meta.to_nokogiri.root.to_xml }
         end
-        # xml.reasons do
-        #   reasons.each { |reason| xml << reason.to_nokogiri.root.to_xml }
-        # end
+        xml.order_reasons do
+          reasons.each { |reason| xml.reason reason.pattern }
+        end
         xml.text_
         xml.signature_
+        xml.dispatch_
         # xml.protocol_
         if template.id == ENTRANCE_TEMPLATE
           xml.act_

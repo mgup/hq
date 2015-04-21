@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150209112327) do
+ActiveRecord::Schema.define(version: 20150218123338) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -1800,6 +1800,8 @@ ActiveRecord::Schema.define(version: 20150209112327) do
     t.integer  "status",                  limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "form",                    limit: 4
+    t.text     "comment",                 limit: 65535
   end
 
   create_table "speciality", primary_key: "speciality_id", force: :cascade do |t|

@@ -85,7 +85,7 @@ prawn_document margin: [28, 20, 28, 28],
           @exam.students.each_with_index do |student, index|
             position_x = x_pos
             if @exam.test? #зачёт
-              if student.student.ball(@discipline) < 55
+              if student.student.ball(@discipline) < 55 || !student.student.pass_discipline?(@discipline)
                 tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
               else
                 tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', student.student.ball(@discipline), 'зачтено', '']
@@ -97,7 +97,7 @@ prawn_document margin: [28, 20, 28, 28],
             elsif @exam.exam? #экзамен
               tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', '', '', '']
             else #дифференцированный зачёт
-              if student.student.ball(@discipline) < 85
+              if student.student.ball(@discipline) < 85 || !student.student.pass_discipline?(@discipline)
                 tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', "#{student.student.ball(@discipline)}+", '', '']
               else
                 tableData << [index+1, student.student.person.full_name, student.student.id, '', '', '', '', '', '', '', '', student.student.ball(@discipline), 'отлично', '']
@@ -116,7 +116,7 @@ prawn_document margin: [28, 20, 28, 28],
         elsif @exam.student #индивидуальная пересдача
           position_x = x_pos
           if @exam.test? #зачёт
-            if @exam.student.ball(@discipline) < 55
+            if @exam.student.ball(@discipline) < 55 || !@exam.student.pass_discipline?(@discipline)
               tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', "#{@exam.student.ball(@discipline)}+", '', '']
             else
               tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', @exam.student.ball(@discipline), 'зачтено', '']
@@ -128,7 +128,7 @@ prawn_document margin: [28, 20, 28, 28],
           elsif @exam.exam? #экзамен
             tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', '', '', '']
           else  #дифференцированный зачёт
-            if @exam.student.ball(@discipline) < 85
+            if @exam.student.ball(@discipline) < 85 || !@exam.student.pass_discipline?(@discipline)
               tableData << [index+1, @exam.student.person.full_name,  @exam.student.id, '', '', '', '', '', '', '', '', "#{@exam.student.ball(@discipline)}+", '', '']
             else
               tableData << [1, @exam.student.person.full_name, @exam.student.id, '', '', '', '', '', '', '', '', @exam.student.ball(@discipline), 'отлично', '']

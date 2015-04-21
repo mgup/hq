@@ -35,8 +35,13 @@ class Library::CardsController < ApplicationController
     connect_to_db
     if params[:student]
       @student = Student.find(params[:student])
-      strange_num = @client.execute("SELECT * FROM dbo.SPEC WHERE spec = #{@student.speciality.code.to_s[0,6]}").first['num']
-      rdr = "99#{@student.group.speciality.faculty.id}#{strange_num < 10 ? strange_num : strange_num - 9}1#{@student.admission_year.to_s[2,2]}#{@student.group.library_form}"
+      if [122, 2708, 2709].include?(@student.speciality.id)
+        strange_num = 5
+      else
+        strange_num = @client.execute("SELECT * FROM dbo.SPEC WHERE spec = #{@student.speciality.code.to_s[0,6]}").first['num']
+        strange_num = (strange_num < 10 ? strange_num : strange_num - 9)
+      end
+      rdr = "99#{@student.group.speciality.faculty.id}#{strange_num}1#{@student.admission_year.to_s[2,2]}#{@student.group.library_form}"
       last_rdr_id = @client.execute("SELECT MAX(SUBSTRING(RDR_ID,9,3)) AS max FROM dbo.READERS WHERE RDR_ID LIKE '#{rdr}%'").first['max']
       last_rdr_id = last_rdr_id ? last_rdr_id.to_i+1 : 1
       rdr_id = last_rdr_id < 100 ? (last_rdr_id < 10 ? "#{rdr}00#{last_rdr_id}" : "#{rdr}0#{last_rdr_id}") : "#{rdr}#{last_rdr_id}"
@@ -100,7 +105,7 @@ class Library::CardsController < ApplicationController
   private
 
   def connect_to_db
-    @client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'], dataserver: '192.168.200.36:1433', database: '[marc 1.11]')
+    @client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'], dataserver: '192.168.200.211:1444', database: '[Lib]')
   end
 
 end

@@ -1,6 +1,6 @@
 class Study::Discipline < ActiveRecord::Base
   CURRENT_STUDY_YEAR  = 2014
-  CURRENT_STUDY_TERM  = 1
+  CURRENT_STUDY_TERM  = 2
 
   self.table_name = 'subject'
 
@@ -89,10 +89,10 @@ class Study::Discipline < ActiveRecord::Base
   scope :with_brs, ->{where(subject_brs:  true)}
 
   def students
-    if is_active?
+    if is_active? && semester == CURRENT_STUDY_TERM
       group.students.valid_for_today
     else
-      Student.in_group_at_date(group, Date.new((1 == semester ? year : year + 1), (1 == semester ? 9 : 4), 15))
+      Student.in_group_at_date(group, Date.new((autumn? ? year : year + 1), (autumn? ? 11 : 5), 15))
     end
   end
 
@@ -173,6 +173,7 @@ class Study::Discipline < ActiveRecord::Base
     return true if checkpoints.length == 0
     max_sum = 0
     checkpoints.each do |c|
+      return false if c.max.nil?
       max_sum += c.max unless c.marked_for_destruction?
     end
     if 80 != max_sum
@@ -185,6 +186,7 @@ class Study::Discipline < ActiveRecord::Base
     return true if checkpoints.length == 0
     min_sum = 0
     checkpoints.each do |c|
+      return false if c.min.nil?
       min_sum += c.min unless c.marked_for_destruction?
     end
     if 44 != min_sum

@@ -3,9 +3,12 @@
 </div>
 <div class="row">
   <div class="col col-lg-10">
-      <%= link_to 'Новая рецензия', new_review_path, class: 'btn btn-primary' %>
-      <%= link_to 'Экспорт в Excel 2007', reviews_path(format: 'xlsx'), class: 'btn btn-info' %>
-      <%= link_to 'Список вузов', universities_path, class: 'btn btn-primary' %>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Посмотреть статистику
+    </button>
+    <%= link_to 'Новая рецензия', new_review_path, class: 'btn btn-primary' %>
+    <%= link_to 'Список вузов', universities_path, class: 'btn btn-primary' %>
+    <%= link_to 'Экспорт в Excel 2007', reviews_path(format: 'xlsx'), class: 'btn btn-info' %>
   </div>
  </div>
 <div class="row">
@@ -81,10 +84,33 @@
 <div>
   <%= paginate_with_info @reviews_page %>
 </div>
-<div class="row">
-  <div class="col col-lg-12">
-    <div>Количество рецензий  <%= Review.count %></div>
-    <div>Стоимость рецензирования  <%= sprintf('%8.2f',Review.sum(:cost)) %></div>
-    <div>Стоимость рецензирования<%= sprintf('%8.2f',Review.sum(:total_cost))%></div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Статистика</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <td>Год</td>
+            <td>Всего рецензий</td>
+            <td>Общая стоимость</td>
+            <td>Стоимость рецензирования</td>
+          </tr>
+          </thead>
+          <tbody>
+          <%= render partial: 'total_count' %>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
 </div>

@@ -76,9 +76,12 @@ class Ability
         can :manage, Office::Order
         can :manage, :student
         can :index, :groups
+        can :manage, Group
 
         can :reference, Student.valid_for_today
         can :soccard_mistakes, Student
+        
+        can :work, :all_faculties
       end
 
       if user.is?(:recenz)
@@ -177,6 +180,8 @@ class Ability
     can :manage, Hostel::Report
     soc_support_event(user)
     can :soccard_mistakes, Student
+    can :delete, Social::Document
+    
   end
 
   def soc_support_event(user)
@@ -189,17 +194,25 @@ class Ability
     can :without_med, User
     can :manage, Event, event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY
     can :manage, Social::Document
+    cannot :delete, Social::Document
     can :manage, Social::DocumentType
     can :read, Student
     can :study, Student
+    
+    can :manage, Office::Order, order_template: Office::Order::REPRIMAND_TEMPLATE
+    can :work, :all_faculties
   end
 
   def soc_support(user)
     can :manage, My::Support
     can :manage, Social::Document
+    cannot :delete, Social::Document
     can :manage, Social::DocumentType
     can :read, Student
     can :study, Student
+    
+    can :manage, Office::Order, order_template: Office::Order::REPRIMAND_TEMPLATE
+    can :work, :all_faculties
   end
 
   def faculty_employee(user)

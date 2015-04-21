@@ -22,7 +22,7 @@
         <td> — </td>
         <!--Что значит этот прочерк О_о-->
         <td><%= order.version %></td>
-        <td class="<%= order.signed? ? 'success' : 'warning' %>"><%= order.number %> от <%= l order.signing_date, format: '%d.%m.%Y' %></td>
+        <td class="<%= order.signed? ? 'success' : 'warning' %>"><%= order.number %> от <%= l(order.signing_date, format: '%d.%m.%Y') if order.signing_date %></td>
         <td><%= order.template.name if order.template %></td>
         <td>
           <%= link_to office_order_path(order), class: 'btn btn-default' do %>

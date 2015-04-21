@@ -36,14 +36,12 @@ class Department < ActiveRecord::Base
 
   validates :name, presence: true
   validates :abbreviation, presence: true
-  #validates :phone, :numericality => true
-
 
   default_scope do
     where('department_active = 1').order('department_name ASC')
   end
 
-  scope :only_main, -> { where(department_parent: nil)}
+  scope :only_main, -> { where(department_parent: nil) }
 
   scope :faculties, -> { where(department_role: 'faculty') }
   scope :academic, -> { where(department_role: 'subdepartment') }
@@ -83,7 +81,6 @@ class Department < ActiveRecord::Base
         xml.name  name
       end
     end
-
     builder.doc
   end
 

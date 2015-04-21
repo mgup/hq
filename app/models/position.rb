@@ -23,4 +23,9 @@ class Position < ActiveRecord::Base
   def info
     "#{appointment.title}, #{department.abbreviation}" unless appointment.nil?
   end
+  
+  def title
+    appointment.nil? ? acl_position_title : appointment.title
+  end
+  
 end

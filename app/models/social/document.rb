@@ -2,6 +2,7 @@ class Social::Document < ActiveRecord::Base
   self.table_name = 'social_documents'
 
   enum status: { actual: 1, archive: 2 }
+  enum form: { notarius: 1, soc: 2, copy: 3, original: 4 }
 
   belongs_to :person, class_name: 'Person', foreign_key: :student_id, primary_key: :student_id
   belongs_to :type, class_name: 'Social::DocumentType', foreign_key: :social_document_type_id
@@ -25,6 +26,19 @@ class Social::Document < ActiveRecord::Base
 
   def actual_for_today?
     expire_date ? (expire_date.future? ? true : false) : true
+  end
+  
+  def form_name
+    case form
+    when 'notarius'
+      'нотариально заверенная копия'
+    when 'soc'
+      'копия, заверенная ЦСПиВР'
+    when 'copy'
+      'ксерокопия'
+    when 'original'
+      'оригинал'
+    end
   end
 
 end
