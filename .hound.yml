@@ -119,7 +119,7 @@ Style/CommentAnnotation:
 Style/DotPosition:
   Description: Checks the position of the dot in multi-line method calls.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#consistent-multi-line-chains
-  Enabled: true
+  Enabled: false
   EnforcedStyle: trailing
   SupportedStyles:
   - leading
@@ -1018,8 +1018,7 @@ Lint/ShadowingOuterLocalVariable:
     or block local variables.
   Enabled: true
 Lint/SpaceBeforeFirstArg:
-  Description: Put a space between a method name and the first argument in a method
-    call without parentheses.
+  Description: Put a space between a method name and the first argument in a method call without parentheses.
   Enabled: true
 Lint/StringConversionInInterpolation:
   Description: Checks for Object#to_s usage in string interpolation.

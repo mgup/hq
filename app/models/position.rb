@@ -34,5 +34,4 @@ class Position < ActiveRecord::Base
   def title
     appointment.nil? ? acl_position_title : appointment.title
   end
-
 end

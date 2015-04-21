@@ -13,10 +13,10 @@ class Review < ActiveRecord::Base
 
   scope :keyword_search, -> (params) {
     where('title LIKE ? OR author LIKE ?
-    OR number_review LIKE ? OR contract_number LIKE ?
-    OR total_cost LIKE ? OR cost LIKE ?',
-    "%#{params[:search_keywords]}%", "%#{params[:search_keywords]}%", "%#{params[:search_keywords]}%",
-    "%#{params[:search_keywords]}%", "#{params[:search_keywords]}%", "#{params[:search_keywords]}%")
+          OR number_review LIKE ? OR contract_number LIKE ?
+          OR total_cost LIKE ? OR cost LIKE ?',
+          "%#{params[:search_keywords]}%", "%#{params[:search_keywords]}%", "%#{params[:search_keywords]}%",
+          "%#{params[:search_keywords]}%", "#{params[:search_keywords]}%", "#{params[:search_keywords]}%")
   }
 
   scope :date_search, -> (params) {
