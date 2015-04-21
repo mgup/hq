@@ -1,5 +1,4 @@
 HQ::Application.routes.draw do
-
   resources :universities
 
   resources :reviews
@@ -402,8 +401,6 @@ HQ::Application.routes.draw do
 
   get 'fractals-radial', to: 'fractals#radial'
   get 'test-exception', to: 'dashboard#test_exception'
-
-
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

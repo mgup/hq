@@ -337,10 +337,10 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     if user_signed_in?
-      if (can? :manage, Review) and (can? :manage, University)
+      if (can? :manage, Review) && (can? :manage, University)
         primary.item :review, 'Рецензирование изданий', class: 'nav-header disabled'
       end
-      if (can? :manage, Review) and (can? :manage, University)
+      if (can? :manage, Review) && (can? :manage, University)
         primary.item :review, 'Рецензии', reviews_path, icon: 'list'
         primary.item :university, 'Университеты', universities_path, icon: 'list'
       end
