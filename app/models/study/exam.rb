@@ -34,7 +34,7 @@ class Study::Exam < ActiveRecord::Base
   ADDITIONAL_EXAMS_TYPES = [
     ['курсовая работа',          TYPE_SEMESTER_WORK],
     ['курсовой проект',          TYPE_SEMESTER_PROJECT],
-    ['промежуточная аттестация', TYPE_VALIDATION]
+    ['текущая аттестация', TYPE_VALIDATION]
   ]
 
   self.table_name = 'exam'
@@ -174,7 +174,7 @@ class Study::Exam < ActiveRecord::Base
       when TYPE_EXAM_COMMISSION_2
         'ГЭК-2'
       when TYPE_VALIDATION
-        'промежуточная аттестация'
+        'текущая аттестация'
     end
   end
 
