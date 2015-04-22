@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150218123338) do
+ActiveRecord::Schema.define(version: 20150420130312) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -1102,6 +1102,7 @@ ActiveRecord::Schema.define(version: 20150218123338) do
     t.boolean  "booking",           limit: 1
     t.integer  "status",            limit: 4
     t.boolean  "hasclaims",         limit: 1,     default: false
+    t.text     "place",             limit: 65535
   end
 
   create_table "event_category", force: :cascade do |t|

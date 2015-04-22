@@ -1,6 +1,6 @@
 <div class="page-header">
   <h1><%= @event.name %>
-    <small><%= @event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !@event.dates.empty? %></small>
+    <small>Дата публикации: <%= l @event.created_at, format: '%d.%m.%Y' %></small>
   </h1>
 </div>
 
@@ -17,7 +17,15 @@
   <%= render partial: 'leave_claim_modal', locals: {event: @event, claim: EventDateClaim.new} %>
 <% end %>
 
-<div><%= raw @event.description %></div>
+<div>
+	<h4><%= (@event.dates.length > 1 ? 'Даты мероприятия:' : 'Дата мероприятия:') if @event.dates.length > 0 %></h4>
+		<% @event.dates.each do |d| %>
+		  <p><%= l d.date, format: '%d %b %Y' %>, <%= l d.time_start, format: '%H:%M' %><%= "–#{l d.time_end, format: '%H:%M'}" if d.time_end %></p>
+		<% end %>
+	<br>
+</div>
+
+<div class="event-style"><%= raw @event.description %></div>
 
 <div class="yashare-auto-init" data-yashareL10n="ru"
      data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter"

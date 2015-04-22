@@ -8,3 +8,4 @@ ru:
         description: 'описание'
         event_category_id: 'категория'
         status: 'статус'
+        place: 'место проведения'
