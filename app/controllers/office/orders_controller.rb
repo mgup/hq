@@ -104,7 +104,7 @@ class Office::OrdersController < ApplicationController
       create_order_with_students(params[:template], students_in_order)
       count = 1
     end
-    redirect_to office_drafts_path, notice: "#{count > 1 ? 'Проекты приказов' : 'Проект приказа'} успешно создан#{'ы' if count > 1}."
+    redirect_to office_drafts_path(faculty: @order.students.first.faculty.id, template: @order.template.id), notice: "#{count > 1 ? 'Проекты приказов' : 'Проект приказа'} успешно создан#{'ы' if count > 1}."
   end
 
   def edit ; end

@@ -16,16 +16,22 @@
 <% end %>
 <%= @order.to_html %>
 
+<div class="row">
 <% if @order.draft? %>
-  <div class="col-sm-offset-1">
-    <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к черновикам'.html_safe, office_drafts_path, class: 'btn btn-default' %>
+  <div class="col col-sm-3 col-sm-offset-1">
+    <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к черновикам'.html_safe, office_drafts_path(faculty: @order.students.first.faculty.id, template: @order.template.id), class: 'btn btn-default' %>
   </div>
 <% elsif @order.underway? %>
-  <div class="col-sm-offset-1">
-      <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к приказам на подписи'.html_safe, office_underways_path, class: 'btn btn-default' %>
+  <div class="col col-sm-3 col-sm-offset-1">
+      <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к приказам на подписи'.html_safe, office_underways_path(faculty: @order.students.first.faculty.id, template: @order.template.id), class: 'btn btn-default' %>
   </div>
 <% else %>
-  <div class="col-sm-offset-1">
-      <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к приказам'.html_safe, office_orders_path, class: 'btn btn-default' %>
+  <div class="col col-sm-3 col-sm-offset-1">
+      <%= link_to '<span class="glyphicons chevron-left"></span> Вернуться к приказам'.html_safe, office_orders_path(faculty: @order.students.first.faculty.id, template: @order.template.id), class: 'btn btn-default' %>
   </div>
 <% end %>
+
+<div class="col col-sm-3 col-sm-offset-5">
+	<%= link_to '<span class="glyphicon glyphicon-print"></span> Распечатать'.html_safe, office_order_path(@order, format: :pdf), class: 'btn btn-success' %>
+</div>
+</div>
