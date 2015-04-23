@@ -11,12 +11,21 @@ class Position < ActiveRecord::Base
   belongs_to :department, primary_key: :department_id, foreign_key: :acl_position_department
   belongs_to :appointment
 
-  #def self.find_or_create_by_position_id(position_id)
+  # def self.find_or_create_by_position_id(position_id)
   #  obj = (self.find(position_id) || self.new)
   #  obj.save
-  #end
+  # end
 
-  scope :from_role, -> role { joins(:role).where(acl_role: { acl_role_name: role })}
+  scope :from_role, -> role {
+    joins(:role)
+      .where(acl_role: { acl_role_name: role })
+  }
+
+  scope :for_phonebook, -> {
+    joins(:role, :user)
+      .where('acl_role.acl_role_id NOT IN (34,21,37,5,31,35,36)')
+      .where('user.user_active = 1')
+  }
 
   def info
     "#{appointment.title}, #{department.abbreviation}" unless appointment.nil?
@@ -25,5 +34,4 @@ class Position < ActiveRecord::Base
   def title
     appointment.nil? ? acl_position_title : appointment.title
   end
-  
 end

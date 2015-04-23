@@ -1,0 +1,116 @@
+<div class="page-header">
+  <h1>Рецензирование изданий</h1>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Посмотреть статистику
+    </button>
+    <%= link_to 'Новая рецензия', new_review_path, class: 'btn btn-primary' %>
+    <%= link_to 'Список вузов', universities_path, class: 'btn btn-primary' %>
+    <%= link_to 'Экспорт в Excel 2007', reviews_path(format: 'xlsx'), class: 'btn btn-info' %>
+  </div>
+ </div>
+<div class="row">
+  <%= form_tag search_results_path, method: 'get' do %>
+    <div class="col col-sm-4">
+        <%= text_field_tag :search_keywords, nil, placeholder: 'Введите запрос', class: 'form-control' %>
+    </div>
+    <div class="col col-sm-3">
+      <%= text_field_tag :start_date, nil, placeholder: 'Начальная дата', class: 'form-control datepicker' %>
+    </div>
+    <div class="col col-sm-3">
+      <%= text_field_tag :end_date, nil, placeholder: 'Конечная дата', class: 'form-control datepicker' %>
+    </div>
+    <div class="col col-sm-2">
+        <%= submit_tag 'Поиск' , class: 'btn btn-primary'%>
+    </div>
+  <% end %>
+</div>
+<div class="row"><h3>Ближайшие контракты</h3>
+</div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>№ рец</th>
+    <th>Дата регистрации</th>
+    <th>№ договора</th>
+    <th>Дата договора</th>
+    <th>Тип заказа</th>
+    <th>Автор</th>
+    <th>Учебное заведение</th>
+    <th>Название пособия</th>
+    <th>Общая стоимость</th>
+    <th>Стоимость рецензии</th>
+    <th>Уполн. вуз</th>
+    <th>Дата отправки в вуз</th>
+    <th>Тип отзыва</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+      <%= render partial: 'rows_1' %>
+  </tbody>
+</table>
+<div class="row"><h3>Список всех рецензий</h3>
+</div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>№ рец</th>
+    <th>Дата регистрации</th>
+    <th>№ договора</th>
+    <th>Дата договора</th>
+    <th>Тип заказа</th>
+    <th>Автор</th>
+    <th>Учебное заведение</th>
+    <th>Название пособия</th>
+    <th>Общая стоимость</th>
+    <th>Стоимость рецензии</th>
+    <th>Уполн. вуз</th>
+    <th>Дата отправки в вуз</th>
+    <th>Тип отзыва</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <%= render partial: 'rows' %>
+  </tbody>
+</table>
+<div>
+  <%= paginate_with_info @reviews_page %>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Статистика</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <td>Год</td>
+            <td>Всего рецензий</td>
+            <td>Общая стоимость</td>
+            <td>Стоимость рецензирования</td>
+          </tr>
+          </thead>
+          <tbody>
+          <%= render partial: 'total_count' %>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

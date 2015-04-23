@@ -1,0 +1,20 @@
+<%= form_for @university, html: { class: 'form-horizontal' } do |f| %>
+
+    <div class="row">
+      <%= f.label :name, 'Название университета', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :name, class: 'form-control' %>
+        <span class="help-block">
+
+    </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-lg-10 col-offset-2">
+        <%= f.submit "Сохранить изменения", class: 'btn btn-warning' %>
+        или
+        <%= link_to 'назад к структуре', universities_path, class: 'btn btn-primary' %>
+      </div>
+    </div>
+<%end%>

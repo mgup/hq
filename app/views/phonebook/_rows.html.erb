@@ -1,0 +1,25 @@
+<% departments.each do |department| %>
+  <tr>
+    <td class="text-muted"><%= department.id %></td>
+    <td style="padding-left: <%= 15 * (level - 1) %>px;">
+      <%= '&lfloor;'.html_safe if level > 1 %>
+      <%= department.name %>
+    </td>
+    <td class="nowrap">
+      <%=department.phone %>
+    </td>
+    <td>
+      <%= link_to 'показать', phonebook_path(department)%>
+    </td>
+    <td><% if can? :manage, @phonebook %>
+          <%= link_to edit_department_path(department.id), class: 'btn btn-default' do%>
+              <span class="glyphicon glyphicon-edit"></span>
+          <% end %>
+        <% end %>
+    </td>
+  </tr>
+  <% if department.subdepartments.any? %>
+    <%= render partial: 'phonebook/rows',
+               locals: { departments: department.subdepartments, level: (level + 2) } %>
+  <% end %>
+<% end %>

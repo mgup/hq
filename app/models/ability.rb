@@ -84,6 +84,11 @@ class Ability
         can :work, :all_faculties
       end
 
+      if user.is?(:recenz)
+        can :manage, Review
+        can :manage, University
+      end
+
     end
 
     can [:index, :show], :progress

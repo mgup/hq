@@ -1,4 +1,13 @@
 HQ::Application.routes.draw do
+  resources :universities
+
+  resources :reviews
+  get 'reviews/index'
+  get 'review/search_result' => 'reviews#search_results', as: :search_results
+
+  resources :phonebook
+  get 'phonebook/index'
+
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.is?(:developer) } do
     mount Sidekiq::Web => '/sidekiq'

@@ -48,6 +48,8 @@ class Department < ActiveRecord::Base
 
   scope :ordered, -> { order(:department_name) }
 
+  scope :active, -> { where(department_active: 1, department_parent: nil) }
+
   scope :without, -> where {
     cond = all
      if where[:id]!=nil
@@ -79,7 +81,6 @@ class Department < ActiveRecord::Base
         xml.name  name
       end
     end
-
     builder.doc
   end
 
@@ -100,3 +101,4 @@ class Department < ActiveRecord::Base
     end
   end
 end
+

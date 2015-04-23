@@ -63,12 +63,12 @@ class UsersController < ApplicationController
 
   def resource_params
     params.fetch(:user, {}).permit(
-        :username, :email, :phone, :password,
-        fname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
-        iname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
-        oname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
-        positions_attributes: [:id, :appointment_id, :acl_position_role,
-                               :acl_position_department, :started_at, :primary, :_destroy]
+      :username, :email, :phone, :password,
+      fname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
+      iname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
+      oname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
+      positions_attributes: [:id, :appointment_id, :acl_position_role,
+                            :acl_position_department, :started_at, :primary, :_destroy]
     )
   end
 

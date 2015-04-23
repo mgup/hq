@@ -52,6 +52,6 @@ class DepartmentsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:department, {}).permit(:name, :abbreviation, :parent)
+    params.fetch(:department, {}).permit(:name, :abbreviation, :parent, :phone)
   end
 end
