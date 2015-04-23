@@ -1,5 +1,5 @@
 <% @reviews.each do |review| %>
-  <% if review.contract_expires.present? and review.contract_expires.mjd - Date.today.mjd  > 30 %>
+  <% if review.contract_expires.present? and review.contract_expires.mjd - Date.today.mjd  > 0 and  review.contract_expires.mjd - Date.today.mjd < 123 %>
     <% if review.status == 'завершен' %>
         <tr class="success">
           <td><%= review.number_review %></td>

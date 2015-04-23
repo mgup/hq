@@ -32,13 +32,13 @@ class ReviewsController < ApplicationController
 
   def edit
     @review = Review.find(params[:id])
-    count_cost
+    # count_cost
     count_date
   end
 
   def create
     @review = Review.new(resource_params)
-    count_cost
+    # count_cost
     count_date
     if @review.save
       redirect_to @review
@@ -49,7 +49,7 @@ class ReviewsController < ApplicationController
 
   def update
     @review = Review.find(params[:id])
-    count_cost
+    # count_cost
     count_date
     if @review.update(resource_params)
       redirect_to @review
@@ -96,9 +96,12 @@ class ReviewsController < ApplicationController
     if @review.sheet_number.nil?
       @review.total_cost = 0
       @review.cost = 0
-    else
-      @review.total_cost = 614.544 * (@review.sheet_number + 5.28)
-      @review.cost = @review.total_cost - 1297.92
+    elsif @review.contract_date > '2015-04-23' # изменить дату
+      @review.total_cost = 1.18 * (520.8 * @review.sheet_number + 5350)
+      @review.cost = @review.total_cost - 4366
+    # else старая формула расчета стоимости
+      # @review.total_cost = 614.544 * (@review.sheet_number + 5.28)
+      # @review.cost = @review.total_cost - 1297.92
     end
   end
 
