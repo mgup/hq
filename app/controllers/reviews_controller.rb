@@ -93,12 +93,12 @@ class ReviewsController < ApplicationController
   private
 
   def count_cost
-    if @review.sheet_number.nil?
-      @review.total_cost = 0
-      @review.cost = 0
-    else @review.contract_date > '2015-04-23' # изменить дату
+    if @review.sheet_number.present? && @review.contract_date > '2015-04-23' # изменить дату
       @review.total_cost = 1.18 * (520.8 * @review.sheet_number + 5350)
       @review.cost = @review.total_cost - 4366
+    else
+      @review.total_cost = 0
+      @review.cost = 0
     end
   end
 
