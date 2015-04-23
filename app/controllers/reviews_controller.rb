@@ -96,12 +96,9 @@ class ReviewsController < ApplicationController
     if @review.sheet_number.nil?
       @review.total_cost = 0
       @review.cost = 0
-    elsif @review.contract_date > '2015-04-23' # изменить дату
+    else @review.contract_date > '2015-04-23' # изменить дату
       @review.total_cost = 1.18 * (520.8 * @review.sheet_number + 5350)
       @review.cost = @review.total_cost - 4366
-    # else старая формула расчета стоимости
-      # @review.total_cost = 614.544 * (@review.sheet_number + 5.28)
-      # @review.cost = @review.total_cost - 1297.92
     end
   end
 
