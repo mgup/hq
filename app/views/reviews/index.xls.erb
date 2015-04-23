@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">№ рецензии</Data></Cell>
+        <Cell><Data ss:Type="String">Дата регистрации</Data></Cell>
+        <Cell><Data ss:Type="String">№ договора</Data></Cell>
+        <Cell><Data ss:Type="String">Дата договора</Data></Cell>
+        <Cell><Data ss:Type="String">Тип заказа</Data></Cell>
+        <Cell><Data ss:Type="String">Автор</Data></Cell>
+        <Cell><Data ss:Type="String">Учебное заведение</Data></Cell>
+        <Cell><Data ss:Type="String">Название пособия</Data></Cell>
+        <Cell><Data ss:Type="String">Уполномоченный вуз</Data></Cell>
+        <Cell><Data ss:Type="String">Договор с упол. вузом</Data></Cell>
+        <Cell><Data ss:Type="String">Дата отправки в вуз</Data></Cell>
+        <Cell><Data ss:Type="String">Количество авторских листов</Data></Cell>
+        <Cell><Data ss:Type="String">Общая стоимость</Data></Cell>
+        <Cell><Data ss:Type="String">Стоимость рецензии</Data></Cell>
+      </Row>
+      <% @reviews.each do |review| %>
+          <Row>
+            <Cell><Data ss:Type="String"><%= review.number_review %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.date_registration %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.contract_number %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.contract_date %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.ordt %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.author %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.university.nil? ? '—' : review.university.name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.title %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.university_author.nil? ? '—' : review.university_author.name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.auth_contract_number %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.date_auth_university %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.sheet_number %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.total_cost %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= review.cost %></Data></Cell>
+          </Row>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

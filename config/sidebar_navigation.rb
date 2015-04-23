@@ -153,12 +153,11 @@ SimpleNavigation::Configuration.run do |navigation|
                      achievement_periods_path, icon: 'list'
 
         primary.item :event_categories, 'Категории событий', event_categories_path, icon: 'th-list'
-
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
+        primary.item :phonebook, 'Телефонная книга'.html_safe, phonebook_index_path, icon: 'list'
       end
     end
-
     # ======================================
     if user_signed_in?
       if (can? :index, :selection_contracts) or (can? :index, :payment_types)
@@ -332,6 +331,16 @@ SimpleNavigation::Configuration.run do |navigation|
       end
       if can? :manage, :all
         primary.item :npr, 'Заполненение НПР'.html_safe, print_achievements_path, icon: 'list'
+      end
+    end
+
+    if user_signed_in?
+      if (can? :manage, Review) && (can? :manage, University)
+        primary.item :review, 'Рецензирование изданий', class: 'nav-header disabled'
+      end
+      if (can? :manage, Review) && (can? :manage, University)
+        primary.item :review, 'Рецензии', reviews_path, icon: 'list'
+        primary.item :university, 'Университеты', universities_path, icon: 'list'
       end
     end
 

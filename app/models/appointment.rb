@@ -4,4 +4,5 @@ class Appointment < ActiveRecord::Base
   end
 
   has_many :positions
+  has_many :reviews
 end

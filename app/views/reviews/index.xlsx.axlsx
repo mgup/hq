@@ -1,0 +1,42 @@
+require 'axlsx_rails'
+xlsx = Axlsx::Package.new
+rew = xlsx_package.workbook
+rew.styles do |s|
+    header_s = s.add_style :sz => 14, :alignment => { :horizontal=> :center}
+rew.add_worksheet(name: "Reviews") do |sheet|
+  sheet.add_row ["Список рецензий"], :style => [header_s]
+  sheet.merge_cells("A1:N1")
+  sheet.add_row ["Номер рецензии",
+                 "Дата регистрации",
+                 "Номер договора",
+                 "Дата договора",
+                 "Тип заказа",
+                 "Автор",
+                 "Учебное заведение",
+                 "Название пособия",
+                 "Уполномоченный вуз",
+                 "Догвор с упол. вузом",
+                 "Дата отправки в вуз",
+                 "Количество авторских листов",
+                 "Общая стоимость",
+                 "Стоимость рецензии"], :style => [header_s]
+  @reviews.each do |review|
+    sheet.add_row [review.number_review,
+                   review.date_registration,
+                   review.contract_number,
+                   review.contract_date,
+                   review.ordt,
+                   review.author,
+                   review.university.nil? ? '—' : review.university.name,
+                   review.title,
+                   review.university_author.nil? ? '—' : review.university_author.name,
+                   review.auth_contract_number,
+                   review.date_auth_university,
+                   review.sheet_number,
+                   review.total_cost,
+                   review.cost]
+  end
+  sheet.column_widths 20, 20, 20, 20, 10, 20, 20, 40, 20, 10, 10, 10, 10, 10, 10
+end
+end
+rew.use_shared_strings = true

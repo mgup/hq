@@ -199,7 +199,6 @@ ActiveRecord::Schema.define(version: 20150420130312) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
-    t.text    "employer",                              limit: 65535
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
@@ -445,6 +444,7 @@ ActiveRecord::Schema.define(version: 20150420130312) do
     t.integer "department_parent",  limit: 4
     t.string  "name_rp",            limit: 255
     t.string  "short_name_rp",      limit: 255
+    t.string  "phone",              limit: 255
   end
 
   add_index "department", ["department_prename"], name: "department_prename", using: :btree
@@ -664,7 +664,6 @@ ActiveRecord::Schema.define(version: 20150420130312) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
-    t.text    "employer",                              limit: 65535
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
@@ -1666,6 +1665,11 @@ ActiveRecord::Schema.define(version: 20150420130312) do
 
   add_index "order_xsl", ["order_xsl_template"], name: "order_xsl_template", using: :btree
 
+  create_table "phonebooks", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "position", primary_key: "position_id", force: :cascade do |t|
     t.integer "position_dictionary_name", limit: 4, null: false
   end
@@ -1707,6 +1711,35 @@ ActiveRecord::Schema.define(version: 20150420130312) do
     t.string  "pseries",  limit: 3,   default: "0", null: false
     t.integer "kladr_id", limit: 4,                 null: false
     t.string  "name",     limit: 255,               null: false
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer  "id_r",                 limit: 4
+    t.integer  "number_review",        limit: 4
+    t.date     "date_registration"
+    t.integer  "status",               limit: 4
+    t.integer  "appointments_id",      limit: 4
+    t.string   "contract_number",      limit: 255
+    t.date     "contract_date"
+    t.date     "contract_expires"
+    t.integer  "ordt",                 limit: 4
+    t.text     "author",               limit: 65535
+    t.text     "title",                limit: 65535
+    t.integer  "university_id",        limit: 4
+    t.integer  "university_auth_id",   limit: 4
+    t.float    "cost",                 limit: 24
+    t.float    "total_cost",           limit: 24
+    t.float    "sheet_number",         limit: 24
+    t.integer  "evaluation",           limit: 4
+    t.string   "auth_contract_number", limit: 255
+    t.date     "date_auth_university"
+    t.date     "date_auth_contract"
+    t.date     "date_review"
+    t.date     "date_accounting"
+    t.integer  "paid",                 limit: 4
+    t.text     "note",                 limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "room", primary_key: "room_id", force: :cascade do |t|
@@ -2278,6 +2311,12 @@ ActiveRecord::Schema.define(version: 20150420130312) do
     t.integer "education_status_id", limit: 4
   end
 
+  create_table "universities", force: :cascade do |t|
+    t.text     "name",       limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "use_olympics", force: :cascade do |t|
     t.text     "name",       limit: 65535
     t.integer  "number",     limit: 4
@@ -2324,6 +2363,7 @@ ActiveRecord::Schema.define(version: 20150420130312) do
     t.string   "last_name_hint",         limit: 255
     t.string   "first_name_hint",        limit: 255
     t.string   "patronym_hint",          limit: 255
+    t.string   "workphone",              limit: 255
   end
 
   add_index "user", ["reset_password_token"], name: "index_user_on_reset_password_token", unique: true, using: :btree

@@ -1,0 +1,19 @@
+<div class="page-header">
+  <h1>Телефонный справочник</h1>
+</div>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th class="text-muted">#</th>
+    <th>Подразделение</th>
+    <th>Телефон</th>
+    <th>Сотрудники</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <%= render partial: 'rows',
+             locals: { departments: @departments, level: 1 } %>
+  </tbody>
+</table>
