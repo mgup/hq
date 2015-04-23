@@ -79,7 +79,6 @@ class Office::OrdersController < ApplicationController
   end
 
   def new
-    params[:course] ||= 1
     params[:template] ||= current_user.is?(:soc_support_boss) ? Office::Order::REPRIMAND_TEMPLATE : 40
     @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception])
                        .my_filter(params).from_template(Office::OrderTemplate.find(params[:template])).page(params[:page])
@@ -147,7 +146,7 @@ class Office::OrdersController < ApplicationController
       user_departments = current_user.departments_ids
       @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
     end
-    params[:faculty] ||= @faculties.first.id
+    params[:faculty] ||= @faculties.first.id if @faculties.length < 2
   end
   
   def find_templates

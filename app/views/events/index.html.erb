@@ -54,7 +54,7 @@
           <td><%= index + 1 %></td>
           <td>
             <h4 style="margin: 0;"><%= event.name %> <small><%= event.dates.collect{|date| l date.date, format: '%d.%m.%Y'}.join(', ') if !event.dates.empty? %></small></h4>
-            <p class="help-block"><%= raw event.description %></p>
+            <p class="event-style help-block"><%= raw event.description %></p>
             <% if event.closed? %>
               <p style="height: 1px"><small class="text-warning pull-right">Данное событие было закрыто</small></p>
             <% elsif event.hasclaims %>

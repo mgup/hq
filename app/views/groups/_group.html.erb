@@ -1,14 +1,14 @@
 <div class='row'>
   <div class='col col-lg-10'>
     <%= hidden_field_tag :faculty, params[:faculty],  class: 'ajax-faculty hidden-pill-values' %>
-    <%= pill_tabs('faculty', @faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
+    <%= pill_tabs('faculty', faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
   </div>
 </div>
 
 <div class='row'>
   <div class='col col-lg-6'>
     <%= select_tag 'speciality',
-                   options_from_collection_for_select((@faculties.length > 1 ? Speciality.includes(:faculty) : @faculties.first.specialities), :id, :full_name, params[:speciality]),
+                   options_from_collection_for_select((faculties.length > 1 ? Speciality.includes(:faculty) : faculties.first.specialities), :id, :full_name, params[:speciality]),
                    prompt: 'все специальности', class: 'ajax-speciality form-control' %>
   </div>
 

@@ -84,6 +84,7 @@ $ ->
     }, (groups) ->
       updateGroups(groups)
 
+  $('.ajax-faculty').change()
   if $('.ajax-speciality').length > 0 and 0 == $('.ajax-speciality')[0].options.length
     $('.ajax-faculty').change() if 0 == $('.ajax-speciality')[0].options.length
     $('.ajax-speciality').change() if 0 == $('.ajax-group')[0].options.length

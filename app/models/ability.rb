@@ -68,6 +68,7 @@ class Ability
 
       if user.is?(:library)
         can :manage, :library
+        can :work, :all_faculties
       end
 
       if user.is?(:student_hr) || user.is?(:student_hr_boss)
@@ -195,6 +196,7 @@ class Ability
     can :study, Student
     
     can :manage, Office::Order, order_template: Office::Order::REPRIMAND_TEMPLATE
+    cannot :sign, Office::Order
     can :work, :all_faculties
   end
 
@@ -228,6 +230,8 @@ class Ability
   def ioo(user)
     faculty_employee(user)
     cannot :manage, Office::Order
+    
+    can :work, :all_faculties
   end
 
   def selection(user)
@@ -302,6 +306,8 @@ class Ability
     can :update, Office::Order
     can :show, Office::Order
     can :orders, Entrance::Campaign
+    
+    can :work, :all_faculties
   end
 
   def executive_secretary(user)
@@ -312,6 +318,8 @@ class Ability
     can :orders, Entrance::Campaign
     can :numbers, Entrance::Campaign
     can :statistics, Entrance::Contract
+    
+    can :work, :all_faculties
     # can :update, Achievement
     # can :validate_selection, Achievement
   end
