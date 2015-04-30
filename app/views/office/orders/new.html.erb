@@ -32,8 +32,30 @@
                           pl5: 'Выбрано %c основ обучения' %>
     </div>
   </div>
-  <%= render 'groups/group', locals: { faculties: @faculties } %>
-  <div class="row">
+  <div class='row'>
+   <div class='col col-lg-10'>
+     <%= hidden_field_tag :faculty, params[:faculty],  class: 'ajax-faculty hidden-pill-values' %>
+     <%= pill_tabs('faculty', @faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
+   </div>
+ </div>
+
+ <div class='row'>
+   <div class='col col-lg-6'>
+     <%= select_tag 'speciality',
+                    options_from_collection_for_select((@faculties.length > 1 ? Speciality.includes(:faculty) : @faculties.first.specialities), :id, :full_name, params[:speciality]),
+                    prompt: 'все специальности', class: 'ajax-speciality-all form-control' %>
+   </div>
+
+   <div class='col col-lg-2'>
+     <%= select_tag :course, options_for_select([1,2,3,4,5,6], params[:course]), prompt: 'все курсы', class: 'ajax-course form-control' %>
+   </div>
+
+   <div class='col col-lg-4'>
+     <%= select_tag :form, options_for_select([['очная', '101'], ['очно-заочная', '102'], ['заочная', '103'],
+                                               ['дистанционная', '105']], params[:form]), class: 'ajax-form form-control' %>
+   </div>
+   </div>
+   <div class="row">
     <div class="col col-sm-2 pull-right">
       <%= submit_tag 'Искать', class: 'btn btn-primary' %>
       <%= link_to students_path, class: 'form_reset btn btn-danger pull-right' do %>
