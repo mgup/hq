@@ -11,6 +11,8 @@ class Review < ActiveRecord::Base
 
   enum paid: { да: 0, нет: 1 } # оплата
 
+  validates :contract_date, presence: :true
+
   scope :keyword_search, -> (params) {
     where('title LIKE ? OR author LIKE ?
           OR number_review LIKE ? OR contract_number LIKE ?

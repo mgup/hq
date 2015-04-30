@@ -40,7 +40,7 @@
     <div class="row">
       <%= f.label :contract_date, 'Дата договора', class: 'control-label col col-sm-2' %>
       <div class="col col-sm-2">
-        <%= f.text_field :contract_date, value: (f.object.contract_date ? l(f.object.contract_date, format: '%d.%m.%Y') : ''),class: 'form-control datepicker' %>
+        <%= f.text_field :contract_date, value: (f.object.contract_date ? l(f.object.contract_date, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
         <span class="help-block">
           <%= f.label :contact_date, 'обязательное поле' %>
         </span>

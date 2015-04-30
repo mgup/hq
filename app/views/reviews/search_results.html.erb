@@ -4,9 +4,12 @@
 </div>
 <div class="row">
   <div class="col col-lg-10">
-      <%= link_to 'Новая рецензия', new_review_path, class: 'btn btn-primary' %>
-      <%= link_to 'Экспорт в Excel 2007', reviews_path(format: 'xlsx'), class: 'btn btn-info' %>
-      <%= link_to 'Список ВУЗов', universities_path, class: 'btn btn-primary' %>
+    <%= link_to 'Новая рецензия', new_review_path, class: 'btn btn-primary' %>
+    <%= link_to 'Экспорт в Excel 2007', reviews_path(format: 'xlsx'), class: 'btn btn-info' %>
+    <%= link_to 'Список ВУЗов', universities_path, class: 'btn btn-primary' %>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+      Посмотреть статистику
+    </button>
   </div>
 </div>
 <div class="row">
@@ -36,6 +39,8 @@
     <th>Автор</th>
     <th>Учебное заведение</th>
     <th>Название пособия</th>
+    <th>Общая стоимость</th>
+    <th>Стоимость рецензии</th>
     <th>Уполномоченный вуз</th>
     <th>Дата отправки в вуз</th>
     <th>Тип отзыва</th>
