@@ -147,6 +147,9 @@ class Office::OrdersController < ApplicationController
       @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
     end
     params[:faculty] ||= @faculties.first.id if @faculties.length < 2
+    if params[:faculty].present?
+      @faculty = Department.find(params[:faculty])
+    end
   end
   
   def find_templates
