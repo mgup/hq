@@ -1,4 +1,10 @@
 <tr>
+  <td>2011</td>
+  <td><%= Review.where(contract_date: '2011-01-01'..'2011-12-31').count(:id) %></td>
+  <td><%= sprintf('%8.2f', Review.where(contract_date: '2011-01-01'..'2011-12-31').sum(:total_cost))%></td>
+  <td><%= sprintf('%8.2f', Review.where(contract_date: '2011-01-01'..'2011-12-31').sum(:cost))%></td>
+</tr>
+<tr>
   <td>2012</td>
   <td><%= Review.where(contract_date: '2012-01-01'..'2012-12-31').count(:id) %></td>
   <td><%= sprintf('%8.2f', Review.where(contract_date: '2012-01-01'..'2012-12-31').sum(:total_cost))%></td>
@@ -24,7 +30,16 @@
 </tr>
 <tr>
   <td><b>Всего</b></td>
-  <td><%= Review.count(:id) %></td>
-  <td><%= sprintf('%8.2f', Review.sum(:total_cost))%></td>
-  <td><%= sprintf('%8.2f', Review.sum(:cost))%></td>
+  <td><%= Review.where('contract_date IS NOT NULL').count(:id) %></td>
+  <td><%= sprintf('%8.2f', Review.where('contract_date IS NOT NULL').sum(:total_cost))%></td>
+  <td><%= sprintf('%8.2f', Review.where('contract_date IS NOT NULL').sum(:cost))%></td>
+</tr>
+<tr>
+
+</tr>
+<tr>
+  <td>Рецензии без договора</td>
+  <td><%= Review.where('contract_date IS NULL').count(:id) %></td>
+  <td><%= sprintf('%8.2f', Review.where('contract_date IS NULL').sum(:total_cost))%></td>
+  <td><%= sprintf('%8.2f', Review.where('contract_date IS NULL').sum(:cost))%></td>
 </tr>
