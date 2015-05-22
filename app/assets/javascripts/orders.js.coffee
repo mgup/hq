@@ -44,9 +44,53 @@
         metaRemoveButtonClick(this)
     $('#meta' + uid).val($this.attr('data-meta-text'))
 
+@initOrderMetaCheckStudent = (uid) ->
+  $this = $('#' + uid)
+  required = ('true' == $this.attr('data-required'))
 
-#Создание мета-блока с текстом, связанным с приказом.
-#@param uid
+  text = $this.attr('data-meta-text')
+  isTrue = ('1' == text)
+  text = if isTrue then ", #{$this.attr('data-meta-pattern')}" else ", #{$this.attr('data-meta-pattern')}?"
+  $this.html(text)
+  if isTrue then $this.css('color' : 'green') else $this.css('color' : 'red')
+
+  div = $('<div>', {'class' : 'meta-popover meta-text meta-text-student', 'id'  : uid})
+  container = $('<div>', {'class' : 'checkbox'})
+  label = $('<label>', {'text' : $this.attr('data-meta-pattern')})
+  input = $('<input>', {'type' : 'checkbox', 'id' : 'meta' + uid})
+  if isTrue
+    input.prop('checked', true)
+  else
+    input.prop('checked', false)  
+  label.prepend(input)
+  container.append(label)
+  div.append(container)
+  div.append($('<br>'))
+  $('<button>', {'class' : 'btn btn-primary save', 'text'  : 'Сохранить', 'data-uid'  : uid}).appendTo(div)
+
+  div.append(' или ')
+  $('<button>', {'class' : 'btn btn-danger remove', 'text' : 'Удалить', 'data-uid'  : uid}).appendTo(div)
+
+  div.append(' или ')
+
+  $('<a>', {'class' : 'cancel', 'href' : '#', 'text' : 'отменить', 'data-uid'  : uid}).appendTo(div)
+
+  $this.popover({'html' : true, 'content' : div})
+
+  $this.on 'click', ->
+    $(this).popover('show')
+    $('.meta-text .save').on 'click', ->
+      metaSaveButtonClick(this)
+    $('.meta-text .cancel').on 'click', ->
+      metaCancelLinkClick(this)
+      return false
+
+    $('.meta-text .remove').on 'click', ->
+      metaRemoveButtonClick(this)
+    text = $this.attr('data-meta-text')
+    isTrue = ('1' == text)
+    text = if isTrue then $this.attr('data-meta-pattern') else "#{$this.attr('data-meta-pattern')}?"
+    $('#meta' + uid).val(text)
 
 @initOrderMetaTextOrder = (uid) ->
   $this = $('#' + uid)
@@ -259,15 +303,23 @@
 @metaSaveButtonClick = (object) ->
   uid = $(object).data('uid')
   $link = $('#' + uid)
-
-  text = if $('#meta' + uid).is('select') then $('#meta' + uid + ' option:selected').text() else $('#meta' + uid).val()
-
-  $link.attr('data-meta-text', text)
-  $link.html(text)
+  if $('#meta' + uid).is(':checkbox')
+    text = if $('#meta' + uid).is(':checked') then '1' else '0'
+    $link.attr('data-meta-text', text)
+    pat = if $('#meta' + uid).is(':checked') then ", #{$link.attr('data-meta-pattern')}" else ", #{$link.attr('data-meta-pattern')}?"
+    $link.html(pat)
+    if $('#meta' + uid).is(':checked') then $link.css('color' : 'green') else $link.css('color' : 'red')
+  else
+    text = if $('#meta' + uid).is('select') then $('#meta' + uid + ' option:selected').text() else $('#meta' + uid).val()
+    $link.attr('data-meta-text', text)
+    $link.html(text)
 
   $('#meta' + uid + '.datepicker').datepicker('destroy')
   saveMeta(uid)
   $link.popover('hide')
+  $('.meta-popover .save').off('click')
+  $('.meta-popover .cancel').off('click')
+  $('.meta-popover .remove').off('click')
 
   marker = $('.meta-marker[data-uid="' + uid + '"]')
   if marker
@@ -279,18 +331,27 @@
   uid = $(object).data('uid')
   $link = $('#' + uid)
   $link.popover('hide')
+  $('.meta-popover .save').off('click')
+  $('.meta-popover .cancel').off('click')
+  $('.meta-popover .remove').off('click')
 
 @metaRemoveButtonClick = (object) ->
   uid = $(object).data('uid')
   $link = $('#' + uid)
 
   $link.attr('data-meta-text', 'null')
-  $link.html($link.attr('data-meta-pattern'))
+  if $('#meta' + uid).is(':checkbox')
+    $link.html(", #{$link.attr('data-meta-pattern')}?")
+  else
+    $link.html($link.attr('data-meta-pattern'))
 
   saveMeta(uid)
   $link.attr('data-meta-id', '')
   $link.attr('data-meta-text', '')
   $link.popover('hide')
+  $('.meta-popover .save').off('click')
+  $('.meta-popover .cancel').off('click')
+  $('.meta-popover .remove').off('click')
 
   marker = $('.meta-marker[data-uid="' + uid + '"]')
   if marker

@@ -610,6 +610,94 @@
       });
     </xsl:element>
   </xsl:template>
+  
+  <xsl:template match="meta_check_student">
+    <xsl:variable name="pattern">
+      <xsl:value-of select="@pattern" />
+    </xsl:variable>
+
+    <xsl:variable name="student">
+      <xsl:value-of select="@student" />
+    </xsl:variable>
+
+    <xsl:variable name="isRequired">
+      <xsl:value-of select="'required' = @required" />
+    </xsl:variable>
+
+    <xsl:variable name="uid" select="generate-id(.)" />
+    <xsl:element name="span">
+      <xsl:attribute name="data-uid">
+        <xsl:value-of select="$uid" />
+      </xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="@required">
+          <xsl:choose>
+            <xsl:when test="/order/metas/meta/object[text() = $student]/../pattern[text() = $pattern]">
+              <xsl:attribute name="class">meta-marker valid</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:attribute name="class">meta-marker invalid</xsl:attribute>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="style">display: none;</xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
+      &lowast;
+    </xsl:element>
+    <xsl:element name="a">
+      <xsl:attribute name="id">
+        <xsl:value-of select="$uid" />
+      </xsl:attribute>
+      <xsl:attribute name="data-meta">
+        <xsl:value-of select="$uid" />
+      </xsl:attribute>
+
+      <xsl:choose>
+        <xsl:when test="/order/metas/meta/object[text() = $student]/../pattern[text() = $pattern]">
+          <xsl:attribute name="data-meta-id">
+            <xsl:value-of select="/order/metas/meta/object[text() = $student]/../pattern[text() = $pattern]/../id" />
+          </xsl:attribute>
+          <xsl:attribute name="data-meta-text">
+            <xsl:value-of select="/order/metas/meta/object[text() = $student]/../pattern[text() = $pattern]/../value" />
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="data-meta-id"></xsl:attribute>
+          <xsl:attribute name="data-meta-text"></xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
+
+
+      <xsl:attribute name="data-meta-order">
+        <xsl:value-of select="/order/id" />
+      </xsl:attribute>
+      <xsl:attribute name="data-meta-type">2</xsl:attribute>
+      <xsl:attribute name="data-meta-object">
+        <xsl:value-of select="$student" />
+      </xsl:attribute>
+      <xsl:attribute name="data-meta-pattern">
+        <xsl:value-of select="$pattern" />
+      </xsl:attribute>
+      <xsl:attribute name="data-required">
+        <xsl:value-of select="$isRequired" />
+      </xsl:attribute>
+
+      <xsl:attribute name="class">order-meta</xsl:attribute>
+      <xsl:attribute name="data-toggle">popover</xsl:attribute>
+      <xsl:attribute name="data-placement">top</xsl:attribute>
+      <xsl:attribute name="data-original-title">
+        <xsl:value-of select="@title" />
+      </xsl:attribute>
+    </xsl:element>
+    <xsl:element name="script">
+      <xsl:attribute name="type">text/javascript</xsl:attribute>
+      $(function() {
+      initOrderMetaCheckStudent('<xsl:value-of select="$uid" />');
+      });
+    </xsl:element>
+  </xsl:template>
 
 
 </xsl:stylesheet>

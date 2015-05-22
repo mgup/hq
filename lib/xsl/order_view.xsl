@@ -7,10 +7,11 @@
 
   <xsl:include href="lib/xsl/utilities.xsl" />
   <xsl:include href="lib/xsl/metas_view.xsl" />
-	<xsl:include href="lib/xsl/reasons_view.xsl" />
+  <xsl:include href="lib/xsl/reasons_view.xsl" />
 
   <xsl:template match="order">
-    <div class="order-view" style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
+    <div>
+    <div style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
       <p style="text-align: center; font-weight: bold; font-size: 17px; margin-bottom: 0;">МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ</p>
       <p style="text-align: center; font-weight: bold; margin-bottom: 3px; font-size: 16px;">федеральное государственное бюджетное образовательное<br />учреждение высшего профессионального образования</p>
       <p style="text-align: center; font-weight: bold; font-size: 16px; padding-bottom: 3px; margin-bottom: 20px; border-bottom: 3px solid black;">&laquo;МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА&raquo;</p>
@@ -67,13 +68,13 @@
       <div style="margin-top: 70px;">
         <xsl:value-of select="id" />&mdash;<xsl:value-of select="revision" />
       </div>
-    </div>
-    <div class="order-view" style="margin-top: 40px; padding: 40px 80px 40px 80px;">ч
-      <xsl:apply-templates select="/order/signature" />
-      <xsl:apply-templates select="./dispatch" />
-      <div style="margin-top: 70px; text-align: right;">
-        <xsl:value-of select="id" />&mdash;<xsl:value-of select="revision" />
-      </div>
+	</div>
+    <div style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
+        <xsl:apply-templates select="/order/signature" />
+        <xsl:apply-templates select="./dispatch" />
+        <div style="margin-top: 70px; text-align: right;">
+          <xsl:value-of select="id" />&mdash;<xsl:value-of select="revision" />
+        </div>
     </div>
     <!--	<script>
             totalMetas = 0;
@@ -86,6 +87,7 @@
                 });
             });
         </script> -->
+	</div>
   </xsl:template>
 
   <xsl:template match="reasons">
@@ -265,26 +267,17 @@
   </xsl:template>
 
   <xsl:template match="employee">
-    <table style="width: 100%;">
-      <tbody>
-        <tr>
-          <td style="border: none; padding: 0;">
-            <xsl:call-template name="change_case">
-              <xsl:with-param name="input_string" select="substring(./title, 1, 1)" />
-              <xsl:with-param name="direction" select="'up'" />
-            </xsl:call-template><xsl:value-of select="substring(./title, 2)" /><xsl:text> </xsl:text><xsl:value-of select="./department_short_name" />
-          </td>
-          <td style="border: none; width: 38%; text-align: right;">
-            <div>
-              <xsl:value-of select="./name" />
-            </div>
-            <div style="margin-top: 15px; margin-bottom: 10px;">
-              &laquo;___&raquo; _______________ 2015 г.
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+	  <p>
+        <xsl:call-template name="change_case">
+          <xsl:with-param name="input_string" select="substring(./title, 1, 1)" />
+          <xsl:with-param name="direction" select="'up'" />
+        </xsl:call-template><xsl:value-of select="substring(./title, 2)" /><xsl:text> </xsl:text><xsl:value-of select="./department_short_name" />
+	  </p>
+	  <p><xsl:apply-templates select="./name" /></p>
+		<div style="margin-top: 15px; margin-bottom: 10px;">
+          «_____» _________________ 2015 г.
+         </div>
+	  <p> </p>
   </xsl:template>
 
   <xsl:template match="user_name">

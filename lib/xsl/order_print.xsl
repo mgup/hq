@@ -275,7 +275,7 @@
     </fo:block>
     <fo:block font="12pt PT Serif" space-after="10pt">
       ___________________
-      <xsl:value-of select="./name" />
+      <xsl:apply-templates select="./name" />
     </fo:block>
     <fo:block font="12pt PT Serif">
       &laquo;______&raquo; _______________ 2015 г.
