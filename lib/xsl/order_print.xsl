@@ -51,13 +51,19 @@
         <fo:static-content flow-name="oddFoot">
           <fo:block>
             <xsl:value-of select="id" />&nbsp;&ndash;&nbsp;<xsl:value-of select="revision" />
+			<fo:block font="5pt PT Serif">
+			  <xsl:if test="1 = /order/status">ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК</xsl:if>
+			</fo:block>
           </fo:block>
         </fo:static-content>
 
         <fo:static-content flow-name="evenFoot">
           <!--<fo:block text-align="end">-->
-          <fo:block>
+          <fo:block font="PT Serif">
             <xsl:value-of select="id" />&nbsp;&ndash;&nbsp;<xsl:value-of select="revision" />
+			<fo:block font="5pt PT Serif">
+			  <xsl:if test="1 = /order/status">ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК ЧЕРНОВИК</xsl:if>
+			</fo:block> 
           </fo:block>
         </fo:static-content>
 
@@ -81,7 +87,9 @@
             <fo:block border-top="3pt solid black" space-after="1pt"></fo:block>
             <fo:block border-bottom="0.5pt solid black" space-after="13pt"></fo:block>
             <fo:block font="14pt PT Serif" font-weight="bold" text-align="center" space-after="13pt">
-              ПРИКАЗ
+              <xsl:if test="1 = /order/status">ЧЕРНОВИК ПРИКАЗА</xsl:if>
+              <xsl:if test="2 = /order/status">ПРИКАЗ</xsl:if>
+			  <xsl:if test="3 = /order/status">ПРИКАЗ</xsl:if>
             </fo:block>
             <fo:table table-layout="fixed" width="100%" space-after="25pt">
               <fo:table-column column-width="proportional-column-width(1.7)" />
