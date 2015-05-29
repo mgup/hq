@@ -844,7 +844,7 @@
         <fo:list-item>
             <fo:list-item-label end-indent="label-end()">
                 <fo:block>
-                    <xsl:number format="1" />.
+                    <xsl:number format="1" />)
                 </fo:block>
             </fo:list-item-label>
             <fo:list-item-body start-indent="body-start()">
