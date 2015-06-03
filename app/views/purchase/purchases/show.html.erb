@@ -1,0 +1,66 @@
+<div class="page-header">
+  <h1>Закупки МГУП</h1>
+  <h3>Заявка № <%= @purchase.number %> от <%= @purchase.date_registration.nil? ? ' ' : l(@purchase.date_registration) %></h3>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <%= link_to 'Новая заявка', new_purchase_purchase_path, class: 'btn btn-primary' %>
+  </div>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <%= link_to 'Заявки', purchase_purchases_path, class: 'btn btn-primary' %>
+    <%= link_to 'Поставщики', purchase_suppliers_path, class: 'btn btn-primary' %>
+    <%= link_to 'Товары', purchase_goods_path, class: 'btn btn-primary' %>
+    <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
+  </div>
+</div>
+<div class="row">
+  Поиск
+</div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>Товар</th>
+    <th>Обоснование</th>
+    <th>Планируемая сумма</th>
+    <th>Срок осуществеления</th>
+    <th>Поставщик</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @purchase.purchase_line_items.any? %>
+    <% @purchase.purchase_line_items.each do |line_item| %>
+      <tr>
+        <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.name %></td>
+        <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.demand %></td>
+        <td><%= sprintf('%8.2f', line_item.total_price) %></td>
+        <td><%= line_item.period %></td>
+        <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
+        <td>
+          <%= link_to purchase_line_item_path(line_item), class: 'btn btn-danger', title: 'Удалить',
+                      method: :delete,
+                      data: { confirm: 'Вы уверены? Запись будет удалена!' }  do %>
+              <span class="glyphicon glyphicon-remove"></span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <p>Товары отсутствуют</p>
+  <% end %>
+  </tbody>
+</table>
+<%= link_to 'Распечатать', purchase_purchase_path(format: 'xlsx'), class: 'btn btn-info' %>
+<br>
+<% @current_user.departments.each do |department| %>
+    <%= department.name %>
+    <% if department.subdepartments.any? %>
+        <% @current_user.departments = department.subdepartments %>
+    <% end %>
+<% end %>
+<br>
+<%= @current_user.last_name_hint  + ' '  + @current_user.first_name_hint[0] + '. ' + @current_user.patronym_hint[0] + '.' %>

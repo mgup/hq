@@ -1,0 +1,19 @@
+<% @goods.each do |good| %>
+    <tr>
+        <td><%= good.id %></td>
+        <td><%= good.name %></td>
+        <td><%= good.demand %></td>
+        <td>
+            <%= link_to edit_purchase_good_path(good), class: 'btn btn-warning', title: 'Изменить' do %>
+                <span class="glyphicon glyphicon-edit"></span>
+            <% end %>
+        </td>
+        <td>
+            <%= link_to purchase_good_path(good), class: 'btn btn-danger', title: 'Удалить',
+                        method: :delete,
+                        data: { confirm: 'Вы уверены? Запись будет удалена!' }  do %>
+                <span class="glyphicon glyphicon-remove"></span>
+            <% end %>
+        </td>
+    </tr>
+<% end %>

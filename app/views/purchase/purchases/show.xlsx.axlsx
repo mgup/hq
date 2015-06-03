@@ -1,0 +1,41 @@
+require 'axlsx_rails'
+xlsx = Axlsx::Package.new
+p = xlsx_package.workbook
+
+margins = {:left => 3, :right => 5, :top => 1.5, :bottom => 1.5}
+setup = {:fit_to_width => 1, :orientation => :portrait, :paper_width => "210mm", :paper_height => "297mm"}
+options = {:grid_lines => true, :headings => true, :horizontal_centered => true}
+head = p.styles.add_style :sz => 12, :alignment => { :horizontal => :center}
+title = p.styles.add_style :sz => 12, :alignment => { :horizontal => :right}
+table_head = p.styles.add_style :sz => 12, :border => {:style => :thin, :color => "00000000"}, :alignment => { :horizontal => :center, :wrap_text => :true}, :b=>true
+table_body = p.styles.add_style :sz => 12, :border => {:style => :thin, :color => "00000000"}, :alignment => { :horizontal => :left, :wrap_text => :true}
+
+p.add_worksheet(name: "Заявка", :page_margins => margins, :page_setup => setup, :print_options => options) do |s|
+    s.add_row ["УТВЕРЖДАЮ"], :style=>title
+    s.merge_cells("A1:E1")
+    s.add_row ["Ректор МГУП имени Ивана Федорова"], :style=>title
+    s.merge_cells("A2:E2")
+    s.add_row ["Антипов К.В."], :style=>title
+    s.merge_cells("A3:E3")
+    s.add_row ["«__» _________ 2014 г."], :style=>title
+    s.merge_cells("A4:E4")
+    s.add_row
+    s.add_row ["План расходов МГУП имени Ивана Федорова"], :style=>head
+    s.merge_cells("A6:E6")
+    s.add_row ["по приносящей доход деятельности"], :style=>head
+    s.merge_cells("A7:E7")
+    s.add_row ["структурного подразделения «"+@purchase.department.name+"»"], :style=>head
+    s.merge_cells("A8:E8")
+    s.add_row
+    s.add_row ["№", "Предмет расходов (товар, работа, услуга)", "Краткое обоснование необходимости расходов", "Планируемая сумма, руб.", "Период (срок) осуществления" ], :style=>table_head,  :height=>40
+    @purchase.purchase_line_items.each_with_index do |li, i|
+            s.add_row [i+1, li.purchase_goods.name, li.purchase_goods.demand, li.total_price, li.period ], :style=>table_body
+    end
+
+    s.add_row ["Итого", " ", " ", @sum," "], :style=>table_body
+    s.column_info.first.width = 13.44
+    s.column_info.second.width = 40.32
+    s.column_info.third.width = 40.32
+    s.column_info.fourth.width = 26.88
+    s.column_info.fifth.width = 26.88
+end

@@ -1,0 +1,31 @@
+<%= form_for @lineitem, html: { class: 'form-horizontal' } do |f| %>
+
+    <div class="row">
+      <%= f.label :purchase_id, 'заявка', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :purchase_id, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :good_id, 'товар', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :good_id, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :measure, 'мера', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :measure, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-lg-10 col-offset-2">
+        <%= f.submit "Сохранить изменения", class: 'btn btn-warning' %>
+        или
+        <%= link_to 'назад к структуре', purchase_purchases_path, class: 'btn btn-primary' %>
+      </div>
+    </div>
+<%end%>
