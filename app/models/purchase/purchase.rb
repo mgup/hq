@@ -5,5 +5,10 @@ class Purchase::Purchase < ActiveRecord::Base
   accepts_nested_attributes_for :purchase_line_items, allow_destroy: 'true'
 
   enum status: {обработка: 0, подпись: 1, зарегистрирован: 2}
-  #scope by_department, -> (department) {}
+
+  scope :statistic, -> (good, dep) {
+    joins('LEFT JOIN purchase_line_items AS li ON li.purchase_id = id')
+      .joins('LEFT JOIN purchase_goods AS g ON li.good_id = g.id')
+      .where(:good_id => good).where(:dep_id => dep)
+  }
 end

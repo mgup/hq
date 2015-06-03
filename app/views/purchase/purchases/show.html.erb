@@ -29,6 +29,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -47,6 +48,9 @@
               <span class="glyphicon glyphicon-remove"></span>
           <% end %>
         </td>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+              Посмотреть статистику
+            </button>
       </tr>
     <% end %>
   <% else %>
@@ -62,5 +66,35 @@
         <% @current_user.departments = department.subdepartments %>
     <% end %>
 <% end %>
-<br>
-<%= @current_user.last_name_hint  + ' '  + @current_user.first_name_hint[0] + '. ' + @current_user.patronym_hint[0] + '.' %>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Статистика</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <td>Год</td>
+            <td>Наименование</td>
+            <td>Стоимость</td>
+            <td>Статус</td>
+          </tr>
+          </thead>
+          <tbody>
+          <%= render partial: 'statistics' %>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -10,7 +10,7 @@ class Purchase::LineItemsController < ApplicationController
 
   def show
     @lineitem = Purchase::LineItem.find(params[:id])
-    @stat = Purchase::LineItem.statistic(@lineitem.good_id, user_dep)
+    @stat = Purchase::LineItem.statistic(@lineitem.good_id)
   end
 
   def destroy

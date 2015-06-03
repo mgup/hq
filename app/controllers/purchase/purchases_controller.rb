@@ -11,9 +11,8 @@ class Purchase::PurchasesController < ApplicationController
     @purchase = Purchase::Purchase.find(params[:id])
     @sum = Purchase::LineItem.where(:purchase_id => @purchase.id).sum('total_price')
     @count_goods = Purchase::LineItem.where(:purchase_id => @purchase.id).count('good_id')
-    # fail params.inspect
+    fail params.inspect
     create_report
-    @departments = Department.all
   end
 
   def create

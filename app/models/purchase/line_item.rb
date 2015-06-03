@@ -10,11 +10,10 @@ class Purchase::LineItem < ActiveRecord::Base
   enum delivered: {поставлен: 0, не_п: 1}
   enum paid: {оплачен: 0, не_оп: 1}
 
-  scope :statistic, -> (good, user_dep) {
+  scope :statistic, -> (good) {
     joins('LEFT JOIN purchase_goods AS g ON good_id = g.id')
       .joins('LEFT JOIN purchase_purchases AS p ON purchase_id = p.id')
-      .joins('LEFT JOIN department as d ON p.dep_id = d.department_id')
-      .where(:good_id => good).where('d.department_name LIKE ?', user_dep)
+      .where(:good_id => good)
   }
 
   scope :keyword_search, -> (params) {
