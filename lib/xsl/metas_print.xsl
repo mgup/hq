@@ -74,6 +74,18 @@
         <xsl:value-of select="$year" />/<xsl:value-of select="$year + 1" />
     </xsl:template>
 
+    <xsl:template match="meta_check_student">
+        <xsl:variable name="pattern">
+            <xsl:value-of select="@pattern" />
+        </xsl:variable>
+
+        <xsl:variable name="student">
+            <xsl:value-of select="@student" />
+        </xsl:variable>
+
+        <xsl:if test="1 = /order/metas/meta/object[text() = $student]/../pattern[text() = $pattern]/../value">, <xsl:value-of select="@pattern" /></xsl:if>
+    </xsl:template>
+
     <xsl:template match="meta_employee_student">
         <xsl:variable name="pattern">
             <xsl:value-of select="@pattern" />

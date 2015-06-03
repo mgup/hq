@@ -42,7 +42,7 @@
  <div class='row'>
    <div class='col col-lg-6'>
      <%= select_tag 'speciality',
-                    options_from_collection_for_select((@faculties.length > 1 ? Speciality.includes(:faculty) : @faculties.first.specialities), :id, :full_name, params[:speciality]),
+                    options_from_collection_for_select((@faculty ? @faculty.specialities : Speciality.includes(:faculty)), :id, :full_name, params[:speciality]),
                     prompt: 'все специальности', class: 'ajax-speciality-all form-control' %>
    </div>
 
@@ -65,10 +65,12 @@
     <div class="col-sm-4">
       <%= select_tag :group,
           options_from_collection_for_select((@faculties.length > 1 ? Group.all : @faculties.first.groups), :id, :name, params[:group]),
-                            prompt: 'все группы', class: 'ajax-group form-control' %>
+                            prompt: 'все группы', class: 'ajax-group-all form-control' %>
     </div>
   </div>
 <% end %>
+
+
 
 <div id="create_order">
   <%= render 'create_order' %>

@@ -87,6 +87,7 @@ class Office::OrdersController < ApplicationController
   def create
     count = 0
     students_in_order = Student.where(student_group_id: params[:exception])
+    faculty = students_in_order.first.faculty.id
     if Office::OrderTemplate.find(params[:template]).template_check_speciality
       students_in_order.group_by(&:group).each do |_, group_students|
         if Office::OrderTemplate.find(params[:template]).template_check_tax
@@ -103,7 +104,7 @@ class Office::OrdersController < ApplicationController
       create_order_with_students(params[:template], students_in_order)
       count = 1
     end
-    redirect_to office_drafts_path(faculty: @order.students.first.faculty.id, template: @order.template.id), notice: "#{count > 1 ? 'Проекты приказов' : 'Проект приказа'} успешно создан#{'ы' if count > 1}."
+    redirect_to office_drafts_path(faculty: faculty, template: params[:template]), notice: "#{count > 1 ? 'Проекты приказов' : 'Проект приказа'} успешно создан#{'ы' if count > 1}."
   end
 
   def edit ; end
@@ -147,6 +148,9 @@ class Office::OrdersController < ApplicationController
       @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
     end
     params[:faculty] ||= @faculties.first.id if @faculties.length < 2
+    if params[:faculty].present?
+      @faculty = Department.find(params[:faculty])
+    end
   end
   
   def find_templates
