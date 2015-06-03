@@ -71,7 +71,7 @@
     <div class="row">
       <%= f.label :university, 'Учебное заведение', class: 'col col-lg-2 control-label' %>
       <div class="col col-sm-10">
-        <%= f.collection_select(:university_id, University.all, :id, :name, { include_blank: true }, class: 'form-control') %>
+        <%= f.collection_select(:university_id, University.all.order(:name), :id, :name, { include_blank: true }, class: 'form-control') %>
       </div>
     </div>
 
@@ -118,7 +118,7 @@
     <div class="row">
       <%= f.label :university_author, 'Уполномоченный вуз', class: 'col col-lg-2 control-label' %>
       <div class="col col-sm-10">
-        <%= f.collection_select(:university_auth_id, University.all, :id, :name, { include_blank: false}, class: 'form-control') %>
+        <%= f.collection_select(:university_auth_id, University.all.order(:name), :id, :name, { include_blank: true}, class: 'form-control') %>
       </div>
     </div>
 
