@@ -1,5 +1,5 @@
 <%= form_for @person, url: (@person.id ? @person : persons_path),  html: { class: 'form-horizontal student-and-person-form' },
-    data: { value: @student.id, type: (@person.id ? 'edit' : 'new') } do |f| %>
+    data: { value: (@student.id if @student), type: (@person.id ? 'edit' : 'new') } do |f| %>
   <legend>Персональная информация</legend>
   <div class="row">
     <div class="col col-lg-12">

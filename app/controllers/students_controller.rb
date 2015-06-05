@@ -32,10 +32,16 @@ class StudentsController < ApplicationController
   end
 
   def new
-    @person = Person.new
-    @person.build_fname
-    @person.build_iname
-    @person.build_oname
+    @person = Person.find(params[:person])
+    @student = @person.students.build
+#     @person.build_fname
+#     @person.build_iname
+#     @person.build_oname
+  end
+  
+  def create
+    raise @student.inspect
+    @student = Student.new(resource_params)
   end
 
   def update
@@ -82,7 +88,9 @@ class StudentsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:student, {}).permit()
+    params.fetch(:student, {}).permit(:id, :person, :group,
+          :payment, :status, :state_line, :record, :abit, :abitpoints, :school
+    )
   end
 
   def soccard

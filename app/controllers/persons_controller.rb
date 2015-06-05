@@ -1,8 +1,19 @@
 class PersonsController < ApplicationController
   load_and_authorize_resource
 
+  def new
+    @person.build_fname
+    @person.build_iname
+    @person.build_oname
+  end
+  
   def create
-
+    
+    if @person.save
+      redirect_to new_student_path(person: @person.id)
+    else
+      render action: :new
+    end
   end
 
   def update
