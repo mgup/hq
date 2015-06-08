@@ -30,6 +30,7 @@ class Speciality < ActiveRecord::Base
   scope :masters, -> { where(speciality_ntype: 2) }
   scope :not_masters, -> { where(speciality_ntype: [0,1]) }
   scope :not_aspirants, -> { where(speciality_ntype: [0,1,2]) }
+  scope :aspirants, -> { where(speciality_ntype: 3) }
 
   def bachelor?
     1 == type

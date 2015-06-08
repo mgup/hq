@@ -182,6 +182,7 @@ class Student < ActiveRecord::Base
   scope :from_template, -> template { where(student_group_status: template.statuses.collect{ |s| s.id }) }
 
   scope :not_aspirants, -> { where(student_group_group: Group.filter(speciality: Speciality.not_aspirants.collect{|x| x.id}))}
+  scope :aspirants, -> { where(student_group_group: Group.filter(speciality: Speciality.aspirants.collect{|x| x.id}))}
 
   scope :in_group_at_date, -> group, date {
     group = group.id if group.is_a?(Group)

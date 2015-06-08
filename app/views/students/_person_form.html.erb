@@ -191,7 +191,11 @@
                 <% [:fname, :iname, :oname].each do |name| %>
                   <div class="col col-lg-4 <%= 'has-error' if @person.errors.include?(name) %>">
                     <%= f.fields_for name do |sub_f| %>
-                      <%= sub_f.text_field p[0], required: true, class: 'form-control' %>
+					  <% if @person.id && p[0] == :ip %>
+					  	<%= sub_f.text_field p[0], disabled: !current_user.is?(:developer), class: 'name_field form-control' %>
+					  <% else %>
+                      	<%= sub_f.text_field p[0], required: true, class: 'form-control' %>
+					  <% end %>
                     <% end %>
                   </div>
                 <% end %>

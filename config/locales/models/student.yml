@@ -6,10 +6,11 @@ ru:
       student:
         id: 'личный номер'
         payment: 'основа обучения'
-        group: 'группа'
-        status: 'статус'
+        student_group_group: 'группа'
+        student_group_status: 'статус'
         state_line: 'гослиния'
         record: 'номер зачётки'
         abit: 'номер личного дела'
         abitpoints: 'баллы при зачислении'
         school: 'общеобразовательная школа'
+        admission_year: 'год поступления'

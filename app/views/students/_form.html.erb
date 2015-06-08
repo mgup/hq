@@ -1,5 +1,6 @@
 <%= form_for @student, html: { class: 'form-horizontal student-and-person-form' },
     data: { value: @student.id, type: (@student.id ? 'edit' : 'new') } do |f| %>
+  <%= f.hidden_field :student_group_student, value: @person.id, class: 'form-control' %>
   <legend>Группа студента</legend>
   <div class="row">
     <div class="col-sm-3"><%= label_tag :faculty, 'Институт' %></div>
@@ -7,7 +8,7 @@
 		<% if @student.group %>
       		<p class="form-control-static"><%= @student.speciality.faculty.abbreviation %></p>
 		<% else %>
-			<%= select_tag :faculty, options_from_collection_for_select(Department.faculties, :id, :abbreviation), prompt: 'Выберите факультет', class: 'form-control ajax-faculty' %>
+			<%= select_tag :faculty, options_from_collection_for_select(@faculties, :id, :abbreviation), prompt: 'Выберите факультет', class: 'form-control ajax-faculty' %>
 		<% end %>
     </div>
   </div>
@@ -47,18 +48,24 @@
     <div class="col-sm-3"><%= f.label :group %></div>
     <div class="col-sm-9">
 	  <% if @student.group %>
-      <%= f.select :group, options_from_collection_for_select(Group.filter(speciality: @student.speciality.id),
+      <%= f.select :student_group_group, options_from_collection_for_select(Group.filter(speciality: @student.speciality.id),
                                                               :id, :name, @student.group.id), {}, class: 'form-control ajax-group' %>
  	  <% else %>
- 		<%= f.select :group, [], {}, { class: 'form-control ajax-group' } %>
+ 		<%= f.select :student_group_group, [], {}, { class: 'form-control ajax-group' } %>
  	  <% end %>
     </div>
   </div>
   <legend>Статус обучения</legend>
   <div class="row">
-    <div class="col-sm-3"><%= f.label :status %></div>
+    <div class="col-sm-3"><%= f.label :admission_year %></div>
     <div class="col-sm-9">
-      <%= f.select :status, options_from_collection_for_select(Status.all, :id, :name, @student.status), {}, class: 'form-control' %>
+      <%= f.select :admission_year, options_for_select(Time.now.year.downto(Time.now.year-5).to_a, f.object.admission_year), {}, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :student_group_status %></div>
+    <div class="col-sm-9">
+      <%= f.select :student_group_status, options_from_collection_for_select(Status.all, :id, :name, @student.status), {}, class: 'form-control' %>
     </div>
   </div>
   <div class="row">

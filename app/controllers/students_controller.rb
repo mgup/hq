@@ -2,6 +2,8 @@ class StudentsController < ApplicationController
   load_and_authorize_resource
 
   before_filter :find_student, only: [:documents, :study, :grants, :orders, :hostel]
+  
+  before_filter :find_faculties, only: :new
 
   def index
     @students = @students.joins(:group).my_filter(params)
@@ -19,6 +21,7 @@ class StudentsController < ApplicationController
   end
 
   def study
+
   end
 
   # def grants
@@ -34,14 +37,20 @@ class StudentsController < ApplicationController
   def new
     @person = Person.find(params[:person])
     @student = @person.students.build
+    
+    # raise @student.inspect
 #     @person.build_fname
 #     @person.build_iname
 #     @person.build_oname
   end
   
   def create
-    raise @student.inspect
-    @student = Student.new(resource_params)
+    if @student.save
+      @student.student_group_speciality = @student.speciality
+      redirect_to student_path(@student)
+    else
+      render action: :new
+    end
   end
 
   def update
@@ -88,8 +97,8 @@ class StudentsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:student, {}).permit(:id, :person, :group,
-          :payment, :status, :state_line, :record, :abit, :abitpoints, :school
+    params.fetch(:student, {}).permit(:id, :student_group_student, :student_group_group,
+          :payment, :student_group_status, :state_line, :record, :abit, :abitpoints, :school, :admission_year
     )
   end
 
@@ -110,5 +119,18 @@ class StudentsController < ApplicationController
 
   def find_student
     @student = Student.find(params[:student_id])
+    @person = @student.person
+  end
+  
+  def find_faculties
+    @faculties = Department.faculties
+    unless current_user.is?(:developer) || can?(:work, :all_faculties)
+      user_departments = current_user.departments_ids
+      @faculties = @faculties.find_all { |f| user_departments.include?(f.id) }
+    end
+    params[:faculty] ||= @faculties.first.id if @faculties.length < 2
+    if params[:faculty].present?
+      @faculty = Department.find(params[:faculty])
+    end
   end
 end

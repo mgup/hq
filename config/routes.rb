@@ -33,7 +33,7 @@ HQ::Application.routes.draw do
       get 'user/edit' => 'devise/registrations#edit', as: 'user_profile'
       put 'user/user_update' => 'devise/registrations#update'
     end
-  devise_for :students
+  devise_for :students, controllers: {registrations: 'students'}
 
   # Мониторинг состояния сервера.
   get 'system/stats'

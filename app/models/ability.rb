@@ -230,6 +230,16 @@ class Ability
     cannot :sign, Office::Order
     can :manage, Group
     can :index, :groups
+    
+    can :manage, Student
+    can :manage, Person
+  end
+  
+  def aspirantura(user) 
+    can :work, :all_faculties  
+    can :manage, Student, student_group_id: Student.aspirants.collect{|s| s.id}
+    can :create, Student
+    can :manage, Person
   end
 
   def ioo(user)
