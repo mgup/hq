@@ -15,7 +15,7 @@ class Study::PlansController < ApplicationController
       @groups = @groups.distance
     end
 
-    if current_user.is?(:developer) || current_user.is?(:ioo)
+    if current_user.is?(:developer) || can?(:work, :all_faculties)
       @group = Group.find(params[:group]) if params[:group]
     else
       if params[:group]
