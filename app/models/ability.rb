@@ -235,7 +235,18 @@ class Ability
     can :manage, Person
   end
   
-  def aspirantura(user) 
+  def aspirantura(user)
+    can :manage, :plans
+
+    # Подумать, как совместить это с тем, что Дирекция не преподаватель!!!
+    can :manage, Study::Discipline
+    can :manage, Study::Exam
+    can :manage, Study::Repeat
+    can :manage, Office::Order
+    cannot :sign, Office::Order
+    can :manage, Group
+    can :index, :groups
+    
     can :work, :all_faculties  
     can :manage, Student, student_group_id: Student.aspirants.collect{|s| s.id}
     can :create, Student
