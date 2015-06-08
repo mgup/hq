@@ -6,7 +6,7 @@
     <div class="col-sm-3"><%= label_tag :faculty, 'Институт' %></div>
     <div class="col-sm-9">
 		<% if @student.group %>
-      		<p class="form-control-static"><%= @student.speciality.faculty.abbreviation %></p>
+      		<p class="form-control-static"><%= @student.speciality.faculty.abbreviation if @student.speciality.faculty %></p>
 		<% else %>
 			<%= select_tag :faculty, options_from_collection_for_select(@faculties, :id, :abbreviation), prompt: 'Выберите факультет', class: 'form-control ajax-faculty' %>
 		<% end %>
