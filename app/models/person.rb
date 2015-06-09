@@ -210,7 +210,7 @@ class Person < ActiveRecord::Base
   def to_nokogiri
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.person {
-        xml.id_   id
+        xml.id_   student_id
         xml.hostel hostel.address if student_room
         xml.foreign student_foreign if student_foreign
         name_to_nokogiri.children[0].children.each { |part| xml << part.to_xml }
