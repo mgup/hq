@@ -255,7 +255,6 @@ class Ability
 
   def ioo(user)
     faculty_employee(user)
-    cannot :manage, Office::Order
     
     can :work, :all_faculties
   end
