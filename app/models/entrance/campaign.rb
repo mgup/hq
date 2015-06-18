@@ -18,4 +18,5 @@ class Entrance::Campaign < ActiveRecord::Base
   has_many :competitive_groups, class_name: 'Entrance::CompetitiveGroup'
   has_many :items, class_name: 'Entrance::CompetitiveGroupItem', through: :competitive_groups
   has_many :checks, through: :entrants
+  has_many :achievement_types, class_name: 'Entrance::AchievementType', foreign_key: :campaign_id
 end

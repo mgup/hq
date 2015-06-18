@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618084018) do
+ActiveRecord::Schema.define(version: 20150618103741) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -805,6 +805,19 @@ ActiveRecord::Schema.define(version: 20150618084018) do
   add_index "employee_position", ["employee_position_employee"], name: "employee_position_employee", using: :btree
   add_index "employee_position", ["employee_position_position"], name: "employee_position_position", using: :btree
 
+  create_table "entrance_achievement_types", force: :cascade do |t|
+    t.integer "campaign_id",                limit: 4
+    t.integer "institution_achievement_id", limit: 4
+    t.integer "max_ball",                   limit: 4
+  end
+
+  create_table "entrance_achievements", force: :cascade do |t|
+    t.integer "entrant_id",                   limit: 4
+    t.integer "entrance_achievement_type_id", limit: 4
+    t.string  "document",                     limit: 255
+    t.date    "date"
+  end
+
   create_table "entrance_applications", force: :cascade do |t|
     t.string   "number",                           limit: 255
     t.integer  "entrant_id",                       limit: 4
@@ -1553,6 +1566,10 @@ ActiveRecord::Schema.define(version: 20150618084018) do
     t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "institution_achievements", force: :cascade do |t|
+    t.string "name", limit: 255
   end
 
   create_table "log", primary_key: "log_id", force: :cascade do |t|
