@@ -16,6 +16,8 @@
 <br>
 <br>
 <% if date %>
+  
+<% if discipline.final_exam.date.future? %>
   <div class="alert alert-danger">
     Студенты, обязательно посмотрите в конце страницы что вас ждёт на экзамене.
     Если вас не устраивает возможность повышения оценки, которую даёт вам
@@ -26,6 +28,12 @@
     Если вы заметили ошибку в расчётах — пишите по электронной почте в отдел
     информационных систем (адреса в конце страницы).
   </div>
+<% else %>
+  <div class="alert alert-info">
+    Результаты экзамена (<%= l discipline.final_exam.date %>) можно посмотреть в конце страницы.
+  </div>
+
+<% end %>
 <% end %>
 
 
@@ -84,6 +92,8 @@
     </li>
   </ul>
 
+<% if discipline.final_exam.date.future? %>
+
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -120,4 +130,48 @@
       <% end %>
     </tbody>
   </table>
+
+<% else %>
+
+  <table class="table table-hover">
+    <tr>
+      <th class="text-muted">#</th>
+      <th>Студент</th>
+      <th>Итоговый балл</th>
+      <th colspan="2">Результат</th>
+    </tr>
+  <% students.each do |student| %>
+    <tr>
+      <td class="text-muted"><%= student[:student].id %></td>
+      <td><%= student[:student].person.full_name %></td>
+
+      <% final_mark = discipline.final_exam.final_marks.by_student(student[:student]).last %>
+      <% rating_mark = discipline.final_exam.rating_marks.by_student(student[:student]).last %>
+	  <% ball = student[:student].ball(discipline.final_exam.discipline)%>
+      <% if rating_mark == nil %>
+        <td>-</td>
+      <% else %>
+        <td>
+          <ul class="list-unstyled">
+            <li>за семестр — <%= ball %></li>
+            <li>за экзамен — <span id="exam_mark_li_<%= student[:student].id %>"><%= rating_mark.value %></span></li>
+          </ul>
+        </td>
+      <% end %>
+
+      <% if final_mark == nil %>
+        <td colspan="2">-</div>
+        </td>
+      <% else %>
+        <td>  
+        <% final = ball.to_f * discipline.final_exam.weight / 100.0 + (1.0 - discipline.final_exam.weight / 100.0) * rating_mark.value %>
+        <% result = mark_count(ball, final, (final_mark.value.to_s if final_mark.value == 9 || final_mark.value == 1)) %>
+          <div><span class='label label-<%= result[:span] %>'><%= result[:mark] %></span></div>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+  </table>
+  
+<% end %>
 <% end %>

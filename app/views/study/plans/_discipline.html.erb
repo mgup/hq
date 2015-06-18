@@ -21,7 +21,7 @@
       <tr>
         <td>
           <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-<%= (exam.exam? && exam.date) ? '3' : '4' %>">
               <strong><%= exam.id %></strong>
               <%= exam.name %>
             </div>
@@ -46,6 +46,14 @@
             <div class="col-sm-2">
               <%= render partial: 'study/plans/validation', locals: { exam: exam } %>
             </div>
+			
+			<% if exam.exam? && exam.date %>
+			<div class="col-sm-1">
+				<%= link_to study_group_discipline_path(discipline.group, discipline), class: 'btn btn-sm btn-info', title: 'Посмотреть результаты' do %>
+				  <span class='glyphicon glyphicon-eye-open'></span>
+				<% end %>
+			</div>
+			<% end %>
 
             <div class="col-sm-1">
               <% if exam.can_print_register? %>
