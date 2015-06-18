@@ -316,6 +316,7 @@ HQ::Application.routes.draw do
 
   resources :directions, only: :index
   namespace :entrance do
+    get 'import' => 'import#index'
     resources :items do
       get 'protocols', on: :collection, defaults: { format: :pdf }
     end
