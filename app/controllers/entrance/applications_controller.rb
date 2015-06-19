@@ -101,7 +101,7 @@ class Entrance::ApplicationsController < ApplicationController
   def create
     if @application.save
       # Теперь нужно заявлению присвоить номер.
-      number = '14-'
+      number = '15-'
       number << @application.competitive_group_item.direction.letters
 
       second = case @application.competitive_group_item.direction.qualification_code
