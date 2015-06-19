@@ -98,7 +98,7 @@ pdf.font_size 11 do
           result = ["#{index + 1}."]
           result << achievement.achievement_type.institution_achievement.name
           result << achievement.document
-          result << l(achievement.date)
+          result << l(achievement.date) if achievement.date.present?
           # result << "(#{exam_result.exam_type})"
 
           # if application.benefits.first && application.benefits.first.benefit_kind.out_of_competition?
