@@ -38,10 +38,20 @@ class Entrance::ApplicationsController < ApplicationController
         end
         unless found
           # Эта конкурсная группа подходит.
-          @new_applications << @entrant.applications.build(
-              competitive_group_item_id: g.items.first.id,
-              campaign_id: @campaign.id
-          )
+          if g.items.first.budget?
+            @new_applications << @entrant.applications.build(
+                competitive_group_item_id: g.items.first.id,
+                campaign_id: @campaign.id,
+                is_payed: false
+            )
+          end
+          if g.items.first.payed?
+            @new_applications << @entrant.applications.build(
+                competitive_group_item_id: g.items.first.id,
+                campaign_id: @campaign.id,
+                is_payed: true
+            )
+          end
         end
       end
     else
