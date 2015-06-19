@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150619090945) do
+ActiveRecord::Schema.define(version: 20150619100134) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -887,6 +887,7 @@ ActiveRecord::Schema.define(version: 20150619090945) do
     t.boolean  "agree",                            limit: 1
     t.boolean  "prikladnoy",                       limit: 1,     default: false
     t.boolean  "is_payed",                         limit: 1
+    t.integer  "education_form_id",                limit: 4
   end
 
   add_index "entrance_applications", ["campaign_id"], name: "index_entrance_applications_on_campaign_id", using: :btree
