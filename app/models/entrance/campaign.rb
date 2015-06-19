@@ -19,4 +19,6 @@ class Entrance::Campaign < ActiveRecord::Base
   has_many :items, class_name: 'Entrance::CompetitiveGroupItem', through: :competitive_groups
   has_many :checks, through: :entrants
   has_many :achievement_types, class_name: 'Entrance::AchievementType', foreign_key: :campaign_id
+  
+  scope :this_year, -> { where(start_year: Entrance::Campaign::CURRENT) }
 end
