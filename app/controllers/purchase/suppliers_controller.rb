@@ -1,4 +1,6 @@
 class Purchase::SuppliersController < ApplicationController
+  authorize_resource
+
   def index
     @suppliers = Purchase::Supplier.all
   end
@@ -10,7 +12,7 @@ class Purchase::SuppliersController < ApplicationController
   def create
     @supplier = Purchase::Supplier.new(resource_params)
     if @supplier.save
-      redirect_to purchase_suppliers_path # изменить
+      redirect_to purchase_suppliers_path, notice: 'Поставщик успешно создан' # изменить
     else
       render action: :new
     end
@@ -23,7 +25,7 @@ class Purchase::SuppliersController < ApplicationController
   def update
     @supplier = Purchase::Supplier.find(params[:id])
     if @supplier.update(resource_params)
-      redirect_to purchase_suppliers_path # изменить
+      redirect_to purchase_suppliers_path, notice: 'Данные поставщика успешно изменены' # изменить
     else
       render action: :edit
     end
@@ -32,7 +34,7 @@ class Purchase::SuppliersController < ApplicationController
   def destroy
     @supplier = Purchase::Supplier.find(params[:id])
     @supplier.destroy
-    redirect_to purchase_suppliers_path
+    redirect_to purchase_suppliers_path, notice: 'Поставщик удален'
   end
 
   def resource_params

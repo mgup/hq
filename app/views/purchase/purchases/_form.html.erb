@@ -3,14 +3,22 @@
     <legend>Товары</legend>
       <div class="row">
         <%= f.label :number, 'Номер заявки', class: 'col col-lg-2 control-label' %>
-        <div class="col col-sm-10">
-          <%= f.text_field :number, class: 'form-control' %>
+        <div class="col col-sm-9">
+          <%= f.text_field :number, disabled: true, class: 'form-control' %>
         </div>
+      <% if @current_user.is? (:developer) %>
+        <!-- только ДФП -->
+        <div class="col col-sm-1" align="right">
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" >
+            Рег.
+          </button>
+        </div>
+      <% end %>
       </div>
       <div class="row">
         <%= f.label :date_registration, 'Дата регистрации', class: 'control-label col col-sm-2' %>
           <div class="col col-sm-10">
-            <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
+            <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), disabled: true, class: 'form-control datepicker' %>
           </div>
         </div>
       <div class="row">
@@ -26,7 +34,7 @@
             <% [{type: 'обработка', key:  'обработка'}, {type: 'на подписи', key: 'подпись'},{type: 'зарегистрирован', key: 'зарегистрирован'} ].each do |fin| %>
                 <% stat << (OpenStruct.new fin) %>
             <% end %>
-            <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @purchase.status), {}, class: 'form-control' %>
+            <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @purchase.status), {}, disabled: true, class: 'form-control' %>
         </div>
       </div>
       <div class="row">
@@ -60,3 +68,38 @@
       </div>
     </div>
 <%end%>
+
+<script>
+    $('form').validate({
+        rules: {
+            "purchase_purchase[dep_id]": {required: true},
+            "purchase_purchase[note]": {required: true}
+        },
+        messages: {
+            "purchase_purchase[dep_id]": {
+                required: 'Выберите структурное подразделение'
+            },
+            "purchase_purchase[note]": {
+                required: 'Введите должность ответственного сотрудника'
+            }
+        }
+    });
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Статистика</h4>
+      </div>
+      <div class="modal-body">
+          <%= render partial: 'formreg' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>

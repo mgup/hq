@@ -10,9 +10,6 @@
     <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
   </div>
 </div>
-<div class="row">
-  Поиск
-</div>
 <table class="table table-condensed">
   <thead>
     <tr>
@@ -51,7 +48,7 @@
             <td>Год</td>
             <td>Наименование</td>
             <td>Стоимость</td>
-            <td>Статус</td>
+            <td>Статус заявки</td>
           </tr>
           </thead>
           <tbody>
@@ -65,3 +62,7 @@
     </div>
   </div>
 </div>
+
+<% @current_user.departments.each do |department| %>
+    <%= department.name %>
+<% end %>

@@ -1,4 +1,6 @@
 class Purchase::PurchasesController < ApplicationController
+  authorize_resource
+
   def index
     @purchases = Purchase::Purchase.all
   end
@@ -9,9 +11,9 @@ class Purchase::PurchasesController < ApplicationController
 
   def show
     @purchase = Purchase::Purchase.find(params[:id])
-    @sum = Purchase::LineItem.where(:purchase_id => @purchase.id).sum('total_price')
-    @count_goods = Purchase::LineItem.where(:purchase_id => @purchase.id).count('good_id')
-    fail params.inspect
+    count_goods
+    calculate_stat
+    change_status
     create_report
   end
 
@@ -30,6 +32,7 @@ class Purchase::PurchasesController < ApplicationController
 
   def update
     @purchase = Purchase::Purchase.find(params[:id])
+    change_status
     if @purchase.update(resource_params)
       redirect_to purchase_purchases_path, notice: 'Изменения сохранены'# изменить
     else
@@ -60,5 +63,23 @@ class Purchase::PurchasesController < ApplicationController
       format.csv
       format.xlsx
     end
+  end
+
+  def change_status
+    if @purchase.number.present?
+      @purchase.status = 'зарегистрирован'
+    end
+  end
+
+  def count_goods
+    @count_goods = Purchase::LineItem.where(:purchase_id => @purchase.id).count('good_id')
+    @sum = Purchase::LineItem.where(:purchase_id => @purchase.id).sum('total_price')
+  end
+
+  def calculate_stat
+    @count_published = Purchase::LineItem.where(:purchase_id => @purchase.id, :published => 'опубликован').count('good_id')
+    @count_contracted = Purchase::LineItem.where(:purchase_id => @purchase.id).where(:contracted => 'законтрактирован').count('good_id')
+    @count_delivered = Purchase::LineItem.where(:purchase_id => @purchase.id).where(:delivered => 'поставлен').count('good_id')
+    @count_paid = Purchase::LineItem.where(:purchase_id => @purchase.id).where(:paid => 'оплачен').count('good_id')
   end
 end

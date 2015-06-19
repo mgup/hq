@@ -3,7 +3,10 @@
     <div class="row">
       <%= f.label :name, 'Наименование', class: 'col col-lg-2 control-label' %>
       <div class="col col-sm-10">
-        <%= f.text_field :name, class: 'form-control' %>
+        <%= f.text_field :name,  class: 'form-control' %>
+        <span class="help-block">
+
+        </span>
       </div>
     </div>
 
@@ -22,3 +25,16 @@
       </div>
     </div>
 <%end%>
+
+<script>
+    $('form').validate({
+        rules: {
+            "purchase_good[name]": {required: true}
+        },
+        messages: {
+            "purchase_good[name]": {
+                required: 'Поле не должно быть пустым!'
+            }
+        }
+    });
+</script>

@@ -1,6 +1,6 @@
 <% @stat.each do |lineitem| %>
 <tr>
-  <td><%= l(lineitem.purchase_purchases.date_registration) %></td>
+  <td><%= lineitem.purchase_purchases.date_registration.year %></td>
   <td><%= lineitem.purchase_goods.name %></td>
   <td><%= sprintf('%8.2f', lineitem.total_price) %></td>
   <td><%= lineitem.purchase_purchases.status %></td>

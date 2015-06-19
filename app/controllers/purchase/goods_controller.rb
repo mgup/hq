@@ -1,4 +1,6 @@
 class Purchase::GoodsController < ApplicationController
+  authorize_resource
+
   def index
     @goods = Purchase::Good.all
   end
@@ -10,7 +12,7 @@ class Purchase::GoodsController < ApplicationController
   def create
     @good = Purchase::Good.new(resource_params)
     if @good.save
-      redirect_to purchase_goods_path # изменить
+      redirect_to purchase_goods_path, notice: 'Товар успешно создан!'
     else
       render action: :new
     end
@@ -23,7 +25,7 @@ class Purchase::GoodsController < ApplicationController
   def update
     @good = Purchase::Good.find(params[:id])
     if @good.update(resource_params)
-      redirect_to purchase_goods_path # изменить
+      redirect_to purchase_goods_path, notice: 'Товар успешно изменен!'
     else
       render action: :edit
     end
@@ -32,7 +34,7 @@ class Purchase::GoodsController < ApplicationController
   def destroy
     @good = Purchase::Good.find(params[:id])
     @good.destroy
-    redirect_to purchase_goods_path
+    redirect_to purchase_goods_path, notice: 'Товар удален'
   end
 
   def resource_params
