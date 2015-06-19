@@ -92,22 +92,24 @@ pdf.font_size 11 do
       end
 
 
-      pdf.text 'Индивидуальные достижения:'
-      entrant.achievements.each_with_index do |achievement, index|
-        result = ["#{index + 1}."]
-        result << achievement.achievement_type.institution_achievement.name
-        result << achievement.document
-        result << l(achievement.date)
-        # result << "(#{exam_result.exam_type})"
+      if entrant.achievements.any?
+        pdf.text 'Индивидуальные достижения:'
+        entrant.achievements.each_with_index do |achievement, index|
+          result = ["#{index + 1}."]
+          result << achievement.achievement_type.institution_achievement.name
+          result << achievement.document
+          result << l(achievement.date)
+          # result << "(#{exam_result.exam_type})"
 
-        # if application.benefits.first && application.benefits.first.benefit_kind.out_of_competition?
-        #   result << ''
-        # else
-        #   result << exam_result.score
-        # end
+          # if application.benefits.first && application.benefits.first.benefit_kind.out_of_competition?
+          #   result << ''
+          # else
+          #   result << exam_result.score
+          # end
 
-        pdf.text result.join(' ')
-      end
+          pdf.text result.join(' ')
+        end
+      end      
 
 
 
