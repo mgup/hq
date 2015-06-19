@@ -94,7 +94,7 @@ class Entrance::ApplicationsController < ApplicationController
               item = g.items.first
 
               if item.budget?
-                if (item.number_budget_o > 0 || item.number_paid_o > 0 || item.number_quota_o > 0)
+                if (item.number_budget_o > 0 || item.number_quota_o > 0)
                   @new_applications << @entrant.applications.build(
                     competitive_group_item_id: item.id,
                     campaign_id: @campaign.id,
@@ -102,7 +102,7 @@ class Entrance::ApplicationsController < ApplicationController
                     education_form_id: 11
                   )
                 end
-                if (item.number_budget_oz > 0 || item.number_paid_oz > 0 || item.number_quota_oz > 0)
+                if (item.number_budget_oz > 0 || item.number_quota_oz > 0)
                   @new_applications << @entrant.applications.build(
                     competitive_group_item_id: item.id,
                     campaign_id: @campaign.id,
@@ -110,7 +110,7 @@ class Entrance::ApplicationsController < ApplicationController
                     education_form_id: 12
                   )
                 end
-                if (item.number_budget_z > 0 || item.number_paid_z > 0 || item.number_quota_z > 0)
+                if (item.number_budget_z > 0  || item.number_quota_z > 0)
                   @new_applications << @entrant.applications.build(
                     competitive_group_item_id: item.id,
                     campaign_id: @campaign.id,
@@ -120,7 +120,7 @@ class Entrance::ApplicationsController < ApplicationController
                 end
               end
               if item.payed?
-                if (item.number_budget_o > 0 || item.number_paid_o > 0 || item.number_quota_o > 0)
+                if (item.number_paid_o > 0)
                   @new_applications << @entrant.applications.build(
                     competitive_group_item_id: item.id,
                     campaign_id: @campaign.id,
@@ -128,7 +128,7 @@ class Entrance::ApplicationsController < ApplicationController
                     education_form_id: 11
                   )
                 end
-                if (item.number_budget_oz > 0 || item.number_paid_oz > 0 || item.number_quota_oz > 0)
+                if (item.number_paid_oz > 0)
                   @new_applications << @entrant.applications.build(
                     competitive_group_item_id: item.id,
                     campaign_id: @campaign.id,
@@ -136,7 +136,7 @@ class Entrance::ApplicationsController < ApplicationController
                     education_form_id: 12
                   )
                 end
-                if (item.number_budget_z > 0 || item.number_paid_z > 0 || item.number_quota_z > 0)
+                if (item.number_paid_z > 0)
                   @new_applications << @entrant.applications.build(
                     competitive_group_item_id: item.id,
                     campaign_id: @campaign.id,
@@ -173,7 +173,7 @@ class Entrance::ApplicationsController < ApplicationController
                  'М'
                when 70
                  'А'
-               else case @application.competitive_group_item.form
+               else case @application.education_form_id
                     when 10
                       'З'
                     when 11
@@ -187,7 +187,7 @@ class Entrance::ApplicationsController < ApplicationController
 
       number << (@application.entrant.ioo ? 'И' : second)
 
-      payment = @application.payed ? 'п' : ''
+      payment = @application.is_payed ? 'п' : ''
 
       last = Entrance::Application.
         where('number LIKE ?', "#{number}%#{payment}")
