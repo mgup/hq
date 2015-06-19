@@ -75,22 +75,37 @@ class Entrance::ApplicationsController < ApplicationController
               key &&= (@entrant.exam_results.by_exam(exam.exam_id).first.score ? exam.min_score <= @entrant.exam_results.by_exam(exam.exam_id).first.score : true)
             end
             found = !key
-            @entrant.applications.each do |a|
-              # Только для неотозванных заявлений.
-              if a.called_back?
-                # Проверяем, что у человека ещё нет заявлений в этой конкурсной группе.
-                next
-              else
-                found = true if a.competitive_group_item_id == g.items.first.id
-              end
-            end
+            # @entrant.applications.each do |a|
+            #   # Только для неотозванных заявлений.
+            #   if a.called_back?
+            #     # Проверяем, что у человека ещё нет заявлений в этой конкурсной группе.
+            #     next
+            #   else
+            #     found = true if a.competitive_group_item_id == g.items.first.id
+            #   end
+            # end
 
             unless found
               # Эта конкурсная группа подходит.
-              @new_applications << @entrant.applications.build(
-                competitive_group_item_id: g.items.first.id,
-                campaign_id: @campaign.id
-              )
+              # @new_applications << @entrant.applications.build(
+              #   competitive_group_item_id: g.items.first.id,
+              #   campaign_id: @campaign.id
+              # )
+
+              if g.items.first.budget?
+                @new_applications << @entrant.applications.build(
+                  competitive_group_item_id: g.items.first.id,
+                  campaign_id: @campaign.id,
+                  is_payed: false
+                )
+              end
+              if g.items.first.payed?
+                @new_applications << @entrant.applications.build(
+                  competitive_group_item_id: g.items.first.id,
+                  campaign_id: @campaign.id,
+                  is_payed: true
+                )
+              end
             end
           else
             next
