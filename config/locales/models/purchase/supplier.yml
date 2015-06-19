@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+      purchase/supplier: 'Поставщики'
+    attributes:
+      purchase/supplier:
+        name: 'Поставщик'
+        inn: 'ИНН'
+        address: 'Адрес'
+        phone: 'Телефон'

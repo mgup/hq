@@ -1,0 +1,94 @@
+<%= f.fields_for :purchase_line_items do |p| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Позиция</h3>
+    </div>
+    <div class="panel-body">
+      <%= p.hidden_field :id %>
+
+      <div class="form-group">
+        <%= p.label :good_id, 'Товар', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= p.select :good_id, Purchase::Good.all.collect{ |d|[d.name, d.id] }, {include_blank: true}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :total_price, 'Планируемая сумма' , class: 'col-sm-2 control-label'%>
+        <div class="col-sm-10">
+          <%= p.text_field :total_price, placeholder: 'Пример, 400.00', class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :period, 'Период (срок) осуществления', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <% stat = [] %>
+          <% [{type: '12 мес', key:  '12 мес'}, {type: '24 мес', key: '24 мес'}, {type: '36 мес', key: '36 мес'}].each do |fin| %>
+              <% stat << (OpenStruct.new fin) %>
+          <% end %>
+          <%= p.select :period, options_from_collection_for_select(stat, :key, :type), {include_blank: false}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :supplier_id, 'Поставщик', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= p.select :supplier_id, Purchase::Supplier.all.collect{ |d|[d.name, d.id] }, {include_blank: true}, class: 'form-control' %>
+          <span class="help-block">
+            <p>Если поставщик неопределен, оставить поле пустым</p>
+          </span>
+        </div>
+      </div>
+
+      <div class="panel-heading">
+        <h3 class="panel-title">Дополнительные сведения</h3>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :count, 'Сведения о количестве (объеме)' , class: 'col-sm-2 control-label'%>
+        <div class="col-sm-10">
+          <%= p.text_field :count, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :measure, 'Единица измерения', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <% stat = [] %>
+          <% [{type: 'час', key:  'час'}, {type: 'день', key: 'день'},{type: 'месяц', key: 'мес'}, {type: 'шт', key: 'шт'} ].each do |fin| %>
+              <% stat << (OpenStruct.new fin) %>
+          <% end %>
+          <%= p.select :measure, options_from_collection_for_select(stat, :key, :type), {include_blank: false}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :start_price, 'Начальная цена закупки' , class: 'col-sm-2 control-label'%>
+        <div class="col-sm-10">
+          <%= p.text_field :start_price, placeholder: 'Пример, 400.00', class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="row">
+        <%= f.label :p_start_date, 'Дата начала закупки', class: 'control-label col col-sm-2' %>
+        <div class="col col-sm-10">
+          <%= f.text_field :p_start_date, value: (), class: 'form-control datepicker' %>
+        </div>
+      </div>
+
+      <div class="row">
+        <%= f.label :p_end_date, 'Дата окончания закупки', class: 'control-label col col-sm-2' %>
+        <div class="col col-sm-10">
+          <%= f.text_field :p_end_date, value: (), class: 'form-control datepicker' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= p.link_to_remove 'Удалить позицию', class: 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

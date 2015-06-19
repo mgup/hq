@@ -19,7 +19,6 @@
     </div>
   </div>
 
-
   <div class="row">
     <%= f.label :parent, 'Главное подразделение', class: 'col col-lg-2 control-label' %>
     <div class="col col-lg-10">
@@ -37,7 +36,6 @@
       </div>
     </div>
 
-
   <div class="row">
     <div class="col col-lg-10 col-offset-2">
       <%= f.submit class: 'btn btn-primary' %>
@@ -48,9 +46,8 @@
 
 <% end %>
 
-
 <script>
-       $('form').validate({
+  $('form').validate({
     messages: {
         "department[phone]": {pattern: 'Неверный формат. Введите телефон в формате: +7 499 123-45-67' }
     }

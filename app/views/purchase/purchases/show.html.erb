@@ -1,0 +1,105 @@
+<div class="page-header">
+  <h1>Закупки МГУП</h1>
+  <h3>Заявка
+    <% if @purchase.number.present? %>
+        № <%= @purchase.number %> от <%= l(@purchase.date_registration) %>
+    <% end %>
+  </h3>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <%= link_to 'Новая заявка', new_purchase_purchase_path, class: 'btn btn-primary' %>
+  </div>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <%= link_to 'Заявки', purchase_purchases_path, class: 'btn btn-primary' %>
+    <%= link_to 'Поставщики', purchase_suppliers_path, class: 'btn btn-primary' %>
+    <%= link_to 'Товары', purchase_goods_path, class: 'btn btn-primary' %>
+    <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
+  </div>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <p class="text-info"><%= notice %></p>
+  </div>
+</div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>Товар</th>
+    <th>Обоснование</th>
+    <th>Планируемая сумма</th>
+    <th>Срок осуществеления</th>
+    <th>Поставщик</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @purchase.purchase_line_items.any? %>
+    <% @purchase.purchase_line_items.each do |line_item| %>
+        <% if line_item.published == 'опубликован' &&
+                line_item.contracted == 'законтрактирован' &&
+                line_item.paid == 'оплачен' &&
+                line_item.delivered == 'поставлен'%>
+          <tr class="success">
+            <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.name %></td>
+            <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.demand %></td>
+            <td><%= line_item.total_price %></td>
+            <td><%= line_item.period %></td>
+            <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
+            <td>
+              <%= link_to purchase_line_item_path(line_item), class: 'btn btn-danger', title: 'Удалить',
+                          method: :delete,
+                          data: { confirm: 'Вы уверены? Запись будет удалена!' }  do %>
+                  <span class="glyphicon glyphicon-remove"></span>
+              <% end %>
+            </td>
+          </tr>
+        <% else %>
+          <tr>
+            <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.name %></td>
+            <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.demand %></td>
+            <td><%= line_item.total_price %></td>
+            <td><%= line_item.period %></td>
+            <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
+            <td>
+              <%= link_to purchase_line_item_path(line_item), class: 'btn btn-danger', title: 'Удалить',
+                          method: :delete,
+                          data: { confirm: 'Вы уверены? Запись будет удалена!' }  do %>
+                  <span class="glyphicon glyphicon-remove"></span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+    <% end %>
+  <% else %>
+    <p>Товары отсутствуют</p>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Распечатать', purchase_purchase_path(format: 'xlsx'), class: 'btn btn-info' %>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+  Посмотреть статистику
+</button>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Статистика</h4>
+      </div>
+      <div class="modal-body">
+          <%= render partial: 'statistics' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>

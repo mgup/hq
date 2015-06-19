@@ -85,11 +85,19 @@ class Ability
         can :work, :all_faculties
       end
 
+      # отдел рецензирования
       if user.is?(:recenz)
         can :manage, Review
         can :manage, University
       end
 
+      # закупки
+      if user.is?(:purchase_manager) || user.is?(:purchase_user)
+        can :manage, Purchase::Good
+        can :manage, Purchase::Supplier
+        can :manage, Purchase::LineItem
+        can :manage, Purchase::Purchase
+      end
     end
 
     can [:index, :show], :progress

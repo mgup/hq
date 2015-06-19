@@ -1,0 +1,17 @@
+<h4>
+  Всего товаров в заявке : <%= @count_goods %>
+</h4>
+<ul> Из них:
+  <li>
+    опубликовано <%= @count_published * 100 / @count_goods %> % (это <%= @count_published %> тов.)
+  </li>
+  <li>
+    законтрактировано <%= @count_contracted * 100 / @count_goods %> % (это <%= @count_contracted %> тов.)
+  </li>
+  <li>
+    оплачено <%= @count_paid * 100 / @count_goods %> % (это <%= @count_paid %> тов.)
+  </li>
+  <li>
+    поставлено <%= @count_delivered * 100 / @count_goods %> % (это <%= @count_delivered %> тов.)
+  </li>
+</ul>

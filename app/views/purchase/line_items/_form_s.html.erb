@@ -1,0 +1,37 @@
+<tr>
+  <td><%= @lineitem.purchase_goods.name %></td>
+  <td><%= @lineitem.purchase_purchases.number %></td>
+  <td><%= l(@lineitem.purchase_purchases.date_registration) %></td>
+  <td><%= sprintf('%8.2f', @lineitem.total_price) %></td>
+  <td><%= @lineitem.purchase_purchases.department.name %></td>
+  <td><% if @lineitem.purchase_suppliers == nil %>
+        <%= 'не определен' %>
+      <% else %>
+        <%= @lineitem.purchase_suppliers.name %> <br> <%= @lineitem.purchase_suppliers.inn.to_s %> <br> <%= @lineitem.purchase_suppliers.address %>
+      <% end %>
+  </td>
+  <td><% if @lineitem.published == 'опубликован'%>
+        <%= 'да' %>
+      <% else %>
+        <%= 'нет' %>
+      <% end %>
+  </td>
+  <td><% if @lineitem.contracted == 'законтрактирован'%>
+        <%= 'да' %>
+    <% else %>
+        <%= 'нет' %>
+    <% end %>
+  </td>
+  <td><% if @lineitem.delivered == 'поставлен'%>
+        <%= 'да' %>
+    <% else %>
+        <%= 'нет' %>
+    <% end %>
+  </td>
+  <td><% if @lineitem.paid == 'оплачен'%>
+        <%= 'да' %>
+    <% else %>
+        <%= 'нет' %>
+    <% end %>
+  </td>
+</tr>

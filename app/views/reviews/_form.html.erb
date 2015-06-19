@@ -27,6 +27,7 @@
         <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @review.status), {}, class: 'form-control' %>
       </div>
     </div>
+
     <div class="row">
       <%= f.label :contract_number, 'Номер договора', class: 'col col-lg-2 control-label' %>
       <div class="col col-sm-2">

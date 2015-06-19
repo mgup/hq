@@ -1,0 +1,19 @@
+<%= form_for @purchase, html: { class: 'form-horizontal', autocomplete: 'off' } do |f| %>
+  <div class="row">
+     <%= f.label :number, 'Номер заявки', class: 'col col-lg-2 control-label' %>
+     <div class="col col-sm-10">
+        <%= f.text_field :number, class: 'form-control' %>
+     </div>
+  </div>
+  <div class="row">
+      <%= f.label :date_registration, 'Дата регистрации', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col col-lg-10 col-offset-2">
+      <%= f.submit 'Сохранить изменения', class: 'btn btn-warning' %>
+    </div>
+  </div>
+<%end%>
