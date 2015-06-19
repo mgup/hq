@@ -28,14 +28,16 @@
         </div>
       </div>
       <div class="row">
-        <%= f.label :status, 'Статус', class: 'control-label col col-sm-2' %>
-        <div class='col col-sm-10'>
-            <% stat = [] %>
-            <% [{type: 'обработка', key:  'обработка'}, {type: 'на подписи', key: 'подпись'},{type: 'зарегистрирован', key: 'зарегистрирован'} ].each do |fin| %>
-                <% stat << (OpenStruct.new fin) %>
-            <% end %>
-            <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @purchase.status), {}, disabled: true, class: 'form-control' %>
-        </div>
+        <% if @current_user.is?(:developer) || user.is?(:purchase_manager) %>
+            <%= f.label :status, 'Статус', class: 'control-label col col-sm-2' %>
+            <div class='col col-sm-10'>
+                <% stat = [] %>
+                <% [{type: 'обработка', key:  'обработка'}, {type: 'на подписи', key: 'подпись'},{type: 'зарегистрирован', key: 'зарегистрирован'} ].each do |fin| %>
+                    <% stat << (OpenStruct.new fin) %>
+                <% end %>
+                <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @purchase.status), {}, disabled: false, class: 'form-control' %>
+            </div>
+        <% end %>
       </div>
       <div class="row">
         <%= f.label :note, 'Должность ответственного сотрудника ', class: 'col col-lg-2 control-label' %>
