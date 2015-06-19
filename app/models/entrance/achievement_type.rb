@@ -6,7 +6,7 @@ class Entrance::AchievementType < ActiveRecord::Base
   
   has_many :achievements, class_name: 'Entrance::Achievement'
 
-  def name
-    name || institution_achievement.name
-  end
+  # def name
+  #   name || institution_achievement.name
+  # end
 end
