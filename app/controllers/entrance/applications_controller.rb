@@ -187,7 +187,7 @@ class Entrance::ApplicationsController < ApplicationController
 
       number << (@application.entrant.ioo ? 'И' : second)
 
-      payment = @application.competitive_group_item.payed? ? 'п' : ''
+      payment = @application.payed ? 'п' : ''
 
       last = Entrance::Application.
         where('number LIKE ?', "#{number}%#{payment}")
