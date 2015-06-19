@@ -259,11 +259,19 @@
           <fo:block font="12pt PT Serif" space-before="40pt">
             Исполнитель:
           </fo:block>
-          <xsl:apply-templates select="author/employee" />
+	      <fo:block font="12pt PT Serif" space-after="10pt" space-before="15pt">
+	        <xsl:call-template name="change_case">
+	          <xsl:with-param name="input_string" select="substring(author/employee/title, 1, 1)" />
+	          <xsl:with-param name="direction" select="'up'" />
+	        </xsl:call-template><xsl:value-of select="substring(author/employee/title, 2)" /><xsl:text> </xsl:text><xsl:value-of select="author/employee/department_short_name" />
+	      </fo:block>
+	      <fo:block font="12pt PT Serif" space-after="10pt">
+	        <xsl:apply-templates select="author/employee/name" />
+	      </fo:block>
         </xsl:when>
       </xsl:choose>
       <fo:block font="12pt PT Serif" space-before="10pt">
-        тел: <xsl:value-of select="author/employee/phone" />
+        <xsl:value-of select="author/employee/phone" />
       </fo:block>
 
       <fo:block font="12pt PT Serif" space-before="40pt">

@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150515093736) do
+ActiveRecord::Schema.define(version: 20150619090241) do
+
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -199,7 +200,50 @@ ActiveRecord::Schema.define(version: 20150515093736) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
-    t.text    "employer",                              limit: 65535
+    t.string  "registration_country_name",             limit: 255
+    t.integer "registration_country_code",             limit: 4
+    t.string  "registration_region_name",              limit: 255
+    t.integer "registration_region_code",              limit: 4
+    t.string  "registration_district_name",            limit: 255
+    t.integer "registration_district_code",            limit: 4
+    t.string  "registration_city_name",                limit: 255
+    t.integer "registration_city_code",                limit: 4
+    t.string  "registration_city_area_name",           limit: 255
+    t.integer "registration_city_area_code",           limit: 4
+    t.string  "registration_place_name",               limit: 255
+    t.integer "registration_place_code",               limit: 4
+    t.string  "registration_street_name",              limit: 255
+    t.integer "registration_street_code",              limit: 4
+    t.string  "registration_extra_name",               limit: 255
+    t.integer "registration_extra_code",               limit: 4
+    t.string  "registration_child_extra_name",         limit: 255
+    t.integer "registration_child_extra_code",         limit: 4
+    t.string  "registration_house",                    limit: 255
+    t.string  "registration_building",                 limit: 255
+    t.string  "registration_corp",                     limit: 255
+    t.string  "registration_flat",                     limit: 255
+    t.string  "residence_country_name",                limit: 255
+    t.integer "residence_country_code",                limit: 4
+    t.string  "residence_region_name",                 limit: 255
+    t.integer "residence_region_code",                 limit: 4
+    t.string  "residence_district_name",               limit: 255
+    t.integer "residence_district_code",               limit: 4
+    t.string  "residence_city_name",                   limit: 255
+    t.integer "residence_city_code",                   limit: 4
+    t.string  "residence_city_area_name",              limit: 255
+    t.integer "residence_city_area_code",              limit: 4
+    t.string  "residence_place_name",                  limit: 255
+    t.integer "residence_place_code",                  limit: 4
+    t.string  "residence_street_name",                 limit: 255
+    t.integer "residence_street_code",                 limit: 4
+    t.string  "residence_extra_name",                  limit: 255
+    t.integer "residence_extra_code",                  limit: 4
+    t.string  "residence_child_extra_name",            limit: 255
+    t.integer "residence_child_extra_code",            limit: 4
+    t.string  "residence_house",                       limit: 255
+    t.string  "residence_building",                    limit: 255
+    t.string  "residence_corp",                        limit: 255
+    t.string  "residence_flat",                        limit: 255
   end
 
   add_index "archive_student", ["archive_order"], name: "archive_order", using: :btree
@@ -498,81 +542,6 @@ ActiveRecord::Schema.define(version: 20150515093736) do
     t.string  "discount_type_commentary", limit: 200
   end
 
-  create_table "dmDoc", id: false, force: :cascade do |t|
-    t.integer  "Код",                limit: 4
-    t.integer  "КодСтудента",        limit: 4
-    t.integer  "КодГруппы",          limit: 4
-    t.integer  "ТипДокумента",       limit: 1
-    t.string   "ДокОбр",             limit: 255
-    t.integer  "ГодДокОбр",          limit: 2
-    t.string   "Поступил",           limit: 255
-    t.string   "Окончил",            limit: 255
-    t.integer  "КодСпециальности",   limit: 2
-    t.text     "ТемаДиплома",        limit: 16777215
-    t.string   "НомерДиплома",       limit: 50
-    t.datetime "ДатаРешения"
-    t.binary   "ПДатаРешения",       limit: 1
-    t.datetime "ДатаВыдачи"
-    t.binary   "ПДатаВыдачи",        limit: 1
-    t.string   "РегНомер",           limit: 50
-    t.binary   "ПРегНомер",          limit: 1
-    t.string   "Специальность",      limit: 255
-    t.string   "Квалификация",       limit: 255
-    t.string   "Срок",               limit: 50
-    t.string   "Специализация",      limit: 255
-    t.datetime "Дата_Рождения"
-    t.string   "ФИО",                limit: 255
-    t.string   "ФИО_Дат",            limit: 255
-    t.string   "Место_Рождения",     limit: 255
-    t.binary   "Пол",                limit: 1
-    t.text     "Примечание",         limit: 16777215
-    t.string   "ОценкаДиплом",       limit: 20
-    t.string   "НедельДиплом",       limit: 20
-    t.float    "ZEДиплом",           limit: 24
-    t.binary   "СОтличием",          limit: 1
-    t.string   "Непроверено",        limit: 50
-    t.integer  "АудЧасов",           limit: 2
-    t.string   "SДокОбр",            limit: 50
-    t.string   "NДокОбр",            limit: 50
-    t.string   "Уровень",            limit: 50
-    t.string   "СпецЗвание",         limit: 255
-    t.string   "Протокол",           limit: 255
-    t.string   "ID",                 limit: 255
-    t.string   "ProfessionalStatus", limit: 255
-  end
-
-  create_table "dmSpecialities", id: false, force: :cascade do |t|
-    t.integer "Код",           limit: 4
-    t.string  "Срок_Обучения", limit: 50
-    t.string  "Специальность", limit: 255
-    t.string  "Специализация", limit: 255
-    t.string  "Квалификация",  limit: 50
-  end
-
-  create_table "dmStudent", id: false, force: :cascade do |t|
-    t.integer  "Код",                limit: 4
-    t.string   "Фамилия",            limit: 25
-    t.string   "Имя",                limit: 15
-    t.string   "Отчество",           limit: 20
-    t.string   "ФИО_Дат",            limit: 70
-    t.integer  "Статус",             limit: 2
-    t.integer  "Код_Группы",         limit: 4
-    t.string   "Пол",                limit: 10
-    t.datetime "Дата_Рождения"
-    t.string   "Кем_Выдан",          limit: 200
-    t.string   "Номер_Паспорта",     limit: 50
-    t.datetime "Дата_Выдачи"
-    t.integer  "Год_Поступления",    limit: 2
-    t.string   "Документ",           limit: 50
-    t.string   "ГодВыдачи",          limit: 4
-    t.integer  "КодСтудентаДеканат", limit: 4
-  end
-
-  create_table "dmTypeEdDoc", id: false, force: :cascade do |t|
-    t.integer "Код",      limit: 1
-    t.string  "Название", limit: 100
-  end
-
   create_table "document", primary_key: "document_id", force: :cascade do |t|
     t.integer  "document_type",        limit: 4,                    null: false
     t.text     "document_number",      limit: 16777215,             null: false
@@ -665,7 +634,6 @@ ActiveRecord::Schema.define(version: 20150515093736) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
-    t.text    "employer",                              limit: 65535
   end
 
   add_index "document_student", ["document_student_document"], name: "document_student_document", using: :btree
@@ -804,6 +772,20 @@ ActiveRecord::Schema.define(version: 20150515093736) do
 
   add_index "employee_position", ["employee_position_employee"], name: "employee_position_employee", using: :btree
   add_index "employee_position", ["employee_position_position"], name: "employee_position_position", using: :btree
+
+  create_table "entrance_achievement_types", force: :cascade do |t|
+    t.integer "campaign_id",                limit: 4
+    t.integer "institution_achievement_id", limit: 4
+    t.integer "max_ball",                   limit: 4
+    t.string  "name",                       limit: 255
+  end
+
+  create_table "entrance_achievements", force: :cascade do |t|
+    t.integer "entrant_id",                   limit: 4
+    t.integer "entrance_achievement_type_id", limit: 4
+    t.string  "document",                     limit: 255
+    t.date    "date"
+  end
 
   create_table "entrance_applications", force: :cascade do |t|
     t.string   "number",                           limit: 255
@@ -962,40 +944,84 @@ ActiveRecord::Schema.define(version: 20150515093736) do
   add_index "entrance_edu_documents", ["specialization_id"], name: "index_entrance_edu_documents_on_specialization_id", using: :btree
 
   create_table "entrance_entrants", force: :cascade do |t|
-    t.string   "last_name",                 limit: 255
-    t.string   "first_name",                limit: 255
-    t.string   "patronym",                  limit: 255
-    t.integer  "gender",                    limit: 4,   default: 1,     null: false
-    t.string   "snils",                     limit: 255
-    t.string   "information",               limit: 255
+    t.string   "last_name",                     limit: 255
+    t.string   "first_name",                    limit: 255
+    t.string   "patronym",                      limit: 255
+    t.integer  "gender",                        limit: 4,   default: 1,     null: false
+    t.string   "snils",                         limit: 255
+    t.string   "information",                   limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "campaign_id",               limit: 4,                   null: false
-    t.integer  "citizenship",               limit: 4,   default: 1,     null: false
-    t.date     "birthday",                                              null: false
-    t.string   "birth_place",               limit: 255,                 null: false
-    t.string   "pseries",                   limit: 255
-    t.string   "pnumber",                   limit: 255,                 null: false
-    t.string   "pdepartment",               limit: 255,                 null: false
-    t.date     "pdate",                                                 null: false
-    t.integer  "acountry",                  limit: 4,   default: 0,     null: false
-    t.string   "azip",                      limit: 255,                 null: false
-    t.string   "aregion",                   limit: 255
-    t.string   "aaddress",                  limit: 255,                 null: false
-    t.string   "phone",                     limit: 255,                 null: false
-    t.integer  "military_service",          limit: 4,   default: 1,     null: false
-    t.boolean  "foreign_institution",       limit: 1,   default: false
-    t.string   "institution",               limit: 255
-    t.integer  "graduation_year",           limit: 4
-    t.string   "certificate_number",        limit: 255
+    t.integer  "campaign_id",                   limit: 4,                   null: false
+    t.integer  "citizenship",                   limit: 4,   default: 1,     null: false
+    t.date     "birthday",                                                  null: false
+    t.string   "birth_place",                   limit: 255,                 null: false
+    t.string   "pseries",                       limit: 255
+    t.string   "pnumber",                       limit: 255,                 null: false
+    t.string   "pdepartment",                   limit: 255,                 null: false
+    t.date     "pdate",                                                     null: false
+    t.integer  "acountry",                      limit: 4,   default: 0,     null: false
+    t.string   "azip",                          limit: 255,                 null: false
+    t.string   "aregion",                       limit: 255
+    t.string   "aaddress",                      limit: 255,                 null: false
+    t.string   "phone",                         limit: 255,                 null: false
+    t.integer  "military_service",              limit: 4,   default: 1,     null: false
+    t.boolean  "foreign_institution",           limit: 1,   default: false
+    t.string   "institution",                   limit: 255
+    t.integer  "graduation_year",               limit: 4
+    t.string   "certificate_number",            limit: 255
     t.date     "certificate_date"
-    t.integer  "foreign_language",          limit: 4
-    t.boolean  "need_hostel",               limit: 1,   default: true
-    t.integer  "identity_document_type_id", limit: 4,   default: 1,     null: false
-    t.integer  "nationality_type_id",       limit: 4,   default: 1,     null: false
-    t.boolean  "need_hostel_for_exams",     limit: 1,   default: false, null: false
-    t.integer  "student_id",                limit: 4
-    t.boolean  "ioo",                       limit: 1,   default: false
+    t.integer  "foreign_language",              limit: 4
+    t.boolean  "need_hostel",                   limit: 1,   default: true
+    t.integer  "identity_document_type_id",     limit: 4,   default: 1,     null: false
+    t.integer  "nationality_type_id",           limit: 4,   default: 1,     null: false
+    t.boolean  "need_hostel_for_exams",         limit: 1,   default: false, null: false
+    t.integer  "student_id",                    limit: 4
+    t.boolean  "ioo",                           limit: 1,   default: false
+    t.string   "registration_country_name",     limit: 255
+    t.integer  "registration_country_code",     limit: 4
+    t.string   "registration_region_name",      limit: 255
+    t.integer  "registration_region_code",      limit: 4
+    t.string   "registration_district_name",    limit: 255
+    t.integer  "registration_district_code",    limit: 4
+    t.string   "registration_city_name",        limit: 255
+    t.integer  "registration_city_code",        limit: 4
+    t.string   "registration_city_area_name",   limit: 255
+    t.integer  "registration_city_area_code",   limit: 4
+    t.string   "registration_place_name",       limit: 255
+    t.integer  "registration_place_code",       limit: 4
+    t.string   "registration_street_name",      limit: 255
+    t.integer  "registration_street_code",      limit: 4
+    t.string   "registration_extra_name",       limit: 255
+    t.integer  "registration_extra_code",       limit: 4
+    t.string   "registration_child_extra_name", limit: 255
+    t.integer  "registration_child_extra_code", limit: 4
+    t.string   "registration_house",            limit: 255
+    t.string   "registration_building",         limit: 255
+    t.string   "registration_corp",             limit: 255
+    t.string   "registration_flat",             limit: 255
+    t.string   "residence_country_name",        limit: 255
+    t.integer  "residence_country_code",        limit: 4
+    t.string   "residence_region_name",         limit: 255
+    t.integer  "residence_region_code",         limit: 4
+    t.string   "residence_district_name",       limit: 255
+    t.integer  "residence_district_code",       limit: 4
+    t.string   "residence_city_name",           limit: 255
+    t.integer  "residence_city_code",           limit: 4
+    t.string   "residence_city_area_name",      limit: 255
+    t.integer  "residence_city_area_code",      limit: 4
+    t.string   "residence_place_name",          limit: 255
+    t.integer  "residence_place_code",          limit: 4
+    t.string   "residence_street_name",         limit: 255
+    t.integer  "residence_street_code",         limit: 4
+    t.string   "residence_extra_name",          limit: 255
+    t.integer  "residence_extra_code",          limit: 4
+    t.string   "residence_child_extra_name",    limit: 255
+    t.integer  "residence_child_extra_code",    limit: 4
+    t.string   "residence_house",               limit: 255
+    t.string   "residence_building",            limit: 255
+    t.string   "residence_corp",                limit: 255
+    t.string   "residence_flat",                limit: 255
   end
 
   add_index "entrance_entrants", ["campaign_id"], name: "index_entrance_entrants_on_campaign_id", using: :btree
@@ -1511,6 +1537,10 @@ ActiveRecord::Schema.define(version: 20150515093736) do
     t.datetime "updated_at"
   end
 
+  create_table "institution_achievements", force: :cascade do |t|
+    t.string "name", limit: 255
+  end
+
   create_table "log", primary_key: "log_id", force: :cascade do |t|
     t.datetime "log_timestamp",                          null: false
     t.integer  "log_priority",  limit: 1,                null: false
@@ -1729,12 +1759,12 @@ ActiveRecord::Schema.define(version: 20150515093736) do
 
   create_table "purchases_goods", force: :cascade do |t|
     t.string "name", limit: 255
+    t.string "demand", limit: 255
   end
 
   create_table "purchases_line_items", force: :cascade do |t|
     t.integer "good_id",      limit: 4
     t.integer "purchase_id",  limit: 4
-    t.string  "demand",       limit: 255
     t.integer "measure",      limit: 4
     t.float   "start_price",  limit: 24
     t.float   "total_price",  limit: 24
@@ -2072,6 +2102,50 @@ ActiveRecord::Schema.define(version: 20150515093736) do
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
     t.text    "employer",                              limit: 65535
+    t.string  "registration_country_name",             limit: 255
+    t.integer "registration_country_code",             limit: 4
+    t.string  "registration_region_name",              limit: 255
+    t.integer "registration_region_code",              limit: 4
+    t.string  "registration_district_name",            limit: 255
+    t.integer "registration_district_code",            limit: 4
+    t.string  "registration_city_name",                limit: 255
+    t.integer "registration_city_code",                limit: 4
+    t.string  "registration_city_area_name",           limit: 255
+    t.integer "registration_city_area_code",           limit: 4
+    t.string  "registration_place_name",               limit: 255
+    t.integer "registration_place_code",               limit: 4
+    t.string  "registration_street_name",              limit: 255
+    t.integer "registration_street_code",              limit: 4
+    t.string  "registration_extra_name",               limit: 255
+    t.integer "registration_extra_code",               limit: 4
+    t.string  "registration_child_extra_name",         limit: 255
+    t.integer "registration_child_extra_code",         limit: 4
+    t.string  "registration_house",                    limit: 255
+    t.string  "registration_building",                 limit: 255
+    t.string  "registration_corp",                     limit: 255
+    t.string  "registration_flat",                     limit: 255
+    t.string  "residence_country_name",                limit: 255
+    t.integer "residence_country_code",                limit: 4
+    t.string  "residence_region_name",                 limit: 255
+    t.integer "residence_region_code",                 limit: 4
+    t.string  "residence_district_name",               limit: 255
+    t.integer "residence_district_code",               limit: 4
+    t.string  "residence_city_name",                   limit: 255
+    t.integer "residence_city_code",                   limit: 4
+    t.string  "residence_city_area_name",              limit: 255
+    t.integer "residence_city_area_code",              limit: 4
+    t.string  "residence_place_name",                  limit: 255
+    t.integer "residence_place_code",                  limit: 4
+    t.string  "residence_street_name",                 limit: 255
+    t.integer "residence_street_code",                 limit: 4
+    t.string  "residence_extra_name",                  limit: 255
+    t.integer "residence_extra_code",                  limit: 4
+    t.string  "residence_child_extra_name",            limit: 255
+    t.integer "residence_child_extra_code",            limit: 4
+    t.string  "residence_house",                       limit: 255
+    t.string  "residence_building",                    limit: 255
+    t.string  "residence_corp",                        limit: 255
+    t.string  "residence_flat",                        limit: 255
   end
 
   add_index "student", ["student_fname"], name: "studentFname", using: :btree

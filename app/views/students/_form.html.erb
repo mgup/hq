@@ -1,55 +1,105 @@
-<%= form_for @student, html: { class: 'form-horizontal', role: 'form' } do |f| %>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h2 class="panel-title">Персональная информация</h2>
-    </div>
-    <div class="panel-body">
-      <div class="form-group">
-        <label class="col-sm-3 control-label">Пол</label>
-        <div class="col-sm-9">
-          <p class="form-control-static"><%= @student.person.male? ? 'мужской' : 'женский' %></p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-3 control-label">Дата рождения</label>
-        <div class="col-sm-9">
-          <p class="form-control-static"><%= l @student.person.birthday %></p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-3 control-label">Место рождения</label>
-        <div class="col-sm-9">
-          <p class="form-control-static"><%= @student.person.birthplace %></p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-3 control-label">Паспорт</label>
-        <div class="col-sm-9">
-          <p class="form-control-static"><%= "#{@student.person.passport_series} #{@student.person.passport_number}" %></p>
-        </div>
-        <div class=" col-sm-offset-3 col-sm-9">
-          <p class="form-control-static">
-            выдан
-            <%= l @student.person.passport_date unless @student.person.passport_date.nil? %>
-            <%= @student.person.passport_department %> (<%= @student.person.passport_department_code %>)
-          </p>
-        </div>
-      </div>
+<%= form_for @student, html: { class: 'form-horizontal student-and-person-form' },
+    data: { value: @student.id, type: (@student.id ? 'edit' : 'new') } do |f| %>
+  <%= f.hidden_field :student_group_student, value: @person.id, class: 'form-control' %>
+  <legend>Группа студента</legend>
+  <div class="row">
+    <div class="col-sm-3"><%= label_tag :faculty, 'Институт' %></div>
+    <div class="col-sm-9">
+		<% if @student.group %>
+      		<p class="form-control-static"><%= @student.speciality.faculty.abbreviation if @student.speciality.faculty %></p>
+		<% else %>
+			<%= select_tag :faculty, options_from_collection_for_select(@faculties, :id, :abbreviation), prompt: 'Выберите факультет', class: 'form-control ajax-faculty' %>
+		<% end %>
     </div>
   </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h2 class="panel-title">Учебная информация</h2>
-    </div>
-    <div class="panel-body">
-      <div class="form-group">
-        <%= f.label :id, class: 'col-sm-3 control-label' %>
-        <div class="col-sm-9">
-          <p class="form-control-static"><%= @student.id %></p>
-        </div>
-      </div>
+  <div class="row">
+    <div class="col-sm-3"><%= label_tag :speciality,'Специальность/Направление' %></div>
+    <div class="col-sm-9">
+	  <% if @student.group %>
+      	<p class="form-control-static"><%= @student.speciality.code %> <%= @student.speciality.name %></p>
+	  <% else %>
+		<%= select_tag :speciality, options_from_collection_for_select(Speciality.all, :id, :full_name), prompt: 'Выберите направление', class: 'form-control ajax-speciality' %>
+	  <% end %>
     </div>
   </div>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :payment %></div>
+    <div class="col-sm-9">
+      <% finance = [] %>
+      <% [{type: 'бюджетная', key:  1}, {type: 'внебюджетная', key: 2}].each do |fin| %>
+        <% finance << (OpenStruct.new fin) %>
+      <% end %>
+      <%= f.select :payment, options_from_collection_for_select(finance, :key, :type, @student.payment), {}, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3"><%= label_tag :course, 'Курс' %></div>
+    <div class="col-sm-9">
+      <p class="form-control-static">
+		  <% if @student.group %>
+		  	<%= @student.group.course %>
+      	  <% else %>
+      		<%= select_tag :course, options_for_select([1,2,3,4,5,6]), prompt: 'Выберите курс', class: 'form-control ajax-course' %>
+      	  <% end %>
+	  </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :group %></div>
+    <div class="col-sm-9">
+	  <% if @student.group %>
+      <%= f.select :student_group_group, options_from_collection_for_select(Group.filter(speciality: @student.speciality.id),
+                                                              :id, :name, @student.group.id), {}, class: 'form-control ajax-group' %>
+ 	  <% else %>
+ 		<%= f.select :student_group_group, [], {}, { class: 'form-control ajax-group' } %>
+ 	  <% end %>
+    </div>
+  </div>
+  <legend>Статус обучения</legend>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :admission_year %></div>
+    <div class="col-sm-9">
+      <%= f.select :admission_year, options_for_select(Time.now.year.downto(Time.now.year-5).to_a, f.object.admission_year), {}, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :student_group_status %></div>
+    <div class="col-sm-9">
+      <%= f.select :student_group_status, options_from_collection_for_select(Status.all, :id, :name, @student.status), {}, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :state_line %></div>
+    <div class="col-sm-9">
+      <%= f.check_box :state_line %>
+    </div>
+  </div>
+  <legend>Данные о документах</legend>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :record %></div>
+    <div class="col-sm-9">
+      <%= f.text_field :record, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3"><%=f.label :abit %></div>
+    <div class="col-sm-9">
+      <%= f.text_field :abit, class: 'form-control' %>
+    </div>
+  </div>
+  <legend>Данные о зачислении</legend>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :abitpoints %></div>
+    <div class="col-sm-9">
+      <%= f.text_field :abitpoints, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3"><%= f.label :school %></div>
+    <div class="col-sm-9">
+      <%= f.text_field :school, class: 'form-control' %>
+    </div>
+  </div>
+  <%= f.submit class: 'btn btn-primary'%>
 <% end %>
 

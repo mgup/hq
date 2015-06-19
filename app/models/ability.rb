@@ -230,11 +230,31 @@ class Ability
     cannot :sign, Office::Order
     can :manage, Group
     can :index, :groups
+    
+    can :manage, Student
+    can :manage, Person
+  end
+  
+  def aspirantura(user)
+    can :manage, :plans
+
+    # Подумать, как совместить это с тем, что Дирекция не преподаватель!!!
+    can :manage, Study::Discipline
+    can :manage, Study::Exam
+    can :manage, Study::Repeat
+    can :manage, Office::Order
+    cannot :sign, Office::Order
+    can :manage, Group
+    can :index, :groups
+    
+    can :work, :all_faculties  
+    can :manage, Student, student_group_id: Student.aspirants.collect{|s| s.id}
+    can :create, Student
+    can :manage, Person
   end
 
   def ioo(user)
     faculty_employee(user)
-    cannot :manage, Office::Order
     
     can :work, :all_faculties
   end

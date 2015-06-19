@@ -38,10 +38,20 @@ class Entrance::ApplicationsController < ApplicationController
         end
         unless found
           # Эта конкурсная группа подходит.
-          @new_applications << @entrant.applications.build(
-              competitive_group_item_id: g.items.first.id,
-              campaign_id: @campaign.id
-          )
+          if g.items.first.budget?
+            @new_applications << @entrant.applications.build(
+                competitive_group_item_id: g.items.first.id,
+                campaign_id: @campaign.id,
+                is_payed: false
+            )
+          end
+          if g.items.first.payed?
+            @new_applications << @entrant.applications.build(
+                competitive_group_item_id: g.items.first.id,
+                campaign_id: @campaign.id,
+                is_payed: true
+            )
+          end
         end
       end
     else
@@ -101,7 +111,7 @@ class Entrance::ApplicationsController < ApplicationController
   def create
     if @application.save
       # Теперь нужно заявлению присвоить номер.
-      number = '14-'
+      number = '15-'
       number << @application.competitive_group_item.direction.letters
 
       second = case @application.competitive_group_item.direction.qualification_code

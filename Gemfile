@@ -64,7 +64,6 @@ gem 'numbers_and_words'
 # gem 'mysql2psql'
 
 group :development do
-  gem 'spring'
 
   gem 'thin'
   #gem 'debugger'

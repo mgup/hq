@@ -1,5 +1,5 @@
 <%= form_for @person, url: (@person.id ? @person : persons_path),  html: { class: 'form-horizontal student-and-person-form' },
-    data: { value: @student.id, type: (@person.id ? 'edit' : 'new') } do |f| %>
+    data: { value: (@student.id if @student), type: (@person.id ? 'edit' : 'new') } do |f| %>
   <legend>Персональная информация</legend>
   <div class="row">
     <div class="col col-lg-12">
@@ -191,7 +191,11 @@
                 <% [:fname, :iname, :oname].each do |name| %>
                   <div class="col col-lg-4 <%= 'has-error' if @person.errors.include?(name) %>">
                     <%= f.fields_for name do |sub_f| %>
-                      <%= sub_f.text_field p[0], required: true, class: 'form-control' %>
+					  <% if @person.id && p[0] == :ip %>
+					  	<%= sub_f.text_field p[0], disabled: !current_user.is?(:developer), class: 'name_field form-control' %>
+					  <% else %>
+                      	<%= sub_f.text_field p[0], required: true, class: 'form-control' %>
+					  <% end %>
                     <% end %>
                   </div>
                 <% end %>

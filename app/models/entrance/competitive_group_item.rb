@@ -16,6 +16,8 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   scope :for_7_july_aspirants, -> { where('competitive_group_id IN (201453,201457,201458,201627,201630,201634,201637,201640,201649,201661,201668,201673,201676,201679,201686,201688,201692,201694,201695,201697,201699,201702,201704,201706)') }
   scope :for_7_july_crimea, -> { where('competitive_group_id IN (228818,228819,230882,230883,230884,230885,230886,247821,247836,247844,247847,247850,247854,247857,247862,247867,247893,247897,247898,247900,247903,247905,247911,247913,247923,247929,247934,247937,247938)') }
 
+  attr_accessor :UID
+
   def direction_name
     direction.name
   end
@@ -34,6 +36,10 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
 
   def payed?
     number_paid_o > 0 || number_paid_oz > 0 || number_paid_z > 0
+  end
+  
+  def budget?
+    number_budget_o > 0 || number_budget_oz > 0 || number_budget_z > 0 || number_quota_o > 0 || number_quota_oz > 0 || number_quota_z > 0
   end
 
   def budget_name

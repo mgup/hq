@@ -3,7 +3,12 @@ class AjaxController < ApplicationController
   skip_before_filter :authenticate_user!
 
   def specialities
-    render({ json: Speciality.from_faculty(params[:faculty]).inject([]) do |specialities, speciality|
+    if current_user
+      fsp = current_user.is?(:aspirantura) ? Speciality.aspirants : Speciality.all
+    else
+      fsp = Speciality.all
+    end
+    render({ json: fsp.from_faculty(params[:faculty]).inject([]) do |specialities, speciality|
       specialities << { id: speciality.id, code: speciality.code, name: speciality.name }
       specialities
     end })

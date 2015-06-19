@@ -41,7 +41,7 @@ HQ::Application.routes.draw do
       get 'user/edit' => 'devise/registrations#edit', as: 'user_profile'
       put 'user/user_update' => 'devise/registrations#update'
     end
-  devise_for :students
+  devise_for :students, controllers: {registrations: 'students'}
 
   # Мониторинг состояния сервера.
   get 'system/stats'
@@ -324,6 +324,7 @@ HQ::Application.routes.draw do
 
   resources :directions, only: :index
   namespace :entrance do
+    get 'import' => 'import#index'
     resources :items do
       get 'protocols', on: :collection, defaults: { format: :pdf }
     end

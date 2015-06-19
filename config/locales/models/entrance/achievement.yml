@@ -1,0 +1,9 @@
+ru:
+  activerecord:
+    models:
+      entrance/achievement: 'индивидуальное достижение'
+    attributes:
+      entrance/achievement:
+        entrance_achievement_type_id: 'тип достижения'
+        document: 'документ'
+        date: 'дата'

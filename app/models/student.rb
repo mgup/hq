@@ -122,9 +122,9 @@ class Student < ActiveRecord::Base
 
   scope :valid, -> { where(student_group_status: [self::STATUS_STUDENT,
                                                   self::STATUS_TRANSFERRED_DEBTOR,
-                                                  self::STATUS_DEBTOR]) }
+                                                  self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
 
-  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR]) }
+  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
   scope :valid_student, -> { where(student_group_status: STATUS_STUDENT)}
 
   scope :actual, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_EXPELED},#{self::STATUS_GRADUATE})") }
@@ -182,6 +182,7 @@ class Student < ActiveRecord::Base
   scope :from_template, -> template { where(student_group_status: template.statuses.collect{ |s| s.id }) }
 
   scope :not_aspirants, -> { where(student_group_group: Group.filter(speciality: Speciality.not_aspirants.collect{|x| x.id}))}
+  scope :aspirants, -> { where(student_group_group: Group.filter(speciality: Speciality.aspirants.collect{|x| x.id}))}
 
   scope :in_group_at_date, -> group, date {
     group = group.id if group.is_a?(Group)
@@ -279,7 +280,7 @@ LIMIT 1 ")
 
   # нужно найти все valid? и заменить
   def is_valid?
-    STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status
+    STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status || STATUS_POSTGRADUATE == student_group_status
   end
 
   def is_debtor?
@@ -438,7 +439,7 @@ LIMIT 1 ")
   def to_nokogiri
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.student {
-        xml.id_   id
+        xml.id_  student_group_id
         xml.abitpoints abitpoints
         xml.abit abit
         xml.contract abit_contract

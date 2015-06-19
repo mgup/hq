@@ -1,87 +1,10 @@
 <%= render_navigation context: :student %>
 <br>
 <div class="page-header">
-  <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
-  <% if current_user.is? :developer %>
+  <h1><%= @person.full_name %> <small><%= @student.group.name %></small></h1>
+  <% if current_user.is?(:developer) || can?(:manage, Student) %>
     <button style="margin-top: -25px;" data-type="<%= @student.id ? 'edit' : 'new' %>" data-value="<%= @student.id %>" class="pull-right btn btn-sm btn-info edit-student-person">Редактировать</button>
   <% end %>
 </div>
 
-<%= form_for @student, html: { class: 'form-horizontal student-and-person-form' },
-    data: { value: @student.id, type: (@student.id ? 'edit' : 'new') } do |f| %>
-  <legend>Группа студента</legend>
-  <div class="row">
-    <div class="col-sm-3"><%= label_tag :faculty, 'Институт' %></div>
-    <div class="col-sm-9">
-      <p class="form-control-static"><%= @student.speciality.faculty.abbreviation %></p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3"><%= label_tag :speciality,( @student.speciality.specialist? ? 'Специальность' : 'Направление') %></div>
-    <div class="col-sm-9">
-      <p class="form-control-static"><%= @student.speciality.code %> <%= @student.speciality.name %></p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3"><%= f.label :payment %></div>
-    <div class="col-sm-9">
-      <% finance = [] %>
-      <% [{type: 'бюджетная', key:  1}, {type: 'внебюджетная', key: 2}].each do |fin| %>
-        <% finance << (OpenStruct.new fin) %>
-      <% end %>
-      <%= f.select :payment, options_from_collection_for_select(finance, :key, :type, @student.payment), {}, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3"><%= label_tag :course, 'Курс' %></div>
-    <div class="col-sm-9">
-      <p class="form-control-static"><%= @student.group.course %></p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3"><%= f.label :group %></div>
-    <div class="col-sm-9">
-      <%= f.select :group, options_from_collection_for_select(Group.filter(speciality: @student.speciality.id),
-                                                              :id, :name, @student.group.id), {}, class: 'form-control' %>
-    </div>
-  </div>
-  <legend>Статус обучения</legend>
-  <div class="row">
-    <div class="col-sm-3"><%= f.label :status %></div>
-    <div class="col-sm-9">
-      <%= f.select :status, options_from_collection_for_select(Status.all, :id, :name, @student.status), {}, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3"><%= f.label :state_line %></div>
-    <div class="col-sm-9">
-      <%= f.check_box :state_line %>
-    </div>
-  </div>
-  <legend>Данные о документах</legend>
-  <div class="row">
-    <div class="col-sm-3"><%= f.label :record %></div>
-    <div class="col-sm-9">
-      <%= f.text_field :record, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3"><%=f.label :abit %></div>
-    <div class="col-sm-9">
-      <%= f.text_field :abit, class: 'form-control' %>
-    </div>
-  </div>
-  <legend>Данные о зачислении</legend>
-  <div class="row">
-    <div class="col-sm-3"><%= f.label :abitpoints %></div>
-    <div class="col-sm-9">
-      <%= f.text_field :abitpoints, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3"><%= f.label :school %></div>
-    <div class="col-sm-9">
-      <%= f.text_field :school, class: 'form-control' %>
-    </div>
-  </div>
-<% end %>
+<%= render 'form' %>

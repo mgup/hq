@@ -2,7 +2,7 @@
 <br>
 <div class="page-header">
   <h1><%= @student.person.full_name %> <small><%= @student.group.name %></small></h1>
-  <% if current_user.is? :developer %>
+  <% if current_user.is?(:developer) || can?(:manage, Student) %>
     <button style="margin-top: -25px;" data-type="<%= @person.id ? 'edit' : 'new' %>" data-value="<%= @student.id %>" class="pull-right btn btn-sm btn-info edit-student-person">Редактировать</button>
   <% end %>
 </div>

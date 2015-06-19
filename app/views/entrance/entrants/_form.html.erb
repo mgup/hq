@@ -317,7 +317,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" style="display: none;">
         <%= exams_f.label :score, class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
           <%= exams_f.text_field :score, class: 'form-control', disabled: exams_f.object.checked || exams_f.object.university? %>
@@ -340,6 +340,48 @@
     <%= f.link_to_add 'Добавить вступительное испытание', :exam_results,
                       class: 'col-sm-offset-2',
                       style: 'font-weight: bold; color: red; font-size: 2em;' %>
+    <br><br>
+  </fieldset>
+  
+  <fieldset>
+    <legend>Индивидуальные достижения</legend>
+
+    <%= f.fields_for :achievements do |a_f| %>
+      <%= a_f.hidden_field :id %>
+
+      <div class="form-group">
+        <%= a_f.label :entrance_achievement_type_id, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= a_f.select :entrance_achievement_type_id,
+                             options_from_collection_for_select(@campaign.achievement_types, :id, :name,
+                               a_f.object.entrance_achievement_type_id
+                             ), {}, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= a_f.label :document, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= a_f.text_field :document, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= a_f.label :date, class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= a_f.text_field :date, class: 'form-control datepicker', value: a_f.object.date ? l(a_f.object.date) : '' %>
+        </div>
+      </div>
+
+      <%= a_f.link_to_remove class: 'col-sm-offset-2 text-danger',
+                                 title: 'Удалить' do %>
+        Удалить индивидуальное достижение
+      <% end %>
+      <br><br>
+    <% end %>
+    <%= f.link_to_add 'Добавить индивидуальное достижение', :achievements,
+                      class: 'col-sm-offset-2',
+                      style: 'font-weight: bold; color: blue; font-size: 2em' %>
     <br><br>
   </fieldset>
 

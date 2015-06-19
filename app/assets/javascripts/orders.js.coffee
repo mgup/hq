@@ -312,7 +312,7 @@
   else
     text = if $('#meta' + uid).is('select') then $('#meta' + uid + ' option:selected').text() else $('#meta' + uid).val()
     $link.attr('data-meta-text', text)
-    $link.html(text)
+    $link.html(if text == '' then $link.attr('data-meta-pattern') else text)
 
   $('#meta' + uid + '.datepicker').datepicker('destroy')
   saveMeta(uid)

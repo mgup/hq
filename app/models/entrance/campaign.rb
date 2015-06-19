@@ -1,6 +1,6 @@
 class Entrance::Campaign < ActiveRecord::Base
-  CURRENT = 2014
-  CRIMEA = 12014
+  CURRENT = 2015
+  CRIMEA = 22015
 
   # TODO Почему-то не получается перенести table_name_prefix в entrance.rb
   self.table_name_prefix = 'entrance_'
@@ -18,4 +18,7 @@ class Entrance::Campaign < ActiveRecord::Base
   has_many :competitive_groups, class_name: 'Entrance::CompetitiveGroup'
   has_many :items, class_name: 'Entrance::CompetitiveGroupItem', through: :competitive_groups
   has_many :checks, through: :entrants
+  has_many :achievement_types, class_name: 'Entrance::AchievementType', foreign_key: :campaign_id
+  
+  scope :this_year, -> { where(start_year: Entrance::Campaign::CURRENT) }
 end
