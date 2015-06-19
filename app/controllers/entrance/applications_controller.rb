@@ -91,20 +91,59 @@ class Entrance::ApplicationsController < ApplicationController
               #   competitive_group_item_id: g.items.first.id,
               #   campaign_id: @campaign.id
               # )
+              item = g.items.first
 
-              if g.items.first.budget?
-                @new_applications << @entrant.applications.build(
-                  competitive_group_item_id: g.items.first.id,
-                  campaign_id: @campaign.id,
-                  is_payed: false
-                )
+              if item.budget?
+                if (item.number_budget_o > 0 || item.number_paid_o > 0 || item.number_quota_o > 0)
+                  @new_applications << @entrant.applications.build(
+                    competitive_group_item_id: item.id,
+                    campaign_id: @campaign.id,
+                    is_payed: false,
+                    education_form_id: 11
+                  )
+                end
+                if (item.number_budget_oz > 0 || item.number_paid_oz > 0 || item.number_quota_oz > 0)
+                  @new_applications << @entrant.applications.build(
+                    competitive_group_item_id: item.id,
+                    campaign_id: @campaign.id,
+                    is_payed: false,
+                    education_form_id: 12
+                  )
+                end
+                if (item.number_budget_z > 0 || item.number_paid_z > 0 || item.number_quota_z > 0)
+                  @new_applications << @entrant.applications.build(
+                    competitive_group_item_id: item.id,
+                    campaign_id: @campaign.id,
+                    is_payed: false,
+                    education_form_id: 10
+                  )
+                end
               end
-              if g.items.first.payed?
-                @new_applications << @entrant.applications.build(
-                  competitive_group_item_id: g.items.first.id,
-                  campaign_id: @campaign.id,
-                  is_payed: true
-                )
+              if item.payed?
+                if (item.number_budget_o > 0 || item.number_paid_o > 0 || item.number_quota_o > 0)
+                  @new_applications << @entrant.applications.build(
+                    competitive_group_item_id: item.id,
+                    campaign_id: @campaign.id,
+                    is_payed: true,
+                    education_form_id: 11
+                  )
+                end
+                if (item.number_budget_oz > 0 || item.number_paid_oz > 0 || item.number_quota_oz > 0)
+                  @new_applications << @entrant.applications.build(
+                    competitive_group_item_id: item.id,
+                    campaign_id: @campaign.id,
+                    is_payed: true,
+                    education_form_id: 12
+                  )
+                end
+                if (item.number_budget_z > 0 || item.number_paid_z > 0 || item.number_quota_z > 0)
+                  @new_applications << @entrant.applications.build(
+                    competitive_group_item_id: item.id,
+                    campaign_id: @campaign.id,
+                    is_payed: true,
+                    education_form_id: 10
+                  )
+                end
               end
             end
           else
@@ -148,7 +187,7 @@ class Entrance::ApplicationsController < ApplicationController
 
       number << (@application.entrant.ioo ? 'И' : second)
 
-      payment = @application.payed ? 'п' : ''
+      payment = @application.competitive_group_item.payed? ? 'п' : ''
 
       last = Entrance::Application.
         where('number LIKE ?', "#{number}%#{payment}")
