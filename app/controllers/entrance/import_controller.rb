@@ -1,8 +1,8 @@
 class Entrance::ImportController < ApplicationController
 
   def index
-    # xml = Nokogiri::XML(open('/home/matrix/webapps/import.xml'))
-    xml = Nokogiri::XML(open('/Users/anna/Downloads/import.xml'))
+    xml = Nokogiri::XML(open('/home/matrix/webapps/import.xml'))
+    # xml = Nokogiri::XML(open('/Users/anna/Downloads/import.xml'))
     hash = Hash.from_xml("#{xml}")
     hash = rename_keys(hash, {'CompetitiveGroup' => :competitive_group, 'CampaignUID' => :campaign_id, 'CompetitiveGroupID' => :id,
                               'Course' => :course, 'Items' => :items_attributes, 'CompetitiveGroupItemID' => :id, 'Name' => :name,
