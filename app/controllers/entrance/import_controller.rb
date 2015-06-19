@@ -1,7 +1,8 @@
 class Entrance::ImportController < ApplicationController
 
   def index
-    xml = Nokogiri::XML(open('/home/matrix/webapps/import.xml'))
+    # xml = Nokogiri::XML(open('/home/matrix/webapps/import.xml'))
+    xml = Nokogiri::XML(open('/Users/anna/Downloads/import.xml'))
     hash = Hash.from_xml("#{xml}")
     hash = rename_keys(hash, {'CompetitiveGroup' => :competitive_group, 'CampaignUID' => :campaign_id, 'CompetitiveGroupID' => :id,
                               'Course' => :course, 'Items' => :items_attributes, 'CompetitiveGroupItemID' => :id, 'Name' => :name,
@@ -20,20 +21,20 @@ class Entrance::ImportController < ApplicationController
     ti_keepers = [:subject_name, :use_subject_id, :form, :min_score, :entrance_test_priority, :benefit_items_attributes]
     cb_keepers = [:benefit_kind_id, :is_for_all_olympics, :diplom_types_attributes, :year]
     hash.first.second[:competitive_group].each do |cg|
-      if cg[:target_organizations_attributes].nil?
+      # if cg[:target_organizations_attributes][:items_attributes].nil? || (cg[:target_organizations_attributes][:items_attributes].first['CompetitiveGroupTargetItem'][:direction_id].nil? if cg[:target_organizations_attributes][:items_attributes].present?)
         cg[:target_organizations_attributes] = []
-      else
-        cg[:target_organizations_attributes] = cg[:target_organizations_attributes]['TargetOrganization']
-        if cg[:target_organizations_attributes].length > 1 and !cg[:target_organizations_attributes].is_a?(::Hash)
-          cg[:target_organizations_attributes].each do |to|
-            to[:items_attributes] = to[:items_attributes]['CompetitiveGroupTargetItem']
-            to[:items_attributes] = [to[:items_attributes]] if to[:items_attributes].is_a?(::Hash)
-          end
-        else
-          cg[:target_organizations_attributes][:items_attributes] = cg[:target_organizations_attributes][:items_attributes]['CompetitiveGroupTargetItem']
-          cg[:target_organizations_attributes] = [cg[:target_organizations_attributes]]
-        end
-      end
+      # else
+      #   cg[:target_organizations_attributes] = cg[:target_organizations_attributes]['TargetOrganization']
+      #   if cg[:target_organizations_attributes].length > 1 and !cg[:target_organizations_attributes].is_a?(::Hash)
+      #     cg[:target_organizations_attributes].each do |to|
+      #       to[:items_attributes] = to[:items_attributes]['CompetitiveGroupTargetItem']
+      #       to[:items_attributes] = [to[:items_attributes]] if to[:items_attributes].is_a?(::Hash)
+      #     end
+      #   else
+      #     cg[:target_organizations_attributes][:items_attributes] = cg[:target_organizations_attributes][:items_attributes]['CompetitiveGroupTargetItem']
+      #     cg[:target_organizations_attributes] = [cg[:target_organizations_attributes]]
+      #   end
+      # end
       if cg[:test_items_attributes].nil?
         cg[:test_items_attributes] = []
       else
@@ -42,58 +43,58 @@ class Entrance::ImportController < ApplicationController
           cg[:test_items_attributes].each do |ti|
             ti.merge!(ti['EntranceTestSubject'])
             ti.keep_if{|k,_| ti_keepers.include? k }
-            if ti[:benefit_items_attributes].nil?
+            # if ti[:benefit_items_attributes].nil?
               ti[:benefit_items_attributes] = []
-            else
-              ti[:benefit_items_attributes] = ti[:benefit_items_attributes]['EntranceTestBenefitItem']
-              if ti[:benefit_items_attributes].length > 1 and !ti[:benefit_items_attributes].is_a?(::Hash)
-                ti[:benefit_items_attributes].each do |cb|
-                  cb[:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
-                  cb.keep_if{|k,_| cb_keepers.include? k }
-                end
-              else
-                ti[:benefit_items_attributes][:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
-                ti[:benefit_items_attributes].keep_if{|k,_| cb_keepers.include? k }
-                ti[:benefit_items_attributes] = [ti[:benefit_items_attributes]]
-              end
-            end
+            # else
+            #   ti[:benefit_items_attributes] = ti[:benefit_items_attributes]['EntranceTestBenefitItem']
+            #   if ti[:benefit_items_attributes].length > 1 and !ti[:benefit_items_attributes].is_a?(::Hash)
+            #     ti[:benefit_items_attributes].each do |cb|
+            #       cb[:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
+            #       cb.keep_if{|k,_| cb_keepers.include? k }
+            #     end
+            #   else
+            #     ti[:benefit_items_attributes][:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
+            #     ti[:benefit_items_attributes].keep_if{|k,_| cb_keepers.include? k }
+            #     ti[:benefit_items_attributes] = [ti[:benefit_items_attributes]]
+            #   end
+            # end
           end
         else
-          cg[:test_items_attributes].merge!(cg[:test_items_attributes]['EntranceTestSubject'])
+          # cg[:test_items_attributes].merge!(cg[:test_items_attributes]['EntranceTestSubject'])
           cg[:test_items_attributes].keep_if{|k,_| ti_keepers.include? k }
-          if cg[:test_items_attributes][:benefit_items_attributes].nil?
+          # if cg[:test_items_attributes][:benefit_items_attributes].nil?
             cg[:test_items_attributes][:benefit_items_attributes] = []
-          else
-            cg[:test_items_attributes][:benefit_items_attributes] = cg[:test_items_attributes][:benefit_items_attributes]['EntranceTestBenefitItem']
-            if cg[:test_items_attributes][:benefit_items_attributes].length > 1 and !cg[:test_items_attributes][:benefit_items_attributes].is_a?(::Hash)
-              cg[:test_items_attributes][:benefit_items_attributes].each do |cb|
-                cb[:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
-                cb.keep_if{|k,_| cb_keepers.include? k }
-              end
-            else
-              cg[:test_items_attributes][:benefit_items_attributes][:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
-              cg[:test_items_attributes][:benefit_items_attributes].keep_if{|k,_| cb_keepers.include? k }
-              cg[:test_items_attributes][:benefit_items_attributes] = [cg[:test_items_attributes][:benefit_items_attributes]]
-            end
-          end
+          # else
+            # cg[:test_items_attributes][:benefit_items_attributes] = cg[:test_items_attributes][:benefit_items_attributes]['EntranceTestBenefitItem']
+            # if cg[:test_items_attributes][:benefit_items_attributes].length > 1 and !cg[:test_items_attributes][:benefit_items_attributes].is_a?(::Hash)
+            #   cg[:test_items_attributes][:benefit_items_attributes].each do |cb|
+            #     cb[:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
+            #     cb.keep_if{|k,_| cb_keepers.include? k }
+            #   end
+            # else
+            #   cg[:test_items_attributes][:benefit_items_attributes][:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
+            #   cg[:test_items_attributes][:benefit_items_attributes].keep_if{|k,_| cb_keepers.include? k }
+            #   cg[:test_items_attributes][:benefit_items_attributes] = [cg[:test_items_attributes][:benefit_items_attributes]]
+            # end
+          # end
           cg[:test_items_attributes] = [cg[:test_items_attributes]]
         end
       end
-      if cg[:common_benefits_attributes].nil?
+      # if cg[:common_benefits_attributes].nil?
         cg[:common_benefits_attributes] = []
-      else
-        cg[:common_benefits_attributes] = cg[:common_benefits_attributes]['CommonBenefitItem']
-        if cg[:common_benefits_attributes].length > 1 and !cg[:common_benefits_attributes].is_a?(::Hash)
-          cg[:common_benefits_attributes].each do |cb|
-            cb[:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
-            cb.keep_if{|k,_| cb_keepers.include? k }
-          end
-        else
-          cg[:common_benefits_attributes][:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
-          cg[:common_benefits_attributes].keep_if{|k,_| cb_keepers.include? k }
-          cg[:common_benefits_attributes] = [cg[:common_benefits_attributes]]
-        end
-      end
+      # else
+      #   cg[:common_benefits_attributes] = cg[:common_benefits_attributes]['CommonBenefitItem']
+      #   if cg[:common_benefits_attributes].length > 1 and !cg[:common_benefits_attributes].is_a?(::Hash)
+      #     cg[:common_benefits_attributes].each do |cb|
+      #       cb[:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
+      #       cb.keep_if{|k,_| cb_keepers.include? k }
+      #     end
+      #   else
+      #     cg[:common_benefits_attributes][:diplom_types_attributes] = [{olympic_diplom_type_id: 1}, {olympic_diplom_type_id: 2}]
+      #     cg[:common_benefits_attributes].keep_if{|k,_| cb_keepers.include? k }
+      #     cg[:common_benefits_attributes] = [cg[:common_benefits_attributes]]
+      #   end
+      # end
       cg.keep_if{|k,_| keepers.include? k }
       Entrance::CompetitiveGroup.create cg
     end
