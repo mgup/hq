@@ -149,7 +149,9 @@
     <% if a.entrant.ioo %>
         <% next unless a.competitive_group_item.distance? %>
     <% end %>
-  <h4><%= a.competitive_group_item.competitive_group.name %>, <%= a.is_payed ? 'по договорам' : 'бюджет' %></h4>
+  <h4><%= a.competitive_group_item.competitive_group.name %>, <%= a.is_payed ? 'по договорам' : 'бюджет' %>,
+  <%= a.education_form_id == 10 ? 'заочка' : (a.education_form_id == 11 ? 'очка' : 'вечерка') %>
+  </h4>
 
   <div id="<%= dom_id(a.competitive_group_item.competitive_group) %>">
     <% if a.id %>
