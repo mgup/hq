@@ -37,6 +37,10 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   def payed?
     number_paid_o > 0 || number_paid_oz > 0 || number_paid_z > 0
   end
+  
+  def budget?
+    number_budget_o > 0 || number_budget_oz > 0 || number_budget_z > 0 || number_quota_o > 0 || number_quota_oz > 0 || number_quota_z > 0
+  end
 
   def budget_name
     (number_paid_o > 0 || number_paid_oz > 0 || number_paid_z > 0) ? 'по договорам' : 'бюджет'
