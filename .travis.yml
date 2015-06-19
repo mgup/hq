@@ -15,6 +15,7 @@ before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 before_script:
+#- mysql -e 'create database matrix_test;'
 - bundle exec rake db:setup
 #- bundle exec rake db:test:prepare
 env:
