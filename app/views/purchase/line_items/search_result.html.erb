@@ -12,7 +12,9 @@
     <%= link_to 'Заявки', purchase_purchases_path, class: 'btn btn-primary' %>
     <%= link_to 'Поставщики', purchase_suppliers_path, class: 'btn btn-primary' %>
     <%= link_to 'Товары', purchase_goods_path, class: 'btn btn-primary' %>
-    <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
+    <% if @current_user.is?(:developer) || @current_user.is?(:purchase_manager) %>
+        <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
+    <% end %>
   </div>
 </div>
 <div class="row">
