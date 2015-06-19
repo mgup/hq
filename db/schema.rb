@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150619090945) do
+ActiveRecord::Schema.define(version: 20150619090241) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -776,6 +776,7 @@ ActiveRecord::Schema.define(version: 20150619090945) do
     t.integer "campaign_id",                limit: 4
     t.integer "institution_achievement_id", limit: 4
     t.integer "max_ball",                   limit: 4
+    t.string  "name",                       limit: 255
   end
 
   create_table "entrance_achievements", force: :cascade do |t|
@@ -804,7 +805,6 @@ ActiveRecord::Schema.define(version: 20150619090945) do
     t.integer  "order_id",                         limit: 4
     t.boolean  "agree",                            limit: 1
     t.boolean  "prikladnoy",                       limit: 1,     default: false
-    t.boolean  "is_payed",                         limit: 1
   end
 
   add_index "entrance_applications", ["campaign_id"], name: "index_entrance_applications_on_campaign_id", using: :btree
@@ -1717,6 +1717,43 @@ ActiveRecord::Schema.define(version: 20150619090945) do
     t.date    "to"
     t.integer "student_group_id", limit: 4
     t.integer "ref_type",         limit: 4
+  end
+
+  create_table "purchase_goods", force: :cascade do |t|
+    t.string "name",   limit: 255
+    t.string "demand", limit: 255
+  end
+
+  create_table "purchase_line_items", force: :cascade do |t|
+    t.integer "purchase_id",  limit: 4
+    t.integer "good_id",      limit: 4
+    t.integer "measure",      limit: 4
+    t.float   "start_price",  limit: 24
+    t.float   "total_price",  limit: 24
+    t.float   "count",        limit: 24
+    t.integer "period",       limit: 4
+    t.date    "p_start_date"
+    t.date    "p_end_date"
+    t.integer "supplier_id",  limit: 4
+    t.integer "published",    limit: 4
+    t.integer "contracted",   limit: 4
+    t.integer "delivered",    limit: 4
+    t.integer "paid",         limit: 4
+  end
+
+  create_table "purchase_purchases", force: :cascade do |t|
+    t.integer "dep_id",            limit: 4
+    t.string  "number",            limit: 255
+    t.date    "date_registration"
+    t.integer "status",            limit: 4
+    t.string  "note",              limit: 255
+  end
+
+  create_table "purchase_suppliers", force: :cascade do |t|
+    t.string  "name",    limit: 255
+    t.integer "inn",     limit: 8
+    t.string  "address", limit: 255
+    t.string  "phone",   limit: 255
   end
 
   create_table "ratings", force: :cascade do |t|
