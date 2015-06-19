@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-sm-12">
     <%= hidden_field_tag :campaign, url_for(params), class: '', onchange: 'document.location = $(this).val();' %>
-    <%= pill_tabs('campaign', Entrance::Campaign.all.map { |c| [url_for(params.merge({ camp_opts_field => c.id })), c.name] }, 'campaign', class:  'super-tabs') %>
+    <%= pill_tabs('campaign', Entrance::Campaign.this_year.map { |c| [url_for(params.merge({ camp_opts_field => c.id })), c.name] }, 'campaign', class:  'super-tabs') %>
   </div>
 </div>
 <br>
