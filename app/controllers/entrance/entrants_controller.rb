@@ -61,7 +61,7 @@ class Entrance::EntrantsController < ApplicationController
       exam_results_attributes: [:id, :exam_id, :form, :score,
                                 :document, :_destroy],
       achievements_attributes: [:id, :entrance_achievement_type_id, :document,
-                                :date],
+                                :date, :_destroy],
       edu_document_attributes: [:id, :document_type_id, :series, :number,
                                 :date, :organization, :graduation_year,
                                 :foreign_institution, :our_institution,
