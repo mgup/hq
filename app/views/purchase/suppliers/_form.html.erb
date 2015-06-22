@@ -1,0 +1,55 @@
+<%= form_for @supplier, html: { class: 'form-horizontal' } do |f| %>
+
+    <div class="row">
+      <%= f.label :name, 'Поставщик', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :address, 'Адрес', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :address, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :inn, 'ИНН', class: 'col col-lg-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :inn, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= f.label :phone, 'Телефон', class: 'col col-lg-2 control-label'%>
+      <div class="col col-lg-10">
+        <%= f.text_field :phone,  class: 'form-control', placeholder: '+7 499 123-45-67',  pattern: '[\+]\d{1}\d{3} \d{3}[\-]\d{2}[\-]\d{2}' %>
+        <span class="help-block">
+
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-lg-10 col-offset-2">
+        <%= f.submit "Сохранить изменения", class: 'btn btn-warning' %>
+        или
+        <%= link_to 'назад к структуре', purchase_suppliers_path, class: 'btn btn-primary' %>
+      </div>
+    </div>
+<%end%>
+
+<script>
+    $('form').validate({
+        rules: {
+            "purchase_supplier[name]": {required: true},
+            "purchase_supplier[inn]" : {required: true},
+            "purchase_supplier[address]" : {required: true},
+        },
+        messages: {
+            required: 'Заполните поле',
+            "purchase_supplier[phone]": {pattern: 'Неверный формат. Введите телефон в формате: +7499 123-45-67' }
+        }
+    });
+</script>

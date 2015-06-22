@@ -32,7 +32,9 @@ class Department < ActiveRecord::Base
              foreign_key: :department_parent
 
   has_many :positions, foreign_key: :acl_position_department
-  has_many :users, through: :positions
+  has_many :users, through: :positions, foreign_key: :dep_id
+
+  has_many :purchase_purchases, :class_name => 'Purchase::Purchase', foreign_key: :dep_id
 
   validates :name, presence: true
   validates :abbreviation, presence: true

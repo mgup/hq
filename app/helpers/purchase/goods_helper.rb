@@ -1,0 +1,2 @@
+module Purchase::GoodsHelper
+end

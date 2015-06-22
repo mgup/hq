@@ -1,0 +1,11 @@
+ru:
+  activerecord:
+    models:
+      purchase/purchase: 'Заявки'
+    attributes:
+      purchase/purchase:
+        dep_id: 'Департамент'
+        number: 'Номер заявки'
+        date_registration: 'Дата регистрации'
+        status: 'Статус заявки'
+        note: 'Должность ответственного сотрудника'

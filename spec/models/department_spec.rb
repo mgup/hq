@@ -25,6 +25,10 @@ describe Department do
     it 'с учебными направлениями подготовки' do
       expect have_many(:specialities)
     end
+
+    it 'с заявками' do
+      expect have_many(:purchase_purchases)
+    end
   end
 
   describe 'обладает ограничениями на поля' do

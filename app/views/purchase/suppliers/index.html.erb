@@ -1,0 +1,40 @@
+<div class="page-header">
+  <h1>Закупки МГУП</h1>
+  <h3>Список поставщиков</h3>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <%= link_to 'Новый поставщик', new_purchase_supplier_path, class: 'btn btn-primary' %>
+  </div>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <%= link_to 'Заявки', purchase_purchases_path, class: 'btn btn-primary' %>
+    <%= link_to 'Поставщики', purchase_suppliers_path, class: 'btn btn-primary' %>
+    <%= link_to 'Товары', purchase_goods_path, class: 'btn btn-primary' %>
+    <% if @current_user.is?(:developer) || @current_user.is?(:purchase_manager) %>
+        <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <p class="text-info"><%= notice %></p>
+  </div>
+</div>
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Поставщик</th>
+    <th>Адрес</th>
+    <th>ИНН</th>
+    <th>Телефон</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+      <%= render partial: 'rows' %>
+  </tbody>
+</table>

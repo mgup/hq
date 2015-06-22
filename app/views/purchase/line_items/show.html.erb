@@ -1,0 +1,65 @@
+<div class="page-header">
+  <h1>Закупки МГУП</h1>
+  <h3>Наименование товара <%= @lineitem.purchase_goods.name %></h3>
+</div>
+<div class="row">
+  <div class="col col-lg-10">
+    <%= link_to 'Заявки', purchase_purchases_path, class: 'btn btn-primary' %>
+    <%= link_to 'Поставщики', purchase_suppliers_path, class: 'btn btn-primary' %>
+    <%= link_to 'Товары', purchase_goods_path, class: 'btn btn-primary' %>
+    <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
+  </div>
+</div>
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Наименование</th>
+      <th>Заявка</th>
+      <th>Дата регистрации</th>
+      <th>Стоимость</th>
+      <th>Департамент</th>
+      <th>Поставщик</th>
+      <th>Опубликован</th>
+      <th>Законтрактован</th>
+      <th>Поставлен</th>
+      <th>Оплачен</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: 'form_s' %>
+  </tbody>
+</table>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+  Посмотреть статистику
+</button>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Статистика</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <td>Год</td>
+            <td>Наименование</td>
+            <td>Стоимость</td>
+            <td>Статус заявки</td>
+          </tr>
+          </thead>
+          <tbody>
+          <%= render partial: 'statistics' %>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+

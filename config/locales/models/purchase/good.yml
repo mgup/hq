@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+      purchase/good: 'Товары'
+    attributes:
+      purchase/good:
+        name: 'Наименование'
+        demand: 'Обоснование'

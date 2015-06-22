@@ -1,0 +1,12 @@
+ru:
+  activerecord:
+    models:
+      purchase/line_item: 'Товарные позиции'
+    attributes:
+      purchase/line_item:
+        purchase_id: 'Заявка'
+        good_id: 'Товар'
+        measure: 'Ед. измерения'
+        total_cost: 'Стоимость'
+        period: 'Период (срок) осуществления'
+        supplier_id: 'Поставщик'
