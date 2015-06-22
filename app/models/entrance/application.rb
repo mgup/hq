@@ -195,16 +195,33 @@ class Entrance::Application < ActiveRecord::Base
   def self.direction_stats(campaign, direction)
     applications = campaign.applications.actual.for_direction(direction)
 
+    competitive_group_items = applications.map(&:competitive_group_item).uniq
+
     stats = {}
     [:budget, :paid].each do |payment|
       stats[payment] = {}
       [:o, :oz, :z].each do |form|
-        stats[payment][form] = { total: 0, original: 0, enrolled: 0 }
+        places = if :budget == payment
+          case form
+          when :o   then competitive_group_items.map(&:total_budget_o).sum
+          when :oz  then competitive_group_items.map(&:total_budget_oz).sum
+          when :z   then competitive_group_items.map(&:total_budget_z).sum
+          end
+        elsif :paid == payment
+          case form
+          when :o   then competitive_group_items.map(&:total_paid_o).sum
+          when :oz  then competitive_group_items.map(&:total_paid_oz).sum
+          when :z   then competitive_group_items.map(&:total_paid_z).sum
+          end
+        end
+
+        stats[payment][form] = { total: 0, original: 0, enrolled: 0, places: places, contest: 0, real_contest: 0 }
       end
     end
 
     applications.each do |app|
-      form = case app.competitive_group_item.form
+      # form = case app.competitive_group_item.form
+      form = case app.education_form_id
         when 11
           :o
         when 12
@@ -213,11 +230,27 @@ class Entrance::Application < ActiveRecord::Base
           :z
       end
 
-      payment_form = app.competitive_group_item.payed? ? :paid : :budget
+      # payment_form = app.competitive_group_item.payed? ? :paid : :budget
+      payment_form = app.is_payed ? :paid : :budget
 
       stats[payment_form][form][:total] += 1
-      stats[payment_form][form][:original] += 1 if app.original?
+
+
+      if app.is_payed
+        stats[payment_form][form][:original] += 1 if app.contract
+      else
+        stats[payment_form][form][:original] += 1 if app.original?
+      end
+
+
       stats[payment_form][form][:enrolled] += 1 if app.status_id == 8
+    end
+
+    [:budget, :paid].each do |payment_form|
+      [:o, :oz, :z].each do |form|
+        stats[payment_form][form][:contest] = (1.0 * stats[payment_form][form][:total] / stats[payment_form][form][:places]).round(2)
+        stats[payment_form][form][:real_contest] = (1.0 * stats[payment_form][form][:original] / stats[payment_form][form][:places]).round(2)
+      end
     end
 
     stats
@@ -286,12 +319,22 @@ class Entrance::Application < ActiveRecord::Base
 
         row = [direction.description]
 
-        [:budget, :paid].each do |p|
-          [:o, :oz, :z].each do |f|
+        [:budget].each do |p|
+          [:o].each do |f|
             row << if stats[p][f][:total].zero?
                      ''
                    else
-                     "#{stats[p][f][:total]} (#{stats[p][f][:original]}) — #{stats[p][f][:enrolled]}"
+                     "#{stats[p][f][:total]} (#{stats[p][f][:original]}) / #{stats[p][f][:places]} (#{stats[p][f][:enrolled]}) / #{stats[p][f][:contest]} (#{stats[p][f][:real_contest]})"
+                   end
+          end
+        end
+
+        [:paid].each do |p|
+          [:o, :oz].each do |f|
+            row << if stats[p][f][:total].zero?
+                     ''
+                   else
+                     "#{stats[p][f][:total]} (#{stats[p][f][:original]}) / #{stats[p][f][:places]} (#{stats[p][f][:enrolled]}) / #{stats[p][f][:contest]} (#{stats[p][f][:real_contest]})"
                    end
           end
         end

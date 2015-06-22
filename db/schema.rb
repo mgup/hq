@@ -503,6 +503,10 @@ ActiveRecord::Schema.define(version: 20150622081245) do
     t.text "dictionary_pp", limit: 16777215, null: false
   end
 
+  create_table "diplomMasterGroups", force: :cascade do |t|
+    t.string "nname", limit: 250
+  end
+
   create_table "directions", force: :cascade do |t|
     t.string   "code",               limit: 255
     t.string   "new_code",           limit: 255

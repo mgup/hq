@@ -62,6 +62,30 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
     number_quota_o + number_quota_oz + number_quota_z
   end
 
+  def total_budget_o
+    number_budget_o + number_quota_o
+  end
+
+  def total_budget_oz
+    number_budget_oz + number_quota_oz
+  end
+
+  def total_budget_z
+    number_budget_z + number_quota_z
+  end
+
+  def total_paid_o
+    number_paid_o
+  end
+
+  def total_paid_oz
+    number_paid_oz
+  end
+
+  def total_paid_z
+    number_paid_z
+  end
+
   def matrix_form
     case form
       when 11
