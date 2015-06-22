@@ -183,8 +183,8 @@
         </td>
       <% else %>
         <td>  
-        <% final = ball.to_f * discipline.final_exam.weight / 100.0 + (1.0 - discipline.final_exam.weight / 100.0) * rating_mark.value %>
-        <% result = mark_count(ball, final, (final_mark.value.to_s if final_mark.value == 9 || final_mark.value == 1)) %>
+        <% final = rating_mark.value * discipline.final_exam.weight / 100.0 + (1.0 - discipline.final_exam.weight / 100.0) * ball.to_f  %>
+        <% result = mark_count(rating_mark.value, final, (final_mark.value.to_s if final_mark.value == 9 || final_mark.value == 1)) %>
           <div><span class='label label-<%= result[:span] %>'><%= result[:mark] %></span></div>
         </td>
       <% end %>
