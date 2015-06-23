@@ -5,9 +5,16 @@
   </h1>
 </div>
 
+<% Department.faculties.each do |department| %>
+  <%= link_to print_department_register_entrance_campaign_path(@campaign, department: department.id, date: params[:date]), target: :blank, class: 'btn btn-default', style: 'margin-bottom: 15px' do %>
+        <span class="glyphicon glyphicon-print"></span> <%= department.abbreviation %>
+  <% end %>
+<% end %>
+
+
 <%= render partial: 'filters',
            locals: { url: register_entrance_campaign_path(@campaign),
-                     date: true } %>
+                     date: true} %>
 
 <% if @applications.empty? %>
   <p>Нет ни одного заявления.</p>

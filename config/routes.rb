@@ -344,6 +344,7 @@ HQ::Application.routes.draw do
       get 'print_all', on: :member, defaults: { format: :pdf }
       get 'report',       on: :member
       get 'register',     on: :member
+      get '/print_department_register.pdf', to: 'campaigns#print_department_register', on: :member, defaults: { format: 'pdf' }, as: :print_department_register
       get 'rating',     on: :member
       get 'crimea_rating',     on: :member
       get 'results',     on: :member

@@ -51,6 +51,11 @@ class Entrance::Application < ActiveRecord::Base
     joins(:competitive_group_item).
       where('competitive_group_items.direction_id = ?', direction.id)
   end
+  
+  scope :from_faculty, -> (faculty_id) do
+    joins(:competitive_group_item).joins(competitive_group_item: :direction).
+    where('directions.department_id = ?', faculty_id)
+  end
 
   scope :paid, -> do
     # where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
@@ -218,6 +223,19 @@ class Entrance::Application < ActiveRecord::Base
       stats[payment_form][form][:total] += 1
       stats[payment_form][form][:original] += 1 if app.original?
       stats[payment_form][form][:enrolled] += 1 if app.status_id == 8
+    end
+
+    stats
+  end
+  
+  def self.group_by_form_payment_and_direction
+
+    stats = {}
+    [:not_paid, :paid].each do |payment|
+      stats[payment] = {}
+      [:o, :oz, :z].each do |form|
+        stats[payment][form] = self.send(payment).send("#{form}_form").group_by(&:direction)
+      end
     end
 
     stats

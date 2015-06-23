@@ -53,6 +53,16 @@ class Entrance::CampaignsController < ApplicationController
       format.pdf
     end
   end
+  
+  def print_department_register
+    @department = Department.find(params[:department])
+    @apps = @campaign.applications.actual.where('DATE(entrance_applications.created_at) = ?',
+                 Date.strptime(params[:date], '%d.%m.%Y')).from_faculty(params[:department])
+
+    respond_to do |format|
+      format.pdf
+    end
+  end
 
   def results
     authorize! :manage, Entrance::Exam
@@ -145,10 +155,26 @@ class Entrance::CampaignsController < ApplicationController
 
   def register
     if params[:date] == ''
+      # if params[:faculty] == ''
+#         @applications = applications_from_filters
+#       else
+#         @applications = applications_from_filters(faculty: true)
+#       end
       @applications = applications_from_filters
     else
+      # if params[:faculty] == ''
+#         @applications = applications_from_filters(date: true)
+#       else
+#         @applications = applications_from_filters(date: true, faculty: true)
+#       end 
       @applications = applications_from_filters(date: true)
     end
+    
+    # if params[:faculty] == ''
+#       @directions = Direction.for_campaign(@campaign)
+#     else
+#       @directions = Direction.for_campaign(@campaign).from_faculty(params[:faculty])
+#     end
 
     respond_to do |format|
       format.html
@@ -213,7 +239,7 @@ class Entrance::CampaignsController < ApplicationController
                                                              params[:direction])
   end
 
-  def applications_from_filters(opts = { form: true, payment: true, date: false })
+  def applications_from_filters(opts = { form: true, payment: true, date: false, faculty: false })
     params[:date] ||= l(Date.today)
 
     params[:form]      ||= 11
@@ -250,6 +276,10 @@ class Entrance::CampaignsController < ApplicationController
     if opts[:date]
       apps = apps.where('DATE(entrance_applications.created_at) = ?',
                  Date.strptime(params[:date], '%d.%m.%Y'))
+    end
+    
+    if opts[:faculty]
+      apps = apps.from_faculty(params[:faculty])
     end
 
     if params[:direction].present?

@@ -113,7 +113,7 @@ class Ability
     can :index, Entrance::MinScore
 
     can :applications, Entrance::Campaign
-    can [:balls, :rating, :print_all, :crimea_rating], Entrance::Campaign
+    can [:balls, :rating, :print_all, :crimea_rating, :print_direction_register], Entrance::Campaign
     can :show, Entrance::Event
 
     can :index, EducationPrice

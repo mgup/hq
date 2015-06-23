@@ -1,4 +1,14 @@
 <%= form_tag url, method: :get do %>
+
+  <% if defined?(faculties) && faculties %>
+    <div class="row">
+	  <div class='col col-lg-10'>
+	    <%= hidden_field_tag :faculty, params[:faculty],  class: 'hidden-pill-values-no-change',
+		onchange: %q($(this).parents('form').submit();) %>
+	    <%= pill_tabs('faculty', Department.faculties.collect {|f| [f.id, f.abbreviation ]}, 'faculty') %>
+	  </div>
+    </div>
+  <% end %>
   <div class="row">
     <div class="col-sm-8">
       <%= select_tag :direction,
