@@ -5,10 +5,16 @@
     <small><%= @campaign.name %></small>
   </h2>
 </div>
-<%= link_to 'Распечатать',
+
+<p style="font-size: 1.1em;"><em>
+  Заявлений (из них оригиналов, договоров) / Всего мест (из них уже зачислено) / Конкурс по заявлениям (конкурс по оригиналам, договорам)
+</em></p>
+
+<%#= link_to 'Распечатать',
             report_entrance_campaign_path(
                     @campaign, params.merge({ format: :xlsx })
             ), class: 'lead only-screen' %>
+
 <table class="table table-condensed table-bordered table-striped">
   <thead>
     <tr>
