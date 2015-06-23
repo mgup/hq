@@ -200,16 +200,33 @@ class Entrance::Application < ActiveRecord::Base
   def self.direction_stats(campaign, direction)
     applications = campaign.applications.actual.for_direction(direction)
 
+    competitive_group_items = applications.map(&:competitive_group_item).uniq
+
     stats = {}
     [:budget, :paid].each do |payment|
       stats[payment] = {}
       [:o, :oz, :z].each do |form|
-        stats[payment][form] = { total: 0, original: 0, enrolled: 0 }
+        places = if :budget == payment
+          case form
+          when :o   then competitive_group_items.map(&:total_budget_o).sum
+          when :oz  then competitive_group_items.map(&:total_budget_oz).sum
+          when :z   then competitive_group_items.map(&:total_budget_z).sum
+          end
+        elsif :paid == payment
+          case form
+          when :o   then competitive_group_items.map(&:total_paid_o).sum
+          when :oz  then competitive_group_items.map(&:total_paid_oz).sum
+          when :z   then competitive_group_items.map(&:total_paid_z).sum
+          end
+        end
+
+        stats[payment][form] = { total: 0, original: 0, enrolled: 0, places: places, contest: 0, real_contest: 0 }
       end
     end
 
     applications.each do |app|
-      form = case app.competitive_group_item.form
+      # form = case app.competitive_group_item.form
+      form = case app.education_form_id
         when 11
           :o
         when 12
@@ -218,11 +235,27 @@ class Entrance::Application < ActiveRecord::Base
           :z
       end
 
-      payment_form = app.competitive_group_item.payed? ? :paid : :budget
+      # payment_form = app.competitive_group_item.payed? ? :paid : :budget
+      payment_form = app.is_payed ? :paid : :budget
 
       stats[payment_form][form][:total] += 1
-      stats[payment_form][form][:original] += 1 if app.original?
+
+
+      if app.is_payed
+        stats[payment_form][form][:original] += 1 if app.contract
+      else
+        stats[payment_form][form][:original] += 1 if app.original?
+      end
+
+
       stats[payment_form][form][:enrolled] += 1 if app.status_id == 8
+    end
+
+    [:budget, :paid].each do |payment_form|
+      [:o, :oz, :z].each do |form|
+        stats[payment_form][form][:contest] = (1.0 * stats[payment_form][form][:total] / stats[payment_form][form][:places]).round(2)
+        stats[payment_form][form][:real_contest] = (1.0 * stats[payment_form][form][:original] / stats[payment_form][form][:places]).round(2)
+      end
     end
 
     stats
@@ -298,26 +331,99 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def self.report_information(campaign)
+    totals = {
+      budget: {
+        o: {
+          total: 0,
+          original: 0,
+          places: 0,
+          enrolled: 0
+        }
+      },
+      paid: {
+        o: {
+          total: 0,
+          original: 0,
+          places: 0,
+          enrolled: 0
+        },
+        oz: {
+          total: 0,
+          original: 0,
+          places: 0,
+          enrolled: 0
+        },
+        z: {
+          total: 0,
+          original: 0,
+          places: 0,
+          enrolled: 0
+        }
+      }
+    }
+
     Department.faculties.map do |faculty|
       applications = faculty.directions.for_campaign(campaign).map do |direction|
         stats = self.direction_stats(campaign, direction)
 
         row = [direction.description]
 
-        [:budget, :paid].each do |p|
-          [:o, :oz, :z].each do |f|
-            row << if stats[p][f][:total].zero?
+        [:budget].each do |p|
+          [:o].each do |f|
+            row << if stats[p][f][:places].zero?
                      ''
                    else
-                     "#{stats[p][f][:total]} (#{stats[p][f][:original]}) — #{stats[p][f][:enrolled]}"
+                     "#{stats[p][f][:total]} (#{stats[p][f][:original]}) / #{stats[p][f][:places]} (#{stats[p][f][:enrolled]}) / #{stats[p][f][:contest]} (#{stats[p][f][:real_contest]})"
                    end
+
+            totals[p][f][:total] += stats[p][f][:total]
+            totals[p][f][:original] += stats[p][f][:original]
+            totals[p][f][:places] += stats[p][f][:places]
+            totals[p][f][:enrolled] += stats[p][f][:enrolled]
+          end
+        end
+
+        [:paid].each do |p|
+          [:o, :oz].each do |f|
+            row << if stats[p][f][:places].zero?
+                     ''
+                   else
+                     "#{stats[p][f][:total]} (#{stats[p][f][:original]}) / #{stats[p][f][:places]} (#{stats[p][f][:enrolled]}) / #{stats[p][f][:contest]} (#{stats[p][f][:real_contest]})"
+                   end
+
+            totals[p][f][:total] += stats[p][f][:total]
+            totals[p][f][:original] += stats[p][f][:original]
+            totals[p][f][:places] += stats[p][f][:places]
+            totals[p][f][:enrolled] += stats[p][f][:enrolled]
           end
         end
 
         row
       end
 
-      { faculty: faculty.name, applications: applications }
+      totals[:budget][:o][:contest] = (1.0 * totals[:budget][:o][:total] / totals[:budget][:o][:places]).round(2)
+      totals[:budget][:o][:real_contest] = (1.0 * totals[:budget][:o][:original] / totals[:budget][:o][:places]).round(2)
+      totals[:paid][:o][:contest] = (1.0 * totals[:paid][:o][:total] / totals[:paid][:o][:places]).round(2)
+      totals[:paid][:o][:real_contest] = (1.0 * totals[:paid][:o][:original] / totals[:paid][:o][:places]).round(2)
+      totals[:paid][:oz][:contest] = (1.0 * totals[:paid][:oz][:total] / totals[:paid][:oz][:places]).round(2)
+      totals[:paid][:oz][:real_contest] = (1.0 * totals[:paid][:oz][:original] / totals[:paid][:oz][:places]).round(2)
+      totals[:paid][:z][:contest] = (1.0 * totals[:paid][:z][:total] / totals[:paid][:z][:places]).round(2)
+      totals[:paid][:z][:real_contest] = (1.0 * totals[:paid][:z][:original] / totals[:paid][:z][:places]).round(2)
+
+      if 3 == faculty.id
+        applications = applications.push([
+                                           'ВСЕГО',
+                                           "#{totals[:budget][:o][:total]} (#{totals[:budget][:o][:original]}) / #{totals[:budget][:o][:places]} (#{totals[:budget][:o][:enrolled]}) / #{totals[:budget][:o][:contest]} (#{totals[:budget][:o][:real_contest]})",
+                                           "#{totals[:paid][:o][:total]} (#{totals[:paid][:o][:original]}) / #{totals[:paid][:o][:places]} (#{totals[:paid][:o][:enrolled]}) / #{totals[:paid][:o][:contest]} (#{totals[:paid][:o][:real_contest]})",
+                                           "#{totals[:paid][:oz][:total]} (#{totals[:paid][:oz][:original]}) / #{totals[:paid][:oz][:places]} (#{totals[:paid][:oz][:enrolled]}) / #{totals[:paid][:oz][:contest]} (#{totals[:paid][:oz][:real_contest]})"#,
+                                         # "#{totals[:paid][:z][:total]} (#{totals[:paid][:z][:original]}) / #{totals[:paid][:z][:places]} (#{totals[:paid][:z][:enrolled]}) / #{totals[:paid][:z][:contest]} (#{totals[:paid][:z][:real_contest]})"
+                                         ])
+      end
+
+      {
+        faculty: faculty.name,
+        applications: applications
+      }
     end
   end
 
