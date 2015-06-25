@@ -1,4 +1,4 @@
-prawn_document margin: [28.34645669291339, 28.34645669291339,
+prawn_document margin: [56.692913386, 28.34645669291339,
                         28.34645669291339, 56.692913386],
                page_size: 'A4', page_layout: :portrait do |pdf|
 
