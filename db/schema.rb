@@ -199,7 +199,6 @@ ActiveRecord::Schema.define(version: 20150622081245) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
-    t.text    "employer",                              limit: 65535
     t.string  "registration_country_name",             limit: 255
     t.integer "registration_country_code",             limit: 4
     t.string  "registration_region_name",              limit: 255
@@ -503,10 +502,6 @@ ActiveRecord::Schema.define(version: 20150622081245) do
     t.text "dictionary_pp", limit: 16777215, null: false
   end
 
-  create_table "diplomMasterGroups", force: :cascade do |t|
-    t.string "nname", limit: 250
-  end
-
   create_table "directions", force: :cascade do |t|
     t.string   "code",               limit: 255
     t.string   "new_code",           limit: 255
@@ -544,81 +539,6 @@ ActiveRecord::Schema.define(version: 20150622081245) do
     t.integer "discount_type_imposition", limit: 1,                             default: 1,     null: false
     t.decimal "discount_type_basic",                    precision: 3, scale: 2
     t.string  "discount_type_commentary", limit: 200
-  end
-
-  create_table "dmDoc", id: false, force: :cascade do |t|
-    t.integer  "Код",                limit: 4
-    t.integer  "КодСтудента",        limit: 4
-    t.integer  "КодГруппы",          limit: 4
-    t.integer  "ТипДокумента",       limit: 1
-    t.string   "ДокОбр",             limit: 255
-    t.integer  "ГодДокОбр",          limit: 2
-    t.string   "Поступил",           limit: 255
-    t.string   "Окончил",            limit: 255
-    t.integer  "КодСпециальности",   limit: 2
-    t.text     "ТемаДиплома",        limit: 16777215
-    t.string   "НомерДиплома",       limit: 50
-    t.datetime "ДатаРешения"
-    t.binary   "ПДатаРешения",       limit: 1
-    t.datetime "ДатаВыдачи"
-    t.binary   "ПДатаВыдачи",        limit: 1
-    t.string   "РегНомер",           limit: 50
-    t.binary   "ПРегНомер",          limit: 1
-    t.string   "Специальность",      limit: 255
-    t.string   "Квалификация",       limit: 255
-    t.string   "Срок",               limit: 50
-    t.string   "Специализация",      limit: 255
-    t.datetime "Дата_Рождения"
-    t.string   "ФИО",                limit: 255
-    t.string   "ФИО_Дат",            limit: 255
-    t.string   "Место_Рождения",     limit: 255
-    t.binary   "Пол",                limit: 1
-    t.text     "Примечание",         limit: 16777215
-    t.string   "ОценкаДиплом",       limit: 20
-    t.string   "НедельДиплом",       limit: 20
-    t.float    "ZEДиплом",           limit: 24
-    t.binary   "СОтличием",          limit: 1
-    t.string   "Непроверено",        limit: 50
-    t.integer  "АудЧасов",           limit: 2
-    t.string   "SДокОбр",            limit: 50
-    t.string   "NДокОбр",            limit: 50
-    t.string   "Уровень",            limit: 50
-    t.string   "СпецЗвание",         limit: 255
-    t.string   "Протокол",           limit: 255
-    t.string   "ID",                 limit: 255
-    t.string   "ProfessionalStatus", limit: 255
-  end
-
-  create_table "dmSpecialities", id: false, force: :cascade do |t|
-    t.integer "Код",           limit: 4
-    t.string  "Срок_Обучения", limit: 50
-    t.string  "Специальность", limit: 255
-    t.string  "Специализация", limit: 255
-    t.string  "Квалификация",  limit: 50
-  end
-
-  create_table "dmStudent", id: false, force: :cascade do |t|
-    t.integer  "Код",                limit: 4
-    t.string   "Фамилия",            limit: 25
-    t.string   "Имя",                limit: 15
-    t.string   "Отчество",           limit: 20
-    t.string   "ФИО_Дат",            limit: 70
-    t.integer  "Статус",             limit: 2
-    t.integer  "Код_Группы",         limit: 4
-    t.string   "Пол",                limit: 10
-    t.datetime "Дата_Рождения"
-    t.string   "Кем_Выдан",          limit: 200
-    t.string   "Номер_Паспорта",     limit: 50
-    t.datetime "Дата_Выдачи"
-    t.integer  "Год_Поступления",    limit: 2
-    t.string   "Документ",           limit: 50
-    t.string   "ГодВыдачи",          limit: 4
-    t.integer  "КодСтудентаДеканат", limit: 4
-  end
-
-  create_table "dmTypeEdDoc", id: false, force: :cascade do |t|
-    t.integer "Код",      limit: 1
-    t.string  "Название", limit: 100
   end
 
   create_table "document", primary_key: "document_id", force: :cascade do |t|
@@ -713,7 +633,6 @@ ActiveRecord::Schema.define(version: 20150622081245) do
     t.string  "birth_okrug",                           limit: 200
     t.string  "birth_city",                            limit: 200
     t.string  "birth_settlement",                      limit: 200
-    t.text    "employer",                              limit: 65535
     t.string  "registration_country_name",             limit: 255
     t.integer "registration_country_code",             limit: 4
     t.string  "registration_region_name",              limit: 255
