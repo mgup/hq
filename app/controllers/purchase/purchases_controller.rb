@@ -1,5 +1,5 @@
 class Purchase::PurchasesController < ApplicationController
-  authorize_resource
+  load_and_authorize_resource
 
   def index
     @purchases = Purchase::Purchase.all
@@ -13,7 +13,6 @@ class Purchase::PurchasesController < ApplicationController
     @purchase = Purchase::Purchase.find(params[:id])
     count_goods
     calculate_stat
-    change_status
     create_report
   end
 
@@ -32,10 +31,10 @@ class Purchase::PurchasesController < ApplicationController
 
   def update
     @purchase = Purchase::Purchase.find(params[:id])
-    change_status
     if @purchase.update(resource_params)
       redirect_to purchase_purchases_path, notice: 'Изменения сохранены'# изменить
     else
+      # raise params.inspect
       render action: :edit
     end
   end
@@ -62,12 +61,6 @@ class Purchase::PurchasesController < ApplicationController
       format.html
       format.csv
       format.xlsx
-    end
-  end
-
-  def change_status
-    if @purchase.number.present?
-      @purchase.status = 'зарегистрирован'
     end
   end
 

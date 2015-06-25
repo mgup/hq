@@ -22,7 +22,7 @@ describe Purchase::GoodsController, type: :controller do
       end
 
       it 'в выводе должна присутствовать тестовый товар' do
-         expect(assigns(:goods)).to include(@purchase_good)
+        expect(assigns(:goods)).to include(@purchase_good)
       end
     end
 
@@ -101,7 +101,7 @@ describe Purchase::GoodsController, type: :controller do
       before :each do
         @deleted = FactoryGirl.create(:purchase_good)
         expect { delete :destroy, id: @deleted }
-        .to change { Purchase::Good.count }.by(-1)
+          .to change { Purchase::Good.count }.by(-1)
       end
 
       it 'должен находить правильный товар' do

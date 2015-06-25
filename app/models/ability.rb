@@ -92,7 +92,7 @@ class Ability
       end
 
       # закупки
-      if user.is?(:purchase_manager) || user.is?(:purchase_user)
+      if user.is?(:purchase_manager) || user.is?(:purchase_user) || user.is?(:ciot)
         can :manage, Purchase::Good
         can :manage, Purchase::Supplier
         can :manage, Purchase::LineItem

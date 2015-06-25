@@ -1,5 +1,5 @@
 class Purchase::LineItemsController < ApplicationController
-  authorize_resource
+  load_and_authorize_resource
 
   def index
     @lineitems = Purchase::LineItem.all

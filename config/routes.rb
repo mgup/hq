@@ -7,7 +7,6 @@ HQ::Application.routes.draw do
     get 'line_item/search_result' => 'line_items#search_result', as: :search_result
   end
 
-
   resources :universities
   resources :reviews
   get 'reviews/index'
