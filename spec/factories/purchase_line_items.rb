@@ -1,7 +1,7 @@
 require 'faker'
 
 FactoryGirl.define do
-  factory :purchase_line_item, :class => 'Purchase::LineItem' do
+  factory :purchase_line_item, class: Purchase::LineItem do
     purchase_id { Faker::Number.number(4) }
     good_id { Faker::Number.number(4) }
     measure 'час'

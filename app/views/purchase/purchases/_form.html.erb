@@ -1,43 +1,53 @@
 <%= nested_form_for @purchase, html: { class: 'form-horizontal', autocomplete: 'off' } do |f| %>
   <fieldset>
     <legend>Товары</legend>
-      <div class="row">
+      <% if @current_user.is?(:developer) || @current_user.is?(:purchase_manager) || @current_user.is?(:ciot) %>
+        <!-- только ДФП -->
+        <div class="row">
+          <%= f.label :number, 'Номер заявки', class: 'col col-lg-2 control-label' %>
+          <div class="col col-sm-10">
+            <%= f.text_field :number, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="row">
+          <%= f.label :date_registration, 'Дата регистрации', class: 'control-label col col-sm-2' %>
+          <div class="col col-sm-10">
+            <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
+          </div>
+        </div>
+      <% else %>
+        <div class="row">
         <%= f.label :number, 'Номер заявки', class: 'col col-lg-2 control-label' %>
-        <div class="col col-sm-9">
+        <div class="col col-sm-10">
           <%= f.text_field :number, disabled: true, class: 'form-control' %>
         </div>
-      <% if @current_user.is?(:developer) || user.is?(:purchase_manager) %>
-        <!-- только ДФП -->
-        <div class="col col-sm-1" align="right">
-          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" >
-            Рег.
-          </button>
         </div>
-      <% end %>
-      </div>
-      <div class="row">
-        <%= f.label :date_registration, 'Дата регистрации', class: 'control-label col col-sm-2' %>
+        <div class="row">
+          <%= f.label :date_registration, 'Дата регистрации', class: 'control-label col col-sm-2' %>
           <div class="col col-sm-10">
             <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), disabled: true, class: 'form-control datepicker' %>
           </div>
         </div>
+      <% end %>
       <div class="row">
         <%= f.label :dep_id, 'Структурное подразделение', class: 'col col-lg-2 control-label' %>
-         <div class="col col-sm-10">
-           <%= f.collection_select(:dep_id, Department.all, :id, :name, { include_blank: true }, class: 'form-control') %>
+        <div class="col col-sm-10">
+          <%= f.collection_select(:dep_id, @current_user.departments.all, :id, :name, { include_blank: true }, class: 'form-control') %>
         </div>
       </div>
       <div class="row">
-        <% if @current_user.is?(:developer) || user.is?(:purchase_manager) %>
-            <%= f.label :status, 'Статус', class: 'control-label col col-sm-2' %>
-            <div class='col col-sm-10'>
-                <% stat = [] %>
-                <% [{type: 'обработка', key:  'обработка'}, {type: 'на подписи', key: 'подпись'},{type: 'зарегистрирован', key: 'зарегистрирован'} ].each do |fin| %>
-                    <% stat << (OpenStruct.new fin) %>
-                <% end %>
+        <%= f.label :status, 'Статус', class: 'control-label col col-sm-2' %>
+          <div class='col col-sm-10'>
+            <% stat = [] %>
+            <% [{type: 'обработка', key:  'обработка'}, {type: 'на подписи', key: 'подпись'},{type: 'зарегистрирован', key: 'зарегистрирован'} ].each do |fin| %>
+                <% stat << (OpenStruct.new fin) %>
+            <% end %>
+            <% if @current_user.is?(:purchase_user)%>
+                <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @purchase.status), {}, disabled: true, class: 'form-control' %>
+            <% else %>
                 <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @purchase.status), {}, disabled: false, class: 'form-control' %>
+            <% end %>
             </div>
-        <% end %>
       </div>
       <div class="row">
         <%= f.label :note, 'Должность ответственного сотрудника ', class: 'col col-lg-2 control-label' %>

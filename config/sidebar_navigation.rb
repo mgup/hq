@@ -335,12 +335,30 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     if user_signed_in?
-      if (can? :manage, Review) && (can? :manage, University)
+      if (can? :manage, Purchase) && (can? :manage, University)
         primary.item :review, 'Рецензирование изданий', class: 'nav-header disabled'
       end
       if (can? :manage, Review) && (can? :manage, University)
         primary.item :review, 'Рецензии', reviews_path, icon: 'list'
         primary.item :university, 'Университеты', universities_path, icon: 'list'
+      end
+    end
+
+    if user_signed_in?
+      if (can? :manage, Purchase::Good) &&
+          (can? :manage, Purchase::Supplier) &&
+          (can? :manage, Purchase::Purchase) &&
+          (can? :manage, Purchase::LineItem)
+        primary.item :purchase_purchases, 'Закупки', class: 'nav-header disabled'
+      end
+      if (can? :manage, Purchase::Good) &&
+          (can? :manage, Purchase::Supplier) &&
+          (can? :manage, Purchase::Purchase) &&
+          (can? :manage, Purchase::LineItem)
+        primary.item :purchase_purchases, 'Заявки', purchase_purchases_path, icon: 'file'
+        primary.item :purchase_goods, 'Товары', purchase_goods_path, icon: 'list'
+        primary.item :purchase_suppliers, 'Поставщики', purchase_suppliers_path, icon: 'list'
+        primary.item :purchase_line_items, 'ДФП', purchase_line_items_path, icon: 'stats'
       end
     end
 
