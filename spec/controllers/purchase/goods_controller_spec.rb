@@ -59,7 +59,7 @@ describe Purchase::GoodsController, type: :controller do
       end
 
       it 'должен находить правильный товар' do
-        expect(assigns(:good).to eq(@edited))
+        expect(assigns(:good)).to eq(@edited)
       end
     end
 
@@ -87,7 +87,7 @@ describe Purchase::GoodsController, type: :controller do
         end
 
         it 'должен находить правильный товар' do
-          expect(assigns(:purchase_goods)).to eq(@updated)
+          expect(assigns(:good)).to eq(@updated)
         end
 
         it 'должен переходить на страницу с товарами' do
