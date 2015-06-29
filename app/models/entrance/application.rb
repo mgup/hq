@@ -51,7 +51,7 @@ class Entrance::Application < ActiveRecord::Base
     joins(:competitive_group_item).
       where('competitive_group_items.direction_id = ?', direction.id)
   end
-  
+
   scope :from_faculty, -> (faculty_id) do
     joins(:competitive_group_item).joins(competitive_group_item: :direction).
     where('directions.department_id = ?', faculty_id)
@@ -61,7 +61,7 @@ class Entrance::Application < ActiveRecord::Base
     # where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
 #     where('number_budget_o = 0 AND number_budget_oz = 0 AND number_budget_z = 0').
 #     where('number_quota_o = 0 AND number_quota_oz = 0 AND number_quota_z = 0')
-      where(is_payed: true) 
+      where(is_payed: true)
   end
 
   scope :not_paid, -> do
@@ -260,7 +260,7 @@ class Entrance::Application < ActiveRecord::Base
 
     stats
   end
-  
+
   def self.group_by_form_payment_and_direction
 
     stats = {}
@@ -541,7 +541,7 @@ class Entrance::Application < ActiveRecord::Base
                   order_meta_type: 1,
                   order_meta_pattern: 'Конкурсная группа',
                   order_meta_object: 0,
-                  order_meta_text: competitive_group_item.competitive_group
+                  order_meta_text: competitive_group_item.competitive_group.id
               }
           }
       )
