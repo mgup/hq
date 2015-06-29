@@ -67,7 +67,7 @@ pdf.font_size 11 do
       end
 
       if application.benefits.any?
-        pdf.text "Категория зачисления: <u>#{Unicode::downcase(application.benefits.first.benefit_kind.name)}</u> (#{application.benefits.first.temp_text}).", inline_format: true
+        pdf.text "Категория зачисления: <u>#{Unicode::downcase(application.benefits.first.benefit_kind.name)}</u> (#{application.benefits.map(&:temp_text).join(' ')}).", inline_format: true
       elsif @campaign.id == 32014
         pdf.text 'Категория зачисления: <u> гослиния </u>', inline_format: true
       else
@@ -109,7 +109,7 @@ pdf.font_size 11 do
 
           pdf.text result.join(' ')
         end
-      end      
+      end
 
 
 
