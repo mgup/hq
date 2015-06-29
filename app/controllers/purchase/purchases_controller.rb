@@ -1,5 +1,5 @@
 class Purchase::PurchasesController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: :new
 
   def index
     @purchases = Purchase::Purchase.all
