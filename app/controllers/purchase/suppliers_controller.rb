@@ -1,5 +1,5 @@
 class Purchase::SuppliersController < ApplicationController
-  authorize_resource
+  load_and_authorize_resource
 
   def index
     @suppliers = Purchase::Supplier.all
