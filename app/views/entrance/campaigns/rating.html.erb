@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-sm-12">
-    <%= hidden_field_tag :campaign, url_for(params), class: 'hidden-pill-values', onchange: 'document.location = $(this).val();' %>
+    <%= hidden_field_tag :campaign, url_for(params), class: 'hidden-pill-values-no-change', onchange: 'document.location = $(this).val();' %>
     <%= pill_tabs('campaign', [
-      [rating_entrance_campaign_path(Entrance::Campaign::CURRENT, 
+      [rating_entrance_campaign_path(Entrance::Campaign::CURRENT,
         direction: params[:direction], utf8: '✓',
         form: params[:form], payment: params[:payment]),
-       Entrance::Campaign.find(Entrance::Campaign::CURRENT).name], 
-      [crimea_rating_entrance_campaign_path(Entrance::Campaign::CRIMEA, 
+       Entrance::Campaign.find(Entrance::Campaign::CURRENT).name],
+      [crimea_rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
         direction: params[:direction], utf8: '✓',
         form: params[:form], payment: params[:payment]),
         Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name],
