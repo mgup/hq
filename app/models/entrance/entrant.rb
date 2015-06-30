@@ -88,6 +88,10 @@ class Entrance::Entrant < ActiveRecord::Base
   #   res = super
   #   res.blank? ? ' ' : res
   # end
+  
+  def is_foreign?
+    3 == identity_document_type_id
+  end
 
   def full_name
     [last_name, first_name, patronym].join(' ')
