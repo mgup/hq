@@ -53,7 +53,7 @@ class Entrance::CampaignsController < ApplicationController
       format.pdf
     end
   end
-  
+
   def print_department_register
     @department = Department.find(params[:department])
     @apps = @campaign.applications.actual.where('DATE(entrance_applications.created_at) = ?',
@@ -129,7 +129,7 @@ class Entrance::CampaignsController < ApplicationController
                     xml.RegistrationDate application.created_at.iso8601
                   end
                   xml.DirectionID application.direction.id
-                  xml.EducationFormID application.competitive_group_item.form
+                  xml.EducationFormID application.education_form_id
                   xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
 
                   if '44.03.04' == application.direction.new_code
@@ -166,10 +166,10 @@ class Entrance::CampaignsController < ApplicationController
 #         @applications = applications_from_filters(date: true)
 #       else
 #         @applications = applications_from_filters(date: true, faculty: true)
-#       end 
+#       end
       @applications = applications_from_filters(date: true)
     end
-    
+
     # if params[:faculty] == ''
 #       @directions = Direction.for_campaign(@campaign)
 #     else
@@ -277,7 +277,7 @@ class Entrance::CampaignsController < ApplicationController
       apps = apps.where('DATE(entrance_applications.created_at) = ?',
                  Date.strptime(params[:date], '%d.%m.%Y'))
     end
-    
+
     if opts[:faculty]
       apps = apps.from_faculty(params[:faculty])
     end
