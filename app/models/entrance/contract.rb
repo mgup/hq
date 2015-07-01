@@ -8,7 +8,7 @@ class Entrance::Contract < ActiveRecord::Base
   def prices
     EducationPrice.
       for_year(created_at.to_date.year).
-      for_form(application.competitive_group_item.form).
+      for_form(application.education_form_id).
       for_direction(application.direction.id).sort_by { |p| p.course }
   end
 
