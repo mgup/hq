@@ -87,7 +87,7 @@ SimpleNavigation::Configuration.run do |navigation|
                  entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
 
     primary.item :entrance_events, 'Вступительные испытания',
-                 entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: 115)
+                 entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: Entrance::Campaign.find(Entrance::Campaign::CURRENT).events.first.id)
 
     # primary.item :entrants_results,
     #              '<span class="glyphicons inbox"></span> Результаты вступительных испытаний'.html_safe,
