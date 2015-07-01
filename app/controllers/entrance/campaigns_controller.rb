@@ -1,5 +1,6 @@
 class Entrance::CampaignsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
+  # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
+  skip_before_action :authenticate_user!, only: [:applications, :balls]
   load_and_authorize_resource class: 'Entrance::Campaign', except: :results
   load_resource class: 'Entrance::Campaign', only: :results
 

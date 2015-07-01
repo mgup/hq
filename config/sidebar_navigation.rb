@@ -78,10 +78,12 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     end
 
-    primary.item :rating,
-                 '<span class="glyphicons charts"></span> Рейтинги и приказы о зачислении'.html_safe,
-                 rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
-                 highlights_on: -> { (params[:action] == 'rating' || params[:action] == 'crimea_rating') && params[:controller] == 'entrance/campaigns'}
+    if can?(:manage, Entrance::Entrant)
+      primary.item :rating,
+                   '<span class="glyphicons charts"></span> Рейтинги и приказы о зачислении'.html_safe,
+                   rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
+                   highlights_on: -> { (params[:action] == 'rating' || params[:action] == 'crimea_rating') && params[:controller] == 'entrance/campaigns'}
+    end
 
     primary.item :entrance_dates, 'Сроки проведения',
                  entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
