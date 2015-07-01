@@ -35,7 +35,7 @@
           <td><%= index+1 %></td>
             <td><%= contract.application.entrant.full_name %></td>
             <td><%= contract.number %></td>
-            <td><%= 10 == contract.application.competitive_group_item.form ? '1 год: '+number_to_currency(contract.prices.first.price) : '1 семестр: '+number_to_currency(contract.prices.first.price/2) %></td>
+            <td><%= 10 == contract.application.education_form_id ? '1 год: '+number_to_currency(contract.prices.first.price) : '1 семестр: '+number_to_currency(contract.prices.first.price/2) %></td>
             <td>
               <table>
                 <% contract.student.payments.each do |payment| %>
