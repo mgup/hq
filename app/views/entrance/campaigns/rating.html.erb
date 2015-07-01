@@ -122,7 +122,7 @@
             <th></th>
           </tr>
         </thead>
-        <% a_out_of_competition.sort_by{|app| [app.order.signing_date, -app.abitpoints]}.each_with_index do |a, i| %>
+        <% a_out_of_competition.sort_by{|app| [app.order ? app.order.signing_date : true, -app.abitpoints]}.each_with_index do |a, i| %>
           <tr id="application_<%= a.id %>">
             <td><%= i + 1 %></td>
             <%= render partial: 'entrance/applications/rows/out_of_competition', locals: {a: a} %>
