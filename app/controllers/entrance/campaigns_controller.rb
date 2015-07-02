@@ -105,8 +105,9 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def report
-    @applications = Entrance::Application.where(campaign_id: [2015, 22015]).where(status_id: 8).
-      find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 32014 != a.campaign.id }
+    @applications = Entrance::Application.where(campaign_id: [2015, 22015]).
+      where(status_id: 8).
+      # find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 32014 != a.campaign.id }
 
     respond_to do |format|
       format.html

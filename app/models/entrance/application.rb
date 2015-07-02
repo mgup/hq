@@ -575,7 +575,7 @@ class Entrance::Application < ActiveRecord::Base
         end
         xml.FinSourceAndEduForms do
           xml.FinSourceEduForm do
-            xml.FinanceSourceID (competitive_group_item.payed? ? 15 : ( competitive_group_target_item_id.nil? ? 14 : 16))
+            xml.FinanceSourceID is_payed ? 15 : (competitive_group_target_item_id.nil? ? 14 : 16) # (competitive_group_item.payed? ? 15 : ( competitive_group_target_item_id.nil? ? 14 : 16))
             xml.EducationFormID     education_form_id
             xml.CompetitiveGroupID  competitive_group_item.competitive_group.id
             xml.CompetitiveGroupItemID  competitive_group_item_id
@@ -583,16 +583,16 @@ class Entrance::Application < ActiveRecord::Base
 
             unless competitive_group_target_item_id.nil?
               # xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
-              xml.TargetOrganizationUID case competitive_group_target_item.target_organization.name
-                                        when 'ФАПМК'
-                                          '2014-1'
-                                        when 'Министерство образования и науки Республики Тыва'
-                                          '2014-2'
-                                        when 'Министерство образования и науки Республики Бурятия'
-                                          '2014-3'
-                                        when 'Министерство образования, науки и по делам молодежи КБР'
-                                          '2014-4'
-                                        end
+              # xml.TargetOrganizationUID case competitive_group_target_item.target_organization.name
+              #                           when 'ФАПМК'
+              #                             '2014-1'
+              #                           when 'Министерство образования и науки Республики Тыва'
+              #                             '2014-2'
+              #                           when 'Министерство образования и науки Республики Бурятия'
+              #                             '2014-3'
+              #                           when 'Министерство образования, науки и по делам молодежи КБР'
+              #                             '2014-4'
+              #                           end
             end
           end
         end
