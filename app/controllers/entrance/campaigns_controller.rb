@@ -105,7 +105,8 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def report
-    @applications = Entrance::Application.where(status_id: 8).find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 32014 != a.campaign.id }
+    @applications = Entrance::Application.where(campaign_id: [2015, 22015]).where(status_id: 8).
+      find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 32014 != a.campaign.id }
 
     respond_to do |format|
       format.html
@@ -116,35 +117,35 @@ class Entrance::CampaignsController < ApplicationController
       format.xml do
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
-            # xml.Applications do
-            #   @applications.each do |application|
-            #     xml << application.to_fis.xpath('/Application').to_xml.to_str
-            #   end
-            # end
-
-            xml.OrdersOfAdmission do
+            xml.Applications do
               @applications.each do |application|
-                xml.OrderOfAdmission do
-                  xml.Application do
-                    xml.ApplicationNumber application.number
-                    xml.RegistrationDate application.created_at.iso8601
-                  end
-                  xml.DirectionID application.direction.id
-                  xml.EducationFormID application.education_form_id
-                  xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
-
-                  if '44.03.04' == application.direction.new_code
-                    xml.EducationLevelID 2
-                  else
-                    xml.EducationLevelID application.competitive_group_item.education_type_id
-                  end
-
-                  xml.IsBeneficiary application.benefits.any?
-                  unless Date.new(2014, 7, 31) == application.order.signing_date
-                    xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date || 12014 == application.campaign.id || 22014 == application.campaign.id) ? 1 : 2)
-                  end
-                end
+                xml << application.to_fis.xpath('/Application').to_xml.to_str
               end
+            end
+
+            # xml.OrdersOfAdmission do
+            #   @applications.each do |application|
+            #     xml.OrderOfAdmission do
+            #       xml.Application do
+            #         xml.ApplicationNumber application.number
+            #         xml.RegistrationDate application.created_at.iso8601
+            #       end
+            #       xml.DirectionID application.direction.id
+            #       xml.EducationFormID application.education_form_id
+            #       xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
+            #
+            #       if '44.03.04' == application.direction.new_code
+            #         xml.EducationLevelID 2
+            #       else
+            #         xml.EducationLevelID application.competitive_group_item.education_type_id
+            #       end
+            #
+            #       xml.IsBeneficiary application.benefits.any?
+            #       unless Date.new(2014, 7, 31) == application.order.signing_date
+            #         xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date || 12014 == application.campaign.id || 22014 == application.campaign.id) ? 1 : 2)
+            #       end
+            #     end
+            #   end
             end
           end
         end
