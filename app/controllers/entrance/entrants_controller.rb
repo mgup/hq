@@ -59,7 +59,7 @@ class Entrance::EntrantsController < ApplicationController
       :foreign_language, :need_hostel, :ioo,
       :identity_document_type_id, :nationality_type_id,
       exam_results_attributes: [:id, :exam_id, :form, :score,
-                                :document, :_destroy],
+                                :document, :distance, :_destroy],
       achievements_attributes: [:id, :entrance_achievement_type_id, :document,
                                 :date, :_destroy],
       edu_document_attributes: [:id, :document_type_id, :series, :number,

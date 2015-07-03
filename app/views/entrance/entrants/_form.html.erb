@@ -308,12 +308,15 @@
 
       <div class="form-group">
         <%= exams_f.label :form, class: 'col-sm-2 control-label' %>
-        <div class="col-sm-10">
+        <div class="col-sm-4">
           <%= exams_f.select :form, options_for_select(
               [['ЕГЭ', :use],
                ['Внутренние испытания', :university]],
               exams_f.object.form),
                              {}, class: 'form-control' %>
+        </div>
+        <div class="col-sm-4">
+          <label><%= exams_f.check_box :distance %> дистанционно</label>
         </div>
       </div>
 
