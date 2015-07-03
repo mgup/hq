@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150703094335) do
+ActiveRecord::Schema.define(version: 20150703102342) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -1144,6 +1144,7 @@ ActiveRecord::Schema.define(version: 20150703094335) do
     t.string   "residence_building",            limit: 255
     t.string   "residence_corp",                limit: 255
     t.string   "residence_flat",                limit: 255
+    t.string   "email",                         limit: 255
   end
 
   add_index "entrance_entrants", ["campaign_id"], name: "index_entrance_entrants_on_campaign_id", using: :btree

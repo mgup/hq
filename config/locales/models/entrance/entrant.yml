@@ -20,6 +20,7 @@ ru:
         aregion: 'регион'
         aaddress: 'адрес'
         phone: 'телефон'
+        email: 'электронная почта'
         foreign_institution: 'иностранное учебное заведение'
         institution: 'учебное заведение'
         graduation_year: 'год окончания'

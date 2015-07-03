@@ -55,7 +55,7 @@ class Entrance::EntrantsController < ApplicationController
     params.fetch(:entrance_entrant, {}).permit(
       :last_name, :first_name, :patronym, :gender, :snils, :information,
       :nationality_type_id, :birthday, :birth_place, :pseries, :pnumber, :pdepartment,
-      :pdate, :acountry, :azip, :aregion, :aaddress, :phone, :military_service,
+      :pdate, :acountry, :azip, :aregion, :aaddress, :phone, :email, :military_service,
       :foreign_language, :need_hostel, :ioo,
       :identity_document_type_id, :nationality_type_id,
       exam_results_attributes: [:id, :exam_id, :form, :score,
