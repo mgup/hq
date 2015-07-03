@@ -70,6 +70,8 @@ pdf.font_size 11 do
         pdf.text "Категория зачисления: <u>#{Unicode::downcase(application.benefits.first.benefit_kind.name)}</u> (#{application.benefits.map(&:temp_text).join(' ')}).", inline_format: true
       elsif @campaign.id == 32014
         pdf.text 'Категория зачисления: <u> гослиния </u>', inline_format: true
+      elsif application.competitive_group_target_item_id
+        pdf.text "Категория зачисления: <u> по конкурсу целевого приёма по договору #{application.competitive_group_target_item.target_organization.contract_number} с  #{application.competitive_group_target_item.target_organization.name}</u>", inline_format: true
       else
         pdf.text 'Категория зачисления: <u> по конкурсу </u>', inline_format: true
       end
