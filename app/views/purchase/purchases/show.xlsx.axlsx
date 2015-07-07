@@ -2,7 +2,7 @@ require 'axlsx_rails'
 xlsx = Axlsx::Package.new
 p = xlsx_package.workbook
 
-setup = {:fit_to_width => 1, :orientation => :portrait, :paper_width => "210mm", :paper_height => "297mm"}
+setup = {:fit_to_width => 1, :orientation => :landscape, :paper_width => "210mm", :paper_height => "297mm"}
 options = {:horizontal_centered => true}
 
 head = p.styles.add_style :sz => 12, :alignment => { :horizontal => :center}
