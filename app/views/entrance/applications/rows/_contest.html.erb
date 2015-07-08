@@ -65,7 +65,7 @@
 <td>
   <% if a.order && a.order.signing_date %>
     № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
-  <% elsif can?(:create, :entrance_orders) && !a.order %>
+  <% elsif can?(:create, :entrance_orders) && !a.order && a.packed %>
     <%= image_tag asset_path('loader.gif'), class: 'loader', style: 'display: none;' %>
     <%# if if ((a.original? && !a.payed? && success) || (a.payed? && a.contract && a.contract.paid?)) %>
       <%= link_to 'Зачислить', enroll_entrance_campaign_entrant_application_path(@campaign.id, a.entrant.id, a.id), class: 'btn btn-success enroll-link',

@@ -228,8 +228,19 @@ class Entrance::CampaignsController < ApplicationController
 
   # Инициализация фильтров по-умолчанию.
   def initialize_default_filters
-    params[:direction] ||= 1887
-    @direction = Direction.find(params[:direction])
+    params[:competitive_group] ||= 336142
+
+    if params[:competitive_group]
+      @competitive_group = Entrance::CompetitiveGroup.find(params[:competitive_group])
+
+      unless params[:direction]
+        @direction = @competitive_group.items.first.direction
+        params[:direction] = @direction.id
+      end
+    else
+      params[:direction] ||= 1887
+      @direction = Direction.find(params[:direction])
+    end
 
     params[:form] ||= 11
     @form = EducationForm.find(params[:form])
@@ -237,9 +248,15 @@ class Entrance::CampaignsController < ApplicationController
     params[:payment] ||= 14
     @source = EducationSource.find(params[:payment])
 
-    @applications = @campaign.applications.for_rating.rating(params[:form],
-                                                             params[:payment],
-                                                             params[:direction])
+    if params[:competitive_group]
+      @applications = @competitive_group.items.first.applications.for_rating.rating(params[:form],
+                                                               params[:payment],
+                                                               params[:direction])
+    else
+      @applications = @campaign.applications.for_rating.rating(params[:form],
+                                                               params[:payment],
+                                                               params[:direction])
+    end
   end
 
   def applications_from_filters(opts = { form: true, payment: true, date: false, faculty: false })

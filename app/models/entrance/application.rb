@@ -187,6 +187,7 @@ class Entrance::Application < ActiveRecord::Base
                     else
                       :o_form
                   end
+
     payment_method = case payment
                        when '15'
                          :paid

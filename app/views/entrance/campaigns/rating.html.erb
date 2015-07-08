@@ -9,15 +9,7 @@
       [crimea_rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
         direction: params[:direction], utf8: '✓',
         form: params[:form], payment: params[:payment]),
-        Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name],
-      [rating_entrance_campaign_path(22014,
-                                     direction: params[:direction], utf8: '✓',
-                                     form: params[:form], payment: params[:payment]),
-       Entrance::Campaign.find(22014).name],
-      [rating_entrance_campaign_path(32014,
-                                     direction: params[:direction], utf8: '✓',
-                                     form: params[:form], payment: params[:payment]),
-       Entrance::Campaign.find(32014).name]
+        Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name]
     ], 'campaign', class:  'super-tabs') %>
   </div>
 </div>
@@ -30,7 +22,15 @@
 <%= form_tag rating_entrance_campaign_path(@campaign), method: :get do %>
   <div class="row">
     <div class="col-sm-8">
-      <%= select_tag :direction,
+      <%= select_tag :competitive_group,
+                     options_from_collection_for_select(
+                       @campaign.competitive_groups,
+                       :id, :name, params[:competitive_group]
+                     ),
+                     prompt: 'Все конкурсные группы',
+                     class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+      <%#= select_tag :direction,
                      options_from_collection_for_select(
                        Direction.for_campaign(@campaign),
                        :id, :description, params[:direction]
@@ -60,14 +60,14 @@
 <% end %>
 
 <% if @items && @items.any? %>
-  <% @items.each do |item| %>
+  <% @competitive_group.items.each do |item| %>
     <%
        a_out_of_competition = []
        a_special_rights = []
        a_organization = []
        a_contest_enrolled = []
        a_contest = []
-       item.applications.for_rating.each do |a|
+       @applications.for_rating.each do |a|
          if a.out_of_competition
            a_out_of_competition << a
          else
@@ -87,18 +87,21 @@
          end
        end
 
-       field_payment = item.payed? ? 'paid' : 'budget'
-       field_form = case item.form
-                      when 11 then 'o'
-                      when 12 then 'oz'
-                      when 10 then 'z'
+       field_payment = '15' == params[:payment] ? 'paid' : 'budget'
+       field_form = case params[:form]
+                      when '11' then 'o'
+                      when '12' then 'oz'
+                      when '10' then 'z'
                     end
 
        total_places = item.send("number_#{field_payment}_#{field_form}")
-       total_places += item.send("number_quota_#{field_form}")
-       item.competitive_group.target_organizations.each do |org|
-         org.items.where(direction_id: item.direction_id, education_level_id: item.education_type_id).each do |i|
-           total_places += i.send("number_target_#{field_form}")
+
+       if 'budget' == field_payment
+         total_places += item.send("number_quota_#{field_form}")
+         item.competitive_group.target_organizations.each do |org|
+           org.items.where(direction_id: item.direction_id, education_level_id: item.education_type_id).each do |i|
+             total_places += i.send("number_target_#{field_form}")
+           end
          end
        end
 

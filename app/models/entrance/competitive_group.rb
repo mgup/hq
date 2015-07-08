@@ -14,6 +14,10 @@ class Entrance::CompetitiveGroup < ActiveRecord::Base
 
   belongs_to :campaign, class_name: 'Entrance::Campaign'
 
+  default_scope do
+    order(:name)
+  end
+
   def items_attributes=(attributes)
     attributes.each do |item_hash|
       item = item_hash.second
