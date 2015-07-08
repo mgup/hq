@@ -28,7 +28,7 @@
             <tr>
                 <td class="text-muted">
                   <% if @event.competitive_groups.present? && ee.entrant.applications.actual.find_all { |a| @event.competitive_groups.split(',').map { |c| c.to_i }.include?(a.competitive_group.id) }.any? %>
-                    <%= ee.entrant.applications.find_all { |a| @event.competitive_groups.split(',').map { |c| c.to_i }.include?(a.competitive_group.id) }.first.number %>
+                    <%= ee.entrant.applications.actual.find_all { |a| @event.competitive_groups.split(',').map { |c| c.to_i }.include?(a.competitive_group.id) }.first.number %>
                   <% else %>
                     <%= ee.entrant.packed_application.number %>
                   <% end %>
@@ -54,7 +54,7 @@
    <tr>
      <td class="text-muted">
        <% if @event.competitive_groups.present? && entrant.applications.actual.find_all { |a| @event.competitive_groups.split(',').map { |c| c.to_i }.include?(a.competitive_group.id) } %>
-         <%= entrant.applications.find_all { |a| @event.competitive_groups.split(',').map { |c| c.to_i }.include?(a.competitive_group.id) }.first.number %>
+         <%= entrant.applications.actual.find_all { |a| @event.competitive_groups.split(',').map { |c| c.to_i }.include?(a.competitive_group.id) }.first.number %>
        <% else %>
          <%= entrant.packed_application.number if entrant.packed_application %>
        <% end %>
