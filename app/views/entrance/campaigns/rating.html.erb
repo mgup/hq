@@ -257,7 +257,7 @@
           <strong>
             Доступное количество мест — <span id="remaining_places"><%= remaining_places %></span>
           </strong>
-          <% if item.payed? %>
+          <% if @applications.first.is_payed %>
             <br>
             <% if 193593 == item.competitive_group.id %>
               <div class="alert alert-danger lead">
@@ -278,7 +278,7 @@
         </h3>
       <% end %>
 
-      <% if item.payed? %>
+      <% if @applications.first.is_payed %>
         <div class="alert alert-success">
           Зачисление на места по договорам об образовании производится после
           оформления договора и согласия на зачисление. Оригинал
