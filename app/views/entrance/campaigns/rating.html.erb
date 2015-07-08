@@ -87,11 +87,11 @@
          end
        end
 
-       field_payment = '15' == params[:payment] ? 'paid' : 'budget'
-       field_form = case params[:form]
-                      when '11' then 'o'
-                      when '12' then 'oz'
-                      when '10' then 'z'
+       field_payment = 15 == params[:payment].to_i ? 'paid' : 'budget'
+       field_form = case params[:form].to_i
+                      when 11 then 'o'
+                      when 12 then 'oz'
+                      when 10 then 'z'
                     end
 
        total_places = item.send("number_#{field_payment}_#{field_form}")
