@@ -23,10 +23,16 @@
         </tr>
         </thead>
         <% @event.event_entrants.group_by(&:classroom).each do |classroom, event_entrants| %>
-            <tr><td class="lead" colspan="4">Аудитория <%= classroom.number %></td></tr>
-            <% event_entrants.sort_by{|x| x.entrant.last_name}.each do |ee| %>
+            <tr><td class="lead" colspan="4">Аудитория <%= classroom.present? ? classroom.number : 'XXX' %></td></tr>
+            <% event_entrants.find_all{ |x| x.entrant.present? }.sort_by{|x| x.entrant.last_name}.each do |ee| %>
             <tr>
-                <td class="text-muted"><%= ee.entrant.packed_application.number %></td>
+                <td class="text-muted">
+                  <% if @event.competitive_groups.present? %>
+                    <%= ee.entrant.applications.find_all { |a| @event.competitive_groups.split(',').map { |c| c.to_i }.include?(a.competitive_group.id) }.map { |a| a.number }.join(', ') %>
+                  <% else %>
+                    <%= ee.entrant.packed_application.number %>
+                  <% end %>
+                </td>
                 <td><%= ee.entrant.last_name %></td>
                 <td><%= ee.entrant.first_name %></td>
                 <td><%= ee.entrant.patronym %></td>
