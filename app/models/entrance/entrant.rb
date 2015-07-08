@@ -40,7 +40,7 @@ class Entrance::Entrant < ActiveRecord::Base
 
   # или всё-таки has_many?
   has_one :student, class_name: 'Student', foreign_key: :entrant_id
-  
+
   has_many :achievements, class_name: 'Entrance::Achievement', foreign_key: :entrant_id, dependent: :destroy
   accepts_nested_attributes_for :achievements, allow_destroy: true
 
@@ -88,7 +88,7 @@ class Entrance::Entrant < ActiveRecord::Base
   #   res = super
   #   res.blank? ? ' ' : res
   # end
-  
+
   def is_foreign?
     3 == identity_document_type_id
   end
@@ -155,8 +155,9 @@ class Entrance::Entrant < ActiveRecord::Base
         end
 
         if order_id
-          competitive_group_id = Office::OrderMeta.where(order_meta_order: order_id).where(order_meta_pattern: 'Конкурсная группа').first.order_meta_text.to_i
-          xml << applications.find_all { |a| a.competitive_group.id == competitive_group_id}.first.to_nokogiri.root.to_xml
+          # competitive_group_id = Office::OrderMeta.where(order_meta_order: order_id).where(order_meta_pattern: 'Конкурсная группа').first.order_meta_text.to_i
+          xml << packed_application.to_nokogiri.root.to_xml
+          # xml << applications.find_all { |a| a.competitive_group.id == competitive_group_id }.first.to_nokogiri.root.to_xml
         else
           xml << packed_application.to_nokogiri.root.to_xml
         end
