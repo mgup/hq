@@ -6,7 +6,7 @@
         direction: params[:direction], utf8: '✓',
         form: params[:form], payment: params[:payment]),
        Entrance::Campaign.find(Entrance::Campaign::CURRENT).name],
-      [crimea_rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
+      [rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
         direction: params[:direction], utf8: '✓',
         form: params[:form], payment: params[:payment]),
         Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name]
