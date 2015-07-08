@@ -53,7 +53,11 @@
  <% @event.entrants.each do |entrant| %>
    <tr>
      <td class="text-muted">
-       <%= entrant.packed_application.number if entrant.packed_application %>
+       <% if @event.competitive_groups.present? %>
+         <%= entrant.applications.find_all { |a| @event.competitive_groups.split(',').map { |c| c.to_i }.include?(a.competitive_group.id) }.map { |a| a.number }.join(', ') %>
+       <% else %>
+         <%= entrant.packed_application.number if entrant.packed_application %>
+       <% end %>
      </td>
      <td><%= entrant.last_name %></td>
      <td><%= entrant.first_name %></td>
