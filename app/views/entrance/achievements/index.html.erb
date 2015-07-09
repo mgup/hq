@@ -33,9 +33,10 @@
   <% @achievements.each do |achievement| %>
   <tr>
      <td class="text-muted"><%= achievement.entrant.id %></td>
-     <td><%= achievement.entrant.full_name %>, <%= achievement.document %></td>
+     <td><%= achievement.entrant.full_name %> (<%= achievement.entrant.packed_application ? achievement.entrant.packed_application.number : '<span class="text-danger">нет заявления с пакетом документов</span>'.html_safe %>), <%= achievement.document %></td>
      <% if achievement.score.nil? %>
      <td>
+		 <%= link_to 'Редактировать', edit_entrance_campaign_entrant_path(@campaign, achievement.entrant), class: 'btn btn-danger' %>
 	 <!-- <%= form_for achievement,
 	               url: entrance_campaign_achievements_path(@campaign, achievement),
 	               remote: true,
