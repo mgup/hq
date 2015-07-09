@@ -1,15 +1,19 @@
 module Entrance
   # Отчёт со статистикой платного приёма приёмной кампании.
   class PaidEnrollmentReport < Report
-    attr_reader :generated_at, :campaign, :contracts, :total_sum,
+    attr_reader :generated_at, :campaign_year, :contracts, :total_sum,
                 :expected_for_first_term_sum, :received_for_first_term_sum,
                 :payed_contracts_count
 
-    def initialize(campaign = @campaign)
+    def initialize(campaign_year = @campaign_year)
       @generated_at = Time.now
 
-      @campaign = campaign
-      @contracts = @campaign.contracts
+      @campaign_year = campaign_year
+
+      @contracts = []
+      Entrance::Campaign.where(start_year: campaign_year).each do |campaign|
+        @contracts += campaign.contracts
+      end
 
       @total_sum = 0
       @expected_for_first_term_sum = 0
@@ -26,12 +30,13 @@ module Entrance
       @renderer.image(graph_received_expected_sums)
       @renderer.text('Распределение поступивших платежей по институтам:')
       @renderer.image(graph_received_sums_by_department)
+      contracts_by_competitive_groups
       contracts_by_direction
     end
 
     # Название отчёта.
     def title
-      "#{campaign.name}: статистика платного приёма"
+      "Приём #{campaign_year}: статистика платного приёма"
     end
 
     # Общее количество заключённых договоров о образовании.
@@ -116,6 +121,93 @@ module Entrance
       end
     end
 
+    def contracts_by_competitive_groups
+      @renderer.text('Распределение договоров по конкурсным группам')
+
+      data = [['Конкурсная группа', 'Очная', 'Очно-заочная', 'Заочная']]
+      @grouped_by_department.each do |abbreviation, contracts|
+        # next unless 'ИПИТ' == abbreviation
+
+        data << [{content: "[ #{abbreviation} ]", colspan: 4}]
+
+        by_competitive_group = contracts.group_by do |contract|
+          # contract.application.competitive_group
+          "#{contract.application.competitive_group.items.first.direction.new_code} #{contract.application.competitive_group.name}"
+        end
+
+        # by_speciality = contracts.group_by do |contract|
+        #   contract.student.group.speciality
+        # end
+
+        data_draft = []
+        by_competitive_group.each do |competitive_group_title, contracts|
+          d = [competitive_group_title, [0, 0], [0, 0], [0, 0]]
+          # d = ["#{speciality.new_code} #{speciality.name}", [0, 0], [0, 0], [0, 0]]
+          contracts.each do |contract|
+            case contract.student.group.form
+            when 'fulltime' then d[1][0] += 1
+            when 'semitime' then d[2][0] += 1
+            when 'postal'   then d[3][0] += 1
+            when 'distance' then d[3][0] += 1
+            else fail 'Неизвестная форма обучения.'
+            end
+
+            if contract.paid?
+              case contract.student.group.form
+              when 'fulltime' then d[1][1] += 1
+              when 'semitime' then d[2][1] += 1
+              when 'postal'   then d[3][1] += 1
+              when 'distance' then d[3][1] += 1
+              else fail 'Неизвестная форма обучения.'
+              end
+            end
+          end
+
+          data_draft << d
+        end
+
+        sorted_data = data_draft.sort_by do |row|
+          parts = row[0].split('.')
+          [parts[2][3..-1], parts[0], parts[1]]
+        end
+
+        sorted_data.each do |el|
+          data << [el[0], "#{el[1][0]} (#{el[1][1]})", "#{el[2][0]} (#{el[2][1]})", "#{el[3][0]} (#{el[3][1]})"]
+        end
+
+        # by_speciality.each do |speciality, contracts|
+        #   d = ["#{speciality.new_code} #{speciality.name}", [0, 0], [0, 0], [0, 0]]
+        #   contracts.each do |contract|
+        #     case contract.student.group.form
+        #     when 'fulltime' then d[1][0] += 1
+        #     when 'semitime' then d[2][0] += 1
+        #     when 'postal'   then d[3][0] += 1
+        #     when 'distance' then d[3][0] += 1
+        #     else fail 'Неизвестная форма обучения.'
+        #     end
+        #
+        #     if contract.paid?
+        #       case contract.student.group.form
+        #       when 'fulltime' then d[1][1] += 1
+        #       when 'semitime' then d[2][1] += 1
+        #       when 'postal'   then d[3][1] += 1
+        #       when 'distance' then d[3][1] += 1
+        #       else fail 'Неизвестная форма обучения.'
+        #       end
+        #     end
+        #   end
+        #
+        #   data_draft << d
+        # end
+
+        # data_draft.each do |el|
+        #   data << [el[0], "#{el[1][0]} (#{el[1][1]})", "#{el[2][0]} (#{el[2][1]})", "#{el[3][0]} (#{el[3][1]})"]
+        # end
+      end
+
+      @renderer.table data, column_widths: { 1 => 50, 2 => 60, 3 => 60 }
+    end
+
     def contracts_by_direction
       @renderer.text('Распределение договоров по направлениям')
 
@@ -155,10 +247,18 @@ module Entrance
           data_draft << d
         end
 
-        data_draft.each do |el|
+        sorted_data = data_draft.sort_by do |row|
+          parts = row[0].split('.')
+          [parts[2][3..-1], parts[0], parts[1]]
+        end
+
+        sorted_data.each do |el|
           data << [el[0], "#{el[1][0]} (#{el[1][1]})", "#{el[2][0]} (#{el[2][1]})", "#{el[3][0]} (#{el[3][1]})"]
         end
 
+        # data_draft.each do |el|
+        #   data << [el[0], "#{el[1][0]} (#{el[1][1]})", "#{el[2][0]} (#{el[2][1]})", "#{el[3][0]} (#{el[3][1]})"]
+        # end
       end
 
       @renderer.table data, column_widths: { 1 => 50, 2 => 60, 3 => 60 }

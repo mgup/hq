@@ -203,7 +203,7 @@ class Entrance::CampaignsController < ApplicationController
   # end
 
   def paid_enrollment
-    render_report Entrance::PaidEnrollmentReport.new(@campaign)
+    render_report Entrance::PaidEnrollmentReport.new(Entrance::Campaign::CURRENT)
   end
 
   # Конфликты при проверке ЕГЭ.
