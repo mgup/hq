@@ -91,9 +91,9 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.item :entrance_events, 'Вступительные испытания',
                  entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: Entrance::Campaign.find(Entrance::Campaign::CURRENT).events.first.id)
 
-    # primary.item :entrants_results,
-    #              '<span class="glyphicons inbox"></span> Результаты вступительных испытаний'.html_safe,
-    #              balls_entrance_campaign_path(Entrance::Campaign::CURRENT)
+    primary.item :entrants_results,
+                 '<span class="glyphicons inbox"></span> Результаты вступительных испытаний'.html_safe,
+                 balls_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
     primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
                  entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
