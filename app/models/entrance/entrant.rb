@@ -46,6 +46,7 @@ class Entrance::Entrant < ActiveRecord::Base
 
   scope :aspirants, -> { joins(:edu_document).where('entrance_edu_documents.direction_id IS NOT NULL') }
   scope :from_exam, -> exam_id { joins(:exam_results).where('entrance_exam_results.exam_id = ? AND entrance_exam_results.form = 2', exam_id) }
+  scope :from_achievement_type, -> achievement_type_id { joins(:achievements).where('entrance_achievements.entrance_achievement_type_id = ?', achievement_type_id) }
 
   scope :from_pseries, -> pseries { where(pseries: pseries) }
   scope :from_pnumber, -> pnumber { where(pnumber: pnumber) }

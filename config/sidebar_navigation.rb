@@ -69,6 +69,12 @@ SimpleNavigation::Configuration.run do |navigation|
                      '<span class="glyphicons charts"></span> Результаты вступительных испытаний'.html_safe,
                      results_entrance_campaign_path(Entrance::Campaign::CURRENT)
       end
+      
+      if can?(:manage, Entrance::Achievement)
+        primary.item :entrantce_achievements,
+                     '<span class="glyphicons fire"></span> Индивидуальные достижения'.html_safe,
+                     entrance_campaign_achievements_path(Entrance::Campaign::CURRENT)
+      end
 
       if can?(:statistics, Entrance::Contract)
         primary.item :entrance_contracts_statistics,

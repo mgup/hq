@@ -334,7 +334,8 @@ HQ::Application.routes.draw do
         get 'ratings'
         get 'protocol_permit'
       end
-
+      
+      resources :achievements
       get 'temp_print_all_checks', on: :member
 
       get 'dashboard', on: :member

@@ -296,6 +296,7 @@ class Ability
     can :statistics, Entrance::Contract
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
+    can :manage, Entrance::Achievement
   end
 
   def selection_editor(user)
@@ -313,6 +314,7 @@ class Ability
 
     can :reject, :entrance_applications
     can :create, :entrance_orders
+    can :manage, Entrance::Achievement
   end
 
   def selection_io(user)
