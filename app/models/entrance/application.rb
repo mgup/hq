@@ -439,7 +439,7 @@ class Entrance::Application < ActiveRecord::Base
       student_id = contract.student_id
       save!
     else
-      group = find_group(competitive_group_item, entrant.ioo)
+      group = find_group(competitive_group_item, entrant.ioo, self)
       if group.is_a?(Hash)
         fail "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
       else
@@ -502,7 +502,7 @@ class Entrance::Application < ActiveRecord::Base
             '0' => {
               student_group_group: group.id,
               student_group_yearin: Date.today.year,
-              student_group_tax:  payed? ? Student::PAYMENT_OFF_BUDGET : Student::PAYMENT_BUDGET,
+              student_group_tax:  is_payed ? Student::PAYMENT_OFF_BUDGET : Student::PAYMENT_BUDGET,
               student_group_status: Student::STATUS_ENTRANT,
               student_group_speciality: group.speciality.id,
               student_group_form: group.form,
@@ -519,7 +519,7 @@ class Entrance::Application < ActiveRecord::Base
     order = Office::Order.entrance
     .joins(:metas)
     .where("order_meta.order_meta_pattern = 'Конкурсная группа' && order_meta.order_meta_text = '#{competitive_group_item.competitive_group.id}'").last
-    if order && order.draft?
+    if order && order.draft? && (order.students_in_order.first.student.education_form == matrix_form) && (order.students_in_order.first.student.off_budget? == is_payed)
       order.students_in_order << Office::OrderStudent.create!(
           order_student_student: person.id,
           order_student_student_group_id: person.students.first.id,
@@ -808,21 +808,49 @@ class Entrance::Application < ActiveRecord::Base
     #   false
     # end
   end
+  
+  def matrix_form
+    case education_form_id
+    when 11
+      'fulltime'
+    when 12
+      'semitime'
+    when 10
+      distance ? 'distance' : 'postal'
+    else
+      fail 'Неизвестная форма обучения'
+    end
+  end
+  
+  def matrix_form_number
+    case education_form_id
+    when 11
+      101
+    when 12
+      102
+    when 10
+      distance ? 105 : 103
+    else
+      fail 'Неизвестная форма обучения'
+    end
+  end
 
   private
 
+
   # TODO Переделать и перенести в Group.
-  def find_group(competitive_group_item, ioo)
+  def find_group(competitive_group_item, ioo, application)
     direction = competitive_group_item.direction
 
     specialities = Speciality.from_direction(direction)
+    
     if specialities.any?
       speciality = specialities.first
     else
       speciality = Speciality.find_by_speciality_code(direction.new_code)
     end
 
-    form = ioo ? 105 : competitive_group_item.matrix_form
+    form = application.matrix_form_number   # competitive_group_item.matrix_form
     group = Group.filter(speciality: [speciality.id], form: [form], course: [1]).first if speciality
     if group
       return group

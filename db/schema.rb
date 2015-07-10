@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150708122416) do
+ActiveRecord::Schema.define(version: 20150709121620) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -828,6 +828,7 @@ ActiveRecord::Schema.define(version: 20150708122416) do
     t.integer "entrance_achievement_type_id", limit: 4
     t.string  "document",                     limit: 255
     t.date    "date"
+    t.integer "score",                        limit: 4
   end
 
   create_table "entrance_applications", force: :cascade do |t|

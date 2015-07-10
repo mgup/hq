@@ -1,0 +1,75 @@
+<%= render 'entrance/shared/switch' %>
+
+<div class="page-header">
+  <h1>Баллы за индивидуальные достижения</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <select class="form-control" onchange="document.location = $(this).val();">
+      <% @campaign.achievement_types.each do |a_type| %>
+        <option value="<%= url_for(params.merge(achievement_type_id: a_type.id)) %>"
+                <%= 'selected' if a_type.id == params[:achievement_type_id].to_i %>>
+          <%= a_type.name %>
+        </option>
+      <% end %>
+    </select>
+  </div>
+</div>
+
+<br>
+<%# link_to 'Распечатать',
+            achievements_entrance_campaign_path(
+                    @campaign, params.merge({ format: :pdf })
+            ),
+            target: :blank, class: 'lead' %>
+<br>
+
+<div class="alert alert-warning" style="display: none;">
+  <p>Проверьте правильность введенных баллов</p>
+</div>
+
+<table class="table">
+  <% @achievements.each do |achievement| %>
+  <tr>
+     <td class="text-muted"><%= achievement.entrant.id %></td>
+     <td><%= achievement.entrant.full_name %> (<%= achievement.entrant.packed_application ? achievement.entrant.packed_application.number : '<span class="text-danger">нет заявления с пакетом документов</span>'.html_safe %>), <%= achievement.document %></td>
+     <% if achievement.score.nil? %>
+     <td>
+		 <%= link_to 'Редактировать', edit_entrance_campaign_entrant_path(@campaign, achievement.entrant), class: 'btn btn-danger' %>
+	 <!-- <%= form_for achievement,
+	               url: entrance_campaign_achievements_path(@campaign, achievement),
+	               remote: true,
+	               html: { class: 'form-inline' } do |f| %>
+	    <div class="form-group">
+	      <%= f.text_field :score, class: 'form-control', style: 'width: 50px;' %>
+	    </div>
+	    <button type="submit" class="btn btn-default">
+	      <span class="glyphicons floppy_save"></span>
+	    </button>
+	 <% end %> -->
+     </td>
+     <td></td>
+     <% else %>
+      <td>
+         <span><%= result.score %></span>
+         <div class="editResultFields">
+         <br>
+			<%= form_for achievement,
+				url: entrance_campaign_achievement_path(@campaign, achievement),
+				remote: true,
+				html: { class: 'form-inline' } do |f| %>
+					<div class="form-group">
+					<%= f.text_field :score, class: 'form-control', style: 'width: 50px;' %>
+					</div>
+					  <button type="submit" class="btn btn-default">
+					   	 <span class="glyphicons floppy_save"></span>
+					  </button>
+			<% end %>
+        </div>
+      </td>
+      <td><button class="btn btn-default editResultButton">Редактировать</button></td>
+     <% end %>
+   </tr>
+ <% end %>
+</table>

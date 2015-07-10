@@ -334,7 +334,8 @@ HQ::Application.routes.draw do
         get 'ratings'
         get 'protocol_permit'
       end
-
+      
+      resources :achievements
       get 'temp_print_all_checks', on: :member
 
       get 'dashboard', on: :member
@@ -347,7 +348,7 @@ HQ::Application.routes.draw do
       get 'rating',     on: :member
       get 'crimea_rating',     on: :member
       get 'results',     on: :member
-      # get 'balls',     on: :member
+      get 'balls',     on: :member
       get 'orders', on: :collection
       get 'numbers', on: :collection
 

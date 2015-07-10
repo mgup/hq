@@ -69,6 +69,12 @@ SimpleNavigation::Configuration.run do |navigation|
                      '<span class="glyphicons charts"></span> Результаты вступительных испытаний'.html_safe,
                      results_entrance_campaign_path(Entrance::Campaign::CURRENT)
       end
+      
+      if can?(:manage, Entrance::Achievement)
+        primary.item :entrantce_achievements,
+                     '<span class="glyphicons fire"></span> Индивидуальные достижения'.html_safe,
+                     entrance_campaign_achievements_path(Entrance::Campaign::CURRENT)
+      end
 
       if can?(:statistics, Entrance::Contract)
         primary.item :entrance_contracts_statistics,
@@ -85,18 +91,18 @@ SimpleNavigation::Configuration.run do |navigation|
                    highlights_on: -> { (params[:action] == 'rating' || params[:action] == 'crimea_rating') && params[:controller] == 'entrance/campaigns'}
     end
 
-    primary.item :entrance_dates, 'Сроки проведения',
-                 entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
+    # primary.item :entrance_dates, 'Сроки проведения',
+    #              entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
 
     primary.item :entrance_events, 'Вступительные испытания',
                  entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: Entrance::Campaign.find(Entrance::Campaign::CURRENT).events.first.id)
 
-    # primary.item :entrants_results,
-    #              '<span class="glyphicons inbox"></span> Результаты вступительных испытаний'.html_safe,
-    #              balls_entrance_campaign_path(Entrance::Campaign::CURRENT)
+    primary.item :entrants_results,
+                 '<span class="glyphicons inbox"></span> Результаты вступительных испытаний'.html_safe,
+                 balls_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
-    primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
-                 entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
+    # primary.item :entrance_min_scores, 'Минимальные баллы для вступительных испытаний',
+    #              entrance_campaign_min_scores_path(Entrance::Campaign::CURRENT)
 
     primary.item :education_prices, 'Стоимость обучения', education_prices_path
 
