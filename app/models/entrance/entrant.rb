@@ -82,7 +82,7 @@ class Entrance::Entrant < ActiveRecord::Base
   end
 
   default_scope do
-    order(:last_name, :first_name, :patronym)
+    where(visible: true).order(:last_name, :first_name, :patronym)
   end
 
   # def patronym

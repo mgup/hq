@@ -29,8 +29,17 @@ class Entrance::EntrantsController < ApplicationController
 
   def update
     if @entrant.update(resource_params)
+      if @entrant.visible
       redirect_to entrance_campaign_entrant_applications_path(@campaign, @entrant),
                   notice: 'Информация об абитуриенте успешно изменена.'
+      else
+        @entrant.applications.each do |a|
+          a.update( status_id: 6 )
+          a.save
+        end
+        redirect_to entrance_campaign_entrants_path(@campaign),
+                   notice: 'Вы успешно продали смертную душу.'
+      end
     else
       render action: :edit
     end
@@ -57,7 +66,7 @@ class Entrance::EntrantsController < ApplicationController
       :nationality_type_id, :birthday, :birth_place, :pseries, :pnumber, :pdepartment,
       :pdate, :acountry, :azip, :aregion, :aaddress, :phone, :email, :military_service,
       :foreign_language, :need_hostel, :ioo,
-      :identity_document_type_id, :nationality_type_id,
+      :identity_document_type_id, :nationality_type_id, :visible,
       exam_results_attributes: [:id, :exam_id, :form, :score,
                                 :document, :distance, :_destroy],
       achievements_attributes: [:id, :entrance_achievement_type_id, :document,
