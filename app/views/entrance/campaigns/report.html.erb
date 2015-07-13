@@ -1,43 +1,99 @@
-<%= render 'entrance/shared/switch' %>
+<%#= render 'entrance/shared/switch' %>
 <div class="page-header">
   <h2>
-    Статистика приёма <span class="nowrap">на <%= l Time.now %></span>
-    <small><%= @campaign.name %></small>
+    Статистика приёма <%= @campaign_year %> <span class="nowrap">на <%= l Time.now %></span>
   </h2>
 </div>
 
-<p style="font-size: 1.1em;"><em>
-  Заявлений (из них оригиналов) / Всего мест (из них уже зачислено) / Конкурс по заявлениям (конкурс по оригиналам)
-</em></p>
+<style>
+  table tr td:nth-child(1) {
+    border-right: 2px solid black;
+  }
+  table tr td:nth-child(7) {
+    border-right: 2px solid black;
+  }
+  table tr td:nth-child(13) {
+    border-right: 2px solid black;
+  }
+  table tr td:nth-child(19) {
+    border-right: 2px solid black;
+  }
+  table tr td:nth-child(25) {
+    border-right: 2px solid black;
+  }
 
-<%#= link_to 'Распечатать',
-            report_entrance_campaign_path(
-                    @campaign, params.merge({ format: :xlsx })
-            ), class: 'lead only-screen' %>
+  .vertical th {
+    font-size: 0.5em;
+  }
+</style>
 
 <table class="table table-condensed table-bordered table-striped">
   <thead>
     <tr>
-      <th rowspan="2">Направление</th>
-      <th class="text-center">Бюджет</th>
-      <th colspan="3" class="text-center">Платный приём</th>
+      <th rowspan="3">Конкурсная группа</th>
+      <th colspan="6" class="text-center">Бюджет</th>
+      <th colspan="18" class="text-center">Платный приём</th>
     </tr>
     <tr>
-      <th>Очная</th>
-      <th>Очная</th>
-      <th>Очно-заочная</th>
+      <th colspan="6">Очная</th>
+      <th colspan="6">Очная</th>
+      <th colspan="6">Очно-заочная</th>
+      <th colspan="6">Заочная</th>
+    </tr>
+    <tr class="vertical">
+      <th>Всего заявлений</th>
+      <th>Из них с оригиналами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по оригиналам</th>
+      <th>Всего заявлений</th>
+      <th>Из них с договорами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по договорам</th>
+      <th>Всего заявлений</th>
+      <th>Из них с договорами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по договорам</th>
+      <th>Всего заявлений</th>
+      <th>Из них с договорами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по договорам</th>
     </tr>
   </thead>
-  <% Entrance::Application.report_information(@campaign).each do |f| %>
+  <% @data.each do |row| %>
     <tr>
-      <th colspan="7"><%= f[:faculty] %></th>
+      <td><%= row[0] %></td>
+      <td><%= row[1][0] %></td>
+      <td><%= row[1][1] %></td>
+      <td><%= row[1][2] %></td>
+      <td><%= row[1][3] %></td>
+      <td><%= row[1][4] %></td>
+      <td><%= row[1][5] %></td>
+      <td><%= row[2][0] %></td>
+      <td><%= row[2][1] %></td>
+      <td><%= row[2][2] %></td>
+      <td><%= row[2][3] %></td>
+      <td><%= row[2][4] %></td>
+      <td><%= row[2][5] %></td>
+      <td><%= row[3][0] %></td>
+      <td><%= row[3][1] %></td>
+      <td><%= row[3][2] %></td>
+      <td><%= row[3][3] %></td>
+      <td><%= row[3][4] %></td>
+      <td><%= row[3][5] %></td>
+      <td><%= row[4][0] %></td>
+      <td><%= row[4][1] %></td>
+      <td><%= row[4][2] %></td>
+      <td><%= row[4][3] %></td>
+      <td><%= row[4][4] %></td>
+      <td><%= row[4][5] %></td>
     </tr>
-    <% f[:applications].each do |row| %>
-      <tr>
-        <% row.each do |field| %>
-            <td class="nowrap"><%= field.html_safe %></td>
-        <% end %>
-      </tr>
-    <% end %>
   <% end %>
 </table>

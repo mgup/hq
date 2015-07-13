@@ -147,8 +147,6 @@ GEM
     diff-lcs (1.2.5)
     docile (1.1.5)
     dotenv (1.0.2)
-    dotenv-deployment (0.3.0)
-      dotenv (~> 1.0)
     dotenv-rails (1.0.2)
       dotenv (= 1.0.2)
     erubis (2.7.0)
@@ -444,7 +442,6 @@ DEPENDENCIES
   database_cleaner
   devise
   devise-i18n
-  dotenv-deployment
   dotenv-rails
   factory_girl_rails
   faker
@@ -489,3 +486,6 @@ DEPENDENCIES
   uglifier
   unicode
   vmstat
+
+BUNDLED WITH
+   1.10.5

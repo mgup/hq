@@ -110,11 +110,60 @@ class Entrance::CampaignsController < ApplicationController
       # find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 32014 != a.campaign.id }
 
     respond_to do |format|
-      format.html
-      format.xlsx do
-        response.headers['Content-Disposition'] = 'attachment; filename="' +
-          "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
+      format.html do
+        @campaign_year = Entrance::Campaign::CURRENT
+
+        @applications = []
+        Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
+          @applications += campaign.applications.includes(competitive_group_item: :direction).actual.
+            first(10000)
+        end
+
+        by_competitive_group = @applications.group_by do |application|
+          "#{application.competitive_group.items.first.direction.new_code} #{application.competitive_group.name}"
+        end
+
+        data_draft = []
+        by_competitive_group.each do |competitive_group_title, applications|
+          d = [competitive_group_title, [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+          applications.each do |application|
+            if application.is_payed
+              case application.education_form_id
+              when 11
+                d[2][0] += 1
+                d[2][1] += 1 if application.contract
+                d[2][3] += 1 if application.order_id
+              when 12
+                d[3][0] += 1
+                d[3][1] += 1 if application.contract
+                d[3][3] += 1 if application.order_id
+              when 10
+                d[4][0] += 1
+                d[4][1] += 1 if application.contract
+                d[4][3] += 1 if application.order_id
+              else
+                fail 'Неизвестная форма обучения.'
+              end
+            else
+              d[1][0] += 1
+              d[1][1] += 1 if application.original?
+              d[1][3] += 1 if application.order_id
+            end
+
+          end
+
+          data_draft << d
+        end
+
+        @data = data_draft.sort_by do |row|
+          parts = row[0].split('.')
+          [parts[2][3..(parts[2].index('(')||(parts[2].size+1))-2], parts[0], parts[1], parts[2][3..-1]]
+        end
       end
+      # format.xlsx do
+      #   response.headers['Content-Disposition'] = 'attachment; filename="' +
+      #     "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
+      # end
       format.xml do
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do

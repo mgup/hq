@@ -50,7 +50,6 @@ gem 'jquery-validation-rails'
 # gem 'morpher', github: 'mgup/morpher', branch: :master
 
 gem 'rollbar'
-gem 'dotenv-rails'
 # gem 'tiny_tds'
 gem 'tiny_tds', github: 'rails-sqlserver/tiny_tds'
 # gem 'activerecord-sqlserver-adapter'
@@ -82,7 +81,6 @@ group :development do
   gem 'letter_opener'
   gem 'bullet'
   gem 'meta_request'
-  gem 'dotenv-deployment'
   gem 'inch', require: false
 end
 
@@ -96,6 +94,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'rubocop', require: false
