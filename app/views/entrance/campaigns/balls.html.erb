@@ -9,6 +9,14 @@
                onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/balls?exam=' + $(this).val();)%>
 <br>
 
+<% if [59,61,57,62,58,64].include?(@exam.id) %>
+  <p>
+    К прохождению дальнейших вступительных испытаний (к участию в конкурсе) допускаются поступающие, \
+    набравшие 40 и более баллов по дополнительным вступительным испытаниям.
+  </p>
+  <br>
+<% end %>
+
 <table class="table">
     <% @entrants.each do |entrant| %>
         <% result = entrant.exam_results.internal.by_exam(@exam.id).last.score %>
