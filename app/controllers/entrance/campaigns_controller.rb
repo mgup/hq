@@ -115,17 +115,53 @@ class Entrance::CampaignsController < ApplicationController
 
         @applications = []
         Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
-          @applications += campaign.applications.includes(competitive_group_item: :direction).actual.
-            first(10000)
+          @applications += campaign.applications.includes(competitive_group_item: :direction).actual
+            #.
+            #first(100)
         end
 
-        by_competitive_group = @applications.group_by do |application|
-          "#{application.competitive_group.items.first.direction.new_code} #{application.competitive_group.name}"
+        competitive_group_titles = { o: {}, z: {} }
+
+        by_competitive_group = @applications.group_by do |a|
+          # a.competitive_group
+          title = "#{a.competitive_group.items.first.direction.new_code} #{a.competitive_group.name}"
+
+          case a.education_form_id
+          when 11
+            competitive_group_titles[:o][title] = a.competitive_group.items.first
+          when 12
+            competitive_group_titles[:o][title] = a.competitive_group.items.first
+          when 10
+            competitive_group_titles[:z][title] = a.competitive_group.items.first
+          else
+            fail 'Неизвестная форма обучения.'
+          end
+
+          title
         end
 
         data_draft = []
         by_competitive_group.each do |competitive_group_title, applications|
-          d = [competitive_group_title, [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+          d = [
+            competitive_group_title,
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0]
+          ]
+
+          if competitive_group_titles[:o][competitive_group_title]
+            competitive_group_item = competitive_group_titles[:o][competitive_group_title]
+            d[1][2] = competitive_group_item.total_budget_o + competitive_group_item.number_quota_o
+            d[2][2] = competitive_group_item.total_paid_o
+            d[3][2] = competitive_group_item.total_paid_oz
+          end
+
+          if competitive_group_titles[:z][competitive_group_title]
+            competitive_group_item = competitive_group_titles[:z][competitive_group_title]
+            d[4][2] = competitive_group_item.total_paid_z
+          end
+
           applications.each do |application|
             if application.is_payed
               case application.education_form_id
@@ -149,7 +185,6 @@ class Entrance::CampaignsController < ApplicationController
               d[1][1] += 1 if application.original?
               d[1][3] += 1 if application.order_id
             end
-
           end
 
           data_draft << d
