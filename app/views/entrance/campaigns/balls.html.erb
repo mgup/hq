@@ -4,23 +4,31 @@
   <h2>Результаты внутренних вступительных испытаний</h2>
 </div>
 
-<%= select_tag :list_of_exams, options_from_collection_for_select(@campaign.exams, :id, :name, selected: @exam.id),
+<%= select_tag :list_of_exams, options_from_collection_for_select(@campaign.exams.find_all { |e| e.id != 59 }, :id, :name, selected: @exam.id),
                class: 'form-control', data: {value: @campaign.id},
                onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/balls?exam=' + $(this).val();)%>
 <br>
+
+<% if [59,61,57,62,58,64].include?(@exam.id) %>
+  <p>
+    К прохождению дальнейших вступительных испытаний (к участию в конкурсе) допускаются поступающие,
+    набравшие 40 и более баллов по дополнительным вступительным испытаниям.
+  </p>
+  <br>
+<% end %>
 <% if @exam.visible %>
-<table class="table">
-    <% @entrants.each do |entrant| %>
-        <% result = entrant.exam_results.internal.by_exam(@exam.id).last.score %>
-        <% if result %>
-        <tr>
-            <td class="text-muted"><%= entrant.id %></td>
-            <td><%= entrant.full_name %></td>
-            <td><%= result %></td>
-        </tr>
-        <% else %>
-            <% next %>
+    <table class="table">
+        <% @entrants.each do |entrant| %>
+            <% result = entrant.exam_results.internal.by_exam(@exam.id).last.score %>
+            <% if result %>
+            <tr>
+                <td class="text-muted"><%= entrant.id %></td>
+                <td><%= entrant.full_name %></td>
+                <td><%= result %></td>
+            </tr>
+            <% else %>
+                <% next %>
+            <% end %>
         <% end %>
-    <% end %>
-</table>
+    </table>
 <% end %>

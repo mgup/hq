@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 gem 'rails'
 gem 'mysql2'
 
+gem 'dotenv-rails'
+
 gem 'sass-rails'
 gem 'bootstrap-sass'
 gem 'coffee-rails'
@@ -50,7 +52,6 @@ gem 'jquery-validation-rails'
 # gem 'morpher', github: 'mgup/morpher', branch: :master
 
 gem 'rollbar'
-gem 'dotenv-rails'
 # gem 'tiny_tds'
 gem 'tiny_tds', github: 'rails-sqlserver/tiny_tds'
 # gem 'activerecord-sqlserver-adapter'
@@ -82,7 +83,6 @@ group :development do
   gem 'letter_opener'
   gem 'bullet'
   gem 'meta_request'
-  gem 'dotenv-deployment'
   gem 'inch', require: false
 end
 

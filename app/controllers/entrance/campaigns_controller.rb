@@ -110,11 +110,114 @@ class Entrance::CampaignsController < ApplicationController
       # find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 32014 != a.campaign.id }
 
     respond_to do |format|
-      format.html
-      format.xlsx do
-        response.headers['Content-Disposition'] = 'attachment; filename="' +
-          "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
+      format.html do
+        @campaign_year = Entrance::Campaign::CURRENT
+
+        @applications = []
+        Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
+          @applications += campaign.applications.includes(competitive_group_item: :direction).actual
+            #.
+            #first(100)
+        end
+
+        competitive_group_titles = { o: {}, z: {} }
+
+        by_competitive_group = @applications.group_by do |a|
+          # a.competitive_group
+          title = "#{a.competitive_group.items.first.direction.new_code} #{a.competitive_group.name}"
+
+          case a.education_form_id
+          when 11
+            competitive_group_titles[:o][title] = a.competitive_group.items.first
+          when 12
+            competitive_group_titles[:o][title] = a.competitive_group.items.first
+          when 10
+            competitive_group_titles[:z][title] = a.competitive_group.items.first
+          else
+            fail 'Неизвестная форма обучения.'
+          end
+
+          title
+        end
+
+        data_draft = []
+        by_competitive_group.each do |competitive_group_title, applications|
+          d = [
+            competitive_group_title,
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0]
+          ]
+
+          if competitive_group_titles[:o][competitive_group_title]
+            competitive_group_item = competitive_group_titles[:o][competitive_group_title]
+            d[1][2] = competitive_group_item.total_budget_o + competitive_group_item.number_quota_o
+            d[2][2] = competitive_group_item.total_paid_o
+            d[3][2] = competitive_group_item.total_paid_oz
+          end
+
+          if competitive_group_titles[:z][competitive_group_title]
+            competitive_group_item = competitive_group_titles[:z][competitive_group_title]
+            d[4][2] = competitive_group_item.total_paid_z
+          end
+
+          applications.each do |application|
+            if application.is_payed
+              case application.education_form_id
+              when 11
+                d[2][0] += 1
+                d[2][1] += 1 if application.contract
+                d[2][3] += 1 if application.order_id
+              when 12
+                d[3][0] += 1
+                d[3][1] += 1 if application.contract
+                d[3][3] += 1 if application.order_id
+              when 10
+                d[4][0] += 1
+                d[4][1] += 1 if application.contract
+                d[4][3] += 1 if application.order_id
+              else
+                fail 'Неизвестная форма обучения.'
+              end
+            else
+              d[1][0] += 1
+              d[1][1] += 1 if application.original?
+              d[1][3] += 1 if application.order_id
+            end
+          end
+
+          data_draft << d
+        end
+
+        data_draft.each do |row|
+          if row[1][2] > 0
+            row[1][4] = (1.0 * row[1][0] / row[1][2]).round(2)
+            row[1][5] = (1.0 * row[1][1] / row[1][2]).round(2)
+          end
+          if row[2][2] > 0
+            row[2][4] = (1.0 * row[2][0] / row[2][2]).round(2)
+            row[2][5] = (1.0 * row[2][1] / row[2][2]).round(2)
+          end
+          if row[3][2] > 0
+            row[3][4] = (1.0 * row[3][0] / row[3][2]).round(2)
+            row[3][5] = (1.0 * row[3][1] / row[3][2]).round(2)
+          end
+          if row[4][2] > 0
+            row[4][4] = (1.0 * row[4][0] / row[4][2]).round(2)
+            row[4][5] = (1.0 * row[4][1] / row[4][2]).round(2)
+          end
+        end
+
+        @data = data_draft.sort_by do |row|
+          parts = row[0].split('.')
+          [parts[2][3..(parts[2].rindex('(')||(parts[2].rindex('К'))||(parts[2].size+1))-2], parts[0], parts[1], parts[2][3..-1]]
+        end
       end
+      # format.xlsx do
+      #   response.headers['Content-Disposition'] = 'attachment; filename="' +
+      #     "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
+      # end
       format.xml do
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
