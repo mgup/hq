@@ -77,8 +77,13 @@ class Entrance::Entrant < ActiveRecord::Base
   end
 
   after_update do |entrant|
-    Entrance::Log.create entrant_id: entrant.id, user_id: User.current.id,
-                         comment: 'Обновлена информация об абитуриенте.'
+    if entrant.visible
+      Entrance::Log.create entrant_id: entrant.id, user_id: User.current.id,
+                           comment: 'Обновлена информация об абитуриенте.'
+    else
+      Entrance::Log.create entrant_id: entrant.id, user_id: User.current.id,
+                           comment: 'Абитуриент скрыт.'
+    end
   end
 
   default_scope do

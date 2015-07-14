@@ -9,7 +9,7 @@ class Entrance::ExamsController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:entrance_exam, {}).permit( :id, :campaign_id, :use, :use_subject_id, :name,
+    params.fetch(:entrance_exam, {}).permit( :id, :campaign_id, :use, :use_subject_id, :name, :visible,
                                                 exam_results_attributes: [:id, :entrant_id, :score, :form, :document, :created_at, :updated_at]
     )
   end

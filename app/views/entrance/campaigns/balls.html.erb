@@ -8,7 +8,7 @@
                class: 'form-control', data: {value: @campaign.id},
                onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/balls?exam=' + $(this).val();)%>
 <br>
-
+<% if @exam.visible %>
 <table class="table">
     <% @entrants.each do |entrant| %>
         <% result = entrant.exam_results.internal.by_exam(@exam.id).last.score %>
@@ -23,4 +23,4 @@
         <% end %>
     <% end %>
 </table>
-
+<% end %>
