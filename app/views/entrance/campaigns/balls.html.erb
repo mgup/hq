@@ -16,19 +16,19 @@
   </p>
   <br>
 <% end %>
-
-<table class="table">
-    <% @entrants.each do |entrant| %>
-        <% result = entrant.exam_results.internal.by_exam(@exam.id).last.score %>
-        <% if result %>
-        <tr>
-            <td class="text-muted"><%= entrant.id %></td>
-            <td><%= entrant.full_name %></td>
-            <td><%= result %></td>
-        </tr>
-        <% else %>
-            <% next %>
+<% if @exam.visible %>
+    <table class="table">
+        <% @entrants.each do |entrant| %>
+            <% result = entrant.exam_results.internal.by_exam(@exam.id).last.score %>
+            <% if result %>
+            <tr>
+                <td class="text-muted"><%= entrant.id %></td>
+                <td><%= entrant.full_name %></td>
+                <td><%= result %></td>
+            </tr>
+            <% else %>
+                <% next %>
+            <% end %>
         <% end %>
-    <% end %>
-</table>
-
+    </table>
+<% end %>

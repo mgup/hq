@@ -34,7 +34,7 @@ class Entrance::EntrantsController < ApplicationController
                   notice: 'Информация об абитуриенте успешно изменена.'
       else
         @entrant.applications.each do |a|
-          a.update( status_id: 6 )
+          a.update(status_id: 6)
           a.save
         end
         redirect_to entrance_campaign_entrants_path(@campaign),
