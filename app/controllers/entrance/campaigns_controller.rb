@@ -239,6 +239,23 @@ class Entrance::CampaignsController < ApplicationController
           [@data.map(&:fifth).map(&:first).sum, @data.map(&:fifth).map(&:second).sum, @data.map(&:fifth).map(&:third).sum, @data.map(&:fifth).map(&:fourth).sum, 0, 0]
         ]
 
+        if last_row[1][2] > 0
+          last_row[1][4] = (1.0 * last_row[1][0] / last_row[1][2]).round(2)
+          last_row[1][5] = (1.0 * last_row[1][1] / last_row[1][2]).round(2)
+        end
+        if last_row[2][2] > 0
+          last_row[2][4] = (1.0 * last_row[2][0] / last_row[2][2]).round(2)
+          last_row[2][5] = (1.0 * last_row[2][1] / last_row[2][2]).round(2)
+        end
+        if last_row[3][2] > 0
+          last_row[3][4] = (1.0 * last_row[3][0] / last_row[3][2]).round(2)
+          last_row[3][5] = (1.0 * last_row[3][1] / last_row[3][2]).round(2)
+        end
+        if last_row[4][2] > 0
+          last_row[4][4] = (1.0 * last_row[4][0] / last_row[4][2]).round(2)
+          last_row[4][5] = (1.0 * last_row[4][1] / last_row[4][2]).round(2)
+        end
+
         @data << last_row
       end
       # format.xlsx do
