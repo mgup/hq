@@ -192,7 +192,7 @@ class Entrance::CampaignsController < ApplicationController
 
         @data = data_draft.sort_by do |row|
           parts = row[0].split('.')
-          [parts[2][3..(parts[2].index('(')||(parts[2].size+1))-2], parts[0], parts[1], parts[2][3..-1]]
+          [parts[2][3..(parts[2].rindex('(')||(parts[2].rindex('К'))||(parts[2].size+1))-2], parts[0], parts[1], parts[2][3..-1]]
         end
       end
       # format.xlsx do
