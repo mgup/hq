@@ -4,7 +4,7 @@
   <h2>Результаты внутренних вступительных испытаний</h2>
 </div>
 
-<%= select_tag :list_of_exams, options_from_collection_for_select(@campaign.exams, :id, :name, selected: @exam.id),
+<%= select_tag :list_of_exams, options_from_collection_for_select(@campaign.exams.find_all { |e| e.id != 59 }, :id, :name, selected: @exam.id),
                class: 'form-control', data: {value: @campaign.id},
                onchange: %q(document.location = '/entrance/campaigns/' + $(this).data('value') + '/balls?exam=' + $(this).val();)%>
 <br>
