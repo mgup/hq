@@ -64,7 +64,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     data = []
     positions.each do |p|
     title = Unicode::capitalize(p.title)
-      data << [title, p.user.short_name]
+      data << ["#{title} #{p.department.abbreviation}", p.user.short_name]
     end
 
     pdf.table data, header: true, width: pdf.bounds.width, cell_style: { padding: 7, border_color: 'ffffff' } do
