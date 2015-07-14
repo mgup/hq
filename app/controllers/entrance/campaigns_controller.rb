@@ -190,6 +190,25 @@ class Entrance::CampaignsController < ApplicationController
           data_draft << d
         end
 
+        data_draft.each do |row|
+          if row[1][2] > 0
+            row[1][4] = (1.0 * row[1][0] / row[1][2]).round(2)
+            row[1][5] = (1.0 * row[1][1] / row[1][2]).round(2)
+          end
+          if row[2][2] > 0
+            row[2][4] = (1.0 * row[2][0] / row[2][2]).round(2)
+            row[2][5] = (1.0 * row[2][1] / row[2][2]).round(2)
+          end
+          if row[3][2] > 0
+            row[3][4] = (1.0 * row[3][0] / row[3][2]).round(2)
+            row[3][5] = (1.0 * row[3][1] / row[3][2]).round(2)
+          end
+          if row[4][2] > 0
+            row[4][4] = (1.0 * row[4][0] / row[4][2]).round(2)
+            row[4][5] = (1.0 * row[4][1] / row[4][2]).round(2)
+          end
+        end
+
         @data = data_draft.sort_by do |row|
           parts = row[0].split('.')
           [parts[2][3..(parts[2].rindex('(')||(parts[2].rindex('К'))||(parts[2].size+1))-2], parts[0], parts[1], parts[2][3..-1]]
