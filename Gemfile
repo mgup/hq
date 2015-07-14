@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 gem 'rails'
 gem 'mysql2'
 
+gem 'dotenv-rails'
+
 gem 'sass-rails'
 gem 'bootstrap-sass'
 gem 'coffee-rails'
@@ -94,7 +96,6 @@ group :test do
 end
 
 group :development, :test do
-  gem 'dotenv-rails'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'rubocop', require: false
