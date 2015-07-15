@@ -838,9 +838,6 @@ class Entrance::Application < ActiveRecord::Base
     end
   end
 
-  private
-
-
   # TODO Переделать и перенести в Group.
   def find_group(competitive_group_item, ioo, matrix_form_number)
     direction = competitive_group_item.direction
