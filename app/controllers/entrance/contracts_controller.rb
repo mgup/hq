@@ -11,7 +11,7 @@ class Entrance::ContractsController < ApplicationController
 
   def create
     if @contract.save!
-      group = find_group(@application.competitive_group_item, @entrant.ioo)
+      group = find_group(@application.competitive_group_item, @application)
       if group.is_a?(Hash)
         @contract.destroy
         @notice = "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
@@ -147,7 +147,7 @@ class Entrance::ContractsController < ApplicationController
     )
   end
 
-  def find_group(competitive_group_item, ioo)
+  def find_group(competitive_group_item, application)
     direction = competitive_group_item.direction
 
     specialities = Speciality.from_direction(direction)
@@ -157,7 +157,7 @@ class Entrance::ContractsController < ApplicationController
       speciality = Speciality.where(speciality_code: direction.new_code).first
     end
 
-    form = ioo ? 105 : competitive_group_item.matrix_form
+    form = application.matrix_form_number
     group = Group.filter(speciality: [speciality.id], form: [form], course: [1]).first if speciality
     if group
       return group
