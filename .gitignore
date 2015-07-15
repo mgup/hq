@@ -28,3 +28,5 @@ rspec.html
 .capistrano/
 spec.html
 .DS_Store
+
+matrix.iml

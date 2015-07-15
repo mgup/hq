@@ -1,20 +1,30 @@
 <div class="row">
   <div class="col-sm-12">
     <%= hidden_field_tag :campaign, url_for(params), class: 'hidden-pill-values-no-change', onchange: 'document.location = $(this).val();' %>
-    <%= pill_tabs('campaign', [
-      [rating_entrance_campaign_path(Entrance::Campaign::CURRENT,
-        competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
-        form: params[:form], payment: params[:payment]),
-       Entrance::Campaign.find(Entrance::Campaign::CURRENT).name],
-	   [rating_entrance_campaign_path(Entrance::Campaign::ZAOCHKA,
-	           competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
-	           form: params[:form], payment: params[:payment]),
-	          Entrance::Campaign.find(Entrance::Campaign::ZAOCHKA).name],
-      [rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
-        competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
-        form: params[:form], payment: params[:payment]),
-        Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name]
-    ], 'campaign', class:  'super-tabs') %>
+
+    <% if signed_in? %>
+      <%= pill_tabs('campaign', [
+        [rating_entrance_campaign_path(Entrance::Campaign::CURRENT,
+          competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
+          form: params[:form], payment: params[:payment]),
+         Entrance::Campaign.find(Entrance::Campaign::CURRENT).name],
+       [rating_entrance_campaign_path(Entrance::Campaign::ZAOCHKA,
+               competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
+               form: params[:form], payment: params[:payment]),
+              Entrance::Campaign.find(Entrance::Campaign::ZAOCHKA).name],
+        [rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
+          competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
+          form: params[:form], payment: params[:payment]),
+          Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name]
+      ], 'campaign', class:  'super-tabs') %>
+    <% else %>
+      <%= pill_tabs('campaign', [
+        [rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
+          competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
+          form: params[:form], payment: params[:payment]),
+          Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name]
+      ], 'campaign', class:  'super-tabs') %>
+    <% end %>
   </div>
 </div>
 <br>
@@ -63,7 +73,7 @@
   </div>
 <% end %>
 
-<% if @items && @items.any? %>
+<% if @applications && @applications.any? %>
   <% @competitive_group.items.each do |item| %>
     <%
        a_out_of_competition = []
@@ -71,7 +81,7 @@
        a_organization = []
        a_contest_enrolled = []
        a_contest = []
-       @applications.for_rating.each do |a|
+       @applications.each do |a|
          if a.out_of_competition
            a_out_of_competition << a
          else
@@ -143,6 +153,7 @@
        exam_names = item.competitive_group.test_items.order(:entrance_test_priority).collect do |t|
          t.exam.name
        end
+       exam_names << 'Индивидуальные достижения'
     %>
 
     <% if a_special_rights.any? %>

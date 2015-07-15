@@ -1,8 +1,10 @@
 class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :report]#, if: :format_html?
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :report, :rating]#, if: :format_html?
   load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report]
   load_resource class: 'Entrance::Campaign', only: :results
+
+  before_action :validate_crimea, only: [:rating]
 
   before_action :initialize_default_filters, only: [:dashboard, :rating, :crimea_rating]
 
@@ -16,6 +18,9 @@ class Entrance::CampaignsController < ApplicationController
   #   @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
   # end
 
+  def validate_crimea
+    @campaign = Entrance::Campaign.find(32015) unless signed_in?
+  end
   # Пофамильные списки поступающих (рейтинги).
   def rating
     # if user_signed_in?
@@ -169,7 +174,7 @@ class Entrance::CampaignsController < ApplicationController
 
           if competitive_group_titles[:o][competitive_group_title]
             competitive_group_item = competitive_group_titles[:o][competitive_group_title]
-            d[1][2] = competitive_group_item.total_budget_o + competitive_group_item.number_quota_o
+            d[1][2] = competitive_group_item.total_budget_o
             d[2][2] = competitive_group_item.total_paid_o
             d[3][2] = competitive_group_item.total_paid_oz
           end
@@ -375,7 +380,13 @@ class Entrance::CampaignsController < ApplicationController
 
   # Инициализация фильтров по-умолчанию.
   def initialize_default_filters
-    params[:competitive_group] ||= @campaign.competitive_groups.first.id
+    if params[:competitive_group]
+      unless @campaign.competitive_groups.map { |g| g.id }.include?(params[:competitive_group].to_i)
+        params[:competitive_group] = @campaign.competitive_groups.first.id
+      end
+    else
+      params[:competitive_group] = @campaign.competitive_groups.first.id
+    end
 
     if params[:competitive_group]
       @competitive_group = Entrance::CompetitiveGroup.find(params[:competitive_group])
