@@ -375,7 +375,7 @@ class Entrance::CampaignsController < ApplicationController
 
   # Инициализация фильтров по-умолчанию.
   def initialize_default_filters
-    params[:competitive_group] ||= 336142
+    params[:competitive_group] ||= @campaign.competitive_groups.first.id
 
     if params[:competitive_group]
       @competitive_group = Entrance::CompetitiveGroup.find(params[:competitive_group])
