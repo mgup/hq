@@ -1,10 +1,14 @@
 class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
-  skip_before_action :authenticate_user!, only: [:applications, :balls]
-  load_and_authorize_resource class: 'Entrance::Campaign', except: :results
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :report]#, if: :format_html?
+  load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report]
   load_resource class: 'Entrance::Campaign', only: :results
 
   before_action :initialize_default_filters, only: [:dashboard, :rating, :crimea_rating]
+
+  def format_html?
+    request.format.html?
+  end
 
   # Заявления.
   # def dashboard
@@ -114,28 +118,41 @@ class Entrance::CampaignsController < ApplicationController
         @campaign_year = Entrance::Campaign::CURRENT
 
         @applications = []
-        Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
-          @applications += campaign.applications.includes(competitive_group_item: :direction).actual
-            #.
-            #first(100)
-        end
 
         competitive_group_titles = { o: {}, z: {} }
+
+        Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
+          @applications += campaign.applications.includes(competitive_group_item: :direction).actual#.
+            #first(100)
+
+          campaign.competitive_groups.each do |competitive_group|
+            title = "#{competitive_group.items.first.direction.new_code} #{competitive_group.name}"
+            if competitive_group.items.first.total_budget_o > 0 || competitive_group.items.first.total_paid_o > 0
+              competitive_group_titles[:o][title] = competitive_group.items.first
+            end
+            if competitive_group.items.first.total_budget_oz > 0 || competitive_group.items.first.total_paid_oz > 0
+              competitive_group_titles[:o][title] = competitive_group.items.first
+            end
+            if competitive_group.items.first.total_budget_z > 0 || competitive_group.items.first.total_paid_z > 0
+              competitive_group_titles[:z][title] = competitive_group.items.first
+            end
+          end
+        end
 
         by_competitive_group = @applications.group_by do |a|
           # a.competitive_group
           title = "#{a.competitive_group.items.first.direction.new_code} #{a.competitive_group.name}"
 
-          case a.education_form_id
-          when 11
-            competitive_group_titles[:o][title] = a.competitive_group.items.first
-          when 12
-            competitive_group_titles[:o][title] = a.competitive_group.items.first
-          when 10
-            competitive_group_titles[:z][title] = a.competitive_group.items.first
-          else
-            fail 'Неизвестная форма обучения.'
-          end
+          # case a.education_form_id
+          # when 11
+          #   competitive_group_titles[:o][title] = a.competitive_group.items.first
+          # when 12
+          #   competitive_group_titles[:o][title] = a.competitive_group.items.first
+          # when 10
+          #   competitive_group_titles[:z][title] = a.competitive_group.items.first
+          # else
+          #   fail 'Неизвестная форма обучения.'
+          # end
 
           title
         end
@@ -213,6 +230,33 @@ class Entrance::CampaignsController < ApplicationController
           parts = row[0].split('.')
           [parts[2][3..(parts[2].rindex('(')||(parts[2].rindex('К'))||(parts[2].size+1))-2], parts[0], parts[1], parts[2][3..-1]]
         end
+
+        last_row = [
+          'По всем конкурсным группам',
+          [@data.map(&:second).map(&:first).sum, @data.map(&:second).map(&:second).sum, @data.map(&:second).map(&:third).sum, @data.map(&:second).map(&:fourth).sum, 0, 0],
+          [@data.map(&:third).map(&:first).sum, @data.map(&:third).map(&:second).sum, @data.map(&:third).map(&:third).sum, @data.map(&:third).map(&:fourth).sum, 0, 0],
+          [@data.map(&:fourth).map(&:first).sum, @data.map(&:fourth).map(&:second).sum, @data.map(&:fourth).map(&:third).sum, @data.map(&:fourth).map(&:fourth).sum, 0, 0],
+          [@data.map(&:fifth).map(&:first).sum, @data.map(&:fifth).map(&:second).sum, @data.map(&:fifth).map(&:third).sum, @data.map(&:fifth).map(&:fourth).sum, 0, 0]
+        ]
+
+        if last_row[1][2] > 0
+          last_row[1][4] = (1.0 * last_row[1][0] / last_row[1][2]).round(2)
+          last_row[1][5] = (1.0 * last_row[1][1] / last_row[1][2]).round(2)
+        end
+        if last_row[2][2] > 0
+          last_row[2][4] = (1.0 * last_row[2][0] / last_row[2][2]).round(2)
+          last_row[2][5] = (1.0 * last_row[2][1] / last_row[2][2]).round(2)
+        end
+        if last_row[3][2] > 0
+          last_row[3][4] = (1.0 * last_row[3][0] / last_row[3][2]).round(2)
+          last_row[3][5] = (1.0 * last_row[3][1] / last_row[3][2]).round(2)
+        end
+        if last_row[4][2] > 0
+          last_row[4][4] = (1.0 * last_row[4][0] / last_row[4][2]).round(2)
+          last_row[4][5] = (1.0 * last_row[4][1] / last_row[4][2]).round(2)
+        end
+
+        @data << last_row
       end
       # format.xlsx do
       #   response.headers['Content-Disposition'] = 'attachment; filename="' +
