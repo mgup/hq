@@ -157,6 +157,7 @@ class Entrance::Application < ActiveRecord::Base
     end
     exams
   end
+  end
 
   # Имеющие ЕГЭ (функция названа неверное, потом нужно поправить)
   def only_use?
@@ -442,7 +443,7 @@ class Entrance::Application < ActiveRecord::Base
       student_id = contract.student_id
       save!
     else
-      group = find_group(competitive_group_item, entrant.ioo, self)
+      group = find_group(competitive_group_item, entrant.ioo, application.matrix_form_number)
       if group.is_a?(Hash)
         fail "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
       else
@@ -842,7 +843,7 @@ class Entrance::Application < ActiveRecord::Base
 
 
   # TODO Переделать и перенести в Group.
-  def find_group(competitive_group_item, ioo, application)
+  def find_group(competitive_group_item, ioo, matrix_form_number)
     direction = competitive_group_item.direction
 
     specialities = Speciality.from_direction(direction)
@@ -853,7 +854,8 @@ class Entrance::Application < ActiveRecord::Base
       speciality = Speciality.find_by_speciality_code(direction.new_code)
     end
 
-    form = application.matrix_form_number   # competitive_group_item.matrix_form
+    # form = application.matrix_form_number   # competitive_group_item.matrix_form
+    form = matrix_form_number   # competitive_group_item.matrix_form
     group = Group.filter(speciality: [speciality.id], form: [form], course: [1]).first if speciality
     if group
       return group
