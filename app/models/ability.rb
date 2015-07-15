@@ -357,5 +357,7 @@ class Ability
     can :work, :all_faculties
     # can :update, Achievement
     # can :validate_selection, Achievement
+
+    can :manage, Entrance::Achievement
   end
 end
