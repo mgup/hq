@@ -824,6 +824,23 @@ class Entrance::Application < ActiveRecord::Base
       fail 'Неизвестная форма обучения'
     end
   end
+  
+  def education_form_name
+    case education_form_id
+    when 11
+      'очная'
+    when 12
+      'очно-заочная'
+    when 10
+      'заочная'
+    else
+      fail 'Неизвестная форма обучения'
+    end
+  end
+  
+  def budget_name
+    is_payed ? 'по договорам' : 'бюджетная основа'
+  end
 
   def matrix_form_number
     case education_form_id

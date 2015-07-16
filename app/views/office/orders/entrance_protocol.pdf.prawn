@@ -15,7 +15,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     end
     pdf.move_down 2
     pdf.text "#{@item.direction.new_code} «#{@item.direction.name}»", style: :bold
-    pdf.text "#{@item.form_name} форма обучения, #{@item.budget_name}", style: :bold
+    pdf.text "#{@applications.first.education_form_name} форма обучения, #{@applications.first.budget_name}", style: :bold
 
     pdf.font_size 10 do
       pdf.table [
