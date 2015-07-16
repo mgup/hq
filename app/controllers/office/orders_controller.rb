@@ -40,6 +40,8 @@ class Office::OrdersController < ApplicationController
 
   def entrance_protocol
     @item = @order.competitive_group.items.first if Office::Order.entrance.include? @order
+    @applications = @order.students.map { |s| s.entrant.applications.for_rating.find_all { |a| a.order}.first }
+
     respond_to do |format|
       format.pdf
     end

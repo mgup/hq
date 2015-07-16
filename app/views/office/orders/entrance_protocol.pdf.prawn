@@ -66,7 +66,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     a_organization = []
     a_contest_enrolled = []
     a_contest = []
-    @item.applications.for_rating.each do |a|
+    @applications.each do |a|
       if a.out_of_competition
         a_out_of_competition << a
       else
@@ -116,7 +116,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     a_contest.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each do |ap |
       # if to_enroll > 0
         # Есть места — зачисляем при наличии оригинала
-      if @item.payed?
+      if ap.is_payed
         if ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
           data << ["#{i+1}", ap.number, ap.entrant.full_name]
           ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
