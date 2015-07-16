@@ -819,7 +819,7 @@ class Entrance::Application < ActiveRecord::Base
     when 12
       'semitime'
     when 10
-      distance ? 'distance' : 'postal'
+      ioo ? 'distance' : 'postal'
     else
       fail 'Неизвестная форма обучения'
     end
@@ -832,7 +832,7 @@ class Entrance::Application < ActiveRecord::Base
     when 12
       102
     when 10
-      distance ? 105 : 103
+      ioo ? 105 : 103
     else
       fail 'Неизвестная форма обучения'
     end
