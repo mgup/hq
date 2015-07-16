@@ -391,10 +391,8 @@ class Entrance::CampaignsController < ApplicationController
     if params[:competitive_group]
       @competitive_group = Entrance::CompetitiveGroup.find(params[:competitive_group])
 
-      unless params[:direction]
-        @direction = @competitive_group.items.first.direction
-        params[:direction] = @direction.id
-      end
+      @direction = @competitive_group.items.first.direction
+      params[:direction] = @direction.id
     else
       params[:direction] ||= 1887
       @direction = Direction.find(params[:direction])
