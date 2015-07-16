@@ -51,7 +51,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     data = [['№ п/п', 'Рег. номер', 'ФИО абитуриента']]
     exams.each {|e|  data.first << e}
     data.first << 'Сумма баллов'
-    if @item.payed?
+    if @applications.first.is_payed
       data.first << 'Договор' #<< 'Согласие на зачислении'
     else
       data.first << 'Оригинал документа об образовании'
@@ -86,8 +86,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       end
     end
 
-    field_payment = @item.payed? ? 'paid' : 'budget'
-    field_form = case @item.form
+    field_payment = @applications.first.is_payed ? 'paid' : 'budget'
+    field_form = case @applications.first.education_form_id
                    when 11 then 'o'
                    when 12 then 'oz'
                    when 10 then 'z'
@@ -130,7 +130,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           data << ["#{i+1}", ap.number, ap.entrant.full_name]
           ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
           data.last << ap.abitpoints
-          if @item.payed?
+          if ap.is_payed
             data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           else
             data.last << (ap.original? ? 'да' : 'нет')
