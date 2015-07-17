@@ -30,7 +30,7 @@ module Entrance
       @renderer.image(graph_received_expected_sums)
       @renderer.text('Распределение поступивших платежей по институтам:')
       @renderer.image(graph_received_sums_by_department)
-      @renderer.text('Необходимо оплатить по заключённым договорам (по институтам ):')
+      @renderer.text('Необходимо оплатить по заключённым договорам (по институтам):')
       @renderer.image(graph_received_expected_sums_by_department)
       contracts_by_competitive_groups
       contracts_by_direction
