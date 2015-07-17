@@ -39,6 +39,7 @@ class Entrance::ApplicationsController < ApplicationController
         unless found
           # Эта конкурсная группа подходит.
           if g.items.first.budget?
+            item = g.items.first
             if (item.number_budget_o > 0 || item.number_quota_o > 0)
               @new_applications << @entrant.applications.build(
                 competitive_group_item_id: item.id,
