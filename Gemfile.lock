@@ -57,6 +57,7 @@ GEM
     autoprefixer-rails (5.1.8)
       execjs
       json
+    awesome_print (1.6.1)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -454,6 +455,7 @@ DEPENDENCIES
   ace-rails-ap
   acts_as_xlsx
   airbrussh
+  awesome_print
   axlsx_rails
   barby
   better_errors

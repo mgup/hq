@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'airbrussh', require: false
+gem 'awesome_print', require: 'ap'
 gem 'rails'
 gem 'telegram-bot-ruby'
 gem 'mysql2'
