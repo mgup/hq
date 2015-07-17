@@ -25,7 +25,7 @@ class Entrance::ApplicationsController < ApplicationController
     end
     @new_applications = []
 
-    if @campaign.id == 32014
+    if @campaign.id == 52015
       @campaign.competitive_groups.each do |g|
         found = false
         @entrant.applications.each do |a|
