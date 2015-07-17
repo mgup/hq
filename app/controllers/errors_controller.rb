@@ -11,13 +11,13 @@ class ErrorsController < ApplicationController
 
     text = "#{@exception.to_s}\n"
     text += "#{env['REQUEST_METHOD']}: http://#{env['HTTP_HOST']}#{env['REQUEST_URI']}#{"?#{env['QUERY_STRING']}" if env['QUERY_STRING'].size > 1}\n"
-    if signed_in?
-      text += "#{current_user.full_name} (#{current_user.phone}, #{current_user.email})\n"
-    end
     text += params.inspect
     text += "\n"
     text += @exception.backtrace[0..4].join("\n")
     text += "\n....." if @exception.backtrace.size > 5
+    if signed_in?
+      text += "#{current_user.full_name} (#{current_user.phone}, #{current_user.email})\n"
+    end
 
     require 'telegram/bot'
     Telegram::Bot::Client.run(ENV['TELEGRAM_BOT_TOKEN']) do |bot|
