@@ -58,7 +58,7 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   scope :paid, -> do
-    # where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
+  #where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
 #     where('number_budget_o = 0 AND number_budget_oz = 0 AND number_budget_z = 0').
 #     where('number_quota_o = 0 AND number_quota_oz = 0 AND number_quota_z = 0')
       where(is_payed: true)
