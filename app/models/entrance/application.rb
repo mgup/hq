@@ -140,6 +140,9 @@ class Entrance::Application < ActiveRecord::Base
     competitive_group_item.competitive_group.test_items.collect{|x| x.exam}.each do |exam|
       sum += entrant.exam_results.by_exam(exam.id).last.score if entrant.exam_results.by_exam(exam.id).last.score
     end
+
+    sum += entrant.achievements.map { |a| a.score || 0 }.sum
+
     sum
   end
 
@@ -439,7 +442,7 @@ class Entrance::Application < ActiveRecord::Base
       student_id = contract.student_id
       save!
     else
-      group = find_group(competitive_group_item, entrant.ioo, self)
+      group = find_group(competitive_group_item, entrant.ioo, matrix_form_number)
       if group.is_a?(Hash)
         fail "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
       else
@@ -467,7 +470,7 @@ class Entrance::Application < ActiveRecord::Base
           phone_mobile: entrant.phone,
           residence_address: entrant.aaddress,
           residence_zip: entrant.azip,
-          student_foreign: (3 == entrant.nationality_type_id.to_i),
+          student_foreign: (3 == entrant.identity_document_type_id.to_i),
           army: army,
           last_name_hint: entrant.last_name,
           first_name_hint: entrant.first_name,
@@ -808,7 +811,7 @@ class Entrance::Application < ActiveRecord::Base
     #   false
     # end
   end
-  
+
   def matrix_form
     case education_form_id
     when 11
@@ -816,12 +819,29 @@ class Entrance::Application < ActiveRecord::Base
     when 12
       'semitime'
     when 10
-      distance ? 'distance' : 'postal'
+      entrant.ioo ? 'distance' : 'postal'
     else
       fail 'Неизвестная форма обучения'
     end
   end
   
+  def education_form_name
+    case education_form_id
+    when 11
+      'очная'
+    when 12
+      'очно-заочная'
+    when 10
+      'заочная'
+    else
+      fail 'Неизвестная форма обучения'
+    end
+  end
+  
+  def budget_name
+    is_payed ? 'по договорам' : 'бюджетная основа'
+  end
+
   def matrix_form_number
     case education_form_id
     when 11
@@ -829,28 +849,26 @@ class Entrance::Application < ActiveRecord::Base
     when 12
       102
     when 10
-      distance ? 105 : 103
+      entrant.ioo ? 105 : 103
     else
       fail 'Неизвестная форма обучения'
     end
   end
 
-  private
-
-
   # TODO Переделать и перенести в Group.
-  def find_group(competitive_group_item, ioo, application)
+  def find_group(competitive_group_item, ioo, matrix_form_number)
     direction = competitive_group_item.direction
 
     specialities = Speciality.from_direction(direction)
-    
+
     if specialities.any?
       speciality = specialities.first
     else
       speciality = Speciality.find_by_speciality_code(direction.new_code)
     end
 
-    form = application.matrix_form_number   # competitive_group_item.matrix_form
+    # form = application.matrix_form_number   # competitive_group_item.matrix_form
+    form = matrix_form_number   # competitive_group_item.matrix_form
     group = Group.filter(speciality: [speciality.id], form: [form], course: [1]).first if speciality
     if group
       return group

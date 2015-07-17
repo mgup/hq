@@ -45,3 +45,37 @@ $ ->
       e.preventDefault()
       $('body').find('.alert-warning').show()
       $('body').animate({ scrollTop: $(this).offset().top}, 2000)
+
+  $('.editEntranceAchievement').hide()
+  $('body').on 'click', '.editEntranceAchievementButton', (e) ->
+    e.preventDefault()
+    btn = $(this)
+    btn.parents('tr').find('.editEntranceAchievement').show()
+    btn.text('Сохранить')
+    btn.addClass('btn-success')
+
+    btn.click ->
+      res = parseInt($(this).parent().parent('tr').find('.score').val())
+      if (res >= 0 && res <= parseInt($('#max_ball').val()))
+        $.getJSON $(this).parents('tr').find('form').attr('action'),{
+          'score': res
+        }, (result) ->
+          btn.parents('tr').removeClass('warning')
+          span = btn.parents('tr').find('.editEntranceAchievement').parent().find('span')
+          btn.parents('tr').find('.editEntranceAchievement').parent().find('p').empty()
+          span.empty()
+          span.text(result.score)
+          btn.parents('tr').find('.editEntranceAchievement').hide()
+          td = btn.parent()
+          td.empty()
+          td.html('<button class="btn-default btn editEntranceAchievementButton">Редактировать</button>')
+      else
+        val = $(this).parents('tr').find('.score')
+        val.val(val.attr('value'))
+        $(this).parents('tr').addClass('warning')
+        btn.parents('tr').find('.editEntranceAchievement').hide()
+        btn.parents('tr').find('.editEntranceAchievement').parent().find('span').parent().find('.text-danger').remove()
+        btn.parents('tr').find('.editEntranceAchievement').parent().find('span').parent().append($('<p class="text-danger">Вы пытались ввести некорректное значение</p>'))
+        td = btn.parent()
+        td.empty()
+        td.html('<button class="btn-default btn editEntranceAchievementButton">Редактировать</button>')

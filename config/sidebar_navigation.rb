@@ -32,11 +32,11 @@ SimpleNavigation::Configuration.run do |navigation|
                  '<span class="glyphicons notes_2"></span> Поданные заявления'.html_safe,
                  applications_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
-    if user_signed_in?
-      primary.item :entrance_campaign_report,
-                   '<span class="glyphicons adjust_alt"></span> Статистика'.html_safe,
-                   report_entrance_campaign_path(Entrance::Campaign::CURRENT)
+    primary.item :entrance_campaign_report,
+                 '<span class="glyphicons adjust_alt"></span> Статистика'.html_safe,
+                 report_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
+    if user_signed_in?
       if can?(:register, Entrance::Campaign)
         primary.item :entrance_campaign_register,
                      '<span class="glyphicons notes_2"></span> Регистрационный журнал'.html_safe,
@@ -84,12 +84,12 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     end
 
-    if can?(:manage, Entrance::Entrant)
+    # if can?(:manage, Entrance::Entrant)
       primary.item :rating,
                    '<span class="glyphicons charts"></span> Рейтинги и приказы о зачислении'.html_safe,
                    rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
                    highlights_on: -> { (params[:action] == 'rating' || params[:action] == 'crimea_rating') && params[:controller] == 'entrance/campaigns'}
-    end
+    # end
 
     # primary.item :entrance_dates, 'Сроки проведения',
     #              entrance_campaign_dates_path(Entrance::Campaign::CURRENT)

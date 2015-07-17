@@ -25,13 +25,17 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     pdf.move_down 5
     pdf.font_size 12 do
-      pdf.text "<u>#{@student.person.full_name}</u>"
+      pdf.text "<u>#{@student.person.full_name(:dp)}</u>"
       pdf.text "действительно является студентом <u>#{@student.group.course}</u> курса <u>#{institute.join(' ')}</u>,", inline_format: true
       pdf.move_down 5
       pdf.text '<strong>Московского государственного университета печати имени Ивана Федорова</strong>', inline_format: true
+      pdf.move_down 5
+      @student.orders.each do |order|
+        if order == @student.orders.last
+          pdf.text "Приказ № <u>#{order.number}</u> от <u>#{order.signing_date.strftime('%d.%m.%Y') if order.signing_date}</u>", inline_format: true
+        end
+      end
     end
   end
-
-
 
  end
