@@ -104,7 +104,9 @@ class Entrance::CampaignsController < ApplicationController
       @campaign.exams.each do |exam|
         found = true if exam.id == params[:exam].to_i
       end
-      params[:exam] = @campaign.exams.first.id unless found
+      if @campaign.exams.any?
+        params[:exam] = @campaign.exams.first.id unless found
+      end
     else
       params[:exam] ||= @campaign.exams.first.id
     end
