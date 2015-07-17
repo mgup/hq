@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'airbrussh', require: false
 gem 'rails'
 gem 'telegram-bot-ruby'
 gem 'mysql2'
