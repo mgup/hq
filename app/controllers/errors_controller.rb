@@ -9,10 +9,10 @@ class ErrorsController < ApplicationController
   def error500
     @exception = env['action_dispatch.exception']
 
-    text = "Кажется что-то пошло не так: #{@exception.to_s}\n"
+    text = "#{@exception.to_s}\n"
     text += "#{env['REQUEST_METHOD']}: http://#{env['HTTP_HOST']}#{env['REQUEST_PATH']}#{"?#{env['QUERY_STRING']}" if env['QUERY_STRING'].size > 1}\n"
     if signed_in?
-      text += "Пользователь: #{current_user.full_name} (#{current_user.phone}, #{current_user.email})"
+      text += "#{current_user.full_name} (#{current_user.phone}, #{current_user.email})"
     end
 
     require 'telegram/bot'
