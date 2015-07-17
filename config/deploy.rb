@@ -1,9 +1,5 @@
 # config valid only for Capistrano 3.1
 
-set :rollbar_token, 'c2cbae55b8e543e785d35ea7f72e909b'
-set :rollbar_env, Proc.new { fetch :stage }
-set :rollbar_role, Proc.new { :app }
-
 set :application, 'matrix'
 set :repo_url, 'git@github.com:mgup/hq.git'
 

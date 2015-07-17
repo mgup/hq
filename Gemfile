@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
+
 gem 'rails'
+gem 'telegram-bot-ruby'
 gem 'mysql2'
 
 gem 'dotenv-rails'
@@ -51,10 +53,7 @@ gem 'jquery-validation-rails'
 # В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
 # gem 'morpher', github: 'mgup/morpher', branch: :master
 
-gem 'rollbar'
-# gem 'tiny_tds'
 gem 'tiny_tds', github: 'rails-sqlserver/tiny_tds'
-# gem 'activerecord-sqlserver-adapter'
 
 gem 'httparty'
 gem 'sidekiq'

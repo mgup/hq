@@ -17,23 +17,6 @@ class ApplicationController < ActionController::Base
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
-  # before_filter :authorize_developer
-
-  # unless Rails.application.config.consider_all_requests_local
-  #   rescue_from ActionController::RoutingError,
-  #               ActionController::UnknownController,
-  #               ActionController::InvalidAuthenticityToken,
-  #               ::AbstractController::ActionNotFound,
-  #               ActiveRecord::RecordNotFound, with: lambda { |exception|
-  #     render_error 404, exception
-  #   }
-  #
-  #   rescue_from Exception, with: lambda { |exception|
-  #     Rollbar.report_exception(exception)
-  #     render_error 500, exception
-  #   }
-  # end
-
   before_filter :enable_profiler unless Rails.env.test?
 
   protected
@@ -55,23 +38,5 @@ class ApplicationController < ActionController::Base
 
   def enable_profiler
     Rack::MiniProfiler.authorize_request if can?(:manage, :all)
-  end
-
-  private
-
-  def render_error(status, exception)
-    respond_to do |format|
-      format.html { render template: "application/error_#{status}",
-                           status: status,
-                           locals: { exception: exception, request: request } }
-      format.all { render nothing: true, status: status }
-    end
-  end
-
-  def render_report(report)
-    respond_to do |format|
-      format.html { render inline: report.render(format: :html), layout: true }
-      format.pdf { render body: report.render(format: :pdf) }
-    end
   end
 end
