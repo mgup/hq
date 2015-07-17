@@ -21,6 +21,7 @@ class Entrance::CampaignsController < ApplicationController
   def validate_crimea
     @campaign = Entrance::Campaign.find(32015) unless signed_in?
   end
+
   # Пофамильные списки поступающих (рейтинги).
   def rating
     # if user_signed_in?
