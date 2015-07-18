@@ -19,14 +19,22 @@
         [rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
           competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
           form: params[:form], payment: params[:payment]),
-          Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name]
+          Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name],
+        [rating_entrance_campaign_path(52015,
+          competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
+          form: params[:form], payment: params[:payment]),
+          Entrance::Campaign.find(52015).name]
       ], 'campaign', class:  'super-tabs') %>
     <% else %>
       <%= pill_tabs('campaign', [
         [rating_entrance_campaign_path(Entrance::Campaign::CRIMEA,
           competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
           form: params[:form], payment: params[:payment]),
-          Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name]
+          Entrance::Campaign.find(Entrance::Campaign::CRIMEA).name],
+        [rating_entrance_campaign_path(52015,
+          competitive_group: params[:competitive_group], direction: params[:direction], utf8: '✓',
+          form: params[:form], payment: params[:payment]),
+          Entrance::Campaign.find(52015).name]
       ], 'campaign', class:  'super-tabs') %>
     <% end %>
   </div>

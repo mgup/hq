@@ -511,7 +511,7 @@ class Entrance::Application < ActiveRecord::Base
               student_group_form: group.form,
               student_group_oldgroup: 0,
               student_group_oldstudent: 0,
-              student_group_a_state_line: (32014 == campaign_id ? 1 : 0),
+              student_group_a_state_line: (52015 == campaign_id ? 1 : 0),
               entrant_id: entrant.id
             }
           }

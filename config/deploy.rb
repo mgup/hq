@@ -1,9 +1,5 @@
 # config valid only for Capistrano 3.1
 
-set :rollbar_token, 'c2cbae55b8e543e785d35ea7f72e909b'
-set :rollbar_env, Proc.new { fetch :stage }
-set :rollbar_role, Proc.new { :app }
-
 set :application, 'matrix'
 set :repo_url, 'git@github.com:mgup/hq.git'
 
@@ -15,9 +11,6 @@ set :deploy_to, '/home/matrix/webapps/matrix'
 
 # Default value for :scm is :git
 # set :scm, :git
-
-# Default value for :format is :pretty
-# set :format, :pretty
 
 # Default value for :log_level is :debug
 # set :log_level, :debug
