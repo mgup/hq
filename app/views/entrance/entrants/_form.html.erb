@@ -253,7 +253,7 @@
              ['Призывник', :conscript],
              ['Военнообязанный', :reservist],
              ['Освобождён от воинской обязанности', :free_of_service],
-             ['Не достигший возраста призывника', :too_young]]),
+             ['Не достигший возраста призывника', :too_young]], f.object.military_service),
                      {}, class: 'form-control' %>
       </div>
     </div>
@@ -265,7 +265,7 @@
             [['Английский', :english],
              ['Немецкий', :german],
              ['Французский', :french],
-             ['Испанский', :spanish]]),
+             ['Испанский', :spanish]], f.object.foreign_language),
                      {}, class: 'form-control' %>
       </div>
     </div>
