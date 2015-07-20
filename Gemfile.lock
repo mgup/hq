@@ -522,6 +522,3 @@ DEPENDENCIES
   uglifier
   unicode
   vmstat
-
-BUNDLED WITH
-   1.10.5

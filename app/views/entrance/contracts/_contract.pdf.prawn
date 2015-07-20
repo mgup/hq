@@ -475,11 +475,12 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
     pdf.text 'ИСПОЛНИТЕЛЬ', style: :bold, leading: 5
 
     # pdf.text 'Начальник студенческого отдела кадров'
-      pdf.text 'Проректор по административно-правовой работе и безопасности образовательного процесса'
-      pdf.move_down 10
-      # pdf.text '_____________________ Бутарева Л. Л.',
-      pdf.text '_____________________ Рачинский Д.В.',
-               indent_paragraphs: 15
+    pdf.text 'Проректор по административно-правовой работе и безопасности образовательного процесса'
+    pdf.move_down 10
+    # pdf.text '_____________________ Бутарева Л. Л.',
+    pdf.text '_____________________ Рачинский Д.В.',
+             indent_paragraphs: 15
+
   end
   if @contract.trilateral? || @contract.trilateral_with_organization?
     pdf.bounding_box([170, pdf.bounds.top], width: 160) do

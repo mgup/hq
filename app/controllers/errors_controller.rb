@@ -24,6 +24,8 @@ class ErrorsController < ApplicationController
       bot.api.sendMessage(chat_id: ENV['TELEGRAM_CHAT_ID'], text: text)
     end
 
+    # File.new(Rails.root.join('app', 'assets', 'images', 'stickers', 'sticker_175980787395461189.webp'))
+
     render status: :internal_server_error
   end
 end

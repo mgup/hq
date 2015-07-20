@@ -60,7 +60,7 @@
              <% end %>
              <%= form_for entrant, url: entrance_campaign_entrant_path(@campaign, entrant) do |f| %>
                <%= f.hidden_field :visible, value: false %>
-               <button type="submit" class="btn btn-danger" title="Удалить абитуриента">
+               <button type="submit" class="btn btn-danger" title="Удалить абитуриента" data-confirm="Вы уверены?">
                   <span class="glyphicons remove_2"></span>
                </button>
             <% end %>
