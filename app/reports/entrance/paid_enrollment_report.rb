@@ -12,7 +12,8 @@ module Entrance
 
       @contracts = []
       Entrance::Campaign.where(start_year: campaign_year).each do |campaign|
-        @contracts += campaign.contracts
+        @contracts += campaign.applications.where(is_payed: true).
+          find_all { |a| a.contract }.map{ |a| a.contract }
       end
 
       @total_sum = 0
