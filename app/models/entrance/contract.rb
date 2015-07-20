@@ -5,6 +5,12 @@ class Entrance::Contract < ActiveRecord::Base
 
   belongs_to :application, class_name: 'Entrance::Application'
 
+  after_create do |contract|
+    Entrance::Log.create entrant_id: contract.application.entrant.id,
+                         user_id: User.current.id,
+                         comment: "Оформлен договор #{contract.id}."
+  end
+
   def prices
     EducationPrice.
       for_year(created_at.to_date.year).
