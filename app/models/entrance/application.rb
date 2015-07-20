@@ -58,7 +58,7 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   scope :paid, -> do
-    # where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
+  #where('number_paid_o > 0 OR number_paid_oz > 0 OR number_paid_z > 0').
 #     where('number_budget_o = 0 AND number_budget_oz = 0 AND number_budget_z = 0').
 #     where('number_quota_o = 0 AND number_quota_oz = 0 AND number_quota_z = 0')
       where(is_payed: true)
@@ -511,7 +511,7 @@ class Entrance::Application < ActiveRecord::Base
               student_group_form: group.form,
               student_group_oldgroup: 0,
               student_group_oldstudent: 0,
-              student_group_a_state_line: (32014 == campaign_id ? 1 : 0),
+              student_group_a_state_line: (52015 == campaign_id ? 1 : 0),
               entrant_id: entrant.id
             }
           }

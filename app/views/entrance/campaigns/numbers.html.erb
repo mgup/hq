@@ -43,7 +43,7 @@
             <% payed =  item.second.each_with_object([]){|x,a| a << x if (x.competitive_group.campaign.id == 2014 && x.payed?)}%>
             <% crimea =  item.second.each_with_object([]){|x,a| a << x if x.competitive_group.campaign.id == 12014}%>
             <% extra =  item.second.each_with_object([]){|x,a| a << x if x.competitive_group.campaign.id == 22014}%>
-            <% citizen =  item.second.each_with_object([]){|x,a| a << x if x.competitive_group.campaign.id == 32014}%>
+            <% citizen =  item.second.each_with_object([]){|x,a| a << x if x.competitive_group.campaign.id == 52015}%>
             <% [budget, payed, crimea, extra, citizen].each do |campaign| %>
               <% if campaign.empty? %>
                 <td colspan="3"> – </td>

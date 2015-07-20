@@ -73,7 +73,7 @@
         </td>
         <td> 
           <div class="entrant_contract_buttons" id="contract_for_<%= a.id %>">
-          <% if a.is_payed == true %>
+          <% if a.is_paid == true %>
               <%= render partial: 'entrance/contracts/contract_button', locals: {a: a} %>
           <% end %>
           </div>

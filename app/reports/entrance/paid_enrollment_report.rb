@@ -30,6 +30,8 @@ module Entrance
       @renderer.image(graph_received_expected_sums)
       @renderer.text('Распределение поступивших платежей по институтам:')
       @renderer.image(graph_received_sums_by_department)
+      @renderer.text('Необходимо оплатить по заключённым договорам (по институтам):')
+      @renderer.image(graph_received_expected_sums_by_department)
       contracts_by_competitive_groups
       contracts_by_direction
     end
@@ -64,6 +66,28 @@ module Entrance
       sums = []
       @grouped_by_department.each_with_index do |group, index|
         group_sum = group[1].reduce(0.0) { |a, e| a + e.student.total_payments }
+        sums << group_sum
+
+        g.labels[index] = "#{group[0]}, #{number_to_currency(group_sum)}"
+      end
+      g.data('', sums)
+
+      g.to_png
+    end
+
+    def graph_received_expected_sums_by_department
+      g = Graphs::SideBar.new('800x200')
+
+      @grouped_by_department = @contracts.group_by do |contract|
+        contract.application.department.abbreviation
+      end
+
+      sums = []
+      @grouped_by_department.each_with_index do |group, index|
+        group_sum = group[1].reduce(0.0) do |a, e|
+          a + e.one_time_payment - e.student.total_payments
+        end
+
         sums << group_sum
 
         g.labels[index] = "#{group[0]}, #{number_to_currency(group_sum)}"
