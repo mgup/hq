@@ -130,7 +130,7 @@ class Entrance::CampaignsController < ApplicationController
         competitive_group_titles = { o: {}, z: {} }
 
         Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
-          @applications += campaign.applications.includes(competitive_group_item: :direction).actual.first(100)
+          @applications += campaign.applications.includes(competitive_group_item: :direction).actual#.first(100)
 
           campaign.competitive_groups.each do |competitive_group|
             title = "#{competitive_group.items.first.direction.new_code} #{competitive_group.name}"
