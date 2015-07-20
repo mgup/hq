@@ -18,4 +18,23 @@ class Entrance::AchievementsController < ApplicationController
     @achievements = achievement_type.achievements.joins(:entrant).order('entrance_entrants.last_name', 'entrance_entrants.first_name', 'entrance_entrants.patronym')
   end
   
+  def update
+    @achievement.update(resource_params)
+    respond_to do |format|
+      format.js      
+    end
+  end
+  
+  def ajax_update
+    @achievement.update_attribute(:score, params[:score])
+    render(json: { id: @achievement.id, score: @achievement.score })
+  end
+
+  def resource_params
+    params.fetch(:entrance_achievement, {}).permit(
+      :id, :entrant_id, :entrance_achievement_type_id, :score,
+      :created_at, :updated_at
+    )
+  end
+  
 end  

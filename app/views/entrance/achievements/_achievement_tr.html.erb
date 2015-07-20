@@ -1,45 +1,7 @@
-<%= render 'entrance/shared/switch' %>
-
-<div class="page-header">
-  <h1>Баллы за индивидуальные достижения</h1>
-</div>
-
-
-<div class="row">
-  <div class="col-sm-12">
-    <select class="form-control" onchange="document.location = $(this).val();">
-      <% @campaign.achievement_types.each do |a_type| %>
-        <option value="<%= url_for(params.merge(achievement_type_id: a_type.id)) %>"
-                <%= 'selected' if a_type.id == params[:achievement_type_id].to_i %>>
-          <%= a_type.name %>
-        </option>
-      <% end %>
-    </select>
-  </div>
-</div>
-
-<br>
-<%= hidden_field_tag :max_ball, Entrance::AchievementType.find(params[:achievement_type_id]).max_ball %>
-<h3>Максимальный балл: <%= Entrance::AchievementType.find(params[:achievement_type_id]).max_ball %></h3>
-<%# link_to 'Распечатать',
-            achievements_entrance_campaign_path(
-                    @campaign, params.merge({ format: :pdf })
-            ),
-            target: :blank, class: 'lead' %>
-<br>
-
-<div class="alert alert-warning" style="display: none;">
-  <p>Проверьте правильность введенных баллов</p>
-</div>
-
-<table class="table">
-  <% @achievements.each do |achievement| %>
-  <tr>
      <td class="text-muted"><%= achievement.entrant.id %></td>
      <td><%= achievement.entrant.full_name %> (<%= achievement.entrant.packed_application ? achievement.entrant.packed_application.number : '<span class="text-danger">нет заявления с пакетом документов</span>'.html_safe %>), <%= achievement.document %></td>
      <% if achievement.score.nil? %>
-     <td id="Achievement<%= achievement.id %>" colspan="2">
-	    <span class="result"></span>
+     <td colspan="2">	 
 		<div class="createAchievement">
          <%= form_for achievement,
   	               url: entrance_campaign_achievement_path(@campaign, achievement),
@@ -72,6 +34,3 @@
       </td>
       <td><button class="btn btn-default editEntranceAchievementButton">Редактировать</button></td>
      <% end %>
-   </tr>
- <% end %>
-</table>

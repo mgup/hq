@@ -1,0 +1,3 @@
+$("#Achievement<%= @achievement.id %>").find('span.result').empty();
+$("#Achievement<%= @achievement.id %>").find('span.result').text(<%= @achievement.score %>);
+$("#Achievement<%= @achievement.id %>").find('.createAchievement').hide()

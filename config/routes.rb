@@ -335,7 +335,9 @@ HQ::Application.routes.draw do
         get 'protocol_permit'
       end
       
-      resources :achievements
+      resources :achievements do
+          get 'ajax_update', to: 'achievements#ajax_update', on: :member
+      end
       get 'temp_print_all_checks', on: :member
 
       get 'dashboard', on: :member

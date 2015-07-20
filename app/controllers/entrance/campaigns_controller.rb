@@ -1,8 +1,10 @@
 class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :report]#, if: :format_html?
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :report, :rating]#, if: :format_html?
   load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report]
   load_resource class: 'Entrance::Campaign', only: :results
+
+  before_action :validate_crimea, only: [:rating]
 
   before_action :initialize_default_filters, only: [:dashboard, :rating, :crimea_rating]
 
@@ -15,6 +17,10 @@ class Entrance::CampaignsController < ApplicationController
   #   fail '123'
   #   @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
   # end
+
+  def validate_crimea
+    @campaign = Entrance::Campaign.find(32015) unless signed_in?
+  end
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
@@ -98,7 +104,9 @@ class Entrance::CampaignsController < ApplicationController
       @campaign.exams.each do |exam|
         found = true if exam.id == params[:exam].to_i
       end
-      params[:exam] = @campaign.exams.first.id unless found
+      if @campaign.exams.any?
+        params[:exam] = @campaign.exams.first.id unless found
+      end
     else
       params[:exam] ||= @campaign.exams.first.id
     end
@@ -122,8 +130,7 @@ class Entrance::CampaignsController < ApplicationController
         competitive_group_titles = { o: {}, z: {} }
 
         Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
-          @applications += campaign.applications.includes(competitive_group_item: :direction).actual#.
-            #first(100)
+          @applications += campaign.applications.includes(competitive_group_item: :direction).actual#.first(100)
 
           campaign.competitive_groups.each do |competitive_group|
             title = "#{competitive_group.items.first.direction.new_code} #{competitive_group.name}"
@@ -169,7 +176,7 @@ class Entrance::CampaignsController < ApplicationController
 
           if competitive_group_titles[:o][competitive_group_title]
             competitive_group_item = competitive_group_titles[:o][competitive_group_title]
-            d[1][2] = competitive_group_item.total_budget_o + competitive_group_item.number_quota_o
+            d[1][2] = competitive_group_item.total_budget_o
             d[2][2] = competitive_group_item.total_paid_o
             d[3][2] = competitive_group_item.total_paid_oz
           end
@@ -375,15 +382,19 @@ class Entrance::CampaignsController < ApplicationController
 
   # Инициализация фильтров по-умолчанию.
   def initialize_default_filters
-    params[:competitive_group] ||= 336142
+    if params[:competitive_group]
+      unless @campaign.competitive_groups.map { |g| g.id }.include?(params[:competitive_group].to_i)
+        params[:competitive_group] = @campaign.competitive_groups.first.id
+      end
+    else
+      params[:competitive_group] = @campaign.competitive_groups.first.id
+    end
 
     if params[:competitive_group]
       @competitive_group = Entrance::CompetitiveGroup.find(params[:competitive_group])
 
-      unless params[:direction]
-        @direction = @competitive_group.items.first.direction
-        params[:direction] = @direction.id
-      end
+      @direction = @competitive_group.items.first.direction
+      params[:direction] = @direction.id
     else
       params[:direction] ||= 1887
       @direction = Direction.find(params[:direction])

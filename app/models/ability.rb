@@ -331,6 +331,21 @@ class Ability
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
   end
+  
+  def selection_foreign(user)
+    can :manage, Entrance::Campaign
+    cannot :orders, Entrance::Campaign
+    can :manage,      Entrance::Entrant, identity_document_type_id: 3
+    cannot :destroy,  Entrance::Entrant
+    can :manage, Entrance::ExamResult
+    can :manage, Entrance::Application
+    can :manage, Entrance::EventEntrant
+    can :manage, Entrance::DocumentMovement
+    can :manage, Entrance::Contract
+    can :statistics, Entrance::Contract
+    can :manage, Entrance::UseCheck
+    can :manage, Entrance::UseCheckResult
+  end
 
   def zamestitel_otvetstvennogo_sekretarja(user)
     selection_editor(user)
@@ -357,5 +372,7 @@ class Ability
     can :work, :all_faculties
     # can :update, Achievement
     # can :validate_selection, Achievement
+
+    can :manage, Entrance::Achievement
   end
 end

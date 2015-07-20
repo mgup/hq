@@ -15,7 +15,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     end
     pdf.move_down 2
     pdf.text "#{@item.direction.new_code} «#{@item.direction.name}»", style: :bold
-    pdf.text "#{@item.form_name} форма обучения, #{@item.budget_name}", style: :bold
+    pdf.text "#{@applications.first.education_form_name} форма обучения, #{@applications.first.budget_name}", style: :bold
 
     pdf.font_size 10 do
       pdf.table [
@@ -51,7 +51,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     data = [['№ п/п', 'Рег. номер', 'ФИО абитуриента']]
     exams.each {|e|  data.first << e}
     data.first << 'Сумма баллов'
-    if @item.payed?
+    if @applications.first.is_payed
       data.first << 'Договор' #<< 'Согласие на зачислении'
     else
       data.first << 'Оригинал документа об образовании'
@@ -66,7 +66,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     a_organization = []
     a_contest_enrolled = []
     a_contest = []
-    @item.applications.for_rating.each do |a|
+    @applications.each do |a|
       if a.out_of_competition
         a_out_of_competition << a
       else
@@ -86,8 +86,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       end
     end
 
-    field_payment = @item.payed? ? 'paid' : 'budget'
-    field_form = case @item.form
+    field_payment = @applications.first.is_payed ? 'paid' : 'budget'
+    field_form = case @applications.first.education_form_id
                    when 11 then 'o'
                    when 12 then 'oz'
                    when 10 then 'z'
@@ -116,11 +116,11 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     a_contest.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each do |ap |
       # if to_enroll > 0
         # Есть места — зачисляем при наличии оригинала
-      if @item.payed?
+      if ap.is_payed
         if ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
           data << ["#{i+1}", ap.number, ap.entrant.full_name]
-          ap.abitexams.collect{|x| (@item.direction.aspirant? ? (x.score/20) : x.score) }.each{ |x| data.last << x }
-          data.last << (@item.direction.aspirant? ? (ap.abitpoints/20) : ap.abitpoints)
+          ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
+          data.last <<  ap.abitpoints
           data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           data.last << 'зачислить'
           i += 1
@@ -128,13 +128,13 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       else
         if ap.original? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
           data << ["#{i+1}", ap.number, ap.entrant.full_name]
-          ap.abitexams.collect{|x| (@item.direction.aspirant? ? (x.score/20) : x.score) }.each{ |x| data.last << x }
-          data.last << (@item.direction.aspirant? ? (ap.abitpoints/20) : ap.abitpoints)
-          if @item.payed?
+          ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
+          data.last << ap.abitpoints
+          if ap.is_payed
             data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
           else
             data.last << (ap.original? ? 'да' : 'нет')
-            if ap.campaign_id == 32014
+            if ap.campaign_id == 52015
               data.last << 'гослиния'
             else
               data.last << 'по конкурсу'
