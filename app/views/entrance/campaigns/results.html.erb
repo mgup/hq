@@ -53,21 +53,24 @@
             </tr>
         <% end %>
     </table>
-    <div class="col-sm-4">
-        <%= f.hidden_field :visible, value: true %>
-        <button type="submit" class="btn btn-success" title="Опубликовать">
-            <span>Опубликовать результаты</span>
-        </button>
-    </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3 col-sm-offset-4">
       <%= f.submit 'Внести результаты', class: 'btn btn-primary' %>
     </div>
 <% end %>
-<%= form_for @exam, url: entrance_campaign_exam_path(@campaign, @exam) do |f| %>
-    <div class="col-sm-4">
-      <%= f.hidden_field :visible, value: false %>
-      <button type="submit" class="btn btn-danger" title="Отмена">
-        <span>Отменить публикацию</span>
-      </button>
+
+<div class="row">
+  <p>
+</div>
+<div class="row">
+  <%= form_for @exam, url: entrance_campaign_exam_path(@campaign, @exam) do |e| %>
+    <div class="col-sm-3">
+       <%= e.select :visible, options_for_select(
+                  [['Не опубликовывать', :false],
+                   ['Опубликовать результаты', :true]]),
+                       {}, class: 'form-control' %>
     </div>
-<% end %>
+    <div class="col-sm-4">
+       <%= e.submit 'Подтвердить', class: 'btn btn-danger' %>
+    </div>
+  <% end %>
+</div>
