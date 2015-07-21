@@ -1,0 +1,17 @@
+<%= render 'entrance/shared/switch' %>
+
+<div class="row">
+    <div class="col-sm-6">
+        <%= link_to entrance_campaign_entrants_path(@campaign),
+        class: 'btn btn-lg btn-block btn-primary' do %>
+        <span class="glyphicon glyphicon-list-alt"></span> Список абитуриентов
+        <% end %>
+    </div>
+
+    <div class="col-sm-6">
+        <%= link_to check_entrance_campaign_entrants_path(@campaign),
+                    class: 'btn btn-lg btn-block btn-primary' do %>
+        <span class="glyphicon glyphicon-copy"></span> Добавить абитуриента
+        <% end %>
+    </div>
+</div>
