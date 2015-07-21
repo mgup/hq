@@ -12,6 +12,11 @@ class Entrance::CampaignsController < ApplicationController
     request.format.html?
   end
 
+
+  def choice
+
+  end
+
   # Заявления.
   # def dashboard
   #   fail '123'

@@ -10,6 +10,20 @@ class Entrance::EntrantsController < ApplicationController
     @entrant.build_edu_document
   end
 
+  def check
+    if params[:number]
+      @entrant = @entrants.from_pnumber(params[:number]).from_pseries(params[:series])
+
+      if @entrant.any?
+        if @entrant.length == 1
+          redirect_to entrance_campaign_entrant_applications_path(@campaign, @entrant.first)
+        end
+      else
+        redirect_to new_entrance_campaign_entrant_path(@campaign)
+      end
+    end
+  end
+
   def create
     if @entrant.save
       @entrant.update(

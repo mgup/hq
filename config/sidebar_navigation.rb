@@ -54,7 +54,7 @@ SimpleNavigation::Configuration.run do |navigation|
         #              dashboard_entrance_campaign_path(Entrance::Campaign::CURRENT)
 
         primary.item :new_entrance_application, 'Абитуриенты',
-                     entrance_campaign_entrants_path(Entrance::Campaign::CURRENT)
+                     choice_entrance_campaign_path(Entrance::Campaign::CURRENT)
       end
 
       # primary.item :new_entrants_results,

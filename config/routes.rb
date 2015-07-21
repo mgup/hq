@@ -333,6 +333,7 @@ HQ::Application.routes.draw do
         get 'conflicts'
         get 'ratings'
         get 'protocol_permit'
+        get 'choice'
       end
       
       resources :achievements do
@@ -368,6 +369,7 @@ HQ::Application.routes.draw do
       resources :entrants do
         get 'history', on: :member
         get 'events', on: :member
+        get 'check', on: :collection
         resources :exam_results
         resources :checks do
           get 'show.pdf', to: 'checks#show', on: :member, defaults: { format: 'pdf' }, as: :print
