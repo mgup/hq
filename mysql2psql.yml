@@ -3,12 +3,13 @@ mysql:
  port: 3306
  socket: /tmp/mysql.sock
  username: root
- password:
+ password: matrix!
+ pass: matrix!
  database: matrix
 
 destination:
  # if file is given, output goes to file, else postgres
- file: 
+ file:
  postgres:
   hostname: localhost
   port: 5432
