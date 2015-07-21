@@ -1,0 +1,42 @@
+<div class="page-header">
+    <h1>
+        Проверка информации о новом абитуриенте
+        <small class="nowrap"><%= @campaign.name %></small>
+    </h1>
+</div>
+
+<%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+  <div class="form-group">
+      <div class="col-sm-4">
+          <%= text_field_tag :series, params[:series], class: 'form-control', placeholder: 'Серия' %>
+      </div>
+      <div class="col-sm-4">
+          <%= text_field_tag :number, params[:number], class: 'form-control', placeholder: 'Номер' %>
+      </div>
+      <div class="col-sm-2">
+          <%= submit_tag 'Поиск', class: 'btn btn-info form-control' %>
+      </div>
+  </div>
+<% end %>
+
+<% if @entrant && @entrant.any? %>
+  <p class="alert alert-danger">Было найдено несколько абитуриентов, возможно, необходимо удалить дубликат.</p>
+  <table class="table">
+  <% @entrant.each do |entrant| %>
+   <tr>
+       <td class="text-muted"><%= entrant.id %></td>
+       <td><%= entrant.full_name %></td>
+       <td><%= [entrant.pseries, entrant.pnumber].join(' ') %></td>
+       <td>
+           <%= link_to entrance_campaign_entrant_applications_path(@campaign, entrant) do %>
+             <%= entrant.applications.without_called_back.count %>
+             <%= Russian::p(entrant.applications.without_called_back.count,
+                            'заявление',
+                            'заявления',
+                            'заявлений') %>
+           <% end %>
+       </td>
+   </tr>
+  <% end %>
+  </table>
+<% end %>
