@@ -11,7 +11,7 @@ class Entrance::EntrantsController < ApplicationController
   end
 
   def check
-    if params[:number]
+    if params[:number] && params[:number] != ''
       @entrant = @entrants.from_pnumber(params[:number]).from_pseries(params[:series])
 
       if @entrant.any?
