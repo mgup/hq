@@ -1,25 +1,23 @@
 <%= form_for @review, html: { class: 'form-horizontal' } do |f| %>
-
     <div class="row">
       <%= f.label :number_review, 'Номер рецензии', class: 'col col-lg-2 control-label' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :number_review, class: 'form-control' %>
         <span class="help-block">
-
-    </span>
+        </span>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :date_registration, 'Дата регистрации', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
-      <%= f.label :status, 'Cтатус', class: 'control-label col col-sm-2' %>
-      <div class='col col-sm-2'>
+      <%= f.label :status, 'Статус', class: 'control-label col col-sm-2' %>
+      <div class='col col-sm-10'>
         <% stat = [] %>
         <% [{type: 'обработка', key:  'обработка'}, {type: 'завершен', key: 'завершен'},{type: 'истек', key: 'истек'} ].each do |fin| %>
             <% stat << (OpenStruct.new fin) %>
@@ -30,27 +28,24 @@
 
     <div class="row">
       <%= f.label :contract_number, 'Номер договора', class: 'col col-lg-2 control-label' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :contract_number, class: 'form-control' %>
         <span class="help-block">
 
-    </span>
-      </div>
-    </div>
-
-    <div class="row">
-      <%= f.label :contract_date, 'Дата договора', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
-        <%= f.text_field :contract_date, value: (f.object.contract_date ? l(f.object.contract_date, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
-        <span class="help-block">
-          <%= f.label :contact_date, 'обязательное поле' %>
         </span>
       </div>
     </div>
 
     <div class="row">
+      <%= f.label :contract_date, 'Дата договора', class: 'control-label col col-sm-2' %>
+      <div class="col col-sm-10">
+        <%= f.text_field :contract_date, value: (f.object.contract_date ? l(f.object.contract_date, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
+      </div>
+    </div>
+
+    <div class="row">
       <%= f.label :ordt, 'Заказчик', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <% ordtt = [] %>
         <% [{type: 'физ.лицо', key:  'физ'}, {type: 'юр.лицо', key: 'юр'}].each do |fin| %>
             <% ordtt << (OpenStruct.new fin) %>
@@ -61,11 +56,8 @@
 
     <div class="row">
       <%= f.label :author, 'Автор', class: 'col col-lg-2 control-label' %>
-      <div class="col col-sm-6">
+      <div class="col col-sm-10">
         <%= f.text_field :author, class: 'form-control' %>
-        <span class="help-block">
-
-      </span>
       </div>
     </div>
 
@@ -78,41 +70,29 @@
 
     <div class="row">
       <%= f.label :title, 'Название пособия', class: 'col col-lg-2 control-label'%>
-      <div class="col col-sm-6">
+      <div class="col col-sm-10">
         <%= f.text_field :title,  class: 'form-control' %>
-        <span class="help-block">
-
-        </span>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :sheet_number, 'Количество авторских листов', class: 'col col-lg-2 control-label' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :sheet_number, placeholder: 'Пример, 4.52', class: 'form-control' %>
-        <span class="help-block">
-
-        </span>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :total_cost, 'Общая стоимость', class: 'col col-lg-2 control-label' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :total_cost, placeholder: 'Пример, 4.52', class: 'form-control' %>
-        <span class="help-block">
-
-        </span>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :cost, 'Стоимость рецензии', class: 'col col-lg-2 control-label' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :cost, placeholder: 'Пример, 4.52', class: 'form-control' %>
-        <span class="help-block">
-
-        </span>
       </div>
     </div>
 
@@ -125,14 +105,14 @@
 
     <div class="row">
       <%= f.label :auth_contract_number, 'Договор с уполн. вузом', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :auth_contract_number, class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :evaluation, 'Тип отзыва', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <% eval = [] %>
         <% [{type: '+', key:  '+'}, {type: '-', key: '-'}, {type: 'нет', key: 'неопр'}].each do |fin| %>
             <% eval << (OpenStruct.new fin) %>
@@ -143,35 +123,35 @@
 
     <div class="row">
       <%= f.label :date_auth_university, 'Дата отправки в уполн. вуз', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :date_auth_university, value: (f.object.date_auth_university ? l(f.object.date_auth_university, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :date_auth_contract, 'Дата отправки авторского договора', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :date_auth_contract, value: (f.object.date_auth_contract ? l(f.object.date_auth_contract, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :date_review, 'Дата отправки рецензии', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :date_review, value: (f.object.date_review ? l(f.object.date_review, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :date_accounting, 'Дата отправки бухгалтерских документов', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <%= f.text_field :date_accounting, value: (f.object.date_accounting ? l(f.object.date_accounting, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
       </div>
     </div>
 
     <div class="row">
       <%= f.label :paid, 'Оплачено', class: 'control-label col col-sm-2' %>
-      <div class="col col-sm-2">
+      <div class="col col-sm-10">
         <% paidd= [] %>
         <% [{type: 'да', key:  'да'}, {type: 'нет', key: 'нет'}].each do |fin| %>
             <% paidd << (OpenStruct.new fin) %>
@@ -182,11 +162,8 @@
 
     <div class="row">
       <%= f.label :note, 'Примечание', class: 'col col-lg-2 control-label' %>
-      <div class="col col-sm-6">
+      <div class="col col-sm-10">
         <%= f.text_field :note, class: 'form-control' %>
-        <span class="help-block">
-
-    </span>
       </div>
     </div>
 
@@ -198,3 +175,16 @@
       </div>
     </div>
 <%end%>
+
+<script>
+    $('form').validate({
+        rules: {
+            "review[contract_date]": {required: true}
+        },
+        messages: {
+            "review[contract_date]": {
+                required: 'Поле не должно быть пустым!'
+            }
+        }
+    });
+</script>
