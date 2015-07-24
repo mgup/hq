@@ -105,7 +105,7 @@ class Library::CardsController < ApplicationController
   private
 
   def connect_to_db
-    @client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'], dataserver: '192.168.200.211:1444', database: '[Lib]')
+    @client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'], dataserver: '192.168.200.211:1444', database: '[Lib19]')
   end
 
 end
