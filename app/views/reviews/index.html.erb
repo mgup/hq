@@ -27,62 +27,79 @@
     </div>
   <% end %>
 </div>
-<div class="row"><h3>Последние контракты</h3>
-</div>
-<table class="table table-condensed">
-  <thead>
-  <tr>
-    <th>№ рец</th>
-    <th>Дата регистрации</th>
-    <th>№ договора</th>
-    <th>Дата договора</th>
-    <th>Тип заказа</th>
-    <th>Автор</th>
-    <th>Учебное заведение</th>
-    <th>Название пособия</th>
-    <th>Общая стоимость</th>
-    <th>Стоимость рецензии</th>
-    <th>Уполн. вуз</th>
-    <th>Дата отправки в вуз</th>
-    <th>Тип отзыва</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-      <%= render partial: 'rows_1' %>
-  </tbody>
-</table>
-<div class="row"><h3>Список всех рецензий</h3>
-</div>
-<table class="table table-condensed">
-  <thead>
-  <tr>
-    <th>№ рец</th>
-    <th>Дата регистрации</th>
-    <th>№ договора</th>
-    <th>Дата договора</th>
-    <th>Тип заказа</th>
-    <th>Автор</th>
-    <th>Учебное заведение</th>
-    <th>Название пособия</th>
-    <th>Общая стоимость</th>
-    <th>Стоимость рецензии</th>
-    <th>Уполн. вуз</th>
-    <th>Дата отправки в вуз</th>
-    <th>Тип отзыва</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <%= render partial: 'rows' %>
-  </tbody>
-</table>
-<div>
-  <%= paginate_with_info @reviews_page %>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#panel1">Последние</a></li>
+  <li><a data-toggle="tab" href="#panel2">Все</a></li>
+</ul>
+<div class="tab-content">
+  <div id="panel1" class="tab-pane fade in active">
+    <div class="row">
+      <h3>Последние контракты</h3>
+    </div>
+    <div class="row">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>№ рец</th>
+          <th>Дата регистрации</th>
+          <th>№ договора</th>
+          <th>Дата договора</th>
+          <th>Тип заказа</th>
+          <th>Автор</th>
+          <th>Учебное заведение</th>
+          <th>Название пособия</th>
+          <th>Общая стоимость</th>
+          <th>Стоимость рецензии</th>
+          <th>Уполн. вуз</th>
+          <th>Дата отправки в вуз</th>
+          <th>Тип отзыва</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: 'rows_1' %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="panel2" class="tab-pane fade">
+    <div class="row">
+      <h3>Список всех рецензий</h3>
+    </div>
+    <div class="row">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>№ рец</th>
+          <th>Дата регистрации</th>
+          <th>№ договора</th>
+          <th>Дата договора</th>
+          <th>Тип заказа</th>
+          <th>Автор</th>
+          <th>Учебное заведение</th>
+          <th>Название пособия</th>
+          <th>Общая стоимость</th>
+          <th>Стоимость рецензии</th>
+          <th>Уполн. вуз</th>
+          <th>Дата отправки в вуз</th>
+          <th>Тип отзыва</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: 'rows' %>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <%= paginate_with_info @reviews_page %>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->

@@ -9,7 +9,6 @@ HQ::Application.routes.draw do
 
   resources :universities
   resources :reviews
-  get 'reviews/index'
   get 'review/search_result' => 'reviews#search_results', as: :search_results
 
   resources :phonebook

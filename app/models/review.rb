@@ -2,6 +2,7 @@ class Review < ActiveRecord::Base
   belongs_to :appointment # связь с должностями
   belongs_to :university, foreign_key: :university_id
   belongs_to :university_author, class_name: University, foreign_key: :university_auth_id
+  validates :date_registration, presence: { message: 'не может быть пустым!'}
 
   enum status: { обработка: 0, завершен: 1, истек: 2 } # статус рецензии
 
