@@ -1,0 +1,145 @@
+<%= render 'entrance/shared/switch' %>
+
+<div class="page-header">
+    <h1>Проверка адресов</h1>
+</div>
+
+<% @campaign.entrants.each do |entrant| %>
+<div id="address_<%= entrant.id %>" class ="jumbotron">
+    <h3><%= entrant.full_name %></h3>
+    <div class="field">
+        <input data-value="<%= entrant.id %>" class="address form-control" type="text" placeholder="Адрес" value="<%= entrant.aaddress %>">
+        <button class="btn btn-default checkAddress">
+            <span class="glyphicon glyphicon-map-marker"></span>
+        </button>
+    </div>
+
+    <div class="addition">
+        <div class="block">
+            <ul class="js-log">
+                <%= form_for entrant, url: entrance_campaign_entrant_path(@campaign, entrant) do |f| %>
+                  <div class="form-group">
+                      <%= f.label :azip, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :azip, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <%= f.label :registration_country_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_country_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_country_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_region_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_region_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_region_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_district_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_district_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_district_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_city_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_city_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_city_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_city_area_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_city_area_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_city_area_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_place_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_place_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_place_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_street_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_street_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_street_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_extra_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_extra_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_extra_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_child_extra_name, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_child_extra_name, class: 'form-control' %>
+                      </div>
+                  </div>
+                  <%= f.hidden_field :registration_child_extra_code %>
+
+                  <div class="form-group">
+                      <%= f.label :registration_house, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_house, class: 'form-control' %>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <%= f.label :registration_building, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_building, class: 'form-control' %>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <%= f.label :registration_corp, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_corp, class: 'form-control' %>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <%= f.label :registration_flat, class: 'col-sm-4 control-label' %>
+                      <div class="col-sm-8">
+                          <%= f.text_field :registration_flat, class: 'form-control' %>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicons"></span> Сохранить
+                    </button>
+                  </div>
+                <% end %>
+                <li class="id" style="display: none;"><span class="name">Код:</span> <span class="value"></span></li>
+                <li class="zip" style="display: none;"><span class="name">Почтовый индекс:</span> <span class="value"></span></li>
+                <li class="name" style="display: none;"><span class="name">Название:</span> <span class="value"></span></li>
+                <li class="fullName" style="display: none;"><span class="name">Полное название:</span> <span class="value"></span>
+                <li class="type" style="display: none;"><span class="name">Подпись:</span> <span class="value"></span></li>
+                <li class="typeShort" style="display: none;"><span class="name">Подпись коротко:</span> <span class="value"></span></li>
+                <li class="contentType" style="display: none;"><span class="name">Тип объекта:</span> <span class="value"></span>
+                <li class="okato" style="display: none;"><span class="name">ОКАТО:</span> <span class="value"></span>
+            </ul>
+        </div>
+    </div>
+</div>
+<% end %>

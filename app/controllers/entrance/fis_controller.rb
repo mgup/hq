@@ -19,6 +19,10 @@ class Entrance::FisController < ApplicationController
       end
     end
 
+    def kladr
+      @entrants = @campaign.entrants
+    end
+
     # http = Net::HTTP.new(ENV['FIS_HOST'], port: ENV['FIS_PORT'])
     # @response = http.post('/import/ImportService.svc/dictionarydetails', doc)
 

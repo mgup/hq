@@ -398,6 +398,7 @@ HQ::Application.routes.draw do
       post 'fis/check'   => 'fis#check'
 
       get 'fis/test'  => 'fis#test'
+      get 'fis/kladr' => 'fis#kladr'
     end
 
     resources :document_movements
