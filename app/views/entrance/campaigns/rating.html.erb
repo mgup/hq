@@ -210,7 +210,8 @@
           </tr>
         <% end %>
       </table>
-      <% remaining_places -= (a_special_rights.size > item.number_quota_o ? item.number_quota_o : a_special_rights.size) %>
+      <%# remaining_places -= (a_special_rights.size > item.number_quota_o ? item.number_quota_o : a_special_rights.size) %>
+      <% remaining_places -= item.number_quota_o %>
     <% end %>
 
     <% if a_organization.any? %>
@@ -242,7 +243,8 @@
             </tr>
           <% end %>
         </table>
-        <% remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size) %>
+        <%# remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size) %>
+        <% remaining_places -= target_item.number_target_o %>
       <% end %>
     <% end %>
 
