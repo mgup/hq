@@ -1,11 +1,11 @@
 <td class="nowrap"><%= a.number %></td>
 <td><%= a.entrant.full_name %></td>
 <td><%= a.benefits.first.temp_text %></td>
-<td class="nowrap">
-    <% if a.order && a.order.signing_date %>
+<!--<td class="nowrap">-->
+    <!--<% if a.order && a.order.signing_date %>-->
       № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
-    <% end %>
-</td>
+    <!--<% end %>-->
+<!--</td>-->
 <% if can?(:manage, Entrance::Application) %>
   <td>
       <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
