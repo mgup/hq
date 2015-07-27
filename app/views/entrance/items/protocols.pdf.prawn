@@ -94,8 +94,6 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
             pdf.table data, width: pdf.bounds.width, column_widths: column_widths
           end
         end
-
-        break
       end
     end
   end
