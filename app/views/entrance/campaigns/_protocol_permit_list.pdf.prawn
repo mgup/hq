@@ -146,7 +146,8 @@ item = group.items.first
       pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
       pdf.move_down 40
 
-      remaining_places -= (a_special_rights.size > group.items.first.number_quota_o ? group.items.first.number_quota_o : a_special_rights.size)
+      #remaining_places -= (a_special_rights.size > group.items.first.number_quota_o ? group.items.first.number_quota_o : a_special_rights.size)
+      remaining_places -= group.items.first.number_quota_o
     end
 
     if a_organization.any?
@@ -165,7 +166,8 @@ item = group.items.first
         pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
         pdf.move_down 40
 
-        remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size)
+        #remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size)
+        remaining_places -= target_item.number_target_o
       end
     end
 
