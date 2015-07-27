@@ -6,15 +6,17 @@ item = group.items.first
     pdf.start_new_page if key
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
-    pdf.text 'о допуске к участию в конкурсе', style: :bold, align: :center
+    pdf.text 'о допуска к участию в конкурсе', style: :bold, align: :center
 
     if 12015 == @campaign.id
       date = '13 июля'
-    elsif 18 == applications.first.education_type_id
+    elsif 18 == applications.first.education_form_id
       date = '17 июля'
     else
       date = '25 июля'
     end
+
+    date = '27 июля'
 
     pdf.table [['№ __________________', "от #{date} 2015 г."]], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
       column(0).width = 600
@@ -28,7 +30,7 @@ item = group.items.first
                   ['Председатель приемной комиссии', 'Антипов К.В.', '____________________________'],
                   ['Зам. председателя приемной комиссии', 'Маркелова Т.В.', '____________________________'],
                   ['Зам. председателя по приему в аспирантуру', 'Назаров В.Г.', '____________________________'],
-                  ['Зам. председателя по учету индивидуальных достижений', 'Рачинский Д.В.', '____________________________'],
+                  ['Проректор по АПР и БОП', 'Рачинский Д.В.', '____________________________'],
                   ['Ответственный секретарь', 'Хохлогорская Е.Л.', '____________________________'],
                   ['Заместитель ответственного секретаря по бюджетному приему', 'Боцман Ю.Ю.', '____________________________'],
                   ['Заместитель ответственного секретаря по приему в аспирантуру', 'Ситникова Т.А.', '____________________________'],
@@ -136,9 +138,9 @@ item = group.items.first
       pdf.text "Доступное количество мест — #{group.items.first.number_quota_o}",
                style: :bold, size: 10
 
-      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
+      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
       a_special_rights.each_with_index do |a, i|
-        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
       end
 
       pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
@@ -155,9 +157,9 @@ item = group.items.first
         pdf.text "Доступное количество мест — #{target_item.number_target_o}",
                  style: :bold, size: 10
 
-        data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
+        data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
         appls.each_with_index do |a, i|
-          data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+          data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
         end
 
         pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
@@ -175,9 +177,9 @@ item = group.items.first
       pdf.text "Доступное количество мест — #{remaining_places}",
                style: :bold, size: 10
 
-      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
+      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
       a_contest.sort_by { |a| [a.pass_min_score, a.total_score] }.reverse.each_with_index do |a, i|
-        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map{|e| e ? e.score : ''} + [a.total_score] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map{|e| e ? e.score : ''} + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
       end
 
       pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
