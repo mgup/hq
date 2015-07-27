@@ -4,7 +4,7 @@ class Entrance::EntrantsController < ApplicationController
 
   def index
     if current_user.is?(:selection_foreign) && @campaign.id != 52015
-      @entrants = @entrants.unscoped.where(visible: true).where(identity_document_type_id: 3).order(:nationality_type_id, :last_name, :first_name)
+      @entrants = @entrants.unscoped.where(visible: true).where(campaign_id: @campaign.id).where('identity_document_type_id = 3 OR nationality_type_id != 1').order(:nationality_type_id, :last_name, :first_name)
     end
   end
 
