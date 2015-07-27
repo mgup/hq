@@ -96,7 +96,7 @@ class Entrance::Entrant < ActiveRecord::Base
   # end
 
   def is_foreign?
-    3 == identity_document_type_id
+    3 == identity_document_type_id || 1 != entrant.nationality_type_id
   end
 
   def full_name
