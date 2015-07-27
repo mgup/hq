@@ -4,9 +4,9 @@ prawn_document margin: [72.0 * 1.0 / 2.54,
                         72.0 * 1.0 / 2.54],
                page_layout: :landscape do |pdf|
   @campaign.competitive_groups.each do |competitive_group|
-    next if competitive_group.items.first.payed?
-
-    next unless 199761 == competitive_group.id
+    # next if competitive_group.items.first.payed?
+    #
+    # next unless 199761 == competitive_group.id
 
     # next if 6 == competitive_group.items.first.direction.department_id
     # next if 7 == competitive_group.items.first.direction.department_id
@@ -20,7 +20,7 @@ prawn_document margin: [72.0 * 1.0 / 2.54,
       render partial: 'ratings_list', locals: { pdf: pdf,
                                                 group: competitive_group }
 
-      pdf.start_new_page
+      # pdf.start_new_page
     end
   end
 end
