@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
 
   before_filter :enable_profiler unless Rails.env.test?
 
+  before_filter do
+    raise ActionController::RoutingError.new('Нужно подождать') unless can?(:manage, Department)
+  end
+
   protected
 
   def current_ability
