@@ -5,7 +5,7 @@
 <%= form_tag nil, method: :get, class: 'filter-block', id: 'reader-choice' do |f| %>
     <div class='row'>
         <div class='col col-sm-offset-4 col-sm-6'>
-            <%= hidden_field_tag :reader, params[:reader],  class: 'hidden-pill-values' %>
+            <%= hidden_field_tag :reader, params[:reader],  class: 'hidden-pill-values-no-change' %>
             <%= pill_tabs('reader', [[1, 'Студент'], [2, 'Сотрудник']], 'reader') %>
         </div>
     </div>

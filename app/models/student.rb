@@ -471,7 +471,7 @@ LIMIT 1 ")
 
   def rdr_id
     client = TinyTds::Client.new(username: ENV['LIBRARY_USERNAME'], password: ENV['LIBRARY_PASSWORD'],
-                                 dataserver: '192.168.200.36:1433', database: '[marc 1.11]')
+                                 dataserver: '192.168.200.211:1444', database: '[Lib19]')
     if admission_year < 2012
       query = "SELECT RDR_ID FROM dbo.READERS WHERE NAME = '#{full_name}'"
     else
