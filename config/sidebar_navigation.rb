@@ -86,7 +86,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
     # if can?(:manage, Entrance::Entrant)
       primary.item :rating,
-                   '<span class="glyphicons charts"></span> Рейтинги и приказы о зачислении'.html_safe,
+                   '<span class="glyphicons charts"></span> Конкурсные списки и приказы о зачислении'.html_safe,
                    rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
                    highlights_on: -> { (params[:action] == 'rating' || params[:action] == 'crimea_rating') && params[:controller] == 'entrance/campaigns'}
     # end
