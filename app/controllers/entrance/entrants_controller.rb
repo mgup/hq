@@ -3,7 +3,9 @@ class Entrance::EntrantsController < ApplicationController
   load_and_authorize_resource through: :campaign, class: 'Entrance::Entrant'
 
   def index
-
+    if current_user.is?(:selection_foreign) && @campaign.id != 52015
+      @entrants = @entrants.unscoped.where(visible: true).where(identity_document_type_id: 3).order(:nationality_type_id, :last_name, :first_name)
+    end
   end
 
   def new

@@ -335,8 +335,13 @@ class Ability
   def selection_foreign(user)
     can :manage, Entrance::Campaign
     cannot :orders, Entrance::Campaign
-    can :manage, Entrance::Entrant, identity_document_type_id: 3
-    can :manage, Entrance::Entrant, campaign_id: Entrance::Campaign::STATELINE
+
+    # can :manage, Entrance::Entrant, identity_document_type_id: 3
+    # can :manage, Entrance::Entrant, campaign_id: Entrance::Campaign::STATELINE
+    can :manage, Entrance::Entrant, [] do |entrant|
+      3 == entrant.identity_document_type_id || Entrance::Campaign::STATELINE == entrant.campaign_id
+    end
+
     cannot :destroy,  Entrance::Entrant
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
