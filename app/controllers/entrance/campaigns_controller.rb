@@ -4,7 +4,7 @@ class Entrance::CampaignsController < ApplicationController
   load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report]
   load_resource class: 'Entrance::Campaign', only: :results
 
-  before_action :validate_crimea, only: [:rating]
+  #before_action :validate_crimea, only: [:rating]
 
   before_action :initialize_default_filters, only: [:dashboard, :rating, :crimea_rating]
 
