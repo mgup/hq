@@ -1,26 +1,26 @@
 <td class="nowrap"><%= a.number %></td>
 <td><%= a.entrant.full_name %></td>
-<td class="nowrap">
-    <% if a.order && a.order.signing_date %>
+<!--<td class="nowrap">-->
+    <!--<% if a.order && a.order.signing_date %>-->
       № <%= a.order.number %> от <%= l a.order.signing_date.to_date %>
-    <% end %>
-</td>
-<% if can?(:manage, Entrance::Application) %>
-  <td>
-      <%= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
-                  class: 'btn btn-default',
-                  title: 'Заявления',
+    <!--<% end %>-->
+<!--</td>-->
+<%# if can?(:manage, Entrance::Application) %>
+  <!--<td>-->
+      <%#= link_to entrance_campaign_entrant_applications_path(@campaign, a.entrant),
+                   class: 'btn btn-default',
+                   title: 'Заявления',
                   target: :blank do %>
-        <span class="glyphicons notes"></span>
-      <% end %>
-  </td>
+        <!--<span class="glyphicons notes"></span>-->
+      <!--<%# end %>-->
+  <!--</td>-->
   <td><%= a.abitpoints %></td>
   <td>
       <% if a.original? %>
         <span class="glyphicons ok_2"></span>
       <% end %>
   </td>
-<% end %>
+<%# end %>
 <td>
   <% if current_user %>
     <% if current_user.is?(:developer) && !a.order %>
