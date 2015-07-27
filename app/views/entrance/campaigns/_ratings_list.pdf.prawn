@@ -122,9 +122,9 @@ item = group.items.first
       pdf.text "Доступное количество мест — #{group.items.first.number_quota_o}",
                style: :bold, size: 10
 
-      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма').flatten]
+      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Оригинал').flatten]
       a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
-        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score]
+        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score, (a.original? ? 'да' : 'нет')]
       end
 
       pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
@@ -141,9 +141,9 @@ item = group.items.first
         pdf.text "Доступное количество мест — #{target_item.number_target_o}",
                  style: :bold, size: 10
 
-        data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма').flatten]
+        data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Оригинал').flatten]
         appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
-          data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score]
+          data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score, (a.original? ? 'да' : 'нет')]
         end
 
         pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
