@@ -146,7 +146,7 @@ class Entrance::Application < ActiveRecord::Base
       sum += entrant.exam_results.by_exam(exam.id).last.score if entrant.exam_results.by_exam(exam.id).last.score
     end
 
-    sum += entrant.achievements.map { |a| a.score || 0 }.sum
+    sum += abitachievements
 
     sum
   end
