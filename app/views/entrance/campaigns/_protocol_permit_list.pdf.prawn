@@ -1,5 +1,5 @@
 item = group.items.first
-[:paid, :not_paid].each do |payment|
+[:not_paid].each do |payment|
   [:z_form, :oz_form, :o_form].each do |form|
     applications = item.applications.send(form).send(payment)
     next unless applications.any?
