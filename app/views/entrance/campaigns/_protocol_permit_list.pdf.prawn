@@ -3,7 +3,7 @@ item = group.items.first
   [:z_form, :oz_form, :o_form].each do |form|
     applications = item.applications.send(form).send(payment)
     next unless applications.any?
-    pdf.start_new_page if key
+    pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
     pdf.text 'о допуска к участию в конкурсе', style: :bold, align: :center
