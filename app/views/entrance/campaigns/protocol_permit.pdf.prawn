@@ -3,12 +3,13 @@ prawn_document margin: [72.0 * 1.0 / 2.54,
                         72.0 * 1.0 / 2.54,
                         72.0 * 1.0 / 2.54],
                page_layout: :landscape do |pdf|
-  @campaign.competitive_groups.each do |competitive_group|
+  key = false
+  @campaign.competitive_groups.each_with_index do |competitive_group, i|
     # next if competitive_group.items.first.payed?
-
+    next if i > 5
     render partial: 'protocol_permit_list', locals: { pdf: pdf,
-                                            group: competitive_group }
+                                            group: competitive_group, key: key }
 
-    pdf.start_new_page
+    key = true
   end
 end
