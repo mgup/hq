@@ -6,7 +6,7 @@ item = group.items.first
     pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
-    pdf.text 'о допуска к участию в конкурсе', style: :bold, align: :center
+    pdf.text 'о допуске к участию в конкурсе', style: :bold, align: :center
 
     if 12015 == @campaign.id
       date = '13 июля'
