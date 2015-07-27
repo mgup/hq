@@ -132,7 +132,8 @@ class Entrance::Application < ActiveRecord::Base
 
   def self.sort_applications_for_sort_by
     lambda do |a|
-      res = sprintf('%03d', a.abitpoints.to_s)
+      res = a.original? ? '1' : '0'
+      res += sprintf('%03d', a.abitpoints.to_s)
       res += a.abitexams.map{ |e| e ? sprintf('%03d', e.score) : '000' }.join
 
       res
