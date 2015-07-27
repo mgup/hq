@@ -3,7 +3,7 @@
 <% a.abitexams.each do |exam| %>
   <td><%= exam.score %></td>
 <% end %>
-<td><%= a.entrant.achievements.map { |a| a.score || 0 }.sum %></td>
+<td><%= a.abitachievements %></td>
 <td><%= a.abitpoints %></td>
 
 <% if a.is_payed && can?(:manage, Entrance::Application) %>

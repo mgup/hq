@@ -15,6 +15,11 @@
       <% end %>
   </td>
   <td><%= a.abitpoints %></td>
+  <td>
+      <% if a.original? %>
+        <span class="glyphicons ok_2"></span>
+      <% end %>
+  </td>
 <% end %>
 <td>
   <% if current_user %>

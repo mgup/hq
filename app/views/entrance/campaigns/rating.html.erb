@@ -147,6 +147,7 @@
             <% if can?(:manage, Entrance::Application) %>
               <th></th>
               <th>Сумма баллов</th>
+              <th>Оригинал</th>
             <% end %>
             <th></th>
           </tr>
@@ -180,6 +181,7 @@
           <% if can?(:manage, Entrance::Application) %>
             <th></th>
             <th>Сумма баллов</th>
+            <th>Оригинал</th>
           <% end %>
           <th></th>
         </tr>
@@ -195,7 +197,7 @@
     <% end %>
 
     <% if a_organization.any? %>
-      <h2>Зачисленные по квоте целевого приема</h2>
+      <h2>По квоте целевого приема</h2>
       <% a_organization.sort_by{|app| [app.order.present? ? app.order.signing_date : true, -app.abitpoints]}.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls| %>
         <h2>Договор № <%= target_item.target_organization.contract_number %> от <%= l target_item.target_organization.contract_date %>, <%= target_item.target_organization.name %></h2>
         <table class="table table-striped table-bordered">
@@ -208,6 +210,7 @@
             <% if can?(:manage, Entrance::Application) %>
               <th></th>
               <th>Сумма баллов</th>
+              <th>Оригинал</th>
             <% end %>
             <th></th>
           </tr>

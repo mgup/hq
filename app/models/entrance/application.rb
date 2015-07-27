@@ -162,6 +162,20 @@ class Entrance::Application < ActiveRecord::Base
     exams
   end
 
+  def abitachievements
+    sum = 0
+    entrant.achievements.each do |a|
+      if direction.id == 280
+        next if a.entrance_achievement_type_id == 13
+        sum += a.score || 0
+      else
+        next if a.entrance_achievement_type_id == 14
+        sum += a.score || 0
+      end
+    end
+    sum
+  end
+
   # Имеющие ЕГЭ (функция названа неверное, потом нужно поправить)
   def only_use?
     abitexams.find_all { |r| r.use? }.size > 0
