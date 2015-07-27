@@ -5,8 +5,10 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   render 'pdf/font', pdf: pdf
   key = true
   @items.each do |i|
-    [:paid, :not_paid].each do |payment|
-      [:z_form, :oz_form, :o_form].each do |form|
+    # [:paid, :not_paid].each do |payment|
+    [:not_paid].each do |payment|
+      # [:z_form, :oz_form, :o_form].each do |form|
+      [:o_form].each do |form|
         applications = i.applications.send(form).send(payment)
 
         if applications.empty?
