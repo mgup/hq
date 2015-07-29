@@ -10,6 +10,10 @@ module UtilitiesHelper
     "#{n} #{Russian::pluralize(n, f1, f2, f5)}"
   end
 
+  def pluralize_without_number(n, f1, f2, f5)
+    "#{Russian::pluralize(n, f1, f2, f5)}"
+  end
+
   def embed_pdf(path)
     content_tag(:object,
                 data: path,
