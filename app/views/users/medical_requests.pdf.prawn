@@ -172,4 +172,5 @@ prawn_document size: :A4, page_layout: :portrait, margin: [10,10,10,10] do |pdf|
 
     pdf.start_new_page
   end
-end
+  end
+  end

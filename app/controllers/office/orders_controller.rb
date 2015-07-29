@@ -40,7 +40,47 @@ class Office::OrdersController < ApplicationController
 
   def entrance_protocol
     @item = @order.competitive_group.items.first if Office::Order.entrance.include? @order
-    @applications = @order.students.map { |s| s.entrant.applications.for_rating.find_all { |a| a.order}.first }
+    ap = @order.students.first.entrant.packed_application
+    @applications = ap.competitive_group.items.first.applications.for_rating.rating(ap.education_form_id,
+                                                                                    ap.is_payed ? '15' : '14',
+                                                                                    ap.direction.id)
+
+    a_out_of_competition = []
+    a_special_rights = []
+    a_organization = []
+    a_contest_enrolled = []
+    a_contest = []
+    @applications.each do |a|
+      if a.out_of_competition
+        a_out_of_competition << a
+      else
+        if 0 != a.pass_min_score
+          if a.special_rights
+            a_special_rights << a
+          elsif a.competitive_group_target_item
+            a_organization << a
+          else
+            if a.order && a.order.signed?
+              a_contest_enrolled << a
+            else
+              a_contest << a
+            end
+          end
+        end
+      end
+    end
+
+    if ap.out_of_competition
+      @applications = a_out_of_competition
+    elsif ap.special_rights
+      @applications = a_special_rights
+    elsif ap.competitive_group_target_item
+      @applications = a_organization
+    else
+      @applications = a_contest_enrolled + a_contest
+    end
+
+    #@applications = @order.students.map { |s| s.entrant.applications.for_rating.find_all { |a| a.order}.first }
 
     respond_to do |format|
       format.pdf
