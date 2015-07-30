@@ -17,12 +17,14 @@ item = group.items.first
         # pdf.stroke_bounds
       end
 
-      pdf.bounding_box([520,  pdf.bounds.top], width: 200) do
+      pdf.bounding_box([500,  pdf.bounds.top], width: 250) do
         pdf.text 'УТВЕРЖДАЮ'
         pdf.text 'Председатель Приемной комиссии'
+        # pdf.text 'Зам. председателя Приемной комиссии'
         pdf.text 'МГУП имени Ивана Федорова'
         pdf.move_down 20
         pdf.text '_____________________ / К. В. Антипов /'
+        # pdf.text '_____________________ / Т. В. Маркелова /'
 
         # pdf.stroke_bounds
       end
