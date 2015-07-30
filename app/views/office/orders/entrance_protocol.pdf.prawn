@@ -148,10 +148,9 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     else
 
-
     i = 0
-    a_contest.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each do |ap|
-      if to_enroll > 0
+    @applications.each do |ap|
+      # if to_enroll > 0
         # Есть места — зачисляем при наличии оригинала
       if ap.is_payed
         if ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
@@ -164,7 +163,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           i += 1
         end
       else
-        if ap.original? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
+        if ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant)
           data << ["#{i+1}", ap.number, ap.entrant.full_name]
           ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
           data.last << ap.abitachievements
@@ -181,51 +180,51 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           end
           data.last << 'зачислить'
           i += 1
-        else
-          data << ["#{index+1}", ap.number, ap.entrant.full_name]
-          ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
-          data.last << ap.abitpoints
-          if @item.payed?
-            data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
-          else
-            data.last << (ap.original? ? 'да' : 'нет')
-          end
-          data.last << 'не зачислить'
+        # else
+        #   data << ["#{index+1}", ap.number, ap.entrant.full_name]
+        #   ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
+        #   data.last << ap.abitpoints
+        #   if @item.payed?
+        #     data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
+        #   else
+        #     data.last << (ap.original? ? 'да' : 'нет')
+        #   end
+        #   data.last << 'не зачислить'
         end
       end
 
-        success = true
-        to_enroll -= 1
-        prev_score = ap.total_score
-      elsif 0 == to_enroll && !last_found
-        if prev_score == ap.total_score
-          success = true
-
-          if ap.original?
-            data << ["#{index+1}", ap.number, ap.entrant.full_name]
-            ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
-            data.last << ap.abitachievements
-            data.last << ap.abitpoints
-            if @item.payed?
-              data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
-            else
-              data.last << (ap.original? ? 'да' : 'нет')
-            end
-            data.last << (ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant) ? 'зачислить' : 'не зачислить')
-          else
-            data << ["#{index+1}", ap.number, ap.entrant.full_name]
-            ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
-            data.last << ap.abitachievements
-            data.last << ap.abitpoints
-            if @item.payed?
-              data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
-            else
-              data.last << (ap.original? ? 'да' : 'нет')
-            end
-            data.last << (ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant) ? 'зачислить' : 'не зачислить')
-          end
-        end
-      end
+      #   success = true
+      #   to_enroll -= 1
+      #   prev_score = ap.total_score
+      # elsif 0 == to_enroll && !last_found
+      #   if prev_score == ap.total_score
+      #     success = true
+      #
+      #     if ap.original?
+      #       data << ["#{index+1}", ap.number, ap.entrant.full_name]
+      #       ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
+      #       data.last << ap.abitachievements
+      #       data.last << ap.abitpoints
+      #       if @item.payed?
+      #         data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
+      #       else
+      #         data.last << (ap.original? ? 'да' : 'нет')
+      #       end
+      #       data.last << (ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant) ? 'зачислить' : 'не зачислить')
+      #     else
+      #       data << ["#{index+1}", ap.number, ap.entrant.full_name]
+      #       ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
+      #       data.last << ap.abitachievements
+      #       data.last << ap.abitpoints
+      #       if @item.payed?
+      #         data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
+      #       else
+      #         data.last << (ap.original? ? 'да' : 'нет')
+      #       end
+      #       data.last << (ap.enrolled? && (@order.students.collect{|student| student.entrant}.include? ap.entrant) ? 'зачислить' : 'не зачислить')
+      #     end
+      #   end
+      # end
     end
     end
 

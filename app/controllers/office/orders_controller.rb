@@ -75,7 +75,7 @@ class Office::OrdersController < ApplicationController
     elsif ap.special_rights
       @applications = a_special_rights
     elsif ap.competitive_group_target_item
-      @applications = a_organization
+      @applications = a_organization.find_all {|a| a.competitive_group_target_item_id == ap.competitive_group_target_item.id}
     else
       @applications = a_contest_enrolled + a_contest
     end
