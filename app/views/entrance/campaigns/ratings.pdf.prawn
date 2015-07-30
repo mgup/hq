@@ -6,7 +6,7 @@ prawn_document margin: [72.0 * 1.0 / 2.54,
   @campaign.competitive_groups.each do |competitive_group|
     # next if competitive_group.items.first.payed?
     #
-    next unless [336159,336153].include?(competitive_group.id)
+    # next unless [336159,336153].include?(competitive_group.id)
 
     # next if 6 == competitive_group.items.first.direction.department_id
     # next if 7 == competitive_group.items.first.direction.department_id
