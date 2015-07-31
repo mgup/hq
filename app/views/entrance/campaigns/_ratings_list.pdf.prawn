@@ -10,7 +10,11 @@ item = group.items.first
     pdf.font_size = 12
     pdf.bounding_box([0, pdf.cursor], width: 510) do
       pdf.bounding_box([0, pdf.bounds.top], width: 500) do
-        pdf.text 'Конкурсные списки, I этап', style: :bold, size: 14
+        if applications.first.direction.master?
+          pdf.text 'Конкурсные списки', style: :bold, size: 14
+        else
+          pdf.text 'Конкурсные списки, I этап', style: :bold, size: 14
+        end
 
         pdf.text "#{group.items.first.direction.new_code}, #{group.items.first.direction.name}", size: 14
         pdf.text "#{applications.first.education_form_name} форма обучения, #{applications.first.budget_name}", size: 14
@@ -141,25 +145,31 @@ item = group.items.first
     end
 
     if a_organization.any?
-      # pdf.text 'Список поступающих по квоте целевого приема', size: 14
+      if a_organization[0].direction.master?
+        pdf.text 'Список поступающих по квоте целевого приема', size: 14
+      end
 
       a_organization.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls|
-        # pdf.text "Договор № #{target_item.target_organization.contract_number} от #{l target_item.target_organization.contract_date}, #{target_item.target_organization.name}", size: 12
-        # pdf.text "Доступное количество мест — #{target_item.number_target_o}",
-        #          style: :bold, size: 10
+        if a_organization[0].direction.master?
+          pdf.text "Договор № #{target_item.target_organization.contract_number} от #{l target_item.target_organization.contract_date}, #{target_item.target_organization.name}", size: 12
+          pdf.text "Доступное количество мест — #{target_item.number_target_o}",
+                   style: :bold, size: 10
+        end
 
         data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Оригинал').flatten]
         appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
           data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score, (a.original? ? 'да' : 'нет')]
 
-          remaining_places -= 1 if a.enrolled?
+          remaining_places -= 1 if a.enrolled? && !a_organization[0].direction.master?
         end
 
-        # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
-        # pdf.move_down 40
+        if a_organization[0].direction.master?
+          pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
+          pdf.move_down 40
 
-        ##remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size)
-        # remaining_places -= target_item.number_target_o
+          ##remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size)
+          remaining_places -= target_item.number_target_o
+        end
       end
     end
 
