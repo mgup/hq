@@ -354,7 +354,7 @@ class Entrance::CampaignsController < ApplicationController
     params[:faculty] ||= 3 # 5,6,7
     @faculty = Department.find(params[:faculty])
 
-    @checks = Entrance::UseCheck.all.joins(:entrant).
+    checks_all = Entrance::UseCheck.all.joins(:entrant).
       joins('LEFT JOIN entrance_applications AS a ON a.entrant_id = entrance_entrants.id').
       where('a.campaign_id = 2015').
       where('a.packed = 1').
@@ -362,10 +362,17 @@ class Entrance::CampaignsController < ApplicationController
       joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
       where('d.department_id = ?', params[:faculty])
 
-      respond_to do |format|
-        format.html
-        format.pdf
-      end
+    grouped = checks_all.group_by { |c| c.entrant }
+
+    @checks = []
+    grouped.each do |_, checks|
+      @checks << checks.sort_by { |c| c.date }.last
+    end
+
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
   end
 
   def paid_enrollment
