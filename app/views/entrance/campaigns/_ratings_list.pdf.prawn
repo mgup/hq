@@ -178,6 +178,9 @@ item = group.items.first
       pdf.text "Доступно для зачисления на первом этапе 80% вакантных мест — #{remaining_places - (remaining_places * 0.2).ceil}",
                style: :bold, size: 10
 
+      pdf.text 'Прием оригиналов документов об образовании для зачисления на первом этапе завершается в 18:00 МСК 3 августа 2015 года.',
+               style: :bold, size: 10
+
       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Оригинал').flatten]
 
       to_enroll = remaining_places
