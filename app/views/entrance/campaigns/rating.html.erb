@@ -170,10 +170,11 @@
           <tr id="application_<%= a.id %>">
             <td><%= i + 1 %></td>
             <%= render partial: 'entrance/applications/rows/out_of_competition', locals: {a: a} %>
+            <% remaining_places -= 1 if a.enrolled? %>
           </tr>
         <% end %>
       </table>
-      <% remaining_places -= a_out_of_competition.size %>
+      <%# remaining_places -= a_out_of_competition.size %>
     <% end %>
 
     <%
@@ -185,9 +186,9 @@
 
     <% if a_special_rights.any? %>
       <h2>По квоте приема лиц, имеющих особое право</h2>
-      <strong>
-        Доступное количество мест — <span id="remaining_places"><%= item.send("number_quota_#{field_form}") %></span>
-      </strong>
+      <!--<strong>-->
+        <!--Доступное количество мест — <span id="remaining_places"><%= item.send("number_quota_#{field_form}") %></span>-->
+      <!--</strong>-->
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -207,20 +208,21 @@
           <tr id="application_<%= a.id %>">
             <td><%= i + 1 %></td>
             <%= render partial: 'entrance/applications/rows/special_rights', locals: {a: a} %>
+            <% remaining_places -= 1 if a.enrolled? %>
           </tr>
         <% end %>
       </table>
-      <%# remaining_places -= (a_special_rights.size > item.number_quota_o ? item.number_quota_o : a_special_rights.size) %>
-      <% remaining_places -= item.number_quota_o %>
+      <%## remaining_places -= (a_special_rights.size > item.number_quota_o ? item.number_quota_o : a_special_rights.size) %>
+      <%# remaining_places -= item.number_quota_o %>
     <% end %>
 
     <% if a_organization.any? %>
       <h2>По квоте целевого приема</h2>
       <% a_organization.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls| %>
         <h2>Договор № <%= target_item.target_organization.contract_number %> от <%= l target_item.target_organization.contract_date %>, <%= target_item.target_organization.name %></h2>
-        <strong>
-          Доступное количество мест — <span id="remaining_places"><%= target_item.number_target_o %></span>
-        </strong>
+        <!--<strong>-->
+          <!--Доступное количество мест — <span id="remaining_places"><%= target_item.number_target_o %></span>-->
+        <!--</strong>-->
         <table class="table table-striped table-bordered">
           <thead>
           <tr>
@@ -240,11 +242,12 @@
             <tr id="application_<%= a.id %>">
               <td><%= i + 1 %></td>
               <%= render partial: 'entrance/applications/rows/organization', locals: {a: a} %>
+              <% remaining_places -= 1 if a.enrolled? %>
             </tr>
           <% end %>
         </table>
-        <%# remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size) %>
-        <% remaining_places -= target_item.number_target_o %>
+        <%## remaining_places -= (appls.size > target_item.number_target_o ? target_item.number_target_o : appls.size) %>
+        <%# remaining_places -= target_item.number_target_o %>
       <% end %>
     <% end %>
 
@@ -304,6 +307,12 @@
           <strong>
             Доступное количество мест — <span id="remaining_places"><%= remaining_places %></span>
           </strong>
+          <% unless @applications.first.is_payed %>
+            <br>
+            <strong>
+              Доступно для зачисления на первом этапе 80% вакантных мест — <%= remaining_places - (remaining_places * 0.2).ceil %>
+            </strong>
+          <% end %>
           <% if @applications.first.is_payed %>
             <br>
             <% if 193593 == item.competitive_group.id %>
