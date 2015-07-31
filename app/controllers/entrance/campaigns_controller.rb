@@ -182,6 +182,12 @@ class Entrance::CampaignsController < ApplicationController
           if competitive_group_titles[:o][competitive_group_title]
             competitive_group_item = competitive_group_titles[:o][competitive_group_title]
             d[1][2] = competitive_group_item.total_budget_o
+            competitive_group_item.competitive_group.target_organizations.each do |org|
+              org.items.where(direction_id: competitive_group_item.direction_id, education_level_id: competitive_group_item.education_type_id).each do |i|
+                d[1][2] += i.send("number_target_o")
+              end
+            end
+
             d[2][2] = competitive_group_item.total_paid_o
             d[3][2] = competitive_group_item.total_paid_oz
           end
