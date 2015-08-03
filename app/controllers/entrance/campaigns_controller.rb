@@ -55,7 +55,7 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def orders
-    @orders = Office::Order.entrance.from_year_and_month(2014, 6)
+    @orders = Office::Order.entrance.from_year_and_month(2015, 6)
   end
 
   def numbers
