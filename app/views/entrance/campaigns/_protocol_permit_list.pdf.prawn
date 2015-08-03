@@ -1,7 +1,9 @@
 item = group.items.first
 [:not_paid].each do |payment|
   [:z_form, :oz_form, :o_form].each do |form|
-    applications = item.applications.send(form).send(payment)
+
+    applications = item.applications.where('created_at < 2015-07-25').send(form).send(payment)
+
     next unless applications.any?
     pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center

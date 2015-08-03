@@ -12,6 +12,10 @@ class Entrance::ItemsController < ApplicationController
                 'от «10» июля 2015 г.'
               when 3
                 'от «25» июля 2015 г.'
+              when 4
+                'от «25» июля 2015 г.'
+              when 5
+                'от «1» августа 2015 г.'
               # when 4
               #   'от «15» июля 2015 г.'
               # when 5
@@ -26,13 +30,18 @@ class Entrance::ItemsController < ApplicationController
                 @items.for_10_july
               when 3
                 @items.for_25_july
+              when 4
+                @items.for_master_25_july
+              when 5
+                @items.for_master_1_august
               # when 4
               #   @items.for_15_july
               # when 5
               #   @items.for_7_july_aspirants
               # when 6
               #   @items.for_7_july_crimea
-            end
+             end
+    # fail '123'
     respond_to do |format|
       format.pdf
     end

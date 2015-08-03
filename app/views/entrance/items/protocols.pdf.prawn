@@ -9,7 +9,13 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     [:not_paid].each do |payment|
       # [:z_form, :oz_form, :o_form].each do |form|
       [:o_form].each do |form|
-        applications = i.applications.send(form).send(payment)
+        if '4' == params[:type]
+          applications = i.applications.send(form).send(payment).find_all { |a| a.created_at < Date.new(2015, 7, 25) }
+        elsif '5' == params[:type]
+          applications = i.applications.send(form).send(payment).find_all { |a| a.created_at >= Date.new(2015, 7, 25) }
+        else
+          applications = i.applications.send(form).send(payment)
+        end
 
         if applications.empty?
           next
