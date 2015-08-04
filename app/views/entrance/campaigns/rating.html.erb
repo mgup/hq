@@ -312,14 +312,14 @@
           <strong>
             Доступное количество мест — <span id="remaining_places"><%= remaining_places %></span>
           </strong>
-          <% unless @applications.first.is_payed %>
-            <% unless @applications.first.direction.master? %>
-              <br>
-              <strong>
-                Доступно для зачисления на первом этапе 80% вакантных мест — <%= remaining_places - (remaining_places * 0.2).ceil %>
-              </strong>
-            <% end %>
-          <% end %>
+          <!--<%# unless @applications.first.is_payed %>-->
+            <!--<%# unless @applications.first.direction.master? %>-->
+              <!--<br>-->
+              <!--<strong>-->
+                <!-- Доступно для зачисления на первом этапе 80% вакантных мест — <%#= remaining_places - (remaining_places * 0.2).ceil %> -->
+              <!--</strong>-->
+            <!--<%# end %>-->
+          <!--<%# end %>-->
           <% if @applications.first.is_payed %>
             <br>
             <% if 193593 == item.competitive_group.id %>
