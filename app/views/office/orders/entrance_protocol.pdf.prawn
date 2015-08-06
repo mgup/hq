@@ -233,11 +233,11 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
             ap.abitexams.collect{|x| x.score }.each{ |x| data.last << x }
             data.last << ap.abitachievements
             data.last << ap.abitpoints
-            if @item.payed?
-              data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
-            else
+            # if @item.payed?
+            #   data.last << (ap.contract ? "№ #{ap.contract.number}" : '') #<< (ap.agree? ? 'да' : 'нет')
+            # else
               data.last << (ap.original? ? 'да' : 'нет')
-            end
+            # end
             data.last << 'по конкурсу'
             data.last << 'не зачислить'
             i += 1
