@@ -149,7 +149,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     else
 
     i = 0
-    @applications.each do |ap|
+    @applications.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.each do |ap|
       # if to_enroll > 0
         # Есть места — зачисляем при наличии оригинала
       if ap.is_payed
@@ -190,6 +190,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           else
             data.last << (ap.original? ? 'да' : 'нет')
           end
+          data.last << 'по конкурсу'
           data.last << 'не зачислить'
           i += 1
         end
