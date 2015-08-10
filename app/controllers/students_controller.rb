@@ -105,7 +105,8 @@ class StudentsController < ApplicationController
   def soccard
     respond_to do |format|
       format.xml do
-        render xml: @students.valid_for_today.where('student_group_group NOT IN (430,434,435,436)').my_filter(form: 101).to_soccard #FIXME заменить скоуп на soccard
+        render xml: @students.where('student_group_id NOT IN (97,352,990,24650,18585,23293)').where(student_group_status: Student::STATUS_GRADUATE).my_filter(form: 101).to_soccard #FIXME заменить скоуп на soccard
+        # render xml: @students.valid_for_today.where('student_group_group NOT IN (430,434,435,436)').my_filter(form: 101).to_soccard #FIXME заменить скоуп на soccard
         # render xml: @students.valid_for_today.where('student_group_group NOT IN (430,434,435,436)').my_filter(form: 101).limit(10).to_soccard #FIXME заменить скоуп на soccard
       end
     end

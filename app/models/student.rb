@@ -16,11 +16,11 @@ class Student < ActiveRecord::Base
 
   STATUS_ENTRANT            = 100
   STATUS_STUDENT            = 101
-  STATUS_EXPELED            = 102
-  STATUS_SABBATICAL         = 103
-  STATUS_GRADUATE           = 104
-  STATUS_POSTGRADUATE       = 105
-  STATUS_COMPLETE           = 106
+  STATUS_EXPELED            = 102 # отчислен
+  STATUS_SABBATICAL         = 103 # академ
+  STATUS_GRADUATE           = 104 # выпускник (есть приказ об отчислении по окончании)
+  STATUS_POSTGRADUATE       = 105 # аспирант
+  STATUS_COMPLETE           = 106 # окончивший (есть приказ об окончании)
   STATUS_DEBTOR             = 107
   STATUS_TRANSFERRED_DEBTOR = 108
 
@@ -514,11 +514,12 @@ LIMIT 1 ")
           xml.parent.namespace = nil
           xml.fileSender '028'
           xml.version '1.1.3'
-          xml.recordCount self.all.length
+          xml.recordCount self.all.find_all { |s| s.last_status_order && s.last_status_order.order_signing >= Date.new(2015, 4, 1) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
-          self.all.each_with_index do |student, index|
+          # убрать find_all
+          self.all.find_all { |s| s.last_status_order && s.last_status_order.order_signing >= Date.new(2015, 4, 1) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
