@@ -1,7 +1,9 @@
 item = group.items.first
 [:not_paid].each do |payment|
   [:z_form, :oz_form, :o_form].each do |form|
-    applications = item.applications.send(form).send(payment)
+
+    applications = item.applications.where('created_at < 2015-07-25').send(form).send(payment)
+
     next unless applications.any?
     pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
@@ -138,9 +140,11 @@ item = group.items.first
       pdf.text "Доступное количество мест — #{group.items.first.number_quota_o}",
                style: :bold, size: 10
 
-      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
+      # data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
+      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
       a_special_rights.each_with_index do |a, i|
-        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+        # data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
       end
 
       pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
@@ -158,9 +162,11 @@ item = group.items.first
         pdf.text "Доступное количество мест — #{target_item.number_target_o}",
                  style: :bold, size: 10
 
-        data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
+        # data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
+        data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
         appls.each_with_index do |a, i|
-          data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+          # data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+          data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
         end
 
         pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
@@ -179,9 +185,11 @@ item = group.items.first
       pdf.text "Доступное количество мест — #{remaining_places}",
                style: :bold, size: 10
 
-      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
+      # data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Решение комиссии').flatten]
+      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Сумма' << 'Решение комиссии').flatten]
       a_contest.sort_by { |a| [a.pass_min_score, a.total_score] }.reverse.each_with_index do |a, i|
-        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map{|e| e ? e.score : ''} + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+        # data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map{|e| e ? e.score : ''} + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map{|e| e ? e.score : ''} + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
       end
 
       pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true

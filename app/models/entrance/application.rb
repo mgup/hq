@@ -201,7 +201,7 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def self.rating(form = '11', payment = '14', direction = '1887')
-    form_method = case form
+    form_method = case form.to_s
                     when '10'
                       :z_form
                     when '12'

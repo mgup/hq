@@ -55,7 +55,7 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def orders
-    @orders = Office::Order.entrance.from_year_and_month(2014, 6)
+    @orders = Office::Order.entrance.from_year_and_month(2015, 6)
   end
 
   def numbers
@@ -182,6 +182,12 @@ class Entrance::CampaignsController < ApplicationController
           if competitive_group_titles[:o][competitive_group_title]
             competitive_group_item = competitive_group_titles[:o][competitive_group_title]
             d[1][2] = competitive_group_item.total_budget_o
+            competitive_group_item.competitive_group.target_organizations.each do |org|
+              org.items.where(direction_id: competitive_group_item.direction_id, education_level_id: competitive_group_item.education_type_id).each do |i|
+                d[1][2] += i.send("number_target_o")
+              end
+            end
+
             d[2][2] = competitive_group_item.total_paid_o
             d[3][2] = competitive_group_item.total_paid_oz
           end
@@ -344,22 +350,30 @@ class Entrance::CampaignsController < ApplicationController
     end
   end
 
-  # def temp_print_all_checks
-  #   params[:faculty] ||= 3 # 5,6,7
-  #   @faculty = Department.find(params[:faculty])
-  #
-  #   @checks = Entrance::UseCheck.all.joins(:entrant).
-  #     joins('LEFT JOIN entrance_applications AS a ON a.entrant_id = entrance_entrants.id').
-  #     where('a.packed = 1').
-  #     joins('LEFT JOIN competitive_group_items as i ON a.competitive_group_item_id = i.id').
-  #     joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
-  #     where('d.department_id = ?', params[:faculty])
-  #
-  #     respond_to do |format|
-  #       format.html
-  #       format.pdf
-  #     end
-  # end
+  def temp_print_all_checks
+    params[:faculty] ||= 3 # 5,6,7
+    @faculty = Department.find(params[:faculty])
+
+    checks_all = Entrance::UseCheck.all.joins(:entrant).
+      joins('LEFT JOIN entrance_applications AS a ON a.entrant_id = entrance_entrants.id').
+      where('a.campaign_id = 2015').
+      where('a.packed = 1').
+      joins('LEFT JOIN competitive_group_items as i ON a.competitive_group_item_id = i.id').
+      joins('LEFT JOIN directions AS d ON d.id = i.direction_id').
+      where('d.department_id = ?', params[:faculty])
+
+    grouped = checks_all.group_by { |c| c.entrant }
+
+    @checks = []
+    grouped.each do |_, checks|
+      @checks << checks.sort_by { |c| c.date }.last
+    end
+
+    respond_to do |format|
+      format.html
+      format.pdf
+    end
+  end
 
   def paid_enrollment
     render_report Entrance::PaidEnrollmentReport.new(Entrance::Campaign::CURRENT)
