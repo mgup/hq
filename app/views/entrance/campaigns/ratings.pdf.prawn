@@ -18,6 +18,8 @@ prawn_document margin: [72.0 * 1.0 / 2.54,
     # end
     # next unless 3 == competitive_group.items.first.direction.department_id
 
+    next unless competitive_group.items.first.direction.master?
+
     if competitive_group.items.first.applications.for_rating.to_a.size > 0
       render partial: 'ratings_list', locals: { pdf: pdf,
                                                 group: competitive_group }
