@@ -122,7 +122,6 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def report
-    @applications = Entrance::Application.where(campaign_id: [2015, 22015]).where(status_id: 8)
     #.
       # find_all { |a| [11, 12].include?(a.form) && !a.payed? && %w(03 05).include?(a.direction.new_code.split('.')[1]) && 32014 != a.campaign.id }
 
@@ -281,6 +280,9 @@ class Entrance::CampaignsController < ApplicationController
       #     "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
       # end
       format.xml do
+        @applications = Entrance::Application.where(campaign_id: Entrance::Campaign.where(start_year: 2015).ids).
+          where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
+
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
             xml.Applications do
