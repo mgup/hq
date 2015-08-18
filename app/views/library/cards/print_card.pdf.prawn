@@ -7,7 +7,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
  pdf.image "#{Rails.root}/app/assets/images/library/reader1.png", at: [50,700], scale: 0.75
  pdf.image "#{Rails.root}/app/assets/images/library/reader2.png", at: [50,450], scale: 0.75
  pdf.image "#{Rails.root}/app/assets/images/library/barcode.png", at: [170,588], width: 125, height: 30
- pdf.text_box "#{@rdr_id}", at: [172, 550], width: 125, character_spacing: 7, style: :bold, text_align: :center
+ pdf.text_box "#{@rdr_id}", at: [172, 550], width: 250, character_spacing: 7, style: :bold, text_align: :center
  pdf.font_size = 10
  pdf.text_box "#{@reader_last_name}", at: [215, 645]
  pdf.text_box "#{@reader_first_name}", at: [215, 631]

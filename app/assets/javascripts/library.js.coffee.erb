@@ -22,7 +22,7 @@ $ ->
     barcodes = new Image()
     barcodes.src = "<%= asset_path('library/barcode.png') %>"
     barcodes.onload = ->
-      if barcodes.width < 97
+      if barcodes.width < 102
         context.drawImage(barcodes, 147, 140, barcodes.width, barcodes.height/1.2)
       else
         context.drawImage(barcodes, 147, 140, barcodes.width/1.6, barcodes.height/1.2)
