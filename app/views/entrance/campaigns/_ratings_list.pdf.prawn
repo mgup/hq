@@ -187,13 +187,13 @@ item = group.items.first
                style: :bold, size: 10
 
       unless a_contest[0].direction.master?
-        # pdf.text "Доступно для зачисления на первом этапе 80% вакантных мест — #{remaining_places - (remaining_places * 0.2).ceil}",
+        pdf.text "Доступно для зачисления на первом этапе 80% вакантных мест — #{remaining_places - (remaining_places * 0.2).ceil}",
+                  style: :bold, size: 10
+        # pdf.text "Доступно для зачисления на втором этапе 100% вакантных мест — #{remaining_places}",
         #          style: :bold, size: 10
-        pdf.text "Доступно для зачисления на втором этапе 100% вакантных мест — #{remaining_places}",
-                 style: :bold, size: 10
-
-        pdf.text 'Прием оригиналов документов об образовании для зачисления на втором этапе завершается в 18:00 МСК 6 августа 2015 года.',
-                 style: :bold, size: 10
+        #
+        # pdf.text 'Прием оригиналов документов об образовании для зачисления на втором этапе завершается в 18:00 МСК 6 августа 2015 года.',
+        #          style: :bold, size: 10
       end
 
       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Оригинал').flatten]
