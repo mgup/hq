@@ -705,6 +705,21 @@ class Entrance::Application < ActiveRecord::Base
             xml.DocumentTypeID  benefits.first.document_type_id
             xml.BenefitKindID  benefits.first.benefit_kind_id
             xml.DocumentReason do
+              if 17771 == id.to_i
+                xml.OlympicTotalDocument do
+                  xml.UID 1
+                  xml.DocumentSeries 'б/с'
+                  xml.DocumentNumber '2015-II-1194'
+                  xml.DiplomaTypeID 2
+                  xml.Subjects do
+                    xml.SubjectBriefData do
+                      xml.SubjectID 9
+                    end
+                  end
+                end
+
+              end
+
               if benefits.first.olympic_document
                 xml.OlympicDocument do
                   xml.UID benefits.first.olympic_document.id
