@@ -35,26 +35,28 @@ class Library::CardsController < ApplicationController
     connect_to_db
     if params[:student]
       @student = Student.find(params[:student])
-      if [122, 2708, 2709].include?(@student.speciality.id)
-        strange_num = 5
-      else
-        strange_num = @client.execute("SELECT * FROM dbo.SPEC WHERE spec = #{@student.speciality.code.to_s.tr('.', '')}").first['num']
-        strange_num = (strange_num < 10 ? strange_num : strange_num - 9)
-      end
-      rdr = "99#{@student.group.speciality.faculty.id}#{strange_num}1#{@student.admission_year.to_s[2,2]}#{@student.group.library_form}"
-      last_rdr_id = @client.execute("SELECT MAX(SUBSTRING(RDR_ID,9,3)) AS max FROM dbo.READERS WHERE RDR_ID LIKE '#{rdr}%'").first['max']
-      last_rdr_id = last_rdr_id ? last_rdr_id.to_i+1 : 1
-      rdr_id = last_rdr_id < 100 ? (last_rdr_id < 10 ? "#{rdr}00#{last_rdr_id}" : "#{rdr}0#{last_rdr_id}") : "#{rdr}#{last_rdr_id}"
+      # if [122, 2708, 2709].include?(@student.speciality.id)
+      #   strange_num = 5
+      # else
+      #   strange_num = @client.execute("SELECT * FROM dbo.SPEC WHERE spec = #{@student.speciality.code.to_s.tr('.', '')}").first['num']
+      #   strange_num = (strange_num < 10 ? strange_num : strange_num - 9)
+      # end
+      # rdr = "99#{@student.group.speciality.faculty.id}#{strange_num}1#{@student.admission_year.to_s[2,2]}#{@student.group.library_form}"
+      # last_rdr_id = @client.execute("SELECT MAX(SUBSTRING(RDR_ID,9,3)) AS max FROM dbo.READERS WHERE RDR_ID LIKE '#{rdr}%'").first['max']
+      # last_rdr_id = last_rdr_id ? last_rdr_id.to_i+1 : 1
+      # rdr_id = last_rdr_id < 100 ? (last_rdr_id < 10 ? "#{rdr}00#{last_rdr_id}" : "#{rdr}0#{last_rdr_id}") : "#{rdr}#{last_rdr_id}"
+      rdr_id = '100' + @student.id.to_s
       @client.execute("INSERT INTO dbo.READERS (RDR_ID, NAME, CODE, MATRIX_STUDENT_ID, MATRIX_STUDENT_GROUP_ID) VALUES ('#{rdr_id}', '#{@student.full_name}', 'Студент', #{@student.person.id}, #{@student.id})").insert
       redirect_to library_cards_path faculty: @student.group.speciality.faculty.id, speciality: @student.group.speciality.id, course: @student.group.course,
                                    form: @student.group.form, group: @student.group.id, student: @student.id, reader: 1
     elsif params[:user]
       @user = User.find(params[:user])
-      department = @user.departments.first.id < 10 ? "0#{@user.departments.first.id}" : @user.departments.first.id
-      rdr = "99#{department}2#{Study::Discipline::CURRENT_STUDY_YEAR.to_s[2,2]}0"
-      last_rdr_id = @client.execute("SELECT MAX(SUBSTRING(RDR_ID,9,3)) AS max FROM dbo.READERS WHERE RDR_ID LIKE '#{rdr}%'").first['max']
-      last_rdr_id = last_rdr_id ? last_rdr_id.to_i+1 : 1
-      rdr_id = last_rdr_id < 100 ? (last_rdr_id < 10 ? "#{rdr}00#{last_rdr_id}" : "#{rdr}0#{last_rdr_id}") : "#{rdr}#{last_rdr_id}"
+      # department = @user.departments.first.id < 10 ? "0#{@user.departments.first.id}" : @user.departments.first.id
+      # rdr = "99#{department}2#{Study::Discipline::CURRENT_STUDY_YEAR.to_s[2,2]}0"
+      # last_rdr_id = @client.execute("SELECT MAX(SUBSTRING(RDR_ID,9,3)) AS max FROM dbo.READERS WHERE RDR_ID LIKE '#{rdr}%'").first['max']
+      # last_rdr_id = last_rdr_id ? last_rdr_id.to_i+1 : 1
+      # rdr_id = last_rdr_id < 100 ? (last_rdr_id < 10 ? "#{rdr}00#{last_rdr_id}" : "#{rdr}0#{last_rdr_id}") : "#{rdr}#{last_rdr_id}"
+      rdr_id = '200' + @user.id.to_s
       @client.execute("INSERT INTO dbo.READERS (RDR_ID, NAME, CODE) VALUES ('#{rdr_id}', '#{@user.full_name}', 'Сотрудник')").insert
       redirect_to library_cards_path user_name: @user.last_name, reader: 2
     end
