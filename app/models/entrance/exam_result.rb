@@ -66,6 +66,14 @@ class Entrance::ExamResult < ActiveRecord::Base
 
         xml.CompetitiveGroupID  opts[:competitive_group_id]
         xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
+
+        if 2 == self[:form].to_i
+          xml.ResultDocument do
+            xml.InstitutionDocument do
+              xml.DocumemtNumber opts[:application_number]
+            end
+          end
+        end
       end
     end
 
