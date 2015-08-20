@@ -13,8 +13,8 @@ item = group.items.first
         if applications.first.direction.master?
           pdf.text 'Конкурсные списки', style: :bold, size: 14
         else
-          # pdf.text 'Конкурсные списки, I этап', style: :bold, size: 14
-          pdf.text 'Конкурсные списки, II этап', style: :bold, size: 14
+          pdf.text 'Конкурсные списки, I этап', style: :bold, size: 14
+          # pdf.text 'Конкурсные списки, II этап', style: :bold, size: 14
         end
 
         pdf.text "#{group.items.first.direction.new_code}, #{group.items.first.direction.name}", size: 14
@@ -54,7 +54,7 @@ item = group.items.first
           elsif a.competitive_group_target_item
             a_organization << a
           else
-            if a.order && a.order.signed?
+            if a.order && a.order.signed? && a.order.signing_date <= Date.new(2015,7,27) # TODO убрать условие
               a_contest_enrolled << a
             else
               a_contest << a
@@ -96,7 +96,7 @@ item = group.items.first
       a_out_of_competition.each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name, a.benefits.first.temp_text]
 
-        remaining_places -= 1 if a.enrolled?
+        remaining_places -= 1 if (a.enrolled? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,27))
       end
 
       # pdf.table data, width: pdf.bounds.width, header: true, column_widths: column_widths
@@ -135,7 +135,7 @@ item = group.items.first
       a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score, (a.original? ? 'да' : 'нет')]
 
-        remaining_places -= 1 if a.enrolled?
+        remaining_places -= 1 if (a.enrolled? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,27))
       end
 
       # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
@@ -161,7 +161,7 @@ item = group.items.first
         appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
           data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score, (a.original? ? 'да' : 'нет')]
 
-          remaining_places -= 1 if a.enrolled? && !a_organization[0].direction.master?
+          remaining_places -= 1 if (a.enrolled? && !a_organization[0].direction.master? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,27))
         end
 
         if a_organization[0].direction.master?
