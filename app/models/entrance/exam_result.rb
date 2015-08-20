@@ -70,7 +70,7 @@ class Entrance::ExamResult < ActiveRecord::Base
         if 2 == self[:form].to_i
           xml.ResultDocument do
             xml.InstitutionDocument do
-              xml.DocumemtNumber opts[:application_number]
+              xml.DocumentNumber opts[:application_number]
             end
           end
         end
