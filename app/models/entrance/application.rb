@@ -645,6 +645,7 @@ class Entrance::Application < ActiveRecord::Base
                 xml.CustomDocument do
                   xml.UID "IA#{a.id}"
                   xml.DocumentTypeNameText a.document.present? ?  a.document : "Протокол #{a.id}"
+                  xml.OriginalReceived true
                 end
               end
             end
