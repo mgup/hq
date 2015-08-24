@@ -78,7 +78,7 @@ class Entrance::ExamResult < ActiveRecord::Base
               xml.LevelID 1
             end
           end
-        elsif 16233 == opts[:application].id && 76 == exam.id
+        elsif 16233 == opts[:application].id && 95 == exam.id
           xml.ResultDocument do
             xml.OlympicDocument do
               xml.UID "olympic_document_4"
