@@ -605,7 +605,7 @@ class Entrance::Application < ActiveRecord::Base
             xml.Priority            1
 
             unless competitive_group_target_item_id.nil?
-              # xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+              xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
               # xml.TargetOrganizationUID case competitive_group_target_item.target_organization.name
               #                           when 'ФАПМК'
               #                             '2014-1'
