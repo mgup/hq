@@ -71,7 +71,7 @@ class Entrance::ExamResult < ActiveRecord::Base
           xml.ResultDocument do
             xml.InstitutionDocument do
               xml.DocumentTypeID 2
-              xml.DocumentNumber opts[:application].number
+              xml.DocumentNumber "#{opts[:application].number}-#{exam.id}"
               xml.DocumentDate opts[:application].created_at.to_date.iso8601
             end
           end
