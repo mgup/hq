@@ -60,7 +60,13 @@ class Entrance::ExamResult < ActiveRecord::Base
       xml.EntranceTestResult do
         xml.UID                 "test_result_#{id}"
         xml.ResultValue         score
-        xml.ResultSourceTypeID  self[:form]
+        if 16233 == opts[:application].id && 76 == exam.id
+          xml.ResultSourceTypeID  3
+        elsif 16233 == opts[:application].id && 95 == exam.id
+          xml.ResultSourceTypeID  3
+        else
+          xml.ResultSourceTypeID  self[:form]
+        end
 
         xml.EntranceTestTypeID  exam.creative ? 2 : 1
 
