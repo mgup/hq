@@ -632,6 +632,20 @@ class Entrance::Application < ActiveRecord::Base
           xml.EduDocuments do
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
+
+          if abitachievements > 0
+            entrant.achievements.each do |a|
+              if direction.id == 280
+                next if a.entrance_achievement_type_id == 13
+              else
+                next if a.entrance_achievement_type_id == 14
+              end
+
+              xml.CustomDocument do
+                xml.UID "IA#{a.id}"
+              end
+            end
+          end
         end
         unless benefits.empty?
         # xml.ApplicationCommonBenefit do
@@ -810,7 +824,7 @@ class Entrance::Application < ActiveRecord::Base
                 xml.IAUID "individual_achievement_#{a.id}"
                 xml.IAName a.achievement_type.name
                 xml.IAMark a.score if a.score.present?
-                # xml.IADocumentUID "IA#{a.id}"
+                xml.IADocumentUID "IA#{a.id}"
               end
             end
           end
