@@ -796,6 +796,25 @@ class Entrance::Application < ActiveRecord::Base
             end
           end
         end
+
+        if entrant.achievements.any?
+          xml.IndividualAchievements do
+            entrant.achievements.each do |a|
+              if direction.id == 280
+                next if a.entrance_achievement_type_id == 13
+              else
+                next if a.entrance_achievement_type_id == 14
+              end
+
+              xml.IndividualAchievement do
+                xml.IAUID "individual_achievement_#{a.id}"
+                xml.IAName a.achievement_type.name
+                xml.IAMark a.score
+                xml.IADocumentUID "IA#{a.id}"
+              end
+            end
+          end
+        end
       end
     end
 
