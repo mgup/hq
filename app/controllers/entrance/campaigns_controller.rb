@@ -285,36 +285,36 @@ class Entrance::CampaignsController < ApplicationController
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
-            xml.Applications do
-              @applications.each do |application|
-                xml << application.to_fis.xpath('/Application').to_xml.to_str
-              end
-            end
-
-            # xml.OrdersOfAdmission do
+            # xml.Applications do
             #   @applications.each do |application|
-            #     xml.OrderOfAdmission do
-            #       xml.Application do
-            #         xml.ApplicationNumber application.number
-            #         xml.RegistrationDate application.created_at.iso8601
-            #       end
-            #       xml.DirectionID application.direction.id
-            #       xml.EducationFormID application.education_form_id
-            #       xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
-            #
+            #     xml << application.to_fis.xpath('/Application').to_xml.to_str
+            #   end
+            # end
+
+            xml.OrdersOfAdmission do
+              @applications.each do |application|
+                xml.OrderOfAdmission do
+                  xml.Application do
+                    xml.ApplicationNumber application.number
+                    xml.RegistrationDate application.created_at.iso8601
+                  end
+                  xml.DirectionID application.direction.id
+                  xml.EducationFormID application.education_form_id
+                  xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
+
             #       if '44.03.04' == application.direction.new_code
             #         xml.EducationLevelID 2
             #       else
-            #         xml.EducationLevelID application.competitive_group_item.education_type_id
+                    xml.EducationLevelID application.competitive_group_item.education_type_id
             #       end
             #
-            #       xml.IsBeneficiary application.benefits.any?
-            #       unless Date.new(2014, 7, 31) == application.order.signing_date
-            #         xml.Stage ((Date.new(2014, 8, 5) == application.order.signing_date || 12014 == application.campaign.id || 22014 == application.campaign.id) ? 1 : 2)
-            #       end
-            #     end
-            #   end
-            # end
+                  xml.IsBeneficiary application.benefits.any? && application.order.signing_date >= Date.new(2015, 7, 30)
+                  unless Date.new(2015, 7, 30) == application.order.signing_date
+                    xml.Stage ((Date.new(2015, 8, 4) <= application.order.signing_date) ? 1 : 2)
+                  end
+                end
+              end
+            end
           end
         end
 
