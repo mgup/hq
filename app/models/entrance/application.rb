@@ -607,7 +607,7 @@ class Entrance::Application < ActiveRecord::Base
             unless competitive_group_target_item_id.nil?
               # xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
               xml.TargetOrganizationUID case competitive_group_target_item.target_organization.name
-                                        when 'Роспечать'
+                                        when 'ФАПМК'
                                           '2015-1'
               #                           when 'Министерство образования и науки Республики Тыва'
               #                             '2014-2'
