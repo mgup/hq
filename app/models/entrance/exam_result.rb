@@ -76,6 +76,19 @@ class Entrance::ExamResult < ActiveRecord::Base
             end
           end
         end
+
+        if 16233 == opts[:application].id
+          xml.ResultDocument do
+            xml.OlympicDocument do
+              xml.UID "olympic_document_#{opts[:application].benefits.first.olympic_document.id}"
+              xml.OriginalReceived true
+              xml.DocumentNumber opts[:application].benefits.first.olympic_document.number
+              xml.DiplomaTypeID opts[:application].benefits.first.olympic_document.diploma_type_id
+              xml.OlympicID opts[:application].benefits.first.olympic_document.olympic_id
+              xml.LevelID opts[:application].benefits.first.olympic_document.level_id
+            end
+          end
+        end
       end
     end
 

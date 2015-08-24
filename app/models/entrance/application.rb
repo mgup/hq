@@ -695,27 +695,7 @@ class Entrance::Application < ActiveRecord::Base
         # end
 
           if 16233 == id
-            xml.ApplicationCommonBenefit do
-              # ФИС требует, чтобы льготы передаваемые через
-              # ApplicationCommonBenefits и ApplicationCommonBenefit имели
-              # различные UID. Надеюсь, что у нас не скоро будет 100000
-              # абитуриентов со льготами.
-              # xml.UID (benefits.first.id + 100000)
-              xml.UID "benefit_#{benefits.first.id}"
-              xml.CompetitiveGroupID competitive_group_item.competitive_group.id
-              xml.DocumentTypeID  benefits.first.document_type_id
-              xml.BenefitKindID  benefits.first.benefit_kind_id
-              xml.DocumentReason do
-                xml.OlympicDocument do
-                  xml.UID "olympic_document_#{benefits.first.olympic_document.id}"
-                  xml.OriginalReceived true
-                  xml.DocumentNumber benefits.first.olympic_document.number
-                  xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
-                  xml.OlympicID benefits.first.olympic_document.olympic_id
-                  xml.LevelID benefits.first.olympic_document.level_id
-                end
-              end
-            end
+            # 100 баллов за ЕГЭ в exam_result
           else
             xml.ApplicationCommonBenefits do
               xml.ApplicationCommonBenefit do
