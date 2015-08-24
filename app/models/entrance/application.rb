@@ -634,15 +634,17 @@ class Entrance::Application < ActiveRecord::Base
           end
 
           if abitachievements > 0
-            entrant.achievements.each do |a|
-              if direction.id == 280
-                next if a.entrance_achievement_type_id == 13
-              else
-                next if a.entrance_achievement_type_id == 14
-              end
+            xml.CustomDocuments do
+              entrant.achievements.each do |a|
+                if direction.id == 280
+                  next if a.entrance_achievement_type_id == 13
+                else
+                  next if a.entrance_achievement_type_id == 14
+                end
 
-              xml.CustomDocument do
-                xml.UID "IA#{a.id}"
+                xml.CustomDocument do
+                  xml.UID "IA#{a.id}"
+                end
               end
             end
           end
