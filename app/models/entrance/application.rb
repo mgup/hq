@@ -609,8 +609,8 @@ class Entrance::Application < ActiveRecord::Base
               xml.TargetOrganizationUID case competitive_group_target_item.target_organization.name
                                         when 'ФАПМК'
                                           '2015-1'
-              #                           when 'Министерство образования и науки Республики Тыва'
-              #                             '2014-2'
+                                        when 'Ульяновский Дом печати'
+                                          '2015-2'
               #                           when 'Министерство образования и науки Республики Бурятия'
               #                             '2014-3'
               #                           when 'Министерство образования, науки и по делам молодежи КБР'
