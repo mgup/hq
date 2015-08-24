@@ -298,6 +298,7 @@ class Entrance::CampaignsController < ApplicationController
                   xml.Application do
                     xml.ApplicationNumber application.number
                     xml.RegistrationDate application.created_at.iso8601
+                    xml.OrderIdLevelBudget 1
                   end
                   xml.DirectionID application.direction.id
                   xml.EducationFormID application.education_form_id
