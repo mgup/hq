@@ -294,6 +294,7 @@ class Entrance::CampaignsController < ApplicationController
             xml.OrdersOfAdmission do
               @applications.each do |application|
                 xml.OrderOfAdmission do
+                  xml.OrderOfAdmissionUID "order_of_admission_#{application.order.id}"
                   xml.Application do
                     xml.ApplicationNumber application.number
                     xml.RegistrationDate application.created_at.iso8601
