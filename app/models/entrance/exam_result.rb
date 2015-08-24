@@ -67,16 +67,6 @@ class Entrance::ExamResult < ActiveRecord::Base
         xml.CompetitiveGroupID  opts[:competitive_group_id]
         xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
 
-        if 2 == self[:form].to_i
-          xml.ResultDocument do
-            xml.InstitutionDocument do
-              xml.DocumentTypeID 2
-              xml.DocumentNumber opts[:application].number
-              xml.DocumentDate opts[:application].created_at.to_date.iso8601
-            end
-          end
-        end
-
         if 16233 == opts[:application].id
           xml.ResultDocument do
             xml.OlympicDocument do
@@ -86,6 +76,14 @@ class Entrance::ExamResult < ActiveRecord::Base
               xml.DiplomaTypeID opts[:application].benefits.first.olympic_document.diploma_type_id
               xml.OlympicID opts[:application].benefits.first.olympic_document.olympic_id
               xml.LevelID opts[:application].benefits.first.olympic_document.level_id
+            end
+          end
+        elsif 2 == self[:form].to_i
+          xml.ResultDocument do
+            xml.InstitutionDocument do
+              xml.DocumentTypeID 2
+              xml.DocumentNumber opts[:application].number
+              xml.DocumentDate opts[:application].created_at.to_date.iso8601
             end
           end
         end
