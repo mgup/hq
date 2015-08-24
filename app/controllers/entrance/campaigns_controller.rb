@@ -300,7 +300,7 @@ class Entrance::CampaignsController < ApplicationController
             #       end
             #       xml.DirectionID application.direction.id
             #       xml.EducationFormID application.education_form_id
-            #       xml.FinanceSourceID (application.competitive_group_item.payed? ? 15 : ( application.competitive_group_target_item_id.nil? ? 14 : 16))
+            #       xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
             #
             #       if '44.03.04' == application.direction.new_code
             #         xml.EducationLevelID 2

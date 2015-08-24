@@ -814,7 +814,7 @@ class Entrance::Application < ActiveRecord::Base
           end
         end
 
-        if entrant.achievements.any?
+        if abitachievements > 0
           xml.IndividualAchievements do
             entrant.achievements.each do |a|
               if direction.id == 280
