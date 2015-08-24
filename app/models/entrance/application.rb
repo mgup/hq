@@ -581,7 +581,7 @@ class Entrance::Application < ActiveRecord::Base
         xml.UID               id
         xml.ApplicationNumber number
         xml.Entrant do
-          xml.UID         entrant.id
+          xml.UID         "entrant_#{entrant.id}"
           xml.FirstName   entrant.first_name
           xml.MiddleName  entrant.patronym
           xml.LastName    entrant.last_name
@@ -700,14 +700,14 @@ class Entrance::Application < ActiveRecord::Base
             # различные UID. Надеюсь, что у нас не скоро будет 100000
             # абитуриентов со льготами.
             # xml.UID (benefits.first.id + 100000)
-            xml.UID benefits.first.id
+            xml.UID "benefit_#{benefits.first.id}"
             xml.CompetitiveGroupID competitive_group_item.competitive_group.id
             xml.DocumentTypeID  benefits.first.document_type_id
             xml.BenefitKindID  benefits.first.benefit_kind_id
             xml.DocumentReason do
               if 17771 == id.to_i
                 xml.OlympicTotalDocument do
-                  xml.UID 1
+                  xml.UID "olympic_total_document_1"
                   xml.DocumentSeries 'б/с'
                   xml.DocumentNumber '2015-II-1194'
                   xml.DiplomaTypeID 2
@@ -722,7 +722,7 @@ class Entrance::Application < ActiveRecord::Base
 
               if benefits.first.olympic_document
                 xml.OlympicDocument do
-                  xml.UID benefits.first.olympic_document.id
+                  xml.UID "olympic_document_#{benefits.first.olympic_document.id}"
                   xml.OriginalReceived true
                   xml.DocumentNumber benefits.first.olympic_document.number
                   xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
@@ -734,7 +734,7 @@ class Entrance::Application < ActiveRecord::Base
                   xml.BenefitDocument do
                     if benefits.first.medical_disability_document.medical?
                       xml.MedicalDocument do
-                        xml.UID benefits.first.medical_disability_document.id
+                        xml.UID "medical_document_#{benefits.first.medical_disability_document.id}"
                         xml.OriginalReceived true
                         xml.DocumentNumber benefits.first.medical_disability_document.number
                         xml.DocumentDate benefits.first.medical_disability_document.date
@@ -742,7 +742,7 @@ class Entrance::Application < ActiveRecord::Base
                       end
                     else
                       xml.DisabilityDocument do
-                        xml.UID benefits.first.medical_disability_document.id
+                        xml.UID "disability_document_#{benefits.first.medical_disability_document.id}"
                         xml.OriginalReceived true
                         xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
                         xml.DocumentNumber benefits.first.medical_disability_document.number
@@ -753,7 +753,7 @@ class Entrance::Application < ActiveRecord::Base
                     end
                   end
                   xml.AllowEducationDocument do
-                    xml.UID benefits.first.allow_education_document.id
+                    xml.UID "allow_education_document_#{benefits.first.allow_education_document.id}"
                     xml.OriginalReceived true
                     xml.DocumentNumber benefits.first.allow_education_document.number
                     xml.DocumentDate benefits.first.allow_education_document.date
@@ -762,7 +762,7 @@ class Entrance::Application < ActiveRecord::Base
                 end
               elsif benefits.first.custom_document
                 xml.CustomDocument do
-                  xml.UID benefits.first.custom_document.id
+                  xml.UID "custom_document_#{benefits.first.custom_document.id}"
                   xml.OriginalReceived true
                   xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
                   xml.DocumentNumber benefits.first.custom_document.number

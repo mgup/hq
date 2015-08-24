@@ -58,7 +58,7 @@ class Entrance::ExamResult < ActiveRecord::Base
 
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.EntranceTestResult do
-        xml.UID                 id
+        xml.UID                 "test_result_#{id}"
         xml.ResultValue         score
         xml.ResultSourceTypeID  self[:form]
 
@@ -71,7 +71,7 @@ class Entrance::ExamResult < ActiveRecord::Base
           xml.ResultDocument do
             xml.InstitutionDocument do
               xml.DocumentTypeID 2
-              xml.DocumentNumber "#{opts[:application].number}-#{exam.id}"
+              xml.DocumentNumber opts[:application].number
               xml.DocumentDate opts[:application].created_at.to_date.iso8601
             end
           end
