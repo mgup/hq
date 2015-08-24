@@ -72,7 +72,7 @@ class Entrance::ExamResult < ActiveRecord::Base
             xml.InstitutionDocument do
               xml.DocumentTypeID 2
               xml.DocumentNumber opts[:application].number
-              xml.DocumentDate opts[:application].date
+              xml.DocumentDate opts[:application].created_at.iso8601
             end
           end
         end
