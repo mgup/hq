@@ -514,12 +514,12 @@ LIMIT 1 ")
           xml.parent.namespace = nil
           xml.fileSender '028'
           xml.version '1.1.3'
-          xml.recordCount self.all.find_all { |s| s.entrance_order && s.entrance_order.signed? && s.entrance_order.order_signing >= Date.new(2015, 6, 1) && s.entrance_order.order_signing <= Date.new(2015, 8, 7) }.length
+          xml.recordCount self.all.find_all { |s| s.entrance_order && s.entrance_order.signed? && s.entrance_order.order_signing >= Date.new(2015, 8, 8) && s.entrance_order.order_signing <= Date.new(2015, 8, 25) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
           # убрать find_all
-          self.all.find_all { |s| s.entrance_order && s.entrance_order.signed? && s.entrance_order.order_signing >= Date.new(2015, 6, 1) && s.entrance_order.order_signing <= Date.new(2015, 8, 7) }.each_with_index do |student, index|
+          self.all.find_all { |s| s.entrance_order && s.entrance_order.signed? && s.entrance_order.order_signing >= Date.new(2015, 8, 8) && s.entrance_order.order_signing <= Date.new(2015, 8, 25) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
