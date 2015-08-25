@@ -304,11 +304,11 @@ class Entrance::CampaignsController < ApplicationController
                   xml.EducationFormID application.education_form_id
                   xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
                   xml.EducationLevelID application.competitive_group_item.education_type_id
-                  xml.IsBeneficiary application.benefits.any? && application.order.signing_date >= Date.new(2015, 7, 30)
+                  xml.IsBeneficiary application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
 
-                  if Date(2015, 8, 4) == application.order.signing_date
+                  if Date.new(2015, 8, 4) == application.order.signing_date
                     xml.Stage 1
-                  elsif Date(2015, 8, 7) == application.order.signing_date
+                  elsif Date.new(2015, 8, 7) == application.order.signing_date
                     xml.Stage 2
                   else
                     xml.Stage 0
