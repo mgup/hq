@@ -496,6 +496,7 @@ class Entrance::Application < ActiveRecord::Base
           patronym_hint: entrant.patronym,
           student_oldid: 0,
           student_oldperson: 0,
+          student_benefits: 1,
           fname_attributes: {
             ip: entrant.last_name,
             rp: entrant.last_name,
