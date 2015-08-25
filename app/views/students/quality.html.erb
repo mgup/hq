@@ -1,36 +1,72 @@
 <div class="page-header">
-    <h1>Показатели качества знаний студентов (очная форма обучения)</h1>
+  <h1>Показатели качества знаний студентов </h1>
+  <h2>(очная форма обучения)</h2>
 </div>
 
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th rowspan="2">Факультет</th>
+<%= form_tag nil, method: :get, class: 'form-horizontal filters' do %>
+    <div class="form-group">
+      <div class="col-sm-4">
+        <%= select_tag :faculty, options_from_collection_for_select(Department.faculties, :id, :abbreviation), prompt: 'Выберите институт', class: 'form-control' %>
+      </div>
+      <div class="col-sm-4">
+        <%= select_tag :year_term,
+                       options_for_select(
+                               [['2014/2015, 2-й семестр', '2014 2'],
+                                ['2015/2016, 1-й семестр', '2015 1']]),
+                       class: 'form-control' %>
+      </div>
+      <div class="col-sm-2">
+        <%= submit_tag 'Смотреть', class: 'btn btn-info' %>
+      </div>
+    </div>
+<% end %>
+
+<% if params[:faculty] && params[:year_term] != '' %>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th rowspan="2">Институт</th>
         <th rowspan="2">Направление/специальность</th>
-        <th rowspan="2">Всего</th>
-        <th colspan="3">Успевающие</th>
-        <th rowspan="2">Неуспевающие</th>
-    </tr>
-    <tr>
-        <th>5</th>
-        <th>5 и 4</th>
-        <th>3</th>
-    </tr>
-    </thead>
-    <% @students.each do |faculty, specialities| %>
-      <% specialities.each do |speciality, students| %>
-        <tr>
-            <% if speciality == specialities.first.first %>
-              <td rowspan="<%= specialities.size %>"><%= faculty.abbreviation %></td>
-            <% end %>
-            <td><%= speciality.full_name %></td>
-            <td><%= students.size %></td>
-            <% st = students.group_by{|st| st.exam_progress(2013, 2).to_s} %>
-            <td><%= st['5'] ? st['5'].size : '–' %></td>
-            <td><%= st['4'] ? st['4'].size : '–' %></td>
-            <td><%= st['3'] ? st['3'].size : '–' %></td>
-            <td><%= st['2'] ? st['2'].size : '–' %></td>
-        </tr>
+        <% 4.times do %>
+            <th rowspan="2">Курс</th>
+            <th rowspan="2">Всего</th>
+            <th colspan="3">Успевающие</th>
+            <th rowspan="2">Неуспевающие</th>
+            <th rowspan="2">Нет данных</th>
+        <% end %>
+      </tr>
+      <tr>
+        <% 4.times do %>
+            <th>5</th>
+            <th>4</th>
+            <th>3</th>
+        <% end %>
+      </tr>
+      </thead>
+      <% @students.each do |faculty, specialities| %>
+          <% specialities.each do |speciality, students| %>
+              <tr>
+                <% if speciality == specialities.first.first %>
+                    <td rowspan="<%= specialities.size %>"><%= faculty.nil? ? '-' : faculty.abbreviation %></td>
+                <% end %>
+                <% if speciality.groups.size > 0 %>
+                    <td><%= speciality.full_name %></td>
+                <% end %>
+                <% speciality.groups.group_by {|g| g.course}.each do |c, groups| %>
+                    <% student = groups.collect {|g| g.students.valid_for_today.without_entrants.full_time_study}.flatten %>
+                    <% if student.size != 0 %>
+                        <td><ins><%= c %></ins></td>
+                        <td><%= student.size %></td>
+                        <% st = student.group_by{|st| st.exam_progress(params[:year_term].split.map{ |i| i.to_i }).to_s} %>
+                        <td><%= st['5'] ? st['5'].size.to_s + ' / '+ (st['5'].size * 100/student.size).to_s + '%' : '–' %></td>
+                        <td><%= st['4'] ? st['4'].size.to_s + ' / '+ (st['4'].size * 100/student.size).to_s + '%' : '–' %></td>
+                        <td><%= st['3'] ? st['3'].size.to_s + ' / '+ (st['3'].size * 100/student.size).to_s + '%' : '–' %></td>
+                        <td><%= st['2'] ? st['2'].size.to_s + ' / '+ (st['2'].size * 100/student.size).to_s + '%' : '–' %></td>
+                        <td><%= st['6'] ? st['6'].size.to_s + ' / '+ (st['6'].size * 100/student.size).to_s + '%' : '–' %></td>
+                    <% end %>
+                <% end %>
+              </tr>
+          <% end %>
       <% end %>
-    <% end %>
-</table>
+    </table>
+<% end %>

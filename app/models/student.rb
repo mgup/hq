@@ -125,7 +125,7 @@ class Student < ActiveRecord::Base
                                                   self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
 
   scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
-  scope :valid_student, -> { where(student_group_status: STATUS_STUDENT)}
+  scope :valid_student, -> { where(student_group_status: self::STATUS_STUDENT) }
 
   scope :actual, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_EXPELED},#{self::STATUS_GRADUATE})") }
   scope :soccard, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_ENTRANT},#{self::STATUS_POSTGRADUATE})") }
@@ -135,48 +135,49 @@ class Student < ActiveRecord::Base
   scope :entrants, -> { where(student_group_status: 100) }
 
   scope :second_higher, -> { where(student_group_group: Group.second_higher) }
-  scope :full_time_study, -> { where(student_group_form: 101) }
 
-  scope :my_filter, -> filters {
-    cond = all
+  scope :full_time_study, -> { joins(:group).where("group.group_form = 101") }
+  scope :without_entrants, -> { where("student_group_yearin != 2015") } # студенты 2015 года поступления
 
-    if filters.key?(:name) && filters[:name] != ''
-      names = filters[:name].split(' ').map { |n| "%#{n}%" }
-      cond = cond.where(
+  scope :my_filter, -> filters {   cond = all
+
+  if filters.key?(:name) && filters[:name] != ''
+    names = filters[:name].split(' ').map { |n| "%#{n}%" }
+    cond = cond.where(
         ['last_name_hint LIKE ?', 'first_name_hint LIKE ?', 'patronym_hint LIKE ?'][0..(names.size-1)].join(' AND ') + ' OR ' +
-        ['first_name_hint LIKE ?', 'last_name_hint LIKE ?', 'patronym_hint LIKE ?'][0..(names.size-1)].join(' AND ') + ' OR ' +
-        ['first_name_hint LIKE ?', 'patronym_hint LIKE ?', 'last_name_hint LIKE ?'][0..(names.size-1)].join(' AND '), *names, *names, *names,)
+            ['first_name_hint LIKE ?', 'last_name_hint LIKE ?', 'patronym_hint LIKE ?'][0..(names.size-1)].join(' AND ') + ' OR ' +
+            ['first_name_hint LIKE ?', 'patronym_hint LIKE ?', 'last_name_hint LIKE ?'][0..(names.size-1)].join(' AND '), *names, *names, *names,)
 
-    end
+  end
 
-    if filters.key?(:status) && filters[:status] != ''
-      cond = cond.where(student_group_status: filters[:status])
-    end
+  if filters.key?(:status) && filters[:status] != ''
+    cond = cond.where(student_group_status: filters[:status])
+  end
 
-    if filters.key?(:course) && filters[:course] != ''
-      cond = cond.where(student_group_group: Group.filter(course: filters[:course]))
-    end
+  if filters.key?(:course) && filters[:course] != ''
+    cond = cond.where(student_group_group: Group.filter(course: filters[:course]))
+  end
 
-    if filters.key?(:group) && filters[:group] != ''
-      cond = cond.where(student_group_group: filters[:group])
-    end
+  if filters.key?(:group) && filters[:group] != ''
+    cond = cond.where(student_group_group: filters[:group])
+  end
 
-    if filters.key?(:speciality) && filters[:speciality] != ''
-      cond = cond.where(student_group_group: Group.filter(speciality: filters[:speciality]))
-    end
-    if filters.key?(:faculty) && filters[:faculty] != ''
-      cond = cond.where(student_group_group: Group.filter(faculty: filters[:faculty]))
-    end
+  if filters.key?(:speciality) && filters[:speciality] != ''
+    cond = cond.where(student_group_group: Group.filter(speciality: filters[:speciality]))
+  end
+  if filters.key?(:faculty) && filters[:faculty] != ''
+    cond = cond.where(student_group_group: Group.filter(faculty: filters[:faculty]))
+  end
 
-    if filters.key?(:form) && filters[:form] != ''
-      cond = cond.where(student_group_group: Group.filter(form: filters[:form]))
-    end
+  if filters.key?(:form) && filters[:form] != ''
+    cond = cond.where(student_group_group: Group.filter(form: filters[:form]))
+  end
 
-    if filters.key?(:finance) && filters[:finance] != ''
-      cond = cond.where(student_group_tax: filters[:finance])
-    end
+  if filters.key?(:finance) && filters[:finance] != ''
+    cond = cond.where(student_group_tax: filters[:finance])
+  end
 
-    cond
+  cond
   }
 
   scope :from_template, -> template { where(student_group_status: template.statuses.collect{ |s| s.id }) }
@@ -260,7 +261,7 @@ ORDER BY
   def group_at_date(date)
     date = date.strftime('%Y-%m-%d')
     group_id = ActiveRecord::Base.connection.execute(
-"SELECT `group`.*, `order`.order_signing as 'date'  FROM `group`
+        "SELECT `group`.*, `order`.order_signing as 'date'  FROM `group`
 JOIN `archive_student_group` ON `archive_student_group`.student_group_group = `group`.group_id AND `archive_student_group`.student_group_id = #{id}
 JOIN `order` ON `order`.order_id = `archive_student_group`.archive_student_group_order
 WHERE `order`.order_signing >= '#{date}'
@@ -371,9 +372,9 @@ LIMIT 1 ")
 
   def discipline_marks(discipline)
     if discipline.is_active?
-     date_group = group
+      date_group = group
     else
-     date_group = group_at_date(Date.new((discipline.semester == 1 ? discipline.year : discipline.year+1), (discipline.semester == 1 ? 10 : 4), 15))
+      date_group = group_at_date(Date.new((discipline.semester == 1 ? discipline.year : discipline.year+1), (discipline.semester == 1 ? 10 : 4), 15))
     end
     dmarks = []
     date_group.group_marks(discipline).each_with_object([]){ |mark, a| a << mark if mark[2] == id }.each do |mark|
@@ -389,16 +390,16 @@ LIMIT 1 ")
           mark[:mark]
         else
           case mark[:mark]
-          when MARK_LECTURE_ATTEND
-            discipline.lecture_weight
-          when MARK_PRACTICAL_FAIR
-            discipline.seminar_weight/3
-          when MARK_PRACTICAL_GOOD
-            discipline.seminar_weight*2/3
-          when MARK_PRACTICAL_PERFECT
-            discipline.seminar_weight
-          else
-            0
+            when MARK_LECTURE_ATTEND
+              discipline.lecture_weight
+            when MARK_PRACTICAL_FAIR
+              discipline.seminar_weight/3
+            when MARK_PRACTICAL_GOOD
+              discipline.seminar_weight*2/3
+            when MARK_PRACTICAL_PERFECT
+              discipline.seminar_weight
+            else
+              0
           end
         end
       }.compact
@@ -485,19 +486,22 @@ LIMIT 1 ")
     end
   end
 
-  def exam_progress(year, semester)
-    marks = (final_marks.from_year_and_semester(year, semester).collect { |m| m.value } + exam_marks.from_year_and_semester(year, semester).collect { |m| m.value }).uniq
+  def exam_progress(year_term)
+    year = year_term[0]
+    semester = year_term[1]
+    marks = (exam_marks.from_year_and_semester(year, semester).collect { |m| m.value }).uniq
     case
-    when marks.include?(Study::ExamMark::VALUE_2) || marks.include?(Study::ExamMark::VALUE_NEZACHET) || marks.include?(Study::ExamMark::VALUE_NEDOPUSCHEN)
-      2
-    when marks.include?(Study::ExamMark::VALUE_3)
-      3
-    when marks.include?(Study::ExamMark::VALUE_4)
-      4
-    when marks.include?(Study::ExamMark::VALUE_5)
-      5
-    else
-      nil
+      when (marks.include?(Study::ExamMark::VALUE_2) || marks.include?(Study::ExamMark::VALUE_NEZACHET) ||
+          marks.include?(Study::ExamMark::VALUE_NEDOPUSCHEN) || marks.include?(Study::ExamMark::VALUE_NEYAVKA))
+        2
+      when marks.include?(Study::ExamMark::VALUE_3)
+        3
+      when marks.include?(Study::ExamMark::VALUE_4)
+        4
+      when marks.include?(Study::ExamMark::VALUE_5)
+        5
+      else
+        6
     end
 
   end
@@ -585,48 +589,48 @@ LIMIT 1 ")
 
   def last_status_order
     case status.id
-    when 103
-      orders.signed.my_filter(template: [11,24,26,28]).order(:order_signing).last
-    when 102
-      orders.signed.my_filter(template: 14).order(:order_signing).last
-    when 104
-      orders.signed.my_filter(template: 20).order(:order_signing).last
-    when 100
-      nil
-    when 105
-      nil
-    else
-      orr = orders.signed.my_filter(template: [1,2,3,16,17,25]).order(:order_signing).last
-      unless orr
-        # Придумываем студенту дату зачисления.
+      when 103
+        orders.signed.my_filter(template: [11,24,26,28]).order(:order_signing).last
+      when 102
+        orders.signed.my_filter(template: 14).order(:order_signing).last
+      when 104
+        orders.signed.my_filter(template: 20).order(:order_signing).last
+      when 100
+        nil
+      when 105
+        nil
+      else
+        orr = orders.signed.my_filter(template: [1,2,3,16,17,25]).order(:order_signing).last
+        unless orr
+          # Придумываем студенту дату зачисления.
 
-        orr = orders.build(order_signing: "#{Date.today.year - course}-09-01")
-        # fail '123'
-      end
+          orr = orders.build(order_signing: "#{Date.today.year - course}-09-01")
+          # fail '123'
+        end
 
-      orr
+        orr
     end
   end
 
   def soccard_status
     case status.id
-    when 103
-      2
-    when 102
-      3
-    when 104
-      4
-    when 100
-      fail
-    when 105
-      fail
-    else
-      1
+      when 103
+        2
+      when 102
+        3
+      when 104
+        4
+      when 100
+        fail
+      when 105
+        fail
+      else
+        1
     end
   end
 
   def valid_for_soccard?
     last_name.present? && first_name.present? && person.birthday.present? && person.passport_number.present? && person.passport_department.present? && person.residence_address.present? &&
-      last_status_order && person.passport_date.present?
+        last_status_order && person.passport_date.present?
   end
 end
