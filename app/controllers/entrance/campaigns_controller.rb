@@ -311,7 +311,7 @@ class Entrance::CampaignsController < ApplicationController
                   elsif Date.new(2015, 8, 7) == application.order.signing_date
                     xml.Stage 2
                   else
-                    xml.Stage 0
+                    xml.Stage 1
                   end
                 end
               end
