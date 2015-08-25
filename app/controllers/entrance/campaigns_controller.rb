@@ -306,10 +306,13 @@ class Entrance::CampaignsController < ApplicationController
                   xml.EducationLevelID application.competitive_group_item.education_type_id
                   xml.IsBeneficiary application.benefits.any? && application.order.signing_date >= Date.new(2015, 7, 30)
 
-                  xml.Stage 0
-                  # unless Date.new(2015, 7, 30) == application.order.signing_date
-                  #   xml.Stage ((Date.new(2015, 8, 4) <= application.order.signing_date) ? 1 : 2)
-                  # end
+                  if Date(2015, 8, 4) == application.order.signing_date
+                    xml.Stage 1
+                  elsif Date(2015, 8, 7) == application.order.signing_date
+                    xml.Stage 2
+                  else
+                    xml.Stage 0
+                  end
                 end
               end
             end
