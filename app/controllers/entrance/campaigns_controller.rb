@@ -291,6 +291,8 @@ class Entrance::CampaignsController < ApplicationController
             #   end
             # end
 
+            order_ids = []
+
             xml.OrdersOfAdmission do
               @applications.each do |application|
                 xml.OrderOfAdmission do
@@ -306,13 +308,16 @@ class Entrance::CampaignsController < ApplicationController
                   xml.EducationLevelID application.competitive_group_item.education_type_id
                   xml.IsBeneficiary application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
 
-                  if Date.new(2015, 8, 4) == application.order.signing_date
-                    xml.Stage 1
-                  elsif Date.new(2015, 8, 7) == application.order.signing_date
-                    xml.Stage 2
-                  else
-                    xml.Stage 1
+                  unless order_ids.include?(application.order.id)
+                    if Date.new(2015, 8, 4) == application.order.signing_date
+                      xml.Stage 1
+                    elsif Date.new(2015, 8, 7) == application.order.signing_date
+                      xml.Stage 2
+                    elsif Date.new(2015, 7, 27) == application.order.signing_date
+                      xml.Stage 1
+                    end
                   end
+                  order_ids.push(application.order.id)
                 end
               end
             end
