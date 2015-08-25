@@ -54,7 +54,7 @@ item = group.items.first
           elsif a.competitive_group_target_item
             a_organization << a
           else
-            if a.order && a.order.signed? && a.order.signing_date <= Date.new(2015,7,30) # TODO убрать условие
+            if a.order && a.order.signed? && a.order.signing_date <= Date.new(2015,7,27) # TODO убрать условие
               a_contest_enrolled << a
             else
               a_contest << a
@@ -91,18 +91,18 @@ item = group.items.first
         2 => 170
       }
 
-      # pdf.text 'Список поступающих без вступительных испытаний', size: 14
+      pdf.text 'Список поступающих без вступительных испытаний', size: 14
       data = [['', 'Рег. номер', 'Поступающий', 'Причина']]
       a_out_of_competition.each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name, a.benefits.first.temp_text]
 
-        remaining_places -= 1 if (a.enrolled? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,30))
+        #remaining_places -= 1 if (a.enrolled? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,27))
       end
 
-      # pdf.table data, width: pdf.bounds.width, header: true, column_widths: column_widths
-      # pdf.move_down 40
+      pdf.table data, width: pdf.bounds.width, header: true, column_widths: column_widths
+      pdf.move_down 40
 
-      # remaining_places -= a_out_of_competition.size
+      remaining_places -= a_out_of_competition.size
     end
 
     exam_names = group.test_items.order(:entrance_test_priority).collect do |t|
@@ -125,24 +125,24 @@ item = group.items.first
 
     # Квота.
     if a_special_rights.any?
-      # pdf.text 'Список поступающих по квоте приема лиц, имеющих особое право',
-      #          size: 14
+      pdf.text 'Список поступающих по квоте приема лиц, имеющих особое право',
+               size: 14
 
-      # pdf.text "Доступное количество мест — #{group.items.first.number_quota_o}",
-      #          style: :bold, size: 10
+      pdf.text "Доступное количество мест — #{group.items.first.number_quota_o}",
+               style: :bold, size: 10
 
       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Оригинал').flatten]
       a_special_rights.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score, (a.original? ? 'да' : 'нет')]
 
-        remaining_places -= 1 if (a.enrolled? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,30))
+        #remaining_places -= 1 if (a.enrolled? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,27))
       end
 
-      # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
-      # pdf.move_down 40
+      pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
+      pdf.move_down 40
 
       ##remaining_places -= (a_special_rights.size > group.items.first.number_quota_o ? group.items.first.number_quota_o : a_special_rights.size)
-      # remaining_places -= group.items.first.number_quota_o
+      remaining_places -= group.items.first.number_quota_o
     end
 
     if a_organization.any?
@@ -161,7 +161,7 @@ item = group.items.first
         appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
           data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.abitachievements + a.total_score, (a.original? ? 'да' : 'нет')]
 
-          remaining_places -= 1 if (a.enrolled? && !a_organization[0].direction.master? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,30))
+          remaining_places -= 1 if (a.enrolled? && !a_organization[0].direction.master? && a.order.signed? && a.order.signing_date <= Date.new(2015,7,27))
         end
 
         if a_organization[0].direction.master?
