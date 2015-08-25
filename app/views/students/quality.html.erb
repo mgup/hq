@@ -16,7 +16,7 @@
                        class: 'form-control' %>
       </div>
       <div class="col-sm-2">
-        <%= submit_tag 'Смотреть', class: 'btn btn-info' %>
+        <%= submit_tag 'Смотреть', class: 'btn btn-info disabled' %>
       </div>
     </div>
 <% end %>
@@ -30,18 +30,18 @@
         <% 4.times do %>
             <th rowspan="2">Курс</th>
             <th rowspan="2">Всего</th>
-            <th colspan="3">Успевающие</th>
+            <!--<th colspan="3">Успевающие</th>-->
             <th rowspan="2">Неуспевающие</th>
             <th rowspan="2">Нет данных</th>
         <% end %>
       </tr>
-      <tr>
-        <% 4.times do %>
+      <!--<tr>
+        <%# 4.times do %>
             <th>5</th>
             <th>4</th>
             <th>3</th>
-        <% end %>
-      </tr>
+        <%# end %>
+      </tr>-->
       </thead>
       <% @students.each do |faculty, specialities| %>
           <% specialities.each do |speciality, students| %>
@@ -53,14 +53,14 @@
                     <td><%= speciality.full_name %></td>
                 <% end %>
                 <% speciality.groups.group_by {|g| g.course}.each do |c, groups| %>
-                    <% student = groups.collect {|g| g.students.valid_for_today.without_entrants.full_time_study}.flatten %>
+                    <% student = groups.collect {|g| g.students.valid_for_today.full_time_study}.flatten %>
                     <% if student.size != 0 %>
                         <td><ins><%= c %></ins></td>
                         <td><%= student.size %></td>
                         <% st = student.group_by{|st| st.exam_progress(params[:year_term].split.map{ |i| i.to_i }).to_s} %>
-                        <td><%= st['5'] ? st['5'].size.to_s + ' / '+ (st['5'].size * 100/student.size).to_s + '%' : '–' %></td>
+                        <!--<td><%= st['5'] ? st['5'].size.to_s + ' / '+ (st['5'].size * 100/student.size).to_s + '%' : '–' %></td>
                         <td><%= st['4'] ? st['4'].size.to_s + ' / '+ (st['4'].size * 100/student.size).to_s + '%' : '–' %></td>
-                        <td><%= st['3'] ? st['3'].size.to_s + ' / '+ (st['3'].size * 100/student.size).to_s + '%' : '–' %></td>
+                        <td><%= st['3'] ? st['3'].size.to_s + ' / '+ (st['3'].size * 100/student.size).to_s + '%' : '–' %></td>-->
                         <td><%= st['2'] ? st['2'].size.to_s + ' / '+ (st['2'].size * 100/student.size).to_s + '%' : '–' %></td>
                         <td><%= st['6'] ? st['6'].size.to_s + ' / '+ (st['6'].size * 100/student.size).to_s + '%' : '–' %></td>
                     <% end %>
@@ -70,3 +70,8 @@
       <% end %>
     </table>
 <% end %>
+
+<p>
+  Внимание! <br>
+  Актуальные данные о количестве студентов в группах и их успеваемости будет доступна после подписания приказов о переводе, включая приказы об условном переводе студентов на следуюший курсы.
+</p>
