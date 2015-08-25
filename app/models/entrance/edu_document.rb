@@ -35,7 +35,9 @@ class Entrance::EduDocument < ActiveRecord::Base
   end
 
   def add_fis_document_details(application, xml)
-    xml.OriginalReceived      application.original
+    xml.OriginalReceived      true
+    xml.OriginalReceivedDate  application.created_at.date.iso8601
+    # xml.OriginalReceived      application.original
     xml.DocumentSeries        entrant.edu_document.series.blank? ? 'б/с' : entrant.edu_document.series
     xml.DocumentNumber        entrant.edu_document.number
     xml.DocumentDate          entrant.edu_document.date.iso8601

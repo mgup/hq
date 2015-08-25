@@ -581,7 +581,7 @@ class Entrance::Application < ActiveRecord::Base
         xml.UID               id
         xml.ApplicationNumber number
         xml.Entrant do
-          xml.UID         entrant.id
+          xml.UID         "entrant_#{entrant.id}"
           xml.FirstName   entrant.first_name
           xml.MiddleName  entrant.patronym
           xml.LastName    entrant.last_name
@@ -606,16 +606,16 @@ class Entrance::Application < ActiveRecord::Base
 
             unless competitive_group_target_item_id.nil?
               # xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
-              # xml.TargetOrganizationUID case competitive_group_target_item.target_organization.name
-              #                           when 'ФАПМК'
-              #                             '2014-1'
-              #                           when 'Министерство образования и науки Республики Тыва'
-              #                             '2014-2'
+              xml.TargetOrganizationUID case competitive_group_target_item.target_organization.name
+                                        when 'ФАПМК'
+                                          '2015-1'
+                                        when 'Ульяновский Дом печати'
+                                          '2015-2'
               #                           when 'Министерство образования и науки Республики Бурятия'
               #                             '2014-3'
               #                           when 'Министерство образования, науки и по делам молодежи КБР'
               #                             '2014-4'
-              #                           end
+                                        end
             end
           end
         end
@@ -631,6 +631,24 @@ class Entrance::Application < ActiveRecord::Base
           end
           xml.EduDocuments do
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
+          end
+
+          if abitachievements > 0
+            xml.CustomDocuments do
+              entrant.achievements.each do |a|
+                if direction.id == 280
+                  next if a.entrance_achievement_type_id == 13
+                else
+                  next if a.entrance_achievement_type_id == 14
+                end
+
+                xml.CustomDocument do
+                  xml.UID "IA#{a.id}"
+                  xml.DocumentTypeNameText a.document.present? ?  a.document : "Протокол #{a.id}"
+                  xml.OriginalReceived true
+                end
+              end
+            end
           end
         end
         unless benefits.empty?
@@ -693,88 +711,94 @@ class Entrance::Application < ActiveRecord::Base
         #     end
         #   end
         # end
-        xml.ApplicationCommonBenefits do
-          xml.ApplicationCommonBenefit do
-            # ФИС требует, чтобы льготы передаваемые через
-            # ApplicationCommonBenefits и ApplicationCommonBenefit имели
-            # различные UID. Надеюсь, что у нас не скоро будет 100000
-            # абитуриентов со льготами.
-            # xml.UID (benefits.first.id + 100000)
-            xml.UID benefits.first.id
-            xml.CompetitiveGroupID competitive_group_item.competitive_group.id
-            xml.DocumentTypeID  benefits.first.document_type_id
-            xml.BenefitKindID  benefits.first.benefit_kind_id
-            xml.DocumentReason do
-              if 17771 == id.to_i
-                xml.OlympicTotalDocument do
-                  xml.UID 1
-                  xml.DocumentSeries 'б/с'
-                  xml.DocumentNumber '2015-II-1194'
-                  xml.DiplomaTypeID 2
-                  xml.Subjects do
-                    xml.SubjectBriefData do
-                      xml.SubjectID 9
-                    end
-                  end
-                end
 
-              end
-
-              if benefits.first.olympic_document
-                xml.OlympicDocument do
-                  xml.UID benefits.first.olympic_document.id
-                  xml.OriginalReceived true
-                  xml.DocumentNumber benefits.first.olympic_document.number
-                  xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
-                  xml.OlympicID benefits.first.olympic_document.olympic_id
-                  xml.LevelID benefits.first.olympic_document.level_id
-                end
-              elsif benefits.first.medical_disability_document
-                xml.MedicalDocuments do
-                  xml.BenefitDocument do
-                    if benefits.first.medical_disability_document.medical?
-                      xml.MedicalDocument do
-                        xml.UID benefits.first.medical_disability_document.id
-                        xml.OriginalReceived true
-                        xml.DocumentNumber benefits.first.medical_disability_document.number
-                        xml.DocumentDate benefits.first.medical_disability_document.date
-                        xml.DocumentOrganization benefits.first.medical_disability_document.organization
-                      end
-                    else
-                      xml.DisabilityDocument do
-                        xml.UID benefits.first.medical_disability_document.id
-                        xml.OriginalReceived true
-                        xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
-                        xml.DocumentNumber benefits.first.medical_disability_document.number
-                        xml.DocumentDate benefits.first.medical_disability_document.date
-                        xml.DocumentOrganization benefits.first.medical_disability_document.organization
-                        xml.DisabilityTypeID benefits.first.medical_disability_document.disability_type_id
+          if 16233 == id
+            # 100 баллов за ЕГЭ в exam_result
+          else
+            xml.ApplicationCommonBenefits do
+              xml.ApplicationCommonBenefit do
+                # ФИС требует, чтобы льготы передаваемые через
+                # ApplicationCommonBenefits и ApplicationCommonBenefit имели
+                # различные UID. Надеюсь, что у нас не скоро будет 100000
+                # абитуриентов со льготами.
+                # xml.UID (benefits.first.id + 100000)
+                xml.UID "benefit_#{benefits.first.id}"
+                xml.CompetitiveGroupID competitive_group_item.competitive_group.id
+                xml.DocumentTypeID  benefits.first.document_type_id
+                xml.BenefitKindID  benefits.first.benefit_kind_id
+                xml.DocumentReason do
+                  if 17771 == id.to_i
+                    xml.OlympicTotalDocument do
+                      xml.UID "olympic_total_document_1"
+                      xml.DocumentSeries 'б/с'
+                      xml.DocumentNumber '2015-II-1194'
+                      xml.DiplomaTypeID 2
+                      xml.Subjects do
+                        xml.SubjectBriefData do
+                          xml.SubjectID 9
+                        end
                       end
                     end
+
                   end
-                  xml.AllowEducationDocument do
-                    xml.UID benefits.first.allow_education_document.id
-                    xml.OriginalReceived true
-                    xml.DocumentNumber benefits.first.allow_education_document.number
-                    xml.DocumentDate benefits.first.allow_education_document.date
-                    xml.DocumentOrganization benefits.first.allow_education_document.organization
+
+                  if benefits.first.olympic_document
+                    xml.OlympicDocument do
+                      xml.UID "olympic_document_#{benefits.first.olympic_document.id}"
+                      xml.OriginalReceived true
+                      xml.DocumentNumber benefits.first.olympic_document.number
+                      xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
+                      xml.OlympicID benefits.first.olympic_document.olympic_id
+                      xml.LevelID benefits.first.olympic_document.level_id
+                    end
+                  elsif benefits.first.medical_disability_document
+                    xml.MedicalDocuments do
+                      xml.BenefitDocument do
+                        if benefits.first.medical_disability_document.medical?
+                          xml.MedicalDocument do
+                            xml.UID "medical_document_#{benefits.first.medical_disability_document.id}"
+                            xml.OriginalReceived true
+                            xml.DocumentNumber benefits.first.medical_disability_document.number
+                            xml.DocumentDate benefits.first.medical_disability_document.date
+                            xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                          end
+                        else
+                          xml.DisabilityDocument do
+                            xml.UID "disability_document_#{benefits.first.medical_disability_document.id}"
+                            xml.OriginalReceived true
+                            xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
+                            xml.DocumentNumber benefits.first.medical_disability_document.number
+                            xml.DocumentDate benefits.first.medical_disability_document.date
+                            xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                            xml.DisabilityTypeID benefits.first.medical_disability_document.disability_type_id
+                          end
+                        end
+                      end
+                      xml.AllowEducationDocument do
+                        xml.UID "allow_education_document_#{benefits.first.allow_education_document.id}"
+                        xml.OriginalReceived true
+                        xml.DocumentNumber benefits.first.allow_education_document.number
+                        xml.DocumentDate benefits.first.allow_education_document.date
+                        xml.DocumentOrganization benefits.first.allow_education_document.organization
+                      end
+                    end
+                  elsif benefits.first.custom_document
+                    xml.CustomDocument do
+                      xml.UID "custom_document_#{benefits.first.custom_document.id}"
+                      xml.OriginalReceived true
+                      xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
+                      xml.DocumentNumber benefits.first.custom_document.number
+                      xml.DocumentDate benefits.first.custom_document.date
+                      xml.DocumentOrganization benefits.first.custom_document.organization
+                      xml.DocumentTypeNameText benefits.first.custom_document.type_name
+                    end
                   end
-                end
-              elsif benefits.first.custom_document
-                xml.CustomDocument do
-                  xml.UID benefits.first.custom_document.id
-                  xml.OriginalReceived true
-                  xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
-                  xml.DocumentNumber benefits.first.custom_document.number
-                  xml.DocumentDate benefits.first.custom_document.date
-                  xml.DocumentOrganization benefits.first.custom_document.organization
-                  xml.DocumentTypeNameText benefits.first.custom_document.type_name
                 end
               end
             end
           end
         end
-        end
+
         has_scores = false
         results = entrant.exam_results.in_competitive_group(competitive_group)
         results.each do |r|
@@ -785,7 +809,26 @@ class Entrance::Application < ActiveRecord::Base
           xml.EntranceTestResults do
             results.each do |r|
               if r.score
-                xml << r.to_fis(competitive_group_id: competitive_group.id, application_number: number).xpath('/EntranceTestResult').to_xml.to_str
+                xml << r.to_fis(competitive_group_id: competitive_group.id, application: self).xpath('/EntranceTestResult').to_xml.to_str
+              end
+            end
+          end
+        end
+
+        if abitachievements > 0
+          xml.IndividualAchievements do
+            entrant.achievements.each do |a|
+              if direction.id == 280
+                next if a.entrance_achievement_type_id == 13
+              else
+                next if a.entrance_achievement_type_id == 14
+              end
+
+              xml.IndividualAchievement do
+                xml.IAUID "individual_achievement_#{a.id}"
+                xml.IAName a.achievement_type.name
+                xml.IAMark a.score if a.score.present?
+                xml.IADocumentUID "IA#{a.id}"
               end
             end
           end
