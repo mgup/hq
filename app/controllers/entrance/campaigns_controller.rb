@@ -300,7 +300,7 @@ class Entrance::CampaignsController < ApplicationController
 
                   xml.OrderName application.competitive_group.name
                   xml.OrderNumber application.order.number
-                  xml.OrderDate application.order.signing_date.iso8601
+                  xml.OrderDate application.order.signing_date.to_date.iso8601
 
                   xml.Application do
                     xml.ApplicationNumber application.number
