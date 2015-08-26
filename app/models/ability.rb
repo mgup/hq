@@ -51,11 +51,11 @@ class Ability
       # end
 
       #if user.is?(:lecturer)
-        # can :manage, Study::Exam
-        # can :manage, Study::ExamMark
-        # Загрузка ресурсов, принадлежащих только текущему пользователю,
-        # производится в Study::DisciplinesController.
-        # can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }
+      # can :manage, Study::Exam
+      # can :manage, Study::ExamMark
+      # Загрузка ресурсов, принадлежащих только текущему пользователю,
+      # производится в Study::DisciplinesController.
+      # can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }
       #end
 
       if user.is?(:developer)
@@ -81,7 +81,7 @@ class Ability
 
         can :reference, Student.valid_for_today
         can :soccard_mistakes, Student
-        
+
         can :work, :all_faculties
       end
 
@@ -190,7 +190,7 @@ class Ability
     soc_support_event(user)
     can :soccard_mistakes, Student
     can :delete, Social::Document
-    
+
   end
 
   def soc_support_event(user)
@@ -207,7 +207,7 @@ class Ability
     can :manage, Social::DocumentType
     can :read, Student
     can :study, Student
-    
+
     can :manage, Office::Order, order_template: Office::Order::REPRIMAND_TEMPLATE
     cannot :sign, Office::Order
     can :work, :all_faculties
@@ -220,7 +220,7 @@ class Ability
     can :manage, Social::DocumentType
     can :read, Student
     can :study, Student
-    
+
     can :manage, Office::Order, order_template: Office::Order::REPRIMAND_TEMPLATE
     can :work, :all_faculties
   end
@@ -238,11 +238,11 @@ class Ability
     cannot :sign, Office::Order
     can :manage, Group
     can :index, :groups
-    
+
     can :manage, Student
     can :manage, Person
   end
-  
+
   def aspirantura(user)
     can :manage, :plans
 
@@ -254,8 +254,8 @@ class Ability
     cannot :sign, Office::Order
     can :manage, Group
     can :index, :groups
-    
-    can :work, :all_faculties  
+
+    can :work, :all_faculties
     can :manage, Student, student_group_id: Student.aspirants.collect{|s| s.id}
     can :create, Student
     can :manage, Person
@@ -263,7 +263,7 @@ class Ability
 
   def ioo(user)
     faculty_employee(user)
-    
+
     can :work, :all_faculties
   end
 
@@ -331,7 +331,7 @@ class Ability
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
   end
-  
+
   def selection_foreign(user)
     can :manage, Entrance::Campaign
     cannot :orders, Entrance::Campaign
@@ -359,7 +359,7 @@ class Ability
     can :update, Office::Order
     can :show, Office::Order
     can :orders, Entrance::Campaign
-    
+
     can :work, :all_faculties
   end
 
@@ -371,7 +371,7 @@ class Ability
     can :orders, Entrance::Campaign
     can :numbers, Entrance::Campaign
     can :statistics, Entrance::Contract
-    
+
     can :work, :all_faculties
     # can :update, Achievement
     # can :validate_selection, Achievement

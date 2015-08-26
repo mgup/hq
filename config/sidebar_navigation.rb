@@ -15,7 +15,7 @@ SimpleNavigation::Configuration.run do |navigation|
       end
 
       primary.item :user_rating,
-        '<span class="glyphicons podium"></span> Отчёт об эффективности'.html_safe,
+                   '<span class="glyphicons podium"></span> Отчёт об эффективности'.html_safe,
                    rating_user_path(current_user)
 
       if current_user.is?(:subdepartment) || current_user.is?(:dean)
@@ -69,7 +69,7 @@ SimpleNavigation::Configuration.run do |navigation|
                      '<span class="glyphicons charts"></span> Результаты вступительных испытаний'.html_safe,
                      results_entrance_campaign_path(Entrance::Campaign::CURRENT)
       end
-      
+
       if can?(:manage, Entrance::Achievement)
         primary.item :entrantce_achievements,
                      '<span class="glyphicons fire"></span> Индивидуальные достижения'.html_safe,
@@ -80,7 +80,7 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :entrance_contracts_statistics,
                      '<span class="glyphicons coins"></span> Статистика платного приёма'.html_safe,
                      paid_enrollment_entrance_campaign_path(Entrance::Campaign::CURRENT)
-                     # statistics_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
+        # statistics_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
       end
     end
 
@@ -186,6 +186,7 @@ SimpleNavigation::Configuration.run do |navigation|
       end
       if can?(:manage, :plans)
         primary.item :plans, 'Учебные планы'.html_safe, study_plans_path, icon: 'bell'
+        primary.item :quality, 'Показатели качества знаний'.html_safe, quality_students_path, icon: 'list-alt'
       end
       if can?(:manage, :all)
         primary.item :control, 'Контроль ведомостей'.html_safe, study_control_path, icon: 'warning-sign'
@@ -332,7 +333,7 @@ SimpleNavigation::Configuration.run do |navigation|
         # end
 
         if can? :validate_additional, Achievement
-        #if current_user.is?(:dean)
+          #if current_user.is?(:dean)
           primary.item :validate_additional_achievements, 'Подтверждение показателей эффективности (поручения директора)',
                        validate_additional_achievements_path, icon: 'check'
         end
@@ -343,26 +344,20 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     if user_signed_in?
-      if (can? :manage, Purchase) && (can? :manage, University)
+      if current_user.is?(:recenz)
         primary.item :review, 'Рецензирование изданий', class: 'nav-header disabled'
       end
-      if (can? :manage, Review) && (can? :manage, University)
+      if current_user.is?(:recenz)
         primary.item :review, 'Рецензии', reviews_path, icon: 'list'
         primary.item :university, 'Университеты', universities_path, icon: 'list'
       end
     end
 
     if user_signed_in?
-      if (can? :manage, Purchase::Good) &&
-          (can? :manage, Purchase::Supplier) &&
-          (can? :manage, Purchase::Purchase) &&
-          (can? :manage, Purchase::LineItem)
+      if current_user.is?(:developer) || current_user.is?(:purchase_manager) || current_user.is?(:ciot)
         primary.item :purchase_purchases, 'Закупки', class: 'nav-header disabled'
       end
-      if (can? :manage, Purchase::Good) &&
-          (can? :manage, Purchase::Supplier) &&
-          (can? :manage, Purchase::Purchase) &&
-          (can? :manage, Purchase::LineItem)
+      if current_user.is?(:developer) || current_user.is?(:purchase_manager) || current_user.is?(:ciot)
         primary.item :purchase_purchases, 'Заявки', purchase_purchases_path, icon: 'file'
         primary.item :purchase_goods, 'Товары', purchase_goods_path, icon: 'list'
         primary.item :purchase_suppliers, 'Поставщики', purchase_suppliers_path, icon: 'list'
@@ -407,44 +402,44 @@ SimpleNavigation::Configuration.run do |navigation|
 
   # Define the primary navigation
   #navigation.items do |primary|
-    # Add an item to the primary navigation. The following params apply:
-    # key - a symbol which uniquely defines your navigation item in the scope of the primary_navigation
-    # name - will be displayed in the rendered navigation. This can also be a call to your I18n-framework.
-    # url - the address that the generated item links to. You can also use url_helpers (named routes, restful routes helper, url_for etc.)
-    # options - can be used to specify attributes that will be included in the rendered navigation item (e.g. id, class etc.)
-    #           some special options that can be set:
-    #           :if - Specifies a proc to call to determine if the item should
-    #                 be rendered (e.g. <tt>:if => Proc.new { current_user.admin? }</tt>). The
-    #                 proc should evaluate to a true or false value and is evaluated in the context of the view.
-    #           :unless - Specifies a proc to call to determine if the item should not
-    #                     be rendered (e.g. <tt>:unless => Proc.new { current_user.admin? }</tt>). The
-    #                     proc should evaluate to a true or false value and is evaluated in the context of the view.
-    #           :method - Specifies the http-method for the generated link - default is :get.
-    #           :highlights_on - if autohighlighting is turned off and/or you want to explicitly specify
-    #                            when the item should be highlighted, you can set a regexp which is matched
-    #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>.
-    #
-    #primary.item :key_1, 'name', url, options
+  # Add an item to the primary navigation. The following params apply:
+  # key - a symbol which uniquely defines your navigation item in the scope of the primary_navigation
+  # name - will be displayed in the rendered navigation. This can also be a call to your I18n-framework.
+  # url - the address that the generated item links to. You can also use url_helpers (named routes, restful routes helper, url_for etc.)
+  # options - can be used to specify attributes that will be included in the rendered navigation item (e.g. id, class etc.)
+  #           some special options that can be set:
+  #           :if - Specifies a proc to call to determine if the item should
+  #                 be rendered (e.g. <tt>:if => Proc.new { current_user.admin? }</tt>). The
+  #                 proc should evaluate to a true or false value and is evaluated in the context of the view.
+  #           :unless - Specifies a proc to call to determine if the item should not
+  #                     be rendered (e.g. <tt>:unless => Proc.new { current_user.admin? }</tt>). The
+  #                     proc should evaluate to a true or false value and is evaluated in the context of the view.
+  #           :method - Specifies the http-method for the generated link - default is :get.
+  #           :highlights_on - if autohighlighting is turned off and/or you want to explicitly specify
+  #                            when the item should be highlighted, you can set a regexp which is matched
+  #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>.
+  #
+  #primary.item :key_1, 'name', url, options
 
-    # Add an item which has a sub navigation (same params, but with block)
-    #primary.item :key_2, 'name', url, options do |sub_nav|
-      # Add an item to the sub navigation (same params again)
-      #sub_nav.item :key_2_1, 'name', url, options
-    #end
+  # Add an item which has a sub navigation (same params, but with block)
+  #primary.item :key_2, 'name', url, options do |sub_nav|
+  # Add an item to the sub navigation (same params again)
+  #sub_nav.item :key_2_1, 'name', url, options
+  #end
 
-    # You can also specify a condition-proc that needs to be fullfilled to display an item.
-    # Conditions are part of the options. They are evaluated in the context of the views,
-    # thus you can use all the methods and vars you have available in the views.
-    #primary.item :key_3, 'Admin', url, :class => 'special', :if => Proc.new { current_user.admin? }
-    #primary.item :key_4, 'Account', url, :unless => Proc.new { logged_in? }
+  # You can also specify a condition-proc that needs to be fullfilled to display an item.
+  # Conditions are part of the options. They are evaluated in the context of the views,
+  # thus you can use all the methods and vars you have available in the views.
+  #primary.item :key_3, 'Admin', url, :class => 'special', :if => Proc.new { current_user.admin? }
+  #primary.item :key_4, 'Account', url, :unless => Proc.new { logged_in? }
 
-    # you can also specify a css id or class to attach to this particular level
-    # works for all levels of the menu
-    # primary.dom_id = 'menu-id'
-    # primary.dom_class = 'menu-class'
+  # you can also specify a css id or class to attach to this particular level
+  # works for all levels of the menu
+  # primary.dom_id = 'menu-id'
+  # primary.dom_class = 'menu-class'
 
-    # You can turn off auto highlighting for a specific level
-    # primary.auto_highlight = false
+  # You can turn off auto highlighting for a specific level
+  # primary.auto_highlight = false
 
   #end
 
