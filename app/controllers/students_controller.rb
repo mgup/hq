@@ -2,7 +2,7 @@ class StudentsController < ApplicationController
   load_and_authorize_resource
 
   before_filter :find_student, only: [:documents, :study, :grants, :orders, :hostel]
-  
+
   before_filter :find_faculties, only: :new
 
   def index
@@ -18,6 +18,7 @@ class StudentsController < ApplicationController
 
   def documents
     @reference = Document::Doc.new
+    @petition = Document::Doc.new
   end
 
   def study
@@ -37,13 +38,13 @@ class StudentsController < ApplicationController
   def new
     @person = Person.find(params[:person])
     @student = @person.students.build
-    
+
     # raise @student.inspect
-#     @person.build_fname
-#     @person.build_iname
-#     @person.build_oname
+    #     @person.build_fname
+    #     @person.build_iname
+    #     @person.build_oname
   end
-  
+
   def create
     if @student.save
       @student.student_group_speciality = @student.speciality
@@ -93,12 +94,14 @@ class StudentsController < ApplicationController
   end
 
   def quality
-    @students = @students.valid_for_today.full_time_study.group_by{|st| st.speciality}.group_by{|sp, students| sp.faculty}
+    if params[:faculty] && params[:year_term] != ''
+      @students =@students.my_filter(faculty: params[:faculty]).valid_for_today.full_time_study.group_by{|sp| sp.speciality}.group_by{|f, students| f.faculty}
+    end
   end
 
   def resource_params
     params.fetch(:student, {}).permit(:id, :student_group_student, :student_group_group,
-          :payment, :student_group_status, :state_line, :record, :abit, :abitpoints, :school, :admission_year
+                                      :payment, :student_group_status, :state_line, :record, :abit, :abitpoints, :school, :admission_year
     )
   end
 
@@ -122,7 +125,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:student_id])
     @person = @student.person
   end
-  
+
   def find_faculties
     @faculties = Department.faculties
     unless current_user.is?(:developer) || can?(:work, :all_faculties)
