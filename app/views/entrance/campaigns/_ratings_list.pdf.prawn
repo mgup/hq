@@ -151,11 +151,11 @@ item = group.items.first
       # end
 
       a_organization.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls|
-        if a_organization[0].direction.master?
+        # if a_organization[0].direction.master?
           pdf.text "Договор № #{target_item.target_organization.contract_number} от #{l target_item.target_organization.contract_date}, #{target_item.target_organization.name}", size: 12
           pdf.text "Доступное количество мест — #{target_item.number_target_o}",
                    style: :bold, size: 10
-        end
+        # end
 
         data = [(['', 'Рег. номер', 'Поступающий'] << exam_names << 'Инд. достижения' << 'Сумма' << 'Оригинал').flatten]
         appls.sort(&Entrance::Application.sort_applications).each_with_index do |a, i|
