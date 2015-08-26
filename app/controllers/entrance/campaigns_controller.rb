@@ -297,7 +297,7 @@ class Entrance::CampaignsController < ApplicationController
 
             xml.OrdersOfAdmission do
               @applications.each do |application|
-                next unless application.order.signing_date == Date.new(2015, 7, 30)
+                next if application.order.signing_date == Date.new(2015, 7, 30)
 
                 xml.OrderOfAdmission do
                   xml.OrderOfAdmissionUID "order_of_admission_#{application.order.id}"
