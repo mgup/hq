@@ -280,7 +280,9 @@ class Entrance::CampaignsController < ApplicationController
       #     "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
       # end
       format.xml do
-        @applications = Entrance::Application.where(campaign_id: [2015, 32015]).
+        # @applications = Entrance::Application.where(campaign_id: [2015, 32015]).
+        #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
+        @applications = Entrance::Application.where(campaign_id: [2015]).
           where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
@@ -295,6 +297,8 @@ class Entrance::CampaignsController < ApplicationController
 
             xml.OrdersOfAdmission do
               @applications.each do |application|
+                next unless application.order.signing_date == Date.new(2015, 7, 30)
+
                 xml.OrderOfAdmission do
                   xml.OrderOfAdmissionUID "order_of_admission_#{application.order.id}"
 
@@ -317,6 +321,7 @@ class Entrance::CampaignsController < ApplicationController
                     xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
                     xml.IsBeneficiary false
                   end
+                  xml.CompetitiveGroupUID application.competitive_group.id
 
                   xml.EducationLevelID application.competitive_group_item.education_type_id
 
