@@ -309,9 +309,16 @@ class Entrance::CampaignsController < ApplicationController
                   end
                   xml.DirectionID application.direction.id
                   xml.EducationFormID application.education_form_id
-                  xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
+
+                  if application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
+                    xml.FinanceSourceID 20
+                    xml.IsBeneficiary true
+                  else
+                    xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
+                    xml.IsBeneficiary false
+                  end
+
                   xml.EducationLevelID application.competitive_group_item.education_type_id
-                  xml.IsBeneficiary application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
 
                   # unless order_ids.include?(application.order.id)
                     if Date.new(2015, 8, 4) == application.order.signing_date
