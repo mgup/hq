@@ -416,7 +416,7 @@
 @initOrderMetaAcademicYear = (uid) ->
   currentYear = parseInt($('#' + uid).attr('data-meta-text'))
   if isNaN(currentYear) || '' == currentYear
-    currentYear = 2014
+    currentYear = 2015
 
   $('#' + uid).attr('data-meta-text', currentYear)
 
