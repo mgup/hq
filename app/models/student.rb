@@ -128,7 +128,7 @@ class Student < ActiveRecord::Base
   scope :valid_student, -> { where(student_group_status: self::STATUS_STUDENT) }
 
   scope :actual, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_EXPELED},#{self::STATUS_GRADUATE})") }
-  scope :soccard, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_ENTRANT},#{self::STATUS_POSTGRADUATE})") }
+  scope :soccard, -> { where("student_group.student_group_status IN (#{self::STATUS_ENTRANT},#{self::STATUS_SABBATICAL})") }
   scope :with_group, -> { joins(:group) }
 
   scope :off_budget, -> { where(student_group_tax: PAYMENT_OFF_BUDGET) }
@@ -290,6 +290,10 @@ LIMIT 1 ")
 
   def entrance_order
     orders.where('order_template = 16').last
+  end
+
+  def expeled_sabbatical_order
+    orders.where('order_template IN (14, 15, 42, 26, 24)').last
   end
 
   # Обучается ли студент на бюджетной основе?
@@ -518,12 +522,12 @@ LIMIT 1 ")
           xml.parent.namespace = nil
           xml.fileSender '028'
           xml.version '1.1.3'
-          xml.recordCount self.all.find_all { |s| s.entrance_order && s.entrance_order.signed? && s.entrance_order.order_signing >= Date.new(2015, 8, 25) && s.entrance_order.order_signing <= Date.new(2015, 8, 31) }.length
+          xml.recordCount self.all.find_all { |s| s.last_status_order && [14, 15, 42, 26, 24].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2015, 1, 1) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
           # убрать find_all
-          self.all.find_all { |s| s.entrance_order && s.entrance_order.signed? && s.entrance_order.order_signing >= Date.new(2015, 8, 25) && s.entrance_order.order_signing <= Date.new(2015, 8, 31) }.each_with_index do |student, index|
+          self.all.find_all { |s| s.last_status_order && [14, 15, 42, 26, 24].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2015, 1, 1) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
