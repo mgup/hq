@@ -25,14 +25,36 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     pdf.move_down 5
     pdf.font_size 12 do
-      pdf.text "<u>#{@student.person.full_name(:dp)}</u>"
-      pdf.text "действительно является студентом <u>#{@student.group.course}</u> курса <u>#{institute.join(' ')}</u>,", inline_format: true
+      pdf.text "<u>#{@student.person.full_name}</u>", inline_format: true
+      pdf.text "действительно является студентом(кой) <u>#{@student.group.course}</u> курса <u>#{institute.join(' ')}</u>,", inline_format: true
       pdf.move_down 5
       pdf.text '<strong>Московского государственного университета печати имени Ивана Федорова</strong>', inline_format: true
       pdf.move_down 5
       @student.orders.each do |order|
         if order == @student.orders.last
-          pdf.text "Приказ № <u>#{order.number}</u> от <u>#{order.signing_date.strftime('%d.%m.%Y') if order.signing_date}</u>", inline_format: true
+          pdf.text "Приказ № <u>#{order.number}</u> от <u>#{order.signing_date.strftime('%d.%m.%Y') if order.signing_date}</u>, ", inline_format: true
+        end
+      end
+      pdf.move_down 5
+      pdf.text 'в Москве на учебе с start_date по end_date .'
+      pdf.move_down 5
+      pdf.text 'Институт ходатайствует о регистрации до end_date.'
+      pdf.move_down 5
+        if @student.person.student_hostel_temp == 2
+          pdf.text 'Выдана для передоставления в Отделение ОУФМС России по г. Москве по району «Восточное Дегунино»'
+        elsif @student.person.student_hostel_temp == 3
+          pdf.text 'Выдана для передоставления в Отделение УФМС России по г. Москве по району «Коптево»'
+        end
+      pdf.move_down 25
+      data = []
+      positions.each do |p|
+        title = Unicode::capitalize(p.title)
+        if p.role.name == 'pro-rector-study'
+          data << [
+              title, p.user.short_name]
+        else
+          data << [
+              "#{title} #{p.department.abbreviation}", p.user.short_name]
         end
       end
     end
