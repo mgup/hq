@@ -47,8 +47,8 @@ class Social::ApplicationsController < ApplicationController
   end
 
   def close_receipt
-    params[:year]  ||= 2014
-    params[:month] ||= 10
+    params[:year]  ||= 2015
+    params[:month] ||= 9
     applications = @applications.where(support_year:  params[:year])
     applications = applications.where(support_month: params[:month])
     applications = applications.where(accepted: false)

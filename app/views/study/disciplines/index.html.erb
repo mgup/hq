@@ -16,7 +16,7 @@
   <table class="table table-striped navigation_trip" id='show_disciplines' data-input="#show_disciplines" data-content='Ваши дисциплины будут отражаться тут.'>
     <tbody>
     <% @disciplines.each do |d| %>
-      <%# next unless d.is_active? %>
+      <% next if !d.is_active? && d.year < (Study::Discipline::CURRENT_STUDY_YEAR - 1) %>
       <tr>
         <td class="text-muted"><%= d.id %></td>
         <td class="<%= 'text-muted' unless d.is_active?%>">

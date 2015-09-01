@@ -9,7 +9,7 @@ class Office::Order < ActiveRecord::Base
   PROBATION_TEMPLATE = 40
   REPRIMAND_TEMPLATE = 43
   
-  RESPONSIBLE_POSITION_ROLES = [2,16,25,27,30,33,40]
+  RESPONSIBLE_POSITION_ROLES = [2,16,23,25,27,30,33,40]
 
   alias_attribute :id,      :order_id
   alias_attribute :version, :order_revision
