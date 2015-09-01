@@ -1,0 +1,29 @@
+<div class="modal fade" id="petitionModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Печать справки-ходатайства</h4>
+      </div>
+      <div class="modal-body">
+        <h4><%= student.person.full_name %></h4>
+        <%= form_for @petition, method: :get, url: petition_student_path(student), class: 'form-horizontal', id: 'petitionOptions' do |f| %>
+          <%= f.hidden_field :document_type, value: 1 %>
+          <h5>Нормативный срок обучения:</h5>
+          <div class="row">
+            <div class="col col-sm-3">
+            <%= text_field_tag :start_date, nil, placeholder: 'Начальная дата', class: 'form-control datepicker' %>
+          </div>
+            <div class="col col-sm-3">
+            <%= text_field_tag :end_date, nil, placeholder: 'Конечная дата', class: 'form-control datepicker' %>
+          </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+            <%= f.submit 'Распечатать', class: 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

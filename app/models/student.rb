@@ -137,7 +137,6 @@ class Student < ActiveRecord::Base
   scope :second_higher, -> { where(student_group_group: Group.second_higher) }
 
   scope :full_time_study, -> { joins(:group).where("group.group_form = 101") }
-  scope :without_entrants, -> { where("student_group_yearin != 2015") } # студенты 2015 года поступления
 
   scope :my_filter, -> filters {   cond = all
 

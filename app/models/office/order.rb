@@ -44,6 +44,8 @@ class Office::Order < ActiveRecord::Base
   scope :entrance, -> { where(order_template: ENTRANCE_TEMPLATE) }
   scope :from_year_and_month, -> year, month { where('order_editing > ? AND (order_signing > ? OR order_signing IS NULL)', DateTime.new(year, month, 1, 0, 0, 0, 0), DateTime.new(year, month, 1, 0, 0, 0, 0)) }
 
+  scope :template_student, -> { where("order_template IN (2, 7, 10, 16, 17, 40, 41)") }
+
   scope :my_filter, -> filters {
     cond = all
 

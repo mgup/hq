@@ -20,11 +20,14 @@
     <div class="caption">
       <h3>Справка-ходатайство</h3>
       <p>Справка для предоставления в Отделение ОУФМС для регистрации.</p>
-      <p><%= link_to petition_student_path(@student), class: 'btn btn-default pull-right' do %>
+      <p><%#= link_to petition_student_path(@student), class: 'btn btn-default pull-right' do %>
+        <%= link_to '#petitionModal', class: 'btn btn-default pull-right', data: {toggle: 'modal'} do %>
           Распечатать
         <% end %>
+      </p>
     </div>
   </div>
 </div>
 
 <%= render partial: 'reference_modal', locals: {student: @student} %>
+<%= render partial: 'petition_modal', locals: {student: @student} %>

@@ -72,7 +72,7 @@ class StudentsController < ApplicationController
 
   def reference
     @student = Student.valid_for_today.find(params[:id])
-    #raise @student.person.attributes.inspect
+    # raise @student.person.attributes.inspect
     @reference = Document::Doc.create document_type: params[:document_doc][:document_type],
                                       document_number: (Document::Doc.doc_references.last.number.to_i + 1),
                                       document_expire_date: Date.today.change(year: Date.today.year+1)
@@ -88,6 +88,13 @@ class StudentsController < ApplicationController
   end
 
   def petition
+    @student = Student.valid_for_today.find(params[:id])
+    # raise params.inspect
+    @petition = Document::Doc.create  document_type: (Document::Doc::TYPE_REFERENCE),
+                                      document_number: (Document::Doc.doc_petitions.last.number.to_i + 1),
+                                      document_expire_date: Date.today.change(year: Date.today.year+1)
+    @document_person = Document::DocumentPerson.create (@student.person.attributes.merge(document: @petition))
+    @document_student = Document::DocumentStudent.create (@student.attributes.merge(document: @petition))
     respond_to do |format|
       format.pdf
     end
