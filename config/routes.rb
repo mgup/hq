@@ -232,6 +232,7 @@ HQ::Application.routes.draw do
       # get 'drafts', to: 'orders#drafts', on: :collection
       # get 'underways', to: 'orders#underways', on: :collection
       get 'entrance_protocol', to: 'orders#entrance_protocol', on: :member
+      get 'rebukes', to: 'orders#rebukes', on: :collection
     end
     resources :orders, only: [:show],
                        defaults: { format: 'pdf' },
@@ -241,6 +242,8 @@ HQ::Application.routes.draw do
     get 'drafts', to: 'orders#drafts'
     get 'underways', to: 'orders#underways'
     get 'orders/new(/:page)', to: 'orders#new', defaults: { page: 1 }
+
+
 
     resources :order_templates do
       resources :order_blanks

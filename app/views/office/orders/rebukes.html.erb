@@ -1,0 +1,38 @@
+<div class="page-header">
+    <h1>Приказы об объявлении выговора</h1>
+</div>
+
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th class="text-muted">#</th>
+        <th>Номер</th>
+        <th>Дата подписания</th>
+        <th>Студенты</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <% @orders.each do |order| %>
+        <tr>
+            <td class="text-muted"><%= order.id %></td>
+            <td><%= order.number %></td>
+            <td><%= l order.signing_date, format: '%d %b %Y' %></td>
+            <td>
+                <ul>
+                    <% order.students.each do |student| %>
+                      <li><%= student.full_name %>, <%= student.group.name %></li>
+                    <% end %>
+                </ul>
+
+            </td>
+            <td>
+                <%= link_to office_order_path(order.id, format: :pdf), class: 'btn btn-default', title: 'Распечатать' do %>
+                  <span class="glyphicons print"></span>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>

@@ -71,6 +71,11 @@ class Ability
         can :work, :all_faculties
       end
 
+      if user.is?(:firefighter)
+        can :rebukes, Office::Order
+        can :print,  Office::Order
+      end
+
       if user.is?(:student_hr) || user.is?(:student_hr_boss)
         can :manage, Student
         can :manage, Document::Doc

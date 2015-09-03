@@ -16,6 +16,10 @@ class Office::OrdersController < ApplicationController
     end
   end
 
+  def rebukes
+    @orders = @orders.signed.my_filter(template: Office::Order::REPRIMAND_TEMPLATE)
+  end
+
   def drafts
     params[:from_date]  ||= "01.01.#{Date.today.year}"
     @order_students = Office::OrderStudent.my_filter(params.merge(order_status: Office::Order::STATUS_DRAFT))
