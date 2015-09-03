@@ -73,7 +73,7 @@ class Ability
 
       if user.is?(:firefighter)
         can :rebukes, Office::Order
-        can :print,  Office::Order
+        can :show,  Office::Order
       end
 
       if user.is?(:student_hr) || user.is?(:student_hr_boss)
