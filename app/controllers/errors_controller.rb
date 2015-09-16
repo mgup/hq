@@ -16,7 +16,7 @@ class ErrorsController < ApplicationController
     text += @exception.backtrace[0..4].join("\n")
     text += "\n....." if @exception.backtrace.size > 5
     if signed_in?
-      text += "\n\n#{current_user.full_name} (#{current_user.phone}, #{current_user.email})"
+      text += "\n\n#{current_user.id}, #{current_user.full_name} (#{current_user.phone}, #{current_user.email})"
     end
 
     require 'telegram/bot'
