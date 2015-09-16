@@ -261,6 +261,9 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :support, 'СПИСКИ по заявлениям'.html_safe,  lists_social_applications_path, icon: 'list'
         # primary.item :support_form, 'Оставить заявление на мат. помощь', 'http://matrix3.mgup.ru/my/support', icon: 'ok'
       end
+      if can? :rebukes, Office::Order
+        primary.item :rebukes,    'Приказы об объявлении выговора'.html_safe, rebukes_office_orders_path, icon: 'exclamation-sign'
+      end
       if can? :manage, Event.new(event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY)
         primary.item :event,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
         primary.item :without_med, 'Незаписавшиеся на медосмотр'.html_safe, without_med_users_path, icon: 'print'

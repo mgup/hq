@@ -7,8 +7,11 @@
         <div class='col-sm-3'>
           <%=label_tag :student_name, 'Ф.И.О', class: 'control-label' %>
         </div>
-        <div class='col-sm-8'>
+        <div class='col-sm-6'>
           <a data-toggle="modal" id="personNameBtn" data-target="#studentnameModal" class="btn btn-default"><%= @person.id ? @person.full_name : 'Требуется ввести ФИО' %></a>
+        </div>
+        <div class="col-sm-3">
+          <%= link_to 'Просклонять', declension_student_path(@student), class: 'btn btn-primary' %>
         </div>
       </div>
       <div class="row">
@@ -192,7 +195,7 @@
                   <div class="col col-lg-4 <%= 'has-error' if @person.errors.include?(name) %>">
                     <%= f.fields_for name do |sub_f| %>
 					  <% if @person.id && p[0] == :ip %>
-					  	<%= sub_f.text_field p[0], disabled: !current_user.is?(:developer), class: 'name_field form-control' %>
+					  	<%= sub_f.text_field p[0], disabled: !current_user.is?(:developer), class: 'name_field form-control'%>
 					  <% else %>
                       	<%= sub_f.text_field p[0], required: true, class: 'form-control' %>
 					  <% end %>

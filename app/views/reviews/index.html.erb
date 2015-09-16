@@ -28,6 +28,12 @@
   <% end %>
 </div>
 
+<% if flash[:notice] %>
+    <br>
+    <div class="alert alert-info"><%= flash[:notice] %></div>
+    <br>
+<% end %>
+
 <ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#panel1">Последние</a></li>
   <li><a data-toggle="tab" href="#panel2">Все</a></li>

@@ -126,6 +126,11 @@ class StudentsController < ApplicationController
     @students = @students.valid_for_today.where('student_group_group NOT IN (430,434,435,436)').my_filter(form: 101)
   end
 
+  def declension
+
+    redirect_to @student
+  end
+
   private
 
   def find_student
