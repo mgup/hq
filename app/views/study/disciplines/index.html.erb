@@ -12,68 +12,152 @@
   </div>
 </div>
 
-<% if @disciplines %>
-  <table class="table table-striped navigation_trip" id='show_disciplines' data-input="#show_disciplines" data-content='Ваши дисциплины будут отражаться тут.'>
-    <tbody>
-    <% @disciplines.each do |d| %>
-      <% next if !d.is_active? && d.year < (Study::Discipline::CURRENT_STUDY_YEAR - 1) %>
-      <tr>
-        <td class="text-muted"><%= d.id %></td>
-        <td class="<%= 'text-muted' unless d.is_active?%>">
-          <h4 style="margin-top: 0;"><%= d.name %></h4>
-          <p>
-            <strong><%= d.group.name %></strong>,
-            <%= study_year(d.year) %> учебный год, <%= study_semester(d.semester) %>
-          </p>
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#panel1">Текущие</a></li>
+  <li><a data-toggle="tab" href="#panel2">Все</a></li>
+</ul>
+<div class="tab-content">
+  <div id="panel1" class="tab-pane fade in active">
+    <div class="row">
+      <h3>Дисциплины текущего семестра</h3>
+    </div>
+    <div class="row">
+        <% if @disciplines.now.any? %>
+          <table class="table table-striped navigation_trip" id='show_disciplines' data-input="#show_disciplines" data-content='Ваши дисциплины будут отражаться тут.'>
+            <tbody>
+              <% @disciplines.now.each do |d| %>
+          <% next if !d.is_active? && d.year < (Study::Discipline::CURRENT_STUDY_YEAR - 1) %>
+          <tr>
+            <td class="text-muted"><%= d.id %></td>
+            <td class="<%= 'text-muted' unless d.is_active?%>">
+              <h4 style="margin-top: 0;"><%= d.name %></h4>
+              <p>
+                <strong><%= d.group.name %></strong>,
+                <%= study_year(d.year) %> учебный год, <%= study_semester(d.semester) %>
+              </p>
+              <p>Ведущий преподаватель: <%= d.lead_teacher.full_name if d.lead_teacher %></p>
+              <% unless d.assistant_teachers.empty? %>
+                  <p>Дополнительные преподаватели:</p>
+                  <ul>
+                    <% d.assistant_teachers.each do |t| %>
+                        <li><%= t.full_name %></li>
+                    <% end %>
+                  </ul>
+              <% end %>
+            </td>
+            <td>
+              <div class="pull-right">
+                <% if d.checkpoints.empty? %>
+                    <span class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не указаны контрольные точки</span>
+                    <br><br>
+                <% end %>
+                <%= link_to study_discipline_checkpoints_path(d), class: 'add_marks btn btn-default navigation_trip',
+                            data: { input: '.add_marks:first-child', content: 'Чтобы внести результаты или редактировать расписание, нажмите на эту кнопку.',
+                                    position: 'w'} do %>
+                    <span class="glyphicon glyphicon-<%= d.checkpoints.empty? ? 'calendar' : 'list-alt' %>"></span> Внести данные
+                <% end %>
+                <% if d.is_active? %>
+                    <br><br>
+                    <%= link_to edit_study_discipline_path(d), class: 'btn btn-default edit_discipline navigation_trip',
+                                data: { input: '.edit_discipline', content: 'Вы можете редактировать созданные дисциплины.',
+                                        position: 'w'} do %>
+                        <span class="glyphicon glyphicon-edit"></span>  Редактировать
+                    <% end %>
+                <% end %>
+                <% if d.checkpoints.empty? %>
+                    <br><br>
+                    <%= link_to d, method: :delete, confirm: 'Вы уверены?', class: 'btn btn-danger delete_empty_discipline navigation_trip',
+                                data: { input: '.delete_empty_discipline', content: 'Если Вы ещё не добавили занятия, Вы можете удалить дисциплину.',
+                                        position: 'w'} do %>
+                        <span class="glyphicon glyphicon-remove"></span> Удалить
+                    <% end %>
+                <% end %>
+              </div>
+            </td>
+            <!--<td colspan="2">-->
+            <!--<p class="text-muted">Учебный семестр завершён.</p>-->
+            <!--</td>-->
+          </tr>
+        <% end %>
+                </tbody>
+            </table>
+      <% else %>
+            <p class="lead">
+                Нет дисциплин, закреплённых за вами.
+            </p>
+      <% end %>
+    </div>
+  </div>
+  <div id="panel2" class="tab-pane fade">
+    <div class="row">
+      <h3>Все дисциплины</h3>
+    </div>
+    <div class="row">
+      <% if @disciplines.any? %>
+          <table class="table table-striped navigation_trip" id='show_disciplines' data-input="#show_disciplines" data-content='Ваши дисциплины будут отражаться тут.'>
+            <tbody>
+            <% @disciplines.each do |d| %>
+                <% next if !d.is_active? && d.year < (Study::Discipline::CURRENT_STUDY_YEAR - 1) %>
+                <tr>
+                  <td class="text-muted"><%= d.id %></td>
+                  <td class="<%= 'text-muted' unless d.is_active?%>">
+                    <h4 style="margin-top: 0;"><%= d.name %></h4>
+                    <p>
+                      <strong><%= d.group.name %></strong>,
+                      <%= study_year(d.year) %> учебный год, <%= study_semester(d.semester) %>
+                    </p>
 
-          <p>Ведущий преподаватель: <%= d.lead_teacher.full_name if d.lead_teacher %></p>
-          <% unless d.assistant_teachers.empty? %>
-            <p>Дополнительные преподаватели:</p>
-            <ul>
-              <% d.assistant_teachers.each do |t| %>
-                <li><%= t.full_name %></li>
-              <% end %>
-            </ul>
-          <% end %>
-        </td>
-        <td>
-          <div class="pull-right">
-            <% if d.checkpoints.empty? %>
-              <span class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не указаны контрольные точки</span>
-              <br><br>
+                    <p>Ведущий преподаватель: <%= d.lead_teacher.full_name if d.lead_teacher %></p>
+                    <% unless d.assistant_teachers.empty? %>
+                        <p>Дополнительные преподаватели:</p>
+                        <ul>
+                          <% d.assistant_teachers.each do |t| %>
+                              <li><%= t.full_name %></li>
+                          <% end %>
+                        </ul>
+                    <% end %>
+                  </td>
+                  <td>
+                    <div class="pull-right">
+                      <% if d.checkpoints.empty? %>
+                          <span class="label label-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Не указаны контрольные точки</span>
+                          <br><br>
+                      <% end %>
+                      <%= link_to study_discipline_checkpoints_path(d), class: 'add_marks btn btn-default navigation_trip',
+                                  data: { input: '.add_marks:first-child', content: 'Чтобы внести результаты или редактировать расписание, нажмите на эту кнопку.',
+                                          position: 'w'} do %>
+                          <span class="glyphicon glyphicon-<%= d.checkpoints.empty? ? 'calendar' : 'list-alt' %>"></span> Внести данные
+                      <% end %>
+                      <% if d.is_active? %>
+                          <br><br>
+                          <%= link_to edit_study_discipline_path(d), class: 'btn btn-default edit_discipline navigation_trip',
+                                      data: { input: '.edit_discipline', content: 'Вы можете редактировать созданные дисциплины.',
+                                              position: 'w'} do %>
+                              <span class="glyphicon glyphicon-edit"></span>  Редактировать
+                          <% end %>
+                      <% end %>
+                      <% if d.checkpoints.empty? %>
+                          <br><br>
+                          <%= link_to d, method: :delete, confirm: 'Вы уверены?', class: 'btn btn-danger delete_empty_discipline navigation_trip',
+                                      data: { input: '.delete_empty_discipline', content: 'Если Вы ещё не добавили занятия, Вы можете удалить дисциплину.',
+                                              position: 'w'} do %>
+                              <span class="glyphicon glyphicon-remove"></span> Удалить
+                          <% end %>
+                      <% end %>
+                    </div>
+                  </td>
+                  <!--<td colspan="2">-->
+                  <!--<p class="text-muted">Учебный семестр завершён.</p>-->
+                  <!--</td>-->
+                </tr>
             <% end %>
-            <%= link_to study_discipline_checkpoints_path(d), class: 'add_marks btn btn-default navigation_trip',
-                        data: { input: '.add_marks:first-child', content: 'Чтобы внести результаты или редактировать расписание, нажмите на эту кнопку.',
-                                position: 'w'} do %>
-              <span class="glyphicon glyphicon-<%= d.checkpoints.empty? ? 'calendar' : 'list-alt' %>"></span> Внести данные
-            <% end %>
-            <% if d.is_active? %>
-              <br><br>
-              <%= link_to edit_study_discipline_path(d), class: 'btn btn-default edit_discipline navigation_trip',
-                          data: { input: '.edit_discipline', content: 'Вы можете редактировать созданные дисциплины.',
-                                  position: 'w'} do %>
-                <span class="glyphicon glyphicon-edit"></span>  Редактировать
-              <% end %>
-            <% end %>
-            <% if d.checkpoints.empty? %>
-              <br><br>
-              <%= link_to d, method: :delete, confirm: 'Вы уверены?', class: 'btn btn-danger delete_empty_discipline navigation_trip',
-                          data: { input: '.delete_empty_discipline', content: 'Если Вы ещё не добавили занятия, Вы можете удалить дисциплину.',
-                                  position: 'w'} do %>
-                <span class="glyphicon glyphicon-remove"></span> Удалить
-              <% end %>
-            <% end %>
-          </div>
-        </td>
-        <!--<td colspan="2">-->
-        <!--<p class="text-muted">Учебный семестр завершён.</p>-->
-        <!--</td>-->
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p class="lead">
-    Нет дисциплин, закреплённых за вами.
-  </p>
-<% end %>
+            </tbody>
+          </table>
+      <% else %>
+          <p class="lead">
+            Нет дисциплин, закреплённых за вами.
+          </p>
+      <% end %>
+    </div>
+  </div>
+</div>
