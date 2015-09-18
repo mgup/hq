@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   alias_attribute :password, :user_password
   alias_attribute :email,    :user_email
   alias_attribute :phone,    :user_phone
+  alias_attribute :active,   :user_active
 
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :user_fname
   accepts_nested_attributes_for :fname
@@ -125,7 +126,7 @@ class User < ActiveRecord::Base
   end
 
   def valid_password?(password)
-    if self.password.present?
+    if self.password.present? && self.active == true
       if ::Digest::MD5.hexdigest(password) == self.user_password
         # self.password = password
         # self.client_password = nil

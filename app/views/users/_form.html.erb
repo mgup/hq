@@ -1,4 +1,18 @@
 <%= nested_form_for @user, html: { class: 'form-horizontal', autocomplete: 'off' } do |f| %>
+  <div class="row">
+  <div class="col col-sm-6">
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-success active">
+        <span class="glyphicon glyphicon-heart"></span>
+        <input type="radio" name="user[active]" value="true" checked> Жив здоров
+      </label>
+      <label class="btn btn-danger">
+        <span class="glyphicon glyphicon-fire"></span>
+        <input type="radio" name="user[active]" value="false"> Пал смертью храбрых  </label>
+      </label>
+    </div>
+    </div>
+  </div>
   <fieldset>
     <legend>Фамилия, имя, отчество во всех падежах</legend>
     <div class="form-group">

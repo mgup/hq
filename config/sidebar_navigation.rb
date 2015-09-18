@@ -159,14 +159,12 @@ SimpleNavigation::Configuration.run do |navigation|
 
         primary.item :achievement_period, 'Периоды ввода достижений НПР',
                      achievement_periods_path, icon: 'list'
-
         primary.item :event_categories, 'Категории событий', event_categories_path, icon: 'th-list'
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
         primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
-        primary.item :phonebook, 'Телефонная книга'.html_safe, phonebook_index_path, icon: 'list'
+        primary.item :phonebook, 'Телефонная книга'.html_safe, phonebook_index_path, icon: 'phone-alt'
       end
     end
-    # ======================================
     if user_signed_in?
       if (can? :index, :selection_contracts) or (can? :index, :payment_types)
         primary.item :nav_group_selection, 'Платный приём', class: 'nav-header disabled'

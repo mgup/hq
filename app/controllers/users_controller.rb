@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   authorize_resource except: [:rating]
 
   def index
+    # raise params inspect
     params[:page] ||= 1
     @users = @users.from_appointment(params[:appointment]) if params[:appointment]
     @users = @users.by_name(params[:name]) if params[:name]
@@ -63,7 +64,7 @@ class UsersController < ApplicationController
 
   def resource_params
     params.fetch(:user, {}).permit(
-      :username, :email, :phone, :password,
+      :username, :email, :phone, :password, :active,
       fname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
       iname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
       oname_attributes: [:ip, :rp, :dp, :vp, :tp, :pp],
