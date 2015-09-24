@@ -7,11 +7,8 @@
         <div class='col-sm-3'>
           <%=label_tag :student_name, 'Ф.И.О', class: 'control-label' %>
         </div>
-        <div class='col-sm-6'>
+        <div class='col-sm-9'>
           <a data-toggle="modal" id="personNameBtn" data-target="#studentnameModal" class="btn btn-default"><%= @person.id ? @person.full_name : 'Требуется ввести ФИО' %></a>
-        </div>
-        <div class="col-sm-3">
-          <%= link_to 'Просклонять', declension_student_path(@student), class: 'btn btn-primary' %>
         </div>
       </div>
       <div class="row">
