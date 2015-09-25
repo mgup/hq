@@ -55,7 +55,6 @@ class StudentsController < ApplicationController
   end
 
   def update
-    raise params.inspect
     if params[:student][:ciot_password]
       @student.ciot_password =  params[:student][:ciot_password]
       @student.ciot_login =  params[:student][:ciot_login]
