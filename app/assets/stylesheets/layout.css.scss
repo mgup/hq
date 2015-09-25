@@ -13,3 +13,20 @@ body {
     margin-top: 0;
   }
 }
+#modal-1 {
+  .modal-dialog {
+    left: 60%;
+    width: 40%;
+    position: fixed;
+  }
+  .modal-content {
+    border-radius: 5px;
+    border: none;
+    top: 40%;
+  }
+  .modal-body {
+    background-color: #880e2a;
+    color: white;
+  }
+}
+

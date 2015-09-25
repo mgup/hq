@@ -29,18 +29,6 @@
 </div>
 
 <div class="container">
-  <!-- отображение уведомлений -->
-  <div class="row">
-    <% if @current_user.notifications.any? %>
-        <div class="alert alert-danger">
-          <ul>
-            <% @current_user.notifications.each do |msg| %>
-                <li><%= msg.content %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
-  </div>
   <div class="row">
     <div id="page_sidebar" class="col-sm-3 hidden-print">
       <%= link_to '#', class: 'btn btn-block btn-warning btn-lg', id: 'trip' do %>
@@ -69,6 +57,34 @@
     </div>
   </div>
 </div>
+
+<!-- отображение уведомлений -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Новое уведомление</h4>
+        <% @current_user.notifications.each do |msg| %>
+          <div class="alert alert-danger">
+            <ul>
+              <li><%= msg.content %></li>
+              <%= link_to 'Прочитано!', visible_notification_path(msg), class: 'btn btn-default' %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @current_user.notifications.any? %>
+<script>
+  setTimeout(function() {
+    $('#modal-1').modal({});
+  }, 500);
+</script>
+<% end %>
 
 </body>
 </html>

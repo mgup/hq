@@ -1,30 +1,20 @@
 class NotificationsController < ApplicationController
-  authorize_resource
-  before_action :set_notification, only: [:show, :edit, :update, :destroy]
+ authorize_resource
+ skip_authorize_resource only: [:visible]
 
-  # GET /notifications
-  # GET /notifications.json
+ before_action :set_notification, only: [:show, :edit, :update, :destroy]
+
   def index
     @notifications = Notification.unscoped.all
-    # raise params.inspect
   end
 
-  # GET /notifications/1
-  # GET /notifications/1.json
-  def show
-  end
-
-  # GET /notifications/new
   def new
     @notification = Notification.new
   end
 
-  # GET /notifications/1/edit
   def edit
   end
 
-  # POST /notifications
-  # POST /notifications.json
   def create
     @notification = Notification.new(notification_params)
 
@@ -39,8 +29,6 @@ class NotificationsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /notifications/1
-  # PATCH/PUT /notifications/1.json
   def update
     respond_to do |format|
       if @notification.update(notification_params)
@@ -53,8 +41,6 @@ class NotificationsController < ApplicationController
     end
   end
 
-  # DELETE /notifications/1
-  # DELETE /notifications/1.json
   def destroy
     @notification.destroy
     respond_to do |format|
@@ -68,7 +54,11 @@ class NotificationsController < ApplicationController
     notification.visible = !notification.visible # flop the visible
     notification.save
 
-    redirect_to notifications_path
+    if @current_user.is?(:developer)
+      redirect_to notifications_path
+    else
+      redirect_to root_path
+    end
   end
 
   private
