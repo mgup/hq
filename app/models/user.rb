@@ -50,6 +50,8 @@ class User < ActiveRecord::Base
   has_many :current_groups, -> { where("start_date <= '#{Date.today}' AND end_date >= '#{Date.today}'") }, class_name: Curator::Group, foreign_key: :user_id
   #has_one :current_group, through: :current_curator_group
 
+  has_many :notifications, foreign_key: :user_id
+
   default_scope do
     order(:last_name_hint, :first_name_hint, :patronym_hint)
   end

@@ -12,6 +12,7 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       if current_user.is?(:developer)
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
+        primary.item :notification, 'Раздача плюшек'.html_safe, notifications_path, icon:'warning-sign'
       end
 
       primary.item :user_rating,

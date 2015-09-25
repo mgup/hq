@@ -1,4 +1,9 @@
 HQ::Application.routes.draw do
+
+  resources :notifications do
+    get 'visible', on: :member
+  end
+
   namespace :purchase do
     resources :suppliers
     resources :goods

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150714093912) do
+ActiveRecord::Schema.define(version: 20150925080850) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -478,6 +478,23 @@ ActiveRecord::Schema.define(version: 20150714093912) do
     t.integer "entrance_benefit_id", limit: 4
   end
 
+  create_table "data_uploaders", force: :cascade do |t|
+    t.string   "filename",      limit: 255
+    t.string   "content_type",  limit: 255
+    t.binary   "file_contents", limit: 65535
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "number",        limit: 4
+    t.string   "literal",       limit: 255
+    t.date     "signed"
+    t.integer  "order_type",    limit: 4
+    t.string   "content",       limit: 255
+    t.integer  "department_id", limit: 4
+    t.integer  "volume",        limit: 4
+    t.integer  "page_count",    limit: 4
+    t.string   "note",          limit: 255
+  end
+
   create_table "department", primary_key: "department_id", force: :cascade do |t|
     t.integer "department_oldid",   limit: 4
     t.string  "department_name",    limit: 200,                      null: false
@@ -833,6 +850,15 @@ ActiveRecord::Schema.define(version: 20150714093912) do
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
   add_index "document_student_group", ["student_group_id"], name: "student_group_id", using: :btree
   add_index "document_student_group", ["student_group_student"], name: "student_group_student", using: :btree
+
+  create_table "document_uploaders", force: :cascade do |t|
+    t.integer  "number",     limit: 4
+    t.date     "signed"
+    t.string   "file",       limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.binary   "data",       limit: 65535
+  end
 
   create_table "education_forms", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -1203,9 +1229,10 @@ ActiveRecord::Schema.define(version: 20150714093912) do
     t.string   "name",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "form",           limit: 4,   default: 1,     null: false
-    t.boolean  "creative",       limit: 1,   default: false
-    t.boolean  "visible",        limit: 1,   default: false
+    t.integer  "form",           limit: 4,     default: 1,     null: false
+    t.boolean  "creative",       limit: 1,     default: false
+    t.boolean  "visible",        limit: 1,     default: false
+    t.binary   "data",           limit: 65535
   end
 
   add_index "entrance_exams", ["campaign_id"], name: "index_entrance_exams_on_campaign_id", using: :btree
@@ -1729,6 +1756,14 @@ ActiveRecord::Schema.define(version: 20150714093912) do
     t.datetime "updated_at"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.string   "content",    limit: 255
+    t.boolean  "visible",    limit: 1
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "olympic_documents", force: :cascade do |t|
     t.boolean "original",            limit: 1,   default: true
     t.string  "series",              limit: 255
@@ -1791,6 +1826,25 @@ ActiveRecord::Schema.define(version: 20150714093912) do
   end
 
   add_index "order", ["order_template"], name: "order_template", using: :btree
+
+  create_table "order_documents", force: :cascade do |t|
+    t.integer  "number",            limit: 4
+    t.string   "literal",           limit: 255
+    t.date     "signed"
+    t.integer  "order_type",        limit: 4
+    t.string   "content",           limit: 255
+    t.integer  "department_id",     limit: 4
+    t.integer  "volume",            limit: 4
+    t.integer  "page_count",        limit: 4
+    t.string   "note",              limit: 255
+    t.string   "file_file_name",    limit: 255
+    t.string   "file_content_type", limit: 255
+    t.integer  "file_file_size",    limit: 4
+    t.datetime "file_updated_at"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.binary   "file_contents",     limit: 65535
+  end
 
   create_table "order_meta", primary_key: "order_meta_id", force: :cascade do |t|
     t.integer "order_meta_order",   limit: 4,        null: false
