@@ -204,7 +204,7 @@ class Study::DisciplinesController < ApplicationController
   def load_user_colleagues
     @teachers = []
     current_user.departments.academic.each do |d|
-      @teachers = @teachers.concat(d.users.to_a)
+      @teachers = @teachers.concat(d.users.is_active.to_a)
     end
   end
 end
