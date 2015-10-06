@@ -25,9 +25,11 @@
   </thead>
   <tbody>
   <% @users.includes(:positions, :departments).each do |user| %>
-    <tr>
+    <tr class="<%= 'text-muted' if !user.active %>">
       <td><%= user.id %></td>
-      <td><%= user.full_name %></td>
+      <td >
+        <%= user.full_name %>
+      </td>
       <td>
         <ul class="list-unstyled">
           <% user.positions.each do |p| %>
