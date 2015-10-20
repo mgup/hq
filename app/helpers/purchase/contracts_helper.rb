@@ -1,0 +1,2 @@
+module Purchase::ContractsHelper
+end
