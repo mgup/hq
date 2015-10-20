@@ -54,7 +54,7 @@
         <div class="col col-sm-10">
           <%= f.text_field :note, class: 'form-control' %>
           <span class="help-block">
-            <%= @current_user.last_name_hint  + ' '  + @current_user.first_name_hint[0] + '. ' + @current_user.patronym_hint[0] + '.' %>
+            <%= @current_user.last_name  + ' '  + @current_user.first_name[0] + '. ' + @current_user.patronym[0] + '.' %>
         </span>
         </div>
       </div>

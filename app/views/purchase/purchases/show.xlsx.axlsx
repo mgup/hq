@@ -35,7 +35,7 @@ p.add_worksheet(name: "Заявка", :page_setup => setup, :print_options => op
     end
     s.add_row ["Итого", " ", " ", @sum," "], :style=>table_body
     s.add_row
-    s.add_row [" ", current_user.positions.where(acl_position_role: Purchase::Purchase::RESPONSIBLE_POSITION_ROLES).first.title, "_"*30, current_user.last_name_hint  + ' '  + current_user.first_name_hint[0] + '. ' + current_user.patronym_hint[0], "«__» _________ 2015 г."], :style=>footer
+    s.add_row [" ", current_user.positions.where(acl_position_role: Purchase::Purchase::RESPONSIBLE_POSITION_ROLES).first.title, "_"*30, current_user.last_name  + ' '  + current_user.first_name[0] + '. ' + current_user.patronym[0], "«__» _________ 2015 г."], :style=>footer
     s.add_row [" ","должность","подпись","расшифровка подписи","дата подписания"], :style=>footer_text
     s.add_row
     s.add_row [" ", "Согласовано: ", " ", " ", " " ], :style=>footer
