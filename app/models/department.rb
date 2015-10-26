@@ -35,6 +35,7 @@ class Department < ActiveRecord::Base
   has_many :users, through: :positions, foreign_key: :dep_id
 
   has_many :purchase_purchases, :class_name => 'Purchase::Purchase', foreign_key: :dep_id
+  has_many :purchase_goods, :class_name => 'Purchase::Good', foreign_key: :department_id
 
   validates :name, presence: true
   validates :abbreviation, presence: true

@@ -2,9 +2,19 @@ HQ::Application.routes.draw do
   namespace :purchase do
     resources :suppliers
     resources :goods
-    resources :purchases
-    resources :line_items
-    get 'line_item/search_result' => 'line_items#search_result', as: :search_result
+    resources :purchases do
+      collection do
+        get 'budget', as: :budget
+        get 'off_budget', as: :off_budget
+      end
+    end
+    resources :line_items do
+      collection do
+        get 'search_result', as: :search_result
+      end
+    end
+    resources :contracts
+    resources :contract_items
   end
 
   resources :universities

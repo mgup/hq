@@ -18,11 +18,11 @@
   </div>
 </div>
 <div class="row">
-    <%= form_tag purchase_search_result_path, method: 'get' do %>
-        <div class="col col-sm-4">
+    <%= form_tag search_result_purchase_line_items_path, method: 'get' do %>
+        <div class="col col-lg-4">
           <%= text_field_tag :search_keyword, nil, placeholder: 'Введите запрос', class: 'form-control' %>
         </div>
-        <div class="col col-sm-2">
+        <div class="col col-lg-2">
           <%= submit_tag 'Поиск' , class: 'btn btn-primary'%>
         </div>
     <% end %>
@@ -45,3 +45,8 @@
   <%= render partial: 'rows' %>
   </tbody>
 </table>
+<div class="row">
+  <div class="col col-lg-4">
+    <%= link_to 'назад к структуре', purchase_line_items_path, class: 'btn btn-primary' %>
+  </div>
+</div>

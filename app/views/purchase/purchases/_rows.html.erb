@@ -1,11 +1,14 @@
-<% @purchases.each do |purchase| %>
+<% @purchases.off_budget.each do |purchase| %>
     <tr>
-        <td><%= purchase.number %></td>
+        <td><%= purchase.id %></td>
         <td><%= purchase.date_registration.nil? ? '' : l(purchase.date_registration) %></td>
         <td><%= purchase.department.nil? ? '-' : purchase.department.department_name %></td>
         <td><%= purchase.status %></td>
         <td>
-          <%= link_to purchase_purchase_path(purchase), class: 'btn btn-primary', title: 'Посмотреть' do %>
+          <%= purchase.purchase_line_items.collect { |li| li.planned_sum.to_i }.sum %>
+        </td>
+        <td>
+          <%= link_to purchase_purchase_path(purchase, format: 'xlsx'), class: 'btn btn-primary', title: 'Посмотреть' do %>
               <span class="glyphicon glyphicon-search"></span>
           <% end %>
         </td>

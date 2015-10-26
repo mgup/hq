@@ -13,7 +13,6 @@ class Purchase::LineItemsController < ApplicationController
   def show
     @lineitem = Purchase::LineItem.find(params[:id])
     @stat = Purchase::LineItem.statistic(@lineitem.good_id)
-    #@stat_dep = Purchase::LineItem.stat_dep(@lineitem.good_id, user_dep)
   end
 
   def edit
@@ -42,7 +41,8 @@ class Purchase::LineItemsController < ApplicationController
         :p_start_date, :p_end_date, :supplier_id,
         :published, :contracted, :delivered, :paid,
         purchase_purchases_attributes: [:id, :dep_id, :number,
-                                        :date_registration, :status, :note])
+                                        :date_registration, :status, :note],
+        purchase_goods_attributes: [:id, :name, :demand])
   end
 
   private

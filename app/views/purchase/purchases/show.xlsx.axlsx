@@ -31,9 +31,9 @@ p.add_worksheet(name: "Заявка", :page_setup => setup, :print_options => op
     s.add_row
     s.add_row ["№", "Предмет расходов (товар, работа, услуга)", "Краткое обоснование необходимости расходов", "Планируемая сумма, руб.", "Период (срок) осуществления" ], :style=>table_head,  :height=>40
     @purchase.purchase_line_items.each_with_index do |li, i|
-            s.add_row [i+1, li.purchase_goods.name, li.purchase_goods.demand, li.total_price, li.period ], :style=>table_body
+            s.add_row [i+1, li.purchase_goods.name, li.purchase_goods.demand, li.planned_sum, li.period ], :style=>table_body
     end
-    s.add_row ["Итого", " ", " ", @sum," "], :style=>table_body
+    s.add_row ["Итого", " ", " ", @purchase.purchase_line_items.collect { |li| li.planned_sum.to_i }.sum , "р"], :style=>table_body
     s.add_row
     s.add_row [" ", current_user.positions.where(acl_position_role: Purchase::Purchase::RESPONSIBLE_POSITION_ROLES).first.title, "_"*30, current_user.last_name  + ' '  + current_user.first_name[0] + '. ' + current_user.patronym[0], "«__» _________ 2015 г."], :style=>footer
     s.add_row [" ","должность","подпись","расшифровка подписи","дата подписания"], :style=>footer_text

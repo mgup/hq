@@ -1,8 +1,10 @@
 <div class="page-header">
   <h1>Закупки МГУП</h1>
   <h3>Заявка
-    <% if @purchase.number.present? %>
-        № <%= @purchase.number %> от <%= l(@purchase.date_registration) %>
+    <% if @purchase.date_registration.present? %>
+        № <%= @purchase.id %> от <%= l(@purchase.date_registration) %> на сумму <%= @purchase.purchase_line_items.collect { |li| li.planned_sum.to_i }.sum  %> руб.
+    <% else %>
+        № <%= @purchase.id %> на сумму <%= @purchase.purchase_line_items.purchase_price(@purchase.id) %> руб.
     <% end %>
   </h3>
 </div>
@@ -40,14 +42,11 @@
   <tbody>
   <% if @purchase.purchase_line_items.any? %>
     <% @purchase.purchase_line_items.each do |line_item| %>
-        <% if line_item.published == 'опубликован' &&
-                line_item.contracted == 'законтрактирован' &&
-                line_item.paid == 'оплачен' &&
-                line_item.delivered == 'поставлен'%>
+        <% if line_item.published == ['опубликован' 'законтрактирован', 'оплачен', 'поставлен'] %>
           <tr class="success">
             <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.name %></td>
             <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.demand %></td>
-            <td><%= line_item.total_price %></td>
+            <td><%= line_item.planned_sum %></td>
             <td><%= line_item.period %></td>
             <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
             <td>
@@ -62,7 +61,7 @@
           <tr>
             <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.name %></td>
             <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.demand %></td>
-            <td><%= line_item.total_price %></td>
+            <td><%= line_item.planned_sum %></td>
             <td><%= line_item.period %></td>
             <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
             <td>
@@ -95,7 +94,7 @@
         <h4 class="modal-title" id="myModalLabel">Статистика</h4>
       </div>
       <div class="modal-body">
-          <%= render partial: 'statistics' %>
+          <%#= render partial: 'statistics' %>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
