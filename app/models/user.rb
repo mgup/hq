@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
 
   has_many :roles,       through: :positions
   has_many :departments, through: :positions
-  
+
   has_many :discipline_teachers, class_name: Study::DisciplineTeacher, primary_key: :user_id, foreign_key: :teacher_id
   has_many :disciplines, through: :discipline_teachers, primary_key: :user_id
 
@@ -79,6 +79,8 @@ class User < ActiveRecord::Base
     joins(:positions)
     .where('acl_position_role IN (?)', roles_ids)
   }
+
+  scope :is_active, -> { where(active: true) }
 
   validates :username, presence: true
   validates :password, on: :create, presence: true

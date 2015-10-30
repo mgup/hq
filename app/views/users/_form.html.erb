@@ -2,13 +2,13 @@
   <div class="row">
   <div class="col col-sm-6">
     <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-success active">
+      <label class="btn btn-success <%= 'active' if @user.active %>">
         <span class="glyphicon glyphicon-heart"></span>
-        <input type="radio" name="user[active]" value="true" checked> Жив-здоров 
+        <%= f.radio_button :active, true %>Жив-здоров
       </label>
-      <label class="btn btn-danger">
+      <label class="btn btn-danger <%= 'active' if !@user.active %>">
         <span class="glyphicon glyphicon-fire"></span>
-        <input type="radio" name="user[active]" value="false"> Пал смертью храбрых 
+        <%= f.radio_button :active, false %>Пал смертью храбрых
       </label>
     </div>
     </div>

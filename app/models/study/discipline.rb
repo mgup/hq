@@ -86,7 +86,7 @@ class Study::Discipline < ActiveRecord::Base
     end
   }
 
-  scope :with_brs, ->{where(subject_brs:  true)}
+  scope :with_brs, ->{ where(subject_brs:  true) }
 
   def students
     if is_active? && semester == CURRENT_STUDY_TERM
