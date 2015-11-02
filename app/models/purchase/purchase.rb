@@ -1,5 +1,5 @@
 class Purchase::Purchase < ActiveRecord::Base
-  self.table_name_prefix = 'purchase_'
+  #self.table_name_prefix = 'purchase_'
 
   RESPONSIBLE_POSITION_ROLES = [2, 22]
 

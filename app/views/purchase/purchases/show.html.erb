@@ -1,5 +1,5 @@
+<%= render partial: 'purchase/header' %>
 <div class="page-header">
-  <h1>Закупки МГУП</h1>
   <h3>Заявка
     <% if @purchase.date_registration.present? %>
         № <%= @purchase.id %> от <%= l(@purchase.date_registration) %> на сумму <%= @purchase.purchase_line_items.collect { |li| li.planned_sum.to_i }.sum  %> руб.
@@ -8,33 +8,17 @@
     <% end %>
   </h3>
 </div>
-<div class="row">
-  <div class="col col-lg-10">
-    <%= link_to 'Новая заявка', new_purchase_purchase_path, class: 'btn btn-primary' %>
-  </div>
-</div>
-<div class="row">
-  <div class="col col-lg-10">
-    <%= link_to 'Заявки', purchase_purchases_path, class: 'btn btn-primary' %>
-    <%= link_to 'Поставщики', purchase_suppliers_path, class: 'btn btn-primary' %>
-    <%= link_to 'Товары', purchase_goods_path, class: 'btn btn-primary' %>
-    <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
-  </div>
-</div>
-<div class="row">
-  <div class="col col-lg-10">
-    <p class="text-info"><%= notice %></p>
-  </div>
-</div>
+<div>поиск по товарным позициям</div>
 <table class="table table-condensed">
   <thead>
   <tr>
     <th>Товар</th>
     <th>Обоснование</th>
-    <th>Планируемая сумма</th>
-    <th>Срок осуществеления</th>
+    <th>По плану</th>
+    <th>Срок</th>
     <th>Поставщик</th>
-    <th></th>
+    <th>Остаток</th>
+    <th>Договора</th>
     <th></th>
     <th></th>
   </tr>
@@ -49,6 +33,12 @@
             <td><%= line_item.planned_sum %></td>
             <td><%= line_item.period %></td>
             <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
+            <td><%= line_item.purchase_contract_items.collect { |li| li.total_price.to_i }.sum  %></td>
+            <td>
+              <%= link_to edit_purchase_line_item_path(line_item), class: 'btn btn-warning', title: 'Изменить' do %>
+                  <span class="glyphicon glyphicon-edit"></span>
+              <% end %>
+            </td>
             <td>
               <%= link_to purchase_line_item_path(line_item), class: 'btn btn-danger', title: 'Удалить',
                           method: :delete,
@@ -64,6 +54,12 @@
             <td><%= line_item.planned_sum %></td>
             <td><%= line_item.period %></td>
             <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
+            <td><%= line_item.purchase_contract_items.collect { |li| li.total_price.to_i }.sum  %></td>
+            <td>
+              <%= link_to edit_purchase_line_item_path(line_item), class: 'btn btn-warning', title: 'Изменить' do %>
+                  <span class="glyphicon glyphicon-edit"></span>
+              <% end %>
+            </td>
             <td>
               <%= link_to purchase_line_item_path(line_item), class: 'btn btn-danger', title: 'Удалить',
                           method: :delete,

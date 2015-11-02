@@ -16,6 +16,7 @@ class Purchase::PurchasesController < ApplicationController
   end
 
   def show
+    #raise params.inspect
     count_goods
     calculate_stat
   end
