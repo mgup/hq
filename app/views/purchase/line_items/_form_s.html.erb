@@ -2,7 +2,7 @@
   <td><%= @lineitem.purchase_goods.name %></td>
   <td><%= @lineitem.purchase_purchases.number %></td>
   <td><%= l(@lineitem.purchase_purchases.date_registration) %></td>
-  <td><%= sprintf('%8.2f', @lineitem.total_price) %></td>
+  <td><%= sprintf('%8.2f', @lineitem.planned_sum) %></td>
   <td><%= @lineitem.purchase_purchases.department.name %></td>
   <td><% if @lineitem.purchase_suppliers == nil %>
         <%= 'не определен' %>

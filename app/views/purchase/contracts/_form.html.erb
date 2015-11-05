@@ -1,0 +1,100 @@
+<%= nested_form_for @contract, html: { class: 'form-horizontal', autocomplete: 'off' } do |p| %>
+ <fieldset>
+    <div class="row">
+      <%= p.label :good_id,'Товар', class: 'col-sm-2 control-label' %>
+      <div class="col col-sm-10">
+        <%= p.select :good_id, Purchase::Good.all.collect{ |d| [d.name, d.id] }, {include_blank: true}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= p.label :planned_sum, 'Планируемая сумма' , class: 'col-sm-2 control-label'%>
+      <div class="col col-sm-10">
+        <%= p.text_field :planned_sum, placeholder: 'Пример, 400.00', class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= p.label :period, 'Период (срок) осуществления', class: 'col-sm-2 control-label' %>
+      <div class="col col-sm-10">
+        <% stat = [] %>
+        <% [{type: '12 мес', key:  '12 мес'}, {type: '24 мес', key: '24 мес'}, {type: '36 мес', key: '36 мес'}].each do |fin| %>
+            <% stat << (OpenStruct.new fin) %>
+        <% end %>
+        <%= p.select :period, options_from_collection_for_select(stat, :key, :type), {include_blank: false}, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <%= p.label :supplier_id, 'Поставщик', class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= p.select :supplier_id, Purchase::Supplier.all.collect{ |s| [s.name, s.id] }, {include_blank: true}, class: 'form-control' %>
+        <span class="help-block">
+            <p>Если поставщик неопределен, оставить поле пустым</p>
+          </span>
+      </div>
+    </div>
+ </fieldset>
+ <fieldset>
+   <legend>Добавить контракт</legend>
+
+   <div id="positions">
+     <%= render partial: 'contract_item_fields', locals: {p: p} %>
+   </div>
+   <div class="form-group">
+     <div class="col-sm-offset-2 col-sm-10">
+       <%= p.link_to_add 'Добавить контракт', :purchase_contract_items, class: 'btn btn-default', data: { target: '#positions' } %>
+     </div>
+   </div>
+ </fieldset>
+ <fieldset>
+   <legend>Статус выполнения заявки на товар, работу, услугу</legend>
+
+   <div class="row">
+     <%= p.label :published, 'Опубликована', class: 'col-sm-2 control-label' %>
+     <div class="col col-sm-10">
+       <%= p.select :published, options_for_select(
+               [['да', 'опубликован'],
+                ['нет', 'не_о']], p.object.published),
+                    {include_blank: true}, class: 'form-control' %>
+     </div>
+   </div>
+
+   <div class="row">
+     <%= p.label :contracted, 'Законтрактована', class: 'col-sm-2 control-label' %>
+     <div class="col col-sm-10">
+       <%= p.select :contracted, options_for_select(
+               [['да', 'законтрактирован'],
+                ['нет', 'не_з']], p.object.contracted),
+                    {include_blank: true}, class: 'form-control' %>
+     </div>
+   </div>
+
+   <div class="row">
+     <%= p.label :delivered, 'Поставлена', class: 'col-sm-2 control-label' %>
+     <div class="col col-sm-10">
+       <%= p.select :delivered, options_for_select(
+               [['да', 'поставлен'],
+                ['нет', 'не_п']], p.object.delivered),
+                    {include_blank: true}, class: 'form-control' %>
+     </div>
+   </div>
+
+   <div class="row">
+     <%= p.label :paid, 'Оплачена', class: 'col-sm-2 control-label' %>
+     <div class="col col-sm-10">
+       <%= p.select :paid, options_for_select(
+               [['да', 'оплачен'],
+                ['нет', 'не_оп']], p.object.paid),
+                    {include_blank: true}, class: 'form-control' %>
+     </div>
+   </div>
+ </fieldset>
+    <div class="row">
+      <div class="col col-lg-10 col-offset-2">
+        <%= p.submit "Сохранить изменения", class: 'btn btn-warning' %>
+        или
+        <%= link_to 'назад', purchase_purchase_path(@lineitem.purchase_purchases), class: 'btn btn-primary' %>
+      </div>
+    </div>
+<%end%>

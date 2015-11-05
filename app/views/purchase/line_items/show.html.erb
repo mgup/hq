@@ -30,36 +30,4 @@
   </tbody>
 </table>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-  Посмотреть статистику
-</button>
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Статистика</h4>
-      </div>
-      <div class="modal-body">
-        <table class="table">
-          <thead>
-          <tr>
-            <td>Год</td>
-            <td>Наименование</td>
-            <td>Стоимость</td>
-            <td>Статус заявки</td>
-          </tr>
-          </thead>
-          <tbody>
-          <%= render partial: 'statistics' %>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-      </div>
-    </div>
-  </div>
-</div>
 

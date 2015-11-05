@@ -12,6 +12,7 @@
 <table class="table table-condensed">
   <thead>
   <tr>
+    <th>#</th>
     <th>Товар</th>
     <th>Обоснование</th>
     <th>По плану</th>
@@ -25,15 +26,33 @@
   </thead>
   <tbody>
   <% if @purchase.purchase_line_items.any? %>
-    <% @purchase.purchase_line_items.each do |line_item| %>
+    <% @purchase.purchase_line_items.each_with_index  do |line_item, index| %>
         <% if line_item.published == ['опубликован' 'законтрактирован', 'оплачен', 'поставлен'] %>
           <tr class="success">
+            <td class="text-mutted"><%= index + 1 %></td>
             <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.name %></td>
             <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.demand %></td>
             <td><%= line_item.planned_sum %></td>
             <td><%= line_item.period %></td>
             <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
             <td><%= line_item.purchase_contract_items.collect { |li| li.total_price.to_i }.sum  %></td>
+            <td><% line_item.purchase_contract_items.each do |ci| %>
+                  <% if ci.purchase_contracts.present? %>
+                      <% ci.purchase_contracts.each do |c| %>
+                        <%= c.number %>
+                        <%= c.date_registration %>
+                      <% end %>
+                  <% else %>
+                    нет
+                  <% end %>
+                <% end %>
+            </td>
+            <td>
+              <%= link_to '#contractModal', class: 'btn btn-default', data: {toggle: 'modal'} do %>
+                  Добавить контракт
+              <% end %>]
+              <%= render partial: 'contract_modal', locals: {lineitem: line_item} %>
+            </td>
             <td>
               <%= link_to edit_purchase_line_item_path(line_item), class: 'btn btn-warning', title: 'Изменить' do %>
                   <span class="glyphicon glyphicon-edit"></span>
@@ -49,12 +68,24 @@
           </tr>
         <% else %>
           <tr>
+            <td class="text-mutted"><%= index + 1 %></td>
             <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.name %></td>
             <td><%= line_item.purchase_goods.nil? ? '-' : line_item.purchase_goods.demand %></td>
             <td><%= line_item.planned_sum %></td>
             <td><%= line_item.period %></td>
             <td><%= line_item.purchase_suppliers.nil? ? '-' : line_item.purchase_suppliers.name %></td>
             <td><%= line_item.purchase_contract_items.collect { |li| li.total_price.to_i }.sum  %></td>
+            <td><% line_item.purchase_contract_items.each do |ci| %>
+                  <% if ci.purchase_contracts.present? %>
+                      <%# ci.purchase_contracts.each do |c| %>
+                          <%= ci.purchase_contracts.number %>
+                          <%= ci.purchase_contracts.date_registration %>
+                      <%# end %>
+                  <% else %>
+                      нет
+                  <% end %>
+              <% end %>
+            </td>
             <td>
               <%= link_to edit_purchase_line_item_path(line_item), class: 'btn btn-warning', title: 'Изменить' do %>
                   <span class="glyphicon glyphicon-edit"></span>
@@ -78,23 +109,4 @@
 
 <%= link_to 'Распечатать', purchase_purchase_path(format: 'xlsx'), class: 'btn btn-info' %>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-  Посмотреть статистику
-</button>
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Статистика</h4>
-      </div>
-      <div class="modal-body">
-          <%#= render partial: 'statistics' %>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-      </div>
-    </div>
-  </div>
-</div>
+

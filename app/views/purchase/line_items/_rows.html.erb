@@ -1,5 +1,6 @@
-<% @lineitems.each do |lineitem| %>
+<% @lineitems.each_with_index do |lineitem, index| %>
     <tr>
+        <td class="text-mutted"><%= index + 1 %></td>
         <td><%= lineitem.purchase_goods.name %></td>
         <td><%= lineitem.purchase_purchases.number %></td>
         <td><%= l(lineitem.purchase_purchases.date_registration) %></td>

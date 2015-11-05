@@ -3,7 +3,7 @@ class Purchase::LineItem < ActiveRecord::Base
   belongs_to :purchase_suppliers, :class_name => 'Purchase::Supplier', foreign_key: :supplier_id
   belongs_to :purchase_purchases, :class_name => 'Purchase::Purchase', foreign_key: :purchase_id
   has_many :purchase_contract_items, :class_name => 'Purchase::ContractItem', foreign_key: :line_item_id, dependent: :destroy
-
+  #has_many :purchase_contracts, :class_name => 'Purchase::Contract', through: :purchase_contract_items
   accepts_nested_attributes_for :purchase_contract_items
 
   validates_uniqueness_of :good_id, message: 'Товар не должен повторяться'
