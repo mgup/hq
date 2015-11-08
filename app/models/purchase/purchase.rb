@@ -7,6 +7,7 @@ class Purchase::Purchase < ActiveRecord::Base
   PAYMENT_OFF_BUDGET = 2
 
   has_many :purchase_line_items, class_name: 'Purchase::LineItem', foreign_key: :purchase_id, dependent: :destroy
+  has_many :purchase_contract_items, :class_name => 'Purchase::ContractItem', through: :purchase_line_items
   belongs_to :department, foreign_key: :dep_id
   belongs_to :user, foreign_key: :purchase_introduce
   accepts_nested_attributes_for :purchase_line_items, allow_destroy: true
@@ -18,4 +19,10 @@ class Purchase::Purchase < ActiveRecord::Base
 
   scope :off_budget, -> { where(payment_type:  PAYMENT_OFF_BUDGET) }
   scope :budget, -> { where(payment_type: PAYMENT_BUDGET) }
+
+  scope :search_keyword, -> (key, p) {
+    joins('LEFT JOIN purchase_line_items AS li ON li.purchase_id = purchase_purchases.id')
+    .joins('LEFT JOIN purchase_goods AS g ON g.id = li.good_id')
+    .where('g.name LIKE ? AND purchase_purchases.id = ? ', key, p)
+  }
 end

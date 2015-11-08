@@ -15,11 +15,4 @@ class Purchase::LineItem < ActiveRecord::Base
   enum delivered: {поставлен: 0, не_п: 1}
   enum paid: {оплачен: 0, не_оп: 1}
 
-  scope :keyword_search, -> (params) {
-    joins('LEFT JOIN purchase_purchases as p ON purchase_id = p.id')
-      .joins('LEFT JOIN purchase_goods as g ON good_id = g.id')
-      .where('g.name LIKE ? OR p.number LIKE ?',
-            "%#{params[:search_keyword]}%", "%#{params[:search_keyword]}%")
-  }
-
 end

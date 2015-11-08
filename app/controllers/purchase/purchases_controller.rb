@@ -1,6 +1,6 @@
 class Purchase::PurchasesController < ApplicationController
   load_and_authorize_resource except: :new
-  before_action :set_purchase, only: [:show, :update, :destroy, :edit]
+  before_action :set_purchase, only: [:update, :destroy, :edit]
 
   def budget
     @purchases = Purchase::Purchase.budget
@@ -16,9 +16,9 @@ class Purchase::PurchasesController < ApplicationController
   end
 
   def show
-    #raise params.inspect
+    @purchase = Purchase::Purchase.find(params[:id])
+    create_report
     count_goods
-    calculate_stat
   end
 
   def create
@@ -74,17 +74,11 @@ class Purchase::PurchasesController < ApplicationController
       format.html
       format.csv
       format.xlsx
+      format.pdf
     end
   end
 
   def count_goods
     @count_goods = Purchase::LineItem.where(purchase_id: @purchase.id).count('good_id')
-  end
-
-  def calculate_stat
-    @count_published = Purchase::LineItem.where(purchase_id: @purchase.id, published: 'опубликован').count('good_id')
-    @count_contracted = Purchase::LineItem.where(purchase_id: @purchase.id, contracted: 'законтрактирован').count('good_id')
-    @count_delivered = Purchase::LineItem.where(purchase_id: @purchase.id, delivered: 'поставлен').count('good_id')
-    @count_paid = Purchase::LineItem.where(purchase_id: @purchase.id, paid: 'оплачен').count('good_id')
   end
 end

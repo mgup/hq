@@ -1,11 +1,24 @@
 class Purchase::ContractsController < ApplicationController
+  def index
+    @contracts = Purchase::Contract.all
+  end
   def new
     @contract = Purchase::Contract.new
   end
 
   def create
+    @contract = Purchase::Contract.new(resource_params)
     if @contract.save
-      redirect_to purchase_contracts_path
+      redirect_to purchase_purchases_path, notice: 'Контракт добавлен' # изменить
+    else
+      render action: :new
+    end
+  end
+
+  def destroy
+    @contract = Purchase::Contract.find(params[:id])
+    if @contract.destroy
+      redirect_to purchase_contracts_path, notice: 'Контракт удален!'
     end
 
   end
