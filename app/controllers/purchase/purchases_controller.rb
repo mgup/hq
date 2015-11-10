@@ -72,7 +72,6 @@ class Purchase::PurchasesController < ApplicationController
   def create_report
     respond_to do |format|
       format.html
-      format.csv
       format.xlsx
       format.pdf
     end

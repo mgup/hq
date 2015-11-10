@@ -15,6 +15,19 @@ class Purchase::ContractsController < ApplicationController
     end
   end
 
+  def edit
+    @contract = Purchase::Contract.find(params[:id])
+  end
+
+  def update
+    @contract = Purchase::Contract.find(params[:id])
+    if @contract.update(resource_params)
+      redirect_to purchase_contracts_path, notice: 'Контракт успешно изменен!'
+    else
+      render action: :edit
+    end
+  end
+
   def destroy
     @contract = Purchase::Contract.find(params[:id])
     if @contract.destroy

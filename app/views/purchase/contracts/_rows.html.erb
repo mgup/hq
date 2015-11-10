@@ -1,8 +1,8 @@
 <% @contracts.each do |contract| %>
     <tr>
-        <td class="text-mutted"><%= contract.id %></td>
+        <td class="text-muted"><%= contract.id %></td>
         <td><%= contract.number %></td>
-        <td><%= contract.date_registration %></td>
+        <td><%= l(contract.date_registration) %></td>
         <td><%= contract.total_price %></td>
         <td>
           <% contract.purchase_contract_items.each do |li| %>

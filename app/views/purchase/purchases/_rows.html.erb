@@ -1,6 +1,6 @@
 <% @purchases.off_budget.each_with_index do |purchase, index| %>
     <tr>
-        <td class="text-mutted"><%= index + 1 %></td>
+        <td class="text-muted"><%= index + 1 %></td>
         <td><%= purchase.id %></td>
         <td><%= purchase.date_registration.nil? ? '' : l(purchase.date_registration) %></td>
         <td><%= purchase.department.nil? ? '-' : purchase.department.department_name %></td>
