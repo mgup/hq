@@ -1,0 +1,31 @@
+<% @contracts.each do |contract| %>
+    <tr>
+        <td class="text-muted"><%= contract.id %></td>
+        <td><%= contract.number %></td>
+        <td><%= l(contract.date_registration) %></td>
+        <td><%= contract.total_price %></td>
+        <td>
+          <% contract.purchase_contract_items.each do |li| %>
+            <% if li.purchase_line_items.present? %>
+              <%= li.purchase_line_items.purchase_goods.name %>
+              <%= '(' + li.total_price.to_s + ' руб.)' %>
+            <% else %>
+              нет связанных товаров
+            <% end %>
+          <% end %>
+        </td>
+
+        <td>
+            <%= link_to edit_purchase_contract_path(contract), class: 'btn btn-warning', title: 'Изменить' do %>
+                <span class="glyphicon glyphicon-edit"></span>
+            <% end %>
+        </td>
+        <td>
+            <%= link_to purchase_contract_path(contract), class: 'btn btn-danger', title: 'Удалить',
+                        method: :delete,
+                        data: { confirm: 'Вы уверены? Запись будет удалена!' }  do %>
+                <span class="glyphicon glyphicon-remove"></span>
+            <% end %>
+        </td>
+    </tr>
+<% end %>

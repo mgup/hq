@@ -1,4 +1,4 @@
-<% @purchases.off_budget.each_with_index do |purchase, index| %>
+<% @purchases.budget.each_with_index do |purchase, index| %>
     <tr>
         <td class="text-muted"><%= index + 1 %></td>
         <td><%= purchase.id %></td>

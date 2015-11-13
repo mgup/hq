@@ -38,7 +38,7 @@ class Purchase::SuppliersController < ApplicationController
   end
 
   def resource_params
-    params.fetch(:purchase_supplier, {}).permit(
+    params.require(:purchase_supplier).permit(
         :name,
         :address,
         :inn,
