@@ -58,6 +58,10 @@ class Person < ActiveRecord::Base
   alias_attribute :army,                     :student_army
   alias_attribute :army_voenkom,             :student_army_voenkom
   alias_attribute :hostel_st,                :student_hostel_status
+  alias_attribute :mother_name,              :student_mother_name
+  alias_attribute :mother_phone,             :student_mother_phone
+  alias_attribute :father_name,              :student_father_name
+  alias_attribute :father_phone,             :student_father_phone
 
 
   belongs_to :fname, class_name: Dictionary, primary_key: :dictionary_id, foreign_key: :student_fname, dependent: :destroy

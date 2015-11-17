@@ -132,6 +132,37 @@
     </div>
   </div>
 
+<legend>Контакты родителей</legend>
+  <div class="row">
+    <div class="col col-lg-12">
+      <div class='row'>
+        <div class='col-lg-3'><%= f.label :mother_name, class: 'control-label' %></div>
+        <div class='col-lg-9'>
+          <%= f.text_field :student_mother_name, class: 'form-control', placeholder: 'Введите ФИО матери' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :mother_phone, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :student_mother_phone, class: 'form-control', placeholder: '+74991234567' %>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-lg-3'><%= f.label :father_name, class: 'control-label' %></div>
+        <div class='col-lg-9'>
+          <%= f.text_field :student_father_name, class: 'form-control', placeholder: 'Введите ФИО отца' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"><%= f.label :father_phone, class: 'control-label' %></div>
+        <div class="col-sm-9">
+          <%= f.text_field :student_father_phone, class: 'form-control', placeholder: '+74991234567' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
     <legend>Воинская обязанность</legend>
     <div class="row">
       <div class="col col-lg-12">
@@ -143,7 +174,7 @@
                                                     ['призывник', Person::ARMY_INDUCTEE],
                                                     ['в запасе', Person::ARMY_RESERVIST],
                                                     ['военнослужащий', Person::ARMY_SOLDIER],
-                                                    ['неизвестно', Person::ARMY_OTHER]]), {}, class: 'form-control' %>
+                                                    ['неизвестно', Person::ARMY_OTHER]], f.object.army), {}, class: 'form-control' %>
           </div>
         </div>
         <div class="row">
