@@ -478,6 +478,23 @@ ActiveRecord::Schema.define(version: 20151117074456) do
     t.integer "entrance_benefit_id", limit: 4
   end
 
+  create_table "data_uploaders", force: :cascade do |t|
+    t.string   "filename",      limit: 255
+    t.string   "content_type",  limit: 255
+    t.binary   "file_contents", limit: 65535
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "number",        limit: 4
+    t.string   "literal",       limit: 255
+    t.date     "signed"
+    t.integer  "order_type",    limit: 4
+    t.string   "content",       limit: 255
+    t.integer  "department_id", limit: 4
+    t.integer  "volume",        limit: 4
+    t.integer  "page_count",    limit: 4
+    t.string   "note",          limit: 255
+  end
+
   create_table "department", primary_key: "department_id", force: :cascade do |t|
     t.integer "department_oldid",   limit: 4
     t.string  "department_name",    limit: 200,                      null: false
@@ -833,6 +850,15 @@ ActiveRecord::Schema.define(version: 20151117074456) do
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
   add_index "document_student_group", ["student_group_id"], name: "student_group_id", using: :btree
   add_index "document_student_group", ["student_group_student"], name: "student_group_student", using: :btree
+
+  create_table "document_uploaders", force: :cascade do |t|
+    t.integer  "number",     limit: 4
+    t.date     "signed"
+    t.string   "file",       limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.binary   "data",       limit: 65535
+  end
 
   create_table "education_forms", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -1203,9 +1229,10 @@ ActiveRecord::Schema.define(version: 20151117074456) do
     t.string   "name",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "form",           limit: 4,   default: 1,     null: false
-    t.boolean  "creative",       limit: 1,   default: false
-    t.boolean  "visible",        limit: 1,   default: false
+    t.integer  "form",           limit: 4,     default: 1,     null: false
+    t.boolean  "creative",       limit: 1,     default: false
+    t.boolean  "visible",        limit: 1,     default: false
+    t.binary   "data",           limit: 65535
   end
 
   add_index "entrance_exams", ["campaign_id"], name: "index_entrance_exams_on_campaign_id", using: :btree
@@ -1800,6 +1827,25 @@ ActiveRecord::Schema.define(version: 20151117074456) do
 
   add_index "order", ["order_template"], name: "order_template", using: :btree
 
+  create_table "order_documents", force: :cascade do |t|
+    t.integer  "number",            limit: 4
+    t.string   "literal",           limit: 255
+    t.date     "signed"
+    t.integer  "order_type",        limit: 4
+    t.string   "content",           limit: 255
+    t.integer  "department_id",     limit: 4
+    t.integer  "volume",            limit: 4
+    t.integer  "page_count",        limit: 4
+    t.string   "note",              limit: 255
+    t.string   "file_file_name",    limit: 255
+    t.string   "file_content_type", limit: 255
+    t.integer  "file_file_size",    limit: 4
+    t.datetime "file_updated_at"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.binary   "file_contents",     limit: 65535
+  end
+
   create_table "order_meta", primary_key: "order_meta_id", force: :cascade do |t|
     t.integer "order_meta_order",   limit: 4,        null: false
     t.integer "order_meta_type",    limit: 4,        null: false
@@ -1886,16 +1932,17 @@ ActiveRecord::Schema.define(version: 20151117074456) do
   end
 
   create_table "purchase_line_items", force: :cascade do |t|
-    t.integer "purchase_id", limit: 4
-    t.integer "good_id",     limit: 4
-    t.integer "measure",     limit: 4
-    t.integer "period",      limit: 4
-    t.integer "supplier_id", limit: 4
-    t.integer "published",   limit: 4
-    t.integer "contracted",  limit: 4
-    t.integer "delivered",   limit: 4
-    t.integer "paid",        limit: 4
-    t.integer "planned_sum", limit: 4
+    t.integer "purchase_id",     limit: 4
+    t.integer "good_id",         limit: 4
+    t.integer "period",          limit: 4
+    t.integer "supplier_id",     limit: 4
+    t.integer "published",       limit: 4
+    t.integer "contracted",      limit: 4
+    t.integer "delivered",       limit: 4
+    t.integer "paid",            limit: 4
+    t.string  "contract_number", limit: 255
+    t.date    "contract_date"
+    t.integer "planned_sum",     limit: 4
   end
 
   create_table "purchase_purchases", force: :cascade do |t|
