@@ -23,3 +23,7 @@ ru:
         benefits: 'льготы'
         army: 'воинская обязанность'
         army_voenkom: 'военкомат'
+        mother_name: 'ФИО матери'
+        mother_phone: 'Телефон матери'
+        father_name: 'ФИО отца'
+        father_phone: 'Телефон отца'

@@ -61,6 +61,41 @@
     </div>
   </fieldset>
   <fieldset>
+    <legend>Контактные данные родителей</legend>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_mother_name, 'ФИО матери' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :mother_name, class: 'form-control' %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_mother_phone, 'Контактный телефон матери' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :mother_phone, class: 'form-control' %>
+      </div>
+      </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_father_name, 'ФИО отца' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :father_name, class: 'form-control' %>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-2'>
+        <%= label_tag :student_father_phone, 'Контактный телефон отца' %>
+      </div>
+      <div class='col-lg-8'>
+        <%= f.text_field :father_phone, class: 'form-control' %>
+      </div>
+      </div>
+  </fieldset>
+  <fieldset>
     <legend>Паспортные данные</legend>
     <div class='row'>
       <div class='col col-lg-2'>
