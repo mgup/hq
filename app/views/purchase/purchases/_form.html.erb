@@ -19,7 +19,7 @@
       <div class="row">
         <%= f.label :date_registration, 'Дата регистрации', class: 'col col-lg-2 control-label' %>
         <div class="col col-sm-10">
-          <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), disabled: false, class: 'form-control datepicker' %>
+          <%= f.text_field :date_registration, value: (f.object.date_registration ? l(f.object.date_registration, format: '%d.%m.%Y') : ''), class: 'form-control datepicker' %>
         </div>
       </div>
       <div class="row">
@@ -35,7 +35,7 @@
             <% [{type: 'обработка', key:  'обработка'}, {type: 'на подписи', key: 'подпись'},{type: 'зарегистрирован', key: 'зарегистрирован'} ].each do |fin| %>
                 <% stat << (OpenStruct.new fin) %>
             <% end %>
-            <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @purchase.status), {}, disabled: false, class: 'form-control' %>
+            <%= f.select :status, options_from_collection_for_select(stat, :key, :type, @purchase.status), {}, class: 'form-control' %>
             </div>
       </div>
       <div class="row">
@@ -57,8 +57,8 @@
           <%= f.link_to_add 'Добавить товар', :purchase_line_items, class: 'btn btn-default', data: { target: '#positions' } %>
         </div>
       </div>
-    </fieldset>
-
+  </fieldset>
+  <fieldset>
     <div class="row">
       <div class="col col-lg-10 col-offset-2">
         <%= f.submit 'Сохранить изменения', class: 'btn btn-warning' %>
@@ -66,6 +66,7 @@
         <%= link_to 'назад', purchase_purchases_path, class: 'btn btn-primary' %>
       </div>
     </div>
+  </fieldset>
 <%end%>
 
 <script>

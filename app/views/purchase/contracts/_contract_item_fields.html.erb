@@ -7,17 +7,17 @@
       <div class="row">
         <%= ci.label :good_id,'Товар', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
-            <%= ci.select :line_item_id, Purchase::LineItem.all.collect{ |d| [d.purchase_goods.name, d.id] }, {include_blank: true}, class: 'form-control' %>
+            <%= ci.select :line_item_id, Purchase::LineItem.all.collect{ |d| [(d.purchase_goods.name + ', ' + d.purchase_purchases.id.to_s + ' от ' + l(d.purchase_purchases.date_registration)), d.id] }, {include_blank: true}, class: 'form-control' %>
         </div>
       </div>
-      <div class="row">
-        <%= ci.label :item_count, 'Количество, шт.', class: 'col-sm-2 control-label' %>
+      <!-- <div class="row">
+        <%#= ci.label :item_count, 'Количество, шт.', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
-            <%= ci.text_field :item_count, class: 'form-control' %>
+            <%#= ci.text_field :item_count, class: 'form-control' %>
         </div>
-      </div>
+      </div>-->
       <div class="row">
-        <%= ci.label :total_price, 'Цена, руб.', class: 'col-sm-2 control-label' %>
+        <%= ci.label :total_price, 'Стоимость за меяц, руб.', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
             <%= ci.text_field :total_price, placeholder: 'Пример, 1000', class: 'form-control' %>
         </div>

@@ -8,11 +8,7 @@ HQ::Application.routes.draw do
         get 'off_budget', as: :off_budget
       end
     end
-    resources :line_items do
-      collection do
-        get 'search_result', as: :search_result
-      end
-    end
+    resources :line_items
     resources :contracts
     resources :contract_items
   end
@@ -22,7 +18,6 @@ HQ::Application.routes.draw do
   get 'review/search_result' => 'reviews#search_results', as: :search_results
 
   resources :phonebook
-  get 'phonebook/index'
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.is?(:developer) } do

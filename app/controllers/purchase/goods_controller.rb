@@ -39,11 +39,6 @@ class Purchase::GoodsController < ApplicationController
 
   def resource_params
     params.fetch(:purchase_good, {}).permit(
-      :name, :demand,
-      purchase_purchases_attributes: [:id, :dep_id, :number,
-                                      :date_registration, :status, :note],
-      purchase_line_items_attributes: [:id, :good_id, :purchase_id, :period, :contract_number,
-                                       :contract_date,:planned_sum, :supplier_id,:published,
-                                       :contracted, :delivered, :paid])
+      :name, :demand)
   end
 end

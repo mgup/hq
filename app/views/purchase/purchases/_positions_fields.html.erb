@@ -8,8 +8,8 @@
 
       <div class="row">
         <%= p.label :good_id, 'Товар', class: 'col-sm-2 control-label' %>
-        <div class="col-sm-8">
-          <%= p.select :good_id, Purchase::Good.all.collect{ |g| [g.name, g.id] }, {include_blank: true}, class: 'form-control' %>
+        <div class="col-sm-10">
+          <%= p.select :good_id, Purchase::Good.all.map{ |g| [g.name, g.id] }, {include_blank: true}, class: 'form-control' %>
         </div>
         <!--
         <div class="col-sm-2">
@@ -41,7 +41,7 @@
       <div class="row">
         <%= p.label :supplier_id, 'Поставщик', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
-          <%= p.select :supplier_id, Purchase::Supplier.all.collect{ |s| [s.name, s.id] }, {include_blank: true}, class: 'form-control' %>
+          <%= p.select :supplier_id, Purchase::Supplier.all.map{ |s| [s.name, s.id] }, {include_blank: true}, class: 'form-control' %>
           <span class="help-block">
             <p>Если поставщик неопределен, оставить поле пустым</p>
           </span>

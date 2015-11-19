@@ -3,7 +3,7 @@ class CreatePurchaseContracts < ActiveRecord::Migration
     create_table :purchase_contracts do |t|
       t.string :number, null: false
       t.date :gate_registration
-      t.integer :total_price
+      t.decimal :total_price,  precision: 10, scale: 2
       t.timestamps null: false
     end
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151030113608) do
+ActiveRecord::Schema.define(version: 20151117074456) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -1907,20 +1907,21 @@ ActiveRecord::Schema.define(version: 20151030113608) do
   end
 
   create_table "purchase_contract_items", force: :cascade do |t|
-    t.integer  "line_item_id",  limit: 4, null: false
-    t.integer  "contract_id",   limit: 4, null: false
+    t.integer  "line_item_id",  limit: 4,                          null: false
+    t.integer  "contract_id",   limit: 4,                          null: false
     t.integer  "item_count",    limit: 4
-    t.integer  "total_price",   limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.decimal  "total_price",             precision: 10, scale: 2
     t.integer  "contract_time", limit: 4
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
   end
 
   create_table "purchase_contracts", force: :cascade do |t|
-    t.string   "number",            limit: 255, null: false
-    t.integer  "total_price",       limit: 4
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.string   "number",            limit: 255,                          null: false
+    t.date     "gate_registration"
+    t.decimal  "total_price",                   precision: 10, scale: 2
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
     t.date     "date_registration"
   end
 
