@@ -53,7 +53,7 @@ class Purchase::PurchasesController < ApplicationController
     params.fetch(:purchase_purchase, {}).permit(
       :id, :dep_id, :number, :date_registration, :status, :payment_type, :purchase_introduce,
       purchase_line_items_attributes: [:id, :good_id, :purchase_id, :period, :planned_sum,
-                                       :supplier_id, :published, :contracted, :delivered, :paid, :_destroy] )
+                                       :published, :contracted, :delivered, :paid, :_destroy] )
   end
 
   private

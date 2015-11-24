@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body">
       <div class="row">
-        <%= ci.label :good_id,'Товар', class: 'col-sm-2 control-label' %>
+        <%= ci.label :line_item_id,'Товар', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
             <%= ci.select :line_item_id, Purchase::LineItem.all.collect{ |d| [(d.purchase_goods.name + ', ' + d.purchase_purchases.id.to_s + ' от ' + l(d.purchase_purchases.date_registration)), d.id] }, {include_blank: true}, class: 'form-control' %>
         </div>

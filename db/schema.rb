@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117074456) do
+ActiveRecord::Schema.define(version: 20151124213454) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -1923,6 +1923,7 @@ ActiveRecord::Schema.define(version: 20151117074456) do
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
     t.date     "date_registration"
+    t.integer  "supplier_id",       limit: 4
   end
 
   create_table "purchase_goods", force: :cascade do |t|
@@ -1935,7 +1936,6 @@ ActiveRecord::Schema.define(version: 20151117074456) do
     t.integer "purchase_id",     limit: 4
     t.integer "good_id",         limit: 4
     t.integer "period",          limit: 4
-    t.integer "supplier_id",     limit: 4
     t.integer "published",       limit: 4
     t.integer "contracted",      limit: 4
     t.integer "delivered",       limit: 4

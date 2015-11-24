@@ -67,13 +67,14 @@
       </div>
     </div>
   </fieldset>
-<%end%>
+<% end %>
 
 <script>
     $('form').validate({
         rules: {
             "purchase_purchase[dep_id]": {required: true},
-            "purchase_purchase[payment_type]": {required: true}
+            "purchase_purchase[payment_type]": {required: true},
+            "purchase_purchase[date_registration]": {required: true}
         },
         messages: {
             "purchase_purchase[payment_type]": {
@@ -81,6 +82,9 @@
             },
             "purchase_purchase[dep_id]": {
                 required: 'Выберите структурное подразделение'
+            },
+            "purchase_purchase[date_registration]": {
+                required: 'Выберите дату'
             }
         }
     });

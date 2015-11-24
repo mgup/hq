@@ -40,7 +40,7 @@ class Purchase::ContractsController < ApplicationController
 
   def resource_params
     params.require(:purchase_contract).permit(
-        :id, :number, :date_registration, :total_price,
+        :id, :number, :date_registration, :total_price, :supplier_id,
         purchase_contract_items_attributes: [:id, :line_item_id, :contract_id, :total_price, :item_count,
                                              :contract_time, :_destroy]
     )

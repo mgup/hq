@@ -1,6 +1,5 @@
 class Purchase::LineItem < ActiveRecord::Base
   belongs_to :purchase_goods, :class_name => 'Purchase::Good', foreign_key: :good_id
-  belongs_to :purchase_suppliers, :class_name => 'Purchase::Supplier', foreign_key: :supplier_id
   belongs_to :purchase_purchases, :class_name => 'Purchase::Purchase', foreign_key: :purchase_id
   has_many :purchase_contract_items, :class_name => 'Purchase::ContractItem', foreign_key: :line_item_id
 
