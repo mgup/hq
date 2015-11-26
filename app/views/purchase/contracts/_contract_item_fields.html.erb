@@ -1,0 +1,38 @@
+<%= p.fields_for :purchase_contract_items do |ci| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Товар, работа, услуга</h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <%= ci.label :line_item_id,'Товар', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= ci.select :line_item_id, Purchase::LineItem.all.collect{ |d| [(d.purchase_goods.name + ', ' + d.purchase_purchases.id.to_s + ' от ' + l(d.purchase_purchases.date_registration)), d.id] }, {include_blank: true}, class: 'form-control' %>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <%#= ci.label :item_count, 'Количество, шт.', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%#= ci.text_field :item_count, class: 'form-control' %>
+        </div>
+      </div>-->
+      <div class="row">
+        <%= ci.label :total_price, 'Стоимость за меяц, руб.', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= ci.text_field :total_price, placeholder: 'Пример, 1000', class: 'form-control' %>
+        </div>
+      </div>
+      <div class="row">
+        <%= ci.label :contract_time, 'Срок договора, мес.', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+          <%= ci.text_field :contract_time, placeholder: 'Пример, 4', class: 'form-control' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-offset-2 col-sm-10">
+            <%= ci.link_to_remove 'Удалить', class: 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,41 +1,37 @@
 <div class="page-header">
   <h1>Закупки МГУП</h1>
-  <h3>Список заявок подразделения</h3>
 </div>
+
 <div class="row">
-  <div class="col col-lg-10">
-    <%= link_to 'Новая заявка', new_purchase_purchase_path, class: 'btn btn-primary' %>
+  <div class="text-center">
+    <h3>Выберете источник финансирования</h3>
   </div>
 </div>
 <div class="row">
-  <div class="col col-lg-10">
-    <%= link_to 'Заявки', purchase_purchases_path, class: 'btn btn-primary' %>
-    <%= link_to 'Поставщики', purchase_suppliers_path, class: 'btn btn-primary' %>
-    <%= link_to 'Товары', purchase_goods_path, class: 'btn btn-primary' %>
-    <% if @current_user.is?(:developer) || @current_user.is?(:purchase_manager) || @current_user.is?(:ciot) %>
-        <%= link_to 'ДФП', purchase_line_items_path, class: 'btn btn-primary' %>
+  <div class="col-sm-4 col-sm-offset-2">
+    <%= link_to purchase_purchases_path,
+                class: 'btn btn-lg btn-block btn-primary', disabled: 'disabled' do %>
+        <span class="glyphicon glyphicon-indent-right"></span> Бюджет
+    <% end %>
+  </div>
+
+  <div class="col-sm-4">
+    <%= link_to off_budget_purchase_purchases_path,
+                class: 'btn btn-lg btn-block btn-primary' do %>
+        <span class="glyphicon glyphicon-indent-left"></span> Внебюджет
     <% end %>
   </div>
 </div>
 <div class="row">
-  <div class="col col-lg-10">
-    <p class="text-info"><%= notice %></p>
+  <div class="text-center">
+    <h3>или</h3>
   </div>
 </div>
-<table class="table table-condensed">
-  <thead>
-  <tr>
-    <th>#</th>
-    <th>Дата регистрации</th>
-    <th>Департамент</th>
-    <th>Статус</th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-      <%= render partial: 'rows' %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col col-sm-4 col-sm-offset-4">
+    <%= link_to new_purchase_purchase_path,
+                class: 'btn btn-lg btn-block btn-success' do %>
+        <span class="glyphicon glyphicon-new-window"></span> Создайте заявку
+    <% end %>
+  </div>
+</div>

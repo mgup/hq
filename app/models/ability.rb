@@ -243,7 +243,8 @@ class Ability
     cannot :sign, Office::Order
     can :manage, Group
     can :index, :groups
-
+    can :manage, Document::Doc
+    can :manage, :student
     can :manage, Student
     can :manage, Person
   end

@@ -2,9 +2,15 @@ HQ::Application.routes.draw do
   namespace :purchase do
     resources :suppliers
     resources :goods
-    resources :purchases
+    resources :purchases do
+      collection do
+        get 'budget', as: :budget
+        get 'off_budget', as: :off_budget
+      end
+    end
     resources :line_items
-    get 'line_item/search_result' => 'line_items#search_result', as: :search_result
+    resources :contracts
+    resources :contract_items
   end
 
   resources :universities
@@ -12,7 +18,6 @@ HQ::Application.routes.draw do
   get 'review/search_result' => 'reviews#search_results', as: :search_results
 
   resources :phonebook
-  get 'phonebook/index'
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.is?(:developer) } do

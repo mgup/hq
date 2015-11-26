@@ -12,7 +12,7 @@ class Purchase::GoodsController < ApplicationController
   def create
     @good = Purchase::Good.new(resource_params)
     if @good.save
-      redirect_to purchase_goods_path, notice: 'Товар успешно создан!'
+      redirect_to new_purchase_purchase_path(@purchase), notice: 'Товар успешно создан!'
     else
       render action: :new
     end
@@ -39,7 +39,6 @@ class Purchase::GoodsController < ApplicationController
 
   def resource_params
     params.fetch(:purchase_good, {}).permit(
-        :name,
-        :demand)
+      :name, :demand)
   end
 end
