@@ -728,13 +728,13 @@
                      _____________________________________
               </fo:block>
               <fo:block>
-                    Первый проректор по учебной работе
+                    Ректор
               </fo:block>
               <fo:block>
                     МГУП имени Ивана Федорова
               </fo:block>
               <fo:block>
-                    Т.В. Маркелова
+                    К.В. Антипов
               </fo:block>
          </fo:block>
           <fo:block font="14pt PT Serif" space-before="15pt" font-weight="bold" text-align="center">
