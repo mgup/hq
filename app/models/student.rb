@@ -288,7 +288,7 @@ LIMIT 1 ")
   end
 
   def entrance_order
-    orders.where('order_template = 16').last
+    orders.where('order_template IN (16, 17)').last
   end
 
   def expeled_sabbatical_order
