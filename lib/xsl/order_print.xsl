@@ -234,6 +234,9 @@
                 <xsl:with-param name="input_string" select="substring(./employee/title, 1, 1)" />
                 <xsl:with-param name="direction" select="'up'" />
               </xsl:call-template><xsl:value-of select="substring(./employee/title, 2)" />
+                <xsl:choose>
+                    <xsl:when test="./employee/title = 'Директор'"><xsl:text> </xsl:text><xsl:value-of select="./employee/department_short_name" /></xsl:when>
+                </xsl:choose>
             </fo:block>
           </fo:table-cell>
           <fo:table-cell display-align="after">
