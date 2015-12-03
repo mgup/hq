@@ -159,11 +159,7 @@ class Study::DisciplinesController < ApplicationController
     authorize! :index, :disciplines
     @disciplines = ActiveRecord::Base.connection.execute("
     SELECT department_sname AS `Кафедра`, CONCAT_WS('-', group_name, group_course, group_number) AS `Группа`,
-       subject_name AS `Дисциплина`, CASE WHEN user_name IS NULL or user_name = '' THEN CONCAT_WS(' ',
-                        (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_fname = dictionary.dictionary_id LIMIT 1),
-                        (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_iname = dictionary.dictionary_id LIMIT 1),
-                        (SELECT dictionary.dictionary_ip FROM dictionary JOIN user ON user.user_oname = dictionary.dictionary_id LIMIT 1))
-                        ELSE user_name END AS `Преподаватель`, COUNT(checkpoint_id) AS `Занятий`,
+       subject_name AS `Дисциплина`, CONCAT_WS(' ', last_name_hint, first_name_hint, patronym_hint) AS `Преподаватель`, COUNT(checkpoint_id) AS `Занятий`,
     (SELECT COUNT(*) FROM checkpoint WHERE checkpoint_subject = subject_id AND checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}') AS `Прошло занятий`,
     (SELECT COUNT(*) FROM checkpoint WHERE checkpoint_subject = subject_id AND checkpoint_date < '#{Date.today.strftime('%Y-%m-%d')}' AND (SELECT COUNT(*) FROM checkpoint_mark WHERE checkpoint_mark_checkpoint = checkpoint_id > 0) AND (SELECT COUNT(DISTINCT checkpoint_mark_student) FROM checkpoint_mark WHERE checkpoint_mark_checkpoint = checkpoint_id) >= (SELECT COUNT(*) FROM student_group WHERE student_group_group = group_id AND student_group_status IN (101, 108))) AS `Оценки`
     FROM subject JOIN user ON user_id = subject_teacher JOIN
