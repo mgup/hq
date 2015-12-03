@@ -185,17 +185,17 @@ pdf.text 'Работодателю _____________________________________________
 
       pdf.move_down 5
 
-      pdf.text 'Первый проректор по учебной работе    __________________________       ____________________________________'
+      pdf.text 'Ректор                    ____________________________________                         __________________________________________'
       pdf.font_size 7 do
-        pdf.indent 250 do
-          pdf.text 'подпись                                                                   фамилия, имя, отчество'
+        pdf.indent 160 do
+          pdf.text 'подпись                                                                                                                фамилия, имя, отчество'
         end
-        pdf.indent 190 do
+        pdf.indent 220 do
           pdf.text 'М. П.', color: '444444'
         end
       end
 
-      pdf.text_box 'Т. В. Маркелова', at: [375, 196], width: 100, height: 20, align: :center
+      pdf.text_box 'К. В. Антипов', at: [366, 196], width: 100, height: 20, align: :center
 
       # pdf.table [['Первый проректор по учебной работе', '________________________  Маркелова Т. В.']], width: pdf.bounds.width, cell_style: { padding: 7, border_color: 'ffffff' } do
       #   column(1).style align: :right
@@ -236,7 +236,8 @@ pdf.text 'Работодателю _____________________________________________
         pdf.text_box  '                             федеральном государственном бюджетном образовательном учреждении высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова»', at:[0, 110], width: 500, height: 60, align: :center, inline_format: true, leading: 12
         pdf.text_box "#{l @from, format: '%d %B %Y'}", at: [69, 62], width: 100, height: 20, align: :center, style: :bold
         pdf.text_box "#{l @to, format: '%d %B %Y'}", at: [336, 62], width: 100, height: 20, align: :center, style: :bold
-        pdf.text_box 'Т. В. Маркелова', at: [375, 35], width: 100, height: 20, align: :center
+        pdf.text_box 'К. В. Антипов', at: [366, 35], width: 100, height: 20, align: :center
+        # pdf.text_box 'Т. В. Маркелова', at: [375, 35], width: 100, height: 20, align: :center
       end
       pdf.text 'находился в __________________________________________________________________________________________________'
       pdf.font_size 7 do
@@ -257,12 +258,12 @@ pdf.text 'Работодателю _____________________________________________
 
       pdf.move_down 4
 
-      pdf.text 'Первый проректор по учебной работе    __________________________       ____________________________________'
+      pdf.text 'Ректор                    ____________________________________                         __________________________________________'
       pdf.font_size 7 do
-        pdf.indent 250 do
-          pdf.text 'подпись                                                                   фамилия, имя, отчество'
+        pdf.indent 160 do
+          pdf.text 'подпись                                                                                                                фамилия, имя, отчество'
         end
-        pdf.indent 190 do
+        pdf.indent 220 do
           pdf.text 'М. П.', color: '444444'
         end
       end
