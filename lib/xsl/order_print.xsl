@@ -235,7 +235,7 @@
                 <xsl:with-param name="direction" select="'up'" />
               </xsl:call-template><xsl:value-of select="substring(./employee/title, 2)" />
                 <xsl:choose>
-                    <xsl:when test="./employee/title = 'Директор'"><xsl:text> </xsl:text><xsl:value-of select="./employee/department_short_name" /></xsl:when>
+                    <xsl:when test="./employee/title = 'Директор'"><xsl:text> </xsl:text><xsl:value-of select="./employee/department_name" /></xsl:when>
                 </xsl:choose>
             </fo:block>
           </fo:table-cell>
