@@ -478,23 +478,6 @@ ActiveRecord::Schema.define(version: 20151124213454) do
     t.integer "entrance_benefit_id", limit: 4
   end
 
-  create_table "data_uploaders", force: :cascade do |t|
-    t.string   "filename",      limit: 255
-    t.string   "content_type",  limit: 255
-    t.binary   "file_contents", limit: 65535
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "number",        limit: 4
-    t.string   "literal",       limit: 255
-    t.date     "signed"
-    t.integer  "order_type",    limit: 4
-    t.string   "content",       limit: 255
-    t.integer  "department_id", limit: 4
-    t.integer  "volume",        limit: 4
-    t.integer  "page_count",    limit: 4
-    t.string   "note",          limit: 255
-  end
-
   create_table "department", primary_key: "department_id", force: :cascade do |t|
     t.integer "department_oldid",   limit: 4
     t.string  "department_name",    limit: 200,                      null: false
@@ -850,15 +833,6 @@ ActiveRecord::Schema.define(version: 20151124213454) do
   add_index "document_student_group", ["document_student_group_document"], name: "document_student_group_document", using: :btree
   add_index "document_student_group", ["student_group_id"], name: "student_group_id", using: :btree
   add_index "document_student_group", ["student_group_student"], name: "student_group_student", using: :btree
-
-  create_table "document_uploaders", force: :cascade do |t|
-    t.integer  "number",     limit: 4
-    t.date     "signed"
-    t.string   "file",       limit: 255
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.binary   "data",       limit: 65535
-  end
 
   create_table "education_forms", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -1229,10 +1203,9 @@ ActiveRecord::Schema.define(version: 20151124213454) do
     t.string   "name",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "form",           limit: 4,     default: 1,     null: false
-    t.boolean  "creative",       limit: 1,     default: false
-    t.boolean  "visible",        limit: 1,     default: false
-    t.binary   "data",           limit: 65535
+    t.integer  "form",           limit: 4,   default: 1,     null: false
+    t.boolean  "creative",       limit: 1,   default: false
+    t.boolean  "visible",        limit: 1,   default: false
   end
 
   add_index "entrance_exams", ["campaign_id"], name: "index_entrance_exams_on_campaign_id", using: :btree
@@ -1418,89 +1391,6 @@ ActiveRecord::Schema.define(version: 20151124213454) do
   end
 
   add_index "exam", ["exam_subject"], name: "exam_subject", using: :btree
-
-  create_table "exam_formreader", primary_key: "exam_formreader_id", force: :cascade do |t|
-    t.boolean "exam_formreader_parsed", limit: 1,        default: false, null: false
-    t.string  "DocNumber",              limit: 16
-    t.string  "S1Id",                   limit: 16
-    t.float   "S1Result",               limit: 53
-    t.string  "S2Id",                   limit: 16
-    t.float   "S2Result",               limit: 53
-    t.string  "S3Id",                   limit: 16
-    t.float   "S3Result",               limit: 53
-    t.string  "S4Id",                   limit: 16
-    t.float   "S4Result",               limit: 53
-    t.string  "S5Id",                   limit: 16
-    t.float   "S5Result",               limit: 53
-    t.string  "S6Id",                   limit: 16
-    t.float   "S6Result",               limit: 53
-    t.string  "S7Id",                   limit: 16
-    t.float   "S7Result",               limit: 53
-    t.string  "S8Id",                   limit: 16
-    t.float   "S8Result",               limit: 53
-    t.string  "S9Id",                   limit: 16
-    t.float   "S9Result",               limit: 53
-    t.string  "S10Id",                  limit: 16
-    t.float   "S10Result",              limit: 53
-    t.string  "S11Id",                  limit: 16
-    t.float   "S11Result",              limit: 53
-    t.string  "S12Id",                  limit: 16
-    t.float   "S12Result",              limit: 53
-    t.string  "S13Id",                  limit: 16
-    t.float   "S13Result",              limit: 53
-    t.string  "S14Id",                  limit: 16
-    t.float   "S14Result",              limit: 53
-    t.string  "S15Id",                  limit: 16
-    t.float   "S15Result",              limit: 53
-    t.string  "S16Id",                  limit: 16
-    t.float   "S16Result",              limit: 53
-    t.string  "S17Id",                  limit: 16
-    t.float   "S17Result",              limit: 53
-    t.string  "S18Id",                  limit: 16
-    t.float   "S18Result",              limit: 53
-    t.string  "S19Id",                  limit: 16
-    t.float   "S19Result",              limit: 53
-    t.string  "S20Id",                  limit: 16
-    t.float   "S20Result",              limit: 53
-    t.string  "S21Id",                  limit: 16
-    t.float   "S21Result",              limit: 53
-    t.string  "S22Id",                  limit: 16
-    t.float   "S22Result",              limit: 53
-    t.string  "S23Id",                  limit: 16
-    t.float   "S23Result",              limit: 53
-    t.string  "S24Id",                  limit: 16
-    t.float   "S24Result",              limit: 53
-    t.string  "S25Id",                  limit: 16
-    t.float   "S25Result",              limit: 53
-    t.string  "S26Id",                  limit: 16
-    t.float   "S26Result",              limit: 53
-    t.string  "S27Id",                  limit: 16
-    t.float   "S27Result",              limit: 53
-    t.string  "S28Id",                  limit: 16
-    t.float   "S28Result",              limit: 53
-    t.string  "S29Id",                  limit: 16
-    t.float   "S29Result",              limit: 53
-    t.string  "S30Id",                  limit: 16
-    t.float   "S30Result",              limit: 53
-    t.string  "S31Id",                  limit: 16
-    t.float   "S31Result",              limit: 53
-    t.string  "S32Id",                  limit: 16
-    t.float   "S32Result",              limit: 53
-    t.string  "S33Id",                  limit: 16
-    t.float   "S33Result",              limit: 53
-    t.string  "S34Id",                  limit: 16
-    t.float   "S34Result",              limit: 53
-    t.string  "S35Id",                  limit: 16
-    t.float   "S35Result",              limit: 53
-    t.string  "S36Id",                  limit: 16
-    t.float   "S36Result",              limit: 53
-    t.binary  "ImageData",              limit: 16777215
-    t.string  "Created",                limit: 32
-    t.string  "Recognized",             limit: 32
-    t.string  "Verified",               limit: 32
-  end
-
-  add_index "exam_formreader", ["DocNumber"], name: "DocNumber", using: :btree
 
   create_table "exam_student", primary_key: "exam_student_id", force: :cascade do |t|
     t.integer "exam_student_exam",          limit: 4, null: false
@@ -1756,14 +1646,6 @@ ActiveRecord::Schema.define(version: 20151124213454) do
     t.datetime "updated_at"
   end
 
-  create_table "notifications", force: :cascade do |t|
-    t.integer  "user_id",    limit: 4
-    t.string   "content",    limit: 255
-    t.boolean  "visible",    limit: 1
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
   create_table "olympic_documents", force: :cascade do |t|
     t.boolean "original",            limit: 1,   default: true
     t.string  "series",              limit: 255
@@ -1826,25 +1708,6 @@ ActiveRecord::Schema.define(version: 20151124213454) do
   end
 
   add_index "order", ["order_template"], name: "order_template", using: :btree
-
-  create_table "order_documents", force: :cascade do |t|
-    t.integer  "number",            limit: 4
-    t.string   "literal",           limit: 255
-    t.date     "signed"
-    t.integer  "order_type",        limit: 4
-    t.string   "content",           limit: 255
-    t.integer  "department_id",     limit: 4
-    t.integer  "volume",            limit: 4
-    t.integer  "page_count",        limit: 4
-    t.string   "note",              limit: 255
-    t.string   "file_file_name",    limit: 255
-    t.string   "file_content_type", limit: 255
-    t.integer  "file_file_size",    limit: 4
-    t.datetime "file_updated_at"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.binary   "file_contents",     limit: 65535
-  end
 
   create_table "order_meta", primary_key: "order_meta_id", force: :cascade do |t|
     t.integer "order_meta_order",   limit: 4,        null: false
@@ -1922,7 +1785,6 @@ ActiveRecord::Schema.define(version: 20151124213454) do
     t.decimal  "total_price",                   precision: 10, scale: 2
     t.datetime "created_at",                                             null: false
     t.datetime "updated_at",                                             null: false
-    t.date     "date_registration"
     t.integer  "supplier_id",       limit: 4
   end
 
@@ -1933,16 +1795,15 @@ ActiveRecord::Schema.define(version: 20151124213454) do
   end
 
   create_table "purchase_line_items", force: :cascade do |t|
-    t.integer "purchase_id",     limit: 4
-    t.integer "good_id",         limit: 4
-    t.integer "period",          limit: 4
-    t.integer "published",       limit: 4
-    t.integer "contracted",      limit: 4
-    t.integer "delivered",       limit: 4
-    t.integer "paid",            limit: 4
-    t.string  "contract_number", limit: 255
-    t.date    "contract_date"
-    t.integer "planned_sum",     limit: 4
+    t.integer "purchase_id", limit: 4
+    t.integer "good_id",     limit: 4
+    t.integer "measure",     limit: 4
+    t.integer "period",      limit: 4
+    t.integer "published",   limit: 4
+    t.integer "contracted",  limit: 4
+    t.integer "delivered",   limit: 4
+    t.integer "paid",        limit: 4
+    t.integer "planned_sum", limit: 4
   end
 
   create_table "purchase_purchases", force: :cascade do |t|

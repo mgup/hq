@@ -6,10 +6,11 @@ class Office::Order < ActiveRecord::Base
   STATUS_SIGNED   = 3
 
   ENTRANCE_TEMPLATE = 16
+  TRANSFER_TEMPLATE = 10
   PROBATION_TEMPLATE = 40
   REPRIMAND_TEMPLATE = 43
   
-  RESPONSIBLE_POSITION_ROLES = [2,16,23,25,27,30,33,40]
+  RESPONSIBLE_POSITION_ROLES = [2,16,23,25,27,30,33,40,44]
 
   alias_attribute :id,      :order_id
   alias_attribute :version, :order_revision
@@ -137,7 +138,7 @@ class Office::Order < ActiveRecord::Base
           end
         end
 
-        if template.id == PROBATION_TEMPLATE
+        if [Office::Order::PROBATION_TEMPLATE, Office::Order::TRANSFER_TEMPLATE].include?(template.id)
           xml.groups do
             students.first.group.speciality.groups.filter(course: students.first.group.course + 1).sort_by { |x| x.name }.reverse.each { |group| xml << group.to_nokogiri_empty.root.to_xml }
           end

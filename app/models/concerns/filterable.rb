@@ -9,7 +9,7 @@ module Filterable
     def filter(conditions)
       skipped_keys = ['utf8']
 
-      conditions.reduce(@relation) do |query, (field, value)|
+      conditions.reduce(self) do |query, (field, value)|
         if skipped_keys.include?(field) || value.blank?
           query
         else

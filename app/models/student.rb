@@ -636,4 +636,8 @@ LIMIT 1 ")
     last_name.present? && first_name.present? && person.birthday.present? && person.passport_number.present? && person.passport_department.present? && person.residence_address.present? &&
         last_status_order && person.passport_date.present?
   end
+
+  def lives_in_hostel?
+    person.room && person.hostel_st == Person::HOSTEL_STATUS_ACCEPT
+  end
 end

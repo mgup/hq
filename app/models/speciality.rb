@@ -44,6 +44,10 @@ class Speciality < ActiveRecord::Base
     0 == type
   end
 
+  def aspirant?
+    3 == type
+  end
+
   def full_name
     %Q(#{code} «#{name}»)
   end

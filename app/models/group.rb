@@ -98,10 +98,12 @@ class Group < ActiveRecord::Base
      when 'postal'   then 'З'
      when 'distance' then 'З'
      else fail 'Неизвестная форма обучения.'
-     end,
-     group_name[1], speciality.group_name_suffix]
+     end]
+    n << group_name[1] unless speciality.aspirant?
+    n << speciality.group_name_suffix
     n << 'Д' if form == 'distance'
     n << 'В' if group_second_higher == 1
+    n << 'А' if speciality.aspirant?
     n << "-#{course}-#{number}"
     n.join
   end

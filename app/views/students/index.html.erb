@@ -17,17 +17,23 @@
       <th>Имя</th>
       <th>Отчество</th>
       <th>Группа</th>
+      <th>Оплата</th>
+      <th>Общежитие</th>
+      <th></th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     <% @students.each do |student| %>
-    <tr>
+    <tr style="<%= 'color: #aaa' unless student.is_valid? %>">
       <td><%= student.id %></td>
       <td><%= student.person.last_name %></td>
       <td><%= student.person.first_name %></td>
       <td><%= student.person.patronym %></td>
       <td><%= student.group.name %></td>
+      <td title="<%= student.budget? ? 'Бюджетная форма' : 'Внебюджетная форма' %>"><%= '<span class="glyphicon glyphicon-rub"></span>'.html_safe if student.off_budget? %></td>
+      <td><%= student.person.room.flat.hostel.short_name if student.lives_in_hostel? %></td>
+      <td><%= '<span class="glyphicon glyphicon-globe"></span>'.html_safe if student.person.foreign %></td>
       <td>
         <%= link_to 'Информация', student %>
       </td>
