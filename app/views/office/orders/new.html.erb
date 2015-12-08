@@ -98,7 +98,7 @@
       <td><%= student.person.last_name %></td>
       <td><%= student.person.first_name %></td>
       <td><%= student.person.patronym %></td>
-      <td><%= student.group.speciality.faculty.abbreviation %></td>
+      <td><%= student.group.speciality.faculty.abbreviation if student.group.speciality.faculty %></td>
       <td><%= student.group.name %></td>
       <td>
         <%= link_to '#', class: 'btn btn-default orderadd', id: 'process', data: {value: student.id} do %>

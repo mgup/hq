@@ -128,6 +128,10 @@ class Office::OrdersController < ApplicationController
     params[:template] ||= current_user.is?(:soc_support_boss) ? Office::Order::REPRIMAND_TEMPLATE : 40
     @students = Student.includes([:person, :group]).where.not(student_group_id: params[:exception])
                        .my_filter(params).from_template(Office::OrderTemplate.find(params[:template])).page(params[:page])
+
+    if current_user.is? :aspirantura
+      @students = @students.aspirants
+    end
   end
 
   def create
@@ -153,7 +157,8 @@ class Office::OrdersController < ApplicationController
     redirect_to office_drafts_path(faculty: faculty, template: params[:template]), notice: "#{count > 1 ? 'Проекты приказов' : 'Проект приказа'} успешно создан#{'ы' if count > 1}."
   end
 
-  def edit ; end
+  def edit
+  end
 
   def update
     @order.update(resource_params)

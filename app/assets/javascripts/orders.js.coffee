@@ -252,7 +252,7 @@
   if isEmpty
     text = $this.attr('data-meta-pattern')
   else
-    text = options[optionsText.indexOf(text)]
+    text = text
   $this.html(text)
 
   div = $('<div>', {'class' : 'meta-popover meta-select meta-text-order', 'data-uid'  : uid})
