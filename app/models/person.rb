@@ -215,6 +215,7 @@ class Person < ActiveRecord::Base
     Nokogiri::XML::Builder.new(encoding: 'UTF-8') { |xml|
       xml.person {
         xml.id_   student_id
+        xml.sex   (male? ? 1 : 0)
         xml.hostel hostel.address if student_room
         xml.foreign student_foreign if student_foreign
         name_to_nokogiri.children[0].children.each { |part| xml << part.to_xml }
