@@ -224,8 +224,8 @@
   <!-- Виза ректора -->
   <xsl:template match="approve">
     <fo:table table-layout="fixed" width="100%" space-before="40pt">
-      <fo:table-column column-width="proportional-column-width(1.5)" />
       <fo:table-column column-width="proportional-column-width(2)" />
+      <fo:table-column column-width="proportional-column-width(1.5)" />
       <fo:table-body>
         <fo:table-row>
           <fo:table-cell>
