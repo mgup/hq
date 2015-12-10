@@ -733,7 +733,7 @@
               <fo:block space-before="5pt">
                   ________________________ К.В. Антипов
               </fo:block>
-              <fo:block>
+              <fo:block space-before="5pt">
                   «___» ____________________ 20___ г.
               </fo:block>
               <fo:block>
