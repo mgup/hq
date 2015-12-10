@@ -725,19 +725,19 @@
         <fo:flow flow-name="xsl-region-body">
           <fo:block font="12pt PT Serif" text-indent="260">
               <fo:block>
-                  УТВЕРЖДАЮ
+                  Утверждаю
+              </fo:block>
+              <fo:block>
+                    Ректор МГУП имени Ивана Федорова
               </fo:block>
               <fo:block space-before="5pt">
-                     _____________________________________
+                  ________________________ К.В. Антипов
               </fo:block>
               <fo:block>
-                    Ректор
+                  «___» ____________________ 20___ г.
               </fo:block>
               <fo:block>
-                    МГУП имени Ивана Федорова
-              </fo:block>
-              <fo:block>
-                    К.В. Антипов
+
               </fo:block>
          </fo:block>
           <fo:block font="14pt PT Serif" space-before="15pt" font-weight="bold" text-align="center">
