@@ -606,7 +606,7 @@
     <xsl:element name="script">
       <xsl:attribute name="type">text/javascript</xsl:attribute>
       $(function() {
-      initOrderMetaSelectOrder('<xsl:value-of select="$uid" />');
+        initOrderMetaSelectOrder('<xsl:value-of select="$uid" />');
       });
     </xsl:element>
   </xsl:template>
@@ -698,6 +698,4 @@
       });
     </xsl:element>
   </xsl:template>
-
-
 </xsl:stylesheet>

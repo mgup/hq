@@ -258,7 +258,7 @@
   div = $('<div>', {'class' : 'meta-popover meta-select meta-text-order', 'data-uid'  : uid})
 
   select = $('<select>', {'id' : 'meta' + uid, 'class': 'form-control', 'width' : required ? '234px' : '300px'})
-  $('<option>', {'value' : optionsText[i], 'html' : options[i]}).appendTo(select) for i in [(options.length - 1)..0]
+  $('<option>', {'value' : optionsText[i].replace(/^\s*|\s*$/g, ""), 'html' : options[i].replace(/^\s*|\s*$/g, "")}).appendTo(select) for i in [(options.length - 1)..0]
   div.append(select)
 
   $('<button>', {'class' : 'btn btn-primary save', 'text' : 'Сохранить', 'data-uid' : uid}).appendTo(div)
