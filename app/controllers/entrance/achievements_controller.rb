@@ -5,10 +5,14 @@ class Entrance::AchievementsController < ApplicationController
   def index
     if params[:achievement_type_id]
       found = false
-      @campaign.achievement_types.each do |achievement_type|
-        found = true if achievement_type.id == params[:achievement_type_id].to_i
+      if @campaign.achievement_types.any?
+        @campaign.achievement_types.each do |achievement_type|
+          found = true if achievement_type.id == params[:achievement_type_id].to_i
+        end
+        params[:achievement_type_id] = @campaign.achievement_types.first.id unless found
+      else
+        redirect_to entrance_campaign_achievements_path(Entrance::Campaign.find(2015))
       end
-      params[:achievement_type_id] = @campaign.achievement_types.first.id unless found
     else
       params[:achievement_type_id] ||= @campaign.achievement_types.first.id
     end
