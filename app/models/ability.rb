@@ -354,6 +354,7 @@ class Ability
     can :statistics, Entrance::Contract
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
+    can :manage, Entrance::Achievement
   end
 
   def zamestitel_otvetstvennogo_sekretarja(user)
