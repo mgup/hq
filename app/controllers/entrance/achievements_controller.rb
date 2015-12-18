@@ -1,6 +1,6 @@
 class Entrance::AchievementsController < ApplicationController
   load_and_authorize_resource :campaign, class: 'Entrance::Campaign'
-  load_and_authorize_resource through: :campaign, class: 'Entrance::Achievement'
+  load_and_authorize_resource through: :campaign, class: 'Entrance::Achievement', except: [:index]
   
   def index
     if params[:achievement_type_id]
