@@ -5,8 +5,8 @@ SimpleNavigation::Configuration.run do |navigation|
     primary.dom_id = 'dashboard-menu'
     primary.dom_class = 'nav nav-pills nav-stacked'
 
-    primary.item :actual_events, 'Актуальные события', actual_events_path,
-                 icon: 'calendar'
+      #primary.item :actual_events, 'Актуальные события', actual_events_path,
+      #            icon: 'calendar'
 
 
     if user_signed_in?
@@ -14,9 +14,9 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :dashboard, 'Обзор'.html_safe, root_path, icon: 'home'
       end
 
-      primary.item :user_rating,
-                   '<span class="glyphicons podium"></span> Отчёт об эффективности'.html_safe,
-                   rating_user_path(current_user)
+      #primary.item :user_rating,
+      #             '<span class="glyphicons podium"></span> Отчёт об эффективности'.html_safe,
+      #             rating_user_path(current_user)
 
       if current_user.is?(:subdepartment) || current_user.is?(:dean)
         primary.item :users_department,
@@ -129,10 +129,10 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :ciot, 'Логины и пароли', "#{root_url}ciot", icon: 'folder-open', highlights_on: -> { params[:controller].include?('ciot') }
       end
 
-      if can? :manage, :all
-        primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
-      end
-    end
+    #  if can? :manage, :all
+    #  primary.item :brs, 'Заполненение БРС'.html_safe, print_disciplines_study_disciplines_path, icon: 'list'
+    #  end
+    #  end
 
     # ======================================
     if user_signed_in?
@@ -148,34 +148,34 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :appointments, 'Должности'.html_safe, appointments_path, icon: 'tags'
         primary.item :departments,  'Структура'.html_safe, departments_path, icon: 'list', highlights_on: -> { 'departments' == params[:controller] }
         primary.item :users,        'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
-        primary.item :activity_group, 'Группы показателей эффективности НПР',
-                     activity_groups_path, icon: 'list'
-        primary.item :activity_type, 'Типы показателей эффективности НПР',
-                     activity_types_path, icon: 'list'
-        primary.item :activity_credit_type, 'Типы баллов показателей эффективности НПР',
-                     activity_credit_types_path, icon: 'list'
-        primary.item :activity, 'Показатели эффективности НПР',
-                     activities_path, icon: 'list'
+      #  primary.item :activity_group, 'Группы показателей эффективности НПР',
+      #               activity_groups_path, icon: 'list'
+      #  primary.item :activity_type, 'Типы показателей эффективности НПР',
+      #               activity_types_path, icon: 'list'
+      #  primary.item :activity_credit_type, 'Типы баллов показателей эффективности НПР',
+      #               activity_credit_types_path, icon: 'list'
+      #  primary.item :activity, 'Показатели эффективности НПР',
+      #               activities_path, icon: 'list'
 
-        primary.item :achievement_period, 'Периоды ввода достижений НПР',
-                     achievement_periods_path, icon: 'list'
-        primary.item :event_categories, 'Категории событий', event_categories_path, icon: 'th-list'
+      #  primary.item :achievement_period, 'Периоды ввода достижений НПР',
+      #               achievement_periods_path, icon: 'list'
+      #  primary.item :event_categories, 'Категории событий', event_categories_path, icon: 'th-list'
         primary.item :specialities, 'Направления'.html_safe, specialities_path, icon: 'list', highlights_on: -> { 'specialities' == params[:controller] }
-        primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
+      #  primary.item :blanks, 'Бланки документов', blanks_path, icon: 'file'
         primary.item :phonebook, 'Телефонная книга'.html_safe, phonebook_index_path, icon: 'phone-alt'
       end
     end
-    if user_signed_in?
-      if (can? :index, :selection_contracts) or (can? :index, :payment_types)
-        primary.item :nav_group_selection, 'Платный приём', class: 'nav-header disabled'
-      end
+    #if user_signed_in?
+    #  if (can? :index, :selection_contracts) or (can? :index, :payment_types)
+    #    primary.item :nav_group_selection, 'Платный приём', class: 'nav-header disabled'
+    #  end
       # if can? :index, :selection_contracts
       #   primary.item :documents,    'Ход платного приёма'.html_safe, selection_contract_path, icon: 'usd', highlights_on: -> { params[:controller].include?('selection') }
       # end
-      if can? :index, :payment_types
-        primary.item :prices,    'Стоимость обучения'.html_safe, finance_payment_types_path, icon: 'credit-card', highlights_on: -> { params[:controller].include?('payment_types') }
-      end
-    end
+    #  if can? :index, :payment_types
+    #    primary.item :prices,    'Стоимость обучения'.html_safe, finance_payment_types_path, icon: 'credit-card', highlights_on: -> { params[:controller].include?('payment_types') }
+    #  end
+    #end
 
     # ======================================
     if user_signed_in?
@@ -184,10 +184,10 @@ SimpleNavigation::Configuration.run do |navigation|
       end
       if can?(:manage, :plans)
         primary.item :plans, 'Учебные планы'.html_safe, study_plans_path, icon: 'bell'
-        primary.item :quality, 'Показатели качества знаний'.html_safe, quality_students_path, icon: 'list-alt'
+    #  primary.item :quality, 'Показатели качества знаний'.html_safe, quality_students_path, icon: 'list-alt'
       end
-      if can?(:manage, :all)
-        primary.item :control, 'Контроль ведомостей'.html_safe, study_control_path, icon: 'warning-sign'
+    #  if can?(:manage, :all)
+    #    primary.item :control, 'Контроль ведомостей'.html_safe, study_control_path, icon: 'warning-sign'
       end
     end
 
@@ -262,29 +262,29 @@ SimpleNavigation::Configuration.run do |navigation|
       if can? :rebukes, Office::Order
         primary.item :rebukes,    'Приказы об объявлении выговора'.html_safe, rebukes_office_orders_path, icon: 'exclamation-sign'
       end
-      if can? :manage, Event.new(event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY)
-        primary.item :event,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
-        primary.item :without_med, 'Незаписавшиеся на медосмотр'.html_safe, without_med_users_path, icon: 'print'
-      end
-      if can? :manage, EventDate
-        primary.item :dates,    'Профосмотр (выбор даты)'.html_safe, event_dates_path(1), icon: 'calendar'
-      end
+    #  if can? :manage, Event.new(event_category_id: EventCategory::MEDICAL_EXAMINATION_CATEGORY)
+    #    primary.item :event,    'Профосмотр сотрудников'.html_safe, event_path(1), icon: 'calendar'
+    #    primary.item :without_med, 'Незаписавшиеся на медосмотр'.html_safe, without_med_users_path, icon: 'print'
+    #  end
+    #  if can? :manage, EventDate
+    #    primary.item :dates,    'Профосмотр (выбор даты)'.html_safe, event_dates_path(1), icon: 'calendar'
+    #  end
       if can? :manage, Social::DocumentType
         primary.item :social_document_types,  '<span class="glyphicons notes_2"></span> Типы справок/документов'.html_safe, social_document_types_path, highlights_on: -> { 'social/document_types' == params[:controller] }
       end
     end
 
     # ======================================
-    if user_signed_in?
-      if can? :manage, Event.new(event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY)
-        primary.item :nav_group_events, 'Мероприятия', class: 'nav-header disabled'
-        primary.item :events, 'Мероприятия', events_path, icon: 'folder-open' do |d|
-          d.dom_class = 'hidden'
-          d.item :edit, 'Редактирование', edit_event_path(params[:id] || 2)
-          d.item :new, 'Создание', new_event_path
-        end
-      end
-    end
+  #  if user_signed_in?
+  #    if can? :manage, Event.new(event_category_id: EventCategory::SOCIAL_EVENTS_CATEGORY)
+  #      primary.item :nav_group_events, 'Мероприятия', class: 'nav-header disabled'
+  #      primary.item :events, 'Мероприятия', events_path, icon: 'folder-open' do |d|
+  #        d.dom_class = 'hidden'
+  #        d.item :edit, 'Редактирование', edit_event_path(params[:id] || 2)
+  #        d.item :new, 'Создание', new_event_path
+  #      end
+  #    end
+  #  end
 
     # ======================================
     if user_signed_in?
@@ -304,14 +304,14 @@ SimpleNavigation::Configuration.run do |navigation|
     end
 
     # ======================================
-    if user_signed_in?
-      if (can? :index, Rating) or (can? :manage, Achievement)
-        primary.item :nav_group_npr, 'Показатели эффективности', class: 'nav-header disabled'
-      end
-      if can? :index, Rating
-        primary.item :ratings, 'Показатели эффективности', ratings_path, icon: 'stats'
-      end
-      if can? :manage, Achievement
+    #  if user_signed_in?
+    #  if (can? :index, Rating) or (can? :manage, Achievement)
+    #    primary.item :nav_group_npr, 'Показатели эффективности', class: 'nav-header disabled'
+    #  end
+    #  if can? :index, Rating
+    #    primary.item :ratings, 'Показатели эффективности', ratings_path, icon: 'stats'
+    #  end
+    #  if can? :manage, Achievement
         # primary.item :periods_achievements, 'Показатели эффективности',
         #              periods_achievements_path, icon: 'stats' do |a|
         #   a.dom_class = 'hidden'
@@ -333,22 +333,22 @@ SimpleNavigation::Configuration.run do |navigation|
         #                validate_social_achievements_path, icon: 'check'
         # end
 
-        if can? :validate_additional, Achievement
+        # if can? :validate_additional, Achievement
           #if current_user.is?(:dean)
-          primary.item :validate_additional_achievements, 'Подтверждение показателей эффективности (поручения директора)',
-                       validate_additional_achievements_path, icon: 'check'
-        end
-      end
-      if can? :manage, :all
-        primary.item :npr, 'Заполненение НПР'.html_safe, print_achievements_path, icon: 'list'
-      end
-    end
+        #  primary.item :validate_additional_achievements, 'Подтверждение показателей эффективности (поручения директора)',
+        #               validate_additional_achievements_path, icon: 'check'
+        #  end
+        #   end
+        # if can? :manage, :all
+        # primary.item :npr, 'Заполненение НПР'.html_safe, print_achievements_path, icon: 'list'
+        # end
+        # end
 
     if user_signed_in?
-      if current_user.is?(:recenz)
+      if current_user.is?(:developer) || current_user.is?(:recenz)
         primary.item :review, 'Рецензирование изданий', class: 'nav-header disabled'
       end
-      if current_user.is?(:recenz)
+      if current_user.is?(:developer) || current_user.is?(:recenz)
         primary.item :review, 'Рецензии', reviews_path, icon: 'list'
         primary.item :university, 'Университеты', universities_path, icon: 'list'
       end
