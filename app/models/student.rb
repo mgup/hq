@@ -380,7 +380,7 @@ LIMIT 1 ")
       date_group = group_at_date(Date.new((discipline.semester == 1 ? discipline.year : discipline.year+1), (discipline.semester == 1 ? 10 : 4), 15))
     end
     dmarks = []
-    date_group.group_marks(discipline).each_with_object([]){ |mark, a| a << mark if mark[2] == id }.each do |mark|
+    date_group.group_marks(discipline, id).each_with_object([]){ |mark, a| a << mark if mark[2] == id }.each do |mark|
       dmarks << { mark: mark[3], checkpoint: mark[8] }
     end
     dmarks

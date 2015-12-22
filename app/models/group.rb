@@ -109,7 +109,7 @@ class Group < ActiveRecord::Base
   end
 
   # TODO: Нужно переделать (возможно удалить). Этот вариант мне не нравится.
-  def group_marks(d = nil)
+  def group_marks(d = nil, student_id)
     ActiveRecord::Base.connection.execute("
     SELECT
       `m1`.*, `checkpoint`.`checkpoint_type`, `checkpoint`.`checkpoint_min`,
@@ -126,6 +126,7 @@ class Group < ActiveRecord::Base
       (subject_group = #{id}) AND (m2.checkpoint_mark_submitted IS NULL)
       AND (subject_year = #{d.year}) AND (subject_semester = #{d.semester})
       AND (subject_id IN (#{d ? d.id : disciplines.now.map(&:id).join(', ')}))
+      AND m1.checkpoint_mark_student = #{student_id}
     GROUP BY
       `m1`.`checkpoint_mark_checkpoint`, `m1`.`checkpoint_mark_student`,
       `m1`.`checkpoint_mark_submitted`
