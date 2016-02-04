@@ -44,7 +44,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     end
   end
   pdf.move_down 30
-  pdf.text "#{l(Date.today, format: '%d.%m.%Y')}                                                                                                                         ___________________ / ___________________"
+  # pdf.text "#{l(Date.today, format: '%d.%m.%Y')}                                                                                                                         ___________________ / ___________________"
+  pdf.text "#{l(support.created_at, format: '%d.%m.%Y')}                                                                                                                         ___________________ / ___________________"
   pdf.font 'PTSerif', size: 8 do
     pdf.indent 370 do
       pdf.text 'подпись                     расшифровка'

@@ -109,7 +109,7 @@ class Group < ActiveRecord::Base
   end
 
   # TODO: Нужно переделать (возможно удалить). Этот вариант мне не нравится.
-  def group_marks(d = nil, student_id)
+  def group_marks(d = nil, student_id = nil)
     ActiveRecord::Base.connection.execute("
     SELECT
       `m1`.*, `checkpoint`.`checkpoint_type`, `checkpoint`.`checkpoint_min`,
