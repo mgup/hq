@@ -1,6 +1,6 @@
 class Study::Discipline < ActiveRecord::Base
   CURRENT_STUDY_YEAR  = 2015
-  CURRENT_STUDY_TERM  = 1
+  CURRENT_STUDY_TERM  = 2
 
   self.table_name = 'subject'
 
@@ -42,9 +42,9 @@ class Study::Discipline < ActiveRecord::Base
            class_name: 'Study::Exam', foreign_key: :exam_subject, dependent: :destroy
   accepts_nested_attributes_for :additional_exams, allow_destroy: true
 
-  has_one :semester_work, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_WORK)}, 
+  has_one :semester_work, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_WORK)},
           class_name: Study::Exam, foreign_key: :exam_subject
-  has_one :semester_project, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)}, 
+  has_one :semester_project, -> { where(exam_type: Study::Exam::TYPE_SEMESTER_PROJECT)},
           class_name: Study::Exam, foreign_key: :exam_subject
 
   belongs_to :department, primary_key: :department_id, foreign_key: :department_id
