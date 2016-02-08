@@ -127,6 +127,8 @@ class Student < ActiveRecord::Base
   scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
   scope :valid_student, -> { where(student_group_status: self::STATUS_STUDENT) }
 
+  scope :not_student, -> { where(student_group_status: [self::STATUS_EXPELED, self::STATUS_GRADUATE, self::STATUS_COMPLETE]) }
+
   scope :actual, -> { where("student_group.student_group_status NOT IN (#{self::STATUS_EXPELED},#{self::STATUS_GRADUATE})") }
   scope :soccard, -> { where("student_group.student_group_status IN (#{self::STATUS_ENTRANT},#{self::STATUS_SABBATICAL})") }
   scope :with_group, -> { joins(:group) }
@@ -285,6 +287,10 @@ LIMIT 1 ")
 
   def is_debtor?
     STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status
+  end
+
+  def is_not_student?
+    STATUS_EXPELED == student_group_status || STATUS_GRADUATE == student_group_status || STATUS_COMPLETE == student_group_status
   end
 
   def entrance_order

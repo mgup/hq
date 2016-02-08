@@ -70,7 +70,7 @@ class StudentsController < ApplicationController
   end
 
   def reference
-    @student = Student.valid_for_today.find(params[:id])
+    @student = Student.find(params[:id])
     # raise @student.person.attributes.inspect
     @reference = Document::Doc.create document_type: params[:document_doc][:document_type],
                                       document_number: (Document::Doc.doc_references.last.number.to_i + 1),
