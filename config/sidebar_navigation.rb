@@ -138,7 +138,10 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       if can? :read, Student
         primary.item :nav_group_lists, 'Списки', class: 'nav-header disabled'
-        primary.item :students,  'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+        primary.item :students,  'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] && params[:action] != 'references' }
+        if can? :manage, Document::Doc
+          primary.item :students_references,  'Выданные справки'.html_safe, references_students_path, icon: 'inbox'
+        end
       end
       if can? :index, :groups
         primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }

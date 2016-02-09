@@ -63,6 +63,13 @@
 
           <div class="row">
             <div class="thumbnail">
+              <h4>Количество справок:</h4>
+              <%= number_field_tag :count, 1, class: 'form-control', min: '1' %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="thumbnail">
               <h4>Подпись:</h4>
               <%= select_tag :sign, options_for_select([['Подпись начальника студенческого отдела кадров', 0],
                                                         ['Подпись первого проректора по учебной работе и начальника студенческого отдела кадров', 2]]),
