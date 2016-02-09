@@ -48,7 +48,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       if count > 1
         pdf.text "СПРАВКА № #{@reference.number}/#{i+1} от «<u>#{l @reference.date, format: '%d'}</u>» <u>#{l @reference.date, format: '%B'}</u> #{l @reference.date, format: '%Y'}г.", inline_format: true, align: :center, style: :bold
       else
-        pdf.text "СПРАВКА № #{@reference.number} от «<u>#{l @reference.date, format: '%d'}</u>» <u>#{l @reference.date, format: '%B'}</u> #{l @reference.date, format: '%Y'}г.", align: :center, style: :bold
+        pdf.text "СПРАВКА № #{@reference.number} от «<u>#{l @reference.date, format: '%d'}</u>» <u>#{l @reference.date, format: '%B'}</u> #{l @reference.date, format: '%Y'}г.", inline_format: true, align: :center, style: :bold
       end
     end
 
