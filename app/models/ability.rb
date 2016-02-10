@@ -78,6 +78,7 @@ class Ability
 
       if user.is?(:student_hr) || user.is?(:student_hr_boss)
         can :manage, Student
+        can :manage, Person
         can :manage, Document::Doc
         can :manage, Office::Order
         can :manage, :student
