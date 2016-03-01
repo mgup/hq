@@ -1,6 +1,6 @@
 class Entrance::Campaign < ActiveRecord::Base
   CURRENT_YEAR = 2016
-  CURRENT = 20161
+  CURRENT = 12016
   MAGISTRATURA = 22016
   # ZAOCHKA = 22015
   # CRIMEA = 32015
