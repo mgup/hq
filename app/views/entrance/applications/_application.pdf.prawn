@@ -41,7 +41,7 @@ pdf.font_size 11 do
           pdf.text "С датой представления оригинала документа государственного образца об образовании ознакомлен#{'а' if entrant.female?}"
           pdf.text "__________________ / #{entrant.short_name} /", align: :right
       else
-        pdf.text 'С датами завершения приема заявлений о согласии на зачисление ознакомлен'
+        pdf.text "С датами завершения приема заявлений о согласии на зачисление ознакомлен#{'а' if entrant.female?}"
         pdf.text "__________________ / #{entrant.short_name} /", align: :right
       end
 
