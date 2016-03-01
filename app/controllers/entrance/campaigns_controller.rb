@@ -127,7 +127,7 @@ class Entrance::CampaignsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @campaign_year = Entrance::Campaign::CURRENT
+        @campaign_year = Entrance::Campaign::CURRENT_YEAR
 
         @applications = []
 
@@ -403,7 +403,7 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def paid_enrollment
-    render_report Entrance::PaidEnrollmentReport.new(Entrance::Campaign::CURRENT)
+    render_report Entrance::PaidEnrollmentReport.new(Entrance::Campaign::CURRENT_YEAR)
   end
 
   # Конфликты при проверке ЕГЭ.

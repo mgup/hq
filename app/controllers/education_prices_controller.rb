@@ -3,7 +3,7 @@ class EducationPricesController < ApplicationController
   load_and_authorize_resource instance_name: :price
 
   def index
-    params[:entrance_year] ||= Entrance::Campaign::CURRENT
+    params[:entrance_year] ||= Entrance::Campaign::CURRENT_YEAR
 
     @prices = @prices.for_year(params[:entrance_year])
 

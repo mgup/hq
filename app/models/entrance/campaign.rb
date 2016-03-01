@@ -1,9 +1,11 @@
 class Entrance::Campaign < ActiveRecord::Base
-  CURRENT = 2015
-  ZAOCHKA = 22015
-  CRIMEA = 32015
-  ASPIRANT = 42015
-  STATELINE = 52015
+  CURRENT_YEAR = 2016
+  CURRENT = 20161
+  MAGISTRATURA = 22016
+  # ZAOCHKA = 22015
+  # CRIMEA = 32015
+  ASPIRANT = 32016
+  STATELINE = 42016
 
   # TODO Почему-то не получается перенести table_name_prefix в entrance.rb
   self.table_name_prefix = 'entrance_'
@@ -24,5 +26,5 @@ class Entrance::Campaign < ActiveRecord::Base
   has_many :achievement_types, class_name: 'Entrance::AchievementType', foreign_key: :campaign_id
   has_many :achievements, class_name: 'Entrance::Achievement', through: :achievement_types
   
-  scope :this_year, -> { where(start_year: Entrance::Campaign::CURRENT) }
+  scope :this_year, -> { where(start_year: Entrance::Campaign::CURRENT_YEAR) }
 end
