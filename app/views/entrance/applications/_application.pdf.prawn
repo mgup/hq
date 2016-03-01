@@ -49,7 +49,7 @@ pdf.font_size 11 do
       #только бакалавры и специалисты (надо поставить условие)
       pdf.move_down 4
       if application.competitive_group_item.direction.bachelor? || application.competitive_group_item.direction.specialist?
-          pdf.text 'С информацией о предоставляемых поступающим особых правах и преимуществах при приёме на обучение'
+          pdf.text "С информацией о предоставляемых поступающим особых правах и преимуществах при приёме на обучение ознакомлен#{'а' if entrant.female?}"
           pdf.text "__________________ / #{entrant.short_name} /", align: :right
           pdf.text 'Подачу заявлений в не более, чем пять вузов подтверждаю'
           pdf.text "__________________ / #{entrant.short_name} /", align: :right
