@@ -25,26 +25,38 @@ pdf.font_size 11 do
       pdf.text "С правилами приёма, Лицензией на право ведения образовательной деятельности <br>в сфере профессионального образования ААА № 001773 от 11.08.11, Свидетельством <br>о государственной аккредитации по выбранному направлению подготовки (специальности) <br>ВВ № 001559 от 19.03.12 ознакомлен#{'а' if entrant.female?}", inline_format: true
       pdf.text "__________________ / #{entrant.short_name} /", align: :right
 
+      pdf.move_down 4
+
+
+
       pdf.move_down 8
 
       #только для бюджета (надо поставить условие)
       if application.competitive_group_item.budget_name == 'бюджет'
           pdf.text 'Получение высшего образования данного уровня впервые подтверждаю'
           pdf.text "__________________ / #{entrant.short_name} /", align: :right
+
+          pdf.move_down 4
+
+          pdf.text "С датой представления оригинала документа государственного образца об образовании ознакомлен#{'а' if entrant.female?}"
+          pdf.text "__________________ / #{entrant.short_name} /", align: :right
+      else
+        pdf.text 'С датами завершения приема заявлений о согласии на зачисление ознакомлен'
+        pdf.text "__________________ / #{entrant.short_name} /", align: :right
       end
 
 
       #только бакалавры и специалисты (надо поставить условие)
       pdf.move_down 4
-      if application.competitive_group_item.direction.qualification_code == 62 || application.competitive_group_item.direction.qualification_code == 65
+      if application.competitive_group_item.direction.bachelor? || application.competitive_group_item.direction.specialist?
+          pdf.text 'С информацией о предоставляемых поступающим особых правах и преимуществах при приёме на обучение'
+          pdf.text "__________________ / #{entrant.short_name} /", align: :right
           pdf.text 'Подачу заявлений в не более, чем пять вузов подтверждаю'
+          pdf.text "__________________ / #{entrant.short_name} /", align: :right
+          pdf.text 'Подачу заявлений по не более, чем 3 направлениям подготовки (специальности) подтверждаю'
           pdf.text "__________________ / #{entrant.short_name} /", align: :right
       end
 
-      pdf.move_down 4
-
-      pdf.text "С датой представления оригинала документа государственного образца об образовании ознакомлен#{'а' if entrant.female?}"
-      pdf.text "__________________ / #{entrant.short_name} /", align: :right
 
       pdf.move_down 4
 

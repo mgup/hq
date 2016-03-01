@@ -24,6 +24,14 @@ class Direction < ActiveRecord::Base
     '04' == new_code.split('.')[1]
   end
 
+  def bachelor?
+    '03' == new_code.split('.')[1]
+  end
+
+  def specialist?
+    '05' == new_code.split('.')[1]
+  end
+
   def aspirant?
     qualification_code == 70
   end
