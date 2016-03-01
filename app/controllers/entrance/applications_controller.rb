@@ -25,7 +25,7 @@ class Entrance::ApplicationsController < ApplicationController
     end
     @new_applications = []
 
-    if @campaign.id == 52015
+    if @campaign.id == Entrance::Campaign::STATELINE
       @campaign.competitive_groups.each do |g|
         found = false
         @entrant.applications.each do |a|
@@ -185,7 +185,7 @@ class Entrance::ApplicationsController < ApplicationController
   def create
     if @application.save
       # Теперь нужно заявлению присвоить номер.
-      number = '15-'
+      number = '16-'
       number << @application.competitive_group_item.direction.letters
 
       second = case @application.competitive_group_item.direction.qualification_code
