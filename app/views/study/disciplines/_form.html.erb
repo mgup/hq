@@ -11,7 +11,7 @@
   <div class="form-group <%= 'has-error' if @discipline.errors.include?(:semester) %>">
     <%= f.label :subject_semester, class: 'control-label col-sm-3' %>
     <div class="col-sm-9">
-      <%= f.select :subject_semester, [['осенний', 1], ['весенний', 2]], {}, { class: 'form-control' } %>
+      <%= f.select :subject_semester,  options_for_select([['осенний', 1], ['весенний', 2]], Study::Discipline::CURRENT_STUDY_TERM), {}, { class: 'form-control' } %>
     </div>
   </div>
 
