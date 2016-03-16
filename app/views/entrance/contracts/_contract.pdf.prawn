@@ -383,7 +383,7 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
 
       pdf.move_down 20
 
-      pdf.text 'И. о. главного бухгалтера'
+      pdf.text 'Главный бухгалтер'
       pdf.move_down 10
       pdf.text '_____________________ Алдошина М. А.',
       # pdf.text '_____________________ Рачинский Д. В.',
