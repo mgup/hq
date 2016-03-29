@@ -94,8 +94,8 @@ SimpleNavigation::Configuration.run do |navigation|
     # primary.item :entrance_dates, 'Сроки проведения',
     #              entrance_campaign_dates_path(Entrance::Campaign::CURRENT)
 
-    primary.item :entrance_events, 'Вступительные испытания',
-                 entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: Entrance::Campaign.find(Entrance::Campaign::CURRENT).events.first.id)
+    # primary.item :entrance_events, 'Вступительные испытания',
+    #              entrance_campaign_event_path(Entrance::Campaign::CURRENT, id: Entrance::Campaign.find(Entrance::Campaign::CURRENT).events.first.id)
 
     primary.item :entrants_results,
                  '<span class="glyphicons inbox"></span> Результаты вступительных испытаний'.html_safe,
@@ -138,7 +138,10 @@ SimpleNavigation::Configuration.run do |navigation|
     if user_signed_in?
       if can? :read, Student
         primary.item :nav_group_lists, 'Списки', class: 'nav-header disabled'
-        primary.item :students,  'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] }
+        primary.item :students,  'Студенты'.html_safe, students_path, icon: 'user', highlights_on: -> { 'students' == params[:controller] && params[:action] != 'references' }
+        if can? :manage, Document::Doc
+          primary.item :students_references,  'Выданные справки'.html_safe, references_students_path, icon: 'inbox'
+        end
       end
       if can? :index, :groups
         primary.item :groups,     'Группы'.html_safe, groups_path, icon: 'user', highlights_on: -> { 'groups' == params[:controller] }

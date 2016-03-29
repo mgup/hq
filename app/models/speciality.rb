@@ -88,5 +88,14 @@ class Speciality < ActiveRecord::Base
     builder.doc
   end
 
+  def name_tvor
+    case
+    when bachelor? then 'направлению подготовки бакалавриата'
+    when master? then 'направлению подготовки магистратуры'
+    when aspirant? then 'направлению подготовки аспирантуры'
+    else 'специальности'
+    end
+  end
+
   delegate :to_xml, to: :to_nokogiri
 end

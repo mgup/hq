@@ -224,6 +224,7 @@
                     <%= f.fields_for name do |sub_f| %>
 					  <% if @person.id && p[0] == :ip %>
 					  	<%= sub_f.text_field p[0], disabled: !current_user.is?(:developer), class: 'name_field form-control'%>
+              <%= sub_f.hidden_field p[0], class: 'form-control' unless current_user.is?(:developer)%>
 					  <% else %>
                       	<%= sub_f.text_field p[0], required: true, class: 'form-control' %>
 					  <% end %>

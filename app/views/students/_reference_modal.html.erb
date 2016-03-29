@@ -15,6 +15,8 @@
           <br>
           <label><%= check_box_tag :addPeriod %> Добавить нормативный срок обучения</label>
           <br>
+          <label><%= check_box_tag :addLicense %> Добавить лицензию</label>
+          <br>
           <label><%= check_box_tag :addTax %> Добавить основу обучения</label>
           <br>
           <label><%= check_box_tag :addPlace %> Добавить учреждение, в которое предоставляется справка</label>
@@ -56,6 +58,13 @@
             <div class="thumbnail">
               <h4>Справка для предоставления:</h4>
               <%= text_field_tag :place, 'по месту требования', class: 'form-control' %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="thumbnail">
+              <h4>Количество справок:</h4>
+              <%= number_field_tag :count, 1, class: 'form-control', min: '1' %>
             </div>
           </div>
 

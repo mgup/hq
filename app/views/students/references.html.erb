@@ -1,0 +1,25 @@
+<div class="page-header">
+    <h1>Выданные справки <small><%= Date.today.year %></small></h1>
+</div>
+
+<%= paginate_with_info @references %>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Студент</th>
+        <th>Дата</th>
+        <th>Количество</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @references.each do |ref| %>
+      <tr>
+        <td><%= ref.number %></td>
+        <td><%= ref.students.first.full_name %>, <%= ref.students.first.group.name %></td>
+        <td><%= l ref.date, format: '%d %b %Y' %></td>
+        <td><%= ref.count %></td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>

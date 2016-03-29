@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151124213454) do
+ActiveRecord::Schema.define(version: 20160209091018) do
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -632,6 +632,7 @@ ActiveRecord::Schema.define(version: 20151124213454) do
     t.string   "document_department",  limit: 400
     t.string   "document_name",        limit: 400
     t.integer  "document_eternal",     limit: 4,        default: 0
+    t.integer  "count",                limit: 4,        default: 1
   end
 
   create_table "document_meta", primary_key: "document_meta_id", force: :cascade do |t|

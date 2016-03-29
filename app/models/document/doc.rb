@@ -24,7 +24,7 @@ class Document::Doc < ActiveRecord::Base
   alias_attribute :eternal,     :document_eternal
 
   has_many :document_students, class_name: Document::DocumentStudent, primary_key: :document_id,
-           foreign_key: :document_student_document
+           foreign_key: :document_student_group_document
   has_many :students, through: :document_students
 
   has_many :metas, class_name: Document::Meta, primary_key: :document_id, foreign_key: :document_meta_document
@@ -36,6 +36,8 @@ class Document::Doc < ActiveRecord::Base
   scope :socials, -> { where(document_type: TYPE_SOCIAL_SCHOLARSHIP) }
 
   scope :transfer_protocols, -> { where(document_type: TYPE_TRANSFER_PROTOCOL) }
+
+  scope :current_year, -> { where("document_create_date > '#{Date.today.year}-01-01'")}
 
   # Получение имени плательщика по договору.
   def payer
