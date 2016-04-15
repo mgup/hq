@@ -496,7 +496,7 @@
   # Обрабатываем текст, разбиваем его на элементы.
   parts = text.split('|')
   ul = $('<ul>', {
-    style: 'margin: 0; padding: 0; list-style-type: none;'
+    style: 'margin: 0; padding: 0; list-style-type: none; cursor: pointer; background: #ffe370;'
   });
   elements = for part in text.split('|')
     $('<li>', {
