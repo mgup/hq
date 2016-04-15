@@ -143,7 +143,7 @@
         </xsl:choose>
         &lowast;
       </xsl:element>
-      <xsl:element name="a">
+      <xsl:element name="div">
         <xsl:attribute name="id">
           <xsl:value-of select="$uid" />
         </xsl:attribute>
@@ -157,7 +157,7 @@
               <xsl:for-each select="/order/order_reasons/reason">
                   <xsl:value-of select="."/>
                   <xsl:if test="not(position()=last())">
-                      <xsl:text>, </xsl:text>
+                      <xsl:text>|</xsl:text>
                   </xsl:if>
               </xsl:for-each>
             </xsl:attribute>

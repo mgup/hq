@@ -39,7 +39,8 @@
     </xsl:choose>
     &lowast;
   </xsl:element>
-  <xsl:element name="a">
+
+  <xsl:element name="div">
     <xsl:attribute name="id">
       <xsl:value-of select="$uid" />
     </xsl:attribute>

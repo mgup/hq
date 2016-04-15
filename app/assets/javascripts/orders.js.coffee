@@ -492,7 +492,21 @@
     text = $this.attr('data-reason-pattern')
   else
     text = $this.attr('data-reason-text')
-  $this.html(text)
+
+  # Обрабатываем текст, разбиваем его на элементы.
+  parts = text.split('|')
+  ul = $('<ul>', {
+    style: 'margin: 0; padding: 0; list-style-type: none;'
+  });
+  elements = for part in text.split('|')
+    $('<li>', {
+      class: 'reason',
+      style: 'text-align: justify;'
+    }).text('– ' + part + ',')
+  ul.append(elements)
+  $this.html(ul)
+#  debugger
+#  $this.html(text)
 
   div = $('<div>', {'class' : 'reason-popover reason-select reason-text-order', 'data-uid'  : uid})
 
@@ -580,7 +594,11 @@
     'order'   : reason.attr('data-reason-order'),
     'reasons' : reason.attr('data-reason-text').split(',')
   }, (reasons) ->
-    $('#' + uid).html(reasons.text)
+#    debugger
+
+#    $('#' + uid).html(reasons.text)
+    $('#' + uid).attr('data-reason-text', reasons.text)
+    initOrderReasonMultySelect(uid)
   .success ->
     alert('Информация была успешно сохранена')
     checkForSign()

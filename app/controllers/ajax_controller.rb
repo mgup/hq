@@ -137,7 +137,7 @@ class AjaxController < ApplicationController
   def orderreason
     order = Office::Order.find(params[:order])
     order.reasons = Office::Reason.find(params[:reasons])
-    render({ json: {text: order.reasons.collect {|reason| reason.pattern}.join(', ')} })
+    render({ json: {text: order.reasons.collect {|reason| reason.pattern}.join('|')} })
   end
 
   def checkpoint
