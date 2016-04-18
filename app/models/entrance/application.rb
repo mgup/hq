@@ -644,8 +644,8 @@ class Entrance::Application < ActiveRecord::Base
                 end
 
                 xml.CustomDocument do
-                  xml.UID "IA#{a.id}"
-                  xml.DocumentTypeNameText a.document.present? ?  a.document : "Протокол #{a.id}"
+                  xml.UID "IA#{10000 * a.entrant.id + a.id}"
+                  xml.DocumentTypeNameText a.document.present? ?  a.document : "Протокол #{10000 * a.entrant.id + a.id}"
                   xml.OriginalReceived true
                 end
               end
@@ -826,10 +826,10 @@ class Entrance::Application < ActiveRecord::Base
               end
 
               xml.IndividualAchievement do
-                xml.IAUID "individual_achievement_#{a.id}"
+                xml.IAUID "individual_achievement_#{10000 * a.entrant.id + a.id}"
                 xml.IAName a.achievement_type.name
                 xml.IAMark a.score if a.score.present?
-                xml.IADocumentUID "IA#{a.id}"
+                xml.IADocumentUID "IA#{10000 * a.entrant.id + a.id}"
               end
             end
           end
