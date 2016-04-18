@@ -639,7 +639,7 @@ class Entrance::Application < ActiveRecord::Base
               xml.EgeDocument do
                 xml.UID "entrant_check_#{entrant.checks.last.id}"
                 xml.Subjects do
-                  entrant.checks.last.results do |result|
+                  entrant.checks.last.results.each do |result|
                     xml.SubjectData do
                       n = result.exam_name
                       if 'Английский язык' == n
