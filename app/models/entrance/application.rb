@@ -640,14 +640,16 @@ class Entrance::Application < ActiveRecord::Base
                 xml.UID "entrant_check_#{entrant.checks.last.id}"
                 xml.Subjects do
                   entrant.checks.last.results.each do |result|
-                    xml.SubjectData do
-                      n = result.exam_name
-                      if 'Английский язык' == n
-                        n = 'Иностранный язык'
-                      end
+                    if result.exam_result_id.present?
+                      xml.SubjectData do
+                        n = result.exam_name
+                        if 'Английский язык' == n
+                          n = 'Иностранный язык'
+                        end
 
-                      xml.SubjectID Use::Subject.where(name: n).first.id
-                      xml.Value result.score
+                        xml.SubjectID Use::Subject.where(name: n).first.id
+                        xml.Value result.score
+                      end
                     end
                   end
                 end
