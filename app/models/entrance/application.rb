@@ -856,8 +856,6 @@ class Entrance::Application < ActiveRecord::Base
                 xml.IAName a.achievement_type.name
                 xml.IAMark a.score if a.score.present?
                 xml.IADocumentUID "IA#{10000 * a.entrant.id + a.id}"
-
-                xml.IdCategory a.achievement_type.institution_achievement_id
               end
             end
           end
