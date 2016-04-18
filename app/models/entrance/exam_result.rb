@@ -58,11 +58,8 @@ class Entrance::ExamResult < ActiveRecord::Base
 
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.EntranceTestResult do
-        if '9586' == id.to_s
-          xml.UID                 "test_result_0#{id}"
-        else
-          xml.UID                 "test_result_#{id}"
-        end
+        xml.UID                 "test_result_#{opts[:competitive_group_id].to_i * 100000 + id}"
+
         xml.ResultValue         score
         if 16233 == opts[:application].id && 76 == exam.id
           xml.ResultSourceTypeID  3
