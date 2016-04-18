@@ -638,6 +638,7 @@ class Entrance::Application < ActiveRecord::Base
             xml.EgeDocuments do
               xml.EgeDocument do
                 xml.UID "entrant_check_#{entrant.checks.last.id}"
+                xml.DocumentNumber entrant.checks.last.id
                 xml.Subjects do
                   entrant.checks.last.results.each do |result|
                     if result.exam_result_id.present?
