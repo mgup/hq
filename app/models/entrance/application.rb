@@ -634,6 +634,27 @@ class Entrance::Application < ActiveRecord::Base
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
 
+          if entrant.checks.last
+            xml.EgeDocuments do
+              xml.EgeDocument do
+                xml.UID "entrant_check_#{entrant.checks.last.id}"
+                xml.Subjects do
+                  entrant.checks.last.results do |result|
+                    xml.SubjectData do
+                      n = result.exam_name
+                      if 'Английский язык' == n
+                        n = 'Иностранный язык'
+                      end
+
+                      xml.SubjectID Use::Subject.where(name: n).first.id
+                      xml.Value result.score
+                    end
+                  end
+                end
+              end
+            end
+          end
+
           if abitachievements > 0
             xml.CustomDocuments do
               entrant.achievements.each do |a|

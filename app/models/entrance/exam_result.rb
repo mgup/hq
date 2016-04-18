@@ -103,6 +103,10 @@ class Entrance::ExamResult < ActiveRecord::Base
               xml.DocumentDate opts[:application].created_at.to_date.iso8601
             end
           end
+        elsif 1 == self[:form].to_i
+          xml.ResultDocument do
+            xml.EgeDocumentID "entrant_check_#{opts[:application].entrant.checks.last.id}"
+          end
         end
       end
     end
