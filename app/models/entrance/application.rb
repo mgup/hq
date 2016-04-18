@@ -634,7 +634,7 @@ class Entrance::Application < ActiveRecord::Base
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
 
-          if entrant.checks.last
+          if entrant.checks.last && entrant.checks.last.results.find_all { |r| r.exam_result_id.present? }.any?
             xml.EgeDocuments do
               xml.EgeDocument do
                 xml.UID "entrant_check_#{entrant.checks.last.id}"
