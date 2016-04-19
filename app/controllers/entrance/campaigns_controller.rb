@@ -286,8 +286,9 @@ class Entrance::CampaignsController < ApplicationController
         #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
 
         @applications = Entrance::Application.
-          where(campaign_id: [2015, 22015, 32015, 42015, 62015, 72015]).
-          where(status_id: 8)
+          where(campaign_id: [2015, 22015, 32015, 42015, 62015]).
+          where(status_id: 8).
+          find_all { |a| 450780 != a.competitive_group_item_id || (11 == a.education_form_id) }
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
