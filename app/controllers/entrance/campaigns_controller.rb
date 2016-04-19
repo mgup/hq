@@ -340,7 +340,7 @@ class Entrance::CampaignsController < ApplicationController
                     elsif Date.new(2015, 7, 27) == application.order.signing_date
                       xml.Stage 1
                     else
-                      xml.Stage
+                      # xml.Stage 0
                     end
                   # end
                   # order_ids.push(application.order.id)
