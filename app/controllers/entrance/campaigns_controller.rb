@@ -137,6 +137,8 @@ class Entrance::CampaignsController < ApplicationController
           @applications += campaign.applications.includes(competitive_group_item: :direction).actual#.first(100)
 
           campaign.competitive_groups.each do |competitive_group|
+            next if competitive_group.items.empty?
+
             title = "#{competitive_group.items.first.direction.new_code} #{competitive_group.name}"
             if competitive_group.items.first.total_budget_o > 0 || competitive_group.items.first.total_paid_o > 0
               competitive_group_titles[:o][title] = competitive_group.items.first
