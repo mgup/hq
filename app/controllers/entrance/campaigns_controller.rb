@@ -321,7 +321,7 @@ class Entrance::CampaignsController < ApplicationController
                   xml.DirectionID application.direction.id
                   xml.EducationFormID application.education_form_id
 
-                  if application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
+                  if !application.is_payed && application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
                     xml.FinanceSourceID 20
                     xml.IsBeneficiary true
                   else
@@ -332,14 +332,14 @@ class Entrance::CampaignsController < ApplicationController
 
                   xml.EducationLevelID application.competitive_group_item.education_type_id
 
-                  if Date.new(2015, 8, 4) == application.order.signing_date
-                    xml.Stage 1
-                  elsif Date.new(2015, 8, 7) == application.order.signing_date
-                    xml.Stage 2
-                  elsif Date.new(2015, 7, 27) == application.order.signing_date
-                    xml.Stage 1
-                  else
-                    # xml.Stage 0
+                  if !application.is_payed?
+                    if Date.new(2015, 8, 4) == application.order.signing_date
+                      xml.Stage 1
+                    elsif Date.new(2015, 8, 7) == application.order.signing_date
+                      xml.Stage 2
+                    elsif Date.new(2015, 7, 27) == application.order.signing_date
+                      xml.Stage 1
+                    end
                   end
                 end
               end
