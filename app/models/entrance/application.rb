@@ -634,6 +634,32 @@ class Entrance::Application < ActiveRecord::Base
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
 
+          if entrant.checks.last && entrant.checks.last.results.find_all { |r| r.exam_result_id.present? }.any?
+            xml.EgeDocuments do
+              xml.EgeDocument do
+                xml.UID "entrant_check_#{entrant.checks.last.id}"
+                xml.DocumentNumber entrant.checks.last.id
+                xml.DocumentYear entrant.checks.last.date.year
+                xml.DocumentDate entrant.checks.last.date.iso8601
+                xml.Subjects do
+                  entrant.checks.last.results.each do |result|
+                    if result.exam_result_id.present?
+                      xml.SubjectData do
+                        n = result.exam_name
+                        if 'Английский язык' == n
+                          n = 'Иностранный язык'
+                        end
+
+                        xml.SubjectID Use::Subject.where(name: n).first.id
+                        xml.Value result.score
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+
           if abitachievements > 0
             xml.CustomDocuments do
               entrant.achievements.each do |a|
@@ -644,8 +670,8 @@ class Entrance::Application < ActiveRecord::Base
                 end
 
                 xml.CustomDocument do
-                  xml.UID "IA#{a.id}"
-                  xml.DocumentTypeNameText a.document.present? ?  a.document : "Протокол #{a.id}"
+                  xml.UID "IA#{10000 * competitive_group.id + a.id}"
+                  xml.DocumentTypeNameText a.document.present? ?  a.document : "Протокол #{10000 * competitive_group.id + a.id}"
                   xml.OriginalReceived true
                 end
               end
@@ -826,10 +852,12 @@ class Entrance::Application < ActiveRecord::Base
               end
 
               xml.IndividualAchievement do
-                xml.IAUID "individual_achievement_#{a.id}"
+                xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
                 xml.IAName a.achievement_type.name
                 xml.IAMark a.score if a.score.present?
-                xml.IADocumentUID "IA#{a.id}"
+                xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
+
+                xml.InstitutionAchievementUID a.achievement_type.id
               end
             end
           end

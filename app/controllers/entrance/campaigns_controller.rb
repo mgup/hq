@@ -137,6 +137,8 @@ class Entrance::CampaignsController < ApplicationController
           @applications += campaign.applications.includes(competitive_group_item: :direction).actual#.first(100)
 
           campaign.competitive_groups.each do |competitive_group|
+            next if competitive_group.items.empty?
+
             title = "#{competitive_group.items.first.direction.new_code} #{competitive_group.name}"
             if competitive_group.items.first.total_budget_o > 0 || competitive_group.items.first.total_paid_o > 0
               competitive_group_titles[:o][title] = competitive_group.items.first
@@ -282,8 +284,15 @@ class Entrance::CampaignsController < ApplicationController
       format.xml do
         # @applications = Entrance::Application.where(campaign_id: [2015, 32015]).
         #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
-        @applications = Entrance::Application.where(campaign_id: [2015]).
-          where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
+        # @applications = Entrance::Application.where(campaign_id: [2015]).
+        #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
+
+        @applications = Entrance::Application.
+          where(campaign_id: [2015, 22015, 32015, 42015, 62015]).
+          where(status_id: 8).
+          find_all { |a| 450780 != a.competitive_group_item_id || (11 == a.education_form_id) }.
+          find_all { |a| 553805 != a.competitive_group_item_id || (11 == a.education_form_id) }.
+          find_all { |a| 553831 != a.competitive_group_item_id }
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
@@ -293,11 +302,9 @@ class Entrance::CampaignsController < ApplicationController
             #   end
             # end
 
-            order_ids = [33071,33054,33063,33066,33053]
-
             xml.OrdersOfAdmission do
               @applications.each do |application|
-                next if application.order.signing_date == Date.new(2015, 7, 30)
+                # next if application.order.signing_date == Date.new(2015, 7, 30)
 
                 xml.OrderOfAdmission do
                   xml.OrderOfAdmissionUID "order_of_admission_#{application.order.id}"
@@ -314,7 +321,7 @@ class Entrance::CampaignsController < ApplicationController
                   xml.DirectionID application.direction.id
                   xml.EducationFormID application.education_form_id
 
-                  if application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
+                  if !application.is_payed && application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
                     xml.FinanceSourceID 20
                     xml.IsBeneficiary true
                   else
@@ -325,18 +332,15 @@ class Entrance::CampaignsController < ApplicationController
 
                   xml.EducationLevelID application.competitive_group_item.education_type_id
 
-                  # unless order_ids.include?(application.order.id)
+                  if !application.is_payed?
                     if Date.new(2015, 8, 4) == application.order.signing_date
                       xml.Stage 1
                     elsif Date.new(2015, 8, 7) == application.order.signing_date
                       xml.Stage 2
                     elsif Date.new(2015, 7, 27) == application.order.signing_date
                       xml.Stage 1
-                    else
-                      xml.Stage 0
                     end
-                  # end
-                  # order_ids.push(application.order.id)
+                  end
                 end
               end
             end

@@ -34,7 +34,7 @@ gem 'bootstrap-datepicker-rails'
 gem 'kaminari'
 gem 'prawn'
 gem 'prawn-table'
-          # gem 'gruff'
+          gem 'gruff'
 # gem 'rqrcode'
 # gem 'squeel'
 gem 'chunky_png'
@@ -55,7 +55,7 @@ gem 'jquery-validation-rails'
 # В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
 # gem 'morpher', github: 'mgup/morpher', branch: :master
 
-          # gem 'tiny_tds', github: 'rails-sqlserver/tiny_tds'
+          gem 'tiny_tds', github: 'rails-sqlserver/tiny_tds'
 
 gem 'httparty'
 gem 'sidekiq'

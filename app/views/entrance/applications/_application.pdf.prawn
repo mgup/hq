@@ -25,18 +25,14 @@ pdf.font_size 11 do
       pdf.text "С правилами приёма, Лицензией на право ведения образовательной деятельности <br>в сфере профессионального образования ААА № 001773 от 11.08.11, Свидетельством <br>о государственной аккредитации по выбранному направлению подготовки (специальности) <br>ВВ № 001559 от 19.03.12 ознакомлен#{'а' if entrant.female?}", inline_format: true
       pdf.text "__________________ / #{entrant.short_name} /", align: :right
 
-      pdf.move_down 4
-
-
-
-      pdf.move_down 8
+      # pdf.move_down 4
 
       #только для бюджета (надо поставить условие)
       if application.competitive_group_item.budget_name == 'бюджет'
           pdf.text 'Получение высшего образования данного уровня впервые подтверждаю'
           pdf.text "__________________ / #{entrant.short_name} /", align: :right
 
-          pdf.move_down 4
+          # pdf.move_down 4
 
           pdf.text "С датой представления оригинала документа государственного образца об образовании ознакомлен#{'а' if entrant.female?}"
           pdf.text "__________________ / #{entrant.short_name} /", align: :right
@@ -47,7 +43,7 @@ pdf.font_size 11 do
 
 
       #только бакалавры и специалисты (надо поставить условие)
-      pdf.move_down 4
+      # pdf.move_down 4
       if application.competitive_group_item.direction.bachelor? || application.competitive_group_item.direction.specialist?
           pdf.text "С информацией о предоставляемых поступающим особых правах и преимуществах при приёме на обучение ознакомлен#{'а' if entrant.female?}"
           pdf.text "__________________ / #{entrant.short_name} /", align: :right
@@ -58,17 +54,18 @@ pdf.font_size 11 do
       end
 
 
-      pdf.move_down 4
+      # pdf.move_down 4
 
       pdf.text "С расписанием вступительных испытаний, правилами подачи апелляции ознакомлен#{'а' if entrant.female?}"
       pdf.text "__________________ / #{entrant.short_name} /", align: :right
 
-      pdf.move_down 4
+      # pdf.move_down 4
 
       pdf.text "На обработку персональных данных, необходимых для проведения приёма и зачисления, соглас#{entrant.female? ? 'на' : 'ен'}"
       pdf.text "__________________ / #{entrant.short_name} /", align: :right
 
-      pdf.move_down 5
+      # pdf.move_down 5
+      pdf.move_down 3
 
       pdf.text "Гражданство: <u> <#{entrant.nationality_type.name} </u>", inline_format: true
       pdf.text "Отношение к военной службе: <u> #{entrant.military_status} </u>", inline_format: true
@@ -257,7 +254,7 @@ pdf.font_size 11 do
                 pdf.text '4. Копия паспорта'
                 pdf.text '5. Другое: __________________________'
                 pdf.move_down 5
-                pdf.text 'Принял: секретарь комиссии ____________ / ________________ /', size: 9
+                pdf.text 'Принял: секретарь комиссии ________________ / ____________', size: 9
             end
         end
 

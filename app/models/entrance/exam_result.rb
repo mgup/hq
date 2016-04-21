@@ -58,7 +58,8 @@ class Entrance::ExamResult < ActiveRecord::Base
 
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.EntranceTestResult do
-        xml.UID                 "test_result_#{id}"
+        xml.UID                 "test_result_#{opts[:application].id * 10000 + id}"
+
         xml.ResultValue         score
         if 16233 == opts[:application].id && 76 == exam.id
           xml.ResultSourceTypeID  3
@@ -102,6 +103,10 @@ class Entrance::ExamResult < ActiveRecord::Base
               xml.DocumentNumber opts[:application].number
               xml.DocumentDate opts[:application].created_at.to_date.iso8601
             end
+          end
+        elsif 1 == self[:form].to_i
+          xml.ResultDocument do
+            xml.EgeDocumentID "entrant_check_#{opts[:application].entrant.checks.last.id}"
           end
         end
       end
