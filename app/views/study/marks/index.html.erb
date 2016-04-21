@@ -6,5 +6,10 @@
     <%= @checkpoint.lessonname %></h3>
 </div>
 
+<%= link_to study_discipline_checkpoints_path(@discipline), class: 'btn btn-default btn-sm' do %>
+  <span class="glyphicon glyphicon-list"></span>
+  Назад ко всем занятиям
+<% end %>
+
 <%= render 'form' %>
 
