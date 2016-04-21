@@ -185,7 +185,7 @@ class Study::DisciplinesController < ApplicationController
   end
 
   def load_user_disciplines
-    @disciplines = Study::Discipline.with_brs.include_teacher(current_user).order('subject_semester DESC', :subject_name, :subject_group)
+    @disciplines = Study::Discipline.with_brs.include_teacher(current_user).joins(:group).order('subject_semester DESC', :subject_name, 'group.group_name', 'group.group_semester', 'group.group_number')
   end
 
   def detect_lead_teacher
