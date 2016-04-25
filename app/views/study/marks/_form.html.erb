@@ -1,3 +1,23 @@
+<% if @checkpoint.is_checkpoint? %>
+  <% if flash[:notice] %>
+    <p class="alert alert-info"><%= flash[:notice] %></p>
+  <% end %>
+
+  <%= form_tag add_package_study_discipline_checkpoint_marks_path(@discipline, @checkpoint),
+               method: :post, multipart: true do %>
+    <div class="row">
+        <div class="col col-sm-2 pull-right">
+            <%= submit_tag 'Внести результаты', class: 'btn btn-sm btn-info' %>
+        </div>
+        <div class="col col-sm-4 pull-right">
+            <%= file_field_tag :marks_add,class: 'form-control btn-sm' %>
+            <a class="help-block" style="font-size: 8pt;" href="#" data-toggle="tooltip" title="Вы можете добавить результаты пройденной контрольной точки одним файлом xls/xlsx. В нем должны быть представлены следующие данные: фамилия, имя, отчество, полученный балл. Один студент = одна строка.">Что это позволяет мне сделать?</a>
+        </div>
+    </div>
+  <% end %>
+  <br>
+<% end %>
+
 <%= nested_form_for @checkpoint, url: study_discipline_checkpoint_path(@discipline, @checkpoint),
                     method: :patch, html: { class: 'form-horizontal marks', role: 'form', id: 'formForMarks' } do |f| %>
   <div class="form-group">
@@ -42,6 +62,7 @@
         <p class="form-control-static maxValue"><%= @checkpoint.max %></p>
       </div>
     </div>
+
   <% end %>
 
   <div class="alert alert-warning" style="display: none;">

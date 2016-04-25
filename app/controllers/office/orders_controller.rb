@@ -101,9 +101,9 @@ class Office::OrdersController < ApplicationController
         File.open(xml.path, 'w') do |file|
           file.write @order.to_xml
         end
-        command = "java -cp #{Dir.getwd}/vendor/fop/build/fop.jar"
-        Dir.foreach('vendor/fop/lib') do |file|
-          command << ":#{Dir.getwd}/vendor/fop/lib/#{file}" if (file.match(/.jar/))
+        command = "java -cp #{Dir.getwd}/vendor/fop-2.1/build/fop.jar"
+        Dir.foreach('vendor/fop-2.1/lib') do |file|
+          command << ":#{Dir.getwd}/vendor/fop-2.1/lib/#{file}" if (file.match(/.jar/))
         end
         command << ' org.apache.fop.cli.Main '
         command << " -c #{url}/configuration.xml"

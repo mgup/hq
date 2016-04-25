@@ -9,6 +9,10 @@ class GroupsController < ApplicationController
     end
   end
 
+  def list
+    @groups = @groups.with_students.group_by(&:speciality)
+  end
+
   def print_group
     authorize! :index, :groups
     @group = Group.find(params[:group_id])

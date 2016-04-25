@@ -108,6 +108,8 @@ HQ::Application.routes.draw do
       get 'session_call', defaults: { format: 'pdf' }
     end
 
+    get 'list', to: 'groups#list', on: :collection
+
     get '/print_group.pdf', to: 'groups#print_group', defaults: { format: 'pdf' }, as: :print_group
   end
 
@@ -184,6 +186,7 @@ HQ::Application.routes.draw do
         get 'update_date', to: 'checkpoints#update_date', on: :member
         resources :marks do
           get 'ajax_update', to: 'marks#ajax_update', on: :member
+          post 'add_package'   => 'marks#add_package', on: :collection
         end
       end
 
