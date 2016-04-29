@@ -601,7 +601,7 @@ LIMIT 1 ")
       when 103
         orders.signed.my_filter(template: [11,24,26,28]).order(:order_signing).last
       when 102
-        orders.signed.my_filter(template: 14).order(:order_signing).last
+        orders.signed.my_filter(template: [14, 42]).order(:order_signing).last
       when 104
         orders.signed.my_filter(template: 20).order(:order_signing).last
       when 100
