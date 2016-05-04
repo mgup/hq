@@ -23,16 +23,16 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">
-            Профиль
-        </label>
-        <div class="col-sm-7">
-            <%= f.select :profile_id, options_from_collection_for_select(f.object.competitive_group_item.profiles, :id, :name),
-                         {}, class: 'form-control' %>
-        </div>
-    </div>
   <% end %>
+  <div class="form-group">
+      <label class="col-sm-2 control-label">
+          Профиль
+      </label>
+      <div class="col-sm-7">
+          <%= f.select :profile_id, options_from_collection_for_select(f.object.competitive_group_item.profiles, :id, :name),
+                       {}, class: 'form-control' %>
+      </div>
+  </div>
 
   <% if [223, 437, 1036, 1277].include?(current_user.id) %>
     <div class="form-group">
