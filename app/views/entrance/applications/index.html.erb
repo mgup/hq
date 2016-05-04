@@ -40,8 +40,10 @@
       <td>
         <%= a.direction.new_code %>
         <%= a.direction.name %>
+        <% if a.profile %>
         <br>
         <span class="help-block" style="font-size: 8pt;">Профиль: <%= a.profile.name %></span>
+        <% end %>
       </td>
       <td>
         <% if a.packed? %>
