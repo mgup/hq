@@ -42,7 +42,7 @@
             </div>
             <div class='col col-sm-6'>
                 <%= select_tag 'speciality',
-                               options_from_collection_for_select(@student ? Department.find(params[:faculty]).specialities : Speciality.all,
+                               options_from_collection_for_select(@student ? Department.find(params[:faculty]).specialities.directing : Speciality.directing,
                                                                   :id, :full_name, params[:speciality]),
                                prompt: 'все специальности', class: 'ajax-speciality form-control' %>
             </div>

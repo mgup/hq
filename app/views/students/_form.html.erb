@@ -18,7 +18,7 @@
 	  <% if @student.group %>
       	<p class="form-control-static"><%= @student.speciality.code %> <%= @student.speciality.name %></p>
 	  <% else %>
-		<%= select_tag :speciality, options_from_collection_for_select(Speciality.all, :id, :full_name), prompt: 'Выберите направление', class: 'form-control ajax-speciality' %>
+		<%= select_tag :speciality, options_from_collection_for_select(Speciality.directing, :id, :full_name), prompt: 'Выберите направление', class: 'form-control ajax-speciality' %>
 	  <% end %>
     </div>
   </div>

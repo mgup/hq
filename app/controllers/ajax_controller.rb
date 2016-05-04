@@ -4,9 +4,9 @@ class AjaxController < ApplicationController
 
   def specialities
     if current_user
-      fsp = current_user.is?(:aspirantura) ? Speciality.aspirants : Speciality.all
+      fsp = current_user.is?(:aspirantura) ? Speciality.aspirants : Speciality.directing
     else
-      fsp = Speciality.all
+      fsp = Speciality.directing
     end
     render({ json: fsp.from_faculty(params[:faculty]).inject([]) do |specialities, speciality|
       specialities << { id: speciality.id, code: speciality.code, name: speciality.name }

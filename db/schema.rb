@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160209091018) do
+ActiveRecord::Schema.define(version: 20160504084448) do
+
+  create_table "FRDO", id: false, force: :cascade do |t|
+    t.integer "ID",         limit: 4,   null: false
+    t.string  "last_name",  limit: 255, null: false
+    t.string  "first_name", limit: 255, null: false
+    t.string  "patronym",   limit: 255, null: false
+  end
 
   create_table "achievement_periods", force: :cascade do |t|
     t.integer  "year",       limit: 4,                 null: false
@@ -387,6 +394,16 @@ ActiveRecord::Schema.define(version: 20160209091018) do
     t.integer  "competitive_group_id", limit: 4, null: false
   end
 
+  create_table "competitive_group_item_profiles", force: :cascade do |t|
+    t.integer  "item_id",    limit: 4
+    t.integer  "profile_id", limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "competitive_group_item_profiles", ["item_id"], name: "index_competitive_group_item_profiles_on_item_id", using: :btree
+  add_index "competitive_group_item_profiles", ["profile_id"], name: "index_competitive_group_item_profiles_on_profile_id", using: :btree
+
   create_table "competitive_group_items", force: :cascade do |t|
     t.integer  "competitive_group_id", limit: 4, null: false
     t.integer  "education_type_id",    limit: 4, null: false
@@ -658,7 +675,7 @@ ActiveRecord::Schema.define(version: 20160209091018) do
     t.date    "student_birthday"
     t.string  "student_birthplace",                    limit: 200
     t.integer "student_citizenship",                   limit: 4
-    t.string  "student_pseries",                       limit: 4
+    t.string  "student_pseries",                       limit: 20
     t.string  "student_pnumber",                       limit: 20
     t.date    "student_pdate"
     t.text    "student_pdepartment",                   limit: 16777215
@@ -934,6 +951,7 @@ ActiveRecord::Schema.define(version: 20160209091018) do
     t.boolean  "prikladnoy",                       limit: 1,     default: false
     t.boolean  "is_payed",                         limit: 1
     t.integer  "education_form_id",                limit: 4
+    t.integer  "profile_id",                       limit: 4
   end
 
   add_index "entrance_applications", ["campaign_id"], name: "index_entrance_applications_on_campaign_id", using: :btree
@@ -1771,21 +1789,21 @@ ActiveRecord::Schema.define(version: 20160209091018) do
   end
 
   create_table "purchase_contract_items", force: :cascade do |t|
-    t.integer  "line_item_id",  limit: 4,                          null: false
-    t.integer  "contract_id",   limit: 4,                          null: false
+    t.integer  "line_item_id",  limit: 4, null: false
+    t.integer  "contract_id",   limit: 4, null: false
     t.integer  "item_count",    limit: 4
-    t.decimal  "total_price",             precision: 10, scale: 2
+    t.integer  "total_price",   limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.integer  "contract_time", limit: 4
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
   end
 
   create_table "purchase_contracts", force: :cascade do |t|
-    t.string   "number",            limit: 255,                          null: false
-    t.date     "gate_registration"
-    t.decimal  "total_price",                   precision: 10, scale: 2
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.string   "number",            limit: 255, null: false
+    t.integer  "total_price",       limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.date     "date_registration"
     t.integer  "supplier_id",       limit: 4
   end
 
@@ -1810,7 +1828,7 @@ ActiveRecord::Schema.define(version: 20160209091018) do
   create_table "purchase_purchases", force: :cascade do |t|
     t.integer "dep_id",             limit: 4
     t.string  "number",             limit: 255
-    t.date    "date_registration"
+    t.date    "date_registration",              null: false
     t.integer "status",             limit: 4
     t.integer "payment_type",       limit: 4
     t.integer "purchase_introduce", limit: 4
@@ -2029,6 +2047,7 @@ ActiveRecord::Schema.define(version: 20160209091018) do
     t.decimal "speciality_ozlength",                    precision: 2, scale: 1,                 null: false
     t.integer "speciality_faculty",    limit: 4,                                                null: false
     t.integer "speciality_ioo",        limit: 4
+    t.integer "direction_id",          limit: 4
   end
 
   add_index "speciality", ["speciality_faculty"], name: "specialityFaculty", using: :btree

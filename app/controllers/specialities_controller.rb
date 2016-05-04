@@ -2,7 +2,7 @@ class SpecialitiesController < ApplicationController
  load_and_authorize_resource
 
   def index
-    @specialities = Speciality.all
+    @specialities = Speciality.directing
   end
 
   def show ; end

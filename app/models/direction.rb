@@ -4,6 +4,9 @@ class Direction < ActiveRecord::Base
   has_many :competitive_group_items, class_name: 'Entrance::CompetitiveGroupItem'
   has_many :min_scores, class_name: 'Entrance::MinScore'
 
+  has_one :speciality, class_name: Speciality, foreign_key: :direction_id
+  has_many :profiles, through: :speciality
+
   scope :for_campaign, -> (campaign) do
     joins(competitive_group_items: :competitive_group).
       where('competitive_groups.campaign_id = ?', campaign.id).

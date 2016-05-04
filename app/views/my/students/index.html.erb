@@ -9,7 +9,7 @@
                      prompt: 'Факультет', class: 'ajax-faculty form-control' %>
     </div>
     <div class='col col-lg-5'>
-      <%= select_tag 'speciality', options_from_collection_for_select(Speciality.all, :id, :full_name),
+      <%= select_tag 'speciality', options_from_collection_for_select(Speciality.directing, :id, :full_name),
                        prompt: 'выберите специальность', class: 'ajax-speciality form-control' %>
      </div>
     <div class='col col-lg-2'>

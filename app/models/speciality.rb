@@ -22,6 +22,14 @@ class Speciality < ActiveRecord::Base
            class_name: 'Finance::PaymentType',
            foreign_key: :finance_payment_type_speciality
 
+  # Профили текущего направления.
+  has_many :profiles, class_name: Speciality, foreign_key: :speciality_parent
+
+  # Напрвление текущего профиля.
+  belongs_to :speciality, class_name: Speciality, foreign_key: :speciality_parent
+
+  belongs_to :direction, class_name: Direction, foreign_key: :direction_id
+
   scope :from_faculty, -> faculty { where(speciality_faculty: faculty) }
   scope :from_direction, -> direction do
     where("speciality_code = '#{direction.new_code}'")
@@ -31,6 +39,7 @@ class Speciality < ActiveRecord::Base
   scope :not_masters, -> { where(speciality_ntype: [0,1]) }
   scope :not_aspirants, -> { where(speciality_ntype: [0,1,2]) }
   scope :aspirants, -> { where(speciality_ntype: 3) }
+  scope :directing, -> { where('speciality_parent IS NULL') }
 
   def bachelor?
     1 == type
