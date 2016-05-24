@@ -91,7 +91,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
       pdf.move_down 25
       positions = []
-      if 3 == params[:sign]
+      if '3' == params[:sign]
         roles = ['']
       else
         roles = (params[:sign] == '0' ? ['student_hr_boss'] : ['pro-rector-study', 'student_hr_boss'])
