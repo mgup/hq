@@ -91,7 +91,11 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
       pdf.move_down 25
       positions = []
-      roles = (params[:sign] == '0' ? ['student_hr_boss'] : ['pro-rector-study', 'student_hr_boss'])
+      if 3 == params[:sign]
+        roles = ['']
+      else
+        roles = (params[:sign] == '0' ? ['student_hr_boss'] : ['pro-rector-study', 'student_hr_boss'])
+      end
       roles.each do |role|
         positions << Position.from_role(role).first
       end
