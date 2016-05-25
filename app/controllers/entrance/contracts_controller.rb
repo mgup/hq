@@ -41,7 +41,7 @@ class Entrance::ContractsController < ApplicationController
           phone_mobile: @entrant.phone,
           residence_address: @entrant.aaddress,
           residence_zip: @entrant.azip,
-          student_foreign: (3 == entrant.identity_document_type_id.to_i || 1 != entrant.nationality_type_id.to_i),
+          student_foreign: (3 == @entrant.identity_document_type_id.to_i || 1 != @entrant.nationality_type_id.to_i),
           army: army,
           last_name_hint: @entrant.last_name,
           first_name_hint: @entrant.first_name,
