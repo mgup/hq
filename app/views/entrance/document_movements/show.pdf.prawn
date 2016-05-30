@@ -4,38 +4,109 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   render 'pdf/font', pdf: pdf
 
-  pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
-  pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
-  pdf.text 'Антипову К. В.', indent_paragraphs: 300
-  pdf.text "от абитуриент#{@document_movement.entrant.male? ? 'а' : 'ки'}", indent_paragraphs: 300
-  pdf.text "#{@document_movement.entrant.short_name} (#{@document_movement.from_application.number})", indent_paragraphs: 300
-
-  pdf.move_down 40
-
-  pdf.text 'заявление.', align: :center
-
-  pdf.move_down 40
-
-  text = []
   if @document_movement.original_changed
+    app = @document_movement.from_application
+    pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
+    pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
+    pdf.text 'Антипову К. В.', indent_paragraphs: 300
+    pdf.move_down 10
+    pdf.text "поступаю#{@document_movement.entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
+    pdf.text "личное дело № #{app.number}", indent_paragraphs: 300
+
+    pdf.move_down 60
+
+    pdf.text 'ЗАЯВЛЕНИЕ', align: :center
+
+    pdf.move_down 50
+
+    text = ["Я, #{@document_movement.entrant.full_name}, "]
+
     if @document_movement.original
-      text << 'Прошу принять подлинник документа об образовании взамен ранее предоставленной копии.'
+      text << "подтверждаю согласие на зачисление на направление подготовки #{app.competitive_group_item.direction.description}, профиль #{app.profile ? app.profile.name : 'не указан' }, #{app.education_form_name} форма обучения, #{app.is_payed ? 'договорная' : 'бюджетная'} основа обучения, предоставляю оригинал документа об образовании."
     else
-      text << 'Прошу выдать подлинник документа об образовании.'
+      text << "отзываю согласие на зачисление на направление подготовки #{app.competitive_group_item.direction.description}, профиль #{app.profile ? app.profile.name : 'не указан' }, #{app.education_form_name} форма обучения, #{app.is_payed ? 'договорная' : 'бюджетная'} основа обучения, прошу выдать оригинал документа об образовании."
     end
+
+    pdf.text text.join(' '), align: :justify, indent_paragraphs: 20
+
+    pdf.move_down 80
+
+    pdf.text l(@document_movement.created_at.to_date) + (' ' * 110) + '_______________________'
   end
 
   if @document_movement.moved
     if @document_movement.original
-      text << "Прошу переложить подлинник документа об образовании в дело № #{@document_movement.to_application.number}."
+      app = @document_movement.to_application
+      pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
+      pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
+      pdf.text 'Антипову К. В.', indent_paragraphs: 300
+      pdf.move_down 10
+      pdf.text "поступаю#{@document_movement.entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
+      pdf.text "личное дело № #{app.number}", indent_paragraphs: 300
+
+      pdf.move_down 60
+
+      pdf.text 'ЗАЯВЛЕНИЕ', align: :center
+
+      pdf.move_down 50
+
+      text = ["Я, #{@document_movement.entrant.full_name}, "]
+      text << "подтверждаю согласие на зачисление на направление подготовки #{app.competitive_group_item.direction.description}, профиль #{app.profile ? app.profile.name : 'не указан' }, #{app.education_form_name} форма обучения, #{app.is_payed ? 'договорная' : 'бюджетная'} основа обучения, предоставляю оригинал документа об образовании."
+
+      pdf.text text.join(' '), align: :justify, indent_paragraphs: 20
+
+      pdf.move_down 80
+
+      pdf.text l(@document_movement.created_at.to_date) + (' ' * 110) + '_______________________'
+
+
+      pdf.start_new_page
+      app = @document_movement.from_application
+      pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
+      pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
+      pdf.text 'Антипову К. В.', indent_paragraphs: 300
+      pdf.move_down 10
+      pdf.text "поступаю#{@document_movement.entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
+      pdf.text "личное дело № #{app.number}", indent_paragraphs: 300
+
+      pdf.move_down 60
+
+      pdf.text 'ЗАЯВЛЕНИЕ', align: :center
+
+      pdf.move_down 50
+
+      text = ["Я, #{@document_movement.entrant.full_name}, "]
+      text << "отзываю согласие на зачисление на направление подготовки #{app.competitive_group_item.direction.description}, профиль #{app.profile ? app.profile.name : 'не указан' }, #{app.education_form_name} форма обучения, #{app.is_payed ? 'договорная' : 'бюджетная'} основа обучения, прошу выдать оригинал документа об образовании."
+
+      pdf.text text.join(' '), align: :justify, indent_paragraphs: 20
+
+      pdf.move_down 80
+
+      pdf.text l(@document_movement.created_at.to_date) + (' ' * 110) + '_______________________'
     else
-      text << "Прошу перенести комплект документов в дело № #{@document_movement.to_application.number}."
+      pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
+      pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
+      pdf.text 'Антипову К. В.', indent_paragraphs: 300
+      pdf.move_down 10
+      pdf.text "поступаю#{@document_movement.entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
+      pdf.text "личное дело № #{app.number}", indent_paragraphs: 300
+
+      pdf.move_down 60
+
+      pdf.text 'ЗАЯВЛЕНИЕ', align: :center
+
+      pdf.move_down 50
+
+      text = ["Я, #{@document_movement.entrant.full_name}, "]
+      text << "прошу перенести комплект документов в дело № #{@document_movement.to_application.number}."
+      pdf.text text.join(' '), align: :justify, indent_paragraphs: 20
+
+      pdf.move_down 80
+
+      pdf.text l(@document_movement.created_at.to_date) + (' ' * 110) + '_______________________'
+
     end
   end
 
-  pdf.text text.join(' '), align: :justify, indent_paragraphs: 20
 
-  pdf.move_down 60
-
-  pdf.text '_______________________' + (' ' * 20) + l(@document_movement.created_at.to_date), align: :right
 end

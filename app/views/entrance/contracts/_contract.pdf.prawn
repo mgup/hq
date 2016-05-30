@@ -496,4 +496,5 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
     pdf.text "_____________________ #{@entrant.short_name}",
              indent_paragraphs: 15
   end
+
 end
