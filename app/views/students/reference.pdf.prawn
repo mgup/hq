@@ -92,9 +92,13 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       pdf.move_down 25
       positions = []
       if '3' == params[:sign]
-        roles = ['student_hr_boss_zam']
+        roles = ['student_hr_boss_zam_doc']
       elsif '4' == params[:sign]
-        roles = ['pro-rector-study', 'student_hr_boss_zam']
+        roles = ['pro-rector-study', 'student_hr_boss_zam_doc']
+      elsif '5' == params[:sign]
+        roles = ['student_hr_boss_zam_student']
+      elsif '6' == params[:sign]
+        roles = ['pro-rector-study', 'student_hr_boss_zam_student']
       else
         roles = (params[:sign] == '0' ? ['student_hr_boss'] : ['pro-rector-study', 'student_hr_boss'])
       end

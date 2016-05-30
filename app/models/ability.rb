@@ -76,7 +76,7 @@ class Ability
         can :show,  Office::Order
       end
 
-      if user.is?(:student_hr) || user.is?(:student_hr_boss) || user.is?(:student_hr_boss_zam)
+      if user.is?(:student_hr) || user.is?(:student_hr_boss) || user.is?(:student_hr_boss_zam_doc) || user.is?(:student_hr_boss_zam_student)
         can :manage, Student
         can :manage, Person
         can :manage, Document::Doc
