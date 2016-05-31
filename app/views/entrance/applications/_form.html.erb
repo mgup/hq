@@ -34,6 +34,18 @@
       </div>
   </div>
 
+  <% if f.object.education_form_id == 12 && f.object.direction.bachelor? && f.object.direction.id != 213 %>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">
+            Форма обучения
+        </label>
+        <div class="col-sm-7">
+            <%= f.select :ioo, [['контактная', 0], ['дистанционная', 1]],
+                         {}, class: 'form-control' %>
+        </div>
+    </div>
+  <% end %>
+
   <% if [223, 437, 1036, 1277].include?(current_user.id) %>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">

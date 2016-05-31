@@ -199,7 +199,7 @@ class Entrance::ApplicationsController < ApplicationController
                     when 11
                       'Д'
                     when 12
-                      'В'
+                      @application.ioo ? 'И' : 'В'
                     else
                       fail 'Кажется, что-то пошло не так.'
                     end
@@ -282,7 +282,7 @@ class Entrance::ApplicationsController < ApplicationController
     params.fetch(:entrance_application, {}).permit(
       :entrant_id, :number, :original, :registration_date, :campaign_id,
       :competitive_group_item_id, :packed, :status_id, :created_at, :updated_at, :is_payed,
-      :education_form_id, :profile_id
+      :education_form_id, :profile_id, :ioo
     )
   end
 end
