@@ -345,6 +345,7 @@ HQ::Application.routes.draw do
         get 'ratings'
         get 'protocol_permit'
         get 'choice'
+        get 'competitive_groups'
       end
       
       resources :achievements do

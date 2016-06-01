@@ -2,7 +2,7 @@ class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
   skip_before_action :authenticate_user!, only: [:applications, :balls, :report] #, :rating]#, if: :format_html?
   load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report]
-  load_resource class: 'Entrance::Campaign', only: :results
+  load_resource class: 'Entrance::Campaign', only: [:results, :competitive_groups]
 
   #before_action :validate_crimea, only: [:rating]
 
@@ -119,6 +119,10 @@ class Entrance::CampaignsController < ApplicationController
     @exam = Entrance::Exam.find(params[:exam])
     @entrants = Entrance::Entrant.from_exam(params[:exam]).
       order(:last_name, :first_name, :patronym)
+  end
+
+  def competitive_groups
+    @items = @campaign.items.group_by {|i| i.direction}
   end
 
   def report
