@@ -121,6 +121,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
       pdf.table data, header: true, width: pdf.bounds.width, cell_style: { padding: 7, border_color: 'ffffff' } do
         column(1).style align: :right
+        column(1).width = 200
       end
     end
 
