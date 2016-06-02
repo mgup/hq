@@ -177,8 +177,12 @@
                   <td><%= s[:student].person.full_name %></td>
                   <% discipline.checkpoints.each do |c| %>
                     <td>
-                        <%# mark = (c.marks.empty? ? nil : c.marks.from_student(s[:student]).last) %>
-                        <%# mark ? mark.mark : '-' %>
+                        <% mark = c.marks.by_student(s[:student]).last %>
+                        <% if mark %>
+                          <span style="color: <%= mark.mark < c.min ? 'red' : 'green' %>"><%= mark.mark %></span>
+                        <% else %>
+                          -
+                        <% end %>
                     </td>
                   <% end %>
                   <td>
@@ -261,8 +265,12 @@
                   <td><%= s[:student].person.full_name %></td>
                   <% discipline.checkpoints.each do |c| %>
                     <td>
-                        <%# mark = (c.marks.empty? ? nil : c.marks.from_student(s[:student]).last) %>
-                        <%# mark ? mark.mark : '-' %>
+                        <% mark = c.marks.by_student(s[:student]).last %>
+                        <% if mark %>
+                          <span style="color: <%= mark.mark < c.min ? 'red' : 'green' %>"><%= mark.mark %></span>
+                        <% else %>
+                          -
+                        <% end %>
                     </td>
                   <% end %>
                   <td>
@@ -342,8 +350,12 @@
                 <td><%= s[:student].person.full_name %></td>
                 <% discipline.checkpoints.each do |c| %>
                   <td>
-                      <%# mark = (c.marks.empty? ? nil : c.marks.from_student(s[:student]).last) %>
-                      <%# mark ? mark.mark : '-' %>
+                      <% mark = c.marks.by_student(s[:student]).last %>
+                      <% if mark %>
+                        <span style="color: <%= mark.mark < c.min ? 'red' : 'green' %>"><%= mark.mark %></span>
+                      <% else %>
+                      -
+                      <% end %>
                   </td>
                 <% end %>
                 <td>
