@@ -110,7 +110,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       data = []
       positions.each do |p|
       title = Unicode::capitalize(p.title)
-        if p.role.name == 'pro-rector-study'
+        if p.role.name != 'student_hr_boss'
           data << [
               title, p.user.short_name]
         else
