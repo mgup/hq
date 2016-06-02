@@ -1,7 +1,7 @@
 <% link = study_group_print_progress_path  %>
 <% if discipline %>
   <% link << "?discipline=#{discipline.id}" %>
-  <% date = discipline.final_exam.exam? %>
+  <% date = discipline.final_exam.exam? || discipline.final_exam.test? %>
 <% else %>
   <% date = false %>
 <% end %>
@@ -21,34 +21,34 @@
  
 <% if discipline.final_exam.date.future? %>
   <div class="alert alert-danger">
-    Студенты, обязательно посмотрите в конце страницы что вас ждёт на экзамене.
-    Если вас не устраивает возможность повышения оценки, которую даёт вам
-    экзамен — сдавайте и пересдавайте задания по контрольным точкам. Приходите
-    к преподавателям и улучшайте свои баллы. Сделайте максимум в течение
-    семестра, чтобы получить максимальную оценку по дисциплине.
+    Студенты, обязательно посмотрите в конце страницы что вас ждёт на <%= discipline.final_exam.exam? ? 'экзамене' : 'зачёте' %>.
+    <% if discipline.final_exam.exam? %>
+        Если вас не устраивает возможность повышения оценки, которую даёт вам
+    экзамен — сдавайте и пересдавайте задания по контрольным точкам. Приходите к преподавателям и улучшайте свои баллы. Сделайте максимум в течение семестра, чтобы получить максимальную оценку по дисциплине.
+    <% end %>
     <br><br>
     Если вы заметили ошибку в расчётах — пишите по электронной почте в отдел
     информационных систем (адреса в конце страницы).
   </div>
 <% else %>
   <div class="alert alert-info">
-    Результаты экзамена (<%= l discipline.final_exam.date %>) можно посмотреть в конце страницы.
+    Результаты <%= discipline.final_exam.exam? ? 'экзамена' : 'зачёта' %> (<%= l discipline.final_exam.date %>) можно посмотреть в конце страницы.
   </div>
 
 <% end %>
 
 <% else %>
 
-  <div class="alert alert-danger">
-    Студенты, обязательно посмотрите в конце страницы что вас ждёт на экзамене.
-    Если вас не устраивает возможность повышения оценки, которую даёт вам
-    экзамен — сдавайте и пересдавайте задания по контрольным точкам. Приходите
-    к преподавателям и улучшайте свои баллы. Сделайте максимум в течение
-    семестра, чтобы получить максимальную оценку по дисциплине.
-    <br><br>
-    Если вы заметили ошибку в расчётах — пишите по электронной почте в отдел
-    информационных систем (адреса в конце страницы).
-  </div>
+    <div class="alert alert-danger">
+        Студенты, обязательно посмотрите в конце страницы что вас ждёт на <%= discipline.final_exam.exam? ? 'экзамене' : 'зачёте' %>.
+        <% if discipline.final_exam.exam? %>
+          Если вас не устраивает возможность повышения оценки, которую даёт вам
+          экзамен — сдавайте и пересдавайте задания по контрольным точкам. Приходите к преподавателям и улучшайте свои баллы. Сделайте максимум в течение семестра, чтобы получить максимальную оценку по дисциплине.
+        <% end %>
+        <br><br>
+        Если вы заметили ошибку в расчётах — пишите по электронной почте в отдел
+        информационных систем (адреса в конце страницы).
+    </div>
   
 <% end %>
 <% end %>
@@ -100,6 +100,7 @@
 
 <% if date %>
   <hr>
+  <% if discipline.final_exam.exam? %>
   <ul>
     <li>Вес экзамена, заданный преподавателем: <%= discipline.final_exam.weight %>%</li>
     <li>
@@ -108,11 +109,12 @@
       <pre><%= 100 - discipline.final_exam.weight  %> &times; Баллы за семестр + <%= discipline.final_exam.weight %> &times; Баллы за экзамен</pre>
     </li>
   </ul>
+  <% end %>
 
 <% if discipline.final_exam.date %>
 
 <% if discipline.final_exam.date.future?  %>
-
+  <% if discipline.final_exam.exam? %>
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -149,9 +151,47 @@
       <% end %>
     </tbody>
   </table>
+  <% else %>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th rowspan="2" class="muted">#</th>
+                <th rowspan="2">Имя</th>
+                <th colspan="<%= discipline.checkpoints.length %>">
+                    Результаты контрольных точек
+                </th>
+                <th rowspan="2">Итог</th>
+            </tr>
+            <tr>
+                <% discipline.checkpoints.each do |c| %>
+                  <th><%= c.name %></th>
+                <% end %>
+            </tr>
+            </thead>
+            <tbody>
+            <% students.each do |s| %>
+              <% r = s[:progress] %>
+              <%# if r[:ball].blank? || r[:ball] < 55  %>
+              <tr>
+                  <td class="muted"><%= s[:student].id %></td>
+                  <td><%= s[:student].person.full_name %></td>
+                  <% discipline.checkpoints.each do |c| %>
+                    <td>
+                        <% mark = (c.marks.empty? ? nil : c.marks.from_student(s[:student]).last) %>
+                        <%= mark ? mark.mark : '-' %>
+                    </td>
+                  <% end %>
+                  <td>
+                      <%= (s[:student].ball(discipline) < 55 || !s[:student].pass_discipline?(discipline)) ? 'не зачтено' : 'зачтено' %>
+                  </td>
+              </tr>
 
+            <% end %>
+            </tbody>
+        </table>
+  <% end %>
 <% else %>
-
+  <% if discipline.final_exam.exam? %>
   <table class="table table-hover">
     <tr>
       <th class="text-muted">#</th>
@@ -195,11 +235,50 @@
     </tr>
   <% end %>
   </table>
+      <% else %>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th rowspan="2" class="muted">#</th>
+                <th rowspan="2">Имя</th>
+                <th colspan="<%= discipline.checkpoints.length %>">
+                    Результаты контрольных точек
+                </th>
+                <th rowspan="2">Итог</th>
+            </tr>
+            <tr>
+                <% discipline.checkpoints.each do |c| %>
+                  <th><%= c.name %></th>
+                <% end %>
+            </tr>
+            </thead>
+            <tbody>
+            <% students.each do |s| %>
+              <% r = s[:progress] %>
+              <%# if r[:ball].blank? || r[:ball] < 55  %>
+              <tr>
+                  <td class="muted"><%= s[:student].id %></td>
+                  <td><%= s[:student].person.full_name %></td>
+                  <% discipline.checkpoints.each do |c| %>
+                    <td>
+                        <% mark = (c.marks.empty? ? nil : c.marks.from_student(s[:student]).last) %>
+                        <%= mark ? mark.mark : '-' %>
+                    </td>
+                  <% end %>
+                  <td>
+                      <%= (s[:student].ball(discipline) < 55 || !s[:student].pass_discipline?(discipline)) ? 'не зачтено' : 'зачтено' %>
+                  </td>
+              </tr>
+
+            <% end %>
+            </tbody>
+        </table>
+      <% end %>
   
 <% end %>
 
 <% else %>
-
+  <% if discipline.final_exam.exam? %>
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -236,6 +315,46 @@
       <% end %>
     </tbody>
   </table>
+
+    <% else %>
+      <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+              <th rowspan="2" class="muted">#</th>
+              <th rowspan="2">Имя</th>
+              <th colspan="<%= discipline.checkpoints.length %>">
+                  Результаты контрольных точек
+              </th>
+              <th rowspan="2">Итог</th>
+          </tr>
+          <tr>
+              <% discipline.checkpoints.each do |c| %>
+                <th><%= c.name %></th>
+              <% end %>
+          </tr>
+          </thead>
+          <tbody>
+          <% students.each do |s| %>
+            <% r = s[:progress] %>
+            <%# if r[:ball].blank? || r[:ball] < 55  %>
+            <tr>
+                <td class="muted"><%= s[:student].id %></td>
+                <td><%= s[:student].person.full_name %></td>
+                <% discipline.checkpoints.each do |c| %>
+                  <td>
+                      <% mark = (c.marks.empty? ? nil : c.marks.from_student(s[:student]).last) %>
+                      <%= mark ? mark.mark : '-' %>
+                  </td>
+                <% end %>
+                <td>
+                    <%= (s[:student].ball(discipline) < 55 || !s[:student].pass_discipline?(discipline)) ? 'не зачтено' : 'зачтено' %>
+                </td>
+            </tr>
+
+          <% end %>
+          </tbody>
+      </table>
+    <% end %>
   
 <% end %>
 
