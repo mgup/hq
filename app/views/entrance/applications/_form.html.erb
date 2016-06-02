@@ -34,7 +34,7 @@
       </div>
   </div>
 
-  <% if f.object.education_form_id == 12 && f.object.direction.bachelor? && f.object.direction.id != 213 %>
+  <% if f.object.education_form_id == 12 && f.object.direction.bachelor? && !([213, 1398].include? f.object.direction.id) %>
     <div class="form-group">
         <label class="col-sm-2 control-label">
             Форма обучения
