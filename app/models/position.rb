@@ -11,6 +11,8 @@ class Position < ActiveRecord::Base
   belongs_to :department, primary_key: :department_id, foreign_key: :acl_position_department
   belongs_to :appointment
 
+  has_one :sekretar_gek, class_name: 'Study::Gek'
+
   # def self.find_or_create_by_position_id(position_id)
   #  obj = (self.find(position_id) || self.new)
   #  obj.save
@@ -28,10 +30,14 @@ class Position < ActiveRecord::Base
   }
 
   def info
-    "#{appointment.title}, #{department.abbreviation}" unless appointment.nil?
+    "#{title}, #{department.abbreviation}" unless appointment.nil?
   end
   
   def title
     appointment.nil? ? acl_position_title : appointment.title
+  end
+
+  def user_info
+    "#{user.short_name}, #{info}"
   end
 end

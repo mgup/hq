@@ -151,6 +151,7 @@ SimpleNavigation::Configuration.run do |navigation|
         primary.item :appointments, 'Должности'.html_safe, appointments_path, icon: 'tags'
         primary.item :departments,  'Структура'.html_safe, departments_path, icon: 'list', highlights_on: -> { 'departments' == params[:controller] }
         primary.item :users,        'Сотрудники'.html_safe, users_path, icon: 'user', highlights_on: -> { 'users' == params[:controller] }
+        primary.item :geks, 'Секретари ГЭК'.html_safe, study_geks_path, icon: 'user', highlights_on: -> { 'geks' == params[:controller] }
       #  primary.item :activity_group, 'Группы показателей эффективности НПР',
       #               activity_groups_path, icon: 'list'
       #  primary.item :activity_type, 'Типы показателей эффективности НПР',

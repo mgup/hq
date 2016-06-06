@@ -210,6 +210,8 @@ HQ::Application.routes.draw do
     get '/plans' => 'plans#index'
     #get '/plans/:exam_id/updatedate' => 'plans#updatedate'
     get '/plans/updatediscipline' => 'plans#updatediscipline'
+
+    resources :geks, only: [:index, :create, :destroy]
   end
 
   namespace :my do
