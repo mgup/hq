@@ -108,6 +108,10 @@ class Group < ActiveRecord::Base
     n.join
   end
 
+  def name_speciality
+    "#{name}, #{speciality.full_name}"
+  end
+
   # TODO: Нужно переделать (возможно удалить). Этот вариант мне не нравится.
   def group_marks(d = nil, student_id = nil)
     ActiveRecord::Base.connection.execute("

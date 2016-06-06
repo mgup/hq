@@ -9,7 +9,7 @@
 
   <div class="form-group">
     <%= f.select :group_id,
-                 options_from_collection_for_select(Group.with_students, :id, :name),
+                 options_from_collection_for_select(Group.with_students, :id, :name_speciality),
                  {}, class: 'form-control' %>
   </div>
 
