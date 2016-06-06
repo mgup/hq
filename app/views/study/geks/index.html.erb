@@ -3,7 +3,7 @@
 
   <div class="form-group">
     <%= f.select :position_id,
-                 options_from_collection_for_select(Position.where(acl_position_role: 52), :id, :user_info),
+                 options_from_collection_for_select(Position.where(acl_position_role: 52).sort_by { |p| p.user.short_name }, :id, :user_info),
                  {}, class: 'form-control' %>
   </div>
 
