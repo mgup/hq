@@ -1,0 +1,45 @@
+<%= form_for Study::Gek.new, html: { class: 'form-inline' } do |f| %>
+  <%= f.hidden_field :study_year, value: Study::Discipline::CURRENT_STUDY_YEAR %>
+
+  <div class="form-group">
+    <%= f.select :position_id,
+                 options_from_collection_for_select(Position.where(acl_position_role: 52).sort_by { |p| p.user.short_name }, :id, :user_info),
+                 {}, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.select :group_id,
+                 options_from_collection_for_select(Group.geks.sort_by { |g| [g.speciality.name, g.name] }, :id, :name_speciality),
+                 {}, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit 'Добавить', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Секретарь ГЭК</th>
+      <th>Группа</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @geks.each do |secretary| %>
+    <tr>
+      <td class="text-muted"><%= secretary.id %></td>
+      <td><%= secretary.user.full_name %></td>
+      <td><%= secretary.group.name %></td>
+      <td>
+        <%= link_to study_gek_path(secretary), method: :delete,
+                    data: { confirm: 'Вы уверены?' } do %>
+          <i class="glyphicon glyphicon-remove"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
