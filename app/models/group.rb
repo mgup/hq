@@ -55,6 +55,10 @@ class Group < ActiveRecord::Base
   scope :second_higher, -> { where(group_second_higher: true) }
   scope :distance, -> { where(group_form: 105) }
 
+  scope :geks, -> {
+    joins(:speciality).with_students.where(course: [2, 4,5,6]).where('speciality_ntype != 3')
+  }
+
   def study_length
     speciality.send case form
                     when 'fulltime' then :speciality_olength

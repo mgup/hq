@@ -9,7 +9,7 @@
 
   <div class="form-group">
     <%= f.select :group_id,
-                 options_from_collection_for_select(Group.with_students.sort_by { |g| g.speciality.name }, :id, :name_speciality),
+                 options_from_collection_for_select(Group.geks.sort_by { |g| [g.speciality.name, g.name] }, :id, :name_speciality),
                  {}, class: 'form-control' %>
   </div>
 
