@@ -1,0 +1,11 @@
+<div class="page-header">
+  <h1>Выпускные квалификационные работы</h1>
+</div>
+
+<% @groups.each do |group| %>
+  <h2><%= group.name %></h2>
+
+  <% group.students.for_vkr.each do |student| %>
+    <h3><%= student.full_name %></h3>
+  <% end %>
+<% end %>
