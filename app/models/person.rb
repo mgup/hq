@@ -218,6 +218,7 @@ class Person < ActiveRecord::Base
         xml.sex   (male? ? 1 : 0)
         xml.hostel hostel.address if student_room
         xml.foreign student_foreign if student_foreign
+        xml.benefits student_benefits if student_benefits == BENEFITS_ORPHAN
         name_to_nokogiri.children[0].children.each { |part| xml << part.to_xml }
       }
     }.doc
