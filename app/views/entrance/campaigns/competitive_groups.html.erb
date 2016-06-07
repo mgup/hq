@@ -12,12 +12,15 @@
         <th rowspan="3">Направление подготовки (специальность)</th>
         <th rowspan="3">Конкурсные группы</th>
         <th colspan="3">Очная</th>
-        <th>Очно-заочная</th>
+        <th colspan="2">Очно-заочная</th>
+        <th>Заочная</th>
         <th rowspan="3">Вступительные испытания</th>
         <th rowspan="3">Профили</th>
     </tr>
     <tr>
         <th colspan="2">Бюджет</th>
+        <th rowspan="2">Договор</th>
+        <th rowspan="2">Бюджет</th>
         <th rowspan="2">Договор</th>
         <th rowspan="2">Договор</th>
     </tr>
@@ -34,7 +37,9 @@
           <td><%= items[0].number_budget_o + items[0].number_quota_o %></td>
           <td><%= items[0].number_quota_o %></td>
           <td><%= items[0].number_paid_o %></td>
+          <td><%= items[0].number_budget_oz %></td>
           <td><%= items[0].number_paid_oz %></td>
+          <td><%= items[0].number_paid_z %></td>
           <td><% items[0].competitive_group.test_items.each do |e| %>
               <strong><%= e.entrance_test_priority %></strong> <%= e.exam.name %> - <%= e.min_score %>
                 <br>
@@ -53,7 +58,9 @@
           <td><%= item.number_budget_o + item.number_quota_o %></td>
           <td><%= item.number_quota_o %></td>
           <td><%= item.number_paid_o %></td>
+          <td><%= item.number_budget_oz %></td>
           <td><%= item.number_paid_oz %></td>
+          <td><%= item.number_paid_z %></td>
           <td><% item.competitive_group.test_items.each do |e| %>
                 <strong><%= e.entrance_test_priority %></strong> <%= e.exam.name %> - <%= e.min_score %>
                 <br>
