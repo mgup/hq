@@ -6,7 +6,12 @@ class Study::VkrsController < ApplicationController
     # @user = User.find_by(id: 1331)
 
     @position = @user.positions.from_role(:sekretar_gek).first
-    @secretaries = @position.sekretar_gek
-    @groups = @secretaries.map { |s| s.group }
+
+    if @position.present?
+      @secretaries = @position.sekretar_gek
+      @groups = @secretaries.map { |s| s.group }
+    else
+      redirect_to root_path, notice: 'У вас пока что нет прав доступа'
+    end
   end
 end
