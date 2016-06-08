@@ -1,0 +1,3 @@
+$('#vkr<%= @student.id %>').html(
+  '<%=j render partial: 'study/vkrs/vkr', locals: { group: @student.group, student: @student } %>'
+);

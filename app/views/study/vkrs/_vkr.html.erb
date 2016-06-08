@@ -1,0 +1,44 @@
+<div class="panel-group" id="accordion<%= student.id %>">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion<%= group.id %>" href="#collapse<%= student.id %>">
+          <%= student.full_name %>
+        </a>
+      </h4>
+    </div>
+
+    <div id="collapse<%= student.id %>" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <% vkr = student.vkr || student.build_vkr %>
+        <%= nested_form_for vkr, remote: true, html: { multipart: true, class: 'form-horizontal' } do |f| %>
+          <%= f.hidden_field :student_id %>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <%= f.text_field :title, class: 'form-control', placeholder: 'Тема работы' %>
+            </div>
+          </div>
+
+          <%= f.fields_for :materials do |ff| %>
+            <% if ff.object.persisted? %>
+              <%= link_to ff.object.data_file_name, download_study_vkr_material_path(ff.object) %>
+            <% else %>
+              <%= ff.file_field :data, class: 'form-control' %>
+            <% end %>
+            <%= ff.link_to_remove 'Удалить материал', style: 'color: red;' %>
+            <br><br>
+          <% end %>
+          <%= f.link_to_add 'Добавить материал', :materials, style: 'color: green;' %>
+          <br><br>
+
+          <div class="form-group">
+            <div class="col-sm-12">
+              <%= f.submit 'Сохранить', class: 'btn btn-default' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

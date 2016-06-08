@@ -14,4 +14,29 @@ class Study::VkrsController < ApplicationController
       redirect_to root_path, notice: 'У вас пока что нет прав доступа'
     end
   end
+
+  def create
+    respond_to do |format|
+      format.js do
+        @vkr.save!
+
+        @student = @vkr.student
+      end
+    end
+  end
+
+  def update
+    respond_to do |format|
+      format.js do
+        @vkr.update!(resource_params)
+
+        @student = @vkr.student
+      end
+    end
+  end
+
+  def resource_params
+    params.fetch(:study_vkr, {}).permit(:student_id, :title,
+                                        materials_attributes: [:id, :data, :_destroy])
+  end
 end

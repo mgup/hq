@@ -97,6 +97,8 @@ class Student < ActiveRecord::Base
   has_many :visitor_event_dates, as: :visitor
   has_many :dates, through: :visitor_event_dates
 
+  has_one :vkr, class_name: 'Study::Vkr'
+
   has_and_belongs_to_many :study_repeats, class_name: 'Study::Repeat', join_table: 'exam_student', foreign_key: 'exam_student_student_group',
                           association_foreign_key: 'exam_student_exam'
 
