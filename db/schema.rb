@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160608075722) do
+ActiveRecord::Schema.define(version: 20160606081441) do
 
   create_table "FRDO", id: false, force: :cascade do |t|
     t.integer "ID",         limit: 4,   null: false
@@ -1604,22 +1604,6 @@ ActiveRecord::Schema.define(version: 20160608075722) do
     t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "identity_documents", force: :cascade do |t|
-    t.boolean "original",                  limit: 1
-    t.date    "original_date"
-    t.string  "series",                    limit: 255
-    t.string  "number",                    limit: 255
-    t.string  "subvision_code",            limit: 255
-    t.date    "date"
-    t.string  "organization",              limit: 255
-    t.integer "identity_document_type_id", limit: 4
-    t.integer "nationality_type_id",       limit: 4
-    t.date    "birthday"
-    t.string  "birthplace",                limit: 255
-    t.boolean "main",                      limit: 1
-    t.integer "entrance_entrant_id",       limit: 4
   end
 
   create_table "institution_achievements", force: :cascade do |t|

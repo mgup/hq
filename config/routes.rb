@@ -199,6 +199,8 @@ HQ::Application.routes.draw do
       end
     end
 
+    resources :vkrs
+
     #resources :subjects do
     #  resources :marks
     #end

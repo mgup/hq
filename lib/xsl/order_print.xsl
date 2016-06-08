@@ -790,6 +790,13 @@
     </fo:block>
   </xsl:template>
 
+  <xsl:template match="lBlockAvoid">
+    <fo:block font="12pt PT Serif" space-before="20pt" text-align="justify" text-align-last="start"
+              text-indent="20pt" page-break-before="avoid">
+      <xsl:apply-templates />
+    </fo:block>
+  </xsl:template>
+  
     <xsl:template match="cBlock">
         <fo:block font="12pt PT Serif" space-before="5pt" text-align="justify" text-align-last="start"
                   text-indent="20pt">

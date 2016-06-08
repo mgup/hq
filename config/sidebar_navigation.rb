@@ -115,6 +115,9 @@ SimpleNavigation::Configuration.run do |navigation|
       d.item :student, 'Студент', study_group_student_path(params[:group_id] || 1, params[:id] || 1)
       d.item :student_discipline, 'Студент', study_group_progress_discipline_path(params[:group_id] || 1, params[:id] || 1, params[:discipline] || 1)
     end
+
+    primary.item :study_vkrs, 'Выпускные квалификационные работы', study_vkrs_path, icon: 'list'
+
     if user_signed_in?
       if can? :manage, Study::Discipline
         primary.item :disciplines, 'Балльно-рейтинговая система', study_disciplines_path, icon: 'briefcase', highlights_on: -> { params[:controller].include?('disciplines') || params[:controller].include?('checkpoints') || params[:controller].include?('marks')} do |d|

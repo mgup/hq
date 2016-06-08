@@ -386,4 +386,8 @@ class Ability
 
     can :manage, Entrance::Achievement
   end
+
+  def sekretar_gek(user)
+    can :manage, Study::Vkr
+  end
 end

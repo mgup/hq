@@ -11,7 +11,7 @@ class Position < ActiveRecord::Base
   belongs_to :department, primary_key: :department_id, foreign_key: :acl_position_department
   belongs_to :appointment
 
-  has_one :sekretar_gek, class_name: 'Study::Gek'
+  has_many :sekretar_gek, class_name: 'Study::Gek'
 
   # def self.find_or_create_by_position_id(position_id)
   #  obj = (self.find(position_id) || self.new)

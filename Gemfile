@@ -59,6 +59,7 @@ gem 'roo'
           gem 'tiny_tds', github: 'rails-sqlserver/tiny_tds'
 
 gem 'httparty'
+gem 'paperclip'
 gem 'sidekiq'
 gem 'sidetiq'
 gem 'sinatra', require: nil
