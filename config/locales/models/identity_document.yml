@@ -1,0 +1,16 @@
+ru:
+  activerecord:
+    models:
+      identity_document: 'документ, удостоверяющий личность'
+    attributes:
+      identity_document:
+        birthday: 'дата рождения'
+        birthplace: 'место рождения'
+        series: 'серия'
+        number: 'номер'
+        organization: 'кем выдан'
+        date: 'дата выдачи'
+        identity_document_type_id: 'тип документа, удостоверяющего личность'
+        nationality_type_id: 'гражданство'
+        subvision_code: 'код подразделения'
+        original_date: 'дата получения оригинала'

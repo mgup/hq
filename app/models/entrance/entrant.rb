@@ -12,6 +12,13 @@ class Entrance::Entrant < ActiveRecord::Base
   belongs_to :identity_document_type
   belongs_to :nationality_type
 
+  has_many :identity_documents, -> { where('main = 0') }, class_name: 'IdentityDocument', foreign_key: :entrance_entrant_id, dependent: :destroy
+  accepts_nested_attributes_for :identity_documents, allow_destroy: true
+
+  has_one :main_id_document, -> { where('main = 1') },
+          class_name: 'IdentityDocument', foreign_key: :entrance_entrant_id
+  accepts_nested_attributes_for :main_id_document, allow_destroy: true
+
   belongs_to :campaign, class_name: Entrance::Campaign
 
   has_many :exam_results, class_name: 'Entrance::ExamResult', dependent: :destroy

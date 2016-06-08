@@ -6,6 +6,10 @@ form {
   .form-group label:first-letter {
     text-transform: uppercase;
   }
+
+  .error {
+    color: #ae1c19;
+  }
 }
 
 .ace-editor-wrap {

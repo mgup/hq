@@ -38,68 +38,13 @@
 
   <fieldset>
     <legend>Удостоверение личности</legend>
-
+    <%= render partial: 'main_id_document_fields', locals: {f: f} %>
+    <%= render partial: 'identity_documents_fields', locals: {f: f} %>
+    <br>
     <div class="form-group">
-      <%= f.label :birthday, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-3">
-        <%= f.text_field :birthday, class: 'form-control datepicker',
-                         value: @entrant.birthday ? l(@entrant.birthday) : '', required: true %>
+        <%= f.link_to_add 'Добавить документ', :identity_documents,
+                          class: 'col-lg-offset-4', title: 'Добавляются по необходимости, например, если человек сдавал ЕГЭ по другому документу.' %>
       </div>
-
-      <%= f.label :birth_place, class: 'col-sm-3 control-label' %>
-      <div class="col-sm-4">
-        <%= f.text_field :birth_place, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :nationality_type_id, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-10">
-        <%= f.select :nationality_type_id,
-                     options_from_collection_for_select(
-                         NationalityType.all, :id, :name,
-                         @entrant.nationality_type_id
-                     ), {}, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :identity_document_type_id, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-10">
-        <%= f.select :identity_document_type_id,
-                     options_from_collection_for_select(
-                       IdentityDocumentType.all, :id, :name,
-                       @entrant.identity_document_type_id
-                     ), {}, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :pseries, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-3">
-        <%= f.text_field :pseries, class: 'form-control' %>
-      </div>
-
-      <%= f.label :pnumber, class: 'col-sm-3 control-label' %>
-      <div class="col-sm-4">
-        <%= f.text_field :pnumber, class: 'form-control', required: true %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :pdepartment, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-10">
-        <%= f.text_field :pdepartment, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :pdate, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-3">
-        <%= f.text_field :pdate, class: 'form-control datepicker',
-                         value: @entrant.pdate ? l(@entrant.pdate) : '', required: true%>
-      </div>
-    </div>
   </fieldset>
 
   <fieldset>
