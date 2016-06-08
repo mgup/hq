@@ -2,7 +2,7 @@
   <h1>Выпускные квалификационные работы</h1>
 </div>
 
-<% @groups.each do |group| %>
+<% @groups.sort_by(&:name).each do |group| %>
   <h2><%= group.name %></h2>
 
   <% group.students.for_vkr.each do |student| %>
