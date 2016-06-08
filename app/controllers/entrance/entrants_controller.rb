@@ -10,6 +10,7 @@ class Entrance::EntrantsController < ApplicationController
 
   def new
     @entrant.build_edu_document
+    @entrant.build_main_id_document(main: true)
   end
 
   def check
@@ -27,6 +28,12 @@ class Entrance::EntrantsController < ApplicationController
   end
 
   def create
+    document =  params[:entrance_entrant][:main_id_document_attributes]
+    @entrant.update_attributes( birthday: document[:birthday], birth_place: document[:birthplace],
+                     nationality_type_id: document[:nationality_type_id],
+                     pseries: document[:series], pnumber: document[:number],
+                     pdepartment: document[:organization], pdate: document[:date],
+                     identity_document_type_id: document[:identity_document_type_id] )
     if @entrant.save
       @entrant.update(
         edu_document_attributes: resource_params[:edu_document_attributes]
@@ -45,6 +52,13 @@ class Entrance::EntrantsController < ApplicationController
 
   def update
     if @entrant.update(resource_params)
+      document =  params[:entrance_entrant][:main_id_document_attributes]
+      @entrant.update_attributes( birthday: document[:birthday], birth_place: document[:birthplace],
+                                  nationality_type_id: document[:nationality_type_id],
+                                  pseries: document[:series], pnumber: document[:number],
+                                  pdepartment: document[:organization], pdate: document[:date],
+                                  identity_document_type_id: document[:identity_document_type_id] )
+      @entrant.save
       if @entrant.visible
       redirect_to entrance_campaign_entrant_applications_path(@campaign, @entrant),
                   notice: 'Информация об абитуриенте успешно изменена.'
@@ -92,6 +106,12 @@ class Entrance::EntrantsController < ApplicationController
                                 :foreign_institution, :our_institution,
                                 :direction_id, :qualification,
                                 :_destroy ],
+      identity_documents_attributes: [:id, :original, :original_date, :series, :number,
+                                      :subvision_code, :date, :organization, :identity_document_type_id,
+                                      :nationality_type_id, :birthday, :birthplace, :main, :_destroy ],
+      main_id_document_attributes: [:id, :original, :original_date, :series, :number,
+                                      :subvision_code, :date, :organization, :identity_document_type_id,
+                                      :nationality_type_id, :birthday, :birthplace, :main, :_destroy ],
       papers_attributes: [:id, :name, :publication, :printed,
                               :lists, :co_authors, :_destroy ]
     )
