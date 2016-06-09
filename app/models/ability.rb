@@ -389,5 +389,6 @@ class Ability
 
   def sekretar_gek(user)
     can :manage, Study::Vkr
+    can :manage, Study::VkrMaterial
   end
 end

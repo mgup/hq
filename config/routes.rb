@@ -199,7 +199,13 @@ HQ::Application.routes.draw do
       end
     end
 
-    resources :vkrs
+    resources :vkrs do
+      resources :vkr_materials, shallow: true do
+        member do
+          get 'download'
+        end
+      end
+    end
 
     #resources :subjects do
     #  resources :marks

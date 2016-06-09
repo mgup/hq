@@ -6,6 +6,8 @@
   <h2><%= group.name %></h2>
 
   <% group.students.for_vkr.each do |student| %>
-    <h3><%= student.full_name %></h3>
+    <div id="vkr<%= student.id %>">
+      <%= render partial: 'study/vkrs/vkr', locals: { group: group, student: student } %>
+    </div>
   <% end %>
 <% end %>

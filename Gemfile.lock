@@ -331,6 +331,7 @@ GEM
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
     ref (1.0.5)
+    remotipart (1.2.1)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rmagick (2.15.4)
@@ -520,6 +521,7 @@ DEPENDENCIES
   rails
   rails-erd
   rails-i18n
+  remotipart
   roo
   rspec-rails
   rubocop
