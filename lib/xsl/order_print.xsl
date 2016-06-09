@@ -224,11 +224,14 @@
   <!-- Виза ректора -->
   <xsl:template match="approve">
     <fo:table table-layout="fixed" width="100%" space-before="40pt">
-      <fo:table-column column-width="proportional-column-width(2)" />
-      <fo:table-column column-width="proportional-column-width(1.5)" />
+      <fo:table-column column-width="proportional-column-width(1)" />
+      <xsl:if test="count(/order/sign) > 0">
+        <fo:table-column column-width="proportional-column-width(1)" />
+      </xsl:if>
+      <fo:table-column column-width="proportional-column-width(1)" />
       <fo:table-body>
         <fo:table-row>
-          <fo:table-cell>
+          <fo:table-cell vertical-align="center">
             <fo:block font="12pt PT Serif">
               <xsl:call-template name="change_case">
                 <xsl:with-param name="input_string" select="substring(./employee/title, 1, 1)" />
@@ -239,8 +242,22 @@
                 </xsl:choose>
             </fo:block>
           </fo:table-cell>
-          <fo:table-cell display-align="after">
-            <fo:block font="12pt PT Serif" text-align="end">
+          <xsl:if test="count(/order/sign) > 0">
+          <fo:table-cell>
+              <fo:block>
+                  <fo:external-graphic width="100%"
+                                       content-height="100%"
+                                       content-width="scale-to-fit"
+                                       scaling="uniform">
+                      <xsl:attribute name="src">
+                          http://matrix2.mgup.ru/images/signs/<xsl:value-of select="./employee/id" />.jpg
+                      </xsl:attribute>
+                  </fo:external-graphic>
+              </fo:block>
+          </fo:table-cell>
+          </xsl:if>
+          <fo:table-cell display-align="end" vertical-align="center">
+            <fo:block font="12pt PT Serif" text-align="right">
               <xsl:value-of select="./employee/name" />
             </fo:block>
           </fo:table-cell>

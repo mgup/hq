@@ -109,6 +109,7 @@ class Ability
     can [:index, :show], :progress
     can :show, [:student_progress, :student_discipline_progress]
     can :manage, :progress_group
+    can :print_signed, Office::Order
 
     can [:index, :new, :create, :options, :download_pdf], My::Support
 

@@ -1,5 +1,6 @@
 class Office::OrdersController < ApplicationController
   load_and_authorize_resource class: 'Office::Order'
+  skip_before_filter :authenticate_user!, only: [:print_signed]
   before_filter :find_faculties, only: [:new, :index, :drafts, :underways]
   before_filter :find_templates, only: [:new, :index, :drafts, :underways]
 
@@ -121,6 +122,39 @@ class Office::OrdersController < ApplicationController
         xml.unlink
       }
       format.xml { render xml: @order.to_xml }
+    end
+  end
+
+  def print_signed
+    respond_to do |format|
+      format.pdf {
+        filename = "Приказ №#{@order.id}"
+        Dir.chdir(Rails.root)
+        url = "#{Dir.getwd}/lib/xsl"
+        xml = Tempfile.new(['order', '.xml'])
+        File.open(xml.path, 'w') do |file|
+          file.write @order.to_xml_with_sign
+        end
+        command = "java -cp #{Dir.getwd}/vendor/fop-2.1/build/fop.jar"
+        Dir.foreach('vendor/fop-2.1/lib') do |file|
+          command << ":#{Dir.getwd}/vendor/fop-2.1/lib/#{file}" if (file.match(/.jar/))
+        end
+        command << ' org.apache.fop.cli.Main '
+        command << " -c #{url}/configuration.xml"
+        command << " -xml #{xml.path}"
+        command << " -xsl #{url}/order_print.xsl"
+        command << ' -pdf -'
+        document = `#{command}`
+
+        send_data document,
+                  type: 'application/pdf',
+                  filename: "#{filename}.pdf",
+                  disposition: 'inline'
+
+        xml.close
+        xml.unlink
+      }
+      format.xml { render xml: @order.to_xml_with_sign }
     end
   end
 

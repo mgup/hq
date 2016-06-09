@@ -252,6 +252,8 @@ HQ::Application.routes.draw do
       # get 'underways', to: 'orders#underways', on: :collection
       get 'entrance_protocol', to: 'orders#entrance_protocol', on: :member
       get 'rebukes', to: 'orders#rebukes', on: :collection
+      get 'print_signed', to: 'orders#print_signed', on: :member, defaults: { format: 'pdf' },
+          constraints: { format: /(pdf|xml)/ }
     end
     resources :orders, only: [:show],
                        defaults: { format: 'pdf' },
@@ -391,6 +393,7 @@ HQ::Application.routes.draw do
       resources :entrants do
         get 'history', on: :member
         get 'events', on: :member
+        get 'benefits', on: :member
         get 'check', on: :collection
         resources :exam_results
         resources :checks do

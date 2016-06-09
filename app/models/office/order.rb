@@ -120,7 +120,7 @@ class Office::Order < ActiveRecord::Base
     Entrance::CompetitiveGroup.find(metas.for_entrance.last.text)
   end
 
-  def to_nokogiri
+  def to_nokogiri(sign = false)
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.order do
         xml.id_         id
@@ -128,6 +128,12 @@ class Office::Order < ActiveRecord::Base
         xml.revision     version
         xml.responsible responsible
         xml.status      status
+        if sign
+          xml.sign do
+            xml.number number
+            xml.date signing_date
+          end
+        end
         xml << template.to_nokogiri.root.to_xml
 
         xml.students do
@@ -194,7 +200,13 @@ class Office::Order < ActiveRecord::Base
         department.content = position.department.short_name_rp
         department_full = Nokogiri::XML::Node.new 'department_name', node
         department_full.content = position.department.name_rp
-        node << id << phone << name << title << department << department_full
+        if sign
+          sign_link = Nokogiri::XML::Node.new 'sign', node
+          sign_link.content = ActionController::Base.helpers.image_url("facsimile/#{user.id}.jpg")
+          node << id << phone << name << title << department << department_full << sign_link
+        else
+          node << id << phone << name << title << department << department_full
+        end
       end
     end
 
@@ -216,6 +228,10 @@ class Office::Order < ActiveRecord::Base
 
   def to_xml
     to_nokogiri.to_xml
+  end
+
+  def to_xml_with_sign
+    to_nokogiri(sign: true).to_xml
   end
 
   def to_html

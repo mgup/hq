@@ -5,6 +5,7 @@
     <renderer mime="application/pdf">
       <fonts>
         <directory>/Users/anna/Documents/Projects/matrix-hq/app/assets/fonts</directory>
+        <directory>/home/anna/Проекты/matrix/app/assets/fonts</directory>
         <directory>/Users/storkvist/Sites/mgup/hq/app/assets/fonts</directory>
         <directory>/Users/storkvist/fonts</directory>
         <directory>/home/matrix/webapps/matrix/current/app/assets/fonts</directory>

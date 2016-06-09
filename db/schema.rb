@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160606081441) do
+ActiveRecord::Schema.define(version: 20160608075722) do
 
   create_table "FRDO", id: false, force: :cascade do |t|
     t.integer "ID",         limit: 4,   null: false
@@ -1606,6 +1606,22 @@ ActiveRecord::Schema.define(version: 20160606081441) do
     t.datetime "updated_at"
   end
 
+  create_table "identity_documents", force: :cascade do |t|
+    t.boolean "original",                  limit: 1
+    t.date    "original_date"
+    t.string  "series",                    limit: 255
+    t.string  "number",                    limit: 255
+    t.string  "subvision_code",            limit: 255
+    t.date    "date"
+    t.string  "organization",              limit: 255
+    t.integer "identity_document_type_id", limit: 4
+    t.integer "nationality_type_id",       limit: 4
+    t.date    "birthday"
+    t.string  "birthplace",                limit: 255
+    t.boolean "main",                      limit: 1
+    t.integer "entrance_entrant_id",       limit: 4
+  end
+
   create_table "institution_achievements", force: :cascade do |t|
     t.string "name", limit: 255
   end
@@ -2319,6 +2335,27 @@ ActiveRecord::Schema.define(version: 20160606081441) do
   add_index "study_subjects", ["title"], name: "title", using: :btree
   add_index "study_subjects", ["user_id"], name: "index_study_subjects_on_user_id", using: :btree
   add_index "study_subjects", ["year"], name: "year", using: :btree
+
+  create_table "study_vkr_materials", force: :cascade do |t|
+    t.integer  "vkr_id",            limit: 4,   null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "data_file_name",    limit: 255
+    t.string   "data_content_type", limit: 255
+    t.integer  "data_file_size",    limit: 4
+    t.datetime "data_updated_at"
+  end
+
+  add_index "study_vkr_materials", ["vkr_id"], name: "index_study_vkr_materials_on_vkr_id", using: :btree
+
+  create_table "study_vkrs", force: :cascade do |t|
+    t.integer  "student_id", limit: 4,   null: false
+    t.string   "title",      limit: 255, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "study_vkrs", ["student_id"], name: "index_study_vkrs_on_student_id", using: :btree
 
   create_table "subdepartment", primary_key: "subdepartment_id", force: :cascade do |t|
     t.string  "subdepartment_name",       limit: 400, null: false
