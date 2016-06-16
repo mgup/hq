@@ -1,0 +1,9 @@
+<div class="page-header">
+    <h1>
+        Добавить льготу
+        <small class="nowrap"><%= @entrant.full_name %></small>
+    </h1>
+</div>
+
+<%= render partial: 'form',
+           locals: { url: entrance_campaign_entrant_benefits_path(@campaign, @entrant) } %>

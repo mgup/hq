@@ -1,0 +1,46 @@
+<%= nested_form_for @benefit,
+                    url: url,
+                    html: { class: 'form-horizontal', novalidate: true } do |f| %>
+<div class='row'>
+    <div class='col col-sm-12'>
+        <%= hidden_field_tag :benefit_reason, f.object.document_reason ? f.object.document_reason_type : :olympic,
+                             class: 'hidden-pill-values' %>
+        <%= pill_tabs('benefit_reason', [[:olympic, 'Олимпиада'], [:olympic_total, 'Всероссийская олимпиада'],
+                                         [:medicine, 'Медицинские показания'], [:custom, 'Иные причины']],
+                      'benefit_reason') %>
+    </div>
+</div>
+
+<div class="row">
+    <label class="col-sm-3 control-label">
+        Тип льготы
+    </label>
+    <div class="col-sm-9">
+        <%= f.select :benefit_kind_id, options_from_collection_for_select(Entrance::BenefitKind.all,
+                                                                          :id, :name, selected: (f.object.benefit_kind_id ? f.object.benefit_kind_id : Entrance::BenefitKind.first.id)),
+                     {}, class: 'form-control' %>
+    </div>
+</div>
+
+<div class="row">
+    <label class="col-sm-3 control-label">
+        К заявлению
+    </label>
+    <div class="col-sm-9">
+        <%= f.select :application_id, options_from_collection_for_select(@entrant.applications.actual,
+                                                                         :id, :number,
+                                                                         selected: (f.object.application_id ? f.object.application_id : @entrant.applications.actual.first.id)),
+                     {}, class: 'form-control' %>
+    </div>
+</div>
+
+<fieldset>
+    <legend>Сведения о документе-основании</legend>
+    <% ['custom', 'olympic', 'olympic_total', 'medicine'].each do |d| %>
+      <div id="entrant_benefit_<%= d %>_document" class="entrance_benefit_document">
+        <%= render partial: "entrance/entrants/document/#{d}_document_fields", locals: {f: f} %>
+      </div>
+    <% end %>
+</fieldset>
+  <%= f.submit 'Сохранить', class: 'btn btn-primary' %>
+<% end %>

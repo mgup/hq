@@ -1,0 +1,104 @@
+<fieldset>
+    <legend>Основание для льготы</legend>
+<%= f.fields_for :medical_disability_document do |sub_f| %>
+  <div class="form-group">
+      <%= sub_f.label :kind, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-6">
+          <%= sub_f.select :kind,
+                           options_for_select(
+                             [['Заключение ПМП комиссии', :medical],
+                              ['Справка об установлении инвалидности', :disability]], sub_f.object.kind),
+                           {}, class: 'form-control medical-disability-kind-select' %>
+      </div>
+
+  </div>
+  <div class="form-group">
+      <%= sub_f.label :disability_type_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-8">
+          <%= sub_f.select :disability_type_id,
+             options_for_select([['I группа', 1],
+             ['II группа', 2], ['III группа', 3], ['Ребенок-инвалид', 4],
+             ['Инвалиды с детства', 5], ['Инвалиды вследствие военной травмы', 6]], sub_f.object.disability_type_id),
+                           {}, class: 'form-control disability-select', disabled: true %>
+          <p class="help-block">Выбор доступен только при наличии справки об установлении инвалидности</p>
+      </div>
+
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :series, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :series, class: 'form-control' %>
+      </div>
+
+      <%= sub_f.label :number, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :number, class: 'form-control', required: true %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :date, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :date, class: 'form-control datepicker',
+                               value: sub_f.object.date ? l(sub_f.object.date) : '', required: true%>
+      </div>
+
+      <%= sub_f.label :organization, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+          <%= sub_f.text_field :organization, class: 'form-control', required: true%>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-3">
+          <div class="checkbox">
+              <label>
+                  <%= sub_f.check_box :original %>
+                  <strong>получен оригинал</strong>
+              </label>
+          </div>
+      </div>
+  </div>
+
+  <hr>
+<% end %>
+</fieldset>
+
+<fieldset>
+    <legend>Заключение об отсутствии противопоказаний для обучения</legend>
+<%= f.fields_for :allow_education_document do |sub_f| %>
+  <div class="form-group">
+      <%= sub_f.label :number, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :number, class: 'form-control', required: true %>
+      </div>
+
+      <%= sub_f.label :date, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :date, class: 'form-control datepicker',
+                               value: sub_f.object.date ? l(sub_f.object.date) : '', required: true%>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :organization, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-6">
+          <%= sub_f.text_field :organization, class: 'form-control', required: true%>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-3">
+          <div class="checkbox">
+              <label>
+                  <%= sub_f.check_box :original %>
+                  <strong>получен оригинал</strong>
+              </label>
+          </div>
+      </div>
+  </div>
+
+  <hr>
+<% end %>
+</fieldset>

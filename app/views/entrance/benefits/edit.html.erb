@@ -1,0 +1,9 @@
+<div class="page-header">
+    <h1>
+        Изменение информации о льготе
+        <small class="nowrap"><%= @entrant.full_name %>, <%= @benefit.application.number %></small>
+    </h1>
+</div>
+
+<%= render partial: 'form',
+           locals: { url: entrance_campaign_entrant_benefit_path(@campaign, @entrant, @benefit) } %>

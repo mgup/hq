@@ -1,0 +1,46 @@
+<div class="page-header">
+    <h1>
+        Льготы
+        <small class="nowrap"><%= @entrant.full_name %></small>
+    </h1>
+</div>
+
+<%= link_to new_entrance_campaign_entrant_benefit_path(@campaign, @entrant), class: 'btn btn-primary pull-right', data: {toggle: 'modal'} do %>
+  <span class="glyphicon glyphicon-plus"></span> Добавить абитуриенту льготу
+<% end %>
+
+<% if @benefits.empty? %>
+  <div class="alert alert-info">У абитуриента нет льгот</div>
+<% else %>
+  <table class="table table-striped">
+      <thead>
+        <tr>
+            <th>#</th>
+            <th>Тип льготы</th>
+            <th>Заявление</th>
+            <th>Основание</th>
+            <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @benefits.each_with_index do |b, i| %>
+      <tr>
+          <td><%=i+1 %></td>
+          <td><%= b.benefit_kind.name %></td>
+          <td><%= b.application.number %></td>
+          <td><%= b.document_reason %></td>
+          <td>
+              <%= link_to edit_entrance_campaign_entrant_benefit_path(@campaign, @entrant, b),
+                          class: 'btn btn-success', title: 'Редактировать' do %>
+                <span class="glyphicons pen"></span>
+              <% end %>
+              <%= link_to entrance_campaign_entrant_benefit_path(@campaign, @entrant, b), method: :delete, confirm: 'Вы уверены?', class: 'btn btn-danger', title: 'Удалить' do %>
+                <span class="glyphicon glyphicon-remove"></span>
+              <% end %>
+          </td>
+      </tr>
+      <% end %>
+      </tbody>
+  </table>
+
+<% end %>

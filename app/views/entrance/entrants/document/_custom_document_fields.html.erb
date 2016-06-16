@@ -1,0 +1,53 @@
+<%= f.fields_for :custom_document do |sub_f| %>
+  <div class="form-group">
+      <%= sub_f.label :series, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :series, class: 'form-control' %>
+      </div>
+
+      <%= sub_f.label :number, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :number, class: 'form-control', required: true %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :organization, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-9">
+          <%= sub_f.text_field :organization, class: 'form-control' %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :date, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :date, class: 'form-control datepicker',
+                               value: sub_f.object.date ? l(sub_f.object.date) : '', required: true%>
+      </div>
+
+      <%= sub_f.label :type_name, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :type_name, class: 'form-control'%>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :additional_info, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-9">
+          <%= sub_f.text_area :additional_info, class: 'form-control'%>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-3">
+          <div class="checkbox">
+              <label>
+                  <%= sub_f.check_box :original %>
+                  <strong>получен оригинал</strong>
+              </label>
+          </div>
+      </div>
+  </div>
+
+  <hr>
+<% end %>
