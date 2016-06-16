@@ -13,7 +13,7 @@ class Entrance::Application < ActiveRecord::Base
   delegate :competitive_group, to: :competitive_group_item
   delegate :payed?, to: :competitive_group_item
 
-  has_many :benefits, class_name: 'Entrance::Benefit'
+  has_many :benefits, class_name: 'Entrance::Benefit', unscoped: true
 
   has_one :contract, class_name: 'Entrance::Contract'
 
@@ -37,7 +37,7 @@ class Entrance::Application < ActiveRecord::Base
   # end
 
   default_scope do
-    joins(:entrant).where(entrance_entrants: { visible: 1 })
+    joins(:entrant).where('entrance_entrants.visible IS TRUE')
   end
 
   scope :actual, -> { where('status_id != ?', 6).where('status_id != ?', 5) }

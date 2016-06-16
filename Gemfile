@@ -49,6 +49,7 @@ gem 'remotipart'
 gem 'spreadsheet'
 gem 'jquery-validation-rails'
 gem 'roo'
+gem 'unscoped_associations'
 #gem 'jquery-ui-rails'
 #gem 'jquery-multiselect-rails', git: 'git://github.com/arojoal/jquery-multiselect-rails.git'
 

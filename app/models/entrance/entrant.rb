@@ -45,6 +45,8 @@ class Entrance::Entrant < ActiveRecord::Base
   accepts_nested_attributes_for :event_entrants, allow_destroy: true
   has_many :events, class_name: Entrance::Event, through: :event_entrants
 
+  has_many :benefits, through: :applications, unscoped: true
+
   # или всё-таки has_many?
   has_one :student, class_name: 'Student', foreign_key: :entrant_id
 

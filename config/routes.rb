@@ -393,9 +393,9 @@ HQ::Application.routes.draw do
       resources :entrants do
         get 'history', on: :member
         get 'events', on: :member
-        get 'benefits', on: :member
         get 'check', on: :collection
         resources :exam_results
+        resources :benefits
         resources :checks do
           get 'show.pdf', to: 'checks#show', on: :member, defaults: { format: 'pdf' }, as: :print
         end
