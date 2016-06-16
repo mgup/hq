@@ -8,6 +8,7 @@ class Entrance::Event < ActiveRecord::Base
 
   scope :without, -> ids { where('id NOT IN (?)', ids) }
   scope :without_classroom, -> { where('with_classroom IS NULL OR with_classroom = FALSE') }
+  scope :actual, -> { where(campaign_id: 12016) }
 
   def name_with_date
     "#{name}, #{ (with_time ? (I18n.l date) : (I18n.l date, format: '%d %b %Y')) if date}"

@@ -6,6 +6,7 @@ class Entrance::EventsController < ApplicationController
   load_resource through: :campaign, class: 'Entrance::Event', only: :show
 
   def index
+    @events = @events.actual
   end
 
   def new
