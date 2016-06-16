@@ -8,7 +8,7 @@
                            options_from_collection_for_select(
                              IdentityDocumentType.all, :id, :name,
                              sub_f.object.identity_document_type_id ? sub_f.object.identity_document_type_id : 1
-                           ), {}, class: 'form-control' %>
+                           ), {}, class: 'form-control foreign-check' %>
       </div>
   </div>
 
@@ -51,7 +51,7 @@
                            options_from_collection_for_select(
                              NationalityType.all, :id, :name,
                              sub_f.object.nationality_type_id ? sub_f.object.nationality_type_id : 1
-                           ), {}, class: 'form-control' %>
+                           ), {}, class: 'form-control foreign-check' %>
       </div>
   </div>
 

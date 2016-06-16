@@ -44,7 +44,7 @@
             <%= f.select :entrance_event_id,
                          options_from_collection_for_select(
                            @events.any? ?
-                             Entrance::Event.without(@events.collect{|u| u.id}.join(','))
+                             Entrance::Event.actual.without(@events.collect{|u| u.id}.join(','))
                            : Entrance::Event.actual,
                            :id, :name_with_date),
                          {prompt: 'Выберите мероприятие из списка'}, class: 'form-control' %>

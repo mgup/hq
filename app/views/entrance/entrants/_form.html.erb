@@ -36,6 +36,16 @@
     </div>
   </div>
 
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+              <label>
+                  <%= check_box_tag :foreign_entrant_check %> Иностранец
+              </label>
+          </div>
+      </div>
+  </div>
+
   <fieldset>
     <legend>Удостоверение личности</legend>
     <%= render partial: 'main_id_document_fields', locals: {f: f} %>
@@ -411,6 +421,28 @@
             "entrance_entrant[phone]": {pattern: 'Неверный формат. Введите телефон в формате: +79001234567, несколько телефонов разделите запятой'}
         }
     });
+
+   $('#foreign_entrant_check').change(function(){
+     if (this.checked) {
+       $('.foreign-check').each(function() {
+         if ($(this).val() == '1'){
+           $(this).css({"border-color": "red",
+             "border-width":"1px",
+             "border-style":"solid"});
+         } else {
+           $(this).css({"border-color": "rgb(204, 202, 204)",
+             "border-width":"1px",
+             "border-style":"solid"});
+         }
+       })
+     } else {
+       $('.foreign-check').each(function() {
+         $(this).css({"border-color": "rgb(204, 202, 204)",
+           "border-width":"1px",
+           "border-style":"solid"});
+       })
+     };
+   })
 //    $(document).on('nested:fieldAdded:exam_results', function(){
 //        key = true;
 //        $('#required_exam_message').hide();
