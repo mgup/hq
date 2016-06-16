@@ -67,6 +67,10 @@ gem 'sidetiq'
 gem 'sinatra', require: nil
 gem 'numbers_and_words'
 
+source 'https://rails-assets.org' do
+  gem 'rails-assets-jquery.kladr'
+end
+
 # gem 'mysql2psql'
 
 group :development do
