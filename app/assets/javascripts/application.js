@@ -30,7 +30,7 @@
 //= require chosen.jquery
 //= require jquery_nested_form
 //
-//= require jquery.kladr
+//# require jquery.kladr
 //
 //= require ace/ace
 //
