@@ -80,22 +80,22 @@
       </div>
   </div>
 
-  <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-3">
-          <div class="checkbox">
-              <label>
-                  <%= sub_f.check_box :original %>
-                  <strong>получен оригинал</strong>
-              </label>
-          </div>
-      </div>
+  <!--<div class="form-group">-->
+      <!--<div class="col-sm-offset-2 col-sm-3">-->
+          <!--<div class="checkbox">-->
+              <!--<label>-->
+                  <!--<%# sub_f.check_box :original %>-->
+                  <!--<strong>получен оригинал</strong>-->
+              <!--</label>-->
+          <!--</div>-->
+      <!--</div>-->
 
-      <%= sub_f.label :original_date, class: 'col-sm-3 control-label' %>
-      <div class="col-sm-3">
-          <%= sub_f.text_field :original_date, class: 'form-control datepicker',
+      <!--<%# sub_f.label :original_date, class: 'col-sm-3 control-label' %>-->
+      <!--<div class="col-sm-3">-->
+          <%# sub_f.text_field :original_date, class: 'form-control datepicker',
                                value: sub_f.object.original_date ? l(sub_f.object.original_date) : ''%>
-      </div>
-  </div>
+      <!--</div>-->
+  <!--</div>-->
 
   <hr>
 <% end %>
