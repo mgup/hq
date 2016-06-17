@@ -11,10 +11,10 @@
  *= require_self
  *
  *= require chosen
- *= require jquery.kladr/jquery.kladr.min
- ** require jquery.ui.core
- ** require jquery.ui.theme
- ** require jquery.multiselect
+ * require jquery.kladr/jquery.kladr.min
+ * require jquery.ui.core
+ * require jquery.ui.theme
+ * require jquery.multiselect
  *
  *= require_tree .
  */
