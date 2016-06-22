@@ -34,6 +34,10 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.text l(@document_movement.created_at.to_date) + (' ' * 110) + '_______________________'
   end
 
+  if @document_movement.moved && @document_movement.original_changed
+  pdf.start_new_page
+  end
+
   if @document_movement.moved
     if @document_movement.original
       app = @document_movement.to_application
@@ -84,6 +88,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
       pdf.text l(@document_movement.created_at.to_date) + (' ' * 110) + '_______________________'
     else
+      app = @document_movement.from_application
       pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
       pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
       pdf.text 'Антипову К. В.', indent_paragraphs: 300

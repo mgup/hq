@@ -45,7 +45,7 @@
 
             <% if can?(:edit, Entrance::Entrant) %>
               <%= link_to edit_entrance_campaign_entrant_path(@campaign, entrant),
-                          class: 'btn btn-danger' do %>
+                          class: 'btn btn-danger', title: 'Редактировать абитуриента' do %>
                 <span class="glyphicons pen"></span>
               <% end %>
 

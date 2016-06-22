@@ -207,14 +207,18 @@ class Entrance::ApplicationsController < ApplicationController
 
       number << (@application.entrant.ioo ? 'И' : second)
 
+      profile = @application.direction.id == 430 ? (@application.profile.id == 3083 ? 'р' : 'к') : ''
+
       payment = @application.is_payed ? 'п' : ''
 
+
       last = Entrance::Application.
-        where('number LIKE ?', "#{number}%#{payment}")
+        where('number LIKE ?', "#{number}%#{profile}%#{payment}")
         .order(number: :desc).first
       if last
         last_number = last.number
         last_number.slice!(number)
+        last_number.slice!(profile)
         last_number.slice!(payment)
 
         count = last_number.to_i + 1
@@ -223,7 +227,9 @@ class Entrance::ApplicationsController < ApplicationController
       end
 
       number << sprintf('%03d', count)
+      number << profile
       number << payment
+
 
       @application.number = number
       @application.save!
