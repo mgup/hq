@@ -299,7 +299,7 @@ LIMIT 1 ")
   end
 
   def is_not_student?
-    STATUS_EXPELED == student_group_status || STATUS_GRADUATE == student_group_status || STATUS_COMPLETE == student_group_status
+    STATUS_EXPELED == student_group_status || STATUS_GRADUATE == student_group_status
   end
 
   def entrance_order
