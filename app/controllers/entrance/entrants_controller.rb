@@ -52,12 +52,14 @@ class Entrance::EntrantsController < ApplicationController
 
   def update
     if @entrant.update(resource_params)
-      document =  params[:entrance_entrant][:main_id_document_attributes]
-      @entrant.update_attributes( birthday: document[:birthday], birth_place: document[:birthplace],
+      if params[:entrance_entrant][:main_id_document_attributes]
+        document =  params[:entrance_entrant][:main_id_document_attributes]
+        @entrant.update_attributes( birthday: document[:birthday], birth_place: document[:birthplace],
                                   nationality_type_id: document[:nationality_type_id],
                                   pseries: document[:series], pnumber: document[:number],
                                   pdepartment: document[:organization], pdate: document[:date],
                                   identity_document_type_id: document[:identity_document_type_id] )
+      end
       @entrant.save
       if @entrant.visible
       redirect_to entrance_campaign_entrant_applications_path(@campaign, @entrant),

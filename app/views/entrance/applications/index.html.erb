@@ -24,7 +24,7 @@
       <th></th>
       <th>
         <%= link_to print_all_entrance_campaign_entrant_applications_path(@campaign, @entrant),
-                    class: 'btn btn-info' do %>
+                    class: 'btn btn-info', title: 'Распечатать все заявления' do %>
           <span class="glyphicons print"></span>
         <% end %>
       </th>
@@ -97,14 +97,14 @@
             <td>
               <%= link_to entrance_campaign_entrant_application_path(@campaign, @entrant, a),
                           method: :delete, class: 'btn btn-danger',
-                          title: 'Отозвать', data: { confirm: 'Вы уверены?' } do %>
+                          title: 'Отзыв заявления по инициативе абитуриента. В последствии абитуриент сможет снова подать заявление на этот конкурс', data: { confirm: 'Вы уверены?' } do %>
                 <span class="glyphicons remove_2"></span> Отозвать
               <% end %>
             </td>
             <td>
               <%= link_to reject_entrance_campaign_entrant_application_path(@campaign, a.entrant, a),
                           class: 'btn btn-danger',
-                          title: 'Отклонить заявление',
+                          title: 'Отклонить заявление. Абитуриент не сможет участвовать в этом конкурсе.',
                           remote: true,
                           data: { confirm: 'ВЫ ТОЧНО ПОНИМАЕТЕ ЧТО И ЗАЧЕМ ВЫ ДЕЛАЕТЕ???!!!' } do %>
                 <span class="glyphicons remove_2"></span> Отклонить
