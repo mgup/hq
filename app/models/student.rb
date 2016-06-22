@@ -291,7 +291,7 @@ LIMIT 1 ")
 
   # нужно найти все valid? и заменить
   def is_valid?
-    STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status || STATUS_POSTGRADUATE == student_group_status
+    STATUS_STUDENT == student_group_status || STATUS_DEBTOR == student_group_status || STATUS_TRANSFERRED_DEBTOR == student_group_status || STATUS_POSTGRADUATE == student_group_status || STATUS_COMPLETE == student_group_status
   end
 
   def is_debtor?
