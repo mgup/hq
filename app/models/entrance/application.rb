@@ -590,7 +590,7 @@ class Entrance::Application < ActiveRecord::Base
           xml.GenderID    entrant[:gender]
           xml.EmailOrMailAddress do
             xml.MailAddress do
-              xml.RegionID
+              xml.RegionID entrant.region.try(:kladr_id)
               xml.TownTypeID
               xml.Address entrant.aaddress
             end

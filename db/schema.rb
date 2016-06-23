@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160608075722) do
+ActiveRecord::Schema.define(version: 20160623104410) do
 
   create_table "1", id: false, force: :cascade do |t|
     t.integer "id",         limit: 4
@@ -1130,7 +1130,6 @@ ActiveRecord::Schema.define(version: 20160608075722) do
     t.date     "pdate",                                                     null: false
     t.integer  "acountry",                      limit: 4,   default: 0,     null: false
     t.string   "azip",                          limit: 255,                 null: false
-    t.string   "aregion",                       limit: 255
     t.string   "aaddress",                      limit: 255,                 null: false
     t.string   "phone",                         limit: 255,                 null: false
     t.integer  "military_service",              limit: 4,   default: 1,     null: false
@@ -1192,11 +1191,13 @@ ActiveRecord::Schema.define(version: 20160608075722) do
     t.string   "residence_flat",                limit: 255
     t.string   "email",                         limit: 255
     t.boolean  "visible",                       limit: 1,   default: true
+    t.integer  "region_id",                     limit: 4
   end
 
   add_index "entrance_entrants", ["campaign_id"], name: "index_entrance_entrants_on_campaign_id", using: :btree
   add_index "entrance_entrants", ["identity_document_type_id"], name: "index_entrance_entrants_on_identity_document_type_id", using: :btree
   add_index "entrance_entrants", ["nationality_type_id"], name: "index_entrance_entrants_on_nationality_type_id", using: :btree
+  add_index "entrance_entrants", ["region_id"], name: "index_entrance_entrants_on_region_id", using: :btree
   add_index "entrance_entrants", ["student_id"], name: "index_entrance_entrants_on_student_id", using: :btree
 
   create_table "entrance_event_entrants", force: :cascade do |t|

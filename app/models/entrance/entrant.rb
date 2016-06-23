@@ -11,6 +11,7 @@ class Entrance::Entrant < ActiveRecord::Base
 
   belongs_to :identity_document_type
   belongs_to :nationality_type
+  belongs_to :region
 
   has_many :identity_documents, -> { where('main = 0') }, class_name: 'IdentityDocument', foreign_key: :entrance_entrant_id, dependent: :destroy
   accepts_nested_attributes_for :identity_documents, allow_destroy: true
