@@ -81,7 +81,7 @@
       <%= f.label :region_id, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
         <%= f.select :region_id, options_from_collection_for_select(Region.order(:name), :id, :name, f.object.region_id),
-                     { prompt: true }, class: 'form-control' %>
+                     { prompt: true }, class: 'form-control', required: true %>
       </div>
     </div>
 
@@ -95,7 +95,7 @@
                 ['Населенный пункт городского типа', :small],
                 ['Населенный пункт сельского типа', :village]
             ], f.object.town_type_id),
-                     {}, class: 'form-control' %>
+                     {}, class: 'form-control', required: true %>
       </div>
     </div>
 
