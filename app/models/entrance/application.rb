@@ -597,7 +597,7 @@ class Entrance::Application < ActiveRecord::Base
 
         xml.FinSourceAndEduForms do
           xml.FinSourceEduForm do
-            xml.CompetitiveGroupID  competitive_group_item.competitive_group.id
+            xml.CompetitiveGroupUID  competitive_group_item.competitive_group.id
             unless competitive_group_target_item_id.nil?
               xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
             end
