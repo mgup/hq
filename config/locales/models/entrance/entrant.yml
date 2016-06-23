@@ -17,6 +17,7 @@ ru:
         pdate: 'дата выдачи'
         acountry: 'страна жительства'
         azip: 'индекс'
+        region: 'регион'
         region_id: 'регион'
         town_type_id: 'тип населенного пункта'
         aaddress: 'адрес'

@@ -1,6 +1,15 @@
 <%= nested_form_for @entrant,
                     url: url,
                     html: { class: 'form-horizontal' } do |f| %>
+
+  <% if @entrant.errors.any? %>
+    <ul style="color: red; font-size: 1.5em;">
+      <% @entrant.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
   <div class="form-group">
     <%= f.label :last_name, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
@@ -80,8 +89,9 @@
     <div class="form-group">
       <%= f.label :region_id, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
-        <%= f.select :region_id, options_from_collection_for_select(Region.order(:name), :id, :name, f.object.region_id),
-                     { prompt: true }, class: 'form-control', required: true %>
+        <%= f.select :region_id,
+                     options_from_collection_for_select(Region.order(:name), :id, :name, f.object.region_id),
+                     { include_blank: 'Укажите регион' }, class: 'form-control' %>
       </div>
     </div>
 
@@ -94,8 +104,7 @@
                 ['Город', :simple],
                 ['Населенный пункт городского типа', :small],
                 ['Населенный пункт сельского типа', :village]
-            ], f.object.town_type_id),
-                     {}, class: 'form-control', required: true %>
+            ], f.object.town_type_id), { include_blank: 'Укажите тип населенного пункта' }, class: 'form-control' %>
       </div>
     </div>
 
