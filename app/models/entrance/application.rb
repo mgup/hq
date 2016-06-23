@@ -610,7 +610,7 @@ class Entrance::Application < ActiveRecord::Base
 
         xml.ApplicationDocuments do
           xml.IdentityDocument do
-            xml.OriginalReceived true
+            xml.OriginalReceivedDate    created_at.to_date.iso8601
             xml.DocumentSeries  entrant.pseries.blank? ? 'б/с' : entrant.pseries
             xml.DocumentNumber  entrant.pnumber
             xml.DocumentDate    entrant.pdate.iso8601
