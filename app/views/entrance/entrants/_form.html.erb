@@ -80,8 +80,22 @@
     <div class="form-group">
       <%= f.label :region_id, class: 'col-sm-2 control-label' %>
       <div class="col-sm-10">
-        <%= f.select :region_id, options_for_select([]),
-                     {}, class: 'form-control', disabled: true %>
+        <%= f.select :region_id, options_from_collection_for_select(Region.order(:name), :id, :name, f.object.region_id),
+                     { prompt: true }, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :town_type_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-10">
+        <%= f.select :town_type_id, options_for_select(
+            [
+                ['Город федерального значения', :federal],
+                ['Город', :simple],
+                ['Населенный пункт городского типа', :small],
+                ['Населенный пункт сельского типа', :village]
+            ], f.object.town_type_id),
+                     {}, class: 'form-control' %>
       </div>
     </div>
 
