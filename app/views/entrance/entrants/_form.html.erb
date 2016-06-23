@@ -101,7 +101,7 @@
         <%= f.select :town_type_id, options_for_select(
             [
                 ['Город федерального значения', :federal],
-                ['Город', :simple],
+                ['Город', :plain],
                 ['Населенный пункт городского типа', :small],
                 ['Населенный пункт сельского типа', :village]
             ], f.object.town_type_id), { include_blank: 'Укажите тип населенного пункта' }, class: 'form-control' %>
