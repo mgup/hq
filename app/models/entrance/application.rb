@@ -588,7 +588,13 @@ class Entrance::Application < ActiveRecord::Base
           xml.MiddleName  entrant.patronym
           xml.LastName    entrant.last_name
           xml.GenderID    entrant[:gender]
-          #!!! xml.EmailOrMailAddress
+          xml.EmailOrMailAddress do
+            xml.MailAddress do
+              xml.RegionID
+              xml.TownTypeID
+              xml.Address entrant.aaddress
+            end
+          end
           #!!! xml.IsFromKrym
         end
         xml.RegistrationDate  created_at.iso8601
