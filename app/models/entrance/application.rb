@@ -610,6 +610,7 @@ class Entrance::Application < ActiveRecord::Base
 
         xml.ApplicationDocuments do
           xml.IdentityDocument do
+            xml.UID "identity_document_#{entrant.id}"
             xml.OriginalReceivedDate    created_at.to_date.iso8601
             xml.DocumentSeries  entrant.pseries.blank? ? 'б/с' : entrant.pseries
             xml.DocumentNumber  entrant.pnumber
