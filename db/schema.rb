@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623104410) do
+ActiveRecord::Schema.define(version: 20160623105339) do
 
   create_table "1", id: false, force: :cascade do |t|
     t.integer "id",         limit: 4
@@ -1192,6 +1192,7 @@ ActiveRecord::Schema.define(version: 20160623104410) do
     t.string   "email",                         limit: 255
     t.boolean  "visible",                       limit: 1,   default: true
     t.integer  "region_id",                     limit: 4
+    t.integer  "town_type_id",                  limit: 4
   end
 
   add_index "entrance_entrants", ["campaign_id"], name: "index_entrance_entrants_on_campaign_id", using: :btree

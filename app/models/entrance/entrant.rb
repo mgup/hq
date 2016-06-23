@@ -226,4 +226,8 @@ class Entrance::Entrant < ActiveRecord::Base
 
     has_conflicts
   end
+
+  def need_check
+    region.blank? || town_type_id.blank?
+  end
 end
