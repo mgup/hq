@@ -484,6 +484,7 @@ class Entrance::CampaignsController < ApplicationController
     @source = EducationSource.find(params[:payment])
 
     if params[:competitive_group]
+
       @applications = @competitive_group.items.first.applications.for_rating.rating(params[:form],
                                                                params[:payment],
                                                                params[:direction])
