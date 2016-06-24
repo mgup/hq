@@ -26,7 +26,9 @@
     <tr>
           <td class="text-muted"><%= index+1 %></td>
           <td class="text-muted"><%= entrant.id %></td>
-          <td><%= entrant.full_name %></td>
+          <td style="<%= 'background-color: red; color: white; font-weight: bold;' if entrant.need_check %>">
+            <%= entrant.full_name %>
+          </td>
           <td><%= [entrant.pseries, entrant.pnumber].join(' ') %></td>
           <td>
             <%= link_to entrance_campaign_entrant_applications_path(@campaign, entrant) do %>

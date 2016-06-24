@@ -5,12 +5,19 @@ class Entrance::Entrant < ActiveRecord::Base
   enum gender: { male: 1, female: 2 }
   enum citizenship: { russian: 1, other_citizenship: 2 }
   enum acountry: { russia: 0, cis: 1, other_countries: 2 }
+
+  enum town_type_id: { federal: 1, plain: 2, small: 3, village: 4 }
+  validates_presence_of :town_type_id
+
   enum military_service: { not: 1, conscript: 2, reservist: 6,
                            free_of_service: 7, too_young: 8 }
   enum foreign_language: { english: 24, german: 12, french: 13, spanish: 14 }
 
   belongs_to :identity_document_type
   belongs_to :nationality_type
+
+  belongs_to :region
+  validates_presence_of :region
 
   has_many :identity_documents, -> { where('main = 0') }, class_name: 'IdentityDocument', foreign_key: :entrance_entrant_id, dependent: :destroy
   accepts_nested_attributes_for :identity_documents, allow_destroy: true
@@ -223,5 +230,9 @@ class Entrance::Entrant < ActiveRecord::Base
     end
 
     has_conflicts
+  end
+
+  def need_check
+    region.blank? || town_type_id.blank?
   end
 end
