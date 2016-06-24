@@ -13,17 +13,17 @@
   table tr td:nth-child(<%= can_view ? '7' : '5' %>) {
     border-right: 2px solid black;
   }
-  table tr td:nth-child(<%= can_view ? '12' : '8' %>) {
+  table tr td:nth-child(<%= can_view ? '13' : '8' %>){
     border-right: 2px solid black;
   }
-  table tr td:nth-child(<%= can_view ? '17' : '11' %>) {
+  table tr td:nth-child(<%= can_view ? '18' : '12' %>) {
     border-right: 2px solid black;
   }
-  table tr td:nth-child(<%= can_view ? '22' : '14' %>) {
+  table tr td:nth-child(<%= can_view ? '23' : '15' %>) {
     border-right: 2px solid black;
   }
 
-  table tr:last-child {
+    table tr:last-child {
     border-top: 2px solid black;
     font-size: 1.1em;
     font-weight: bold;
@@ -43,16 +43,23 @@
   <thead>
     <tr>
       <th rowspan="3">Конкурсная группа</th>
-      <th colspan="<%= can_view ? '6' : '4' %>" class="text-center">Бюджет</th>
+      <th colspan="<%= can_view ? '12' : '8' %>" class="text-center">Бюджет</th>
       <th colspan="<%= can_view ? '15' : '9' %>" class="text-center">Платный приём</th>
     </tr>
     <tr>
       <th colspan="<%= can_view ? '6' : '4' %>">Очная</th>
+      <th colspan="<%= can_view ? '6' : '4' %>">Очно-заочная</th>
       <th colspan="<%= can_view ? '5' : '3' %>">Очная</th>
       <th colspan="<%= can_view ? '5' : '3' %>">Очно-заочная</th>
       <th colspan="<%= can_view ? '5' : '3' %>">Заочная</th>
     </tr>
     <tr class="vertical">
+      <th>Всего заявлений</th>
+      <th>Из них с оригиналами</th>
+      <th>Всего мест</th>
+      <%= '<th>Из них зачислено</th>'.html_safe if can_view %>
+      <th>Конкурс</th>
+      <%= '<th>Конкурс по оригиналам</th>'.html_safe if can_view %>
       <th>Всего заявлений</th>
       <th>Из них с оригиналами</th>
       <th>Всего мест</th>
@@ -85,11 +92,12 @@
       <%= "<td>#{row[1][3] if row[1][2] > 0}</td>".html_safe if can_view %>
       <td><%= row[1][4] if row[1][2] > 0 %></td>
       <%= "<td>#{row[1][5] if row[1][2] > 0}</td>".html_safe if can_view %>
-      <td><%= row[2][0] if row[2][2] > 0 %></td>
-      <%= "<td>#{row[2][1] if row[2][2] > 0}</td>".html_safe if can_view %>
-      <td><%= row[2][2] if row[2][2] > 0 %></td>
-      <%= "<td>#{row[2][3] if row[2][2] > 0}</td>".html_safe if can_view %>
-      <td><%= row[2][4] if row[2][2] > 0 %></td>
+        <td><%= row[2][0] if row[2][2] > 0 %></td>
+        <td><%= row[2][1] if row[2][2] > 0 %></td>
+        <td><%= row[2][2] if row[2][2] > 0 %></td>
+        <%= "<td>#{row[2][3] if row[2][2] > 0}</td>".html_safe if can_view %>
+        <td><%= row[2][4] if row[2][2] > 0 %></td>
+        <%= "<td>#{row[2][5] if row[2][2] > 0}</td>".html_safe if can_view %>
       <td><%= row[3][0] if row[3][2] > 0 %></td>
       <%= "<td>#{row[3][1] if row[3][2] > 0}</td>".html_safe if can_view %>
       <td><%= row[3][2] if row[3][2] > 0 %></td>
@@ -100,6 +108,11 @@
       <td><%= row[4][2] if row[4][2] > 0 %></td>
       <%= "<td>#{row[4][3] if row[4][2] > 0}</td>".html_safe if can_view %>
       <td><%= row[4][4] if row[4][2] > 0 %></td>
+      <td><%= row[5][0] if row[5][2] > 0 %></td>
+      <%= "<td>#{row[5][1] if row[5][2] > 0}</td>".html_safe if can_view %>
+      <td><%= row[5][2] if row[5][2] > 0 %></td>
+      <%= "<td>#{row[5][3] if row[5][2] > 0}</td>".html_safe if can_view %>
+      <td><%= row[5][4] if row[5][2] > 0 %></td>
     </tr>
   <% end %>
 </table>

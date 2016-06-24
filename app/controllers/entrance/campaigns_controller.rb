@@ -135,11 +135,10 @@ class Entrance::CampaignsController < ApplicationController
 
         @applications = []
 
-        competitive_group_titles = { o: {}, z: {} }
+        competitive_group_titles = { o: {}, oz: {}, z: {} }
 
         Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
           @applications += campaign.applications.includes(competitive_group_item: :direction).actual#.first(100)
-
           campaign.competitive_groups.each do |competitive_group|
             next if competitive_group.items.empty?
 
@@ -148,7 +147,7 @@ class Entrance::CampaignsController < ApplicationController
               competitive_group_titles[:o][title] = competitive_group.items.first
             end
             if competitive_group.items.first.total_budget_oz > 0 || competitive_group.items.first.total_paid_oz > 0
-              competitive_group_titles[:o][title] = competitive_group.items.first
+              competitive_group_titles[:oz][title] = competitive_group.items.first
             end
             if competitive_group.items.first.total_budget_z > 0 || competitive_group.items.first.total_paid_z > 0
               competitive_group_titles[:z][title] = competitive_group.items.first
@@ -181,6 +180,7 @@ class Entrance::CampaignsController < ApplicationController
             [0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0]
           ]
 
@@ -193,37 +193,49 @@ class Entrance::CampaignsController < ApplicationController
               end
             end
 
-            d[2][2] = competitive_group_item.total_paid_o
-            d[3][2] = competitive_group_item.total_paid_oz
+            d[3][2] = competitive_group_item.total_paid_o
+          end
+
+          if competitive_group_titles[:oz][competitive_group_title]
+            competitive_group_item = competitive_group_titles[:oz][competitive_group_title]
+            d[2][2] = competitive_group_item.total_budget_oz
+            d[4][2] = competitive_group_item.total_paid_oz
           end
 
           if competitive_group_titles[:z][competitive_group_title]
             competitive_group_item = competitive_group_titles[:z][competitive_group_title]
-            d[4][2] = competitive_group_item.total_paid_z
+            d[5][2] = competitive_group_item.total_paid_z
           end
 
           applications.each do |application|
             if application.is_payed
               case application.education_form_id
               when 11
-                d[2][0] += 1
-                d[2][1] += 1 if application.contract
-                d[2][3] += 1 if application.order_id
-              when 12
                 d[3][0] += 1
                 d[3][1] += 1 if application.contract
                 d[3][3] += 1 if application.order_id
-              when 10
+              when 12
                 d[4][0] += 1
                 d[4][1] += 1 if application.contract
                 d[4][3] += 1 if application.order_id
+              when 10
+                d[5][0] += 1
+                d[5][1] += 1 if application.contract
+                d[5][3] += 1 if application.order_id
               else
                 fail 'Неизвестная форма обучения.'
               end
             else
-              d[1][0] += 1
-              d[1][1] += 1 if application.original?
-              d[1][3] += 1 if application.order_id
+              case application.education_form_id
+              when 11
+                d[1][0] += 1
+                d[1][1] += 1 if application.original?
+                d[1][3] += 1 if application.order_id
+              when 12
+                d[2][0] += 1
+                d[2][1] += 1 if application.original?
+                d[2][3] += 1 if application.order_id
+              end
             end
           end
 
@@ -247,6 +259,10 @@ class Entrance::CampaignsController < ApplicationController
             row[4][4] = (1.0 * row[4][0] / row[4][2]).round(2)
             row[4][5] = (1.0 * row[4][1] / row[4][2]).round(2)
           end
+          if row[5][2] > 0
+            row[5][4] = (1.0 * row[5][0] / row[5][2]).round(2)
+            row[5][5] = (1.0 * row[5][1] / row[5][2]).round(2)
+          end
         end
 
         @data = data_draft.sort_by do |row|
@@ -259,7 +275,8 @@ class Entrance::CampaignsController < ApplicationController
           [@data.map(&:second).map(&:first).sum, @data.map(&:second).map(&:second).sum, @data.map(&:second).map(&:third).sum, @data.map(&:second).map(&:fourth).sum, 0, 0],
           [@data.map(&:third).map(&:first).sum, @data.map(&:third).map(&:second).sum, @data.map(&:third).map(&:third).sum, @data.map(&:third).map(&:fourth).sum, 0, 0],
           [@data.map(&:fourth).map(&:first).sum, @data.map(&:fourth).map(&:second).sum, @data.map(&:fourth).map(&:third).sum, @data.map(&:fourth).map(&:fourth).sum, 0, 0],
-          [@data.map(&:fifth).map(&:first).sum, @data.map(&:fifth).map(&:second).sum, @data.map(&:fifth).map(&:third).sum, @data.map(&:fifth).map(&:fourth).sum, 0, 0]
+          [@data.map(&:fifth).map(&:first).sum, @data.map(&:fifth).map(&:second).sum, @data.map(&:fifth).map(&:third).sum, @data.map(&:fifth).map(&:fourth).sum, 0, 0],
+          [@data.map{|x| x[5]}.map(&:first).sum, @data.map{|x| x[5]}.map(&:second).sum, @data.map{|x| x[5]}.map(&:third).sum, @data.map{|x| x[5]}.map(&:fourth).sum, 0, 0]
         ]
 
         if last_row[1][2] > 0
@@ -278,8 +295,14 @@ class Entrance::CampaignsController < ApplicationController
           last_row[4][4] = (1.0 * last_row[4][0] / last_row[4][2]).round(2)
           last_row[4][5] = (1.0 * last_row[4][1] / last_row[4][2]).round(2)
         end
+        if last_row[5][2] > 0
+          last_row[5][4] = (1.0 * last_row[5][0] / last_row[5][2]).round(2)
+          last_row[5][5] = (1.0 * last_row[5][1] / last_row[5][2]).round(2)
+        end
 
         @data << last_row
+
+
       end
       # format.xlsx do
       #   response.headers['Content-Disposition'] = 'attachment; filename="' +
