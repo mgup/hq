@@ -111,8 +111,11 @@ module Entrance
     def txt_total_contracts
       txt = ["Всего заключено #{contracts_count}"]
       txt << Russian.p(contracts_count, 'договор', 'договора', 'договоров')
-      txt << 'об образовании на общую сумму'
-      txt << number_to_currency(total_sum).gsub(' ', ' ')
+
+
+      txt << 'об образовании.'
+      # txt << 'об образовании на общую сумму'
+      # txt << number_to_currency(total_sum).gsub(' ', ' ')
 
       txt.join(' ')
     end
