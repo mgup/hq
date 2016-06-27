@@ -79,7 +79,12 @@
           <div class="entrant_contract_buttons" id="contract_for_<%= a.id %>">
           <% if a.is_payed == true %>
               <%= render partial: 'entrance/contracts/contract_button', locals: {a: a} %>
+              <br>
+              <% if a.entrant.student && can?(:reject, :entrance_applications) %>
+                <p class="help-block">Поступило: <%= a.entrant.student.total_payments %></p>
+              <% end %>
           <% end %>
+
           </div>
 
         </td>
