@@ -1,4 +1,4 @@
-pdf.font_size 11 do
+pdf.font_size 10.5 do
       pdf.text "#{application.number}", align: :center, style: :bold
       pdf.move_down 5
       pdf.text 'Ректору федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» профессору К. В. Антипову', inline_format: true
