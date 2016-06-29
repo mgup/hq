@@ -71,7 +71,7 @@ class Entrance::ExamResult < ActiveRecord::Base
 
         xml.EntranceTestTypeID  exam.creative ? 2 : 1
 
-        xml.CompetitiveGroupID  opts[:competitive_group_id]
+        xml.CompetitiveGroupUID  opts[:competitive_group_id]
         xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
 
         if 16233 == opts[:application].id && 76 == exam.id
