@@ -233,7 +233,12 @@ class Entrance::ApplicationsController < ApplicationController
 
       @application.number = number
       @application.save!
-
+      if @application.original
+        document_movement = Entrance::DocumentMovement.create(from_application: @application,
+                                                              moved: false, original: true, original_changed: true,
+                                                              created_at: Time.now, updated_at: Time.now)
+        document_movement.save!
+      end
       respond_to do |format|
         format.html do
           redirect_to entrance_campaign_entrant_applications_path(
