@@ -317,7 +317,7 @@ class Entrance::CampaignsController < ApplicationController
         @applications = Entrance::Application.
           where(campaign_id: [12016, 22016, 32016, 42016]).
           where(
-            'entrance.applications.number IN ?',
+            'entrance.applications.number IN (?)',
             ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-РВ001п', '16-МД027п', '16-ЭД016п',
              '16-МД023п', '16-РВ002п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
              '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
