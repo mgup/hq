@@ -591,7 +591,7 @@ class Entrance::Application < ActiveRecord::Base
           xml.EmailOrMailAddress do
             xml.MailAddress do
               xml.RegionID   entrant.region.try(:kladr_id)
-              xml.TownTypeID entrant.town_type_id
+              xml.TownTypeID entrant[:town_type_id]
               xml.Address    entrant.aaddress
             end
           end
