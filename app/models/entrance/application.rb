@@ -625,6 +625,23 @@ class Entrance::Application < ActiveRecord::Base
             xml.NationalityTypeID       entrant.nationality_type_id
             xml.BirthDate               entrant.birthday.iso8601
           end
+
+          if entrant.identity_documents.any?
+            xml.OtherIdentityDocuments do
+              entrant.identity_documents.each do |d|
+                xml.IdentityDocument do
+                  xml.UID "identity_document_#{entrant.id}_#{d.id}"
+                  xml.DocumentSeries d.series.blank? ? 'б/с' : d.series
+                  xml.DocumentNumber  d.number
+                  xml.DocumentDate    d.date.iso8601
+                  xml.IdentityDocumentTypeID  d.identity_document_type_id
+                  xml.NationalityTypeID       d.nationality_type_id
+                  xml.BirthDate               d.birthday.iso8601
+                end
+              end
+            end
+          end
+
           xml.EduDocuments do
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end

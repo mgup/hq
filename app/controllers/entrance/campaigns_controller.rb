@@ -322,7 +322,7 @@ class Entrance::CampaignsController < ApplicationController
              '16-МД023п', '16-РВ002п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
              '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
              '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
-             '16-ИМ006п', '16-БД008п']
+             '16-ИМ006п', '16-БД008п', '16-ИМ005п']
           )
           # where(status_id: 8).
           # find_all { |a| 450780 != a.competitive_group_item_id || (11 == a.education_form_id) }.
@@ -331,54 +331,54 @@ class Entrance::CampaignsController < ApplicationController
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
-            xml.Applications do
-              @applications.each do |application|
-                xml << application.to_fis.xpath('/Application').to_xml.to_str
-              end
-            end
-
-            # xml.OrdersOfAdmission do
+            # xml.Applications do
             #   @applications.each do |application|
-            #     # next if application.order.signing_date == Date.new(2015, 7, 30)
-            #
-            #     xml.OrderOfAdmission do
-            #       xml.OrderOfAdmissionUID "order_of_admission_#{application.order.id}"
-            #
-            #       xml.OrderName application.competitive_group.name
-            #       xml.OrderNumber application.order.number
-            #       xml.OrderDate application.order.signing_date.to_date.iso8601
-            #
-            #       xml.Application do
-            #         xml.ApplicationNumber application.number
-            #         xml.RegistrationDate application.created_at.iso8601
-            #         xml.OrderIdLevelBudget 1
-            #       end
-            #       xml.DirectionID application.direction.id
-            #       xml.EducationFormID application.education_form_id
-            #
-            #       if !application.is_payed && application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
-            #         xml.FinanceSourceID 20
-            #         xml.IsBeneficiary true
-            #       else
-            #         xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
-            #         xml.IsBeneficiary false
-            #       end
-            #       xml.CompetitiveGroupUID application.competitive_group.id
-            #
-            #       xml.EducationLevelID application.competitive_group_item.education_type_id
-            #
-            #       if !application.is_payed?
-            #         if Date.new(2015, 8, 4) == application.order.signing_date
-            #           xml.Stage 1
-            #         elsif Date.new(2015, 8, 7) == application.order.signing_date
-            #           xml.Stage 2
-            #         elsif Date.new(2015, 7, 27) == application.order.signing_date
-            #           xml.Stage 1
-            #         end
-            #       end
-            #     end
+            #     xml << application.to_fis.xpath('/Application').to_xml.to_str
             #   end
             # end
+
+            xml.OrdersOfAdmission do
+              @applications.each do |application|
+                # next if application.order.signing_date == Date.new(2015, 7, 30)
+
+                xml.OrderOfAdmission do
+                  xml.OrderOfAdmissionUID "order_of_admission_#{application.order.id}"
+
+                  xml.OrderName application.competitive_group.name
+                  xml.OrderNumber application.order.number
+                  xml.OrderDate application.order.signing_date.to_date.iso8601
+
+                  xml.Application do
+                    xml.ApplicationNumber application.number
+                    xml.RegistrationDate application.created_at.iso8601
+                    xml.OrderIdLevelBudget 1
+                  end
+                  xml.DirectionID application.direction.id
+                  xml.EducationFormID application.education_form_id
+
+                  if !application.is_payed && application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
+                    xml.FinanceSourceID 20
+                    xml.IsBeneficiary true
+                  else
+                    xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
+                    xml.IsBeneficiary false
+                  end
+                  xml.CompetitiveGroupUID application.competitive_group.id
+
+                  xml.EducationLevelID application.competitive_group_item.education_type_id
+
+                  # if !application.is_payed?
+                  #   if Date.new(2015, 8, 4) == application.order.signing_date
+                  #     xml.Stage 1
+                  #   elsif Date.new(2015, 8, 7) == application.order.signing_date
+                  #     xml.Stage 2
+                  #   elsif Date.new(2015, 7, 27) == application.order.signing_date
+                  #     xml.Stage 1
+                  #   end
+                  # end
+                end
+              end
+            end
           end
         end
 
