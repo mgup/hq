@@ -631,6 +631,10 @@ class Entrance::Application < ActiveRecord::Base
               entrant.identity_documents.each do |d|
                 xml.IdentityDocument do
                   xml.UID "identity_document_#{entrant.id}_#{d.id}"
+                  xml.FirstName   entrant.first_name
+                  xml.MiddleName  entrant.patronym
+                  xml.LastName    entrant.last_name
+                  xml.GenderID    entrant[:gender]
                   xml.DocumentSeries d.series.blank? ? 'б/с' : d.series
                   xml.DocumentNumber  d.number
                   xml.DocumentDate    d.date.iso8601
