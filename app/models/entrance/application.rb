@@ -649,31 +649,32 @@ class Entrance::Application < ActiveRecord::Base
           xml.EduDocuments do
             xml << entrant.edu_document.to_nokogiri(self).root.to_xml
           end
-          if entrant.checks.last && entrant.checks.last.results.find_all { |r| r.exam_result_id.present? }.any?
-            xml.EgeDocuments do
-              xml.EgeDocument do
-                xml.UID "entrant_check_#{entrant.checks.last.id}"
-                xml.DocumentNumber entrant.checks.last.id
-                xml.DocumentYear entrant.checks.last.date.year
-                xml.DocumentDate entrant.checks.last.date.iso8601
-                xml.Subjects do
-                  entrant.checks.last.results.each do |result|
-                    if result.exam_result_id.present?
-                      xml.SubjectData do
-                        n = result.exam_name
-                        if 'Английский язык' == n
-                          n = 'Иностранный язык'
-                        end
 
-                        xml.SubjectID Use::Subject.where(name: n).first.id
-                        xml.Value result.score
-                      end
-                    end
-                  end
-                end
-              end
-            end
-          end
+          # if entrant.checks.last && entrant.checks.last.results.find_all { |r| r.exam_result_id.present? }.any?
+          #   xml.EgeDocuments do
+          #     xml.EgeDocument do
+          #       xml.UID "entrant_check_#{entrant.checks.last.id}"
+          #       xml.DocumentNumber entrant.checks.last.id
+          #       xml.DocumentYear entrant.checks.last.date.year
+          #       xml.DocumentDate entrant.checks.last.date.iso8601
+          #       xml.Subjects do
+          #         entrant.checks.last.results.each do |result|
+          #           if result.exam_result_id.present?
+          #             xml.SubjectData do
+          #               n = result.exam_name
+          #               if 'Английский язык' == n
+          #                 n = 'Иностранный язык'
+          #               end
+          #
+          #               xml.SubjectID Use::Subject.where(name: n).first.id
+          #               xml.Value result.score
+          #             end
+          #           end
+          #         end
+          #       end
+          #     end
+          #   end
+          # end
 
           if abitachievements > 0
             xml.CustomDocuments do
