@@ -1,13 +1,18 @@
 <%= f.fields_for :olympic_total_document do |sub_f| %>
   <div class="form-group">
       <%= sub_f.label :series, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-3">
+      <div class="col-sm-2">
           <%= sub_f.text_field :series, class: 'form-control' %>
       </div>
 
-      <%= sub_f.label :number, class: 'col-sm-3 control-label' %>
+      <%= sub_f.label :number, class: 'col-sm-2 control-label' %>
       <div class="col-sm-3">
           <%= sub_f.text_field :number, class: 'form-control', required: true %>
+      </div>
+
+      <%= sub_f.label :diploma_type_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-2">
+        <%= sub_f.text_field :diploma_type_id, class: 'form-control' %>
       </div>
   </div>
 <% end %>

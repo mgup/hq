@@ -34,6 +34,15 @@
     </div>
 </div>
 
+  <div class="row">
+    <label class="col-sm-3 control-label">
+      Текст для заявления
+    </label>
+    <div class="col-sm-9">
+      <%= f.text_field :temp_text, class: 'form-control' %>
+    </div>
+  </div>
+
 <fieldset>
     <legend>Сведения о документе-основании</legend>
     <% ['custom', 'olympic', 'olympic_total', 'medicine'].each do |d| %>
