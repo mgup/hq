@@ -105,9 +105,9 @@ class Entrance::ExamResult < ActiveRecord::Base
             end
           end
         elsif 1 == self[:form].to_i
-          xml.ResultDocument do
-            xml.EgeDocumentID "entrant_check_#{opts[:application].entrant.checks.last.id}"
-          end
+          # xml.ResultDocument do
+          #   xml.EgeDocumentID "entrant_check_#{opts[:application].entrant.checks.last.id}"
+          # end
         end
       end
     end
