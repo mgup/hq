@@ -14,6 +14,9 @@ class Entrance::ApplicationsController < ApplicationController
 
   end
 
+  def print_agreement
+  end
+
   # То, что ниже, нужно рефакторить.
   # ================================
 

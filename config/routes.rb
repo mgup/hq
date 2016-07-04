@@ -413,6 +413,7 @@ HQ::Application.routes.draw do
           get 'send_to_order', on: :member
 
           get '/print.pdf', to: 'applications#print', on: :member, defaults: { format: 'pdf' }, as: :print
+          get '/print_agreement.pdf', to: 'applications#print_agreement', on: :member, defaults: { format: 'pdf' }, as: :print_agreement
           get '/print_all.pdf', to: 'applications#print_all', on: :collection, defaults: { format: 'pdf' }, as: :print_all
         end
       end
