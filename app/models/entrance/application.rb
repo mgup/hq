@@ -625,34 +625,56 @@ class Entrance::Application < ActiveRecord::Base
             xml.NationalityTypeID       entrant.nationality_type_id
             xml.BirthDate               entrant.birthday.iso8601
           end
-          xml.EduDocuments do
-            xml << entrant.edu_document.to_nokogiri(self).root.to_xml
-          end
-          if entrant.checks.last && entrant.checks.last.results.find_all { |r| r.exam_result_id.present? }.any?
-            xml.EgeDocuments do
-              xml.EgeDocument do
-                xml.UID "entrant_check_#{entrant.checks.last.id}"
-                xml.DocumentNumber entrant.checks.last.id
-                xml.DocumentYear entrant.checks.last.date.year
-                xml.DocumentDate entrant.checks.last.date.iso8601
-                xml.Subjects do
-                  entrant.checks.last.results.each do |result|
-                    if result.exam_result_id.present?
-                      xml.SubjectData do
-                        n = result.exam_name
-                        if 'Английский язык' == n
-                          n = 'Иностранный язык'
-                        end
 
-                        xml.SubjectID Use::Subject.where(name: n).first.id
-                        xml.Value result.score
-                      end
-                    end
-                  end
+          if entrant.identity_documents.any?
+            xml.OtherIdentityDocuments do
+              entrant.identity_documents.each do |d|
+                xml.IdentityDocument do
+                  xml.UID "identity_document_#{entrant.id}_#{d.id}"
+                  xml.FirstName   entrant.first_name
+                  xml.MiddleName  entrant.patronym
+                  xml.LastName    entrant.last_name
+                  xml.GenderID    entrant[:gender]
+                  xml.DocumentSeries d.series.blank? ? 'б/с' : d.series
+                  xml.DocumentNumber  d.number
+                  xml.DocumentDate    d.date.iso8601
+                  xml.IdentityDocumentTypeID  d.identity_document_type_id
+                  xml.NationalityTypeID       d.nationality_type_id
+                  xml.BirthDate               d.birthday.iso8601
                 end
               end
             end
           end
+
+          xml.EduDocuments do
+            xml << entrant.edu_document.to_nokogiri(self).root.to_xml
+          end
+
+          # if entrant.checks.last && entrant.checks.last.results.find_all { |r| r.exam_result_id.present? }.any?
+          #   xml.EgeDocuments do
+          #     xml.EgeDocument do
+          #       xml.UID "entrant_check_#{entrant.checks.last.id}"
+          #       xml.DocumentNumber entrant.checks.last.id
+          #       xml.DocumentYear entrant.checks.last.date.year
+          #       xml.DocumentDate entrant.checks.last.date.iso8601
+          #       xml.Subjects do
+          #         entrant.checks.last.results.each do |result|
+          #           if result.exam_result_id.present?
+          #             xml.SubjectData do
+          #               n = result.exam_name
+          #               if 'Английский язык' == n
+          #                 n = 'Иностранный язык'
+          #               end
+          #
+          #               xml.SubjectID Use::Subject.where(name: n).first.id
+          #               xml.Value result.score
+          #             end
+          #           end
+          #         end
+          #       end
+          #     end
+          #   end
+          # end
 
           if abitachievements > 0
             xml.CustomDocuments do

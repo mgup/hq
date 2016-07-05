@@ -33,7 +33,7 @@ class Entrance::BenefitsController < ApplicationController
 
   def resource_params
     params.fetch(:entrance_benefit, {}).permit( :application_id, :benefit_kind_id,
-          :document_type_id,
+          :document_type_id, :temp_text,
            custom_document_attributes: [:id, :original, :series, :number, :date,
                                         :organization, :additional_info, :type_name],
            olympic_document_attributes: [:id, :original, :series, :number, :date,

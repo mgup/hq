@@ -314,12 +314,20 @@ class Entrance::CampaignsController < ApplicationController
         # @applications = Entrance::Application.where(campaign_id: [2015]).
         #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
 
-        @applications = Entrance::Application.
-          where(campaign_id: [12016, 22016, 32016, 42016])
-          # where(status_id: 8).
-          # find_all { |a| 450780 != a.competitive_group_item_id || (11 == a.education_form_id) }.
-          # find_all { |a| 553805 != a.competitive_group_item_id || (11 == a.education_form_id) }.
-          # find_all { |a| 553831 != a.competitive_group_item_id }
+        apps = Entrance::Application.
+          where(campaign_id: [12016, 22016, 32016, 42016]).
+          in_groups(2)
+        @applications = apps[0]
+
+
+          # where(
+          #   'entrance_applications.number IN (?)',
+          #   ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-РВ001п', '16-МД027п', '16-ЭД016п',
+          #    '16-МД023п', '16-РВ002п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
+          #    '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
+          #    '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
+          #    '16-ИМ006п', '16-БД008п', '16-ИМ005п']
+          # )
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
@@ -359,15 +367,15 @@ class Entrance::CampaignsController < ApplicationController
             #
             #       xml.EducationLevelID application.competitive_group_item.education_type_id
             #
-            #       if !application.is_payed?
-            #         if Date.new(2015, 8, 4) == application.order.signing_date
-            #           xml.Stage 1
-            #         elsif Date.new(2015, 8, 7) == application.order.signing_date
-            #           xml.Stage 2
-            #         elsif Date.new(2015, 7, 27) == application.order.signing_date
-            #           xml.Stage 1
-            #         end
-            #       end
+            #       # if !application.is_payed?
+            #       #   if Date.new(2015, 8, 4) == application.order.signing_date
+            #       #     xml.Stage 1
+            #       #   elsif Date.new(2015, 8, 7) == application.order.signing_date
+            #       #     xml.Stage 2
+            #       #   elsif Date.new(2015, 7, 27) == application.order.signing_date
+            #       #     xml.Stage 1
+            #       #   end
+            #       # end
             #     end
             #   end
             # end

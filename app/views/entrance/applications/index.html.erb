@@ -31,6 +31,7 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <% @applications.each do |a| %>
@@ -65,13 +66,19 @@
         <% end %>
       </td>
       <% if a.called_back? %>
-        <td colspan="3">
+        <td colspan="4">
           Отозвано.
         </td>
       <% else %>
         <td>
           <%= link_to print_entrance_campaign_entrant_application_path(@campaign, @entrant, a),
                       class: 'btn btn-default', title: 'Распечатать' do %>
+            <span class="glyphicons print"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to print_agreement_entrance_campaign_entrant_application_path(@campaign, @entrant, a),
+                      class: 'btn btn-default', title: 'Согласие на зачисление (БЮДЖЕТ)' do %>
             <span class="glyphicons print"></span>
           <% end %>
         </td>
