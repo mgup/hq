@@ -314,8 +314,12 @@ class Entrance::CampaignsController < ApplicationController
         # @applications = Entrance::Application.where(campaign_id: [2015]).
         #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
 
-        @applications = Entrance::Application.
-          where(campaign_id: [12016, 22016, 32016, 42016])#.
+        apps = Entrance::Application.
+          where(campaign_id: [12016, 22016, 32016, 42016]).
+          in_groups(2)
+        @applications = apps[0]
+
+
           # where(
           #   'entrance_applications.number IN (?)',
           #   ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-РВ001п', '16-МД027п', '16-ЭД016п',
