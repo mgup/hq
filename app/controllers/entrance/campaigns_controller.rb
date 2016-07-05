@@ -322,12 +322,13 @@ class Entrance::CampaignsController < ApplicationController
 
         @applications = Entrance::Application.where(
           'entrance_applications.number IN (?)',
-          ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-РВ001п', '16-МД027п', '16-ЭД016п',
-           '16-МД023п', '16-РВ002п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
+          ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-МД027п', '16-ЭД016п',
+           '16-МД023п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
            '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
            '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
            '16-ИМ006п', '16-БД008п', '16-ИМ005п']
         )
+        # '16-РВ001п', '16-РВ002п',
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
@@ -340,8 +341,6 @@ class Entrance::CampaignsController < ApplicationController
             xml.Orders do
               xml.OrdersOfAdmission do
                 @applications.each do |application|
-                  # next if application.order.signing_date == Date.new(2015, 7, 30)
-
                   xml.OrderOfAdmission do
                     xml.OrderOfAdmissionUID "order_of_admission_#{application.order.id}"
                     xml.CampaignUID application.campaign.id
