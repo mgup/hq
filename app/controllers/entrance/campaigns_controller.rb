@@ -315,19 +315,15 @@ class Entrance::CampaignsController < ApplicationController
         #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
 
         @applications = Entrance::Application.
-          where(campaign_id: [12016, 22016, 32016, 42016]).
-          where(
-            'entrance_applications.number IN (?)',
-            ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-РВ001п', '16-МД027п', '16-ЭД016п',
-             '16-МД023п', '16-РВ002п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
-             '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
-             '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
-             '16-ИМ006п', '16-БД008п', '16-ИМ005п']
-          )
-          # where(status_id: 8).
-          # find_all { |a| 450780 != a.competitive_group_item_id || (11 == a.education_form_id) }.
-          # find_all { |a| 553805 != a.competitive_group_item_id || (11 == a.education_form_id) }.
-          # find_all { |a| 553831 != a.competitive_group_item_id }
+          where(campaign_id: [12016, 22016, 32016, 42016])#.
+          # where(
+          #   'entrance_applications.number IN (?)',
+          #   ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-РВ001п', '16-МД027п', '16-ЭД016п',
+          #    '16-МД023п', '16-РВ002п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
+          #    '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
+          #    '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
+          #    '16-ИМ006п', '16-БД008п', '16-ИМ005п']
+          # )
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
