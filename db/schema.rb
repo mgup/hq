@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623105339) do
+ActiveRecord::Schema.define(version: 20160705094009) do
 
   create_table "FRDO", id: false, force: :cascade do |t|
     t.integer "ID",         limit: 4,   null: false
@@ -1172,6 +1172,7 @@ ActiveRecord::Schema.define(version: 20160623105339) do
     t.boolean  "visible",                       limit: 1,   default: true
     t.integer  "region_id",                     limit: 4
     t.integer  "town_type_id",                  limit: 4
+    t.boolean  "foreign",                       limit: 1,   default: false
   end
 
   add_index "entrance_entrants", ["campaign_id"], name: "index_entrance_entrants_on_campaign_id", using: :btree

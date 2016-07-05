@@ -49,7 +49,7 @@
       <div class="col-sm-offset-2 col-sm-10">
           <div class="checkbox">
               <label>
-                  <%= check_box_tag :foreign_entrant_check %> Иностранец
+                  <%= f.check_box :foreign %> Иностранец
               </label>
           </div>
       </div>
@@ -445,7 +445,7 @@
         }
     });
 
-   $('#foreign_entrant_check').change(function(){
+   $('#entrance_entrant_foreign').change(function(){
      if (this.checked) {
        $('.foreign-check').each(function() {
          if ($(this).val() == '1'){

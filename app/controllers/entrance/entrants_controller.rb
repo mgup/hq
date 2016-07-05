@@ -3,7 +3,7 @@ class Entrance::EntrantsController < ApplicationController
   load_and_authorize_resource through: :campaign, class: 'Entrance::Entrant'
 
   def index
-    if current_user.is?(:selection_foreign) && @campaign.id != 52015
+    if current_user.is?(:selection_foreign) && @campaign.id != 42016
       @entrants = @entrants.unscoped.where(visible: true).where(campaign_id: @campaign.id).where('identity_document_type_id = 3 OR nationality_type_id != 1').order(:nationality_type_id, :last_name, :first_name)
     end
   end
@@ -98,7 +98,7 @@ class Entrance::EntrantsController < ApplicationController
       :nationality_type_id, :birthday, :birth_place, :pseries, :pnumber, :pdepartment,
       :pdate, :acountry, :azip, :region_id, :town_type_id, :aaddress, :phone, :email, :military_service,
       :foreign_language, :need_hostel, :ioo,
-      :identity_document_type_id, :nationality_type_id, :visible,
+      :identity_document_type_id, :nationality_type_id, :visible, :foreign,
       exam_results_attributes: [:id, :exam_id, :form, :score,
                                 :document, :distance, :_destroy],
       achievements_attributes: [:id, :entrance_achievement_type_id, :document,
