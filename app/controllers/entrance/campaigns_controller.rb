@@ -352,10 +352,8 @@ class Entrance::CampaignsController < ApplicationController
                     xml.EducationLevelID application.competitive_group_item.education_type_id
                     if !application.is_payed && application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
                       xml.FinanceSourceID 20
-                      xml.IsBeneficiary true
                     else
                       xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
-                      xml.IsBeneficiary false
                     end
 
                     if application.is_payed?
