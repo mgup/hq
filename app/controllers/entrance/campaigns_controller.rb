@@ -373,8 +373,9 @@ class Entrance::CampaignsController < ApplicationController
                     xml.OrderTypeID 1
                     xml.CompetitiveGroupUID application.competitive_group.id
 
-                    xml.RegistrationDate application.created_at.iso8601
-                    xml.OrderIdLevelBudget 1
+                    if !application.is_payed?
+                      xml.OrderIdLevelBudget 1
+                    end
                   end
                 end
               end
