@@ -69,7 +69,7 @@ pdf.font_size 10.5 do
 
       pdf.text "Гражданство: <u> <#{entrant.nationality_type.name} </u>", inline_format: true
       pdf.text "Отношение к военной службе: <u> #{entrant.military_status} </u>", inline_format: true
-      if @campaign.id == 52015
+      if @campaign.id == 42016
         pdf.text "Наличие направления: <u> да </u>", inline_format: true
       else
         pdf.text "Наличие направления: <u> нет </u>", inline_format: true
@@ -77,7 +77,7 @@ pdf.font_size 10.5 do
 
       if application.benefits.any?
         pdf.text "Категория зачисления: <u>#{Unicode::downcase(application.benefits.first.benefit_kind.name)}</u> (#{application.benefits.map(&:temp_text).join(' ')}).", inline_format: true
-      elsif @campaign.id == 52015
+      elsif @campaign.id == 42016
         pdf.text 'Категория зачисления: <u> гослиния </u>', inline_format: true
       elsif application.competitive_group_target_item_id
         pdf.text "Категория зачисления: <u> по конкурсу целевого приёма по договору #{application.competitive_group_target_item.target_organization.contract_number} с  #{application.competitive_group_target_item.target_organization.name}</u>", inline_format: true
@@ -85,7 +85,7 @@ pdf.font_size 10.5 do
         pdf.text 'Категория зачисления: <u> по конкурсу </u>', inline_format: true
       end
 
-      unless @campaign.id == 52015
+      unless @campaign.id == 42016
         pdf.text 'Оценки для участия в конкурсе:'
         entrant.exam_results.in_competitive_group(application.competitive_group_item.competitive_group).each_with_index do |exam_result, index|
           result = ["#{index + 1}."]

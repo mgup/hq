@@ -137,7 +137,8 @@ class Entrance::CampaignsController < ApplicationController
 
         competitive_group_titles = { o: {}, oz: {}, z: {} }
 
-        Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
+        # Entrance::Campaign.where(start_year: @campaign_year).each do |campaign|
+        Entrance::Campaign.where(id: [12016, 22016, 32016]).each do |campaign|
           @applications += campaign.applications.includes(competitive_group_item: :direction).actual#.first(100)
           campaign.competitive_groups.each do |competitive_group|
             next if competitive_group.items.empty?
