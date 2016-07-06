@@ -9,6 +9,9 @@ feature 'Добавление нового абитуриента' do
     [3,4,5,6,7,8,9,16].each do |i|
       create(:entrance_document_type, id: i) if Entrance::DocumentType.where(id: i).empty?
     end
+    [70, 25, 16].each do |i|
+      create(:rigion, id: i) if Rigion.where(id: i).empty?
+    end
     @exam = create(:entrance_exam)
   end
 
