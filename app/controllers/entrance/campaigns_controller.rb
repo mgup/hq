@@ -340,23 +340,25 @@ class Entrance::CampaignsController < ApplicationController
 
             xml.Orders do
               xml.OrdersOfAdmission do
-                @applications.each do |application|
-                  xml.OrderOfAdmission do
-                    xml.OrderOfAdmissionUID "order_of_admission_#{application.order.id}"
-                    xml.CampaignUID application.campaign.id
-                    xml.OrderName application.competitive_group.name
-                    xml.OrderNumber application.order.number
-                    xml.OrderDate application.order.signing_date.to_date.iso8601
+                @applications.group_by { |a| a.order }.each do |o, applications|
+                  a = applications[0]
 
-                    xml.EducationFormID application.education_form_id
-                    xml.EducationLevelID application.competitive_group_item.education_type_id
-                    if !application.is_payed && application.benefits.any? && application.order.signing_date == Date.new(2015, 7, 30)
+                  xml.OrderOfAdmission do
+                    xml.OrderOfAdmissionUID "order_of_admission_#{o.id}"
+                    xml.CampaignUID a.campaign.id
+                    xml.OrderName a.competitive_group.name
+                    xml.OrderNumber o.number
+                    xml.OrderDate o.signing_date.to_date.iso8601
+
+                    xml.EducationFormID a.education_form_id
+                    xml.EducationLevelID a.competitive_group_item.education_type_id
+                    if !a.is_payed && a.benefits.any? && a.order.signing_date == Date.new(2015, 7, 30)
                       xml.FinanceSourceID 20
                     else
-                      xml.FinanceSourceID application.is_payed ? 15 : (application.competitive_group_target_item_id.nil? ? 14 : 16)
+                      xml.FinanceSourceID a.is_payed ? 15 : (a.competitive_group_target_item_id.nil? ? 14 : 16)
                     end
 
-                    if application.is_payed?
+                    if a.is_payed?
                       xml.Stage 0
                     end
                   end
