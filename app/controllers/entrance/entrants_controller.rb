@@ -70,7 +70,7 @@ class Entrance::EntrantsController < ApplicationController
           a.save
         end
         redirect_to entrance_campaign_entrants_path(@campaign),
-                   notice: 'Вы успешно продали смертную душу.'
+                   notice: 'Информация об абитуриенте успешно изменена.'
       end
     else
       render action: :edit
