@@ -576,6 +576,8 @@ LIMIT 1 ")
                 end
                 xml.startDate I18n.l(student.start_date_order.order_signing, format: '%Y-%m-%d') if student.start_date_order
                 xml.course student.group.course
+                xml.educationProgram student.group.speciality.soccard_education_program
+                xml.locationUniversity '1'
                 xml.educationType student.group.soccard_form
               end
             end

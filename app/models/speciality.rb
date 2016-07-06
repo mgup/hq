@@ -57,6 +57,15 @@ class Speciality < ActiveRecord::Base
     3 == type
   end
 
+  def soccard_education_program
+    case
+    when bachelor? then 1
+    when master? then 3
+    when aspirant? then 4
+    else 2
+    end
+  end
+
   def full_name
     %Q(#{code} «#{name}»)
   end
