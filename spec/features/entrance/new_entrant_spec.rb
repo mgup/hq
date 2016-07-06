@@ -9,6 +9,9 @@ feature 'Добавление нового абитуриента' do
     [3,4,5,6,7,8,9,16].each do |i|
       create(:entrance_document_type, id: i) if Entrance::DocumentType.where(id: i).empty?
     end
+    [70, 25, 16].each do |i|
+      create(:rigion, id: i) if Rigion.where(id: i).empty?
+    end
     @exam = create(:entrance_exam)
   end
 
@@ -17,12 +20,12 @@ feature 'Добавление нового абитуриента' do
     fill_in 'entrance_entrant[last_name]', with: 'Example'
     fill_in 'entrance_entrant[first_name]', with: 'First'
     choose('женский')
-    fill_in 'entrance_entrant[birthday]', with: '14.07.1996'
-    fill_in 'entrance_entrant[birth_place]', with: 'Birth place'
-    fill_in 'entrance_entrant[pseries]', with: '1234'
-    fill_in 'entrance_entrant[pnumber]', with: '123456'
-    fill_in 'entrance_entrant[pdepartment]', with: 'Passport department'
-    fill_in 'entrance_entrant[pdate]', with: '28.07.2010'
+    fill_in 'entrance_entrant[main_id_document_attributes][birthday]', with: '14.07.1996'
+    fill_in 'entrance_entrant[main_id_document_attributes][birthplace]', with: 'Birth place'
+    fill_in 'entrance_entrant[main_id_document_attributes][series]', with: '1234'
+    fill_in 'entrance_entrant[main_id_document_attributes][number]', with: '123456'
+    fill_in 'entrance_entrant[main_id_document_attributes][organization]', with: 'Passport department'
+    fill_in 'entrance_entrant[main_id_document_attributes][date]', with: '28.07.2010'
     fill_in 'entrance_entrant[azip]', with: '987654'
     fill_in 'entrance_entrant[aaddress]', with: 'Entrant address'
     fill_in 'entrance_entrant[phone]', with: '+7 999 123-45-67'

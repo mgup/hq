@@ -21,6 +21,8 @@ FactoryGirl.define do
     certificate_date { Date.today - 2.months }
     need_hostel_for_exams false
     phone '+7 900 123-45-67'
+    region_id 70
+    town_type_id 2
     military_service { [:not, :conscript, :reservist, :free_of_service, :too_young].sample }
     association :campaign
     association :identity_document_type
