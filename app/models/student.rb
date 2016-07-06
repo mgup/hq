@@ -536,12 +536,12 @@ LIMIT 1 ")
           xml.parent.namespace = nil
           xml.fileSender '028'
           xml.version '1.1.3'
-          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 1, 1) && s.last_status_order.order_signing <= Date.new(2015, 7, 1) }.length
+          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 1, 1) && s.last_status_order.order_signing <= Date.new(2015, 7, 15) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
           # убрать find_all
-          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 1, 1) && s.last_status_order.order_signing <= Date.new(2016, 7, 15) }.each_with_index do |student, index|
+          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 1, 1) && s.last_status_order.order_signing <= Date.new(2016, 7, 15) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
@@ -610,17 +610,17 @@ LIMIT 1 ")
   def last_status_order
     case status.id
       when 103
-        orders.signed.my_filter(template: [11,24,26,28]).order(:order_signing).last
+        orders.signed.my_filter(template: [11,24,26,28]).order(:order_signing).last #академ
       when 102
-        orders.signed.my_filter(template: [14, 42]).order(:order_signing).last
+        orders.signed.my_filter(template: [14, 15, 42]).order(:order_signing).last # отчисленные
       when 104
-        orders.signed.my_filter(template: 20).order(:order_signing).last
+        orders.signed.my_filter(template: 20).order(:order_signing).last # выпускник
       when 100
         nil
       when 105
         nil
       else
-        orr = orders.signed.my_filter(template: [1,2,3,16,17,25]).order(:order_signing).last
+        orr = orders.signed.my_filter(template: [1,2,3,16,17,25,10,46,41,40]).order(:order_signing).last # студент
         unless orr
           # Придумываем студенту дату зачисления.
 
