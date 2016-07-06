@@ -536,7 +536,7 @@ LIMIT 1 ")
           xml.parent.namespace = nil
           xml.fileSender '028'
           xml.version '1.1.3'
-          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2015, 1, 1) && s.last_status_order.order_signing <= Date.new(2015, 7, 1) }.length
+          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 1, 1) && s.last_status_order.order_signing <= Date.new(2015, 7, 1) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
