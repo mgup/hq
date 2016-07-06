@@ -58,7 +58,7 @@ gem 'unscoped_associations'
 # В терминале: bundle config local.morpher /Users/storkvist/Sites/mgup/morpher
 # gem 'morpher', github: 'mgup/morpher', branch: :master
 
-          gem 'tiny_tds', github: 'rails-sqlserver/tiny_tds'
+gem 'tiny_tds'
 
 gem 'httparty'
 gem 'paperclip'
