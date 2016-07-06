@@ -541,7 +541,7 @@ LIMIT 1 ")
         xml.recordList do
           xml.parent.namespace = nil
           # убрать find_all
-          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2015, 1, 1) && s.last_status_order.order_signing <= Date.new(2015, 7, 1) }.each_with_index do |student, index|
+          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 1, 1) && s.last_status_order.order_signing <= Date.new(2016, 7, 15) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
