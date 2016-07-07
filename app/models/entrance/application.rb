@@ -315,6 +315,10 @@ class Entrance::Application < ActiveRecord::Base
       end
     end
 
+    if competitive_group_target_item
+      return "По договору целевого приема № #{competitive_group_target_item.target_organization.contract_number}"
+    end
+
     use = true
     entrant.exam_results.in_competitive_group(competitive_group_item.competitive_group).each do |exam_result|
       use = false if exam_result.university?
