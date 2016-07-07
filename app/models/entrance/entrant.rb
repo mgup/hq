@@ -244,7 +244,7 @@ class Entrance::Entrant < ActiveRecord::Base
     region.blank? || town_type_id.blank?
   end
 
-  def find_by_passport(pseries, pnumber)
+  def self.find_by_passport(pseries, pnumber)
     joins(:all_id_documents).where(identity_documents: {series: pseries, number: pnumber}).last
   end
 end
