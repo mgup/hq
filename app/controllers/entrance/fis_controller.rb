@@ -121,7 +121,7 @@ class Entrance::FisController < ApplicationController
       # Группируем результаты по серии и номеру документа.
       r.group_by { |h| h.values_at(:pseries, :pnumber) }.each do |pdata, scores|
         # Находим нужного абитуриента и делаем запись о проверке.
-        entrant = entrants.find_by_pseries_and_pnumber(*pdata)
+        entrant = entrants.find_by_passport(*pdata)
         if entrant
           check = entrant.checks.create(date: Date.today)
 
@@ -145,7 +145,7 @@ class Entrance::FisController < ApplicationController
 
               # Если наш результат не совпадает с полученным от ФИС, то меняем
               # наш на результат из ФИС, сохраняя при этом старое значение.
-              if result.score != subject[:score].to_i
+              if (!result.score) || result.score < subject[:score].to_i
                 result.old_score = result.score
                 result.score = subject[:score]
               end

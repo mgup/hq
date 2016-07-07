@@ -26,6 +26,8 @@ class Entrance::Entrant < ActiveRecord::Base
           class_name: 'IdentityDocument', foreign_key: :entrance_entrant_id
   accepts_nested_attributes_for :main_id_document, allow_destroy: true
 
+  has_many :all_id_documents, class_name: 'IdentityDocument', foreign_key: :entrance_entrant_id
+
   has_many :compatriot_documents, class_name: 'CompatriotDocument', foreign_key: :entrance_entrant_id, dependent: :destroy
   accepts_nested_attributes_for :compatriot_documents, allow_destroy: true
 
@@ -143,6 +145,9 @@ class Entrance::Entrant < ActiveRecord::Base
     CSV.generate do |csv|
       all.each do |e|
         csv << ["#{e.last_name}%#{e.first_name}%#{e.patronym}%#{e.pseries}%#{e.pnumber}".encode('windows-1251')]
+        e.identity_documents.each do |d|
+          csv << ["#{e.last_name}%#{e.first_name}%#{e.patronym}%#{d.series}%#{d.number}".encode('windows-1251')]
+        end
       end
     end
   end
@@ -237,5 +242,9 @@ class Entrance::Entrant < ActiveRecord::Base
 
   def need_check
     region.blank? || town_type_id.blank?
+  end
+
+  def find_by_passport(pseries, pnumber)
+    joins(:all_id_documents).where(identity_documents: {series: pseries, number: pnumber}).last
   end
 end
