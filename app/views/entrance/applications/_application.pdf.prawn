@@ -17,7 +17,7 @@ pdf.font_size 10.5 do
         pdf.text "на направление подготовки (специальность): <u>#{application.competitive_group_item.direction.new_code}, «#{application.competitive_group_item.direction.name}»</u>", inline_format: true
       end
       pdf.text "Форма обучения: <u>#{application.education_form_id == 10 ? 'заочная' : (application.education_form_id == 11 ? 'очная' : 'очно-заочная')}</u> Основа обучения: <u>#{application.is_payed ? 'по договорам' : 'бюджет'}</u>", inline_format: true
-      pdf.text "В общежитии: <u>#{application.entrant.need_hostel? ? 'нуждаюсь' : 'не нуждаюсь'}</u>            Контактный/домашний телефон: <u>#{entrant.phone}</u>", inline_format: true
+      pdf.text "В общежитии: <u>#{application.entrant.need_hostel? ? 'нуждаюсь' : 'не нуждаюсь'}</u>  Контактный/домашний телефон: <u>#{entrant.phone}</u> #{entrant.email}", inline_format: true
       pdf.text "#{entrant.female? ? 'Окончила' : 'Окончил'} #{entrant.edu_document.organization} в #{entrant.edu_document.graduation_year} г.<br>аттестат (диплом об окончании): <u>#{entrant.edu_document.series} № #{entrant.edu_document.number} от #{l entrant.edu_document.date}</u>", inline_format: true
       if Entrance::Entrant.aspirants.include? entrant
         pdf.text "присвоена квалификация: <u>#{entrant.edu_document.qualification}</u>", inline_format: true
