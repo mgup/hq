@@ -6,7 +6,7 @@
       </div>
 
       <%= sub_f.label :number, class: 'col-sm-3 control-label' %>
-      <div class="col-sm-3">
+      <div class="col-sm-4">
           <%= sub_f.text_field :number, class: 'form-control', required: true %>
       </div>
   </div>
@@ -30,9 +30,28 @@
 
   <div class="form-group">
       <%= sub_f.label :date, class: 'col-sm-2 control-label' %>
-      <div class="col-sm-3">
+      <div class="col-sm-4">
           <%= sub_f.text_field :date, class: 'form-control datepicker',
                                value: sub_f.object.date ? l(sub_f.object.date) : '', required: true%>
+      </div>
+
+      <%= sub_f.label :class_number, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+          <%= sub_f.select :class_number,
+                           options_from_collection_for_select(Olympic::ClassNumber.all,
+                                                              :id, :name, sub_f.object.class_number),
+                           {}, class: 'form-control' %>
+      </div>
+
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :profile_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-6">
+          <%= sub_f.select :profile_id,
+                           options_from_collection_for_select(Olympic::Profile.all,
+                                                              :id, :name, sub_f.object.profile_id),
+                           {}, class: 'form-control' %>
       </div>
 
   </div>

@@ -111,6 +111,8 @@ class Entrance::EntrantsController < ApplicationController
       identity_documents_attributes: [:id, :original, :original_date, :series, :number,
                                       :subvision_code, :date, :organization, :identity_document_type_id,
                                       :nationality_type_id, :birthday, :birthplace, :main, :_destroy ],
+      compatriot_documents_attributes: [:id, :series, :number, :compatriot_category_id,
+                                        :date, :organization, :type_name, :additional_info, :_destroy ],
       main_id_document_attributes: [:id, :original, :original_date, :series, :number,
                                       :subvision_code, :date, :organization, :identity_document_type_id,
                                       :nationality_type_id, :birthday, :birthplace, :main, :_destroy ],

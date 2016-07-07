@@ -6,7 +6,8 @@
         <%= hidden_field_tag :benefit_reason, f.object.document_reason ? f.object.document_reason_type : :olympic,
                              class: 'hidden-pill-values' %>
         <%= pill_tabs('benefit_reason', [[:olympic, 'Олимпиада'], [:olympic_total, 'Всероссийская олимпиада'],
-                                         [:medicine, 'Медицинские показания'], [:custom, 'Иные причины']],
+                                         [:medicine, 'Медицинские показания'], [:orphan, 'Сирота'],
+                                         [:custom, 'Иные причины']],
                       'benefit_reason') %>
     </div>
 </div>
@@ -45,7 +46,7 @@
 
 <fieldset>
     <legend>Сведения о документе-основании</legend>
-    <% ['custom', 'olympic', 'olympic_total', 'medicine'].each do |d| %>
+    <% ['custom', 'orphan', 'olympic', 'olympic_total', 'medicine'].each do |d| %>
       <div id="entrant_benefit_<%= d %>_document" class="entrance_benefit_document">
         <%= render partial: "entrance/entrants/document/#{d}_document_fields", locals: {f: f} %>
       </div>

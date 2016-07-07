@@ -9,6 +9,7 @@ class Entrance::BenefitsController < ApplicationController
 
   def new
     @benefit.build_custom_document
+    @benefit.build_orphan_document
     @benefit.build_olympic_document
     @benefit.build_olympic_total_document
     @benefit.build_medical_disability_document
@@ -36,8 +37,11 @@ class Entrance::BenefitsController < ApplicationController
           :document_type_id, :temp_text,
            custom_document_attributes: [:id, :original, :series, :number, :date,
                                         :organization, :additional_info, :type_name],
+           orphan_document_attributes: [:id, :series, :number, :date, :orphan_category_id,
+                                       :organization, :additional_info, :type_name],
            olympic_document_attributes: [:id, :original, :series, :number, :date,
-                                         :diploma_type_id, :olympic_id, :level_id],
+                                         :diploma_type_id, :olympic_id, :level_id, :class_number,
+                                         :profile_id],
            olympic_total_document_attributes: [:id, :original, :series, :number,
                                                :diploma_type_id],
            medical_disability_document_attributes: [:id, :original, :series, :number, :date,

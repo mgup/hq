@@ -1,0 +1,13 @@
+ru:
+  activerecord:
+    models:
+      benefit_document/olympic_document: 'диплом победителя/призера'
+    attributes:
+      benefit_document/olympic_document:
+        series: 'Серия'
+        number: 'Номер'
+        diploma_type_id: 'ИД типа диплома'
+        olympic_id: 'ИД олимпиады'
+        level_id: 'Уровень'
+        date: 'Дата выдачи'
+

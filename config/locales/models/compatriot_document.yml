@@ -1,0 +1,13 @@
+ru:
+  activerecord:
+    models:
+      compatriot_document: 'документ, подтверждающий принадлежность к соотечественникам'
+    attributes:
+      compatriot_document:
+        series: 'серия'
+        number: 'номер'
+        organization: 'организация, выдавшая документ'
+        date: 'дата выдачи'
+        compatriot_category_id: 'тип документа'
+        type_name: 'наименование документа'
+        additional_info: 'примечания'

@@ -26,6 +26,9 @@ class Entrance::Entrant < ActiveRecord::Base
           class_name: 'IdentityDocument', foreign_key: :entrance_entrant_id
   accepts_nested_attributes_for :main_id_document, allow_destroy: true
 
+  has_many :compatriot_documents, class_name: 'CompatriotDocument', foreign_key: :entrance_entrant_id, dependent: :destroy
+  accepts_nested_attributes_for :compatriot_documents, allow_destroy: true
+
   belongs_to :campaign, class_name: Entrance::Campaign
 
   has_many :exam_results, class_name: 'Entrance::ExamResult', dependent: :destroy

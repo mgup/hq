@@ -1,0 +1,64 @@
+<%= f.fields_for :compatriot_documents do |sub_f| %>
+
+  <div class="form-group">
+      <%= sub_f.label :compatriot_category_id, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-8">
+          <%= sub_f.select :compatriot_category_id,
+                           options_for_select(
+                             [
+                               ['Документ, подтверждающий наличие гражданства СССР', 1],
+                               ['Документ, подтверждающий проживание в прошлом на территории Российского государства, Российской республики, РСФСР, СССР или РФ', 2],
+                               ['Документ, подтверждающий родство по прямой восходящей линии', 3],
+                               ['Документ, подтверждающий проживание за рубежом', 4],
+                               ['Иной документ', 5]
+                             ], sub_f.object.compatriot_category_id), {}, class: 'form-control' %>
+      </div>
+      <div class="col-sm-1">
+          <%= sub_f.link_to_remove class: 'btn btn-danger', title: 'Удалить документ' do %>
+            <span class="glyphicon glyphicon-remove"></span>
+          <% end %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :series, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :series, class: 'form-control' %>
+      </div>
+
+      <%= sub_f.label :number, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :number, class: 'form-control', required: true %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :organization, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-9">
+          <%= sub_f.text_field :organization, class: 'form-control' %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :date, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :date, class: 'form-control datepicker',
+                               value: sub_f.object.date ? l(sub_f.object.date) : '', required: true%>
+      </div>
+
+      <%= sub_f.label :type_name, class: 'col-sm-3 control-label' %>
+      <div class="col-sm-3">
+          <%= sub_f.text_field :type_name, class: 'form-control'%>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <%= sub_f.label :additional_info, class: 'col-sm-2 control-label' %>
+      <div class="col-sm-9">
+          <%= sub_f.text_area :additional_info, class: 'form-control'%>
+      </div>
+  </div>
+
+
+  <hr>
+<% end %>

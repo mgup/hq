@@ -56,7 +56,7 @@
   </div>
 
   <fieldset>
-    <legend>Удостоверение личности</legend>
+    <legend><strong>Удостоверение личности</strong></legend>
     <%= render partial: 'main_id_document_fields', locals: {f: f} %>
     <%= render partial: 'identity_documents_fields', locals: {f: f} %>
     <br>
@@ -64,10 +64,22 @@
         <%= f.link_to_add 'Добавить документ', :identity_documents,
                           class: 'col-lg-offset-4', title: 'Добавляются по необходимости, например, если человек сдавал ЕГЭ по другому документу.' %>
       </div>
+      <hr>
   </fieldset>
 
   <fieldset>
-    <legend>Контакты</legend>
+      <legend title="Заполняется только в Международном отделе">*Документы, подтверждающие принадлежность к соотечественникам</legend>
+      <%= render partial: 'compatriot_documents_fields', locals: {f: f} %>
+      <br>
+      <div class="form-group">
+          <%= f.link_to_add 'Добавить документ', :compatriot_documents,
+                            class: 'col-lg-offset-4 btn btn-default' %>
+      </div>
+  </fieldset>
+  <hr>
+
+  <fieldset>
+    <legend><strong>Контакты</strong></legend>
 
     <div class="form-group">
       <%= f.label :acountry, class: 'col-sm-2 control-label' %>
@@ -133,7 +145,7 @@
   </fieldset>
 
   <fieldset>
-    <legend>Документ об образовании</legend>
+    <legend><strong>Документ об образовании</strong></legend>
 
     <%= f.fields_for :edu_document do |edu_f| %>
       <%= edu_f.hidden_field :id %>
@@ -223,7 +235,7 @@
   </fieldset>
 
   <fieldset>
-    <legend>Дополнительная информация</legend>
+    <legend><strong>Дополнительная информация</strong></legend>
 
     <div class="form-group">
       <%= f.label :military_service, class: 'col-sm-2 control-label' %>
@@ -272,7 +284,7 @@
   </fieldset>
 
   <fieldset>
-    <legend>Вступительные испытания</legend>
+    <legend><strong>Вступительные испытания</strong></legend>
     <p id="required_exam_message" class="alert alert-info"
        style="display: none;">
       Необходимо добавить хотя бы одно вступительное испытание

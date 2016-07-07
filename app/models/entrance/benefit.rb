@@ -13,6 +13,8 @@ class Entrance::Benefit < ActiveRecord::Base
   accepts_nested_attributes_for :medical_disability_document, allow_destroy: true
   has_one :allow_education_document, class_name: 'BenefitDocument::AllowEducation', foreign_key: :entrance_benefit_id
   accepts_nested_attributes_for :allow_education_document, allow_destroy: true
+  has_one :orphan_document, class_name: 'BenefitDocument::Orphan', foreign_key: :entrance_benefit_id
+  accepts_nested_attributes_for :orphan_document, allow_destroy: true
   has_one :custom_document, class_name: 'BenefitDocument::Custom', foreign_key: :entrance_benefit_id
   accepts_nested_attributes_for :custom_document, allow_destroy: true
 
@@ -23,7 +25,9 @@ class Entrance::Benefit < ActiveRecord::Base
       'Победитель/призёр всероссийской олипиады школьников'
     elsif medical_disability_document
       'Медицинские показатели'
-    else custom_document
+    elsif orphan_document
+      'Сирота'
+    else
       'Иные причины'
     end
   end
@@ -35,6 +39,8 @@ class Entrance::Benefit < ActiveRecord::Base
       :olympic_total
     elsif medical_disability_document
       :medicine
+    elsif orphan_document
+      :orphan
     else custom_document
       :custom
     end

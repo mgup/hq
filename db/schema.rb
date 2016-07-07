@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160705094009) do
+ActiveRecord::Schema.define(version: 20160706135146) do
 
   create_table "FRDO", id: false, force: :cascade do |t|
     t.integer "ID",         limit: 4,   null: false
@@ -392,6 +392,17 @@ ActiveRecord::Schema.define(version: 20160705094009) do
     t.datetime "updated_at"
     t.integer  "year",                 limit: 4
     t.integer  "competitive_group_id", limit: 4, null: false
+  end
+
+  create_table "compatriot_documents", force: :cascade do |t|
+    t.string  "series",                 limit: 255
+    t.string  "number",                 limit: 255
+    t.date    "date"
+    t.string  "organization",           limit: 255
+    t.text    "additional_info",        limit: 65535
+    t.string  "type_name",              limit: 255
+    t.integer "compatriot_category_id", limit: 4
+    t.integer "entrance_entrant_id",    limit: 4
   end
 
   create_table "competitive_group_item_profiles", force: :cascade do |t|
@@ -1685,6 +1696,10 @@ ActiveRecord::Schema.define(version: 20160705094009) do
     t.datetime "updated_at"
   end
 
+  create_table "olympic_class_numbers", force: :cascade do |t|
+    t.string "name", limit: 255
+  end
+
   create_table "olympic_documents", force: :cascade do |t|
     t.boolean "original",            limit: 1,   default: true
     t.string  "series",              limit: 255
@@ -1694,6 +1709,12 @@ ActiveRecord::Schema.define(version: 20160705094009) do
     t.integer "olympic_id",          limit: 4
     t.integer "level_id",            limit: 4
     t.integer "entrance_benefit_id", limit: 4
+    t.integer "profile_id",          limit: 4
+    t.string  "class_number",        limit: 255
+  end
+
+  create_table "olympic_profiles", force: :cascade do |t|
+    t.string "name", limit: 255
   end
 
   create_table "olympic_total_document_subjects", force: :cascade do |t|
@@ -1707,6 +1728,7 @@ ActiveRecord::Schema.define(version: 20160705094009) do
     t.string  "number",              limit: 255
     t.integer "diploma_type_id",     limit: 4
     t.integer "entrance_benefit_id", limit: 4
+    t.string  "class_number",        limit: 255
   end
 
   create_table "optional", primary_key: "optional_id", force: :cascade do |t|
@@ -1784,6 +1806,17 @@ ActiveRecord::Schema.define(version: 20160705094009) do
   end
 
   add_index "order_xsl", ["order_xsl_template"], name: "order_xsl_template", using: :btree
+
+  create_table "orphan_documents", force: :cascade do |t|
+    t.string  "series",              limit: 255
+    t.string  "number",              limit: 255
+    t.date    "date"
+    t.string  "organization",        limit: 255
+    t.text    "additional_info",     limit: 65535
+    t.string  "type_name",           limit: 255
+    t.integer "orphan_category_id",  limit: 4
+    t.integer "entrance_benefit_id", limit: 4
+  end
 
   create_table "phonebooks", force: :cascade do |t|
     t.datetime "created_at"
