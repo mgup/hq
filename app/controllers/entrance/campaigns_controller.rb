@@ -316,9 +316,9 @@ class Entrance::CampaignsController < ApplicationController
         #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
 
         apps = Entrance::Application.
-          where(campaign_id: [12016, 22016, 32016, 42016]).
-          in_groups(5)
-        @applications = apps[0]
+          where(campaign_id: [12016, 22016, 32016, 42016])#.
+          #in_groups(5)
+        @applications = apps#[0]
 
         # @applications = Entrance::Application.where(
         #   'entrance_applications.number IN (?)',
