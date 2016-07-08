@@ -333,13 +333,13 @@ class Entrance::CampaignsController < ApplicationController
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
             xml.Applications do
-              @applications.find_all { |a| 8 != a.status_id }.each do |application|
+              @applications.find_all { |a| a.order.blank? || a.order.signing_date.blank? }.each do |application|
                 xml << application.to_fis.xpath('/Application').to_xml.to_str
               end
             end
 
             xml.Orders do
-              apps = @applications.find_all { |a| 8 == a.status_id}
+              apps = @applications.find_all { |a| 8 == a.status_id && a.order.signing_date.present? }
 
               xml.OrdersOfAdmission do
                 apps.group_by { |a| a.order }.each do |o, applications|
