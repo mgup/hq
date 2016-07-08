@@ -320,27 +320,29 @@ class Entrance::CampaignsController < ApplicationController
           in_groups(2)
         @applications = apps[0]
 
-        @applications = Entrance::Application.where(
-          'entrance_applications.number IN (?)',
-          ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-МД027п', '16-ЭД016п',
-           '16-МД023п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
-           '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
-           '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
-           '16-ИМ006п', '16-БД008п', '16-ИМ005п']
-        )
+        # @applications = Entrance::Application.where(
+        #   'entrance_applications.number IN (?)',
+        #   ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-МД027п', '16-ЭД016п',
+        #    '16-МД023п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
+        #    '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
+        #    '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
+        #    '16-ИМ006п', '16-БД008п', '16-ИМ005п']
+        # )
         # '16-РВ001п', '16-РВ002п',
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
-            # xml.Applications do
-            #   @applications.each do |application|
-            #     xml << application.to_fis.xpath('/Application').to_xml.to_str
-            #   end
-            # end
+            xml.Applications do
+              @applications.find_all { |a| 8 != a.status_id }.each do |application|
+                xml << application.to_fis.xpath('/Application').to_xml.to_str
+              end
+            end
 
             xml.Orders do
+              apps = @applications.find_all { |a| 8 == a.status_id}
+
               xml.OrdersOfAdmission do
-                @applications.group_by { |a| a.order }.each do |o, applications|
+                apps.group_by { |a| a.order }.each do |o, applications|
                   a = applications[0]
 
                   xml.OrderOfAdmission do
@@ -366,7 +368,7 @@ class Entrance::CampaignsController < ApplicationController
               end
 
               xml.Applications do
-                @applications.each do |application|
+                apps.each do |application|
                   xml.Application do
                     xml.ApplicationUID application.id
                     xml.OrderUID "order_of_admission_#{application.order.id}"
