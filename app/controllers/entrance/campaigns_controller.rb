@@ -317,7 +317,7 @@ class Entrance::CampaignsController < ApplicationController
 
         apps = Entrance::Application.
           where(campaign_id: [12016, 22016, 32016, 42016]).
-          in_groups(4)
+          in_groups(5)
         @applications = apps[0]
 
         # @applications = Entrance::Application.where(
