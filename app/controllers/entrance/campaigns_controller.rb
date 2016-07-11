@@ -131,10 +131,10 @@ class Entrance::CampaignsController < ApplicationController
 
     @data = {}
     @directions.each do |direction|
-      @data[direction.id] = {}
+      @data[direction.description] = {}
 
       fields[:budget].each do |group|
-        @data[direction.id][group] = {
+        @data[direction.description][group] = {
           applications: [],
           total: 0,
           originals: 0,
@@ -146,7 +146,7 @@ class Entrance::CampaignsController < ApplicationController
       end
 
       fields[:paid].each do |group|
-        @data[direction.id][group] = {
+        @data[direction.description][group] = {
           applications: [],
           total: 0,
           contracts: 0,
@@ -154,6 +154,44 @@ class Entrance::CampaignsController < ApplicationController
           enrolled: 0,
           contest: 0
         }
+      end
+    end
+
+    Entrance::Application.where(campaign_id: [12016, 22016, 32016, 42016]).all.each do |application|
+      if application.payed?
+        # Внебюджет
+      else
+        # Бюджет
+        if 12 == application.form
+          @data[application.direction.description][:oz_o][:applications] << application
+        elsif application.competitive_group.name.include?('Крым')
+          @data[application.direction.description][:o_crimea][:applications] << application
+        elsif application.competitive_group.name.include?('иностранцы')
+          @data[application.direction.description][:o_foreign][:applications] << application
+        end
+      end
+    end
+
+    @directions.each do |direction|
+      fields[:budget].each do |group|
+        apps = @data[direction.description][group][:applications]
+
+        @data[direction.description][group][:total] = apps.size
+        @data[direction.description][group][:originals] = 0
+        @data[direction.description][group][:places] = 0
+        @data[direction.description][group][:enrolled] = 0
+        @data[direction.description][group][:contest] = 0
+        @data[direction.description][group][:contest_by_original] = 0
+      end
+
+      fields[:paid].each do |group|
+        apps = @data[direction.description][group][:applications]
+
+        @data[direction.description][group][:total] = apps.size
+        @data[direction.description][group][:contracts] = 0
+        @data[direction.description][group][:places] = 0
+        @data[direction.description][group][:enrolled] = 0
+        @data[direction.description][group][:contest] = 0
       end
     end
   end

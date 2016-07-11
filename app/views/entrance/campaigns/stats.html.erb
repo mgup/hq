@@ -130,13 +130,13 @@
 
         <% [:o_o, :o_quota, :o_target, :o_crimea, :oz_o].each do |group| %>
           <% [:total, :originals, :places, :enrolled, :contest, :contest_by_original].each do |field| %>
-            <td><%= @data[direction.id][group][field] %></td>
+            <td><%= @data[direction.description][group][field] %></td>
           <% end %>
         <% end %>
 
         <% [:po_o, :po_crimea, :po_foreign, :poz_o, :poz_foreign, :pz_o].each do |group| %>
           <% [:total, :contracts, :places, :enrolled, :contest].each do |field| %>
-            <td><%= @data[direction.id][group][field] %></td>
+            <td><%= @data[direction.description][group][field] %></td>
           <% end %>
         <% end %>
       </tr>
