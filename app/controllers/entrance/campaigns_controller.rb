@@ -1,7 +1,7 @@
 class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
   skip_before_action :authenticate_user!, only: [:applications, :balls] #, :report] #, :rating]#, if: :format_html?
-  load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report]
+  load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report, :stats]
   load_resource class: 'Entrance::Campaign', only: [:results, :competitive_groups]
 
   #before_action :validate_crimea, only: [:rating]
@@ -12,16 +12,9 @@ class Entrance::CampaignsController < ApplicationController
     request.format.html?
   end
 
-
   def choice
 
   end
-
-  # Заявления.
-  # def dashboard
-  #   fail '123'
-  #   @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
-  # end
 
   def validate_crimea
     @campaign = Entrance::Campaign.find(32015) unless signed_in?
@@ -123,6 +116,46 @@ class Entrance::CampaignsController < ApplicationController
 
   def competitive_groups
     @items = @campaign.items.group_by {|i| i.direction}
+  end
+
+  def stats
+    @directions = Entrance::Campaign.where(start_year: Entrance::Campaign::CURRENT_YEAR).
+      map(&:competitive_groups).sum.map(&:items).sum.map(&:direction).uniq.sort_by do |d|
+      [d.bachelor? || d.specialist? ? 1 : 2, d.master? ? 1 : 2, d.name]
+    end
+
+    fields = {
+      budget: [:o_o, :o_quota, :o_target, :o_crimea, :oz_o],
+      paid: [:po_o, :po_crimea, :po_foreign, :poz_o, :poz_foreign, :pz_o]
+    }
+
+    @data = {}
+    @directions.each do |direction|
+      @data[direction.id] = {}
+
+      fields[:budget].each do |group|
+        @data[direction.id][group] = {
+          applications: [],
+          total: 0,
+          originals: 0,
+          places: 0,
+          enrolled: 0,
+          contest: 0,
+          contest_by_original: 0
+        }
+      end
+
+      fields[:paid].each do |group|
+        @data[direction.id][group] = {
+          applications: [],
+          total: 0,
+          contracts: 0,
+          places: 0,
+          enrolled: 0,
+          contest: 0
+        }
+      end
+    end
   end
 
   def report
@@ -556,5 +589,4 @@ class Entrance::CampaignsController < ApplicationController
 
     apps
   end
-
 end

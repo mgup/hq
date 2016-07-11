@@ -1,0 +1,145 @@
+<script>
+  $(function() {
+    $('#page_sidebar').next().removeClass('col-sm-9').addClass('col-sm-12');
+    $('#page_sidebar').hide();
+    $('#return_up').hide();
+  });
+</script>
+
+<div class="page-header">
+  <h2>
+    Статистика приёма <%= Entrance::Campaign::CURRENT_YEAR %>
+    <span class="nowrap">на <%= l Time.now %></span>
+  </h2>
+</div>
+
+<table class="table table-condensed table-bordered table-striped">
+  <thead>
+    <tr>
+      <th rowspan="5">Направление</th>
+      <th colspan="30">Бюджет</th>
+      <th colspan="30">Платный приём</th>
+    </tr>
+    <tr>
+      <th colspan="24">Очная</th>
+      <th colspan="6">Очно-заочная</th>
+
+      <th colspan="15">Очная</th>
+      <th colspan="10">Очно-заочная</th>
+      <th colspan="5">Заочная</th>
+    </tr>
+    <tr>
+      <th colspan="6" rowspan="2">Общий конкурс</th>
+      <th colspan="18">Выделенные места</th>
+      <th colspan="6" rowspan="2">Общий конкурс</th>
+
+      <th colspan="5" rowspan="2">Общий конкурс</th>
+      <th colspan="10">Выделенные места</th>
+      <th colspan="5" rowspan="2">Общий конкурс</th>
+      <th colspan="5">Выделенные места</th>
+      <th colspan="5" rowspan="2">Общий конкурс</th>
+    </tr>
+    <tr>
+      <th colspan="6">Квота особых прав</th>
+      <th colspan="6">Квота целевых мест</th>
+      <th colspan="6">Квота «Крым»</th>
+
+      <th colspan="5">Квота «Крым»</th>
+      <th colspan="5">Иностранцы</th>
+      <th colspan="5">Иностранцы</th>
+    </tr>
+    <tr>
+      <th>Всего заявлений</th>
+      <th>Из них с оригиналами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по оригиналам</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с оригиналами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по оригиналам</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с оригиналами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по оригиналам</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с оригиналами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по оригиналам</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с оригиналами</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+      <th>Конкурс по оригиналам</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с договором</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с договором</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с договором</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с договором</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с договором</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+
+      <th>Всего заявлений</th>
+      <th>Из них с договором</th>
+      <th>Всего мест</th>
+      <th>Из них зачислено</th>
+      <th>Конкурс</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @directions.each do |direction| %>
+      <tr>
+        <th>
+          <%= direction.description %>
+        </th>
+
+        <% [:o_o, :o_quota, :o_target, :o_crimea, :oz_o].each do |group| %>
+          <% [:total, :originals, :places, :enrolled, :contest, :contest_by_original].each do |field| %>
+            <td><%= @data[direction.id][group][field] %></td>
+          <% end %>
+        <% end %>
+
+        <% [:po_o, :po_crimea, :po_foreign, :poz_o, :poz_foreign, :pz_o].each do |group| %>
+          <% [:total, :contracts, :places, :enrolled, :contest].each do |field| %>
+            <td><%= @data[direction.id][group][field] %></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
