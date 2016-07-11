@@ -157,6 +157,64 @@ class Entrance::CampaignsController < ApplicationController
       end
     end
 
+    @directions.each do |direction|
+      o_o = 0
+      o_quota = 0
+      o_target = 0
+      o_crimea = 0
+      oz_o = 0
+      po_o = 0
+      po_crimea = 0
+      po_foreign = 0
+      poz_o = 0
+      poz_foreign = 0
+      pz_o = 0
+
+      direction.competitive_group_items.each do |gi|
+        g = gi.competitive_group
+
+        next unless g.campaign.start_year == Entrance::Campaign::CURRENT_YEAR
+
+        if g.name.include?(', бюджет')
+          if g.name.include?('Крым')
+            o_crimea += gi.number_budget_o
+            o_o += gi.number_budget_o
+          else
+            if g.target_organizations.any?
+              o_target += g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == direction.description }.map(&:number_target_o).sum
+            end
+
+            o_o += gi.number_budget_o - o_target
+            o_quota += gi.number_quota_o
+            oz_o += gi.number_budget_oz
+          end
+        else
+          if g.name.include?('Крым')
+            po_crimea += gi.number_paid_o
+          elsif g.name.include?('иностранцы')
+            po_foreign += gi.number_paid_o
+            poz_foreign += gi.number_paid_oz
+          else
+            po_o += gi.number_paid_o
+            poz_o += gi.number_paid_oz
+            pz_o += gi.number_paid_z
+          end
+        end
+      end
+
+      @data[direction.description][:o_o][:places] = o_o
+      @data[direction.description][:o_quota][:places] = o_quota
+      @data[direction.description][:o_target][:places] = o_target
+      @data[direction.description][:o_crimea][:places] = o_crimea
+      @data[direction.description][:oz_o][:places] = oz_o
+      @data[direction.description][:po_o][:places] = po_o
+      @data[direction.description][:po_crimea][:places] = po_crimea
+      @data[direction.description][:po_foreign][:places] = po_foreign
+      @data[direction.description][:poz_o][:places] = poz_o
+      @data[direction.description][:poz_foreign][:places] = poz_foreign
+      @data[direction.description][:pz_o][:places] = pz_o
+    end
+
     Entrance::Application.where(campaign_id: [12016, 22016, 32016, 42016]).all.each do |application|
       if application.payed?
         # Внебюджет
@@ -168,6 +226,12 @@ class Entrance::CampaignsController < ApplicationController
           @data[application.direction.description][:o_crimea][:applications] << application
         elsif application.competitive_group.name.include?('иностранцы')
           @data[application.direction.description][:o_foreign][:applications] << application
+        elsif application.competitive_group_target_item
+          @data[application.direction.description][:o_target][:applications] << application
+        elsif application.benefits.any? && application.benefits.first.benefit_kind.special_rights?
+          @data[application.direction.description][:o_quota][:applications] << application
+        else
+          @data[application.direction.description][:o_o][:applications] << application
         end
       end
     end
@@ -177,21 +241,22 @@ class Entrance::CampaignsController < ApplicationController
         apps = @data[direction.description][group][:applications]
 
         @data[direction.description][group][:total] = apps.size
-        @data[direction.description][group][:originals] = 0
-        @data[direction.description][group][:places] = 0
-        @data[direction.description][group][:enrolled] = 0
-        @data[direction.description][group][:contest] = 0
-        @data[direction.description][group][:contest_by_original] = 0
+        @data[direction.description][group][:originals] = apps.find_all { |a| a.original? }.size
+        @data[direction.description][group][:enrolled] = apps.find_all { |a| 8 == a.status_id }.size
+        @data[direction.description][group][:contest] =
+          @data[direction.description][group][:total] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
+        @data[direction.description][group][:contest_by_original] =
+          @data[direction.description][group][:originals] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
       end
 
       fields[:paid].each do |group|
         apps = @data[direction.description][group][:applications]
 
         @data[direction.description][group][:total] = apps.size
-        @data[direction.description][group][:contracts] = 0
-        @data[direction.description][group][:places] = 0
-        @data[direction.description][group][:enrolled] = 0
-        @data[direction.description][group][:contest] = 0
+        @data[direction.description][group][:contracts] = apps.find_all { |a| a.contract.present? }.size
+        @data[direction.description][group][:enrolled] = apps.find_all { |a| 8 == a.status_id }.size
+        @data[direction.description][group][:contest] =
+          @data[direction.description][group][:total] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
       end
     end
   end
