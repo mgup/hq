@@ -376,6 +376,7 @@ HQ::Application.routes.draw do
       get 'crimea_rating',     on: :member
       get 'results',     on: :member
       get 'balls',     on: :member
+      get 'stats', on: :collection
       get 'orders', on: :collection
       get 'numbers', on: :collection
 

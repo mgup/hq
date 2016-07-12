@@ -1,7 +1,7 @@
 class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
-  skip_before_action :authenticate_user!, only: [:applications, :balls] #, :report] #, :rating]#, if: :format_html?
-  load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report]
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :stats] #, :report] #, :rating]#, if: :format_html?
+  load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report, :stats]
   load_resource class: 'Entrance::Campaign', only: [:results, :competitive_groups]
 
   #before_action :validate_crimea, only: [:rating]
@@ -12,16 +12,9 @@ class Entrance::CampaignsController < ApplicationController
     request.format.html?
   end
 
-
   def choice
 
   end
-
-  # Заявления.
-  # def dashboard
-  #   fail '123'
-  #   @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
-  # end
 
   def validate_crimea
     @campaign = Entrance::Campaign.find(32015) unless signed_in?
@@ -123,6 +116,149 @@ class Entrance::CampaignsController < ApplicationController
 
   def competitive_groups
     @items = @campaign.items.group_by {|i| i.direction}
+  end
+
+  def stats
+    @directions = Entrance::Campaign.where(start_year: Entrance::Campaign::CURRENT_YEAR).
+      map(&:competitive_groups).sum.map(&:items).sum.map(&:direction).uniq.sort_by do |d|
+      [d.bachelor? || d.specialist? ? 1 : 2, d.master? ? 1 : 2, d.name]
+    end
+
+    fields = {
+      budget: [:o_o, :o_quota, :o_target, :o_crimea, :oz_o],
+      paid: [:po_o, :po_crimea, :po_foreign, :poz_o, :poz_foreign, :pz_o]
+    }
+
+    @data = {}
+    @directions.each do |direction|
+      @data[direction.description] = {}
+
+      fields[:budget].each do |group|
+        @data[direction.description][group] = {
+          applications: [],
+          total: 0,
+          originals: 0,
+          places: 0,
+          enrolled: 0,
+          contest: 0,
+          contest_by_original: 0
+        }
+      end
+
+      fields[:paid].each do |group|
+        @data[direction.description][group] = {
+          applications: [],
+          total: 0,
+          contracts: 0,
+          places: 0,
+          enrolled: 0,
+          contest: 0
+        }
+      end
+    end
+
+    @directions.each do |direction|
+      o_o = 0
+      o_quota = 0
+      o_target = 0
+      o_crimea = 0
+      oz_o = 0
+      po_o = 0
+      po_crimea = 0
+      po_foreign = 0
+      poz_o = 0
+      poz_foreign = 0
+      pz_o = 0
+
+      direction.competitive_group_items.each do |gi|
+        g = gi.competitive_group
+
+        next unless g.campaign.start_year == Entrance::Campaign::CURRENT_YEAR
+
+        if g.name.include?(', бюджет')
+          if g.name.include?('Крым')
+            o_crimea += gi.number_budget_o
+            o_o += gi.number_budget_o
+          else
+            if g.target_organizations.any?
+              o_target += g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == direction.description }.map(&:number_target_o).sum
+            end
+
+            o_o += gi.number_budget_o - o_target
+            o_quota += gi.number_quota_o
+            oz_o += gi.number_budget_oz
+          end
+        else
+          if g.name.include?('Крым')
+            po_crimea += gi.number_paid_o
+          elsif g.name.include?('иностранцы')
+            po_foreign += gi.number_paid_o
+            poz_foreign += gi.number_paid_oz
+          else
+            po_o += gi.number_paid_o
+            poz_o += gi.number_paid_oz
+            pz_o += gi.number_paid_z
+          end
+        end
+      end
+
+      @data[direction.description][:o_o][:places] = o_o
+      @data[direction.description][:o_quota][:places] = o_quota
+      @data[direction.description][:o_target][:places] = o_target
+      @data[direction.description][:o_crimea][:places] = o_crimea
+      @data[direction.description][:oz_o][:places] = oz_o
+      @data[direction.description][:po_o][:places] = po_o
+      @data[direction.description][:po_crimea][:places] = po_crimea
+      @data[direction.description][:po_foreign][:places] = po_foreign
+      @data[direction.description][:poz_o][:places] = poz_o
+      @data[direction.description][:poz_foreign][:places] = poz_foreign
+      @data[direction.description][:pz_o][:places] = pz_o
+    end
+
+    Entrance::Application.where(campaign_id: [12016, 22016, 32016, 42016]).all.each do |application|
+      if application.payed?
+        # Внебюджет
+      else
+        # Бюджет
+        if 12 == application.form
+          @data[application.direction.description][:oz_o][:applications] << application
+        elsif application.competitive_group.name.include?('Крым')
+          @data[application.direction.description][:o_crimea][:applications] << application
+        elsif application.competitive_group.name.include?('иностранцы')
+          @data[application.direction.description][:o_foreign][:applications] << application
+        elsif application.competitive_group_target_item
+          @data[application.direction.description][:o_target][:applications] << application
+        elsif application.benefits.any? && application.benefits.first.benefit_kind.special_rights?
+          @data[application.direction.description][:o_quota][:applications] << application
+        else
+          @data[application.direction.description][:o_o][:applications] << application
+        end
+      end
+    end
+
+    @directions.each do |direction|
+      fields[:budget].each do |group|
+        apps = @data[direction.description][group][:applications]
+
+        @data[direction.description][group][:total] = apps.size
+        @data[direction.description][group][:originals] = apps.find_all { |a| a.original? }.size
+        @data[direction.description][group][:enrolled] = apps.find_all { |a| 8 == a.status_id }.size
+        @data[direction.description][group][:contest] =
+          @data[direction.description][group][:total] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
+        @data[direction.description][group][:contest_by_original] =
+          @data[direction.description][group][:originals] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
+      end
+
+      fields[:paid].each do |group|
+        apps = @data[direction.description][group][:applications]
+
+        @data[direction.description][group][:total] = apps.size
+        @data[direction.description][group][:contracts] = apps.find_all { |a| a.contract.present? }.size
+        @data[direction.description][group][:enrolled] = apps.find_all { |a| 8 == a.status_id }.size
+        @data[direction.description][group][:contest] =
+          @data[direction.description][group][:total] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
+      end
+    end
   end
 
   def report
@@ -316,31 +452,33 @@ class Entrance::CampaignsController < ApplicationController
         #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
 
         apps = Entrance::Application.
-          where(campaign_id: [12016, 22016, 32016, 42016]).
-          in_groups(2)
-        @applications = apps[0]
+          where(campaign_id: [12016, 22016, 32016, 42016])#.
+          #in_groups(5)
+        @applications = apps#[0]
 
-        @applications = Entrance::Application.where(
-          'entrance_applications.number IN (?)',
-          ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-МД027п', '16-ЭД016п',
-           '16-МД023п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
-           '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
-           '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
-           '16-ИМ006п', '16-БД008п', '16-ИМ005п']
-        )
+        # @applications = Entrance::Application.where(
+        #   'entrance_applications.number IN (?)',
+        #   ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-МД027п', '16-ЭД016п',
+        #    '16-МД023п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
+        #    '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
+        #    '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
+        #    '16-ИМ006п', '16-БД008п', '16-ИМ005п']
+        # )
         # '16-РВ001п', '16-РВ002п',
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
-            # xml.Applications do
-            #   @applications.each do |application|
-            #     xml << application.to_fis.xpath('/Application').to_xml.to_str
-            #   end
-            # end
+            xml.Applications do
+              @applications.find_all { |a| a.order.blank? || a.order.signing_date.blank? }.each do |application|
+                xml << application.to_fis.xpath('/Application').to_xml.to_str
+              end
+            end
 
             xml.Orders do
+              apps = @applications.find_all { |a| 8 == a.status_id && a.order.signing_date.present? }
+
               xml.OrdersOfAdmission do
-                @applications.group_by { |a| a.order }.each do |o, applications|
+                apps.group_by { |a| a.order }.each do |o, applications|
                   a = applications[0]
 
                   xml.OrderOfAdmission do
@@ -366,7 +504,7 @@ class Entrance::CampaignsController < ApplicationController
               end
 
               xml.Applications do
-                @applications.each do |application|
+                apps.each do |application|
                   xml.Application do
                     xml.ApplicationUID application.id
                     xml.OrderUID "order_of_admission_#{application.order.id}"
@@ -554,5 +692,4 @@ class Entrance::CampaignsController < ApplicationController
 
     apps
   end
-
 end

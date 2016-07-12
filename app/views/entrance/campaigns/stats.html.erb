@@ -1,0 +1,244 @@
+<script>
+  $(function() {
+    $('#page_sidebar').next().removeClass('col-sm-9').addClass('col-sm-12');
+    $('#page_sidebar').hide();
+    $('#return_up').hide();
+  });
+</script>
+
+<div class="page-header">
+  <h2>
+    Статистика приёма <%= Entrance::Campaign::CURRENT_YEAR %>
+    <span class="nowrap">на <%= l Time.now %></span>
+  </h2>
+</div>
+
+<style>
+  thead tr:nth-child(1) th:nth-child(1),
+  thead tr:nth-child(1) th:nth-child(2),
+  thead tr:nth-child(2) th:nth-child(1),
+  thead tr:nth-child(2) th:nth-child(2),
+  thead tr:nth-child(2) th:nth-child(3),
+  thead tr:nth-child(2) th:nth-child(4),
+  thead tr:nth-child(3) th:nth-child(1),
+  thead tr:nth-child(3) th:nth-child(2),
+  thead tr:nth-child(3) th:nth-child(3),
+  thead tr:nth-child(3) th:nth-child(4),
+  thead tr:nth-child(3) th:nth-child(5),
+  thead tr:nth-child(3) th:nth-child(6),
+  thead tr:nth-child(3) th:nth-child(7),
+  thead tr:nth-child(4) th:nth-child(1),
+  thead tr:nth-child(4) th:nth-child(2),
+  thead tr:nth-child(4) th:nth-child(3),
+  thead tr:nth-child(4) th:nth-child(4),
+  thead tr:nth-child(5) th:nth-child(6),
+  thead tr:nth-child(5) th:nth-child(12),
+  thead tr:nth-child(5) th:nth-child(18),
+  thead tr:nth-child(5) th:nth-child(24),
+  thead tr:nth-child(5) th:nth-child(30),
+  thead tr:nth-child(5) th:nth-child(35),
+  thead tr:nth-child(5) th:nth-child(40),
+  thead tr:nth-child(5) th:nth-child(45),
+  thead tr:nth-child(5) th:nth-child(50),
+  thead tr:nth-child(5) th:nth-child(55),
+  tbody th,
+  tbody td:nth-child(1), tbody td:nth-child(7),
+  tbody td:nth-child(13), tbody td:nth-child(19),
+  tbody td:nth-child(25), tbody td:nth-child(31),
+  tbody td:nth-child(36), tbody td:nth-child(41),
+  tbody td:nth-child(46), tbody td:nth-child(51),
+  tbody td:nth-child(56),
+  tfoot th:nth-child(1), tfoot th:nth-child(7),
+  tfoot th:nth-child(13), tfoot th:nth-child(19),
+  tfoot th:nth-child(25), tfoot th:nth-child(31),
+  tfoot th:nth-child(36), tfoot th:nth-child(41),
+  tfoot th:nth-child(46), tfoot th:nth-child(51),
+  tfoot th:nth-child(56)
+  {
+    border-right: 2px solid black !important;
+  }
+</style>
+
+<table class="table table-condensed table-bordered table-striped">
+  <thead>
+    <tr>
+      <th rowspan="5">Направление</th>
+      <th colspan="30">Бюджет</th>
+      <th colspan="30">Платный приём</th>
+    </tr>
+    <tr>
+      <th colspan="24">Очная</th>
+      <th colspan="6">Очно-заочная</th>
+
+      <th colspan="15">Очная</th>
+      <th colspan="10">Очно-заочная</th>
+      <th colspan="5">Заочная</th>
+    </tr>
+    <tr>
+      <th colspan="6" rowspan="2">Общий конкурс</th>
+      <th colspan="18">Выделенные места</th>
+      <th colspan="6" rowspan="2">Общий конкурс</th>
+
+      <th colspan="5" rowspan="2">Общий конкурс</th>
+      <th colspan="10">Выделенные места</th>
+      <th colspan="5" rowspan="2">Общий конкурс</th>
+      <th colspan="5">Выделенные места</th>
+      <th colspan="5" rowspan="2">Общий конкурс</th>
+    </tr>
+    <tr>
+      <th colspan="6">Квота особых прав</th>
+      <th colspan="6">Квота целевых мест</th>
+      <th colspan="6">Квота «Крым»</th>
+
+      <th colspan="5">Квота «Крым»</th>
+      <th colspan="5">Иностранцы</th>
+      <th colspan="5">Иностранцы</th>
+    </tr>
+    <tr>
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с оригиналами">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+      <th><abbr title="Конкурс по оригиналам">F</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с оригиналами">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+      <th><abbr title="Конкурс по оригиналам">F</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с оригиналами">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+      <th><abbr title="Конкурс по оригиналам">F</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с оригиналами">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+      <th><abbr title="Конкурс по оригиналам">F</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с оригиналами">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+      <th><abbr title="Конкурс по оригиналам">F</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с договором">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с договором">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с договором">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с договором">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с договором">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+
+      <th><abbr title="Всего заявлений">A</abbr></th>
+      <th><abbr title="Из них с договором">B</abbr></th>
+      <th><abbr title="Всего мест">C</abbr></th>
+      <th><abbr title="Из них зачислено">D</abbr></th>
+      <th><abbr title="Конкурс">E</abbr></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @directions.each do |direction| %>
+      <tr>
+        <th>
+          <%= direction.description %>
+        </th>
+
+        <% [:o_o, :o_quota, :o_target, :o_crimea, :oz_o].each do |group| %>
+          <% [:total, :originals, :places, :enrolled, :contest, :contest_by_original].each do |field| %>
+            <td><%= @data[direction.description][group][field] if 0 != @data[direction.description][group][field] %></td>
+          <% end %>
+        <% end %>
+
+        <% [:po_o, :po_crimea, :po_foreign, :poz_o, :poz_foreign, :pz_o].each do |group| %>
+          <% [:total, :contracts, :places, :enrolled, :contest].each do |field| %>
+            <td><%= @data[direction.description][group][field] if 0 != @data[direction.description][group][field] %></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Всего:</th>
+      <% 60.times do %>
+        <th></th>
+      <% end %>
+    </tr>
+  </tfoot>
+</table>
+
+<script>
+  $(function() {
+    var tds = [
+      2, 3, 4, 5,
+      8, 9, 10, 11,
+      14, 15, 16, 17,
+      20, 21, 22, 23,
+      26, 27, 28, 29,
+      32, 33, 34, 35,
+      37, 38, 39, 40,
+      42, 43, 44, 45,
+      47, 48, 49, 50,
+      52, 53, 54, 55,
+      57, 58, 59, 60
+    ];
+    for (var i = 0; i < tds.length; i++) {
+      $('tfoot th:nth-child(' + tds[i] + ')').text(
+        $('tbody td:nth-child(' + tds[i] + ')')
+          .map(function() {
+            return parseInt($(this).text());
+          }).toArray()
+          .reduce(function(total, number) {
+            return (isNaN(number) ? total : total + number);
+          }, 0)
+      );
+    }
+
+    var tds = [6, 12, 18, 24, 30, 36, 41, 46, 51, 56, 61];
+    for (var i = 0; i < tds.length; i++) {
+      $('tfoot th:nth-child(' + tds[i] + ')').text(
+        (parseInt($('tfoot th:nth-child(' + (tds[i] - 4) + ')').text())
+          / parseInt($('tfoot th:nth-child(' + (tds[i] - 2) + ')').text())).toPrecision(2)
+      );
+    }
+
+    var tds = [7, 13, 19, 25, 31];
+    for (var i = 0; i < tds.length; i++) {
+      $('tfoot th:nth-child(' + tds[i] + ')').text(
+        (parseInt($('tfoot th:nth-child(' + (tds[i] - 4) + ')').text())
+          / parseInt($('tfoot th:nth-child(' + (tds[i] - 3) + ')').text())).toPrecision(2)
+      );
+    }
+  });
+</script>
