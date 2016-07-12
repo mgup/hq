@@ -47,7 +47,13 @@
   tbody td:nth-child(25), tbody td:nth-child(31),
   tbody td:nth-child(36), tbody td:nth-child(41),
   tbody td:nth-child(46), tbody td:nth-child(51),
-  tbody td:nth-child(56)
+  tbody td:nth-child(56),
+  tfoot th:nth-child(1), tfoot th:nth-child(7),
+  tfoot th:nth-child(13), tfoot th:nth-child(19),
+  tfoot th:nth-child(25), tfoot th:nth-child(31),
+  tfoot th:nth-child(36), tfoot th:nth-child(41),
+  tfoot th:nth-child(46), tfoot th:nth-child(51),
+  tfoot th:nth-child(56)
   {
     border-right: 2px solid black !important;
   }
@@ -182,4 +188,57 @@
       </tr>
     <% end %>
   </tbody>
+  <tfoot>
+    <tr>
+      <th>Всего:</th>
+      <% 60.times do %>
+        <th></th>
+      <% end %>
+    </tr>
+  </tfoot>
 </table>
+
+<script>
+  $(function() {
+    var tds = [
+      2, 3, 4, 5,
+      8, 9, 10, 11,
+      14, 15, 16, 17,
+      20, 21, 22, 23,
+      26, 27, 28, 29,
+      32, 33, 34, 35,
+      37, 38, 39, 40,
+      42, 43, 44, 45,
+      47, 48, 49, 50,
+      52, 53, 54, 55,
+      57, 58, 59, 60
+    ];
+    for (var i = 0; i < tds.length; i++) {
+      $('tfoot th:nth-child(' + tds[i] + ')').text(
+        $('tbody td:nth-child(' + tds[i] + ')')
+          .map(function() {
+            return parseInt($(this).text());
+          }).toArray()
+          .reduce(function(total, number) {
+            return (isNaN(number) ? total : total + number);
+          }, 0)
+      );
+    }
+
+    var tds = [6, 12, 18, 24, 30, 36, 41, 46, 51, 56, 61];
+    for (var i = 0; i < tds.length; i++) {
+      $('tfoot th:nth-child(' + tds[i] + ')').text(
+        (parseInt($('tfoot th:nth-child(' + (tds[i] - 4) + ')').text())
+          / parseInt($('tfoot th:nth-child(' + (tds[i] - 2) + ')').text())).toPrecision(2)
+      );
+    }
+
+    var tds = [7, 13, 19, 25, 31];
+    for (var i = 0; i < tds.length; i++) {
+      $('tfoot th:nth-child(' + tds[i] + ')').text(
+        (parseInt($('tfoot th:nth-child(' + (tds[i] - 4) + ')').text())
+          / parseInt($('tfoot th:nth-child(' + (tds[i] - 3) + ')').text())).toPrecision(2)
+      );
+    }
+  });
+</script>
