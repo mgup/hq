@@ -20,4 +20,6 @@ ru:
         delegate_inn: 'ИНН'
         delegate_kpp: 'КПП'
         delegate_ls: 'л/с'
+        delegate_ks: 'к/с'
         delegate_bik: 'БИК'
+        delegate_bank: 'Наименование банка'

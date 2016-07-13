@@ -346,7 +346,10 @@ pdf.bounding_box([0, pdf.cursor], width: 510) do
 Факс: #{@contract.delegate_fax}
 ИНН: #{@contract.delegate_inn}
 КПП: #{@contract.delegate_kpp}
+Банковские реквизиты:
+#{@contract.delegate_bank}
 л/с: #{@contract.delegate_ls}
+к/с: #{@contract.delegate_ks}
 БИК: #{@contract.delegate_bik}
       END
     end
