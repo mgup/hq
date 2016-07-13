@@ -75,6 +75,8 @@ class Entrance::Entrant < ActiveRecord::Base
 
   scope :without_checks, -> {includes(:checks).where(entrance_use_checks: {entrant_id: nil} )}
 
+  scope :ioo_see, -> { joins(:applications).where('entrance_applications.ioo IS TRUE') }
+
   scope :filter, -> filters {
     [:pseries, :pnumber, :last_name].inject(all) do |cond, field|
       if filters.include?(field) && !filters[field].empty?

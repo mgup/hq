@@ -5,6 +5,8 @@ class Entrance::EntrantsController < ApplicationController
   def index
     if current_user.is?(:selection_foreign) && @campaign.id != 42016
       @entrants = @entrants.unscoped.where(visible: true).where(campaign_id: @campaign.id).where('identity_document_type_id = 3 OR nationality_type_id != 1').order(:nationality_type_id, :last_name, :first_name)
+    elsif current_user.is?(:selection_io)
+      @entrants = @entrants.ioo_see
     end
   end
 
