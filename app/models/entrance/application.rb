@@ -1014,4 +1014,8 @@ class Entrance::Application < ActiveRecord::Base
                                                                                         end) }
     end
   end
+
+  def faculty
+    competitive_group_item.direction.department_id
+  end
 end

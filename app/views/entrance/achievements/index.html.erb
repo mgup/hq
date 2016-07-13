@@ -4,6 +4,16 @@
   <h1>Баллы за индивидуальные достижения</h1>
 </div>
 
+<% unless params[:achievement_type_id] == '56' %>
+  <% Department.faculties.each do |department| %>
+    <%= link_to  url_for(params.merge(achievement_type_id: params[:achievement_type_id], department: department.id)),
+                 class: "btn btn-#{params[:department].to_i == department.id ? 'info' : 'default'}",
+                 style: 'margin-bottom: 15px' do %>
+      <%= department.abbreviation %>
+    <% end %>
+  <% end %>
+<% end %>
+
 
 <div class="row">
   <div class="col-sm-12">
