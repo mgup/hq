@@ -44,6 +44,8 @@ class Entrance::Application < ActiveRecord::Base
   scope :with_order, -> { where(status_id: 8) }
   scope :without_order, -> { where('status_id != ?', 8) }
 
+  scope :ioo_see, -> { where(ioo: true) }
+
   scope :without_called_back, -> do
     where('status_id != ?', 6)
   end
@@ -466,7 +468,7 @@ class Entrance::Application < ActiveRecord::Base
       student_id = contract.student_id
       save!
     else
-      group = find_group(competitive_group_item, entrant.ioo, matrix_form_number)
+      group = find_group(competitive_group_item, ioo, matrix_form_number)
       if group.is_a?(Hash)
         fail "Не найдена группа со следующими характеристиками: код направления подготовки (специальности): #{group[:speciality]}, форма обучения: #{group[:form]}"
       else
@@ -946,7 +948,7 @@ class Entrance::Application < ActiveRecord::Base
     when 12
       'semitime'
     when 10
-      entrant.ioo ? 'distance' : 'postal'
+      ioo ? 'distance' : 'postal'
     else
       fail 'Неизвестная форма обучения'
     end
