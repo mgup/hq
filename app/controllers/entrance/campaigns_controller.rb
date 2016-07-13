@@ -218,6 +218,23 @@ class Entrance::CampaignsController < ApplicationController
     Entrance::Application.where(campaign_id: [12016, 22016, 32016, 42016]).all.each do |application|
       if application.payed?
         # Внебюджет
+        if 10 == application.form
+          @data[application.direction.description][:pz_o][:applications] << application
+        elsif 12 == application.form
+          if application.competitive_group.name.include?('иностранцы')
+            @data[application.direction.description][:poz_foreign][:applications] << application
+          else
+            @data[application.direction.description][:poz_o][:applications] << application
+          end
+        else
+          if application.competitive_group.name.include?('иностранцы')
+            @data[application.direction.description][:po_foreign][:applications] << application
+          elsif application.competitive_group.name.include?('Крым')
+            @data[application.direction.description][:po_crimea][:applications] << application
+          else
+            @data[application.direction.description][:po_o][:applications] << application
+          end
+        end
       else
         # Бюджет
         if 12 == application.form
