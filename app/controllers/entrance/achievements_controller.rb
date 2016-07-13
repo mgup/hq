@@ -38,6 +38,12 @@ class Entrance::AchievementsController < ApplicationController
       format.js      
     end
   end
+
+  def protocol
+    respond_to do |format|
+      format.pdf
+    end
+  end
   
   def ajax_update
     @achievement.update_attribute(:score, params[:score])
