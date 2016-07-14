@@ -11,21 +11,37 @@ class Entrance::AchievementsController < ApplicationController
         end
         params[:achievement_type_id] = @campaign.achievement_types.first.id unless found
       else
-        redirect_to entrance_campaign_achievements_path(Entrance::Campaign.find(2015))
+        redirect_to entrance_campaign_achievements_path(Entrance::Campaign.find(12016))
       end
     else
       params[:achievement_type_id] ||= @campaign.achievement_types.first.id
     end
-    
+
+    params[:department] ||= Department.faculties.first.id
+
     achievement_type = Entrance::AchievementType.find(params[:achievement_type_id])
-    
-    @achievements = achievement_type.achievements.joins(:entrant).order('entrance_entrants.last_name', 'entrance_entrants.first_name', 'entrance_entrants.patronym')
+    if achievement_type.id == 56
+      params[:department] = nil
+    end
+
+    @achievements = achievement_type.achievements.find_all {|a| a.entrant && a.entrant.packed_application }
+                      .sort_by {|a| a.entrant.full_name}
+
+    if params[:department]
+      @achievements = @achievements.find_all {|a| a.entrant.packed_application.faculty == params[:department].to_i}
+    end
   end
   
   def update
     @achievement.update(resource_params)
     respond_to do |format|
       format.js      
+    end
+  end
+
+  def protocol
+    respond_to do |format|
+      format.pdf
     end
   end
   

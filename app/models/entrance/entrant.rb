@@ -74,6 +74,9 @@ class Entrance::Entrant < ActiveRecord::Base
   scope :from_last_name, -> last_name { where(last_name: last_name) }
 
   scope :without_checks, -> {includes(:checks).where(entrance_use_checks: {entrant_id: nil} )}
+  scope :with_achievements, -> {joins(:achievements).where('entrance_achievements.entrant_id IS NOT NULL') }
+
+  scope :ioo_see, -> { joins(:applications).where('entrance_applications.ioo IS TRUE') }
 
   scope :filter, -> filters {
     [:pseries, :pnumber, :last_name].inject(all) do |cond, field|

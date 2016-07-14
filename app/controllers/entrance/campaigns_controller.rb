@@ -41,6 +41,10 @@ class Entrance::CampaignsController < ApplicationController
 
     @applications = applications_from_filters.actual
 
+    if current_user && current_user.is?(:selection_io)
+      @applications = @applications.ioo_see
+    end
+
     respond_to do |format|
       format.html
       format.pdf

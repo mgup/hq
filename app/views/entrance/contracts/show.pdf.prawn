@@ -10,7 +10,7 @@ prawn_document margin: [56.692913386, 28.34645669291339,
 
   render 'contract', pdf: pdf
 
-  if @contract.trilateral?
+  if @contract.trilateral? || @contract.trilateral_with_organization?
     pdf.start_new_page
 
     render 'contract', pdf: pdf

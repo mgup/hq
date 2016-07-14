@@ -361,6 +361,7 @@ HQ::Application.routes.draw do
       end
       
       resources :achievements do
+          get 'protocol.pdf', to: 'achievements#protocol', on: :collection, defaults: { format: 'pdf' }
           get 'ajax_update', to: 'achievements#ajax_update', on: :member
       end
       get 'temp_print_all_checks', on: :member

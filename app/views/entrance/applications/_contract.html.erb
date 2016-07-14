@@ -218,9 +218,25 @@
         </div>
         <div class="form-group">
             <div class="col-sm-12">
+                <%= f.label :delegate_ks, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_ks, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
                 <%= f.label :delegate_bik, class: 'control-label col-sm-3' %>
                 <div class="col-sm-9">
                     <%= f.text_field :delegate_bik, class: 'form-control', disabled: true %>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <%= f.label :delegate_bank, class: 'control-label col-sm-3' %>
+                <div class="col-sm-9">
+                    <%= f.text_field :delegate_bank, class: 'form-control', disabled: true %>
                 </div>
             </div>
         </div>

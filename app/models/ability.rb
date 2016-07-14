@@ -328,7 +328,7 @@ class Ability
   def selection_io(user)
     can :manage, Entrance::Campaign
     cannot :orders, Entrance::Campaign
-    can :manage,      Entrance::Entrant, ioo: true
+    can :manage,      Entrance::Entrant
     cannot :destroy,  Entrance::Entrant
     can :manage, Entrance::ExamResult
     can :manage, Entrance::Application
