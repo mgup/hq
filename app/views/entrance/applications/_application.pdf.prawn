@@ -85,7 +85,7 @@ pdf.font_size 10.5 do
         pdf.text 'Категория зачисления: <u> по конкурсу </u>', inline_format: true
       end
 
-      unless @campaign.id == 42016
+      if @campaign.id != 42016 || ([608, 685, 686, 197].include? application.competitive_group_item.direction.id)
         pdf.text 'Оценки для участия в конкурсе:'
         entrant.exam_results.in_competitive_group(application.competitive_group_item.competitive_group).each_with_index do |exam_result, index|
           result = ["#{index + 1}."]
