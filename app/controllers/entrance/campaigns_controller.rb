@@ -474,7 +474,8 @@ class Entrance::CampaignsController < ApplicationController
 
         apps = Entrance::Application.
           where(campaign_id: [12016, 22016, 32016, 42016])#.
-          #in_groups(5)
+          .where(status_id: 4)
+          .find_all { |a| a.competitive_group.name.include?('Крым') }
         @applications = apps#[0]
 
         # @applications = Entrance::Application.where(
