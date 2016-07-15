@@ -111,17 +111,10 @@ class Entrance::FisController < ApplicationController
         col_sep: '%', skip_lines: /^((?!Действующий).)*$/
       ).map { |row| Hash[headers.zip(row)] }
 
-      # Выполняем проверку для всех абитуриентов или только для непроверенных.
-      entrants = if params[:fis_check]
-                   @campaign.entrants
-                 elsif params[:fis_empty_check]
-                   @campaign.entrants.without_checks
-                 end
-
       # Группируем результаты по серии и номеру документа.
-      r.group_by { |h| h.values_at(:pseries, :pnumber) }.each do |pdata, scores|
+      r.group_by { |h| h.values_at(:pseries, :pnumber) }.all.each do |pdata, scores|
         # Находим нужного абитуриента и делаем запись о проверке.
-        entrant = entrants.find_by_passport(*pdata)
+        entrant = IdentityDocument.find_by(series: pdata[0], number: pdata[1]).entrant
         if entrant
           check = entrant.checks.create(date: Date.today)
 
@@ -159,17 +152,25 @@ class Entrance::FisController < ApplicationController
             check.results.create(data)
           end
         end
+
       end
 
-      # Ищем абитуриентов, у которых были пустые проверки или у которых
-      # ещё не было ни одной проверки. Если в результатах от ФИС их нет,
-      # то создаём для них пустую проверку.
-      grouped_results = r.group_by { |h| h.values_at(:pseries, :pnumber) }
-      entrants.each do |e|
-        unless grouped_results.find_all { |pdata, _| e.all_id_documents.find_all {|d| pdata == [d.series, d.number]}.any? }.any?
-          e.checks.create(date: Date.today)
-        end
-      end
+      # Выполняем проверку для всех абитуриентов или только для непроверенных.
+      # entrants = if params[:fis_check]
+      #              @campaign.entrants
+      #            elsif params[:fis_empty_check]
+      #              @campaign.entrants.without_checks
+      #            end
+
+      # # Ищем абитуриентов, у которых были пустые проверки или у которых
+      # # ещё не было ни одной проверки. Если в результатах от ФИС их нет,
+      # # то создаём для них пустую проверку.
+      # grouped_results = r.group_by { |h| h.values_at(:pseries, :pnumber) }
+      # entrants.each do |e|
+      #   unless grouped_results.find_all { |pdata, _| e.all_id_documents.find_all {|d| pdata == [d.series, d.number]}.any? }.any?
+      #     e.checks.create(date: Date.today)
+      #   end
+      # end
     end
 
     redirect_to entrance_campaign_fis_check_use_path, notice: 'Проверка завершена'
