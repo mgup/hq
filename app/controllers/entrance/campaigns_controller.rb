@@ -1,6 +1,6 @@
 class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :stats] #, :report] #, :rating]#, if: :format_html?
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :stats, :rating] #, :report] #, :rating]#, if: :format_html?
   load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report, :stats]
   load_resource class: 'Entrance::Campaign', only: [:results, :competitive_groups]
 
@@ -22,11 +22,16 @@ class Entrance::CampaignsController < ApplicationController
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
-    # if user_signed_in?
+    if @competitive_group.name.include?('Крым')
       @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
-    # else
-    #   render 'entrance/campaigns/rating_hidden'
-    # end
+    else
+      if user_signed_in?
+        #
+      else
+        @applications = []
+        render 'entrance/campaigns/rating_hidden'
+      end
+    end
   end
 
   def crimea_rating
