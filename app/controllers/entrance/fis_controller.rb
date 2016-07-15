@@ -112,7 +112,7 @@ class Entrance::FisController < ApplicationController
       ).map { |row| Hash[headers.zip(row)] }
 
       # Группируем результаты по серии и номеру документа.
-      r.group_by { |h| h.values_at(:pseries, :pnumber) }.all.each do |pdata, scores|
+      r.group_by { |h| h.values_at(:pseries, :pnumber) }.each do |pdata, scores|
         # Находим нужного абитуриента и делаем запись о проверке.
         entrant = IdentityDocument.find_by(series: pdata[0], number: pdata[1]).entrant
         if entrant
