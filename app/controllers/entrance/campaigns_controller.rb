@@ -638,7 +638,8 @@ class Entrance::CampaignsController < ApplicationController
         params[:competitive_group] = @campaign.competitive_groups.first.id
       end
     else
-      params[:competitive_group] = @campaign.competitive_groups.first.id
+      # params[:competitive_group] = @campaign.competitive_groups.first.id
+      params[:competitive_group] = 516467
     end
 
     if params[:competitive_group]
