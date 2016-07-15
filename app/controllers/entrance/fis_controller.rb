@@ -156,21 +156,21 @@ class Entrance::FisController < ApplicationController
       end
 
       # Выполняем проверку для всех абитуриентов или только для непроверенных.
-      # entrants = if params[:fis_check]
-      #              @campaign.entrants
-      #            elsif params[:fis_empty_check]
-      #              @campaign.entrants.without_checks
-      #            end
+      entrants = if params[:fis_check]
+                   @campaign.entrants
+                 elsif params[:fis_empty_check]
+                   @campaign.entrants.without_checks
+                 end
 
-      # # Ищем абитуриентов, у которых были пустые проверки или у которых
-      # # ещё не было ни одной проверки. Если в результатах от ФИС их нет,
-      # # то создаём для них пустую проверку.
-      # grouped_results = r.group_by { |h| h.values_at(:pseries, :pnumber) }
-      # entrants.each do |e|
-      #   unless grouped_results.find_all { |pdata, _| e.all_id_documents.find_all {|d| pdata == [d.series, d.number]}.any? }.any?
-      #     e.checks.create(date: Date.today)
-      #   end
-      # end
+      # Ищем абитуриентов, у которых были пустые проверки или у которых
+      # ещё не было ни одной проверки. Если в результатах от ФИС их нет,
+      # то создаём для них пустую проверку.
+      grouped_results = r.group_by { |h| h.values_at(:pseries, :pnumber) }
+      entrants.each do |e|
+        unless grouped_results.find_all { |pdata, _| e.all_id_documents.find_all {|d| pdata == [d.series, d.number]}.any? }.any?
+          e.checks.create(date: Date.today)
+        end
+      end
     end
 
     redirect_to entrance_campaign_fis_check_use_path, notice: 'Проверка завершена'
