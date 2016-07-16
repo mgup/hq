@@ -22,11 +22,11 @@ class Entrance::CampaignsController < ApplicationController
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
-    if @competitive_group.name.include?('Крым')
+    if user_signed_in?
       @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
     else
-      if user_signed_in?
-        #
+      if @competitive_group.name.include?('Крым')
+        @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
       else
         @applications = []
         render 'entrance/campaigns/rating_hidden'

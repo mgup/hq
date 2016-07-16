@@ -33,7 +33,7 @@
     <div class="col-sm-8">
       <%= select_tag :competitive_group,
                      options_from_collection_for_select(
-                       @campaign.competitive_groups.find_all { |cg| cg.name.include?('Крым') },
+                       @campaign.competitive_groups.find_all { |cg| user_signed_in? ? true : cg.name.include?('Крым') },
                        :id, :name, params[:competitive_group]
                      ),
                      prompt: 'Все конкурсные группы',
