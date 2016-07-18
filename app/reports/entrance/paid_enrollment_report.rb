@@ -11,13 +11,9 @@ module Entrance
       @campaign_year = campaign_year
 
       @contracts = []
-      # Entrance::Campaign.where(start_year: campaign_year).each do |campaign|
-      #   @contracts += campaign.applications.where(is_payed: true).
-      #     find_all { |a| a.contract }.map{ |a| a.contract }
-      # end
       Entrance::Campaign.where(start_year: campaign_year).each do |campaign|
         @contracts += campaign.applications.where(is_payed: true).
-          find_all { |a| a.contract && a.contract.created_at >= DateTime.parse('2016-06-20 00:00') }.map{ |a| a.contract }
+          find_all { |a| a.contract }.map{ |a| a.contract }
       end
 
       @total_sum = 0
