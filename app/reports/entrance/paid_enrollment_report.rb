@@ -17,7 +17,7 @@ module Entrance
       # end
       Entrance::Campaign.where(start_year: 2015).each do |campaign|
         @contracts += campaign.applications.where(is_payed: true).
-          find_all { |a| a.contract && a.contract.created_at <= Date.parse('2015-07-18') }.map{ |a| a.contract }
+          find_all { |a| a.contract && a.contract.created_at <= DateTime.parse('2015-07-18 23:59') }.map{ |a| a.contract }
       end
 
       @total_sum = 0
