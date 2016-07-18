@@ -11,9 +11,13 @@ module Entrance
       @campaign_year = campaign_year
 
       @contracts = []
-      Entrance::Campaign.where(start_year: campaign_year).each do |campaign|
+      # Entrance::Campaign.where(start_year: campaign_year).each do |campaign|
+      #   @contracts += campaign.applications.where(is_payed: true).
+      #     find_all { |a| a.contract }.map{ |a| a.contract }
+      # end
+      Entrance::Campaign.where(start_year: 2015).each do |campaign|
         @contracts += campaign.applications.where(is_payed: true).
-          find_all { |a| a.contract }.map{ |a| a.contract }
+          find_all { |a| a.contract && a.contract.created_at <= Date.new(2015, 7, 18) }.map{ |a| a.contract }
       end
 
       @total_sum = 0
@@ -239,7 +243,7 @@ module Entrance
     def contracts_by_direction
       @renderer.text('Распределение договоров по направлениям')
 
-      data = [['Направление', 'Очная', 'Очно-заочная', 'Заочная']]
+      data = [%w(Направление Очная Очно-заочная Заочная)]
       @grouped_by_department.each do |abbreviation, contracts|
         # next unless 'ИПИТ' == abbreviation
 
