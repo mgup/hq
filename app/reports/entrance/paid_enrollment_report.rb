@@ -1,3 +1,5 @@
+require 'date'
+
 module Entrance
   # Отчёт со статистикой платного приёма приёмной кампании.
   class PaidEnrollmentReport < Report
