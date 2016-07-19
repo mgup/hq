@@ -169,15 +169,20 @@ class Entrance::Application < ActiveRecord::Base
   def abitachievements
     sum = 0
     entrant.achievements.each do |a|
-      if direction.id == 280
-        next if a.entrance_achievement_type_id == 13
+      # if direction.id == 280
+      #   next if a.entrance_achievement_type_id == 13
+      #   sum += a.score || 0
+      # else
+      #   next if a.entrance_achievement_type_id == 14
         sum += a.score || 0
-      else
-        next if a.entrance_achievement_type_id == 14
-        sum += a.score || 0
-      end
+      # end
     end
-    sum
+
+    if sum > 10
+      10
+    else
+      sum
+    end
   end
 
   # Имеющие ЕГЭ (функция названа неверное, потом нужно поправить)
@@ -685,11 +690,11 @@ class Entrance::Application < ActiveRecord::Base
           if abitachievements > 0
             xml.CustomDocuments do
               entrant.achievements.each do |a|
-                if direction.id == 280
-                  next if a.entrance_achievement_type_id == 13
-                else
-                  next if a.entrance_achievement_type_id == 14
-                end
+                # if direction.id == 280
+                #   next if a.entrance_achievement_type_id == 13
+                # else
+                #   next if a.entrance_achievement_type_id == 14
+                # end
 
                 xml.CustomDocument do
                   xml.UID "IA#{10000 * competitive_group.id + a.id}"
@@ -868,11 +873,11 @@ class Entrance::Application < ActiveRecord::Base
         if abitachievements > 0
           xml.IndividualAchievements do
             entrant.achievements.each do |a|
-              if direction.id == 280
-                next if a.entrance_achievement_type_id == 13
-              else
-                next if a.entrance_achievement_type_id == 14
-              end
+              # if direction.id == 280
+              #   next if a.entrance_achievement_type_id == 13
+              # else
+              #   next if a.entrance_achievement_type_id == 14
+              # end
 
               xml.IndividualAchievement do
                 xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"

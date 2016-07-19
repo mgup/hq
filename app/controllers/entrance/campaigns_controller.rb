@@ -1,6 +1,6 @@
 class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :stats] #, :report] #, :rating]#, if: :format_html?
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :stats, :rating] #, :report] #, :rating]#, if: :format_html?
   load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report, :stats]
   load_resource class: 'Entrance::Campaign', only: [:results, :competitive_groups]
 
@@ -22,11 +22,16 @@ class Entrance::CampaignsController < ApplicationController
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
-    # if user_signed_in?
+    if user_signed_in?
       @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
-    # else
-    #   render 'entrance/campaigns/rating_hidden'
-    # end
+    else
+      if @competitive_group.name.include?('Крым')
+        @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
+      else
+        @applications = []
+        render 'entrance/campaigns/rating_hidden'
+      end
+    end
   end
 
   def crimea_rating
@@ -474,7 +479,8 @@ class Entrance::CampaignsController < ApplicationController
 
         apps = Entrance::Application.
           where(campaign_id: [12016, 22016, 32016, 42016])#.
-          #in_groups(5)
+          .where(status_id: 4)
+          .find_all { |a| a.competitive_group.name.include?('Крым') }
         @applications = apps#[0]
 
         # @applications = Entrance::Application.where(
@@ -632,7 +638,8 @@ class Entrance::CampaignsController < ApplicationController
         params[:competitive_group] = @campaign.competitive_groups.first.id
       end
     else
-      params[:competitive_group] = @campaign.competitive_groups.first.id
+      # params[:competitive_group] = @campaign.competitive_groups.first.id
+      params[:competitive_group] = 516467
     end
 
     if params[:competitive_group]

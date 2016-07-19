@@ -239,7 +239,7 @@ module Entrance
     def contracts_by_direction
       @renderer.text('Распределение договоров по направлениям')
 
-      data = [['Направление', 'Очная', 'Очно-заочная', 'Заочная']]
+      data = [%w(Направление Очная Очно-заочная Заочная)]
       @grouped_by_department.each do |abbreviation, contracts|
         # next unless 'ИПИТ' == abbreviation
 
