@@ -1,5 +1,9 @@
 <td class="nowrap"><%= a.number %></td>
-<td><%= a.entrant.full_name %></td>
+<td><%= a.entrant.full_name %>
+    <% if can?(:manage, Entrance::Application) %>
+    <br> <%= a.entrant.phone %>
+    <% end %>
+</td>
 <% a.abitexams.each do |exam| %>
   <td><%= exam.score %></td>
 <% end %>
