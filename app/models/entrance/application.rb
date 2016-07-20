@@ -705,16 +705,13 @@ class Entrance::Application < ActiveRecord::Base
           if abitachievements > 0
             xml.CustomDocuments do
               entrant.achievements.each do |a|
-                # if direction.id == 280
-                #   next if a.entrance_achievement_type_id == 13
-                # else
-                #   next if a.entrance_achievement_type_id == 14
-                # end
-
                 xml.CustomDocument do
                   xml.UID "IA#{10000 * competitive_group.id + a.id}"
-                  xml.DocumentTypeNameText a.document.present? ?  a.document : "Протокол #{10000 * competitive_group.id + a.id}"
-                  xml.OriginalReceived true
+                  xml.OriginalReceivedDate created_at.to_date
+                  xml.DocumentName a.document.present? ?  a.document : "Протокол #{10000 * competitive_group.id + a.id}"
+                  xml.DocumentDate a.date.present? ? a.date : created_at.to_date
+                  xml.DocumentOrganization 'МГУП имени Ивана Федорова'
+                  xml.AdditionalInfo a.document
                 end
               end
             end
