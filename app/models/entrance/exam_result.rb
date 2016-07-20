@@ -83,7 +83,6 @@ class Entrance::ExamResult < ActiveRecord::Base
         elsif opts[:application].competitive_group_target_item_id.present?
           # Квота целевого приема
           xml.CompetitiveGroupUID  "#{opts[:application].competitive_group.id}_target"
-          xml.TargetOrganizationUID opts[:application].competitive_group_target_item.target_organization.id
         else
           xml.CompetitiveGroupUID  opts[:application].competitive_group.id
         end
