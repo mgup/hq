@@ -62,7 +62,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     tax = params[:addTax] ? " #{@student.budget? ? '<u>бюджетной</u>' : '<u>договорной</u>'} основы" : ''
     license = params[:addLicense] ? ', осуществляющем образовательную деятельность на основании <u>Лицензии, серия ААА №001773, выданной Федеральной службой по надзору в сфере образования и науки, регистрационный №1704 от 11 августа 2011 г., и Свидетельства о государственной аккредитации, серия ВВ №001559, выданного Федеральной службой по надзору в сфере образования и науки на срок по 19 марта 2018 г., регистрационный №1542 от 19 марта 2012 г</u>' : ''
     last_year = @student.last_status_order.signing_date.year
-    years = @student.is_valid? ? "#{Study::Discipline::CURRENT_STUDY_YEAR}/#{Study::Discipline::CURRENT_STUDY_YEAR+1}" : (@student.last_status_order.signing_date.month > 8 ? "#{last_year}/#{last_year+1}" : "#{last_year-1}/#{last_year}")
+    study_year = (last_year == Study::Discipline::CURRENT_STUDY_YEAR + 1) ? (Study::Discipline::CURRENT_STUDY_YEAR + 1) : Study::Discipline::CURRENT_STUDY_YEAR
+    years = @student.is_valid? ? "#{study_year}/#{study_year+1}" : (@student.last_status_order.signing_date.month > 8 ? "#{last_year}/#{last_year+1}" : "#{last_year-1}/#{last_year}")
 
 
     pdf.font_size 12 do
