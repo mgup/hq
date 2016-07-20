@@ -614,10 +614,25 @@ class Entrance::Application < ActiveRecord::Base
 
         xml.FinSourceAndEduForms do
           xml.FinSourceEduForm do
-            xml.CompetitiveGroupUID  competitive_group_item.competitive_group.id
-            unless competitive_group_target_item_id.nil?
-              xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+
+            if benefits.any? && benefits.first.olympic_document
+              # Олимпиады.
+              xml.CompetitiveGroupUID  competitive_group.id
+            elsif benefits.any?
+              # Квота особых прав
+              xml.CompetitiveGroupUID  "#{competitive_group.id}_quota"
+            elsif competitive_group.name.include?('Крым')
+              # Квота Крым
+              xml.CompetitiveGroupUID  competitive_group.id
+            elsif competitive_group_target_item_id.present?
+              # Квота целевого приема
+              xml.CompetitiveGroupUID  "#{competitive_group.id}_target" do
+                xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+              end
+            else
+              xml.CompetitiveGroupUID  competitive_group.id
             end
+
             #!!! xml.IsAgreedDate
             #!!! xml.IsForSPOandVO
           end

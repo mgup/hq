@@ -352,6 +352,9 @@ HQ::Application.routes.draw do
     end
     resources :campaigns do
       member do
+        get 'contest/:direction/:form/:payment' => 'rating#index',
+            defaults: { direction: 1887, form: 11, payment: 14 }
+
         get 'paid_enrollment'
         get 'conflicts'
         get 'ratings'
