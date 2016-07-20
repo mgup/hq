@@ -626,9 +626,8 @@ class Entrance::Application < ActiveRecord::Base
               xml.CompetitiveGroupUID  competitive_group.id
             elsif competitive_group_target_item_id.present?
               # Квота целевого приема
-              xml.CompetitiveGroupUID  "#{competitive_group.id}_target" do
-                xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
-              end
+              xml.CompetitiveGroupUID  "#{competitive_group.id}_target"
+              xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
             else
               xml.CompetitiveGroupUID  competitive_group.id
             end
