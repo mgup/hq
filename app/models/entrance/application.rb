@@ -888,19 +888,11 @@ class Entrance::Application < ActiveRecord::Base
         if abitachievements > 0
           xml.IndividualAchievements do
             entrant.achievements.each do |a|
-              # if direction.id == 280
-              #   next if a.entrance_achievement_type_id == 13
-              # else
-              #   next if a.entrance_achievement_type_id == 14
-              # end
-
               xml.IndividualAchievement do
                 xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
-                xml.IAName a.achievement_type.name
-                xml.IAMark a.score if a.score.present?
-                xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
-
                 xml.InstitutionAchievementUID a.achievement_type.id
+                xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
+                xml.IAMark a.score if a.score.present?
               end
             end
           end
