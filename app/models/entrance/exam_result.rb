@@ -71,7 +71,23 @@ class Entrance::ExamResult < ActiveRecord::Base
 
         xml.EntranceTestTypeID  exam.creative ? 2 : 1
 
-        xml.CompetitiveGroupUID  opts[:competitive_group_id]
+        if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
+          # Олимпиады.
+          xml.CompetitiveGroupUID  opts[:application].competitive_group.id
+        elsif opts[:application].benefits.any?
+          # Квота особых прав
+          xml.CompetitiveGroupUID  "#{opts[:application].competitive_group.id}_quota"
+        elsif opts[:application].competitive_group.name.include?('Крым')
+          # Квота Крым
+          xml.CompetitiveGroupUID  opts[:application].competitive_group.id
+        elsif opts[:application].competitive_group_target_item_id.present?
+          # Квота целевого приема
+          xml.CompetitiveGroupUID  "#{opts[:application].competitive_group.id}_target"
+          xml.TargetOrganizationUID opts[:application].competitive_group_target_item.target_organization.id
+        else
+          xml.CompetitiveGroupUID  opts[:application].competitive_group.id
+        end
+
         xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
 
         if 16233 == opts[:application].id && 76 == exam.id
