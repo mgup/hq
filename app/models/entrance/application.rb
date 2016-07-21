@@ -197,9 +197,9 @@ class Entrance::Application < ActiveRecord::Base
   def pass_min_score?
     passed = true
     competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).each do |test_item|
-      if entrant.exam_results.by_exam(test_item.exam.id).last.nil?
+      if entrant.exam_results.by_exam(test_item.exam.id).last.blank?
         passed = false
-      elsif entrant.exam_results.by_exam(test_item.exam.id).last.score.nil?
+      elsif entrant.exam_results.by_exam(test_item.exam.id).last.score.blank?
         passed = false
       else
         passed &&= entrant.exam_results.by_exam(test_item.exam.id).last.score >= test_item.min_score
@@ -614,10 +614,24 @@ class Entrance::Application < ActiveRecord::Base
 
         xml.FinSourceAndEduForms do
           xml.FinSourceEduForm do
-            xml.CompetitiveGroupUID  competitive_group_item.competitive_group.id
-            unless competitive_group_target_item_id.nil?
+
+            if benefits.any? && benefits.first.olympic_document
+              # Олимпиады.
+              xml.CompetitiveGroupUID  competitive_group.id
+            elsif benefits.any?
+              # Квота особых прав
+              xml.CompetitiveGroupUID  "#{competitive_group.id}_quota"
+            elsif competitive_group.name.include?('Крым')
+              # Квота Крым
+              xml.CompetitiveGroupUID  competitive_group.id
+            elsif competitive_group_target_item_id.present?
+              # Квота целевого приема
+              xml.CompetitiveGroupUID  "#{competitive_group.id}_target"
               xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+            else
+              xml.CompetitiveGroupUID  competitive_group.id
             end
+
             #!!! xml.IsAgreedDate
             #!!! xml.IsForSPOandVO
           end
@@ -690,16 +704,13 @@ class Entrance::Application < ActiveRecord::Base
           if abitachievements > 0
             xml.CustomDocuments do
               entrant.achievements.each do |a|
-                # if direction.id == 280
-                #   next if a.entrance_achievement_type_id == 13
-                # else
-                #   next if a.entrance_achievement_type_id == 14
-                # end
-
                 xml.CustomDocument do
                   xml.UID "IA#{10000 * competitive_group.id + a.id}"
-                  xml.DocumentTypeNameText a.document.present? ?  a.document : "Протокол #{10000 * competitive_group.id + a.id}"
-                  xml.OriginalReceived true
+                  xml.OriginalReceivedDate created_at.to_date
+                  xml.DocumentName a.document.present? ?  a.document : "Протокол #{10000 * competitive_group.id + a.id}"
+                  xml.DocumentDate a.date.present? ? a.date : created_at.to_date
+                  xml.DocumentOrganization 'МГУП имени Ивана Федорова'
+                  xml.AdditionalInfo a.document
                 end
               end
             end
@@ -873,19 +884,11 @@ class Entrance::Application < ActiveRecord::Base
         if abitachievements > 0
           xml.IndividualAchievements do
             entrant.achievements.each do |a|
-              # if direction.id == 280
-              #   next if a.entrance_achievement_type_id == 13
-              # else
-              #   next if a.entrance_achievement_type_id == 14
-              # end
-
               xml.IndividualAchievement do
                 xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
-                xml.IAName a.achievement_type.name
-                xml.IAMark a.score if a.score.present?
-                xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
-
                 xml.InstitutionAchievementUID a.achievement_type.id
+                xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
+                xml.IAMark a.score if a.score.present?
               end
             end
           end

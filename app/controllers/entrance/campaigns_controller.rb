@@ -224,7 +224,7 @@ class Entrance::CampaignsController < ApplicationController
       @data[direction.description][:pz_o][:places] = pz_o
     end
 
-    Entrance::Application.where(campaign_id: [12016, 22016, 32016, 42016]).all.each do |application|
+    Entrance::Application.where(campaign_id: [12016, 22016, 32016, 42016], status_id: [4, 7, 8]).all.each do |application|
       if application.payed?
         # Внебюджет
         if 10 == application.form
@@ -480,7 +480,7 @@ class Entrance::CampaignsController < ApplicationController
         apps = Entrance::Application.
           where(campaign_id: [12016, 22016, 32016, 42016])#.
           .where(status_id: 4)
-          .find_all { |a| a.competitive_group.name.include?('Крым') }
+          .find_all { |a| a.competitive_group.name.include?('Графика') }
         @applications = apps#[0]
 
         # @applications = Entrance::Application.where(
