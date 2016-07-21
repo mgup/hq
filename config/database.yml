@@ -2,7 +2,7 @@ development:
   adapter: mysql2
   encoding: utf8
   database: matrix
-  pool: 5
+  pool: 5o
   username: root
   host: 127.0.0.1
 
