@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160721093700) do
+ActiveRecord::Schema.define(version: 20160721141227) do
 
   create_table "1", id: false, force: :cascade do |t|
     t.integer "id",         limit: 4
@@ -1054,6 +1054,7 @@ ActiveRecord::Schema.define(version: 20160721093700) do
     t.string   "delegate_ks",           limit: 255
     t.string   "delegate_bank",         limit: 255
     t.integer  "status",                limit: 4,   default: 1
+    t.integer  "count",                 limit: 4
   end
 
   add_index "entrance_contracts", ["application_id"], name: "index_entrance_contracts_on_application_id", using: :btree

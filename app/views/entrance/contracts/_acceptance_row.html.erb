@@ -3,7 +3,7 @@
 <td><%= contract.application.number %></td>
 <td><%= contract.paid? ? '<span class="success">оплачен</span>'.html_safe : '<span class="danger">неоплачен</span>'.html_safe %></td>
 <td><%= contract.status_name %></td>
-<td><%= contract.bilateral? ? '2' : '3' %></td>
+<td><%= contract.count? ? contract.count : (contract.bilateral? ? 2 : 3) %></td>
 <td>
     <% if contract.transfer? %>
       <%= form_for contract, url: entrance_campaign_contract_path(@campaign, contract), remote: true do |f| %>

@@ -12,16 +12,24 @@ prawn_document margin: [56.692913386, 28.34645669291339,
       pdf.move_down 5
       contracts.each_with_index do |contract, i|
         pdf.indent 25 do
-          pdf.text "#{i+1}. #{contract.entrant.full_name} (#{contract.bilateral? ? '2 экземпляра' : '3 экземпляра'})"
+          pdf.text "#{i+1}. #{contract.entrant.full_name} (#{(contract.count? ? contract.count : (contract.bilateral? ? 2 : 3))} #{
+                   Russian::p((contract.count? ? contract.count : (contract.bilateral? ? 2 : 3)),
+                              'экземпляр',
+                              'экземпляра',
+                              'экземпляров')
+                     })"
         end
         pdf.move_down 3
       end
       pdf.move_down 15
     end
 
+    pdf.move_down 25
     pdf.text 'Настоящий акт отпечатан в 2-х экземплярах.'
+    pdf.move_down 15
+    pdf.text "Начальник студенческого отдела кадров #{' '*70} /  Л. Л. Бутарева  /"
     pdf.move_down 10
-    pdf.text "Начальник студенческого отдела кадров #{' '*70} / Л.Л. Бутарева /"
+    pdf.text "______________________________________________ #{' '*69} / __________________ /"
 
   end
 
