@@ -480,7 +480,7 @@ class Entrance::CampaignsController < ApplicationController
         apps = Entrance::Application.
           where(campaign_id: [12016, 22016, 32016, 42016])#.
           .where(status_id: 4)
-          .find_all { |a| a.competitive_group.name.include?('Графика') }
+          .find_all { |a| a.competitive_group.name.include?('Графика') && a.pass_min_score? }
         @applications = apps#[0]
 
         # @applications = Entrance::Application.where(

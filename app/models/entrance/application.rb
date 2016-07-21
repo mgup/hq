@@ -198,9 +198,9 @@ class Entrance::Application < ActiveRecord::Base
     passed = true
     competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).each do |test_item|
       if entrant.exam_results.by_exam(test_item.exam.id).last.blank?
-        # passed = false
+        passed = false
       elsif entrant.exam_results.by_exam(test_item.exam.id).last.score.blank?
-        # passed = false
+        passed = false
       else
         passed &&= entrant.exam_results.by_exam(test_item.exam.id).last.score >= test_item.min_score
       end
