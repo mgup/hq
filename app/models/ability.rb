@@ -334,7 +334,7 @@ class Ability
     can :manage, Entrance::Achievement
 
     cannot :acceptance, Entrance::Contract
-    cannot :transfer, Entrance::Contract
+    can :transfer, Entrance::Contract
   end
 
   def selection_io(user)
