@@ -57,7 +57,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     entrants.each_with_index do |e, ind|
       data << ["#{ind+1}", (e.packed_application ? e.packed_application.number : ''), e.full_name]
       @campaign.achievement_types.each do |a|
-        achievement = e.achievements.find_all {|a| a.achievement_type == a}
+        achievement = e.achievements.find_all {|ach| ach.achievement_type.id == a.id}
         data.last << (achievement.any? ? achievement.first.score : '-')
       end
       sum = e.achievements.collect{|x| x.score }.compact.sum
