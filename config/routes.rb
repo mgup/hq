@@ -394,6 +394,9 @@ HQ::Application.routes.draw do
       resources :events
       resources :contracts do
         get 'statistics', to: 'contracts#statistics', on: :collection
+        get 'transfer', to: 'contracts#transfer', on: :collection
+        get 'acceptance', to: 'contracts#acceptance', on: :collection
+        get 'document.pdf', to: 'contracts#document', on: :collection, defaults: { format: 'pdf' }, as: :document
       end
       resources :entrants do
         get 'history', on: :member

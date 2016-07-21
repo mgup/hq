@@ -89,6 +89,9 @@ class Ability
         can :soccard_mistakes, Student
 
         can :work, :all_faculties
+        can :read, Entrance::Campaign
+        can :acceptance, Entrance::Contract
+        can :update, Entrance::Contract
       end
 
       # отдел рецензирования
@@ -288,6 +291,9 @@ class Ability
     can :manage, Entrance::EventEntrant
     can :manage, Entrance::Contract
     can :statistics, Entrance::Contract
+
+    cannot :acceptance, Entrance::Contract
+    cannot :transfer, Entrance::Contract
   end
 
   def selection_technical_secretary(user)
@@ -305,6 +311,9 @@ class Ability
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
     can :manage, Entrance::Achievement
+
+    cannot :acceptance, Entrance::Contract
+    cannot :transfer, Entrance::Contract
   end
 
   def selection_editor(user)
@@ -323,6 +332,9 @@ class Ability
     can :reject, :entrance_applications
     can :create, :entrance_orders
     can :manage, Entrance::Achievement
+
+    cannot :acceptance, Entrance::Contract
+    can :transfer, Entrance::Contract
   end
 
   def selection_io(user)
@@ -338,6 +350,9 @@ class Ability
     can :statistics, Entrance::Contract
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
+
+    cannot :acceptance, Entrance::Contract
+    cannot :transfer, Entrance::Contract
   end
 
   def selection_foreign(user)
@@ -357,6 +372,9 @@ class Ability
     can :manage, Entrance::UseCheck
     can :manage, Entrance::UseCheckResult
     can :manage, Entrance::Achievement
+
+    cannot :acceptance, Entrance::Contract
+    cannot :transfer, Entrance::Contract
   end
 
   def zamestitel_otvetstvennogo_sekretarja(user)
@@ -370,6 +388,8 @@ class Ability
     can :orders, Entrance::Campaign
 
     can :work, :all_faculties
+    can :transfer, Entrance::Contract
+    cannot :acceptance, Entrance::Contract
   end
 
   def executive_secretary(user)
@@ -380,6 +400,9 @@ class Ability
     can :orders, Entrance::Campaign
     can :numbers, Entrance::Campaign
     can :statistics, Entrance::Contract
+
+    cannot :acceptance, Entrance::Contract
+    can :transfer, Entrance::Contract
 
     can :work, :all_faculties
     # can :update, Achievement

@@ -1,0 +1,47 @@
+<%= render 'entrance/shared/switch' %>
+
+<div class="page-header">
+    <h1>
+        Приём договоров
+        <small><%= @campaign.name %></small>
+    </h1>
+</div>
+
+<%= form_tag nil, method: :get do %>
+  <div class="row">
+      <div class="col-sm-12">
+          <%= select_tag :competitive_group,
+                         options_from_collection_for_select(
+                           @campaign.competitive_groups,
+                           :id, :name, params[:competitive_group]
+                         ),
+                         prompt: 'Все договоры',
+                         class: 'form-control',
+                         onchange: %q($(this).parents('form').submit();) %>
+      </div>
+  </div>
+
+<% end %>
+
+<% if @contracts.empty? %>
+  <p>Нет ни одного договора.</p>
+<% else %>
+  <table class="table table-striped">
+      <thead>
+      <tr>
+          <th>Номер договора</th>
+          <th>Фамилия, имя, отчество</th>
+          <th>Номер личного дела</th>
+          <th>Статус оплаты</th>
+          <th>Статус хранения</th>
+          <th>Количество экземпляров</th>
+          <th></th>
+      </tr>
+      </thead>
+      <% @contracts.each do |contract| %>
+        <tr id="transfer_contract_<%= contract.id %>">
+          <%= render partial: 'acceptance_row', locals: { contract: contract } %>
+        </tr>
+      <% end %>
+  </table>
+<% end %>

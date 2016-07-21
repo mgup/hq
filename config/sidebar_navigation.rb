@@ -93,6 +93,19 @@ SimpleNavigation::Configuration.run do |navigation|
                      paid_enrollment_entrance_campaign_path(Entrance::Campaign::CURRENT)
         # statistics_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
       end
+
+      if can?(:transfer, Entrance::Contract)
+        primary.item :entrance_contracts_transfer,
+                     '<span class="glyphicon glyphicon-level-up"></span> Передача договоров'.html_safe,
+                     transfer_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
+      end
+
+      if can?(:acceptance, Entrance::Contract)
+        primary.item :entrance_contracts_acceptance,
+                     '<span class="glyphicon glyphicon-save-file"></span> Приём договоров'.html_safe,
+                     acceptance_entrance_campaign_contracts_path(Entrance::Campaign::CURRENT)
+      end
+
     end
 
     # if can?(:manage, Entrance::Entrant)

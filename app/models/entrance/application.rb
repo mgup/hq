@@ -37,7 +37,7 @@ class Entrance::Application < ActiveRecord::Base
   # end
 
   default_scope do
-    joins(:entrant).where('entrance_entrants.visible IS TRUE')
+    joins(:entrant) #.where(entrance_entrants: { visible: 1 })
   end
 
   scope :actual, -> { where('status_id != ?', 6).where('status_id != ?', 5) }

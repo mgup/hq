@@ -2,8 +2,18 @@ class Entrance::Contract < ActiveRecord::Base
   self.table_name_prefix = 'entrance_'
 
   enum sides: { bilateral: 2, trilateral: 3, trilateral_with_organization: 4 }
+  enum status: {priem: 1, transfer: 2, sok: 3}
 
   belongs_to :application, class_name: 'Entrance::Application'
+  delegate :entrant, to: :application
+  delegate :competitive_group_item, to: :application
+  delegate :competitive_group, to: :application
+
+  scope :from_competitive_group, -> competitive_group_id { joins(application: :competitive_group_item)
+                                        .where(competitive_group_items: {competitive_group_id: competitive_group_id} ) }
+
+  scope :for_transfer, -> { where('status = 2') }
+  scope :acceptance, -> { where('status IN (2,3)') }
 
   after_create do |contract|
     Entrance::Log.create entrant_id: contract.application.entrant.id,
@@ -57,6 +67,14 @@ class Entrance::Contract < ActiveRecord::Base
 
   def paid?
     student.total_payments >= one_time_payment
+  end
+
+  def status_name
+    case status
+    when 'priem' then 'хранится в ПК'
+    when 'transfer' then 'в процессе передачи'
+    when 'sok' then 'передан в СОК'
+    end
   end
 
   def to_nokogiri

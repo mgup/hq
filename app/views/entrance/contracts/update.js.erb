@@ -1,0 +1,4 @@
+$(document.getElementById(
+  'transfer_contract_<%= @contract.id %>'
+)).html('<%=j render partial: (@contract.sok? ? 'acceptance_row' : 'transfer_row'),
+locals: { contract: @contract } %>');

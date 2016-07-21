@@ -2,12 +2,25 @@ class Entrance::ContractsController < ApplicationController
   load_and_authorize_resource :campaign,
                               class: 'Entrance::Campaign'
   load_and_authorize_resource :entrant, through: :campaign,
-                              class: 'Entrance::Campaign', except: :statistics
+                              class: 'Entrance::Campaign', except: [:statistics, :transfer, :update, :document, :acceptance]
   load_and_authorize_resource :application, through: :entrant,
-                              class: 'Entrance::Application', except: :statistics
+                              class: 'Entrance::Application', except: [:statistics, :transfer, :update, :document, :acceptance]
   load_and_authorize_resource through: :application, singleton: true,
-                              class: 'Entrance::Contract', except: :statistics
-  load_and_authorize_resource through: :campaign, class: 'Entrance::Contract', only: :statistics
+                              class: 'Entrance::Contract', except: [:statistics, :transfer, :update, :document, :acceptance]
+  load_and_authorize_resource through: :campaign, class: 'Entrance::Contract', only: [:statistics, :transfer, :update, :document, :acceptance]
+
+  def transfer
+    if params[:competitive_group] && params[:competitive_group] != ''
+      @contracts = @contracts.from_competitive_group(params[:competitive_group])
+    end
+  end
+
+  def acceptance
+    if params[:competitive_group] && params[:competitive_group] != ''
+      @contracts = @contracts.from_competitive_group(params[:competitive_group])
+    end
+    @contracts = @contracts.acceptance
+  end
 
   def create
     if @contract.save!
@@ -111,6 +124,27 @@ class Entrance::ContractsController < ApplicationController
     end
   end
 
+  def document
+    @contracts = @contracts.for_transfer
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
+  def update
+    @contract.update(resource_params)
+    respond_to do |format|
+      format.js
+    end
+    # if @contract.update(resource_params) && !@contract.sok?
+    #   redirect_to transfer_entrance_campaign_contracts_path(@campaign), notice: 'Изменения сохранены.'
+    # elsif @contract.update(resource_params) && @contract.sok?
+    #   redirect_to acceptance_entrance_campaign_contracts_path(@campaign), notice: 'Изменения сохранены.'
+    # else
+    #   redirect_to transfer_entrance_campaign_contracts_path(@campaign), notice: 'Что-то пошло не так'
+    # end
+  end
+
   def statistics
 
   end
@@ -143,7 +177,7 @@ class Entrance::ContractsController < ApplicationController
       :sides, :delegate_last_name, :delegate_first_name, :delegate_patronym, :delegate_address,
       :delegate_phone, :delegate_pseries, :delegate_pnumber, :delegate_pdepartment, :delegate_pdate,
       :delegate_organization, :delegate_position, :delegate_mobile, :delegate_fax, :delegate_inn, :delegate_kpp,
-      :delegate_ls, :delegate_ks, :delegate_bik, :delegate_bank
+      :delegate_ls, :delegate_ks, :delegate_bik, :delegate_bank, :status, :count
     )
   end
 
