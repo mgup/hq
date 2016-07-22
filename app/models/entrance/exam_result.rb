@@ -59,16 +59,15 @@ class Entrance::ExamResult < ActiveRecord::Base
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.EntranceTestResult do
         xml.UID                 "test_result_#{opts[:application].id * 10000 + id}"
-
         xml.ResultValue         score
-        if 16233 == opts[:application].id && 76 == exam.id
-          xml.ResultSourceTypeID  3
-        elsif 16233 == opts[:application].id && 95 == exam.id
-          xml.ResultSourceTypeID  3
+
+        if opts[:application].benefits && opts[:application].benefits.first.olympic_document
+          xml.ResultSourceTypeID 3
         else
           xml.ResultSourceTypeID  self[:form]
         end
 
+        xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
         xml.EntranceTestTypeID  exam.creative ? 2 : 1
 
         if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
@@ -87,30 +86,27 @@ class Entrance::ExamResult < ActiveRecord::Base
           xml.CompetitiveGroupUID  opts[:application].competitive_group.id
         end
 
-        xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
-
-        if 16233 == opts[:application].id && 76 == exam.id
-          xml.ResultDocument do
-            xml.OlympicDocument do
-              xml.UID "olympic_document_5"
-              xml.OriginalReceived true
-              xml.DocumentNumber '49309763950'
-              xml.DiplomaTypeID 1
-              xml.OlympicID 416
-              xml.LevelID 1
-            end
-          end
-        elsif 16233 == opts[:application].id && 95 == exam.id
-          xml.ResultDocument do
-            xml.OlympicDocument do
-              xml.UID "olympic_document_4"
-              xml.OriginalReceived true
-              xml.DocumentNumber '49312155912'
-              xml.DiplomaTypeID 2
-              xml.OlympicID 258
-              xml.LevelID 1
-            end
-          end
+        if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
+          # xml.ResultDocument do
+          #   xml.OlympicDocument do
+          #     xml.UID "olympic_document_5"
+          #     xml.OriginalReceived true
+          #     xml.DocumentNumber '49309763950'
+          #     xml.DiplomaTypeID 1
+          #     xml.OlympicID 416
+          #     xml.LevelID 1
+          #   end
+          # end
+          # xml.ResultDocument do
+          #   xml.OlympicDocument do
+          #     xml.UID "olympic_document_4"
+          #     xml.OriginalReceived true
+          #     xml.DocumentNumber '49312155912'
+          #     xml.DiplomaTypeID 2
+          #     xml.OlympicID 258
+          #     xml.LevelID 1
+          #   end
+          # end
         elsif 2 == self[:form].to_i
           xml.ResultDocument do
             xml.InstitutionDocument do
@@ -120,9 +116,9 @@ class Entrance::ExamResult < ActiveRecord::Base
             end
           end
         elsif 1 == self[:form].to_i
-          # xml.ResultDocument do
-          #   xml.EgeDocumentID "entrant_check_#{opts[:application].entrant.checks.last.id}"
-          # end
+          xml.ResultDocument do
+            xml.EgeDocumentID "entrant_check_#{opts[:application].entrant.checks.last.id}"
+          end
         end
       end
     end
