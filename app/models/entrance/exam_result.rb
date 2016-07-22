@@ -61,7 +61,7 @@ class Entrance::ExamResult < ActiveRecord::Base
         xml.UID                 "test_result_#{opts[:application].id * 10000 + id}"
         xml.ResultValue         score
 
-        if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
+        if opts[:application].benefits.any? && opts[:application].benefits.first.benefit_kind.ege_100?
           xml.ResultSourceTypeID 3
         else
           xml.ResultSourceTypeID  self[:form]
@@ -70,7 +70,7 @@ class Entrance::ExamResult < ActiveRecord::Base
         xml.EntranceTestSubject { fis_entrance_test_subject(xml) }
         xml.EntranceTestTypeID  exam.creative ? 2 : 1
 
-        if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
+        if opts[:application].benefits.any? && opts[:application].benefits.first.benefit_kind.ege_100?
           # Олимпиады.
           xml.CompetitiveGroupUID  opts[:application].competitive_group.id
         elsif opts[:application].benefits.any?
@@ -86,27 +86,18 @@ class Entrance::ExamResult < ActiveRecord::Base
           xml.CompetitiveGroupUID  opts[:application].competitive_group.id
         end
 
-        if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
-          # xml.ResultDocument do
-          #   xml.OlympicDocument do
-          #     xml.UID "olympic_document_5"
-          #     xml.OriginalReceived true
-          #     xml.DocumentNumber '49309763950'
-          #     xml.DiplomaTypeID 1
-          #     xml.OlympicID 416
-          #     xml.LevelID 1
-          #   end
-          # end
-          # xml.ResultDocument do
-          #   xml.OlympicDocument do
-          #     xml.UID "olympic_document_4"
-          #     xml.OriginalReceived true
-          #     xml.DocumentNumber '49312155912'
-          #     xml.DiplomaTypeID 2
-          #     xml.OlympicID 258
-          #     xml.LevelID 1
-          #   end
-          # end
+        if opts[:application].benefits.any? && opts[:application].benefits.first.benefit_kind.ege_100?
+          xml.ResultDocument do
+            xml.OlympicDocument do
+              xml.UID opts[:application].benefits.first.olympic_document.id
+              xml.DocumentSeries opts[:application].benefits.first.olympic_document.series
+              xml.DocumentNumber opts[:application].benefits.first.olympic_document.number
+              xml.DiplomaTypeID opts[:application].benefits.first.olympic_document.diploma_type_id
+              xml.OlympicID opts[:application].benefits.first.olympic_document.olympic_id
+              xml.ProfileID opts[:application].benefits.first.olympic_document.profile_id
+              xml.ClassNumber opts[:application].benefits.first.olympic_document.class_number
+            end
+          end
         elsif 2 == self[:form].to_i
           xml.ResultDocument do
             xml.InstitutionDocument do
