@@ -61,7 +61,7 @@ class Entrance::ExamResult < ActiveRecord::Base
         xml.UID                 "test_result_#{opts[:application].id * 10000 + id}"
         xml.ResultValue         score
 
-        if opts[:application].benefits && opts[:application].benefits.first.olympic_document
+        if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
           xml.ResultSourceTypeID 3
         else
           xml.ResultSourceTypeID  self[:form]
