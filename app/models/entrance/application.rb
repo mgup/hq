@@ -718,151 +718,158 @@ class Entrance::Application < ActiveRecord::Base
         end
 
         unless benefits.empty?
-        # xml.ApplicationCommonBenefit do
-        #   xml.UID benefits.first.id
-        #   xml.CompetitiveGroupID competitive_group_item.competitive_group.id
-        #   xml.DocumentTypeID  benefits.first.document_type_id
-        #   xml.BenefitKindID  benefits.first.benefit_kind_id
-        #   xml.DocumentReason do
-        #     if benefits.first.olympic_document
-        #       xml.OlympicDocument do
-        #         xml.UID benefits.first.olympic_document.id
-        #         xml.OriginalReceived true
-        #         xml.DocumentNumber benefits.first.olympic_document.number
-        #         xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
-        #         xml.OlympicID benefits.first.olympic_document.olympic_id
-        #         xml.LevelID benefits.first.olympic_document.level_id
-        #       end
-        #     elsif benefits.first.medical_disability_document
-        #       xml.MedicalDocuments do
-        #         xml.BenefitDocument do
-        #           if benefits.first.medical_disability_document.medical?
-        #             xml.MedicalDocument do
-        #               xml.UID benefits.first.medical_disability_document.id
-        #               xml.OriginalReceived true
-        #               xml.DocumentNumber benefits.first.medical_disability_document.number
-        #               xml.DocumentDate benefits.first.medical_disability_document.date
-        #               xml.DocumentOrganization benefits.first.medical_disability_document.organization
-        #             end
-        #           else
-        #             xml.DisabilityDocument do
-        #               xml.UID benefits.first.medical_disability_document.id
-        #               xml.OriginalReceived true
-        #               xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
-        #               xml.DocumentNumber benefits.first.medical_disability_document.number
-        #               xml.DocumentDate benefits.first.medical_disability_document.date
-        #               xml.DocumentOrganization benefits.first.medical_disability_document.organization
-        #               xml.DisabilityTypeID benefits.first.medical_disability_document.disability_type_id
-        #             end
-        #           end
-        #         end
-        #         xml.AllowEducationDocument do
-        #           xml.UID benefits.first.allow_education_document.id
-        #           xml.OriginalReceived true
-        #           xml.DocumentNumber benefits.first.allow_education_document.number
-        #           xml.DocumentDate benefits.first.allow_education_document.date
-        #           xml.DocumentOrganization benefits.first.allow_education_document.organization
-        #         end
-        #       end
-        #     elsif benefits.first.custom_document
-        #       xml.CustomDocument do
-        #         xml.UID benefits.first.custom_document.id
-        #         xml.OriginalReceived true
-        #         xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
-        #         xml.DocumentNumber benefits.first.custom_document.number
-        #         xml.DocumentDate benefits.first.custom_document.date
-        #         xml.DocumentOrganization benefits.first.custom_document.organization
-        #         xml.DocumentTypeNameText benefits.first.custom_document.type_name
-        #       end
-        #     end
-        #   end
-        # end
+        xml.ApplicationCommonBenefit do
+          xml.UID benefits.first.id
+          xml.CompetitiveGroupUID competitive_group_item.competitive_group.id
+          xml.DocumentTypeID  benefits.first.document_type_id
+          xml.BenefitKindID  benefits.first.benefit_kind_id
+          xml.DocumentReason do
+            if benefits.first.olympic_document
+              xml.OlympicDocument do
+                xml.UID benefits.first.olympic_document.id
+                xml.DocumentSeries benefits.first.olympic_document.series
+                xml.DocumentNumber benefits.first.olympic_document.number
+                xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
+                xml.OlympicID benefits.first.olympic_document.olympic_id
+                xml.ProfileID benefits.first.olympic_document.profile_id
+                xml.ClassNumber benefits.first.olympic_document.class_number
+              end
+            elsif benefits.first.medical_disability_document
+              xml.MedicalDocuments do
+                xml.BenefitDocument do
+                  if benefits.first.medical_disability_document.medical?
+                    xml.MedicalDocument do
+                      xml.UID benefits.first.medical_disability_document.id
+                      xml.DocumentNumber benefits.first.medical_disability_document.number
+                      xml.DocumentDate benefits.first.medical_disability_document.date
+                      xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                    end
+                  else
+                    xml.DisabilityDocument do
+                      xml.UID benefits.first.medical_disability_document.id
+                      xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
+                      xml.DocumentNumber benefits.first.medical_disability_document.number
+                      xml.DocumentDate benefits.first.medical_disability_document.date
+                      xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                      xml.DisabilityTypeID benefits.first.medical_disability_document.disability_type_id
+                    end
+                  end
+                end
+                xml.AllowEducationDocument do
+                  xml.UID benefits.first.allow_education_document.id
+                  xml.DocumentNumber benefits.first.allow_education_document.number
+                  xml.DocumentDate benefits.first.allow_education_document.date
+                  xml.DocumentOrganization benefits.first.allow_education_document.organization
+                end
+              end
+            elsif benefits.first.orphan_document
+              xml.OrphanDocument do
+                xml.UID benefits.first.orphan_document.id
+                xml.OrphanCategoryID benefits.first.orphan_document.orphan_category_id
+                xml.DocumentName benefits.first.orphan_document.type_name
+                xml.DocumentSeries benefits.first.orphan_document.series
+                xml.DocumentNumber benefits.first.orphan_document.number
+                xml.DocumentDate benefits.first.orphan_document.date
+                xml.DocumentOrganization benefits.first.orphan_document.organization
+              end
+            elsif benefits.first.custom_document
+              xml.CustomDocument do
+                xml.UID benefits.first.custom_document.id
+                xml.DocumentName benefits.first.custom_document.type_name
+                xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
+                xml.DocumentNumber benefits.first.custom_document.number
+                xml.DocumentDate benefits.first.custom_document.date
+                xml.DocumentOrganization benefits.first.custom_document.organization
+              end
+            end
+          end
+        end
 
-          # if 16233 == id
-          #   # 100 баллов за ЕГЭ в exam_result
-          # else
-          #   xml.ApplicationCommonBenefits do
-          #     xml.ApplicationCommonBenefit do
-          #       # ФИС требует, чтобы льготы передаваемые через
-          #       # ApplicationCommonBenefits и ApplicationCommonBenefit имели
-          #       # различные UID. Надеюсь, что у нас не скоро будет 100000
-          #       # абитуриентов со льготами.
-          #       # xml.UID (benefits.first.id + 100000)
-          #       xml.UID "benefit_#{benefits.first.id}"
-          #       xml.CompetitiveGroupID competitive_group_item.competitive_group.id
-          #       xml.DocumentTypeID  benefits.first.document_type_id
-          #       xml.BenefitKindID  benefits.first.benefit_kind_id
-          #       xml.DocumentReason do
-          #         if 17771 == id.to_i
-          #           xml.OlympicTotalDocument do
-          #             xml.UID "olympic_total_document_1"
-          #             xml.DocumentSeries 'б/с'
-          #             xml.DocumentNumber '2015-II-1194'
-          #             xml.DiplomaTypeID 2
-          #             xml.Subjects do
-          #               xml.SubjectBriefData do
-          #                 xml.SubjectID 9
-          #               end
-          #             end
-          #           end
-          #
-          #         end
-          #
-          #         if benefits.first.olympic_document
-          #           xml.OlympicDocument do
-          #             xml.UID "olympic_document_#{benefits.first.olympic_document.id}"
-          #             xml.OriginalReceived true
-          #             xml.DocumentNumber benefits.first.olympic_document.number
-          #             xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
-          #             xml.OlympicID benefits.first.olympic_document.olympic_id
-          #             xml.LevelID benefits.first.olympic_document.level_id
-          #           end
-          #         elsif benefits.first.medical_disability_document
-          #           xml.MedicalDocuments do
-          #             xml.BenefitDocument do
-          #               if benefits.first.medical_disability_document.medical?
-          #                 xml.MedicalDocument do
-          #                   xml.UID "medical_document_#{benefits.first.medical_disability_document.id}"
-          #                   xml.OriginalReceived true
-          #                   xml.DocumentNumber benefits.first.medical_disability_document.number
-          #                   xml.DocumentDate benefits.first.medical_disability_document.date
-          #                   xml.DocumentOrganization benefits.first.medical_disability_document.organization
-          #                 end
-          #               else
-          #                 xml.DisabilityDocument do
-          #                   xml.UID "disability_document_#{benefits.first.medical_disability_document.id}"
-          #                   xml.OriginalReceived true
-          #                   xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
-          #                   xml.DocumentNumber benefits.first.medical_disability_document.number
-          #                   xml.DocumentDate benefits.first.medical_disability_document.date
-          #                   xml.DocumentOrganization benefits.first.medical_disability_document.organization
-          #                   xml.DisabilityTypeID benefits.first.medical_disability_document.disability_type_id
-          #                 end
-          #               end
-          #             end
-          #             xml.AllowEducationDocument do
-          #               xml.UID "allow_education_document_#{benefits.first.allow_education_document.id}"
-          #               xml.OriginalReceived true
-          #               xml.DocumentNumber benefits.first.allow_education_document.number
-          #               xml.DocumentDate benefits.first.allow_education_document.date
-          #               xml.DocumentOrganization benefits.first.allow_education_document.organization
-          #             end
-          #           end
-          #         elsif benefits.first.custom_document
-          #           xml.CustomDocument do
-          #             xml.UID "custom_document_#{benefits.first.custom_document.id}"
-          #             xml.OriginalReceived true
-          #             xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
-          #             xml.DocumentNumber benefits.first.custom_document.number
-          #             xml.DocumentDate benefits.first.custom_document.date
-          #             xml.DocumentOrganization benefits.first.custom_document.organization
-          #             xml.DocumentTypeNameText benefits.first.custom_document.type_name
-          #           end
-          #         end
-          #       end
-          #     end
-          #   end
-          # end
+          if 16233 == id
+            # 100 баллов за ЕГЭ в exam_result
+          else
+            xml.ApplicationCommonBenefits do
+              xml.ApplicationCommonBenefit do
+                # ФИС требует, чтобы льготы передаваемые через
+                # ApplicationCommonBenefits и ApplicationCommonBenefit имели
+                # различные UID. Надеюсь, что у нас не скоро будет 100000
+                # абитуриентов со льготами.
+                # xml.UID (benefits.first.id + 100000)
+                xml.UID "benefit_#{benefits.first.id}"
+                xml.CompetitiveGroupID competitive_group_item.competitive_group.id
+                xml.DocumentTypeID  benefits.first.document_type_id
+                xml.BenefitKindID  benefits.first.benefit_kind_id
+                xml.DocumentReason do
+                  if 17771 == id.to_i
+                    xml.OlympicTotalDocument do
+                      xml.UID "olympic_total_document_1"
+                      xml.DocumentSeries 'б/с'
+                      xml.DocumentNumber '2015-II-1194'
+                      xml.DiplomaTypeID 2
+                      xml.Subjects do
+                        xml.SubjectBriefData do
+                          xml.SubjectID 9
+                        end
+                      end
+                    end
+
+                  end
+
+                  if benefits.first.olympic_document
+                    xml.OlympicDocument do
+                      xml.UID "olympic_document_#{benefits.first.olympic_document.id}"
+                      xml.OriginalReceived true
+                      xml.DocumentNumber benefits.first.olympic_document.number
+                      xml.DiplomaTypeID benefits.first.olympic_document.diploma_type_id
+                      xml.OlympicID benefits.first.olympic_document.olympic_id
+                      xml.LevelID benefits.first.olympic_document.level_id
+                    end
+                  elsif benefits.first.medical_disability_document
+                    xml.MedicalDocuments do
+                      xml.BenefitDocument do
+                        if benefits.first.medical_disability_document.medical?
+                          xml.MedicalDocument do
+                            xml.UID "medical_document_#{benefits.first.medical_disability_document.id}"
+                            xml.OriginalReceived true
+                            xml.DocumentNumber benefits.first.medical_disability_document.number
+                            xml.DocumentDate benefits.first.medical_disability_document.date
+                            xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                          end
+                        else
+                          xml.DisabilityDocument do
+                            xml.UID "disability_document_#{benefits.first.medical_disability_document.id}"
+                            xml.OriginalReceived true
+                            xml.DocumentSeries benefits.first.medical_disability_document.series.blank? ? 'б/с' : benefits.first.medical_disability_document.series
+                            xml.DocumentNumber benefits.first.medical_disability_document.number
+                            xml.DocumentDate benefits.first.medical_disability_document.date
+                            xml.DocumentOrganization benefits.first.medical_disability_document.organization
+                            xml.DisabilityTypeID benefits.first.medical_disability_document.disability_type_id
+                          end
+                        end
+                      end
+                      xml.AllowEducationDocument do
+                        xml.UID "allow_education_document_#{benefits.first.allow_education_document.id}"
+                        xml.OriginalReceived true
+                        xml.DocumentNumber benefits.first.allow_education_document.number
+                        xml.DocumentDate benefits.first.allow_education_document.date
+                        xml.DocumentOrganization benefits.first.allow_education_document.organization
+                      end
+                    end
+                  elsif benefits.first.custom_document
+                    xml.CustomDocument do
+                      xml.UID "custom_document_#{benefits.first.custom_document.id}"
+                      xml.OriginalReceived true
+                      xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
+                      xml.DocumentNumber benefits.first.custom_document.number
+                      xml.DocumentDate benefits.first.custom_document.date
+                      xml.DocumentOrganization benefits.first.custom_document.organization
+                      xml.DocumentTypeNameText benefits.first.custom_document.type_name
+                    end
+                  end
+                end
+              end
+            end
+          end
         end
 
         has_scores = false
