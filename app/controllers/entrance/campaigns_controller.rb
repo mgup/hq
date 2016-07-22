@@ -472,26 +472,11 @@ class Entrance::CampaignsController < ApplicationController
       #     "Количество поданных заявлений на #{l Time.now}.xlsx" + '"'
       # end
       format.xml do
-        # @applications = Entrance::Application.where(campaign_id: [2015, 32015]).
-        #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
-        # @applications = Entrance::Application.where(campaign_id: [2015]).
-        #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
-
         @applications = Entrance::Application.
           where(campaign_id: [12016],
                 status_id: [4, 8],
                 is_payed: 0).
           find_all { |a| a.pass_min_score? }
-
-        # @applications = Entrance::Application.where(
-        #   'entrance_applications.number IN (?)',
-        #   ['16-ЭД011п', '16-ММ004п', '16-МВ001п', '16-МД027п', '16-ЭД016п',
-        #    '16-МД023п', '16-ЭВ001п', '16-МД017п', '16-МД053п', '16-ММ001п',
-        #    '16-МД045п', '16-ЭД018п', '16-ЭД042п', '16-ЭД043п', '16-БД012п', '16-ПВ002п',
-        #    '16-ИМ004п', '16-ИМ003п', '16-ИМ007п', '16-ИМ009п', '16-ИМ002п', '16-ИМ001п',
-        #    '16-ИМ006п', '16-БД008п', '16-ИМ005п']
-        # )
-        # '16-РВ001п', '16-РВ002п',
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
@@ -540,7 +525,23 @@ class Entrance::CampaignsController < ApplicationController
                     xml.ApplicationUID application.id
                     xml.OrderUID "order_of_admission_#{application.order.id}"
                     xml.OrderTypeID 1
-                    xml.CompetitiveGroupUID application.competitive_group.id
+
+                    if application.benefits.any? && application.benefits.first.olympic_document
+                      # Олимпиады.
+                      xml.CompetitiveGroupUID  application.competitive_group.fis_uid
+                    elsif application.benefits.any?
+                      # Квота особых прав
+                      xml.CompetitiveGroupUID  "#{application.competitive_group.fis_uid}_quota"
+                    elsif application.competitive_group.name.include?('Крым')
+                      # Квота Крым
+                      xml.CompetitiveGroupUID  application.competitive_group.fis_uid
+                    elsif application.competitive_group_target_item_id.present?
+                      # Квота целевого приема
+                      xml.CompetitiveGroupUID  "#{application.competitive_group.fis_uid}_target"
+                      xml.TargetOrganizationUID application.competitive_group_target_item.target_organization.id
+                    else
+                      xml.CompetitiveGroupUID  application.competitive_group.fis_uid
+                    end
 
                     if !application.is_payed?
                       xml.OrderIdLevelBudget 1

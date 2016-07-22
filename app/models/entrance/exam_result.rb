@@ -72,18 +72,18 @@ class Entrance::ExamResult < ActiveRecord::Base
 
         if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
           # Олимпиады.
-          xml.CompetitiveGroupUID  opts[:application].competitive_group.id
+          xml.CompetitiveGroupUID  opts[:application].competitive_group.fis_uid
         elsif opts[:application].benefits.any?
           # Квота особых прав
-          xml.CompetitiveGroupUID  "#{opts[:application].competitive_group.id}_quota"
+          xml.CompetitiveGroupUID  "#{opts[:application].competitive_group.fis_uid}_quota"
         elsif opts[:application].competitive_group.name.include?('Крым')
           # Квота Крым
-          xml.CompetitiveGroupUID  opts[:application].competitive_group.id
+          xml.CompetitiveGroupUID  opts[:application].competitive_group.fis_uid
         elsif opts[:application].competitive_group_target_item_id.present?
           # Квота целевого приема
-          xml.CompetitiveGroupUID  "#{opts[:application].competitive_group.id}_target"
+          xml.CompetitiveGroupUID  "#{opts[:application].competitive_group.fis_uid}_target"
         else
-          xml.CompetitiveGroupUID  opts[:application].competitive_group.id
+          xml.CompetitiveGroupUID  opts[:application].competitive_group.fis_uid
         end
 
         if opts[:application].benefits.any? && opts[:application].benefits.first.olympic_document
