@@ -32,4 +32,11 @@ class Entrance::CompetitiveGroup < ActiveRecord::Base
     items.first.department
   end
 
+  def fis_uid
+    if uid.present?
+      uid
+    else
+      id
+    end
+  end
 end

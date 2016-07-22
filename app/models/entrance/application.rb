@@ -617,19 +617,19 @@ class Entrance::Application < ActiveRecord::Base
 
             if benefits.any? && benefits.first.olympic_document
               # Олимпиады.
-              xml.CompetitiveGroupUID  competitive_group.id
+              xml.CompetitiveGroupUID  competitive_group.fis_uid
             elsif benefits.any?
               # Квота особых прав
-              xml.CompetitiveGroupUID  "#{competitive_group.id}_quota"
+              xml.CompetitiveGroupUID  "#{competitive_group.fis_uid}_quota"
             elsif competitive_group.name.include?('Крым')
               # Квота Крым
-              xml.CompetitiveGroupUID  competitive_group.id
+              xml.CompetitiveGroupUID  competitive_group.fis_uid
             elsif competitive_group_target_item_id.present?
               # Квота целевого приема
-              xml.CompetitiveGroupUID  "#{competitive_group.id}_target"
+              xml.CompetitiveGroupUID  "#{competitive_group.fis_uid}_target"
               xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
             else
-              xml.CompetitiveGroupUID  competitive_group.id
+              xml.CompetitiveGroupUID  competitive_group.fis_uid
             end
 
             #!!! xml.IsAgreedDate
@@ -721,7 +721,24 @@ class Entrance::Application < ActiveRecord::Base
           xml.ApplicationCommonBenefits do
             xml.ApplicationCommonBenefit do
               xml.UID benefits.first.id
-              xml.CompetitiveGroupUID competitive_group_item.competitive_group.id
+
+              if benefits.any? && benefits.first.olympic_document
+                # Олимпиады.
+                xml.CompetitiveGroupUID  competitive_group.fis_uid
+              elsif benefits.any?
+                # Квота особых прав
+                xml.CompetitiveGroupUID  "#{competitive_group.fis_uid}_quota"
+              elsif competitive_group.name.include?('Крым')
+                # Квота Крым
+                xml.CompetitiveGroupUID  competitive_group.fis_uid
+              elsif competitive_group_target_item_id.present?
+                # Квота целевого приема
+                xml.CompetitiveGroupUID  "#{competitive_group.fis_uid}_target"
+                xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+              else
+                xml.CompetitiveGroupUID  competitive_group.fis_uid
+              end
+
               xml.DocumentTypeID  benefits.first.document_type_id
               xml.BenefitKindID  benefits.first.benefit_kind_id
               xml.DocumentReason do
