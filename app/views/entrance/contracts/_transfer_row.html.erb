@@ -13,7 +13,7 @@
   <% end %>
 </td>
 <td><%= contract.application.number %></td>
-<td><%= contract.paid? ? '<span class="success">оплачен</span>'.html_safe : '<span class="danger">неоплачен</span>'.html_safe %></td>
+<td><%= contract.paid? ? '<span class="success">оплачен</span>'.html_safe : '<span class="danger">не оплачен</span>'.html_safe %></td>
 <td><%= contract.status_name %></td>
 <td>
     <% if contract.priem? %>

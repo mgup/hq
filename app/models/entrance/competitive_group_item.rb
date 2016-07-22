@@ -12,6 +12,8 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
            foreign_key: :item_id
   has_many :profiles, through: :competitive_group_item_profiles
 
+  delegate :department, to: :direction
+
   scope :from_direction, -> direction_id { where(direction_id: direction_id) }
 
   scope :for_7_july, -> { where('competitive_group_id IN (336147,373005,336157,372999,336158,373000,336159,336160)') }
