@@ -28,4 +28,8 @@ class Entrance::CompetitiveGroup < ActiveRecord::Base
     super
   end
 
+  def faculty
+    items.first.department
+  end
+
 end

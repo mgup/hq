@@ -4,13 +4,18 @@ prawn_document margin: [56.692913386, 28.34645669291339,
 
   render 'pdf/font', pdf: pdf
 
-  pdf.font_size 11 do
+  index = 0
+  @contracts.group_by{ |c| c.competitive_group.faculty }.each do |_, contracts|
+    pdf.start_new_page unless index == 0
+    index += 1
+    pdf.font_size 11 do
     pdf.text 'АКТ ПЕРЕДАЧИ ДОГОВОРОВ', style: :bold, align: :center
     pdf.move_down 20
-    @contracts.group_by(&:competitive_group).each do |group, contracts|
+
+    contracts.group_by(&:competitive_group).each do |group, cs|
       pdf.text group.name
       pdf.move_down 5
-      contracts.each_with_index do |contract, i|
+      cs.each_with_index do |contract, i|
         pdf.indent 25 do
           pdf.text "#{i+1}. #{contract.entrant.full_name} (#{(contract.count? ? contract.count : (contract.bilateral? ? 2 : 3))} #{
                    Russian::p((contract.count? ? contract.count : (contract.bilateral? ? 2 : 3)),
@@ -31,6 +36,6 @@ prawn_document margin: [56.692913386, 28.34645669291339,
     pdf.move_down 10
     pdf.text "______________________________________________ #{' '*69} / __________________ /"
 
+    end
   end
-
 end
