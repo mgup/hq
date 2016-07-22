@@ -477,11 +477,11 @@ class Entrance::CampaignsController < ApplicationController
         # @applications = Entrance::Application.where(campaign_id: [2015]).
         #   where(status_id: 8).where(is_payed: false).reject { |a| a.direction.master? }
 
-        apps = Entrance::Application.
-          where(campaign_id: [12016, 22016, 32016, 42016])#.
-          .where(status_id: 4)
-          .find_all { |a| a.competitive_group.name.include?('Графика') && a.pass_min_score? }
-        @applications = apps#[0]
+        @applications = Entrance::Application.
+          where(campaign_id: [12016],
+                status_id: 4,
+                is_payed: 0).
+          find_all { |a| a.pass_min_score? }
 
         # @applications = Entrance::Application.where(
         #   'entrance_applications.number IN (?)',
