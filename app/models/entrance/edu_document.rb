@@ -35,7 +35,7 @@ class Entrance::EduDocument < ActiveRecord::Base
   end
 
   def add_fis_document_details(application, xml)
-    xml.UID entrant.edu_document.id
+    xml.UID "edu_document_#{document_type_id}_#{entrant.edu_document.id}"
     xml.OriginalReceivedDate  application.created_at.to_date.iso8601
     # xml.OriginalReceived      application.original
     xml.DocumentSeries        entrant.edu_document.series.blank? ? 'б/с' : entrant.edu_document.series
