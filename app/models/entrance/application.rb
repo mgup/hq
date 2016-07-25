@@ -627,7 +627,14 @@ class Entrance::Application < ActiveRecord::Base
             elsif competitive_group_target_item_id.present?
               # Квота целевого приема
               xml.CompetitiveGroupUID  "#{competitive_group.fis_uid}_target"
-              xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+
+              if [203, 204].include?(competitive_group_target_item.target_organization.id)
+                xml.TargetOrganizationUID 203
+              elsif [205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219].include?(competitive_group_target_item.target_organization.id)
+                xml.TargetOrganizationUID 205
+              else
+                xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+              end
             else
               xml.CompetitiveGroupUID  competitive_group.fis_uid
             end
