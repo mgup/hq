@@ -1,0 +1,25 @@
+<td class="nowrap">
+  <%= a.number %>
+</td>
+
+<td>
+  <%= a.entrant.full_name %>
+</td>
+
+<% a.abitexams.each do |result| %>
+  <td><%= result.score %></td>
+<% end %>
+
+<td>
+  <%= a.abitachievements %>
+</td>
+
+<td>
+  <%= a.abitpoints %>
+</td>
+
+<td class="text-center">
+  <% if a.original? %>
+    <span class="glyphicons ok_2"></span>
+  <% end %>
+</td>
