@@ -185,21 +185,18 @@ class Entrance::CampaignsController < ApplicationController
         next unless g.campaign.start_year == Entrance::Campaign::CURRENT_YEAR
 
         if g.name.include?(', бюджет')
-          o_o += gi.number_budget_o
-          oz_o += gi.number_budget_oz
-
           if g.name.include?('Крым')
             o_crimea += gi.number_budget_o
+            o_o += gi.number_budget_o
+          else
+            if g.target_organizations.any?
+              o_target += g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == direction.description }.map(&:number_target_o).sum
+            end
+
+            o_o += gi.number_budget_o - o_target
+            o_quota += gi.number_quota_o
+            oz_o += gi.number_budget_oz
           end
-
-          o_o += gi.number_quota_o
-          o_quota += gi.number_quota_o
-
-          if g.target_organizations.any?
-            o_target += g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == direction.description }.map(&:number_target_o).sum
-          end
-
-          o_o += o_target
         else
           if g.name.include?('Крым')
             po_crimea += gi.number_paid_o
@@ -479,6 +476,7 @@ class Entrance::CampaignsController < ApplicationController
           where(campaign_id: [12016],
                 status_id: [4, 8],
                 is_payed: 0).
+          find_all { |a| a.competitive_group.name.include?('Графика') }.
           find_all { |a| a.pass_min_score? }
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
