@@ -80,6 +80,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           index = 0
           applications.each do |ap|
             next unless ap.entrant.visible?
+            next unless ap.actual?
             if @type == 2
               next if ap.abitexams.select{|e| e ? e.university? : false}.empty?
             elsif @type == 3
