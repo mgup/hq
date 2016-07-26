@@ -7,13 +7,13 @@ class Entrance::ItemsController < ApplicationController
     @type = params[:type].to_i
     @date = case @type
               when 1
-                'от «7» июля 2015 г.'
+                'от «7» июля 2016 г.'
               when 2
-                'от «10» июля 2015 г.'
+                'от «10» июля 2016 г.'
               when 3
-                'от «25» июля 2015 г.'
+                'от «26» июля 2016 г.'
               when 4
-                'от «25» июля 2015 г.'
+                'от «26» июля 2016 г.'
               when 5
                 'от «1» августа 2015 г.'
               # when 4

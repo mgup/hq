@@ -151,6 +151,10 @@ class Entrance::Application < ActiveRecord::Base
     sum
   end
 
+  def actual?
+    4 == status_id
+  end
+
   def avgpoints
     1.0 * abitpoints / abitexams.size
   end
