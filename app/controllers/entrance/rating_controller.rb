@@ -4,6 +4,7 @@ class Entrance::RatingController < ApplicationController
 
     @campaign = Entrance::Campaign.find_by(id: params[:id])
     load_directions
+    init_places
 
     @applications = @campaign.applications.for_rating.rating(params[:form],
                                                              params[:payment],
@@ -14,6 +15,8 @@ class Entrance::RatingController < ApplicationController
   private
 
   def load_directions
+    @direction = Direction.find_by(id: params[:direction])
+
     @directions = Entrance::Campaign.where(start_year: Entrance::Campaign::CURRENT_YEAR).
       includes(competitive_groups: :items).
       map(&:competitive_groups).sum.map(&:items).sum.map(&:direction).uniq.sort_by do |d|
@@ -67,5 +70,47 @@ class Entrance::RatingController < ApplicationController
 
     @exam_names[@exam_names.size] = 'Индивидуальные достижения'
     @exam_names_crimea[@exam_names_crimea.size] = 'Индивидуальные достижения'
+  end
+
+  def init_places
+    @total_places = 0
+    @crimea_places = 0
+    @quota_places = 0
+    @target_places = 0
+
+    form = case params[:form]
+           when '10' then :z
+           when '11' then :o
+           when '12' then :oz
+           end
+
+    payment = case params[:payment]
+              when '14' then :budget
+              when '15' then :paid
+              end
+
+    @direction.competitive_group_items.each do |gi|
+      g = gi.competitive_group
+      camp = g.campaign_id
+      g_name = g.name
+
+      next unless @campaign.id == g.campaign_id
+
+      @total_places += gi.send("number_#{payment}_#{form}")
+
+      if g.name.include?('Крым')
+        @crimea_places += gi.send("number_#{payment}_#{form}")
+      end
+
+      @total_places += gi.send("number_quota_#{form}")
+      @quota_places += gi.send("number_quota_#{form}")
+
+
+      if g.target_organizations.any?
+        t = g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == @direction.description }.map(&"number_target_#{form}".to_sym).sum
+        @total_places += t
+        @target_places += t
+      end
+    end
   end
 end
