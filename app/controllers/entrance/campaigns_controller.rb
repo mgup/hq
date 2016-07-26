@@ -191,7 +191,6 @@ class Entrance::CampaignsController < ApplicationController
           else
             if g.target_organizations.any?
               o_target += g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == direction.description }.map(&:number_target_o).sum
-              o_o -= o_target
             end
 
             o_o += gi.number_budget_o
