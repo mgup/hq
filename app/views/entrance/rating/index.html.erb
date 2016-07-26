@@ -66,6 +66,7 @@
       <% @crimea_places -= 1 if success %>
       <% @total_places -= 1 if success %>
     <% end %>
+    <% @total_places -= @crimea_places if @crimea_places > 0 %>
     </tbody>
   </table>
 <% end %>
@@ -144,6 +145,7 @@
         <% target_places -= 1 if success %>
         <% @total_places -= 1 if success %>
       <% end %>
+      <% @total_places -= target_places if target_places > 0 %>
       </tbody>
     </table>
   <% end %>
