@@ -11,17 +11,17 @@ item = group.items.first
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
     pdf.text 'о допуске к участию в конкурсе', style: :bold, align: :center
 
-    if 12015 == @campaign.id
-      date = '13 июля'
+    if 12016 == @campaign.id
+      date = '26 июля'
     elsif 18 == applications.first.education_form_id
       date = '17 июля'
     else
       date = '25 июля'
     end
 
-    date = '27 июля'
+    date = '26 июля'
 
-    pdf.table [['№ __________________', "от #{date} 2015 г."]], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
+    pdf.table [['№ __________________', "от #{date} 2016 г."]], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
       column(0).width = 600
     end
     pdf.move_down 8
