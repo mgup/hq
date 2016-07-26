@@ -4,8 +4,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
   render 'pdf/font', pdf: pdf
   key = true
-  payment_categories = params[:type] == 1 ? [:paid, :not_paid] : [:not_paid]
-  form_categories = params[:type] == 1 ? [:z_form, :oz_form, :o_form] : [:o_form]
+  payment_categories = params[:type] == '1' ? [:paid, :not_paid] : [:not_paid]
+  form_categories = params[:type] == '1' ? [:z_form, :oz_form, :o_form] : [:o_form]
   @items.each do |i|
     payment_categories.each do |payment|
       form_categories.each do |form|
