@@ -186,7 +186,7 @@
       crimea.each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
         crimea_places -= 1 if a.original? && a.pass_min_score?
-        crimea_places -= 1 if a.original? && a.pass_min_score?
+        total_places -= 1 if a.original? && a.pass_min_score?
       end
       total_places -= crimea_places if crimea_places > 0
 
