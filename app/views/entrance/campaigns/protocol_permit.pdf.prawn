@@ -7,7 +7,6 @@ prawn_document margin: [72.0 * 1.0 / 2.54,
   @directions.each_with_index do |direction, i|
     pdf.font_size = 10
     # next if competitive_group.items.first.payed?
-    next if i > 2
 
     # next unless competitive_group.items.first.direction.master?
 

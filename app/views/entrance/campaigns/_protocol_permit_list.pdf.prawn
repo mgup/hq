@@ -1,7 +1,10 @@
-[14, 15].each do |payment|
-  [10, 11, 12].each do |form|
-    applications = @campaign.applications.for_rating.rating('form', 'payment', direction.id.to_s)
+# ['14', '15'].each do |payment|
+#   ['10', '11', '12'].each do |form|
+['14'].each do |payment|
+  ['11'].each do |form|
+    applications = @campaign.applications.for_rating.rating(form, payment, direction.id.to_s)
 
+    next if applications.empty?
     # распределяем по типу конкурса
     exam_names = {}
     exam_names_crimea = {}
@@ -14,12 +17,13 @@
 
     applications.each do |a|
       out_of_competition << a if a.out_of_competition?
+
       exams = a.competitive_group.test_items.order(:entrance_test_priority).map { |t| t.exam.name }
       if a.competitive_group.name.include?('Крым')
         crimea << a
         exams.each_with_index do |name, i|
           if exam_names_crimea[i].present?
-            exam_names_crimea[i] += " <hr> #{name}" unless exam_names_crimea[i].include?(name)
+            exam_names_crimea[i] += " / #{name}" unless exam_names_crimea[i].include?(name)
           else
             exam_names_crimea[i] = name
           end
@@ -35,7 +39,7 @@
 
         exams.each_with_index do |name, i|
           if exam_names[i].present?
-            exam_names[i] += " <hr> #{name}" unless exam_names[i].include?(name)
+            exam_names[i] += " / #{name}" unless exam_names[i].include?(name)
           else
             exam_names[i] = name
           end
@@ -46,8 +50,6 @@
     exam_names_crimea[exam_names_crimea.size] = 'Индивидуальные достижения'
     # распределяем по типу конкурса
 
-
-    next if applications.empty?
     pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
@@ -103,14 +105,14 @@
     target_places = 0
 
     form_m = case form
-           when 10 then :z
-           when 11 then :o
-           when 12 then :oz
+           when '10' then :z
+           when '11' then :o
+           when '12' then :oz
            end
 
     payment_m = case payment
-              when 14 then :budget
-              when 15 then :paid
+              when '14' then :budget
+              when '15' then :paid
               end
 
     direction.competitive_group_items.each do |gi|
@@ -180,7 +182,7 @@
       pdf.text "Доступное количество мест — #{crimea_places}",
                style: :bold, size: 10
 
-      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
+      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names_crimea.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
       crimea.each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
         crimea_places -= 1 if a.original? && a.pass_min_score?
