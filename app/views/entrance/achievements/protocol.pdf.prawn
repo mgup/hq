@@ -117,7 +117,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                        .sort_by {|a| a.entrant.full_name}
 
      achievements.each_with_index do |a, ind|
-        data << ["#{ind+1}", a.entrant.packed_application.number, a.entrant.full_name, a.score]
+        data << ["#{ind+1}", a.entrant.applications.actual.collect{ |ap| ap.number }.join(', '), a.entrant.full_name, a.score]
      end
 
       pdf.move_down 15
