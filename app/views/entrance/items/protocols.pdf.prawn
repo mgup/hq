@@ -14,7 +14,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         elsif '5' == params[:type]
           applications = i.applications.send(form).send(payment).find_all { |a| a.created_at >= Date.new(2016, 7, 26) }
         else
-          applications = i.applications.send(form).send(payment)
+          applications = i.applications.send(form).send(payment).actual
         end
 
         if applications.empty?
@@ -79,8 +79,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
           index = 0
           applications.each do |ap|
-            next unless ap.entrant.visible?
-            next unless ap.actual?
+            # next unless ap.entrant.visible?
             if @type == 2
               next if ap.abitexams.select{|e| e ? e.university? : false}.empty?
             elsif @type == 3
