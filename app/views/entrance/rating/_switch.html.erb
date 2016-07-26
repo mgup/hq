@@ -15,7 +15,7 @@
   <div class="row">
     <div class="col-sm-8">
       <%= select_tag :direction,
-                     options_from_collection_for_select(@directions, :id, :name, params[:direction]),
+                     options_from_collection_for_select(@directions, :id, :description, params[:direction]),
                      class: 'form-control',
                      onchange: %q($(this).parents('form').submit();) %>
     </div>
