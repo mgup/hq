@@ -1,0 +1,17 @@
+<td class="nowrap">
+  <%= a.number %>
+</td>
+
+<td>
+  <%= a.entrant.full_name %>
+</td>
+
+<td>
+  <%= a.benefits.first.temp_text %>
+</td>
+
+<td class="text-center">
+  <% if a.original? %>
+    <span class="glyphicons ok_2"></span>
+  <% end %>
+</td>

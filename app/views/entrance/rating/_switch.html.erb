@@ -1,0 +1,43 @@
+<script>
+  $(function() {
+    $('#contest_switch').submit(function(event) {
+      event.preventDefault();
+
+      document.location = 'http://matrix2.mgup.ru/entrance/campaigns/'
+        + $('#campaign').val() + '/contest/'
+        + $('#direction').val() + '/' + $('#form').val() + '/' + $('#payment').val();
+    });
+  });
+</script>
+<%= form_tag nil, id: 'contest_switch' do %>
+  <%= hidden_field_tag :campaign, @campaign.id %>
+
+  <div class="row">
+    <div class="col-sm-8">
+      <%= select_tag :direction,
+                     options_from_collection_for_select(@directions, :id, :name, params[:direction]),
+                     class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :form,
+                     options_for_select(
+                         [['очная', 11], ['очно-заочная', 12], ['заочная', 10]],
+                         params[:form]
+                     ),
+                     class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+    <div class="col-sm-2">
+      <%= select_tag :payment,
+                     options_for_select(
+                         [
+                             ['бюджет', 14] # ,
+                             # ['платное', 15]
+                         ],
+                         params[:payment]
+                     ), class: 'form-control',
+                     onchange: %q($(this).parents('form').submit();) %>
+    </div>
+  </div>
+<% end %>

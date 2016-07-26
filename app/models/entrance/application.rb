@@ -56,7 +56,8 @@ class Entrance::Application < ActiveRecord::Base
 
   scope :for_direction, -> (direction) do
     joins(:competitive_group_item).
-      where('competitive_group_items.direction_id = ?', direction.id)
+      where('competitive_group_items.direction_id = ?',
+            direction.instance_of?(Direction) ? direction.id : direction)
   end
 
   scope :from_faculty, -> (faculty_id) do
@@ -118,17 +119,13 @@ class Entrance::Application < ActiveRecord::Base
     lambda do |a, b|
       sum1 = a.abitpoints
       sum2 = b.abitpoints
-      # 0
+
       if sum1 > sum2
         -1
       elsif sum1 < sum2
         1
       else
-        case b.abitexams.map{|e| e ? e.score : 0} <=> a.abitexams.map{|e| e ? e.score : 0}
-        when 1 then 1
-        when -1 then -1
-        when 0 then 0 #fail("Нужна проверка преимущественного права. #{a.inspect} #{b.inspect}")
-        end
+        b.abitexams.map{|e| e ? e.score : 0} <=> a.abitexams.map{|e| e ? e.score : 0}
       end
     end
   end
@@ -341,6 +338,7 @@ class Entrance::Application < ActiveRecord::Base
       false
     end
   end
+  alias_method :out_of_competition?, :out_of_competition
 
   def special_rights
     if benefits && benefits.first
@@ -349,6 +347,7 @@ class Entrance::Application < ActiveRecord::Base
       false
     end
   end
+  alias_method :special_rights?, :special_rights
 
   # def total_score
   #   results = entrant.exam_results.in_competitive_group(competitive_group)
@@ -627,7 +626,14 @@ class Entrance::Application < ActiveRecord::Base
             elsif competitive_group_target_item_id.present?
               # Квота целевого приема
               xml.CompetitiveGroupUID  "#{competitive_group.fis_uid}_target"
-              xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+
+              if [203, 204].include?(competitive_group_target_item.target_organization.id)
+                xml.TargetOrganizationUID 203
+              elsif [205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219].include?(competitive_group_target_item.target_organization.id)
+                xml.TargetOrganizationUID 205
+              else
+                xml.TargetOrganizationUID competitive_group_target_item.target_organization.id
+              end
             else
               xml.CompetitiveGroupUID  competitive_group.fis_uid
             end
