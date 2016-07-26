@@ -187,7 +187,7 @@ class Entrance::CampaignsController < ApplicationController
         if g.name.include?(', бюджет')
           if g.name.include?('Крым')
             o_crimea += gi.number_budget_o
-            o_o += gi.number_budget_o
+            # o_o += gi.number_budget_o
           else
             if g.target_organizations.any?
               o_target += g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == direction.description }.map(&:number_target_o).sum
