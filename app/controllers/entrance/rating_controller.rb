@@ -17,9 +17,7 @@ class Entrance::RatingController < ApplicationController
   def load_directions
     @direction = Direction.find_by(id: params[:direction])
 
-    @directions = Entrance::Campaign.where(start_year: Entrance::Campaign::CURRENT_YEAR).
-      includes(competitive_groups: :items).
-      map(&:competitive_groups).sum.map(&:items).sum.map(&:direction).uniq.sort_by do |d|
+    @directions = @campaign.competitive_groups.map(&:items).sum.map(&:direction).uniq.sort_by do |d|
       [d.bachelor? || d.specialist? ? 1 : 2, d.master? ? 1 : 2, d.name]
     end
   end
