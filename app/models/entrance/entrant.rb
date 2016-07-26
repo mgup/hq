@@ -123,6 +123,10 @@ class Entrance::Entrant < ActiveRecord::Base
     3 == identity_document_type_id || 1 != entrant.nationality_type_id
   end
 
+  def is_budget?
+    applications.find_all {|a| !a.is_payed }.any?
+  end
+
   def full_name
     [last_name, first_name, patronym].join(' ')
   end
