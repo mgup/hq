@@ -182,7 +182,7 @@ class Entrance::CampaignsController < ApplicationController
       direction.competitive_group_items.each do |gi|
         g = gi.competitive_group
 
-        next unless g.campaign.start_year == Entrance::Campaign::CURRENT_YEAR
+        next unless [12016, 22016, 32016].include?(g.campaign.id)
 
         if g.name.include?(', бюджет')
           if g.name.include?('Крым')
