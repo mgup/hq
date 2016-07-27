@@ -6,7 +6,7 @@ class Entrance::CampaignsController < ApplicationController
 
   #before_action :validate_crimea, only: [:rating]
 
-  before_action :initialize_default_filters, only: [:dashboard, :crimea_rating]
+  before_action :initialize_default_filters, only: [:dashboard, :crimea_rating, :rating]
 
   def format_html?
     request.format.html?
