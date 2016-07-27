@@ -115,10 +115,10 @@ SimpleNavigation::Configuration.run do |navigation|
                    highlights_on: -> { params[:action] == 'index'  && params[:controller] == 'entrance/rating'}
     end
 
-      primary.item :rating,
-                   '<span class="glyphicons charts"></span> Конкурсные списки и приказы о зачислении'.html_safe,
-                   rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
-                   highlights_on: -> { params[:action] == 'rating'  && params[:controller] == 'entrance/campaigns'}
+      # primary.item :rating,
+      #              '<span class="glyphicons charts"></span> Конкурсные списки и приказы о зачислении'.html_safe,
+      #              rating_entrance_campaign_path(Entrance::Campaign::CURRENT),
+      #              highlights_on: -> { params[:action] == 'rating'  && params[:controller] == 'entrance/campaigns'}
 
     # primary.item :entrance_dates, 'Сроки проведения',
     #              entrance_campaign_dates_path(Entrance::Campaign::CURRENT)

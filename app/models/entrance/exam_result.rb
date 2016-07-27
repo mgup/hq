@@ -19,12 +19,12 @@ class Entrance::ExamResult < ActiveRecord::Base
 
   # @!group Скоупы
 
-  default_scope do
-    includes(:entrant).joins(:entrant).
-      order('entrance_entrants.last_name').
-      order('entrance_entrants.first_name').
-      order('entrance_entrants.patronym')
-  end
+  # default_scope do
+  #   includes(:entrant).joins(:entrant).
+  #     order('entrance_entrants.last_name').
+  #     order('entrance_entrants.first_name').
+  #     order('entrance_entrants.patronym')
+  # end
 
   scope :in_competitive_group, -> competitive_group do
     joins('LEFT JOIN entrance_test_items ON entrance_test_items.exam_id = entrance_exam_results.exam_id').

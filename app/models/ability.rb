@@ -42,22 +42,6 @@ class Ability
 
       can :manage, User, user_id: user.id
 
-      # if user.is?(:zamestitel_otvetstvennogo_sekretarja)
-      #   # can :index, :selection_contracts
-      # end
-
-      # if user.is?(:chief_accountant)
-      #   can :index, :selection_contracts
-      # end
-
-      #if user.is?(:lecturer)
-      # can :manage, Study::Exam
-      # can :manage, Study::ExamMark
-      # Загрузка ресурсов, принадлежащих только текущему пользователю,
-      # производится в Study::DisciplinesController.
-      # can :manage, [Study::Discipline], Study::Discipline.include_teacher(user) { |d| }
-      #end
-
       if user.is?(:developer)
         can :manage, :all
       end
@@ -109,24 +93,24 @@ class Ability
       end
     end
 
-    can [:index, :show], :progress
-    can :show, [:student_progress, :student_discipline_progress]
-    can :manage, :progress_group
-    can :print_signed, Office::Order
-
-    can [:index, :new, :create, :options, :download_pdf], My::Support
-
-    can :manage, EventDate
-    can :actual, :events
-    can :create, EventDateClaim
-    can :index, Entrance::Date
-    can :index, Entrance::MinScore
-
-    can :applications, Entrance::Campaign
-    can [:balls, :rating, :print_all, :crimea_rating, :print_direction_register], Entrance::Campaign
-    can :show, Entrance::Event
-
-    can :index, EducationPrice
+    # can [:index, :show], :progress
+    # can :show, [:student_progress, :student_discipline_progress]
+    # can :manage, :progress_group
+    # can :print_signed, Office::Order
+    #
+    # can [:index, :new, :create, :options, :download_pdf], My::Support
+    #
+    # can :manage, EventDate
+    # can :actual, :events
+    # can :create, EventDateClaim
+    # can :index, Entrance::Date
+    # can :index, Entrance::MinScore
+    #
+    # can :applications, Entrance::Campaign
+    # can [:balls, :rating, :print_all, :crimea_rating, :print_direction_register], Entrance::Campaign
+    # can :show, Entrance::Event
+    #
+    # can :index, EducationPrice
   end
 
   # Обычный преподаватель.

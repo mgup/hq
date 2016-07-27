@@ -27,8 +27,6 @@ gem 'simple-navigation'
 gem 'vmstat'
 gem 'devise'
 gem 'devise-i18n'
-gem 'dalli'
-gem 'rack-mini-profiler'
 gem 'cancancan'
 gem 'bootstrap-datepicker-rails'
 gem 'kaminari'
@@ -109,3 +107,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rubocop', require: false
 end
+
+gem 'dalli'
+gem 'rack-mini-profiler'
+# gem 'flamegraph'

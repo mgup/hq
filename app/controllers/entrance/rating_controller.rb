@@ -17,7 +17,7 @@ class Entrance::RatingController < ApplicationController
   def load_directions
     @direction = Direction.find_by(id: params[:direction])
 
-    @directions = @campaign.competitive_groups.map(&:items).sum.map(&:direction).uniq.sort_by do |d|
+    @directions = @campaign.competitive_groups.includes(items: :direction).map(&:items).sum.map(&:direction).uniq.sort_by do |d|
       [d.bachelor? || d.specialist? ? 1 : 2, d.master? ? 1 : 2, d.name]
     end
   end
@@ -87,10 +87,9 @@ class Entrance::RatingController < ApplicationController
               when '15' then :paid
               end
 
-    @direction.competitive_group_items.each do |gi|
+    @direction.competitive_group_items.joins(:competitive_group)
+      .where('competitive_groups.campaign_id = ?', @campaign.id).each do |gi|
       g = gi.competitive_group
-      camp = g.campaign_id
-      g_name = g.name
 
       next unless @campaign.id == g.campaign_id
 
