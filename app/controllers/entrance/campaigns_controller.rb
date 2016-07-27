@@ -22,6 +22,8 @@ class Entrance::CampaignsController < ApplicationController
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
+    authorize! :manage, :all
+
     if user_signed_in?
       @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
     else
