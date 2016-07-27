@@ -9,7 +9,7 @@
     });
   });
 </script>
-<%= form_tag nil, id: 'contest_switch' do %>
+<%= form_tag nil, id: 'contest_switch', class: 'only-screen' do %>
   <%= hidden_field_tag :campaign, @campaign.id %>
 
   <div class="row">
