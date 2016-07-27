@@ -6,7 +6,7 @@
   <%= a.entrant.full_name %>
 </td>
 
-<td>от <%= l(a.order.signing_date) %> № <%= a.order.number %></td>
+<td>от <%= l(a.order.signing_date.to_date) %> № <%= a.order.number %></td>
 
 <td>
   <%= a.abitpoints %>
