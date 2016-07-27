@@ -6,11 +6,33 @@
   });
 </script>
 
-<div class="page-header">
+<div class="page-header only-screen">
   <h1>Конкурсные списки и приказы о зачислении</h1>
 </div>
 
 <%= render 'switch' %>
+
+<div class="print-show" style="display: none; margin-top: -10px;">
+<h4>
+<div class="row">
+  <div class="col-sm-6 pull-right">
+      <p>УТВЕРЖДАЮ</p>
+      <p>Председатель</p>
+      <p>Приемной комиссии</p>
+      <p>МГУП имени Ивана Федорова</p>
+      <br><br><br>
+      <p>____________________</p>
+      <p>К. В. Антипов</p>
+  </div>
+</div>
+</h4>
+<h1 class="text-center">Списки поступающих</h1>
+<br>
+<h4>Направление подготовки: <strong><%= @direction.description %></strong></h4>
+<h4>Форма обучения: <strong><%= @contest.first.education_form_name %></strong></h4>
+<h4>Основа обучения: <strong><%= @contest.first.budget_name %></strong></h4>
+<br>
+</div>
 
 <% if @out_of_competition.any? %>
   <h2>Без вступительных испытаний</h2>
