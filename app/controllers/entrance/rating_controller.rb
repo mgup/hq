@@ -30,6 +30,7 @@ class Entrance::RatingController < ApplicationController
     @crimea = []
     @special_rights = []
     @organization = []
+    @contest_enrolled = []
     @contest = []
 
     @applications.each do |a|
@@ -54,7 +55,11 @@ class Entrance::RatingController < ApplicationController
         elsif a.competitive_group_target_item.present?
           @organization << a
         else
-          @contest << a
+          if a.order_id.present?
+            @contest_enrolled << a
+          else
+            @contest << a
+          end
         end
 
         exams.each_with_index do |name, i|
