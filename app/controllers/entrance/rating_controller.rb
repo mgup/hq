@@ -55,7 +55,7 @@ class Entrance::RatingController < ApplicationController
         elsif a.competitive_group_target_item.present?
           @organization << a
         else
-          if a.order.present?
+          if a.order.present? && a.order.signing_date.present?
             @contest_enrolled << a
           else
             @contest << a
