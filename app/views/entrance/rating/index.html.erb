@@ -61,7 +61,7 @@
 <% end %>
 
 <% if @crimea.any? %>
-  <h2>Выделенные места (Крым)</h2>
+  <h2>Зачисленные на выделенные места (Крым)</h2>
   <p class="lead">
     <strong>Доступное количество мест — <%= @crimea_places %>.</strong>
   </p>
@@ -71,26 +71,20 @@
       <th></th>
       <th>Рег. номер</th>
       <th>Поступающий</th>
-      <% @exam_names_crimea.each do |_, name| %>
-        <th><%= name.html_safe %></th>
-      <% end %>
+      <th>Приказ о зачислении</th>
       <th>Сумма баллов</th>
-      <th>Оригинал</th>
     </tr>
     </thead>
     <tbody>
     <% @crimea.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.
          each_with_index do |a, i| %>
-      <% success = false %>
-      <% success = true if @crimea_places > 0 && a.original? %>
-      <tr class="<%= 'success' if success %>">
+      <tr>
         <td><%= i + 1 %></td>
-        <%= render partial: 'contest', locals: { a: a } %>
+        <%= render partial: 'enrolled', locals: { a: a } %>
       </tr>
-      <% @crimea_places -= 1 if success %>
-      <% @total_places -= 1 if success %>
+      <% @crimea_places -= 1 %>
+      <% @total_places -= 1 %>
     <% end %>
-    <% @total_places -= @crimea_places if @crimea_places > 0 %>
     </tbody>
   </table>
 <% end %>

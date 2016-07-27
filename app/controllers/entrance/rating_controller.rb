@@ -39,7 +39,7 @@ class Entrance::RatingController < ApplicationController
 
       exams = a.competitive_group.test_items.order(:entrance_test_priority).map { |t| t.exam.name }
       if a.competitive_group.name.include?('Крым')
-        @crimea << a
+        @crimea << a if a.order_id.present?
         exams.each_with_index do |name, i|
           if @exam_names_crimea[i].present?
             @exam_names_crimea[i] += " <hr> #{name}" unless @exam_names_crimea[i].include?(name)
