@@ -33,6 +33,7 @@ class Entrance::RatingController < ApplicationController
     @contest = []
 
     @applications.each do |a|
+      next if a.competitive_group.name.include?('иностранцы')
       @out_of_competition << a if a.out_of_competition?
 
       next unless 0 != a.pass_min_score
