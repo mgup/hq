@@ -55,6 +55,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     entrants = @campaign.entrants.find_all {|e| e.achievements.any?}
 
     entrants.each_with_index do |e, ind|
+      next unless e.is_budget?
       data << ["#{ind+1}", e.applications.actual.collect{ |ap| ap.number }.join(', '), e.full_name]
       @campaign.achievement_types.each do |a|
         achievement = e.achievements.find_all {|ach| ach.achievement_type.id == a.id}
@@ -117,6 +118,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
                        .sort_by {|a| a.entrant.full_name}
 
      achievements.each_with_index do |a, ind|
+        next unless a.entrant.is_budget?
         data << ["#{ind+1}", a.entrant.applications.actual.collect{ |ap| ap.number }.join(', '), a.entrant.full_name, a.score]
      end
 

@@ -630,6 +630,9 @@ class Entrance::CampaignsController < ApplicationController
   end
 
   def protocol_permit
+    @directions = @campaign.competitive_groups.map(&:items).sum.map(&:direction).uniq.sort_by do |d|
+      [d.bachelor? || d.specialist? ? 1 : 2, d.master? ? 1 : 2, d.name]
+    end
     respond_to do |format|
       format.pdf
     end
