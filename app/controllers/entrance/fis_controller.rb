@@ -114,7 +114,8 @@ class Entrance::FisController < ApplicationController
       # Группируем результаты по серии и номеру документа.
       r.group_by { |h| h.values_at(:pseries, :pnumber) }.each do |pdata, scores|
         # Находим нужного абитуриента и делаем запись о проверке.
-        entrant = IdentityDocument.find_by(series: pdata[0], number: pdata[1]).try(:entrant)
+        entrant = IdentityDocument.joins(:entrant).where(series: pdata[0], number: pdata[1])
+                    .where('campaign_id IN (?)', [12016, 22016, 32016, 42016]).first.try(:entrant)
         if entrant
           check = entrant.checks.create(date: Date.today)
 
