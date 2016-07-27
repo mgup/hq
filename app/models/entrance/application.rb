@@ -143,7 +143,17 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def abitpoints
-    abitexams.map(&:score).sum + abitachievements
+    if abitexams.any?
+      abitexams.map(&:score).sum + abitachievements
+    else
+      sum = 0
+      competitive_group_item.competitive_group.test_items.collect{|x| x.exam}.each do |exam|
+        sum += entrant.exam_results.by_exam(exam.id).last.score if entrant.exam_results.by_exam(exam.id).last.score
+      end
+
+      sum + abitachievements
+    end
+
   end
 
   def actual?
