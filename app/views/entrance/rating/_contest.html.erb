@@ -19,7 +19,7 @@
 </td>
 
 <td class="text-center">
-  <% if a.original? %>
+  <% if (a.payed? && a.contract.present?) || a.original? %>
     <span class="glyphicons ok_2"></span>
   <% end %>
 </td>

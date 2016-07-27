@@ -189,7 +189,7 @@
         <th><%= name.html_safe %></th>
       <% end %>
       <th>Сумма баллов</th>
-      <th>Оригинал</th>
+      <th><%= '15' == params[:payment] ? 'Договор' : 'Оригинал' %></th>
     </tr>
     </thead>
     <tbody>
