@@ -1,7 +1,5 @@
 class Entrance::RatingController < ApplicationController
   def index
-    authorize! :manage, Entrance::Entrant
-
     @campaign = Entrance::Campaign.find_by(id: params[:id])
     load_directions
     init_places
