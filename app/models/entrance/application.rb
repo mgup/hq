@@ -102,9 +102,11 @@ class Entrance::Application < ActiveRecord::Base
     .joins('LEFT JOIN entrance_test_items AS ti ON ti.competitive_group_id = g.id')
     .joins('LEFT JOIN entrance_exam_results AS r ON r.entrant_id = entrance_applications.entrant_id AND ti.exam_id = r.exam_id')
     .joins('LEFT JOIN directions AS d ON d.id = i.direction_id')
-    .where('status_id != 6')
-    .where('status_id != 5')
+    .where('status_id NOT IN (?)', [5, 6])
     .group('entrance_applications.id')
+    # .joins('LEFT JOIN entrance_entrants AS ee ON ee.id = entrance_applications.entrant_id')
+
+
     # select('CASE b.benefit_kind_id WHEN 1 THEN 1 WHEN 4 THEN 4 ELSE NULL END AS benefit_type')
     # .joins('LEFT JOIN entrance_benefits AS b ON b.application_id = entrance_applications.id')
     # .select('pr.score AS priority_score')
@@ -141,14 +143,7 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def abitpoints
-    sum = 0
-    competitive_group_item.competitive_group.test_items.collect{|x| x.exam}.each do |exam|
-      sum += entrant.exam_results.by_exam(exam.id).last.score if entrant.exam_results.by_exam(exam.id).last.score
-    end
-
-    sum += abitachievements
-
-    sum
+    abitexams.map(&:score).sum + abitachievements
   end
 
   def actual?
@@ -161,8 +156,8 @@ class Entrance::Application < ActiveRecord::Base
 
   def abitexams
     exams = []
-    competitive_group_item.competitive_group.test_items.order(:entrance_test_priority).collect{ |x| x.exam }.each do |exam|
-      exams << entrant.exam_results.by_exam(exam.id).last
+    competitive_group.test_items.order(:entrance_test_priority).each do |test_item|
+      exams << Entrance::ExamResult.where(entrant_id: entrant_id).by_exam(test_item.exam_id).last
     end
     exams
   end
