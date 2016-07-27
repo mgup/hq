@@ -50,6 +50,131 @@
     exam_names_crimea[exam_names_crimea.size] = 'Индивидуальные достижения'
     # распределяем по типу конкурса
 
+    # считаем места
+    total_places = 0
+    crimea_places = 0
+    quota_places = 0
+    target_places = 0
+
+    form_m = case form
+             when '10' then :z
+             when '11' then :o
+             when '12' then :oz
+             end
+
+    payment_m = case payment
+                when '14' then :budget
+                when '15' then :paid
+                end
+
+    direction.competitive_group_items.each do |gi|
+      g = gi.competitive_group
+
+      next unless @campaign.id == g.campaign_id
+
+      total_places += gi.send("number_#{payment_m}_#{form_m}")
+
+      if g.name.include?('Крым')
+        crimea_places += gi.send("number_#{payment_m}_#{form_m}")
+      end
+
+      total_places += gi.send("number_quota_#{form_m}")
+      quota_places += gi.send("number_quota_#{form_m}")
+
+
+      if g.target_organizations.any?
+        t = g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == direction.description }.map(&"number_target_#{form_m}".to_sym).sum
+        total_places += t
+        target_places += t
+      end
+    end
+    # считаем места
+
+    # Крым.
+    if crimea.any?
+
+      column_widths = {
+        0 => 30,
+        1 => 60,
+        2 => 170,
+        (3 + exam_names.size) => 34,
+        (3 + exam_names.size + 1) => 70
+      }
+      exam_names.each_with_index do |name, i|
+        # Название предмета состоит из одного слова.
+        if 1 == name[1].split(' ').size
+          column_widths[3 + i] = pdf.width_of(name[1]) + 10
+        end
+      end
+
+      pdf.start_new_page
+      pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
+      pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
+      pdf.text 'о допуске к участию в конкурсе', style: :bold, align: :center
+
+      pdf.table [['№ __________________', 'от 15 июля 2016 г.']], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
+        column(0).width = 600
+      end
+      pdf.move_down 8
+      pdf.text "#{direction.new_code}, #{direction.name}"
+      pdf.text "#{applications.first.education_form_name} форма обучения, #{applications.first.budget_name}"
+
+      pdf.font_size 10 do
+        pdf.table [
+                    ['Председатель приемной комиссии', 'Антипов К.В.', '____________________________'],
+                    ['Заместитель председателя', 'Кожевников Г.В.', '____________________________'],
+                    ['Зам. председателя по приему в аспирантуру', 'Назаров В.Г.', '____________________________'],
+                    ['Зам. председателя по учету индивидуальных достижений', 'Антипов С.В.', '____________________________'],
+                    ['Ответственный секретарь', 'Хохлогорская Е.Л.', '____________________________'],
+                    ['Заместитель ответственного секретаря', 'Дмитриев Я.В.', '____________________________'],
+                    ['Заместитель ответственного секретаря по бюджетному приему', 'Щербакова Ю.Ю.', '____________________________'],
+                    ['Заместитель ответственного секретаря по приему в аспирантуру', 'Ситникова Т.А.', '____________________________'],
+                    ['Заместитель ответственного секретаря по проведению вступительных испытаний', 'Алиева Д.В.', '____________________________'],
+                    ['Заместитель ответственного секретаря по учету индивидуальных достижений', 'Логинова Ю.А.', '____________________________'],
+                    ['Заместитель ответственного секретаря по приему иностранных граждан', 'Иванова И.А.', '____________________________']
+                  ], cell_style: {border_color: 'ffffff', padding: [1, 0]}, width: pdf.bounds.width do
+          column(0).width = 510
+        end
+      end
+
+      pdf.move_down 8
+      pdf.text 'Члены приемной комиссии'
+
+      pdf.font_size 10 do
+        pdf.table [
+                    ['Корытов О.В.', '____________________________', ' ', 'Горлов С.Ю.', '____________________________', ' ', 'Винокур А.И.', '____________________________'],
+                    ['Столяров А.А.', '____________________________', ' ', 'Цепилова В.А.', '____________________________', ' ', 'Рекус И.Г.', '____________________________'],
+                    ['Махашвили Г.Д.', '____________________________', ' ', 'Попова Е.А.', '____________________________', ' ', 'Чернов А.Н.', '____________________________'],
+                    ['Бабкин Ф.В.', '____________________________', ' ', 'Подколзин Е.Н.', '____________________________', ' ', 'Сугачкова Т.В.', '____________________________'],
+                    ['Резников К.С.', '____________________________', ' ', 'Шаронин П.Н.', '____________________________', ' ', 'Яковлев Р.В.', '____________________________'],
+                    ['Галицкий Д.В.', '____________________________', ' ', 'Иванова А.Е.', '____________________________', ' ', 'Токмаков Б.В.', '____________________________'],
+                    ['Бондарь И.А.', '____________________________', ' ', 'Коростелина В.В.', '____________________________', ' ', 'Гордеева Е.Е.', '____________________________'],
+                    ['Яковлева О.М.', '____________________________', ' ', 'Шерстнев Г.К.', '____________________________', ' ', 'Пронина Е.Н.', '____________________________'],
+                    ['Журавлева Г.Н.', '____________________________', ' ', 'Малков В.В.', '____________________________', ' ', 'Прыгина Н.Ю.', '____________________________'],
+                    ['Тихонова М.О.', '____________________________', ' ', ' ', ' ', ' ', ' '],
+                  ], cell_style: {border_color: 'ffffff', padding: 0}, width: pdf.bounds.width
+      end
+
+
+      pdf.text 'Список поступающих на выделенные места (Крым)',
+               size: 14
+
+      pdf.text "Доступное количество мест — #{crimea_places}",
+               style: :bold, size: 10
+
+      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names_crimea.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
+      crimea.each_with_index do |a, i|
+        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+        crimea_places -= 1 if a.original? && a.pass_min_score?
+        total_places -= 1 if a.original? && a.pass_min_score?
+      end
+      total_places -= crimea_places if crimea_places > 0
+
+      pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
+      pdf.move_down 40
+
+    end
+
     pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
@@ -98,46 +223,6 @@
                 ], cell_style: {border_color: 'ffffff', padding: 0}, width: pdf.bounds.width
     end
 
-    # считаем места
-    total_places = 0
-    crimea_places = 0
-    quota_places = 0
-    target_places = 0
-
-    form_m = case form
-           when '10' then :z
-           when '11' then :o
-           when '12' then :oz
-           end
-
-    payment_m = case payment
-              when '14' then :budget
-              when '15' then :paid
-              end
-
-    direction.competitive_group_items.each do |gi|
-      g = gi.competitive_group
-
-      next unless @campaign.id == g.campaign_id
-
-      total_places += gi.send("number_#{payment_m}_#{form_m}")
-
-      if g.name.include?('Крым')
-        crimea_places += gi.send("number_#{payment_m}_#{form_m}")
-      end
-
-      total_places += gi.send("number_quota_#{form_m}")
-      quota_places += gi.send("number_quota_#{form_m}")
-
-
-      if g.target_organizations.any?
-        t = g.target_organizations.map(&:items).sum.find_all { |i| i.direction.description == direction.description }.map(&"number_target_#{form_m}".to_sym).sum
-        total_places += t
-        target_places += t
-      end
-    end
-    # считаем места
-
 
 # Без вступительных испытаний.
     if out_of_competition.any?
@@ -175,25 +260,25 @@
     end
 
 # Крым.
-    if crimea.any?
-      pdf.text 'Список поступающих на выделенные места (Крым)',
-               size: 14
-
-      pdf.text "Доступное количество мест — #{crimea_places}",
-               style: :bold, size: 10
-
-      data = [(['', 'Рег. номер', 'Поступающий'] << exam_names_crimea.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
-      crimea.each_with_index do |a, i|
-        data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
-        crimea_places -= 1 if a.original? && a.pass_min_score?
-        total_places -= 1 if a.original? && a.pass_min_score?
-      end
-      total_places -= crimea_places if crimea_places > 0
-
-      pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
-      pdf.move_down 40
-
-    end
+#     if crimea.any?
+#       pdf.text 'Список поступающих на выделенные места (Крым)',
+#                size: 14
+#
+#       pdf.text "Доступное количество мест — #{crimea_places}",
+#                style: :bold, size: 10
+#
+#       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names_crimea.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
+#       crimea.each_with_index do |a, i|
+#         data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
+#         crimea_places -= 1 if a.original? && a.pass_min_score?
+#         total_places -= 1 if a.original? && a.pass_min_score?
+#       end
+#       total_places -= crimea_places if crimea_places > 0
+#
+#       pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
+#       pdf.move_down 40
+#
+#     end
 
 # Квота.
     if special_rights.any?
