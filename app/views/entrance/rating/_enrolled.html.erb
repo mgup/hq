@@ -1,0 +1,13 @@
+<td class="nowrap">
+  <%= a.number %>
+</td>
+
+<td>
+  <%= a.entrant.full_name %>
+</td>
+
+<td>от <%= l(a.order.signing_date.to_date) %> № <%= a.order.number %></td>
+
+<td>
+  <%= a.abitpoints %>
+</td>

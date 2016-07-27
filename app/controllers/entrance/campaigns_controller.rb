@@ -6,7 +6,7 @@ class Entrance::CampaignsController < ApplicationController
 
   #before_action :validate_crimea, only: [:rating]
 
-  before_action :initialize_default_filters, only: [:dashboard, :crimea_rating]
+  before_action :initialize_default_filters, only: [:dashboard, :crimea_rating, :rating]
 
   def format_html?
     request.format.html?
@@ -22,7 +22,7 @@ class Entrance::CampaignsController < ApplicationController
 
   # Пофамильные списки поступающих (рейтинги).
   def rating
-    authorize! :manage, :all
+    authorize! :manage, Entrance::Entrant
 
     if user_signed_in?
       @items = Entrance::CompetitiveGroupItem.find(@applications.collect{ |app| app.competitive_group_item_id }.uniq)
