@@ -1,12 +1,12 @@
 class Entrance::CampaignsController < ApplicationController
   # skip_before_action :authenticate_user!, only: [:applications, :balls, :rating, :crimea_rating]
-  skip_before_action :authenticate_user!, only: [:applications, :balls, :stats, :rating] #, :report] #, :rating]#, if: :format_html?
+  skip_before_action :authenticate_user!, only: [:applications, :balls, :stats] #, :report] #, :rating]#, if: :format_html?
   load_and_authorize_resource class: 'Entrance::Campaign', except: [:results, :report, :stats]
   load_resource class: 'Entrance::Campaign', only: [:results, :competitive_groups]
 
   #before_action :validate_crimea, only: [:rating]
 
-  before_action :initialize_default_filters, only: [:dashboard, :rating, :crimea_rating]
+  before_action :initialize_default_filters, only: [:dashboard, :crimea_rating]
 
   def format_html?
     request.format.html?
