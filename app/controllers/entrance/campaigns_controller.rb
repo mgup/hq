@@ -122,7 +122,7 @@ class Entrance::CampaignsController < ApplicationController
 
     @exam = Entrance::Exam.find(params[:exam])
     @entrants = Entrance::Entrant.from_exam(params[:exam]).
-      order(:last_name, :first_name, :patronym)
+      order(:last_name, :first_name, :patronym).includes(:exam_results)
   end
 
   def competitive_groups
