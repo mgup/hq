@@ -1,5 +1,5 @@
 class Entrance::RatingController < ApplicationController
-  skip_before_filter :authenticate_user!, only: [:index]
+  # skip_before_filter :authenticate_user!, only: [:index]
 
   def index
     @campaign = Entrance::Campaign.find_by(id: params[:id])

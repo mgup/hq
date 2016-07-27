@@ -93,24 +93,24 @@ class Ability
       end
     end
 
-    can [:index, :show], :progress
-    can :show, [:student_progress, :student_discipline_progress]
-    can :manage, :progress_group
-    can :print_signed, Office::Order
-
-    can [:index, :new, :create, :options, :download_pdf], My::Support
-
-    can :manage, EventDate
-    can :actual, :events
-    can :create, EventDateClaim
-    can :index, Entrance::Date
-    can :index, Entrance::MinScore
-
-    can :applications, Entrance::Campaign
-    can [:balls, :rating, :print_all, :crimea_rating, :print_direction_register], Entrance::Campaign
-    can :show, Entrance::Event
-
-    can :index, EducationPrice
+    # can [:index, :show], :progress
+    # can :show, [:student_progress, :student_discipline_progress]
+    # can :manage, :progress_group
+    # can :print_signed, Office::Order
+    #
+    # can [:index, :new, :create, :options, :download_pdf], My::Support
+    #
+    # can :manage, EventDate
+    # can :actual, :events
+    # can :create, EventDateClaim
+    # can :index, Entrance::Date
+    # can :index, Entrance::MinScore
+    #
+    # can :applications, Entrance::Campaign
+    # can [:balls, :rating, :print_all, :crimea_rating, :print_direction_register], Entrance::Campaign
+    # can :show, Entrance::Event
+    #
+    # can :index, EducationPrice
   end
 
   # Обычный преподаватель.
