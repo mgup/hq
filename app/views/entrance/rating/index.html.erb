@@ -76,7 +76,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @crimea.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.
+    <% @crimea.sort_by.sort_by { |a| a.entrant.full_name }.
          each_with_index do |a, i| %>
       <tr>
         <td><%= i + 1 %></td>
@@ -182,7 +182,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @contest_enrolled.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.
+    <% @contest_enrolled.sort_by { |a| a.entrant.full_name }.
         each_with_index do |a, i| %>
       <tr>
         <td><%= i + 1 %></td>
