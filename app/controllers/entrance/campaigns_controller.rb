@@ -481,7 +481,6 @@ class Entrance::CampaignsController < ApplicationController
           where(campaign_id: [12016],
                 status_id: [4, 8],
                 is_payed: 0).
-          find_all { |a| a.competitive_group.name.include?('Графика') }.
           find_all { |a| a.pass_min_score? }
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
