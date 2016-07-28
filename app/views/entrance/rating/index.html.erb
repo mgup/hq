@@ -89,6 +89,62 @@
   </table>
 <% end %>
 
+<% if @foreign_enrolled.any? %>
+  <h2>Зачисленные на выделенные места (иностранцы)</h2>
+  <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+          <th></th>
+          <th>Рег. номер</th>
+          <th>Поступающий</th>
+          <th>Приказ о зачислении</th>
+          <th>Сумма баллов</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @foreign_enrolled.sort_by.sort_by { |a| a.entrant.full_name }.
+        each_with_index do |a, i| %>
+        <tr>
+            <td><%= i + 1 %></td>
+            <%= render partial: 'enrolled', locals: { a: a } %>
+        </tr>
+        <% @foreign_places -= 1 %>
+        <% @total_places -= 1 %>
+      <% end %>
+      </tbody>
+  </table>
+<% end %>
+
+<% if @foreign.any? %>
+  <h2>Поступающие на выделенные места (иностранцы)</h2>
+  <p class="lead">
+      <strong>Доступное количество мест — <%= @foreign_places %>.</strong>
+  </p>
+  <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+          <th></th>
+          <th>Рег. номер</th>
+          <th>Поступающий</th>
+          <% @exam_names_foreign.each do |_, name| %>
+            <th><%= name.html_safe %></th>
+          <% end %>
+          <th>Сумма баллов</th>
+          <th>Договор</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @foreign.sort_by(&Entrance::Application.sort_applications_for_sort_by)
+           .reverse.each_with_index do |a, i| %>
+        <tr>
+            <td><%= i + 1 %></td>
+            <%= render partial: 'contest', locals: { a: a } %>
+        </tr>
+      <% end %>
+      </tbody>
+  </table>
+<% end %>
+
 <% if @special_rights.any? %>
   <h2>По квоте приема лиц, имеющих особое право</h2>
   <p class="lead">
