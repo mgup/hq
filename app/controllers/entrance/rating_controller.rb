@@ -35,7 +35,7 @@ class Entrance::RatingController < ApplicationController
 
     @applications.each do |a|
       next if a.competitive_group.name.include?('иностранцы')
-      @out_of_competition << a if a.out_of_competition?
+      @out_of_competition << a if a.out_of_competition? && a.order.present? && a.order.signing_date.present?
 
       next unless 0 != a.pass_min_score
 
@@ -53,7 +53,7 @@ class Entrance::RatingController < ApplicationController
         if a.special_rights?
           @special_rights << a
         elsif a.competitive_group_target_item.present?
-          @organization << a
+          @organization << a if a.order.present? && a.order.signing_date.present?
         else
           if a.order.present? && a.order.signing_date.present?
             @contest_enrolled << a
