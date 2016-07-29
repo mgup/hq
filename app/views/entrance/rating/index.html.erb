@@ -232,6 +232,12 @@
     <p class="lead">
       <strong>Доступное количество мест — <%= @total_places %>.</strong>
     </p>
+    <p class="lead">
+      <% @first_step_places = (@total_places * 0.8).ceil %>
+      <strong>
+        Доступное количество мест для зачисления на 1 этапе — <%= @first_step_places %>.
+      </strong>
+    </p>
   <% end %>
   <table class="table table-striped table-bordered">
     <thead>
@@ -251,11 +257,12 @@
         each_with_index do |a, i| %>
       <% success = false %>
       <% success = true if @total_places > 0 && a.original? %>
-      <tr class="<%= 'success' if success %>">
+      <tr class="<%= success && @first_step_places > 0 ? 'success' : 'warning' %>">
         <td><%= i + 1 %></td>
         <%= render partial: 'contest', locals: { a: a } %>
       </tr>
       <% @total_places -= 1 if success %>
+      <% @first_step_places -= 1 if success %>
     <% end %>
     </tbody>
   </table>
