@@ -1,6 +1,5 @@
 # ['14', '15'].each do |payment|
 #   ['10', '11', '12'].each do |form|
-new_page = false
 ['14'].each do |payment|
   ['11'].each do |form|
     applications = @campaign.applications.for_rating.rating(form, payment, direction.id.to_s)
