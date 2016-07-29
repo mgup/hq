@@ -108,8 +108,7 @@
       end
 
       if false
-      pdf.start_new_page if new_page
-      new_page = true
+      pdf.start_new_page
       pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
       pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
       pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на первом этапе зачисления', style: :bold, align: :center
@@ -178,8 +177,7 @@
 
     end
 
-    pdf.start_new_page if new_page
-    new_page = true
+    pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
     pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на первом этапе зачисления', style: :bold, align: :center
