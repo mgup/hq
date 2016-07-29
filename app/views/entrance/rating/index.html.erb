@@ -164,7 +164,7 @@
 <% end %>
 
 <% if @organization.any? %>
-  <h2>По квоте целевого приема</h2>
+  <h2>Зачисленные по квоте целевого приема</h2>
 
   <% @organization.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls| %>
     <% target_places = target_item.number_target_o %>
