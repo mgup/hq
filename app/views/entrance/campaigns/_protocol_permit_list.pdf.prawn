@@ -170,7 +170,7 @@
         crimea_places -= 1
         total_places -= 1
       end
-      total_places -= crimea_places if crimea_places > 0
+      # total_places -= crimea_places if crimea_places > 0
 
       # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
       # pdf.move_down 40
@@ -296,7 +296,7 @@
         quota_places -= 1
         total_places -= 1
       end
-      total_places -= quota_places if quota_places > 0
+      # total_places -= quota_places if quota_places > 0
 
       # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
       # pdf.move_down 40
@@ -320,7 +320,7 @@
           target_places -= 1
           total_places -= 1
         end
-        total_places -= target_places if target_places > 0
+        # total_places -= target_places if target_places > 0
 
         # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
         # pdf.move_down 40
