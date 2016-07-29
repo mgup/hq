@@ -1,5 +1,6 @@
 # ['14', '15'].each do |payment|
 #   ['10', '11', '12'].each do |form|
+new_page = false
 ['14'].each do |payment|
   ['11'].each do |form|
     applications = @campaign.applications.for_rating.rating(form, payment, direction.id.to_s)
@@ -108,7 +109,8 @@
       end
 
       if false
-      pdf.start_new_page
+      pdf.start_new_page if new_page
+      new_page = true
       pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
       pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
       pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на первом этапе зачисления', style: :bold, align: :center
@@ -177,7 +179,8 @@
 
     end
 
-    pdf.start_new_page
+    pdf.start_new_page if new_page
+    new_page = true
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
     pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на первом этапе зачисления', style: :bold, align: :center
