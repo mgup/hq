@@ -25,17 +25,20 @@ class Entrance::RatingController < ApplicationController
   def init_applications
     @exam_names = {}
     @exam_names_crimea = {}
+    @exam_names_foreign = {}
 
     @out_of_competition = []
     @crimea = []
+    @foreign = []
+    @foreign_enrolled = []
     @special_rights = []
     @organization = []
     @contest_enrolled = []
     @contest = []
 
     @applications.each do |a|
-      next if a.competitive_group.name.include?('иностранцы')
-      @out_of_competition << a if a.out_of_competition? && a.order.present? && a.order.signing_date.present?
+      # next if a.competitive_group.name.include?('иностранцы')
+      @out_of_competition << a if a.out_of_competition?
 
       next unless 0 != a.pass_min_score
 
@@ -47,6 +50,19 @@ class Entrance::RatingController < ApplicationController
             @exam_names_crimea[i] += " <hr> #{name}" unless @exam_names_crimea[i].include?(name)
           else
             @exam_names_crimea[i] = name
+          end
+        end
+      elsif a.competitive_group.name.include?('иностранцы')
+        if a.order.present? && a.order.signing_date.present?
+          @foreign_enrolled << a
+        else
+          @foreign << a
+        end
+        exams.each_with_index do |name, i|
+          if @exam_names_foreign[i].present?
+            @exam_names_foreign[i] += " <hr> #{name}" unless @exam_names_foreign[i].include?(name)
+          else
+            @exam_names_foreign[i] = name
           end
         end
       else
@@ -74,11 +90,13 @@ class Entrance::RatingController < ApplicationController
 
     @exam_names[@exam_names.size] = 'Индивидуальные достижения'
     @exam_names_crimea[@exam_names_crimea.size] = 'Индивидуальные достижения'
+    @exam_names_foreign[@exam_names_foreign.size] = 'Индивидуальные достижения'
   end
 
   def init_places
     @total_places = 0
     @crimea_places = 0
+    @foreign_places = 0
     @quota_places = 0
     @target_places = 0
 
@@ -103,6 +121,10 @@ class Entrance::RatingController < ApplicationController
 
       if g.name.include?('Крым')
         @crimea_places += gi.send("number_#{payment}_#{form}")
+      end
+
+      if g.name.include?('иностранцы')
+        @foreign_places += gi.send("number_#{payment}_#{form}")
       end
 
       @total_places += gi.send("number_quota_#{form}")

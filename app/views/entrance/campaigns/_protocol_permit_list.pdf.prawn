@@ -16,11 +16,11 @@
     contest = []
 
     applications.each do |a|
-      out_of_competition << a if a.out_of_competition?
+      out_of_competition << a if a.out_of_competition? && a.order_id.present?
 
       exams = a.competitive_group.test_items.order(:entrance_test_priority).map { |t| t.exam.name }
       if a.competitive_group.name.include?('Крым')
-        crimea << a
+        crimea << a if a.order_id.present?
         exams.each_with_index do |name, i|
           if exam_names_crimea[i].present?
             exam_names_crimea[i] += " / #{name}" unless exam_names_crimea[i].include?(name)
@@ -30,9 +30,9 @@
         end
       else
         if a.special_rights?
-          special_rights << a
+          special_rights << a if a.order_id.present?
         elsif a.competitive_group_target_item.present?
-          organization << a
+          organization << a if a.order_id.present?
         else
           contest << a
         end
@@ -107,10 +107,11 @@
         end
       end
 
+      if false
       pdf.start_new_page
       pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
       pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
-      pdf.text 'о допуске к участию в конкурсе', style: :bold, align: :center
+      pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на первом этапе зачисления', style: :bold, align: :center
 
       pdf.table [['№ __________________', 'от 15 июля 2016 г.']], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
         column(0).width = 600
@@ -162,25 +163,26 @@
       pdf.text "Доступное количество мест — #{crimea_places}",
                style: :bold, size: 10
 
+      end
       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names_crimea.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
       crimea.each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
-        crimea_places -= 1 if a.original? && a.pass_min_score?
-        total_places -= 1 if a.original? && a.pass_min_score?
+        crimea_places -= 1
+        total_places -= 1
       end
-      total_places -= crimea_places if crimea_places > 0
+      # total_places -= crimea_places if crimea_places > 0
 
-      pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
-      pdf.move_down 40
+      # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
+      # pdf.move_down 40
 
     end
 
     pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
-    pdf.text 'о допуске к участию в конкурсе', style: :bold, align: :center
+    pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на первом этапе зачисления', style: :bold, align: :center
 
-    pdf.table [['№ __________________', 'от 26 июля 2016 г.']], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
+    pdf.table [['№ __________________', 'от 29 июля 2016 г.']], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
       column(0).width = 600
     end
     pdf.move_down 8
@@ -232,15 +234,15 @@
         2 => 170
       }
 
-      pdf.text 'Список поступающих без вступительных испытаний', size: 14
+      # pdf.text 'Список поступающих без вступительных испытаний', size: 14
       data = [['', 'Рег. номер', 'Поступающий', 'Основание', 'Решение комиссии']]
       out_of_competition.each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name, a.benefits.first.temp_text, (a.original? ? 'допустить' : 'не допустить')]
-        total_places -= 1 if a.original?
+        total_places -= 1
       end
 
-      pdf.table data, width: pdf.bounds.width, header: true, column_widths: column_widths
-      pdf.move_down 40
+      # pdf.table data, width: pdf.bounds.width, header: true, column_widths: column_widths
+      # pdf.move_down 40
 
     end
 
@@ -282,46 +284,46 @@
 
 # Квота.
     if special_rights.any?
-      pdf.text 'Список поступающих по квоте приема лиц, имеющих особое право',
-               size: 14
-
-      pdf.text "Доступное количество мест — #{quota_places}",
-               style: :bold, size: 10
+      # pdf.text 'Список поступающих по квоте приема лиц, имеющих особое право',
+      #          size: 14
+      #
+      # pdf.text "Доступное количество мест — #{quota_places}",
+      #          style: :bold, size: 10
 
       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
       special_rights.each_with_index do |a, i|
         data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
-        quota_places -= 1 if a.original? && a.pass_min_score?
-        total_places -= 1 if a.original? && a.pass_min_score?
+        quota_places -= 1
+        total_places -= 1
       end
-      total_places -= quota_places if quota_places > 0
+      # total_places -= quota_places if quota_places > 0
 
-      pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
-      pdf.move_down 40
+      # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
+      # pdf.move_down 40
 
     end
 
 
     # Целевики.
     if organization.any?
-      pdf.text 'Список поступающих по квоте целевого приема', size: 14
-
+      # pdf.text 'Список поступающих по квоте целевого приема', size: 14
+      #
       organization.group_by { |a| a.competitive_group_target_item }.each do |target_item, appls|
-        pdf.text "Договор № #{target_item.target_organization.contract_number} от #{l target_item.target_organization.contract_date}, #{target_item.target_organization.name}", size: 12
-        pdf.text "Доступное количество мест — #{target_places}",
-                 style: :bold, size: 10
+      #   pdf.text "Договор № #{target_item.target_organization.contract_number} от #{l target_item.target_organization.contract_date}, #{target_item.target_organization.name}", size: 12
+      #   pdf.text "Доступное количество мест — #{target_places}",
+      #            style: :bold, size: 10
 
         data = [(['', 'Рег. номер', 'Поступающий'] << exam_names.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
 
         appls.each_with_index do |a, i|
           data << [i + 1, a.number, a.entrant.full_name] + a.abitexams.map(&:score) + [a.abitachievements] + [a.total_score + a.abitachievements] + [0 != a.pass_min_score ? 'допустить' : 'не допустить']
-          target_places -= 1 if a.original? && a.pass_min_score?
-          total_places -= 1 if a.original? && a.pass_min_score?
+          target_places -= 1
+          total_places -= 1
         end
-        total_places -= target_places if target_places > 0
+        # total_places -= target_places if target_places > 0
 
-        pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
-        pdf.move_down 40
+        # pdf.table data, width: pdf.bounds.width, column_widths: column_widths, header: true
+        # pdf.move_down 40
 
       end
     end
@@ -331,7 +333,7 @@
       pdf.text 'Список поступающих по общему конкурсу',
                size: 14
 
-      pdf.text "Доступное количество мест — #{total_places}",
+      pdf.text "Доступное количество мест — #{total_places}, на первом этапе зачисления доступно — #{(total_places*0.8).ceil}",
                style: :bold, size: 10
 
       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
