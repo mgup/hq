@@ -34,3 +34,11 @@ $ ->
         format: 'dd.mm.yyyy'
         language: 'ru-RU'
       })
+
+  ege_sum = 0
+  ege_count =$('.ege_result').length
+  if ege_count > 0
+    $('.ege_result').each ->
+      ege_sum += parseInt($(this).text())
+    ege_average = ege_sum / ($('.ege_result').length);
+    $('#allert-average-ege').text('Средний балл ЕГЭ = ' + ege_average);
