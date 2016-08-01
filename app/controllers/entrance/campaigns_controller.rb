@@ -542,7 +542,7 @@ class Entrance::CampaignsController < ApplicationController
                     elsif application.competitive_group_target_item_id.present?
                       # Квота целевого приема
                       xml.CompetitiveGroupUID  "#{application.competitive_group.fis_uid}_target"
-                      xml.TargetOrganizationUID application.competitive_group_target_item.target_organization.id
+                      # xml.TargetOrganizationUID application.competitive_group_target_item.target_organization.id
                     else
                       xml.CompetitiveGroupUID  application.competitive_group.fis_uid
                     end
