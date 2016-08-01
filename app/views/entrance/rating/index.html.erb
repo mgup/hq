@@ -131,7 +131,7 @@
            .reverse.each_with_index do |a, i| %>
         <tr>
             <td><%= i + 1 %></td>
-            <%= render partial: 'contest', locals: { a: a } %>
+            <%= render partial: 'contest', locals: { a: a, success:  true } %>
         </tr>
       <% end %>
       </tbody>
@@ -154,7 +154,7 @@
     <% @special_rights.sort_by { |a| a.entrant.full_name }.each_with_index do |a, i| %>
       <tr>
         <td><%= i + 1 %></td>
-        <%= render partial: 'enrolled', locals: { a: a } %>
+          <%= render partial: 'enrolled', locals: { a: a } %>
       </tr>
       <% @quota_places -= 1 %>
       <% @total_places -= 1 %>
@@ -286,7 +286,7 @@
       <% success = true if @total_places > 0 && a.original? %>
       <tr class="<%= success && @first_step_places > 0 ? 'success' : (@total_places > 0 ? 'warning' : '') %>">
         <td><%= i + 1 %></td>
-        <%= render partial: 'contest', locals: { a: a } %>
+        <%= render partial: 'contest', locals: { a: a, success: (@contest.first.payed? || success) } %>
       </tr>
       <% @total_places -= 1 if success %>
       <% @first_step_places -= 1 if success %>
@@ -300,4 +300,8 @@
   </p>
   <br><br><br><br><br><br><br><br><br><br><br><br><br>
   <br><br><br><br><br><br><br><br><br><br><br><br><br>
+<% end %>
+
+<% if @current_user && can?(:manage, Entrance::ExamResult) %>
+<p class="alert alert-success" id="allert-average-ege"></p>
 <% end %>

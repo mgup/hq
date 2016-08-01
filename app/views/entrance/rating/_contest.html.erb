@@ -7,7 +7,7 @@
 </td>
 
 <% a.abitexams.each do |result| %>
-  <td><%= result.score %></td>
+  <td class="<%= success && result.use? ? 'ege_result' : ''  %>"><%= result.score %></td>
 <% end %>
 
 <td>
