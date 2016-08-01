@@ -34,6 +34,7 @@ class Entrance::RatingController < ApplicationController
     @special_rights = []
     @organization = []
     @contest_enrolled = []
+    @contest_preenrolled = []
     @contest = []
 
     @applications.each do |a|
@@ -73,6 +74,8 @@ class Entrance::RatingController < ApplicationController
         else
           if a.order.present? && a.order.signing_date.present?
             @contest_enrolled << a
+          elsif a.order.present?
+            @contest_preenrolled << a
           else
             @contest << a
           end

@@ -241,6 +241,31 @@
       </strong>
     </p>
   <% end %>
+
+  <% if @contest.preenrolled.any? %>
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Рег. номер</th>
+        <th>Поступающий</th>
+        <th>Приказ о зачислении</th>
+        <th>Сумма баллов</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @contest_preenrolled.sort_by.sort_by { |a| a.entrant.full_name }.each_with_index do |a, i| %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <%= render partial: 'preenrolled', locals: { a: a } %>
+        </tr>
+        <% @total_places -= 1 %>
+        <% @first_step_places -= 1 %>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
