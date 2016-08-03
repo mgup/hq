@@ -237,6 +237,7 @@
     </p>
     <p class="lead">
       <% @first_step_places = (@total_places * 0.8).ceil %>
+      <% @second_step_places = @total_places %>
       <strong>
         Доступное количество мест для зачисления на втором этапе — <%= @second_step_places %>.
       </strong>
