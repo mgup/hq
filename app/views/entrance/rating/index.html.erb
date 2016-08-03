@@ -227,6 +227,7 @@
   <% if @contest.first.payed? %>
     <% @total_places = 0 %>
     <% @first_step_places = 0 %>
+    <% @second_step_places = @total_places %>
     <h2>Конкурсные списки поступающих</h2>
   <% else %>
     <h2>Конкурсные списки поступающих на места в рамках контрольных цифр приема</h2>
@@ -237,7 +238,7 @@
     <p class="lead">
       <% @first_step_places = (@total_places * 0.8).ceil %>
       <strong>
-        Доступное количество мест для зачисления на втором этапе — <%= @first_step_places %>.
+        Доступное количество мест для зачисления на втором этапе — <%= @second_step_places %>.
       </strong>
     </p>
   <% end %>
@@ -261,6 +262,7 @@
         </tr>
         <% @total_places -= 1 %>
         <% @first_step_places -= 1 %>
+        <% @second_step_places -= 1 %>
       <% end %>
       </tbody>
     </table>
