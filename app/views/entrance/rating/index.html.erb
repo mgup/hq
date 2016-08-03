@@ -286,12 +286,13 @@
         each_with_index do |a, i| %>
       <% success = false %>
       <% success = true if @total_places > 0 && a.original? %>
-      <tr class="<%= success && @first_step_places > 0 ? 'success' : (@total_places > 0 ? 'warning' : '') %>">
+      <tr class="<%= success && @second_step_places > 0 ? 'success' : (@total_places > 0 ? 'warning' : '') %>">
         <td><%= i + 1 %></td>
         <%= render partial: 'contest', locals: { a: a, success: (@contest.first.payed? || success) } %>
       </tr>
       <% @total_places -= 1 if success %>
       <% @first_step_places -= 1 if success %>
+      <% @second_step_places -= 1 if success %>
     <% end %>
     </tbody>
   </table>
