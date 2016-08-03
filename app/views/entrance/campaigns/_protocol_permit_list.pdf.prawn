@@ -14,6 +14,7 @@
     special_rights = []
     organization = []
     contest = []
+    contest_enrolled = []
 
     applications.each do |a|
       out_of_competition << a if a.out_of_competition? && a.order_id.present?
@@ -34,7 +35,11 @@
         elsif a.competitive_group_target_item.present?
           organization << a if a.order_id.present?
         else
-          contest << a
+          if a.order.present? && a.order.signing_date.present?
+            contest_enrolled << a
+          else
+            contest << a
+          end
         end
 
         exams.each_with_index do |name, i|
@@ -180,9 +185,9 @@
     pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
-    pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на первом этапе зачисления', style: :bold, align: :center
+    pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на втором этапе зачисления', style: :bold, align: :center
 
-    pdf.table [['№ __________________', 'от 29 июля 2016 г.']], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
+    pdf.table [['№ __________________', 'от 03 августа 2016 г.']], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
       column(0).width = 600
     end
     pdf.move_down 8
@@ -333,7 +338,7 @@
       pdf.text 'Список поступающих по общему конкурсу',
                size: 14
 
-      pdf.text "Доступное количество мест — #{total_places}, на первом этапе зачисления доступно — #{(total_places*0.8).ceil}",
+      pdf.text "Доступное количество мест для зачисления на втором этапе — #{(total_places*0.2).floor}",
                style: :bold, size: 10
 
       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
