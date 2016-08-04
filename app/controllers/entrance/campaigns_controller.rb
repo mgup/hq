@@ -229,7 +229,7 @@ class Entrance::CampaignsController < ApplicationController
       @data[direction.description][:pz_o][:places] = pz_o
     end
 
-    Entrance::Application.where(campaign_id: [12016, 22016, 32016, 42016], status_id: [4, 5, 7, 8]).all.each do |application|
+    Entrance::Application.where(campaign_id: [12016, 22016, 32016], status_id: [4, 5, 7, 8]).all.each do |application|
       if application.payed?
         # Внебюджет
         if 10 == application.form
