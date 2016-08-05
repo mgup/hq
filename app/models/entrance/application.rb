@@ -604,7 +604,7 @@ class Entrance::Application < ActiveRecord::Base
               xml.Address    entrant.aaddress
             end
           end
-          #!!! xml.IsFromKrym
+          xml.IsFromKrym competitive_group.name.include?('Крым')
         end
         xml.RegistrationDate  created_at.iso8601
         xml.NeedHostel        entrant.need_hostel
@@ -637,8 +637,8 @@ class Entrance::Application < ActiveRecord::Base
               xml.CompetitiveGroupUID  competitive_group.fis_uid
             end
 
-            #!!! xml.IsAgreedDate
-            #!!! xml.IsForSPOandVO
+            xml.IsAgreedDate created_at.iso8601
+            xml.IsForSPOandVO competitive_group.name.include?('СПО')
           end
         end
 

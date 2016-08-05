@@ -272,7 +272,7 @@ class Entrance::CampaignsController < ApplicationController
         apps = @data[direction.description][group][:applications]
 
         @data[direction.description][group][:total] = apps.size
-        @data[direction.description][group][:originals] = apps.find_all { |a| 4 == a.status_id && a.original? }.size
+        @data[direction.description][group][:originals] = apps.find_all { |a| [4,8].include?(a.status_id) && a.original? }.size
         @data[direction.description][group][:enrolled] = apps.find_all { |a| 8 == a.status_id }.size
         @data[direction.description][group][:contest] =
           @data[direction.description][group][:total] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
@@ -516,8 +516,14 @@ class Entrance::CampaignsController < ApplicationController
                       xml.FinanceSourceID a.is_payed ? 15 : (a.competitive_group_target_item_id.nil? ? 14 : 16)
                     end
 
-                    if a.is_payed?
-                      xml.Stage 0
+                    if !a.is_payed?
+                      if a.benefits.any?
+                        xml.Stage 0
+                      elsif a.order.present? && Date.new(2016, 8, 3) == a.order.signing_date
+                        xml.Stage 1
+                      else
+                        xml.State 2
+                      end
                     end
                   end
                 end
