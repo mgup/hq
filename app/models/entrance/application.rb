@@ -174,10 +174,18 @@ class Entrance::Application < ActiveRecord::Base
       # end
     end
 
-    if sum > 10
-      10
+    if direction.master?
+      if sum > 20
+        20
+      else
+        sum
+      end
     else
-      sum
+      if sum > 10
+        10
+      else
+        sum
+      end
     end
   end
 

@@ -110,7 +110,11 @@ SimpleNavigation::Configuration.run do |navigation|
 
     primary.item :rating,
                  '<span class="glyphicons charts"></span> Конкурсные списки и приказы о зачислении'.html_safe,
-                 contest_entrance_campaign_path(id: Entrance::Campaign::CURRENT)
+                 contest_entrance_campaign_path(id: 12016)
+
+    primary.item :rating_master,
+                 '<span class="glyphicons charts"></span> Конкурсные списки и приказы о зачислении (магистратура)'.html_safe,
+                 contest_entrance_campaign_path(id: 22016)
 
     if can?(:manage, Entrance::Entrant)
       primary.item :rating,
