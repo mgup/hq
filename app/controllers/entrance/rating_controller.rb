@@ -33,6 +33,7 @@ class Entrance::RatingController < ApplicationController
     @foreign_enrolled = []
     @special_rights = []
     @organization = []
+    @organization_contest = []
     @contest_enrolled = []
     @contest_preenrolled = []
     @contest = []
@@ -74,6 +75,7 @@ class Entrance::RatingController < ApplicationController
           @special_rights << a if a.order_id.present?
         elsif a.competitive_group_target_item.present?
           @organization << a if a.order.present? && a.order.signing_date.present?
+          @organization_contest << a
         else
           if a.order.present? && a.order.signing_date.present?
             @contest_enrolled << a
