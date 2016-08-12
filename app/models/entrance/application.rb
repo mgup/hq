@@ -835,16 +835,47 @@ class Entrance::Application < ActiveRecord::Base
         end
 
         if abitachievements > 0
+          # Долбанный ФИС требует нарушать закон, поэтому тут нужно делать манипуляции.
+
+          limit = 10
+          if direction.master?
+            limit = 20
+          end
+
           xml.IndividualAchievements do
-            entrant.achievements.each do |a|
+            i = 0
+            loop do
               xml.IndividualAchievement do
                 xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
                 xml.InstitutionAchievementUID a.achievement_type.id
                 xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
-                xml.IAMark a.score if a.score.present?
+
+                if a.score.present?
+                  if a.score <= limit
+                    xml.IAMark a.score
+                    limit -= a.score
+                  else
+                    xml.IAMark limit
+                    limit = 0
+                  end
+                end
               end
+
+              break if limit <= 0
+              i += 1
             end
           end
+
+          # xml.IndividualAchievements do
+          #   entrant.achievements.each do |a|
+          #     xml.IndividualAchievement do
+          #       xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
+          #       xml.InstitutionAchievementUID a.achievement_type.id
+          #       xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
+          #       xml.IAMark a.score if a.score.present?
+          #     end
+          #   end
+          # end
         end
       end
     end
