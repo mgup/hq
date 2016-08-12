@@ -845,6 +845,8 @@ class Entrance::Application < ActiveRecord::Base
           xml.IndividualAchievements do
             i = 0
             loop do
+              a = entrant.achievements[i]
+
               xml.IndividualAchievement do
                 xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
                 xml.InstitutionAchievementUID a.achievement_type.id
