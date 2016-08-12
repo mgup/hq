@@ -846,6 +846,7 @@ class Entrance::Application < ActiveRecord::Base
             i = 0
             loop do
               a = entrant.achievements[i]
+              break if a.blank?
 
               xml.IndividualAchievement do
                 xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
