@@ -110,7 +110,7 @@
       <% success = true if @crimea_places > 0 && a.original? %>
       <tr class="<%= 'success' if success %>">
         <td><%= i + 1 %></td>
-        <%= render partial: 'contest', locals: { a: a } %>
+        <%= render partial: 'contest', locals: { a: a, success: success } %>
       </tr>
       <% @crimea_places -= 1 if success %>
       <% @total_places -= 1 if success %>
