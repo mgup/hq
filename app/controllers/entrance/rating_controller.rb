@@ -53,7 +53,7 @@ class Entrance::RatingController < ApplicationController
         if a.order_id.present?
           @crimea_enrolled << a
         else
-          @crimea
+          @crimea << a
         end
         exams.each_with_index do |name, i|
           if @exam_names_crimea[i].present?
