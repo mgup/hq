@@ -616,7 +616,12 @@ class Entrance::Application < ActiveRecord::Base
               xml.Address    entrant.aaddress
             end
           end
-          xml.IsFromKrym competitive_group.name.include?('Крым')
+
+          if competitive_group.name.include?('Крым')
+            xml.IsFromKrym do
+              xml.DocumentUID "crimea_document_#{id}"
+            end
+          end
         end
         xml.RegistrationDate  created_at.iso8601
         xml.NeedHostel        entrant.need_hostel
@@ -666,6 +671,10 @@ class Entrance::Application < ActiveRecord::Base
             xml.IdentityDocumentTypeID  entrant.identity_document_type_id
             xml.NationalityTypeID       entrant.nationality_type_id
             xml.BirthDate               entrant.birthday.iso8601
+          end
+
+          if competitive_group.name.include?('Крым')
+            xml.DocumentUID "crimea_document_#{id}"
           end
 
           if entrant.identity_documents.any?

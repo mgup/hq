@@ -60,7 +60,7 @@
   </table>
 <% end %>
 
-<% if @crimea.any? %>
+<% if @crimea_enrolled.any? %>
   <h2>Зачисленные на выделенные места (Крым)</h2>
   <table class="table table-striped table-bordered">
     <thead>
@@ -73,7 +73,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @crimea.sort_by.sort_by { |a| a.entrant.full_name }.each_with_index do |a, i| %>
+    <% @crimea_enrolled.sort_by.sort_by { |a| a.entrant.full_name }.each_with_index do |a, i| %>
       <tr>
         <td><%= i + 1 %></td>
         <%= render partial: 'enrolled', locals: { a: a } %>
@@ -81,6 +81,41 @@
       <% @crimea_places -= 1 %>
       <% @total_places -= 1 %>
     <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if @crimea.any? %>
+  <h2>Выделенные места (Крым)</h2>
+  <p class="lead">
+    <strong>Доступное количество мест — <%= @crimea_places %>.</strong>
+  </p>
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th></th>
+      <th>Рег. номер</th>
+      <th>Поступающий</th>
+      <% @exam_names_crimea.each do |_, name| %>
+        <th><%= name.html_safe %></th>
+      <% end %>
+      <th>Сумма баллов</th>
+      <th>Оригинал</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @crimea.sort_by(&Entrance::Application.sort_applications_for_sort_by).reverse.
+        each_with_index do |a, i| %>
+      <% success = false %>
+      <% success = true if @crimea_places > 0 && a.original? %>
+      <tr class="<%= 'success' if success %>">
+        <td><%= i + 1 %></td>
+        <%= render partial: 'contest', locals: { a: a } %>
+      </tr>
+      <% @crimea_places -= 1 if success %>
+      <% @total_places -= 1 if success %>
+    <% end %>
+    <% @total_places -= @crimea_places if @crimea_places > 0 %>
     </tbody>
   </table>
 <% end %>
