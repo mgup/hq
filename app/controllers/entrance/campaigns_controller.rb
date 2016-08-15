@@ -479,7 +479,7 @@ class Entrance::CampaignsController < ApplicationController
       format.xml do
         @applications = Entrance::Application.
           where(campaign_id: [12016],
-                status_id: [4, 8],
+                status_id: [4, 5, 6, 8],
                 is_payed: 0).
           find_all { |a| a.pass_min_score? }
 
