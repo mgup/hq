@@ -194,6 +194,10 @@ class Entrance::Application < ActiveRecord::Base
     abitexams.find_all { |r| r.use? }.size > 0
   end
 
+  def has_not_use?
+    abitexams.find_all { |r| !r.use? }.size > 0
+  end
+
   def has_creative_exams?
     abitexams.find_all { |r| r.exam.creative }.size > 0
   end

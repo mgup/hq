@@ -497,7 +497,7 @@ class Entrance::CampaignsController < ApplicationController
 
             xml.Orders do
               apps = @applications.find_all { |a| 8 == a.status_id && a.order.signing_date.present? }
-              # apps = []
+              apps = []
 
               xml.OrdersOfAdmission do
                 apps.group_by { |a| a.order }.each do |o, applications|
