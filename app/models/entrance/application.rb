@@ -619,7 +619,7 @@ class Entrance::Application < ActiveRecord::Base
 
           if competitive_group.name.include?('Крым')
             xml.IsFromKrym do
-              xml.DocumentUID "crimea_document_#{id}"
+              xml.DocumentUID "identity_document_#{entrant.id}"
             end
           end
         end
@@ -671,10 +671,6 @@ class Entrance::Application < ActiveRecord::Base
             xml.IdentityDocumentTypeID  entrant.identity_document_type_id
             xml.NationalityTypeID       entrant.nationality_type_id
             xml.BirthDate               entrant.birthday.iso8601
-          end
-
-          if competitive_group.name.include?('Крым')
-            xml.DocumentUID "crimea_document_#{id}"
           end
 
           if entrant.identity_documents.any?
