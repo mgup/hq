@@ -15,7 +15,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       column(0).width = 600
     end
     pdf.move_down 2
-    pdf.text 'Максимальная сумма баллов: 10', style: :bold
+    # pdf.text 'Максимальная сумма баллов: 10', style: :bold
+    pdf.text 'Максимальная сумма баллов: 20', style: :bold
 
     pdf.font_size 10 do
       pdf.table [
@@ -62,7 +63,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         data.last << (achievement.any? ? achievement.first.score : '-')
       end
       sum = e.achievements.collect{|x| x.score }.compact.sum
-      data.last << (sum > 10 ? 10 : sum)
+      # data.last << (sum > 10 ? 10 : sum)
+      data.last << (sum > 20 ? 20 : sum)
     end
 
     pdf.move_down 5
