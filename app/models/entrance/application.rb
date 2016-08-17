@@ -803,26 +803,26 @@ class Entrance::Application < ActiveRecord::Base
                     end
                   end
                 elsif benefits.first.orphan_document
-                  xml.OrphanDocument do
-                    xml.UID benefits.first.orphan_document.id
-                    xml.OrphanCategoryID benefits.first.orphan_document.orphan_category_id
-                    xml.DocumentName benefits.first.orphan_document.type_name
-                    xml.DocumentSeries benefits.first.orphan_document.series
-                    xml.DocumentNumber benefits.first.orphan_document.number
-                    xml.DocumentDate benefits.first.orphan_document.date
-                    xml.DocumentOrganization benefits.first.orphan_document.organization
+                  if 4 == benefits.first.benefit_kind_id
+                    xml.OrphanDocument do
+                      xml.UID benefits.first.orphan_document.id
+                      xml.OrphanCategoryID benefits.first.orphan_document.orphan_category_id
+                      xml.DocumentName benefits.first.orphan_document.type_name
+                      xml.DocumentSeries benefits.first.orphan_document.series
+                      xml.DocumentNumber benefits.first.orphan_document.number
+                      xml.DocumentDate benefits.first.orphan_document.date
+                      xml.DocumentOrganization benefits.first.orphan_document.organization
+                    end
+                  elsif 5 == benefits.first.benefit_kind_id
+                    xml.CustomDocument do
+                      xml.UID benefits.first.orphan_document.id
+                      xml.DocumentName benefits.first.orphan_document.type_name
+                      xml.DocumentSeries benefits.first.orphan_document.series
+                      xml.DocumentNumber benefits.first.orphan_document.number
+                      xml.DocumentDate benefits.first.orphan_document.date
+                      xml.DocumentOrganization benefits.first.orphan_document.organization
+                    end
                   end
-
-                  # if 24356 == id
-                  #   xml.CustomDocument do
-                  #     xml.UID "orphan_#{benefits.first.orphan_document.id}"
-                  #     xml.DocumentName benefits.first.orphan_document.type_name
-                  #     xml.DocumentSeries benefits.first.orphan_document.series
-                  #     xml.DocumentNumber benefits.first.orphan_document.number
-                  #     xml.DocumentDate benefits.first.orphan_document.date
-                  #     xml.DocumentOrganization benefits.first.orphan_document.organization
-                  #   end
-                  # end
                 elsif benefits.first.custom_document
                   xml.CustomDocument do
                     xml.UID benefits.first.custom_document.id
