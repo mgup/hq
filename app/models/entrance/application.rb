@@ -805,7 +805,7 @@ class Entrance::Application < ActiveRecord::Base
                 elsif benefits.first.orphan_document
                   if 4 == benefits.first.benefit_kind_id
                     xml.OrphanDocument do
-                      xml.UID benefits.first.orphan_document.id
+                      xml.UID "orphan_#{benefits.first.orphan_document.id}"
                       xml.OrphanCategoryID benefits.first.orphan_document.orphan_category_id
                       xml.DocumentName benefits.first.orphan_document.type_name
                       xml.DocumentSeries benefits.first.orphan_document.series
@@ -815,7 +815,7 @@ class Entrance::Application < ActiveRecord::Base
                     end
                   elsif 5 == benefits.first.benefit_kind_id
                     xml.CustomDocument do
-                      xml.UID benefits.first.orphan_document.id
+                      xml.UID "orphan_#{benefits.first.orphan_document.id}"
                       xml.DocumentName benefits.first.orphan_document.type_name
                       xml.DocumentSeries benefits.first.orphan_document.series
                       xml.DocumentNumber benefits.first.orphan_document.number
@@ -825,7 +825,7 @@ class Entrance::Application < ActiveRecord::Base
                   end
                 elsif benefits.first.custom_document
                   xml.CustomDocument do
-                    xml.UID benefits.first.custom_document.id
+                    xml.UID "custom_#{benefits.first.custom_document.id}"
                     xml.DocumentName benefits.first.custom_document.type_name
                     xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
                     xml.DocumentNumber benefits.first.custom_document.number
