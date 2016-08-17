@@ -527,7 +527,7 @@ class Entrance::CampaignsController < ApplicationController
                       elsif a.order.present? && Date.new(2016, 8, 3) == a.order.signing_date
                         xml.Stage 1
                       else
-                        xml.State 2
+                        xml.Stage 2
                       end
                     end
                   end
