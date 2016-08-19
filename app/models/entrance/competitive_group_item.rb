@@ -29,8 +29,7 @@ class Entrance::CompetitiveGroupItem < ActiveRecord::Base
   scope :for_master_25_july, -> { where(competitive_group_id: [372989,372998,372997,372996,372986,372987,372990,372994,372995,372988,372992,372991,372993]) }
   scope :for_master_1_august, -> { where(competitive_group_id: [372989,372998,372997,372996,372986,372987,372990,372994,372995,372988,372992,372991,372993]) }
 
-  scope :for_master_10_july, -> { where(competitive_group_id: [516390
-  516394,516395,516396,516402,516403,516407,516409,516492]) }
+  scope :for_master_10_july, -> { where(competitive_group_id: [516390, 516394,516395,516396,516402,516403,516407,516409,516492]) }
 
   # scope :for_10_and_25_july, -> { where('competitive_group_id IN (192420,192669,192679,192682,192684,192686,192688,192691,192694,193640,199761)') }
   # scope :for_15_july, -> { where('competitive_group_id IN (201408,201422,201424,201439,201443)') }
