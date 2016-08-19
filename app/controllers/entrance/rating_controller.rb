@@ -79,8 +79,11 @@ class Entrance::RatingController < ApplicationController
         if a.special_rights?
           @special_rights << a if a.order_id.present?
         elsif a.competitive_group_target_item.present?
-          @organization << a if a.order.present?
-          @organization_contest << a
+          if a.order.present?
+            @organization << a
+          else
+            @organization_contest << a
+          end
         else
           if a.order.present? && a.order.signing_date.present?
             @contest_enrolled << a
