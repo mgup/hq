@@ -185,9 +185,10 @@
     pdf.start_new_page
     pdf.text 'ПРОТОКОЛ ЗАСЕДАНИЯ ПРИЕМНОЙ КОМИССИИ', style: :bold, align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА', style: :bold, align: :center
-    pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на втором этапе зачисления', style: :bold, align: :center
+    # pdf.text 'о допуске к участию в конкурсе на основные конкурсные места на втором этапе зачисления', style: :bold, align: :center
+    pdf.text 'о допуске к участию в конкурсе на основные конкурсные места', style: :bold, align: :center
 
-    pdf.table [['№ __________________', 'от 03 августа 2016 г.']], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
+    pdf.table [['№ __________________', 'от 19 августа 2016 г.']], cell_style: {border_color: 'ffffff'}, width: pdf.bounds.width do
       column(0).width = 600
     end
     pdf.move_down 8
@@ -338,7 +339,8 @@
       pdf.text 'Список поступающих по общему конкурсу',
                size: 14
 
-      pdf.text "Доступное количество мест для зачисления на втором этапе — #{(total_places*0.2).floor}",
+      # pdf.text "Доступное количество мест для зачисления на втором этапе — #{(total_places*0.2).floor}",
+      pdf.text "Доступное количество мест для зачисления — #{(total_places*0.2).floor}",
                style: :bold, size: 10
 
       data = [(['', 'Рег. номер', 'Поступающий'] << exam_names.collect{|_, n| n} << 'Сумма' << 'Решение комиссии').flatten]
