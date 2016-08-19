@@ -17,7 +17,7 @@
   <% if 8 == contract.application.status_id %>
     от <%= l(contract.application.order.signing_date.to_date) %> № <%= contract.application.order.number %>
   <% else %>
-    Не зачислен
+    не зачислен
   <% end %>
 </th>
 <td><%= contract.paid? ? '<span class="success">оплачен</span>'.html_safe : '<span class="danger">не оплачен</span>'.html_safe %>
