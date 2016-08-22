@@ -478,29 +478,29 @@ class Entrance::CampaignsController < ApplicationController
       # end
       format.xml do
         @applications = Entrance::Application.
-          # where(campaign_id: [12016],
-          #       status_id: [4, 5, 6, 8],
-          #       is_payed: 0).
           where(campaign_id: [12016],
-                status_id: [8],
+                status_id: [4, 5, 6, 8],
                 is_payed: 0).
+          # where(campaign_id: [12016],
+          #       status_id: [8],
+          #       is_payed: 0).
           find_all { |a| a.pass_min_score? }
 
         doc = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
           xml.PackageData do
             xml.Applications do
-              # @applications.each do |application|
-              #   xml << application.to_fis.xpath('/Application').to_xml.to_str
-              # end
-
-              @applications.find_all { |a| a.order.blank? || a.order.signing_date.blank? }.each do |application|
+              @applications.each do |application|
                 xml << application.to_fis.xpath('/Application').to_xml.to_str
               end
+
+              # @applications.find_all { |a| a.order.blank? || a.order.signing_date.blank? }.each do |application|
+              #   xml << application.to_fis.xpath('/Application').to_xml.to_str
+              # end
             end
 
             xml.Orders do
               apps = @applications.find_all { |a| 8 == a.status_id && a.order.signing_date.present? }
-              # apps = []
+              apps = []
 
               xml.OrdersOfAdmission do
                 apps.group_by { |a| a.order }.each do |o, applications|
