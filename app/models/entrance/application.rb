@@ -174,16 +174,28 @@ class Entrance::Application < ActiveRecord::Base
       # end
     end
 
-    if sum > 10
-      10
+    if direction.master?
+      if sum > 20
+        20
+      else
+        sum
+      end
     else
-      sum
+      if sum > 10
+        10
+      else
+        sum
+      end
     end
   end
 
   # Имеющие ЕГЭ (функция названа неверное, потом нужно поправить)
   def only_use?
     abitexams.find_all { |r| r.use? }.size > 0
+  end
+
+  def has_not_use?
+    abitexams.find_all { |r| !r.use? }.size > 0
   end
 
   def has_creative_exams?
@@ -604,7 +616,12 @@ class Entrance::Application < ActiveRecord::Base
               xml.Address    entrant.aaddress
             end
           end
-          #!!! xml.IsFromKrym
+
+          if competitive_group.name.include?('Крым')
+            xml.IsFromKrym do
+              xml.DocumentUID "identity_document_#{entrant.id}"
+            end
+          end
         end
         xml.RegistrationDate  created_at.iso8601
         xml.NeedHostel        entrant.need_hostel
@@ -637,8 +654,8 @@ class Entrance::Application < ActiveRecord::Base
               xml.CompetitiveGroupUID  competitive_group.fis_uid
             end
 
-            #!!! xml.IsAgreedDate
-            #!!! xml.IsForSPOandVO
+            xml.IsAgreedDate created_at.iso8601
+            xml.IsForSPOandVO competitive_group.name.include?('СПО')
           end
         end
 
@@ -786,18 +803,29 @@ class Entrance::Application < ActiveRecord::Base
                     end
                   end
                 elsif benefits.first.orphan_document
-                  xml.OrphanDocument do
-                    xml.UID benefits.first.orphan_document.id
-                    xml.OrphanCategoryID benefits.first.orphan_document.orphan_category_id
-                    xml.DocumentName benefits.first.orphan_document.type_name
-                    xml.DocumentSeries benefits.first.orphan_document.series
-                    xml.DocumentNumber benefits.first.orphan_document.number
-                    xml.DocumentDate benefits.first.orphan_document.date
-                    xml.DocumentOrganization benefits.first.orphan_document.organization
+                  if 4 == benefits.first.benefit_kind_id
+                    xml.OrphanDocument do
+                      xml.UID "orphan_#{benefits.first.orphan_document.id}"
+                      xml.OrphanCategoryID benefits.first.orphan_document.orphan_category_id
+                      xml.DocumentName benefits.first.orphan_document.type_name
+                      xml.DocumentSeries benefits.first.orphan_document.series
+                      xml.DocumentNumber benefits.first.orphan_document.number
+                      xml.DocumentDate benefits.first.orphan_document.date
+                      xml.DocumentOrganization benefits.first.orphan_document.organization
+                    end
+                  elsif 5 == benefits.first.benefit_kind_id
+                    xml.CustomDocument do
+                      xml.UID "orphan_#{benefits.first.orphan_document.id}"
+                      xml.DocumentName benefits.first.orphan_document.type_name
+                      xml.DocumentSeries benefits.first.orphan_document.series
+                      xml.DocumentNumber benefits.first.orphan_document.number
+                      xml.DocumentDate benefits.first.orphan_document.date
+                      xml.DocumentOrganization benefits.first.orphan_document.organization
+                    end
                   end
                 elsif benefits.first.custom_document
                   xml.CustomDocument do
-                    xml.UID benefits.first.custom_document.id
+                    xml.UID "custom_#{benefits.first.custom_document.id}"
                     xml.DocumentName benefits.first.custom_document.type_name
                     xml.DocumentSeries benefits.first.custom_document.series.blank? ? 'б/с' : benefits.first.custom_document.series
                     xml.DocumentNumber benefits.first.custom_document.number
@@ -816,7 +844,7 @@ class Entrance::Application < ActiveRecord::Base
           has_scores = true if r.score
         end
 
-        if has_scores
+        if has_scores && !out_of_competition?
           xml.EntranceTestResults do
             results.each do |r|
               if r.score
@@ -827,16 +855,50 @@ class Entrance::Application < ActiveRecord::Base
         end
 
         if abitachievements > 0
+          # Долбанный ФИС требует нарушать закон, поэтому тут нужно делать манипуляции.
+
+          limit = 10
+          if direction.master?
+            limit = 20
+          end
+
           xml.IndividualAchievements do
-            entrant.achievements.each do |a|
+            i = 0
+            loop do
+              a = entrant.achievements[i]
+              break if a.blank?
+
               xml.IndividualAchievement do
                 xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
                 xml.InstitutionAchievementUID a.achievement_type.id
                 xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
-                xml.IAMark a.score if a.score.present?
+
+                if a.score.present?
+                  if a.score <= limit
+                    xml.IAMark a.score
+                    limit -= a.score
+                  else
+                    xml.IAMark limit
+                    limit = 0
+                  end
+                end
               end
+
+              break if limit <= 0
+              i += 1
             end
           end
+
+          # xml.IndividualAchievements do
+          #   entrant.achievements.each do |a|
+          #     xml.IndividualAchievement do
+          #       xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
+          #       xml.InstitutionAchievementUID a.achievement_type.id
+          #       xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
+          #       xml.IAMark a.score if a.score.present?
+          #     end
+          #   end
+          # end
         end
       end
     end

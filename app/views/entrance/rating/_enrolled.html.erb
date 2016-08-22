@@ -6,7 +6,13 @@
   <%= a.entrant.full_name %>
 </td>
 
-<td>от <%= l(a.order.signing_date.to_date) %> № <%= a.order.number %></td>
+<td>
+  <% if a.order.signing_date.present? %>
+    от <%= l(a.order.signing_date.to_date) %> № <%= a.order.number %>
+  <% else %>
+    формируется приказ о зачислении
+  <% end %>
+</td>
 
 <td>
   <%= a.abitpoints %>

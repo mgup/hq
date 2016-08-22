@@ -29,15 +29,26 @@
                      onchange: %q($(this).parents('form').submit();) %>
     </div>
     <div class="col-sm-2">
-      <%= select_tag :payment,
-                     options_for_select(
-                         [
-                             ['бюджет', 14],
-                             ['платное', 15]
-                         ],
-                         params[:payment]
-                     ), class: 'form-control',
-                     onchange: %q($(this).parents('form').submit();) %>
+      <% if '12016' == params[:id] %>
+        <%= select_tag :payment,
+                       options_for_select(
+                           [
+                               ['платное', 15]
+                           ],
+                           params[:payment]
+                       ), class: 'form-control',
+                       onchange: %q($(this).parents('form').submit();) %>
+      <% else %>
+        <%= select_tag :payment,
+                       options_for_select(
+                           [
+                               ['бюджет', 14],
+                               ['платное', 15]
+                           ],
+                           params[:payment]
+                       ), class: 'form-control',
+                       onchange: %q($(this).parents('form').submit();) %>
+      <% end %>
     </div>
   </div>
 <% end %>

@@ -229,7 +229,7 @@ class Entrance::CampaignsController < ApplicationController
       @data[direction.description][:pz_o][:places] = pz_o
     end
 
-    Entrance::Application.where(campaign_id: [12016, 22016, 32016, 42016], status_id: [4, 5, 7, 8]).all.each do |application|
+    Entrance::Application.where(campaign_id: [12016, 22016, 32016], status_id: [4, 5, 7, 8]).all.each do |application|
       if application.payed?
         # Внебюджет
         if 10 == application.form
@@ -272,7 +272,7 @@ class Entrance::CampaignsController < ApplicationController
         apps = @data[direction.description][group][:applications]
 
         @data[direction.description][group][:total] = apps.size
-        @data[direction.description][group][:originals] = apps.find_all { |a| 4 == a.status_id && a.original? }.size
+        @data[direction.description][group][:originals] = apps.find_all { |a| [4,8].include?(a.status_id) && a.original? }.size
         @data[direction.description][group][:enrolled] = apps.find_all { |a| 8 == a.status_id }.size
         @data[direction.description][group][:contest] =
           @data[direction.description][group][:total] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
@@ -478,8 +478,11 @@ class Entrance::CampaignsController < ApplicationController
       # end
       format.xml do
         @applications = Entrance::Application.
+          # where(campaign_id: [12016],
+          #       status_id: [4, 5, 6, 8],
+          #       is_payed: 0).
           where(campaign_id: [12016],
-                status_id: [4, 8],
+                status_id: [8],
                 is_payed: 0).
           find_all { |a| a.pass_min_score? }
 
@@ -489,6 +492,7 @@ class Entrance::CampaignsController < ApplicationController
               # @applications.each do |application|
               #   xml << application.to_fis.xpath('/Application').to_xml.to_str
               # end
+
               @applications.find_all { |a| a.order.blank? || a.order.signing_date.blank? }.each do |application|
                 xml << application.to_fis.xpath('/Application').to_xml.to_str
               end
@@ -496,6 +500,7 @@ class Entrance::CampaignsController < ApplicationController
 
             xml.Orders do
               apps = @applications.find_all { |a| 8 == a.status_id && a.order.signing_date.present? }
+              # apps = []
 
               xml.OrdersOfAdmission do
                 apps.group_by { |a| a.order }.each do |o, applications|
@@ -516,8 +521,14 @@ class Entrance::CampaignsController < ApplicationController
                       xml.FinanceSourceID a.is_payed ? 15 : (a.competitive_group_target_item_id.nil? ? 14 : 16)
                     end
 
-                    if a.is_payed?
-                      xml.Stage 0
+                    if !a.is_payed?
+                      if a.benefits.any?
+                        xml.Stage 0
+                      elsif a.order.present? && Date.new(2016, 8, 3) == a.order.signing_date
+                        xml.Stage 1
+                      else
+                        xml.Stage 2
+                      end
                     end
                   end
                 end

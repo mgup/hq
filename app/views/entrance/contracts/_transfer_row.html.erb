@@ -13,7 +13,20 @@
   <% end %>
 </td>
 <td><%= contract.application.number %></td>
-<td><%= contract.paid? ? '<span class="success">оплачен</span>'.html_safe : '<span class="danger">не оплачен</span>'.html_safe %></td>
+
+<% if 8 == contract.application.status_id %>
+  <th>
+    от <%= l(contract.application.order.signing_date.to_date) %>
+    № <%= contract.application.order.number %>
+  </th>
+<% else %>
+  <td>не зачислен</td>
+<% end %>
+
+<td><%= contract.paid? ? '<span class="success">оплачен</span>'.html_safe : '<span class="danger">не оплачен</span>'.html_safe %>
+<br>
+<p>Всего: <%= contract.student.total_payments %> руб.</p>
+</td>
 <td><%= contract.status_name %></td>
 <td>
     <% if contract.priem? %>

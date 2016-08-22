@@ -16,6 +16,9 @@ class Entrance::ItemsController < ApplicationController
                 'от «26» июля 2016 г.'
               when 5
                 'от «1» августа 2015 г.'
+
+            when 6
+                'от «10» августа 2016 г.'
               # when 4
               #   'от «15» июля 2015 г.'
               # when 5
@@ -34,6 +37,8 @@ class Entrance::ItemsController < ApplicationController
                 @items.for_master_25_july
               when 5
                 @items.for_master_1_august
+              when 6
+                @items.for_master_10_august
               # when 4
               #   @items.for_15_july
               # when 5

@@ -29,10 +29,12 @@ class Entrance::RatingController < ApplicationController
 
     @out_of_competition = []
     @crimea = []
+    @crimea_enrolled = []
     @foreign = []
     @foreign_enrolled = []
     @special_rights = []
     @organization = []
+    @organization_contest = []
     @contest_enrolled = []
     @contest_preenrolled = []
     @contest = []
@@ -48,7 +50,11 @@ class Entrance::RatingController < ApplicationController
 
       exams = a.competitive_group.test_items.order(:entrance_test_priority).map { |t| t.exam.name }
       if a.competitive_group.name.include?('Крым')
-        @crimea << a if a.order_id.present?
+        if a.order_id.present?
+          @crimea_enrolled << a
+        else
+          @crimea << a
+        end
         exams.each_with_index do |name, i|
           if @exam_names_crimea[i].present?
             @exam_names_crimea[i] += " <hr> #{name}" unless @exam_names_crimea[i].include?(name)
@@ -73,7 +79,11 @@ class Entrance::RatingController < ApplicationController
         if a.special_rights?
           @special_rights << a if a.order_id.present?
         elsif a.competitive_group_target_item.present?
-          @organization << a if a.order.present? && a.order.signing_date.present?
+          if a.order.present?
+            @organization << a
+          else
+            @organization_contest << a
+          end
         else
           if a.order.present? && a.order.signing_date.present?
             @contest_enrolled << a
