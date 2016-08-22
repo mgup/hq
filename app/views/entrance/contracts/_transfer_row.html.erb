@@ -14,7 +14,7 @@
 </td>
 <td><%= contract.application.number %></td>
 
-<% if 8 == contract.application.status_id %>
+<% if 8 == contract.application.status_id && contract.application.order.signing_date %>
   <th>
     от <%= l(contract.application.order.signing_date.to_date) %>
     № <%= contract.application.order.number %>
