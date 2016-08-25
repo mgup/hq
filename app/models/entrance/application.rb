@@ -24,6 +24,11 @@ class Entrance::Application < ActiveRecord::Base
     Entrance::Log.create entrant_id: application.entrant.id,
                          user_id: User.current.id,
                          comment: "Создано заявление #{application.id}."
+
+    if application.created_at > Date.new(2016, 8, 24)
+      application.created_at = Date.new(2016, 8, 24)
+      application.save!
+    end
   end
 
   # after_update do |application|
