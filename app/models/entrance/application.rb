@@ -874,7 +874,7 @@ class Entrance::Application < ActiveRecord::Base
               break if a.blank?
 
               xml.IndividualAchievement do
-                xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
+                xml.IAUID "individual_achievement_#{campaign_id}_#{10000 * competitive_group.id + a.id}"
                 xml.InstitutionAchievementUID a.achievement_type.id
                 xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
 
@@ -897,7 +897,7 @@ class Entrance::Application < ActiveRecord::Base
           # xml.IndividualAchievements do
           #   entrant.achievements.each do |a|
           #     xml.IndividualAchievement do
-          #       xml.IAUID "individual_achievement_#{10000 * competitive_group.id + a.id}"
+          #       xml.IAUID "individual_achievement_#{campaign_id}_#{10000 * competitive_group.id + a.id}"
           #       xml.InstitutionAchievementUID a.achievement_type.id
           #       xml.IADocumentUID "IA#{10000 * competitive_group.id + a.id}"
           #       xml.IAMark a.score if a.score.present?
