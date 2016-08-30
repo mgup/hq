@@ -130,6 +130,14 @@ class StudentsController < ApplicationController
     end
   end
 
+  def sberbank
+    respond_to do |format|
+      format.xml do
+        render xml: @students.valid_for_today.my_filter(form: 101, course: 1).to_sberbank
+      end
+    end
+  end
+
   def soccard_mistakes
     @students = @students.valid_for_today.where('student_group_group NOT IN (430,434,435,436)').my_filter(form: 101)
   end

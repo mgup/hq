@@ -45,7 +45,6 @@ class Person < ActiveRecord::Base
   alias_attribute :passport_number,          :student_pnumber
   alias_attribute :passport_date,            :student_pdate
   alias_attribute :passport_department,      :student_pdepartment
-  alias_attribute :passport_department_code, :student_pcode
   alias_attribute :passport_code,            :student_pcode
   alias_attribute :registration_address,     :student_registration_address
   alias_attribute :registration_zip,         :student_registration_zip
