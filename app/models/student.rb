@@ -663,20 +663,20 @@ LIMIT 1 ")
     # windows-1251
     doc = Nokogiri::XML::Builder.new(encoding: 'utf-8' ) do |xml|
 
-      xml.СчетаПК(ДатаФормирования: I18n.l(Date.today, format: '%d.%m.%Y'), НомерДоговора: '????????',
-                  НаименованиеОрганизации: '????????', ИНН: '?????????',
-                  РасчетныйСчетОрганизации: '??????????',
-                  ИдПервичногоДокумента: '??????????', НомерРеестра: '?') do
+      xml.СчетаПК(ДатаФормирования: I18n.l(Date.today, format: '%d.%m.%Y'), НомерДоговора: '',
+                  НаименованиеОрганизации: '', ИНН: '',
+                  РасчетныйСчетОрганизации: '',
+                  ИдПервичногоДокумента: '', НомерРеестра: '') do
         xml.ОткрытиеСчетов do
           self.all.each_with_index do |student, index|
             xml.Сотрудник(Нпп: "#{index+1}") do
               xml.Фамилия student.last_name
               xml.Имя student.first_name
               xml.Отчество student.patronym
-              xml.ОтделениеБанка '????'
-              xml.ФилиалОтделенияБанка '????'
-              xml.ВидВклада(КодВидаВклада: '?', КодПодвидаВклада: '?',
-                            КодВалюты: '?') { xml.text('?????') }
+              xml.ОтделениеБанка ''
+              xml.ФилиалОтделенияБанка ''
+              xml.ВидВклада(КодВидаВклада: '', КодПодвидаВклада: '',
+                            КодВалюты: '') { xml.text('') }
               xml.УдостоверениеЛичности do
                 xml.ВидДокумента (student.person.foreign ? 'Паспорт иностранного гражданина' : 'Паспорт гражданина РФ')
                 xml.КодВидаДокумента (student.person.foreign ? '0010': '0021')
@@ -689,15 +689,71 @@ LIMIT 1 ")
               xml.ДатаРождения I18n.l(student.person.birthday, format: '%Y-%m-%d') if student.person.birthday
               xml.Пол (student.person.male? ? 'М' : 'Ж')
               xml.МестоРождения student.person.birthplace
-              xml.АдресПрописки '??????'
-              xml.АдресПроживания '??????'
+              xml.АдресПрописки do
+                xml.Индекс ''
+                xml.Страна do
+                  xml.СтранаНазвание ''
+                end
+                xml.Регион do
+                  xml.РегионНазвание ''
+                  xml.РегионСокращение ''
+                end
+                xml.Район do
+                  xml. РайонНазвание ''
+                  xml.РайонСокращение ''
+                end
+                xml.НаселенныйПункт do
+                  xml.НаселенныйПунктНазвание ''
+                  xml.НаселенныйПунктСокращение ''
+                end
+                xml.Город do
+                  xml.ГородНазвание ''
+                  xml.ГородСокращение ''
+                end
+                xml.Улица do
+                  xml.УлицаНазвание ''
+                  xml.УлицаСокращение ''
+                end
+                xml.Дом ''
+                xml.Корпус ''
+                xml.Квартира ''
+              end
+              xml.АдресПроживания do
+                xml.Индекс ''
+                xml.Страна do
+                  xml.СтранаНазвание ''
+                end
+                xml.Регион do
+                  xml.РегионНазвание ''
+                  xml.РегионСокращение ''
+                end
+                xml.Район do
+                  xml. РайонНазвание ''
+                  xml.РайонСокращение ''
+                end
+                xml.НаселенныйПункт do
+                  xml.НаселенныйПунктНазвание ''
+                  xml.НаселенныйПунктСокращение ''
+                end
+                xml.Город do
+                  xml.ГородНазвание ''
+                  xml.ГородСокращение ''
+                end
+                xml.Улица do
+                  xml.УлицаНазвание ''
+                  xml.УлицаСокращение ''
+                end
+                xml.Дом ''
+                xml.Корпус ''
+                xml.Квартира ''
+              end
               xml.ЭмбоссированныйТекст(Поле1: Russian.translit(student.first_name).upcase,
                                        Поле2: Russian.translit(student.last_name).upcase)
               xml.Резидент (student.person.foreign ? false : true)
-              xml.Гражданство (student.entrant ? student.entrant.nationality_type.name : '????')
-              xml.КатеорияНаселения '???'
-              xml.ПризнакЗарплатный '?'
-              xml.КонтрольнаяИнформация '???'
+              xml.Гражданство (student.entrant ? student.entrant.nationality_type.name : '')
+              xml.КатеорияНаселения ''
+              xml.ПризнакЗарплатный ''
+              xml.КонтрольнаяИнформация ''
             end
           end
         end
