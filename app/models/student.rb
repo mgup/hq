@@ -536,12 +536,12 @@ LIMIT 1 ")
           xml.parent.namespace = nil
           xml.fileSender '028'
           xml.version '1.1.3'
-          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 8, 15) && s.last_status_order.order_signing <= Date.new(2015, 8, 23) }.length
+          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 8, 24) && s.last_status_order.order_signing <= Date.new(2015, 8, 28) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
           # убрать find_all
-          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 8, 15) && s.last_status_order.order_signing <= Date.new(2016, 8, 23) }.each_with_index do |student, index|
+          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 8, 24) && s.last_status_order.order_signing <= Date.new(2016, 8, 28) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
@@ -656,5 +656,57 @@ LIMIT 1 ")
 
   def lives_in_hostel?
     person.room && person.hostel_st == Person::HOSTEL_STATUS_ACCEPT
+  end
+
+  def self.to_sberbank
+    # windows-1251
+    doc = Nokogiri::XML::Builder.new(encoding: 'utf-8' ) do |xml|
+
+      xml.СчетаПК(ДатаФормирования: I18n.l(Date.today, format: '%d.%m.%Y'), НомерДоговора: '????????',
+                  НаименованиеОрганизации: '????????', ИНН: '?????????',
+                  РасчетныйСчетОрганизации: '??????????',
+                  ИдПервичногоДокумента: '??????????', НомерРеестра: '?') do
+        xml.ОткрытиеСчетов do
+          self.all.each_with_index do |student, index|
+            xml.Сотрудник(Нпп: "#{index+1}") do
+              xml.Фамилия student.last_name
+              xml.Имя student.first_name
+              xml.Отчество student.patronym
+              xml.ОтделениеБанка '????'
+              xml.ФилиалОтделенияБанка '????'
+              xml.ВидВклада(КодВидаВклада: '?', КодПодвидаВклада: '?',
+                            КодВалюты: '?') { xml.text('?????') }
+              xml.УдостоверениеЛичности do
+                xml.ВидДокумента (student.person.foreign ? 'Паспорт иностранного гражданина' : 'Паспорт гражданина РФ')
+                xml.КодВидаДокумента (student.person.foreign ? '0010': '0021')
+                xml.Серия student.person.passport_series
+                xml.Номер student.person.passport_number
+                xml.ДатаВыдачи student.person.passport_date
+                xml.КемВыдан student.person.passport_department
+                xml.КодПодразделения student.person.passport_code
+              end
+              xml.ДатаРождения I18n.l(student.person.birthday, format: '%Y-%m-%d') if student.person.birthday
+              xml.Пол (student.person.male? ? 'М' : 'Ж')
+              xml.МестоРождения student.person.birthplace
+              xml.АдресПрописки '??????'
+              xml.АдресПроживания '??????'
+              xml.ЭмбоссированныйТекст(Поле1: Russian.translit(student.first_name).upcase,
+                                       Поле2: Russian.translit(student.last_name).upcase)
+              xml.Резидент (student.person.foreign ? false : true)
+              xml.Гражданство (student.entrant ? student.entrant.nationality_type.name : '????')
+              xml.КатеорияНаселения '???'
+              xml.ПризнакЗарплатный '?'
+              xml.КонтрольнаяИнформация '???'
+            end
+          end
+        end
+        xml.КонтрольныеСуммы do
+          xml.КоличествоЗаписей self.all.count
+        end
+      end
+    end
+
+
+    doc.to_xml
   end
 end
