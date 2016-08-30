@@ -478,7 +478,7 @@ class Entrance::CampaignsController < ApplicationController
       # end
       format.xml do
         @applications = Entrance::Application.
-          where(campaign_id: [12016],
+          where(campaign_id: [12016, 22016, 32016, 42016],
                 status_id: [4, 5, 6, 8],
                 is_payed: 0).
           # where(campaign_id: [12016],

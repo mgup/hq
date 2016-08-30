@@ -19,6 +19,11 @@ class Entrance::Contract < ActiveRecord::Base
     Entrance::Log.create entrant_id: contract.application.entrant.id,
                          user_id: User.current.id,
                          comment: "Оформлен договор #{contract.id}."
+
+    if contract.created_at > Date.new(2016, 8, 24)
+      contract.created_at = Date.new(2016, 8, 24)
+      contract.save!
+    end
   end
 
   def prices
