@@ -55,6 +55,7 @@ class Group < ActiveRecord::Base
 
   scope :second_higher, -> { where(group_second_higher: true) }
   scope :distance, -> { where(group_form: 105) }
+  scope :oz_distance, -> { where(group_form: 106) }
 
   scope :geks, -> {
     joins(:speciality).with_students.where(course: [2, 4,5,6]).where('speciality_ntype != 3')
@@ -84,6 +85,7 @@ class Group < ActiveRecord::Base
       when 'semitime' then 102
       when 'postal' then 103
       when 'distance' then 105
+      when 'oz_distance' then 106
     end
   end
 
