@@ -106,8 +106,13 @@ class Group < ActiveRecord::Base
      when 'distance' then 'З'
      when 'oz_distance' then 'ОЗ'
      else fail 'Неизвестная форма обучения.'
-     end]
-    n << group_name[1] unless speciality.aspirant?
+         end]
+    if 'oz_distance' == form
+      n << group_name[2] unless speciality.aspirant?
+    else
+      n << group_name[1] unless speciality.aspirant?
+    end
+
     n << speciality.group_name_suffix
     n << 'Д' if form == 'distance'
     n << 'В' if group_second_higher == 1
