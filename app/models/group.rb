@@ -103,8 +103,8 @@ class Group < ActiveRecord::Base
      when 'fulltime' then 'Д'
      when 'semitime' then 'В'
      when 'postal'   then 'З'
+     when 'oz_distance' then 'В'
      when 'distance' then 'З'
-     when 'oz_distance' then 'ОЗ'
      else fail 'Неизвестная форма обучения.'
          end]
     if 'oz_distance' == form
