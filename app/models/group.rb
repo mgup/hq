@@ -5,7 +5,8 @@ class Group < ActiveRecord::Base
   FORMS = { fulltime: 101,
             semitime: 102,
             postal:   103,
-            distance: 105 }
+            distance: 105,
+            oz_distance: 106}
 
   self.table_name = 'group'
 
