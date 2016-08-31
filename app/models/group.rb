@@ -104,6 +104,7 @@ class Group < ActiveRecord::Base
      when 'semitime' then 'В'
      when 'postal'   then 'З'
      when 'distance' then 'З'
+     when 'oz_distance' then 'ОЗ'
      else fail 'Неизвестная форма обучения.'
      end]
     n << group_name[1] unless speciality.aspirant?
