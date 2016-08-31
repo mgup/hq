@@ -114,7 +114,7 @@ class Group < ActiveRecord::Base
     end
 
     n << speciality.group_name_suffix
-    n << 'Д' if form == 'distance'
+    n << 'Д' if form == 'distance' || form == 'oz_distance'
     n << 'В' if group_second_higher == 1
     n << 'А' if speciality.aspirant?
     n << "-#{course}-#{number}"
