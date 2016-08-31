@@ -66,6 +66,7 @@ class Group < ActiveRecord::Base
                     when 'fulltime' then :speciality_olength
                     when 'semitime' then :speciality_ozlength
                     when 'postal' then :speciality_zlength
+                    when 'oz_distance' then :speciality_ozlength
                     when 'distance' then :speciality_zlength
                     else fail 'Неизвестная форма обучения.'
                     end
@@ -84,8 +85,8 @@ class Group < ActiveRecord::Base
       when 'fulltime' then 101
       when 'semitime' then 102
       when 'postal' then 103
-      when 'distance' then 105
       when 'oz_distance' then 106
+      when 'distance' then 105
     end
   end
 
@@ -94,6 +95,7 @@ class Group < ActiveRecord::Base
     when 'fulltime' then 'DAYTIME'
     when 'semitime' then 'EVENING_TIME'
     when 'postal' then 'DISTANT'
+    when 'oz_distance' then 'EVENING_TIME'
     when 'distance' then 'DISTANT_ONLINE'
     end
   end
