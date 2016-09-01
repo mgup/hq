@@ -176,6 +176,7 @@ module Entrance
             when 'fulltime' then d[1][0] += 1
             when 'semitime' then d[2][0] += 1
             when 'postal'   then d[3][0] += 1
+            when 'oz_distance' then d[2][0] += 1
             when 'distance' then d[3][0] += 1
             else fail 'Неизвестная форма обучения.'
             end
@@ -185,6 +186,7 @@ module Entrance
               when 'fulltime' then d[1][1] += 1
               when 'semitime' then d[2][1] += 1
               when 'postal'   then d[3][1] += 1
+              when 'oz_distance' then d[2][1] += 1
               when 'distance' then d[3][1] += 1
               else fail 'Неизвестная форма обучения.'
               end
@@ -257,6 +259,7 @@ module Entrance
             when 'fulltime' then d[1][0] += 1
             when 'semitime' then d[2][0] += 1
             when 'postal'   then d[3][0] += 1
+            when 'oz_distance' then d[2][0] += 1
             when 'distance' then d[3][0] += 1
             else fail 'Неизвестная форма обучения.'
             end
@@ -266,6 +269,7 @@ module Entrance
                 when 'fulltime' then d[1][1] += 1
                 when 'semitime' then d[2][1] += 1
                 when 'postal'   then d[3][1] += 1
+                when 'oz_distance' then d[2][1] += 1
                 when 'distance' then d[3][1] += 1
                 else fail 'Неизвестная форма обучения.'
               end

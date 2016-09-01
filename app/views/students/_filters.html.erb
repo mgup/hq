@@ -35,7 +35,7 @@
 
     <div class="col-sm-4 col-sm-offset-1">
       <% forms = [] %>
-      <% [{form: 'очная', code: 101}, {form: 'очно-заочная', code: 102}, {form: 'заочная', code: 103}, {form: 'дистанционная', code: 105}].each do |y| %>
+      <% [{form: 'очная', code: 101}, {form: 'очно-заочная', code: 102}, {form: 'заочная', code: 103}, {form: 'очно-заочная дистанционная', code: 106}, {form: 'дистанционная', code: 105}].each do |y| %>
         <% forms << (OpenStruct.new y) %>
       <% end %>
       <%= multiselect_tag :form, title: 'Все формы', collection: forms,

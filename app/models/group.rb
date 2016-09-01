@@ -5,7 +5,8 @@ class Group < ActiveRecord::Base
   FORMS = { fulltime: 101,
             semitime: 102,
             postal:   103,
-            distance: 105 }
+            distance: 105,
+            oz_distance: 106}
 
   self.table_name = 'group'
 
@@ -54,6 +55,7 @@ class Group < ActiveRecord::Base
 
   scope :second_higher, -> { where(group_second_higher: true) }
   scope :distance, -> { where(group_form: 105) }
+  scope :oz_distance, -> { where(group_form: 106) }
 
   scope :geks, -> {
     joins(:speciality).with_students.where(course: [2, 4,5,6]).where('speciality_ntype != 3')
@@ -64,6 +66,7 @@ class Group < ActiveRecord::Base
                     when 'fulltime' then :speciality_olength
                     when 'semitime' then :speciality_ozlength
                     when 'postal' then :speciality_zlength
+                    when 'oz_distance' then :speciality_ozlength
                     when 'distance' then :speciality_zlength
                     else fail 'Неизвестная форма обучения.'
                     end
@@ -82,6 +85,7 @@ class Group < ActiveRecord::Base
       when 'fulltime' then 101
       when 'semitime' then 102
       when 'postal' then 103
+      when 'oz_distance' then 106
       when 'distance' then 105
     end
   end
@@ -91,6 +95,7 @@ class Group < ActiveRecord::Base
     when 'fulltime' then 'DAYTIME'
     when 'semitime' then 'EVENING_TIME'
     when 'postal' then 'DISTANT'
+    when 'oz_distance' then 'EVENING_TIME'
     when 'distance' then 'DISTANT_ONLINE'
     end
   end
@@ -100,12 +105,18 @@ class Group < ActiveRecord::Base
      when 'fulltime' then 'Д'
      when 'semitime' then 'В'
      when 'postal'   then 'З'
+     when 'oz_distance' then 'В'
      when 'distance' then 'З'
      else fail 'Неизвестная форма обучения.'
-     end]
-    n << group_name[1] unless speciality.aspirant?
+         end]
+    if 'oz_distance' == form
+      n << group_name[2] unless speciality.aspirant?
+    else
+      n << group_name[1] unless speciality.aspirant?
+    end
+
     n << speciality.group_name_suffix
-    n << 'Д' if form == 'distance'
+    n << 'Д' if form == 'distance' || form == 'oz_distance'
     n << 'В' if group_second_higher == 1
     n << 'А' if speciality.aspirant?
     n << "-#{course}-#{number}"
