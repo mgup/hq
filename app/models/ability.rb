@@ -48,6 +48,7 @@ class Ability
 
       if user.is?(:ciot)
         can :manage, :ciot
+        can :index, :groups
       end
 
       if user.is?(:library)
