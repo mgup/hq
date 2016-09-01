@@ -50,6 +50,7 @@ class Ability
         can :manage, :ciot
         can :index, :groups
         can :read, Group
+        can :work, :all_faculties
       end
 
       if user.is?(:library)
