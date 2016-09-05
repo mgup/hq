@@ -153,6 +153,7 @@ HQ::Application.routes.draw do
     end
     post 'reference.pdf', to: 'students#reference', on: :member, defaults: { format: :pdf }, as: :reference
     get 'petition.pdf', to: 'students#petition', on: :member, defaults: { format: :pdf }, as: :petition
+    get 'list_for_politeh.pdf', to: 'students#list_for_politeh', on: :collection, defaults: { format: :pdf }, as: :list_for_politeh
   end
   get '/students/list(/:page)', to: 'students#index'
 

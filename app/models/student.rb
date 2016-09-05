@@ -126,7 +126,7 @@ class Student < ActiveRecord::Base
                                                   self::STATUS_TRANSFERRED_DEBTOR,
                                                   self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
 
-  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
+  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR]) }
 
   scope :for_vkr, -> {
     where(student_group_status: [self::STATUS_COMPLETE, self:STATUS_GRADUATE]).
@@ -286,7 +286,7 @@ LIMIT 1 ")
 
   # Факультет, на котором обучается студент.
   def faculty
-    group.speciality.faculty
+    group.speciality.faculty if group
   end
 
   # нужно найти все valid? и заменить
@@ -386,6 +386,10 @@ LIMIT 1 ")
       pass &&= (mark ? mark.mark >= checkpoint.min : false)
     end
     pass
+  end
+
+  def target?
+    student_group_a_naprav || (entrant && entrant.packed_application.competitive_group_target_item_id.present?)
   end
 
   def discipline_marks(discipline)
