@@ -540,13 +540,12 @@ LIMIT 1 ")
           xml.parent.namespace = nil
           xml.fileSender '028'
           xml.version '1.1.3'
-          # 1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40
-          xml.recordCount self.all.find_all { |s| s.group.speciality.master? && s.last_status_order && [16].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 3, 1) && s.last_status_order.order_signing <= Date.new(2016, 8, 28) }.length
+          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 8, 29) && s.last_status_order.order_signing <= Date.new(2016, 9, 5) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
           # убрать find_all
-          self.all.find_all { |s| s.group.speciality.master? && s.last_status_order && [16].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 3, 1) && s.last_status_order.order_signing <= Date.new(2016, 8, 28) }.each_with_index do |student, index|
+          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 8, 29) && s.last_status_order.order_signing <= Date.new(2016, 9, 5) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
