@@ -401,5 +401,6 @@ class Ability
   def sekretar_gek(user)
     can :manage, Study::Vkr
     can :manage, Study::VkrMaterial
+    can :index, :groups
   end
 end
