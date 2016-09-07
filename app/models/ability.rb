@@ -402,5 +402,7 @@ class Ability
     can :manage, Study::Vkr
     can :manage, Study::VkrMaterial
     can :index, :groups
+    can :manage, Group
+    can :work, :all_faculties
   end
 end
