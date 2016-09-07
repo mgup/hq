@@ -143,7 +143,7 @@ class StudentsController < ApplicationController
   end
 
   def list_for_politeh
-    @students = Student.valid_for_today
+    @students = Student.where(student_group_status: 103)
     respond_to do |format|
       format.pdf
     end
