@@ -14,7 +14,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   pdf.font 'PTSerif', size: 14 do
     pdf.text 'СТУДЕНТЫ', align: :center
     pdf.text 'МОСКОВСКОГО ГОСУДАРСТВЕННОГО УНИВЕРСИТЕТА ПЕЧАТИ', align: :center
-    pdf.text 'ИМЕНИ ИВАНА ФЕДОРОВА, ПЕРЕВЕДЕННЫЕ', align: :center
+    pdf.text 'ИМЕНИ ИВАНА ФЕДОРОВА, НАХОДЯЩИЕСЯ', align: :center
+    pdf.text 'В АКАДЕМИЧЕСКОМ ОТПУСКЕ, ПЕРЕВЕДЕННЫЕ', align: :center
     pdf.text 'С 01 СЕНТЯБРЯ 2016 ГОДА', align: :center
     pdf.text 'В МОСКОВСКИЙ ПОЛИТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ', align: :center
   end
