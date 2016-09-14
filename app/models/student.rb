@@ -389,7 +389,7 @@ LIMIT 1 ")
   end
 
   def target?
-    student_group_a_naprav || (entrant && entrant.packed_application.competitive_group_target_item_id.present?)
+    student_group_a_naprav == 1 || (entrant && entrant.packed_application.competitive_group_target_item_id.present?)
   end
 
   def discipline_marks(discipline)
