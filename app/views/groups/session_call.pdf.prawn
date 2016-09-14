@@ -36,7 +36,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       pdf.text  "от «______» ________________ 20______ г. № ________,", align: :center
 
       [['%d', 119], ['%B', 180], ['%y', 242]].each do |date, x|
-        pdf.text_box "#{l student.proofs.last.date, format: date}", at: [x, 740], width: 100, height: 20, overflow: :shrink_to_fit, align: :center
+        pdf.text_box "#{l Date.new(2016, 8, 30), format: date}", at: [x, 740], width: 100, height: 20, overflow: :shrink_to_fit, align: :center
+        # pdf.text_box "#{l student.proofs.last.date, format: date}", at: [x, 740], width: 100, height: 20, overflow: :shrink_to_fit, align: :center
       end
 
       pdf.text_box "#{student.proofs.last.id}", at: [303, 740], width: 100, height: 20, overflow: :shrink_to_fit, align: :center
