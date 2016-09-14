@@ -207,7 +207,7 @@ pdf.text 'Работодателю _____________________________________________
           pdf.text 'М. П.'
         end
       end
-      pdf.text_box 'Кожевников Г. В.', at: [386, 196], width: 100, height: 20, align: :center
+      pdf.text_box 'Г. В. Кожевников', at: [386, 196], width: 100, height: 20, align: :center
 
       pdf.move_down 15
 
