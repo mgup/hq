@@ -50,7 +50,7 @@
           <div class="row addOptions" id="studentPeriodAdd">
             <div class="thumbnail">
               <h4>Нормативный срок обучения:</h4>
-                С <%= text_field_tag :dateIn, "01.09.#{student.admission_year}", class: 'datepicker form-control' %> по <%= text_field_tag :dateOut, "30.06.#{student.study_time.to_i + student.admission_year.to_i}", class: 'datepicker form-control' %>
+                С <%= text_field_tag :dateIn, "01.09.#{student.admission_year}", class: 'datepicker form-control' %> по <%= text_field_tag :dateOut, "31.08.#{student.study_time.to_i + student.admission_year.to_i}", class: 'datepicker form-control' %>
             </div>
           </div>
 
