@@ -8,13 +8,13 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
   count = params[:count].to_i
   count.times do |i|
     pdf.start_new_page if i > 0
-    pdf.image "#{Rails.root}/app/assets/images/logo.jpg", at: [0,785], scale: 0.20
+    pdf.image "#{Rails.root}/app/assets/images/logo2.jpg", at: [0,775], scale: 0.20
 
     pdf.indent 120 do
       pdf.font 'PTSerif', size: 10, style: :bold, align: :center do
         pdf.text 'МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ', align: :center
         pdf.text 'федеральное государственное бюджетное образовательное', align: :center
-        pdf.text 'учреждение высшего профессионального образования', align: :center
+        pdf.text 'учреждение высшего образования', align: :center
         pdf.text '«МОСКОВСКИЙ ПОЛИТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ»', align: :center
         pdf.text 'Высшая школа печати и медиаиндустрии', align: :center
       end
@@ -37,7 +37,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     pdf.font_size 9 do
       pdf.text '127550, Москва, Прянишникова, 2а'
       pdf.text 'Тел.: (499) 976-39-73, факс: (499) 976-06-35'
-      pdf.text 'e-mail: info@mgup.ru    www.mgup.ru'
+      pdf.text 'e-mail: info@mgup.ru'
       pdf.text '№____________________________________'
       pdf.text 'На______________от___________________'
     end
@@ -68,7 +68,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
     pdf.font_size 12 do
       pdf.move_down 20
-      pdf.text "Выдана <b><u>#{@student.person.full_name(:dp)}</u></b>#{birth} о том, что #{@student.sex} действительно #{@student.is_valid? ? 'является' : (@student.person.male? ? 'являлся' : 'являлась')} обучающимся <u>#{@student.group.course}</u> курса#{tax} <u>#{study_form_name(@student.group.form, :rp)}</u> формы обучения в #{years} учебном году по #{@student.group.speciality.name_tvor} <u>#{@student.group.speciality.code}</u> — «<u>#{@student.group.speciality.name}»</u> в ФГБОУ ВПО «Московский государственный университет печати имени Ивана Федорова»#{license}.", inline_format: true, align: :justify
+      pdf.text "Выдана <b><u>#{@student.person.full_name(:dp)}</u></b>#{birth} о том, что #{@student.sex} действительно #{@student.is_valid? ? 'является' : (@student.person.male? ? 'являлся' : 'являлась')} обучающимся <u>#{@student.group.course}</u> курса#{tax} <u>#{study_form_name(@student.group.form, :rp)}</u> формы обучения в #{years} учебном году по #{@student.group.speciality.name_tvor} <u>#{@student.group.speciality.code}</u> — «<u>#{@student.group.speciality.name}»</u> в ФГБОУ ВО «Московский политехнический университет» Высшая школа печати и медиаиндустрии #{license}.", inline_format: true, align: :justify
       pdf.move_down 25
 
      if params[:orders]
@@ -91,32 +91,38 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       pdf.text '_'*100
 
       pdf.move_down 25
-      positions = []
-      if '3' == params[:sign]
-        roles = ['student_hr_boss_zam_doc']
-      elsif '4' == params[:sign]
-        roles = ['pro-rector-study', 'student_hr_boss_zam_doc']
-      elsif '5' == params[:sign]
-        roles = ['student_hr_boss_zam_student']
-      elsif '6' == params[:sign]
-        roles = ['pro-rector-study', 'student_hr_boss_zam_student']
+      if '1' == params[:sign]
+        pdf.move_down 25
+        data = [['Начальник студенческого отдела кадров', 'Бутарева Л. Л.'],
+                ['Начальник управления контингента образовательных программ', 'Горина Ю. Е.']]
       else
-        roles = (params[:sign] == '0' ? ['student_hr_boss'] : ['pro-rector-study', 'student_hr_boss'])
-      end
-      roles.each do |role|
-        positions << Position.from_role(role).first
-      end
-
-      pdf.move_down 25
-      data = []
-      positions.each do |p|
-      title = Unicode::capitalize(p.title)
-        if p.role.name != 'student_hr_boss'
-          data << [
-              title, p.user.short_name]
+        positions = []
+        if '3' == params[:sign]
+          roles = ['student_hr_boss_zam_doc']
+        elsif '4' == params[:sign]
+          roles = ['pro-rector-study', 'student_hr_boss_zam_doc']
+        elsif '5' == params[:sign]
+          roles = ['student_hr_boss_zam_student']
+        elsif '6' == params[:sign]
+          roles = ['pro-rector-study', 'student_hr_boss_zam_student']
         else
-          data << [
-            "#{title} #{p.department.name_rp}", p.user.short_name]
+          roles = (params[:sign] == '0' ? ['student_hr_boss'] : ['pro-rector-study', 'student_hr_boss'])
+        end
+        roles.each do |role|
+          positions << Position.from_role(role).first
+        end
+
+        pdf.move_down 25
+        data = []
+        positions.each do |p|
+        title = Unicode::capitalize(p.title)
+          if p.role.name != 'student_hr_boss'
+            data << [
+                title, p.user.short_name]
+          else
+            data << [
+              "#{title} #{p.department.name_rp}", p.user.short_name]
+          end
         end
       end
 
