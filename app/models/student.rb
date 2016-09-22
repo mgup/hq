@@ -671,6 +671,7 @@ LIMIT 1 ")
                   РасчетныйСчетОрганизации: '',
                   ИдПервичногоДокумента: '', НомерРеестра: '') do
         xml.ОткрытиеСчетов do
+          # self.all.find_all { |s| s.last_status_order && s.last_status_order.order_signing >= Date.new(2016, 8, 24) }.each_with_index do |student, index|
           self.all.each_with_index do |student, index|
             xml.Сотрудник(Нпп: "#{index+1}") do
               xml.Фамилия student.last_name
