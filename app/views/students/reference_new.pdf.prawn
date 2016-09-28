@@ -79,6 +79,10 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
             orders.each_with_index do |order, index|
               pdf.text "#{index+1}. Приказ № #{order.number} «#{order.name if order.template}» от #{order.signing_date.strftime('%d.%m.%Y') if order.signing_date}"
             end
+            pdf.move_down 5
+            if params[:addPeriod]
+              pdf.text period_text, inline_format: true
+            end
           end
           pdf.move_down 5
         end
