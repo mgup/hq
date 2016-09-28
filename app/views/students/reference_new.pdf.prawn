@@ -30,9 +30,9 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
           pdf.text 'Тел. (495) 223-05-23, Факс (499) 785-62-24. ', align: :center
           pdf.text 'E-mail: mami@mami.ru', align: :center
           if count > 1
-            pdf.text "_______________ № <u>#{@reference.number}/#{i+1}</u>", inline_format: true, align: :center
+            pdf.text "<u>«#{l @reference.date, format: '%d'}» #{l @reference.date, format: '%B'} #{l @reference.date, format: '%Y'}г.</u> № <u>#{@reference.number}/#{i+1}</u>", inline_format: true, align: :center
           else
-            pdf.text "_______________ № <u>#{@reference.number}</u>", inline_format: true, align: :center
+            pdf.text "<u>«#{l @reference.date, format: '%d'}» #{l @reference.date, format: '%B'} #{l @reference.date, format: '%Y'}г.</u> № <u>#{@reference.number}</u>", inline_format: true, align: :center
           end
         end
       end
@@ -94,7 +94,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         pdf.text '_'*106, align: :center
 
         pdf.move_down 12
-        pdf.text "<b>Действительна по</b> «<u>#{l @reference.date, format: '%d'}</u>» <u>#{l @reference.date, format: '%B'}</u> #{l @reference.date + 1.year, format: '%Y'}г.", inline_format: true
+        finish = @reference.date + 1.month
+        pdf.text "<b>Действительна по</b> «<u>#{l finish, format: '%d'}</u>» <u>#{l finish, format: '%B'}</u> #{l finish, format: '%Y'}г.", inline_format: true
 
 
         if '1' == params[:sign]
