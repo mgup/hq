@@ -152,6 +152,9 @@ HQ::Application.routes.draw do
       get 'options', to: 'supports#options', on: :collection
     end
     post 'reference.pdf', to: 'students#reference', on: :member, defaults: { format: :pdf }, as: :reference
+
+    post 'reference_new.pdf', to: 'students#reference_new', on: :member, defaults: { format: :pdf }, as: :reference_new
+
     get 'petition.pdf', to: 'students#petition', on: :member, defaults: { format: :pdf }, as: :petition
     get 'list_for_politeh.pdf', to: 'students#list_for_politeh', on: :collection, defaults: { format: :pdf }, as: :list_for_politeh
   end

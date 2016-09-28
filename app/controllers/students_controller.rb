@@ -69,7 +69,7 @@ class StudentsController < ApplicationController
     end
   end
 
-  def reference
+  def reference_new
     @student = Student.find(params[:id])
     # raise @student.person.attributes.inspect
     @reference = Document::Doc.create document_type: params[:document_doc][:document_type],

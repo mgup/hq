@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
         <h4><%= student.person.full_name %></h4>
-        <%= form_for @reference, url: reference_student_path(student), class: 'form-horizontal', id: 'referenceOptions' do |f| %>
+        <%= form_for @reference, url: reference_new_student_path(student), class: 'form-horizontal', id: 'referenceOptions' do |f| %>
           <%= f.hidden_field :document_type, value: 4 %>
           <label><%= check_box_tag :addBirthday %> Добавить день рождения студента</label>
           <br>
