@@ -26,7 +26,9 @@ prawn_document margin: [40, 54, 28, 54],
 
   pdf.font_size 11 do
     pdf.text_box @repeat.exam.discipline.group.speciality.faculty.name, at: [100, 678], width: 350, align: :center
-    pdf.text_box @repeat.department.name, at: [58, 657], width: 410, align: :center
+    if @repeat.department
+     pdf.text_box @repeat.department.name, at: [58, 657], width: 410, align: :center
+    end
   end
 
   pdf.move_down 7
@@ -64,13 +66,17 @@ prawn_document margin: [40, 54, 28, 54],
 
   pdf.text 'Председатель комиссии: ______________________________________________________________________'
   pdf.font_size 11 do
-    pdf.text_box @repeat.commission_head.science + ' ' + @repeat.commission_head.user.full_name, width: 320, height: 20, align: :center, at: [103, 500]
+    if @repeat.commission_head
+      pdf.text_box @repeat.commission_head.science + ' ' + @repeat.commission_head.user.full_name, width: 320, height: 20, align: :center, at: [103, 500]
+    end
   end
   pdf.move_down 5
   pdf.text 'Члены комиссии: ______________________________________________________________________________'
 
   pdf.font_size 11 do
-    pdf.text_box @repeat.commission_teachers.collect{|t| t.science + ' ' + t.user.short_name}.join(', '), width: 320, height: 20, align: :center, at: [103, 480]
+    if @repeat.commission_teachers.any?
+      pdf.text_box @repeat.commission_teachers.collect{|t| t.science + ' ' + t.user.short_name}.join(', '), width: 320, height: 20, align: :center, at: [103, 480]
+    end
   end
   pdf.move_down 5
   pdf.text 'Дата проведения аттестации: «____» ___________________________ 20_____ г.'
