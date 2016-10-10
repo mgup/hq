@@ -58,7 +58,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
       pdf.font_size 12 do
         pdf.move_down 20
-        pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} #{(@student.is_valid? || @student.student_group_status == Student::STATUS_SABBATICAL) ? 'является' : (@student.person.male? ? 'являлся' : 'являлась')} обучающимся <u>#{@student.group.course}</u> курса#{tax} <u>#{study_form_name(@student.group.form, :rp)}</u> формы обучения в #{years} учебном году по #{@student.group.speciality.name_tvor} <u>#{@student.group.speciality.code}</u> — «<u>#{@student.group.speciality.name}»</u>#{' ' +institute.join(' ')} Московского политехнического университета Высшей школы печати и медиаиндустрии#{license}.", inline_format: true, align: :justify, leading: 6
+        pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} #{(@student.is_valid? || @student.student_group_status == Student::STATUS_SABBATICAL) ? 'является' : (@student.person.male? ? 'являлся' : 'являлась')} обучающимся <u>#{@student.group.course}</u> курса#{tax} <u>#{study_form_name(@student.group.form, :rp)}</u> формы обучения в #{years} учебном году по #{@student.group.speciality.name_tvor} <u>#{@student.group.speciality.code}</u> — «<u>#{@student.group.speciality.name}»</u>#{' ' +institute.join(' ')} #{(@student.is_valid? || @student.student_group_status == Student::STATUS_SABBATICAL) ? 'Московского политехнического университета Высшей школы печати и медиаиндустрии' : 'Московского государственного университета печати имени Ивана Федорова'}#{license}.", inline_format: true, align: :justify, leading: 6
       end
     end
     pdf.font_size 12 do
