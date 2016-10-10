@@ -34,8 +34,13 @@
 
   <div class="form-group">
       <label>Комиссия</label>
-      <% 3.times { f.object.commission_teachers.build } %>
+      <% 2.times { f.object.commission_teachers.build } %>
       <%= render partial: 'commission_teachers_fields', locals: {f: f} %>
+      <br>
+      <div class="form-group">
+          <%= f.link_to_add 'Добавить члена комиссии', :commission_teachers,
+                            class: 'col-lg-offset-2 btn btn-default' %>
+      </div>
   </div>
 
   <label>Включённые студенты</label>
