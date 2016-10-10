@@ -48,7 +48,7 @@ prawn_document margin: [40, 54, 28, 54],
 
   pdf.font_size 11 do
     pdf.text_box "#{@exam.discipline.year}/#{@exam.discipline.year+1}", at: [95, 554]
-    pdf.text_box "#{@exam.discipline.semester == 1 ? 'I' : 'II'}", at: [280, 554]
+    pdf.text_box "#{@exam.discipline.semester == 1 ? @exam.discipline.group.group_semester : @exam.discipline.group.group_semester+1}", at: [280, 554]
     pdf.text_box @exam.discipline.group.name, at: [413, 554]
   end
 
