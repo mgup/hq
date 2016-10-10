@@ -151,6 +151,10 @@ class Study::Exam < ActiveRecord::Base
     TYPE_VALIDATION == type
   end
 
+  def result_exam?
+    test? || graded_test? || exam?
+  end
+
   def name
     case type
       when TYPE_TEST

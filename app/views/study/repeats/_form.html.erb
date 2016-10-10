@@ -18,6 +18,26 @@
                  class: 'form-control' %>
   </div>
 
+  <div class="form-group">
+      <%= f.label :cafedra %>
+      <%= f.select :cafedra, options_from_collection_for_select(Department.academic.order(:name), :id, :name), {},
+                   class: 'form-control ajax-subdepartment' %>
+  </div>
+
+
+  <div class="form-group">
+      <label> Председатель комиссии
+          <% f.object.build_commission_head(head: true) %>
+          <%= render partial: 'commission_head_fields', locals: {f: f} %>
+      </label>
+  </div>
+
+  <div class="form-group">
+      <label>Комиссия</label>
+      <% 3.times { f.object.commission_teachers.build } %>
+      <%= render partial: 'commission_teachers_fields', locals: {f: f} %>
+  </div>
+
   <label>Включённые студенты</label>
   <%= f.collection_check_boxes :student_ids, @discipline.group.students.valid,
                                :id, :full_name do |builder| %>
@@ -41,3 +61,34 @@
 
 <%= f.submit 'Создать дополнительную ведомость', class: 'btn btn-primary' %>
 <% end %>
+
+<script>
+  $(function() {
+    $(document).on('matrix.study.discipline.create', function() {
+      document.location = document.location;
+    });
+
+    $(document).on('matrix.study.discipline.update', function() {
+      $('.modal-backdrop').remove();
+      $(document.body).removeClass('modal-open');
+    });
+
+    var updateTeachers = function(teachers, select){
+      $(select).empty();
+      $(teachers).each(function() {
+        $(select).append('<option value="' + this.id + '">' +  this.name + '</option>');
+      });
+      $(select).trigger("liszt:updated");
+    };
+
+    $(document).on('change', '.ajax-subdepartment', function() {
+      var select = $(this).closest('form').find('.ajax-teacher');
+
+      $.getJSON ($('#matrixHQ').attr('href')+'ajax/teachers', {
+        'subdepartment':  $(this).val()
+      }, function(teachers){
+        updateTeachers(teachers, select);
+      })
+    })
+  });
+</script>

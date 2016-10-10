@@ -200,7 +200,9 @@ HQ::Application.routes.draw do
 
         patch '/updatedate', to: 'exams#updatedate', on: :member
 
-        resources :repeats
+        resources :repeats do
+          get 'protocol',   on: :member, defaults: { format: 'pdf' }
+        end
       end
     end
 
