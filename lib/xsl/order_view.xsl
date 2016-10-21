@@ -33,7 +33,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td style="border: none; width: 22%; text-align: center;">Москва</td>
+            <td style="border: none; width: 22%; text-align: center;"></td>
             <td style="border: none; width: 34%; text-align: right;">
               <xsl:choose>
                 <xsl:when test="not(./sign/number)">

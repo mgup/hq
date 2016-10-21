@@ -126,7 +126,7 @@
                     </fo:block>
                   </fo:table-cell>
                   <fo:table-cell>
-                    <fo:block font="12pt PT Serif" text-align="center">Москва</fo:block>
+                    <fo:block font="12pt PT Serif" text-align="center"> </fo:block>
                   </fo:table-cell>
                   <fo:table-cell>
                     <fo:block font="12pt PT Serif" text-align="end">
