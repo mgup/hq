@@ -69,23 +69,35 @@
 
         <fo:flow flow-name="xsl-region-body">
           <fo:block>
-            <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
+            <fo:block font="11pt PT Serif" text-align="center">
               МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ
             </fo:block>
-            <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
-              федеральное государственное бюджетное образовательное учреждение
+            <fo:block font="11pt PT Serif" text-align="center">
+              ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ
             </fo:block>
-            <fo:block font="12pt PT Serif" font-weight="bold" text-align="center">
-               высшего профессионального образования
+              <!--<fo:block font="12pt PT Serif" font-weight="bold" text-align="center">-->
+                  <!--федеральное государственное бюджетное образовательное учреждение-->
+              <!--</fo:block>-->
+            <fo:block font="11pt PT Serif" text-align="center">
+               ВЫСШЕГО ОБРАЗОВАНИЯ
             </fo:block>
-            <fo:block font="14pt PT Serif" font-weight="bold" text-align="center" padding-bottom="3pt">
-              &laquo;МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ
+              <!--<fo:block font="12pt PT Serif" font-weight="bold" text-align="center">-->
+                  <!--высшего профессионального образования-->
+              <!--</fo:block>-->
+            <fo:block font="11pt PT Serif" font-weight="bold" text-align="center">
+              &laquo;МОСКОВСКИЙ ПОЛИТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ&raquo;
             </fo:block>
-            <fo:block font="14pt PT Serif" font-weight="bold" text-align="center" padding-bottom="3pt">
-              ИМЕНИ ИВАНА ФЕДОРОВА&raquo;
+            <fo:block font="11pt PT Serif" font-weight="bold" text-align="center" padding-bottom="3pt" space-after="20pt">
+              (МОСКОВСКИЙ ПОЛИТЕХ)
             </fo:block>
-            <fo:block border-top="3pt solid black" space-after="1pt"></fo:block>
-            <fo:block border-bottom="0.5pt solid black" space-after="13pt"></fo:block>
+            <!--<fo:block font="14pt PT Serif" font-weight="bold" text-align="center" padding-bottom="3pt">-->
+              <!--&laquo;МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ-->
+            <!--</fo:block>-->
+            <!--<fo:block font="14pt PT Serif" font-weight="bold" text-align="center" padding-bottom="3pt">-->
+              <!--ИМЕНИ ИВАНА ФЕДОРОВА&raquo;-->
+            <!--</fo:block>-->
+            <!--<fo:block border-top="3pt solid black" space-after="1pt"></fo:block>-->
+            <!--<fo:block border-bottom="0.5pt solid black" space-after="13pt"></fo:block>-->
             <fo:block font="14pt PT Serif" font-weight="bold" text-align="center" space-after="13pt">
               <xsl:if test="1 = /order/status">ЧЕРНОВИК ПРИКАЗА</xsl:if>
               <xsl:if test="2 = /order/status">ПРИКАЗ</xsl:if>
@@ -181,8 +193,8 @@
             <xsl:apply-templates select="/order/signature/approve" />
           </fo:block>
 
-          <xsl:apply-templates select="/order/signature" />
-          <xsl:apply-templates select="/order/dispatch" />
+          <!--<xsl:apply-templates select="/order/signature" />-->
+          <!--<xsl:apply-templates select="/order/dispatch" />-->
 
         </fo:flow>
       </fo:page-sequence>

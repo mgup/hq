@@ -12,9 +12,9 @@
   <xsl:template match="order">
     <div>
     <div style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
-      <p style="text-align: center; font-weight: bold; font-size: 17px; margin-bottom: 0;">МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ</p>
-      <p style="text-align: center; font-weight: bold; margin-bottom: 3px; font-size: 16px;">федеральное государственное бюджетное образовательное<br />учреждение высшего профессионального образования</p>
-      <p style="text-align: center; font-weight: bold; font-size: 16px; padding-bottom: 3px; margin-bottom: 20px; border-bottom: 3px solid black;">&laquo;МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ПЕЧАТИ ИМЕНИ ИВАНА ФЕДОРОВА&raquo;</p>
+      <p style="text-align: center; font-size: 12px; margin-bottom: 0;">МИНИСТЕРСТВО ОБРАЗОВАНИЯ И НАУКИ РОССИЙСКОЙ ФЕДЕРАЦИИ</p>
+      <p style="text-align: center; margin-bottom: 3px; font-size: 12px;">ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ<br />ВЫСШЕГО ОБРАЗОВАНИЯ</p>
+      <p style="text-align: center; font-weight: bold; font-size: 12px; padding-bottom: 3px; margin-bottom: 20px; border-bottom: 3px solid black;">&laquo;МОСКОВСКИЙ ПОЛИТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ&raquo;<br />(МОСКОВСКИЙ ПОЛИТЕХ)</p>
       <p style="text-align: center; font-weight: bold; margin: 10px 0 5px 0;">ПРИКАЗ</p>
       <table style="width: 100%; margin-top: 0; margin-bottom: 20px;">
         <tbody>
@@ -69,13 +69,13 @@
         <xsl:value-of select="id" />&mdash;<xsl:value-of select="revision" />
       </div>
 	</div>
-    <div style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">
-        <xsl:apply-templates select="/order/signature" />
-        <xsl:apply-templates select="./dispatch" />
-        <div style="margin-top: 70px; text-align: right;">
-          <xsl:value-of select="id" />&mdash;<xsl:value-of select="revision" />
-        </div>
-    </div>
+    <!--<div style="background-color: white; width: 745px; margin: 20px auto; padding: 40px 80px 40px 80px; border: 1px solid #666666; box-shadow: 0 2px 20px #666666; font-family: 'PT Sans'; font-size: 11pt; position: relative;">-->
+        <!--<xsl:apply-templates select="/order/signature" />-->
+        <!--<xsl:apply-templates select="./dispatch" />-->
+        <!--<div style="margin-top: 70px; text-align: right;">-->
+          <!--<xsl:value-of select="id" />&mdash;<xsl:value-of select="revision" />-->
+        <!--</div>-->
+    <!--</div>-->
     <!--	<script>
             totalMetas = 0;
             document.observe('dom:loaded', function() {
