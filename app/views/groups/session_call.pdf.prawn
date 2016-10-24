@@ -36,7 +36,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       pdf.text  "от «______» ________________ 20______ г. № ________,", align: :center
 
       [['%d', 119], ['%B', 180], ['%y', 242]].each do |date, x|
-        pdf.text_box "#{l Date.new(2016, 8, 30), format: date}", at: [x, 740], width: 100, height: 20, overflow: :shrink_to_fit, align: :center
+        pdf.text_box "#{l Date.today, format: date}", at: [x, 740], width: 100, height: 20, overflow: :shrink_to_fit, align: :center
         # pdf.text_box "#{l student.proofs.last.date, format: date}", at: [x, 740], width: 100, height: 20, overflow: :shrink_to_fit, align: :center
       end
 
@@ -136,7 +136,7 @@ pdf.text 'Работодателю _____________________________________________
         pdf.text 'полное наименование организации,', align: :center
       end
 
-      pdf.text_box 'федеральное государственное бюджетное образовательное учреждение высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова»', at: [-15, 378], width: 540, height: 40, align: :center, leading: 9
+      pdf.text_box 'федеральное государственное бюджетное образовательное учреждение высшего образования «Московский политехнический университет» (Московский Политех)', at: [-15, 378], width: 540, height: 40, align: :center, leading: 9
 
       pdf.text '________________________________________________________________________________________________________________'
       pdf.font_size 7 do
@@ -155,7 +155,7 @@ pdf.text 'Работодателю _____________________________________________
         pdf.text 'реквизиты свидетельства о государственной аккредитации', align: :center
       end
 
-      pdf.text_box '№ 1542 от 19 марта 2012 г., серия ВВ № 001559', at: [0, 294], width: 540, height: 20, align: :center
+      pdf.text_box '№ 2292 от 11 октября 2016 г., серия 90А01 № 0002414', at: [0, 294], width: 540, height: 20, align: :center
 
       pdf.text 'по образовательной программе ____________________________________________________________ образования'
       pdf.font_size 7 do
@@ -198,7 +198,7 @@ pdf.text 'Работодателю _____________________________________________
       #
       #
 
-      pdf.text 'Первый проректор по учебной работе           __________________________        ______________________________'
+      pdf.text 'Директор ВШПМ                                                      __________________________        ______________________________'
       pdf.font_size 7 do
           pdf.indent 270 do
             pdf.text 'подпись                                                          фамилия, имя, отчество'
@@ -207,7 +207,7 @@ pdf.text 'Работодателю _____________________________________________
           pdf.text 'М. П.'
         end
       end
-      pdf.text_box 'Г. В. Кожевников', at: [386, 196], width: 100, height: 20, align: :center
+      pdf.text_box 'К. В. Антипов', at: [386, 196], width: 100, height: 20, align: :center
 
       pdf.move_down 15
 
@@ -235,11 +235,11 @@ pdf.text 'Работодателю _____________________________________________
       pdf.font_size 9 do
         pdf.text_box "#{student.person.full_name}", at: [0, 134], width: 500, height: 20, align: :center, style: :bold, overflow: :shrink_to_fit
 
-        pdf.text_box  '                             федеральном государственном бюджетном образовательном учреждении высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова»', at:[0, 110], width: 500, height: 60, align: :center, inline_format: true, leading: 12
+        pdf.text_box  '                             федеральном государственном бюджетном образовательном учреждении высшего образования «Московский политехнический университет» (Московский Политех)', at:[0, 110], width: 500, height: 60, align: :center, inline_format: true, leading: 12
         pdf.text_box "#{l @from, format: '%d %B %Y'}", at: [69, 62], width: 100, height: 20, align: :center, style: :bold
         pdf.text_box "#{l @to, format: '%d %B %Y'}", at: [336, 62], width: 100, height: 20, align: :center, style: :bold
         # pdf.text_box 'К. В. Антипов', at: [366, 35], width: 100, height: 20, align: :center
-        pdf.text_box ' Г. В. Кожевников', at: [385, 35], width: 100, height: 20, align: :center
+        pdf.text_box 'К. В. Антипов', at: [385, 35], width: 100, height: 20, align: :center
       end
       pdf.text 'находился в __________________________________________________________________________________________________'
       pdf.font_size 7 do
@@ -260,7 +260,7 @@ pdf.text 'Работодателю _____________________________________________
 
       pdf.move_down 4
 
-      pdf.text 'Первый проректор по учебной работе           __________________________        ______________________________'
+      pdf.text 'Директор ВШПМ                                                      __________________________        ______________________________'
       pdf.font_size 7 do
         pdf.indent 270 do
           pdf.text 'подпись                                                          фамилия, имя, отчество'
