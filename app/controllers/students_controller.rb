@@ -133,7 +133,8 @@ class StudentsController < ApplicationController
   def sberbank
     respond_to do |format|
       format.xml do
-        render xml: @students.valid_for_today.where(admission_year: 2016).my_filter(course: 1).to_sberbank
+        render xml: @students.valid_for_today.where(id: 27831).to_sberbank
+        # render xml: @students.valid_for_today.where(admission_year: 2016).my_filter(course: 1).to_sberbank
       end
     end
   end
