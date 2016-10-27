@@ -48,6 +48,9 @@ class Ability
 
       if user.is?(:ciot)
         can :manage, :ciot
+        can :index, :groups
+        can :read, Group
+        can :work, :all_faculties
       end
 
       if user.is?(:library)
@@ -398,5 +401,8 @@ class Ability
   def sekretar_gek(user)
     can :manage, Study::Vkr
     can :manage, Study::VkrMaterial
+    can :index, :groups
+    can :manage, Group
+    can :work, :all_faculties
   end
 end

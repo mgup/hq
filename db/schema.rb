@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160722081759) do
+ActiveRecord::Schema.define(version: 20161010070116) do
 
   create_table "1", id: false, force: :cascade do |t|
     t.integer "id",         limit: 4
@@ -1437,17 +1437,20 @@ ActiveRecord::Schema.define(version: 20160722081759) do
   add_index "event_date_claim", ["group_id"], name: "index_event_date_claim_on_group_id", using: :btree
 
   create_table "exam", primary_key: "exam_id", force: :cascade do |t|
-    t.integer "exam_subject",       limit: 4,                 null: false
-    t.integer "exam_type",          limit: 4,                 null: false
-    t.integer "exam_weight",        limit: 4, default: 50
+    t.integer "exam_subject",       limit: 4,                     null: false
+    t.integer "exam_type",          limit: 4,                     null: false
+    t.integer "exam_weight",        limit: 4,     default: 50
     t.date    "exam_date"
     t.integer "exam_parent",        limit: 4
     t.integer "exam_student",       limit: 4
     t.integer "exam_student_group", limit: 4
     t.integer "exam_group",         limit: 4
     t.integer "exam_repeat",        limit: 4
-    t.boolean "exam_filled",        limit: 1, default: false
-    t.integer "exam_closed",        limit: 4, default: 0,     null: false
+    t.boolean "exam_filled",        limit: 1,     default: false
+    t.integer "exam_closed",        limit: 4,     default: 0,     null: false
+    t.string  "exam_leader",        limit: 255
+    t.text    "exam_commission",    limit: 65535
+    t.integer "cafedra",            limit: 4
   end
 
   add_index "exam", ["exam_subject"], name: "exam_subject", using: :btree
@@ -1460,6 +1463,13 @@ ActiveRecord::Schema.define(version: 20160722081759) do
 
   add_index "exam_student", ["exam_student_exam"], name: "exam_student_exam", using: :btree
   add_index "exam_student", ["exam_student_student_group"], name: "exam_student_student_group", using: :btree
+
+  create_table "exam_users", force: :cascade do |t|
+    t.integer "exam_id", limit: 4
+    t.integer "user_id", limit: 4
+    t.text    "science", limit: 65535
+    t.boolean "head",    limit: 1
+  end
 
   create_table "finance_discount", primary_key: "finance_discount_id", force: :cascade do |t|
     t.integer "finance_discount_type",          limit: 4,                             null: false

@@ -25,7 +25,16 @@ class Study::RepeatsController < ApplicationController
     end
   end
 
+  def repeat
+    respond_to do |format|
+      format.pdf
+    end
+  end
+
   def resource_params
-    params.fetch(:study_repeat, {}).permit(:exam_date, :exam_repeat, student_ids: [])
+    params.fetch(:study_repeat, {}).permit(:exam_date, :exam_repeat, :exam_leader,  :exam_commission, :cafedra, student_ids: [],
+                          commission_teachers_attributes: [:id, :user_id, :head, :science, :_destroy],
+                          commission_head_attributes: [:id, :user_id, :head, :science, :_destroy],
+                          )
   end
 end

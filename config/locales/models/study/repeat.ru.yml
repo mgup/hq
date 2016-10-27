@@ -10,3 +10,6 @@ ru:
         type: 'тип ведомости'
         exam_repeat: 'тип ведомости'
         exam_weight: 'вес'
+        exam_leader: 'председатель комиссии'
+        exam_commission: 'члены комиссии'
+        cafedra: 'кафедра'

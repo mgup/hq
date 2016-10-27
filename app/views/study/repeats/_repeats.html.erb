@@ -16,10 +16,18 @@
     <dd>
       <ul>
         <li style="list-style-type: none;">
-          <%= link_to print_study_discipline_exam_path(@discipline, repeat),
-                      class: 'btn btn-xs btn-default',
-                      title: 'Распечатать ведомость' do %>
-            Распечатать <span class="glyphicons print"></span>
+          <% if [2,3,4].include? repeat.type %>
+            <%= link_to protocol_study_discipline_exam_repeat_path(@discipline, @exam, repeat),
+                        class: 'btn btn-xs btn-default',
+                        title: 'Распечатать протокол' do %>
+              Распечатать протокол <span class="glyphicons print"></span>
+            <% end %>
+          <% else %>
+              <%= link_to print_study_discipline_exam_path(@discipline, repeat),
+                          class: 'btn btn-xs btn-default',
+                          title: 'Распечатать ведомость' do %>
+                Распечатать ведомость <span class="glyphicons print"></span>
+              <% end %>
           <% end %>
 
           <%= link_to study_discipline_exam_repeat_path(@discipline, @exam, repeat),

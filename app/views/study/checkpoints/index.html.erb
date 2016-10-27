@@ -32,7 +32,8 @@
   <span class='glyphicon glyphicon-print'></span> Студенты
 <% end %>
 
-<%= link_to study_group_discipline_path(@discipline.group, @discipline), class: 'btn btn-sm btn-info pull-right navigation_trip hidden-print',
+<%= link_to study_group_discipline_path(@discipline.group, @discipline,
+                                        year: @discipline.year, term: @discipline.semester), class: 'btn btn-sm btn-info pull-right navigation_trip hidden-print',
             id: 'show_progress', data: { input: '#show_progress',
             content: 'Вы можете перейти на страницу с успеваемостью по этой дисциплине.',
             position: 'w'} do %>

@@ -1,0 +1,27 @@
+<%= f.fields_for :commission_teachers do |sub_f| %>
+  <%= sub_f.hidden_field :head, value: false %>
+
+  <div class="form-group">
+      <div class="col-sm-1">
+          <span class="glyphicon glyphicon-user" style="font-size: 1.5em;"></span>
+      </div>
+      <label class="col-sm-5">Член комисии</label>
+      <div class="col-sm-1 pull-right">
+          <%= sub_f.link_to_remove '<span class="glyphicons remove_2"></span>'.html_safe %>
+      </div>
+
+      <div>
+          <%= sub_f.text_field :science, class: 'form-control', placeholder: 'Степень, звание (в сокращении)' %>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div>
+          <%= sub_f.select :user_id,
+                           options_from_collection_for_select(
+                             User.from_subdepartment(Department.academic.order(:name).first.department_id.to_s), :id, :full_name
+                           ), {}, class: 'form-control ajax-teacher' %>
+      </div>
+  </div>
+
+<% end %>

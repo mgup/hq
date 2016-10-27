@@ -126,7 +126,7 @@ class Student < ActiveRecord::Base
                                                   self::STATUS_TRANSFERRED_DEBTOR,
                                                   self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
 
-  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR, self::STATUS_POSTGRADUATE]) }
+  scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR]) }
 
   scope :for_vkr, -> {
     where(student_group_status: [self::STATUS_COMPLETE, self:STATUS_GRADUATE]).
@@ -286,7 +286,7 @@ LIMIT 1 ")
 
   # Факультет, на котором обучается студент.
   def faculty
-    group.speciality.faculty
+    group.speciality.faculty if group
   end
 
   # нужно найти все valid? и заменить
@@ -386,6 +386,10 @@ LIMIT 1 ")
       pass &&= (mark ? mark.mark >= checkpoint.min : false)
     end
     pass
+  end
+
+  def target?
+    (entrant && entrant.packed_application.competitive_group_target_item_id.present?)
   end
 
   def discipline_marks(discipline)
@@ -536,13 +540,12 @@ LIMIT 1 ")
           xml.parent.namespace = nil
           xml.fileSender '028'
           xml.version '1.1.3'
-          # 1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40
-          xml.recordCount self.all.find_all { |s| s.group.speciality.master? && s.last_status_order && [16].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 3, 1) && s.last_status_order.order_signing <= Date.new(2016, 8, 28) }.length
+          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 6, 30) && s.last_status_order.order_signing <= Date.new(2016, 9, 30) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
           # убрать find_all
-          self.all.find_all { |s| s.group.speciality.master? && s.last_status_order && [16].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 3, 1) && s.last_status_order.order_signing <= Date.new(2016, 8, 28) }.each_with_index do |student, index|
+          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 6, 30) && s.last_status_order.order_signing <= Date.new(2016, 9, 30) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
@@ -668,6 +671,7 @@ LIMIT 1 ")
                   РасчетныйСчетОрганизации: '',
                   ИдПервичногоДокумента: '', НомерРеестра: '') do
         xml.ОткрытиеСчетов do
+          # self.all.find_all { |s| s.last_status_order && s.last_status_order.order_signing >= Date.new(2016, 8, 24) }.each_with_index do |student, index|
           self.all.each_with_index do |student, index|
             xml.Сотрудник(Нпп: "#{index+1}") do
               xml.Фамилия student.last_name

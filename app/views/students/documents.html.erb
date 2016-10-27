@@ -5,7 +5,7 @@
 </div>
 
 <div class="row">
-  <% if @student.is_valid? %>
+  <% if @student.is_valid? || @student.student_group_status == Student::STATUS_SABBATICAL %>
   <div class="thumbnail col-lg-5">
     <div class="caption">
       <h3>Справка</h3>

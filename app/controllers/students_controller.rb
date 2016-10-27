@@ -69,7 +69,7 @@ class StudentsController < ApplicationController
     end
   end
 
-  def reference
+  def reference_new
     @student = Student.find(params[:id])
     # raise @student.person.attributes.inspect
     @reference = Document::Doc.create document_type: params[:document_doc][:document_type],
@@ -133,13 +133,22 @@ class StudentsController < ApplicationController
   def sberbank
     respond_to do |format|
       format.xml do
-        render xml: @students.valid_for_today.my_filter(course: 1).to_sberbank
+        render xml: @students.valid_for_today.where(id: 27831).to_sberbank
+        # render xml: @students.valid_for_today.where(admission_year: 2016).my_filter(course: 1).to_sberbank
       end
     end
   end
 
   def soccard_mistakes
     @students = @students.valid_for_today.where('student_group_group NOT IN (430,434,435,436)').my_filter(form: 101)
+  end
+
+  def list_for_politeh
+    # @students = Student.where(student_group_status: 103)
+    @students = Student.valid_for_today
+    respond_to do |format|
+      format.pdf
+    end
   end
 
   private

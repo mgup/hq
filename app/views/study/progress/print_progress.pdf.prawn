@@ -2,7 +2,7 @@
                         28.34645669291339, 56.692913386],
                filename: "Успеваемость #{@group.name} на #{l Date.today}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
-  render 'pdf/header', pdf: pdf, title: "Ведомость контроля успеваемости"
+  render 'pdf/new_header', pdf: pdf, title: "Ведомость контроля успеваемости"
 
   if params[:discipline]
     y_pos = 558
