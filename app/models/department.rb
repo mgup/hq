@@ -94,13 +94,13 @@ class Department < ActiveRecord::Base
   def soccard_name
     case id
     when IPIT
-      '02801'
+      '23608'
     when IIDIZH
-      '02802'
+      '23609'
     when IKIM
-      '02803'
+      '23610'
     when IGRIK
-      '02804'
+      '23611'
     end
   end
 end

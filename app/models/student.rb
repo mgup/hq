@@ -538,14 +538,14 @@ LIMIT 1 ")
 
         xml.fileInfo do
           xml.parent.namespace = nil
-          xml.fileSender '028'
+          xml.fileSender '236'
           xml.version '1.1.3'
-          xml.recordCount self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 6, 30) && s.last_status_order.order_signing <= Date.new(2016, 9, 30) }.length
+          xml.recordCount self.all.find_all { |s| 3 == s.group.speciality.soccard_education_program && s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 6, 30) && s.last_status_order.order_signing <= Date.new(2016, 10, 30) }.length
         end
         xml.recordList do
           xml.parent.namespace = nil
           # убрать find_all
-          self.all.find_all { |s| s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 6, 30) && s.last_status_order.order_signing <= Date.new(2016, 9, 30) }.each_with_index do |student, index|
+          self.all.find_all { |s| 3 == s.group.speciality.soccard_education_program && s.last_status_order && [1,2,3,16,17,25,10,46,41,11,26,24,28,14,15,20,42,40].include?(s.last_status_order.order_template) && s.last_status_order.order_signing >= Date.new(2016, 6, 30) && s.last_status_order.order_signing <= Date.new(2016, 10, 30) }.each_with_index do |student, index|
             xml.record do
               xml.recordId index+1
               xml.clientInfo do
@@ -571,7 +571,7 @@ LIMIT 1 ")
                 end
               end
               xml.universityInfo do
-                xml.universityCode '028'
+                xml.universityCode '236'
                 xml.facultyCode student.faculty.soccard_name
                 xml.facultyName student.faculty.name
                 xml.status do
