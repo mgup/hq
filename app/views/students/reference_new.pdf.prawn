@@ -102,7 +102,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         pdf.move_down 12
         finish = @reference.date + 1.month
         # pdf.text "<b>Действительна по</b> «<u>#{l finish, format: '%d'}</u>» <u>#{l finish, format: '%B'}</u> #{l finish, format: '%Y'}г.", inline_format: true
-        pdf.text "<b>Действительна по</b> «<u>31</u>» <u>января</u> 2017г.", inline_format: true
+        pdf.text "<b>Действительна по</b> «<u>31</u>» <u>августа</u> 2017г.", inline_format: true
 
         if params[:addMamiText]
           pdf.move_down 10
