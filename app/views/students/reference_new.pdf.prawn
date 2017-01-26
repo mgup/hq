@@ -50,7 +50,8 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       institute[0]+='а'
 
       tax = params[:addTax] ? " #{@student.budget? ? '<u>бюджетной</u>' : '<u>договорной</u>'} основы" : ''
-      license = params[:addLicense] ? ', осуществляющем образовательную деятельность на основании <u>Лицензии, серия ААА №001773, выданной Федеральной службой по надзору в сфере образования и науки, регистрационный №1704 от 11 августа 2011 г., и Свидетельства о государственной аккредитации, серия ВВ №001559, выданного Федеральной службой по надзору в сфере образования и науки на срок по 19 марта 2018 г., регистрационный №1542 от 19 марта 2012 г</u>' : ''
+      pensionniy = params[:addStrange] ? ' по основной образовательной программе ' : ''
+      license = params[:addLicense] ? ', осуществляющем образовательную деятельность на основании <u>Лицензии, серия 90Л01 №0009465, выданной Федеральной службой по надзору в сфере образования и науки, регистрационный №2398 от 22 сентября 2016 г., и Свидетельства о государственной аккредитации, серия 90А01 №000241, выданного Федеральной службой по надзору в сфере образования и науки на срок по 19 марта 2018 г., регистрационный №2292 от 11 октября 2016 г</u>' : ''
       last_year = @student.last_status_order.signing_date.year
       study_year = (last_year == Study::Discipline::CURRENT_STUDY_YEAR + 1) ? (Study::Discipline::CURRENT_STUDY_YEAR + 1) : Study::Discipline::CURRENT_STUDY_YEAR
       years = @student.is_valid? ? "#{study_year}/#{study_year+1}" : (@student.last_status_order.signing_date.month > 8 ? "#{last_year}/#{last_year+1}" : "#{last_year-1}/#{last_year}")
@@ -58,7 +59,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
 
       pdf.font_size 12 do
         pdf.move_down 20
-        pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} #{(@student.is_valid? || @student.student_group_status == Student::STATUS_SABBATICAL) ? 'является' : (@student.person.male? ? 'являлся' : 'являлась')} обучающимся <u>#{@student.group.course}</u> курса#{tax} <u>#{study_form_name(@student.group.form, :rp)}</u> формы обучения в #{years} учебном году по #{@student.group.speciality.name_tvor} <u>#{@student.group.speciality.code}</u> — «<u>#{@student.group.speciality.name}»</u>#{' ' +institute.join(' ')} #{(@student.is_valid? || @student.student_group_status == Student::STATUS_SABBATICAL) ? 'Московского политехнического университета Высшей школы печати и медиаиндустрии' : 'Московского государственного университета печати имени Ивана Федорова'}#{license}.", inline_format: true, align: :justify, leading: 6
+        pdf.text "Выдана <u>#{@student.person.full_name(:dp)}</u>#{birth} о том, что #{@student.sex} #{(@student.is_valid? || @student.student_group_status == Student::STATUS_SABBATICAL) ? 'является' : (@student.person.male? ? 'являлся' : 'являлась')} обучающимся <u>#{@student.group.course}</u> курса#{tax} <u>#{study_form_name(@student.group.form, :rp)}</u> формы обучения в #{years} учебном году #{pensionniy}по #{@student.group.speciality.name_tvor} <u>#{@student.group.speciality.code}</u> — «<u>#{@student.group.speciality.name}»</u>#{' ' +institute.join(' ')} #{(@student.is_valid? || @student.student_group_status == Student::STATUS_SABBATICAL) ? 'Московского политехнического университета Высшей школы печати и медиаиндустрии' : 'Московского государственного университета печати имени Ивана Федорова'}#{license}.", inline_format: true, align: :justify, leading: 6
       end
     end
     pdf.font_size 12 do
@@ -101,7 +102,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         pdf.move_down 12
         finish = @reference.date + 1.month
         # pdf.text "<b>Действительна по</b> «<u>#{l finish, format: '%d'}</u>» <u>#{l finish, format: '%B'}</u> #{l finish, format: '%Y'}г.", inline_format: true
-        pdf.text "<b>Действительна по</b> «<u>31</u>» <u>января</u> 2017г.", inline_format: true
+        pdf.text "<b>Действительна по</b> «<u>31</u>» <u>августа</u> 2017г.", inline_format: true
 
         if params[:addMamiText]
           pdf.move_down 10
@@ -113,6 +114,9 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
         if '1' == params[:sign]
           # data = [['Директор Высшей школы печати и медиаиндустрии', 'Антипов К. В.'],
           data = [['Начальник управления контингента образовательных программ', 'Горина Ю. Е.'],
+                  ['Начальник студенческого отдела кадров', 'Бутарева Л. Л.']]
+        elsif '7' == params[:sign]
+          data = [['Директор Высшей школы печати и медиаиндустрии', 'Антипов К. В.'],
                   ['Начальник студенческого отдела кадров', 'Бутарева Л. Л.']]
         else
           positions = []
