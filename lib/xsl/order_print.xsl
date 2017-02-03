@@ -113,7 +113,7 @@
                     <fo:block font="12pt PT Serif">
                       <xsl:choose>
                         <xsl:when test="not(./sign/date)">
-                          от &laquo;______&raquo; ______________ 2016 г.
+                          от &laquo;______&raquo; ______________ 2017 г.
                         </xsl:when>
                         <xsl:otherwise>
                           от &laquo;<xsl:value-of select="substring(./sign/date, 9, 2)" />&raquo;
@@ -326,7 +326,7 @@
       <xsl:apply-templates select="./name" />
     </fo:block>
     <fo:block font="12pt PT Serif">
-      &laquo;______&raquo; _______________ 2016 г.
+      &laquo;______&raquo; _______________ 2017 г.
     </fo:block>
 
   </xsl:template>
@@ -423,7 +423,7 @@
                                       <fo:block font="12pt PT Serif">
                                           <xsl:choose>
                                               <xsl:when test="not(/order/sign/date)">
-                                                  от &laquo;______&raquo; ______________ 2016 г.
+                                                  от &laquo;______&raquo; ______________ 2017 г.
                                               </xsl:when>
                                               <xsl:otherwise>
                                                   от &laquo;<xsl:value-of select="substring(/order/sign/date, 9, 2)" />&raquo;

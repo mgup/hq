@@ -70,9 +70,14 @@ class Study::MarksController < ApplicationController
         (1..sheet.last_row).each do |row|
           last_name  = sheet.cell(row,'A')
           first_name = sheet.cell(row,'B')
-          patronym   = sheet.cell(row,'C')
-          result     = sheet.cell(row,'D').to_i
-          student = @discipline.group.students.my_filter(name: "#{last_name} #{first_name} #{patronym}").first
+          # if sheet.cell(row,'C').to_i
+            result     = sheet.cell(row,'C').to_i
+          # else
+          #   patronym   = sheet.cell(row,'C')
+          #   result     = sheet.cell(row,'D').to_i
+          # end
+          # student = @discipline.group.students.my_filter(name: "#{last_name} #{first_name} #{patronym}").first
+          student = @discipline.group.students.my_filter(name: "#{last_name} #{first_name}").first
           if student && sheet.cell(row,'D') && result >= 0 && result <= @checkpoint.max
             retake = Study::Mark.by_checkpoint(@checkpoint).by_student(student).length > 0
             mark = Study::Mark.create student: student, checkpoint: @checkpoint,

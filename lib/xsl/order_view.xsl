@@ -22,7 +22,7 @@
             <td style="border: none; width: 34%;">
               <xsl:choose>
                 <xsl:when test="not(./sign/date)">
-                  от &laquo;___&raquo; _______________ 2016 г.
+                  от &laquo;___&raquo; _______________ 2017 г.
                 </xsl:when>
                 <xsl:otherwise>
                   от &laquo;<xsl:value-of select="substring(./sign/date, 9, 2)" />&raquo;
@@ -275,7 +275,7 @@
 	  </p>
 	  <p><xsl:apply-templates select="./name" /></p>
 		<div style="margin-top: 15px; margin-bottom: 10px;">
-          «_____» _________________ 2016 г.
+          «_____» _________________ 2017 г.
          </div>
 	  <p> </p>
   </xsl:template>
