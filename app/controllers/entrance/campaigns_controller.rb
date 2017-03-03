@@ -520,7 +520,7 @@ class Entrance::CampaignsController < ApplicationController
           xml.PackageData do
             xml.Applications do
               @applications.each do |application|
-                xml << application.to_fis.xpath('/Application').to_xml.to_str
+                # xml << application.to_fis.xpath('/Application').to_xml.to_str
               end
 
               # @applications.find_all { |a| a.order.blank? || a.order.signing_date.blank? }.each do |application|
