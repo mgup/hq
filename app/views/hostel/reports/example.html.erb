@@ -12,7 +12,7 @@
 <%= form_tag nil, method: :get, class: 'filter-block', id: 'curator-report-example' do |f| %>
   <div class='row'>
     <div class='col col-sm-offset-4 col-sm-6'>
-      <%= hidden_field_tag :empty, params[:empty],  class: 'hidden-pill-values' %>
+      <%= hidden_field_tag :empty, params[:empty],  class: 'hidden-pill-values-no-change' %>
       <%= pill_tabs('empty', [[1, 'Без нарушений'], [2, 'С нарушениями']], 'empty') %>
     </div>
   </div>
