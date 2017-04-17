@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010070116) do
+ActiveRecord::Schema.define(version: 20170417083415) do
 
   create_table "1", id: false, force: :cascade do |t|
     t.integer "id",         limit: 4
@@ -592,53 +592,6 @@ ActiveRecord::Schema.define(version: 20161010070116) do
     t.string  "discount_type_commentary", limit: 200
   end
 
-  create_table "dmDoc", id: false, force: :cascade do |t|
-    t.integer  "Код",                limit: 4,        default: 0,     null: false
-    t.integer  "КодСтудента",        limit: 4,        default: 0,     null: false
-    t.integer  "КодГруппы",          limit: 4,                        null: false
-    t.integer  "ТипДокумента",       limit: 4,        default: 0,     null: false
-    t.string   "ДокОбр",             limit: 45,       default: "",    null: false
-    t.integer  "ГодДокОбр",          limit: 4,        default: 0,     null: false
-    t.string   "Поступил",           limit: 0
-    t.string   "Окончил",            limit: 0
-    t.integer  "КодСпециальности",   limit: 4,        default: 0,     null: false
-    t.string   "ТемаДиплома",        limit: 63
-    t.string   "НомерДиплома",       limit: 0
-    t.datetime "ДатаРешения"
-    t.binary   "ПДатаРешения",       limit: 0
-    t.datetime "ДатаВыдачи"
-    t.binary   "ПДатаВыдачи",        limit: 0
-    t.string   "РегНомер",           limit: 0
-    t.binary   "ПРегНомер",          limit: 0
-    t.text     "Специальность",      limit: 16777215
-    t.string   "Квалификация",       limit: 8
-    t.string   "Срок",               limit: 6
-    t.string   "Специализация",      limit: 0
-    t.text     "ФИО",                limit: 16777215
-    t.text     "ФИО_Дат",            limit: 16777215
-    t.date     "Дата_Рождения"
-    t.string   "Место_Рождения",     limit: 0
-    t.boolean  "Пол",                limit: 1,        default: false, null: false
-    t.string   "Примечание",         limit: 0
-    t.string   "ОценкаДиплом",       limit: 0
-    t.string   "НедельДиплом",       limit: 1,        default: "",    null: false
-    t.integer  "ZEДиплом",           limit: 4,        default: 0,     null: false
-    t.binary   "СОтличием",          limit: 0
-    t.string   "Непроверено",        limit: 50,       default: "",    null: false
-    t.integer  "АудЧасов",           limit: 4,        default: 0,     null: false
-    t.string   "SДокОбр",            limit: 0
-    t.string   "NДокОбр",            limit: 0
-    t.string   "Уровень",            limit: 0
-    t.string   "СпецЗвание",         limit: 0
-    t.string   "Протокол",           limit: 0
-    t.string   "ID",                 limit: 0
-    t.integer  "ProfessionalStatus", limit: 4,        default: 0,     null: false
-    t.datetime "ДатаНачала",                                          null: false
-    t.datetime "ДатаОкончания",                                       null: false
-    t.integer  "Дубликат",           limit: 4,        default: 0,     null: false
-    t.integer  "Формула",            limit: 4,        default: 0,     null: false
-  end
-
   create_table "dmSpecialities", id: false, force: :cascade do |t|
     t.integer "Код",           limit: 4
     t.string  "Срок_Обучения", limit: 50
@@ -669,6 +622,53 @@ ActiveRecord::Schema.define(version: 20161010070116) do
   create_table "dmTypeEdDoc", id: false, force: :cascade do |t|
     t.integer "Код",      limit: 1
     t.string  "Название", limit: 100
+  end
+
+  create_table "dmdoc", id: false, force: :cascade do |t|
+    t.integer  "Код",                limit: 4,          default: 0,     null: false
+    t.integer  "КодСтудента",        limit: 4,          default: 0,     null: false
+    t.integer  "КодГруппы",          limit: 4,                          null: false
+    t.integer  "ТипДокумента",       limit: 4,          default: 0,     null: false
+    t.string   "ДокОбр",             limit: 45,         default: "",    null: false
+    t.integer  "ГодДокОбр",          limit: 4,          default: 0,     null: false
+    t.string   "Поступил",           limit: 0
+    t.string   "Окончил",            limit: 0
+    t.integer  "КодСпециальности",   limit: 4,          default: 0,     null: false
+    t.string   "ТемаДиплома",        limit: 63
+    t.string   "НомерДиплома",       limit: 0
+    t.datetime "ДатаРешения"
+    t.binary   "ПДатаРешения",       limit: 0
+    t.datetime "ДатаВыдачи"
+    t.binary   "ПДатаВыдачи",        limit: 0
+    t.string   "РегНомер",           limit: 0
+    t.binary   "ПРегНомер",          limit: 0
+    t.text     "Специальность",      limit: 4294967295
+    t.string   "Квалификация",       limit: 8
+    t.string   "Срок",               limit: 6
+    t.string   "Специализация",      limit: 0
+    t.text     "ФИО",                limit: 16777215
+    t.text     "ФИО_Дат",            limit: 16777215
+    t.date     "Дата_Рождения"
+    t.string   "Место_Рождения",     limit: 0
+    t.boolean  "Пол",                limit: 1,          default: false, null: false
+    t.string   "Примечание",         limit: 0
+    t.string   "ОценкаДиплом",       limit: 0
+    t.string   "НедельДиплом",       limit: 1,          default: "",    null: false
+    t.integer  "ZEДиплом",           limit: 4,          default: 0,     null: false
+    t.binary   "СОтличием",          limit: 0
+    t.string   "Непроверено",        limit: 50,         default: "",    null: false
+    t.integer  "АудЧасов",           limit: 4,          default: 0,     null: false
+    t.string   "SДокОбр",            limit: 0
+    t.string   "NДокОбр",            limit: 0
+    t.string   "Уровень",            limit: 0
+    t.string   "СпецЗвание",         limit: 0
+    t.string   "Протокол",           limit: 0
+    t.string   "ID",                 limit: 0
+    t.integer  "ProfessionalStatus", limit: 4,          default: 0,     null: false
+    t.datetime "ДатаНачала",                                            null: false
+    t.datetime "ДатаОкончания",                                         null: false
+    t.integer  "Дубликат",           limit: 4,          default: 0,     null: false
+    t.integer  "Формула",            limit: 4,          default: 0,     null: false
   end
 
   create_table "document", primary_key: "document_id", force: :cascade do |t|
@@ -1455,6 +1455,89 @@ ActiveRecord::Schema.define(version: 20161010070116) do
 
   add_index "exam", ["exam_subject"], name: "exam_subject", using: :btree
 
+  create_table "exam_formreader", primary_key: "exam_formreader_id", force: :cascade do |t|
+    t.boolean "exam_formreader_parsed", limit: 1,        default: false, null: false
+    t.string  "DocNumber",              limit: 16
+    t.string  "S1Id",                   limit: 16
+    t.float   "S1Result",               limit: 53
+    t.string  "S2Id",                   limit: 16
+    t.float   "S2Result",               limit: 53
+    t.string  "S3Id",                   limit: 16
+    t.float   "S3Result",               limit: 53
+    t.string  "S4Id",                   limit: 16
+    t.float   "S4Result",               limit: 53
+    t.string  "S5Id",                   limit: 16
+    t.float   "S5Result",               limit: 53
+    t.string  "S6Id",                   limit: 16
+    t.float   "S6Result",               limit: 53
+    t.string  "S7Id",                   limit: 16
+    t.float   "S7Result",               limit: 53
+    t.string  "S8Id",                   limit: 16
+    t.float   "S8Result",               limit: 53
+    t.string  "S9Id",                   limit: 16
+    t.float   "S9Result",               limit: 53
+    t.string  "S10Id",                  limit: 16
+    t.float   "S10Result",              limit: 53
+    t.string  "S11Id",                  limit: 16
+    t.float   "S11Result",              limit: 53
+    t.string  "S12Id",                  limit: 16
+    t.float   "S12Result",              limit: 53
+    t.string  "S13Id",                  limit: 16
+    t.float   "S13Result",              limit: 53
+    t.string  "S14Id",                  limit: 16
+    t.float   "S14Result",              limit: 53
+    t.string  "S15Id",                  limit: 16
+    t.float   "S15Result",              limit: 53
+    t.string  "S16Id",                  limit: 16
+    t.float   "S16Result",              limit: 53
+    t.string  "S17Id",                  limit: 16
+    t.float   "S17Result",              limit: 53
+    t.string  "S18Id",                  limit: 16
+    t.float   "S18Result",              limit: 53
+    t.string  "S19Id",                  limit: 16
+    t.float   "S19Result",              limit: 53
+    t.string  "S20Id",                  limit: 16
+    t.float   "S20Result",              limit: 53
+    t.string  "S21Id",                  limit: 16
+    t.float   "S21Result",              limit: 53
+    t.string  "S22Id",                  limit: 16
+    t.float   "S22Result",              limit: 53
+    t.string  "S23Id",                  limit: 16
+    t.float   "S23Result",              limit: 53
+    t.string  "S24Id",                  limit: 16
+    t.float   "S24Result",              limit: 53
+    t.string  "S25Id",                  limit: 16
+    t.float   "S25Result",              limit: 53
+    t.string  "S26Id",                  limit: 16
+    t.float   "S26Result",              limit: 53
+    t.string  "S27Id",                  limit: 16
+    t.float   "S27Result",              limit: 53
+    t.string  "S28Id",                  limit: 16
+    t.float   "S28Result",              limit: 53
+    t.string  "S29Id",                  limit: 16
+    t.float   "S29Result",              limit: 53
+    t.string  "S30Id",                  limit: 16
+    t.float   "S30Result",              limit: 53
+    t.string  "S31Id",                  limit: 16
+    t.float   "S31Result",              limit: 53
+    t.string  "S32Id",                  limit: 16
+    t.float   "S32Result",              limit: 53
+    t.string  "S33Id",                  limit: 16
+    t.float   "S33Result",              limit: 53
+    t.string  "S34Id",                  limit: 16
+    t.float   "S34Result",              limit: 53
+    t.string  "S35Id",                  limit: 16
+    t.float   "S35Result",              limit: 53
+    t.string  "S36Id",                  limit: 16
+    t.float   "S36Result",              limit: 53
+    t.binary  "ImageData",              limit: 16777215
+    t.string  "Created",                limit: 32
+    t.string  "Recognized",             limit: 32
+    t.string  "Verified",               limit: 32
+  end
+
+  add_index "exam_formreader", ["DocNumber"], name: "DocNumber", using: :btree
+
   create_table "exam_student", primary_key: "exam_student_id", force: :cascade do |t|
     t.integer "exam_student_exam",          limit: 4, null: false
     t.integer "exam_student_student",       limit: 4
@@ -1674,6 +1757,22 @@ ActiveRecord::Schema.define(version: 20161010070116) do
 
   create_table "institution_achievements", force: :cascade do |t|
     t.string "name", limit: 255
+  end
+
+  create_table "interview201704s", force: :cascade do |t|
+    t.boolean  "question1",  limit: 1
+    t.boolean  "question4",  limit: 1
+    t.boolean  "question6",  limit: 1
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.text     "question2",  limit: 65535
+    t.text     "question3",  limit: 65535
+    t.text     "question5",  limit: 65535
+    t.text     "question7",  limit: 65535
+    t.text     "question8",  limit: 65535
+    t.string   "ip_address", limit: 255
+    t.string   "department", limit: 255
+    t.string   "employee",   limit: 255
   end
 
   create_table "log", primary_key: "log_id", force: :cascade do |t|
@@ -2693,7 +2792,7 @@ ActiveRecord::Schema.define(version: 20161010070116) do
 
   add_index "visitor_event_date", ["event_date_id"], name: "index_visitor_event_date_on_event_date_id", using: :btree
 
-  create_table "Все_Группы", id: false, force: :cascade do |t|
+  create_table "все_группы", id: false, force: :cascade do |t|
     t.integer "Код",               limit: 4,                default: 0,  null: false
     t.string  "Название",          limit: 62
     t.integer "Код_Факультета",    limit: 4,                             null: false
@@ -2708,52 +2807,52 @@ ActiveRecord::Schema.define(version: 20161010070116) do
     t.string  "ПредседательГАК",   limit: 0,                default: "", null: false
   end
 
-  create_table "ИмпортdmDoc", id: false, force: :cascade do |t|
-    t.integer  "Код",                limit: 4,        default: 0,     null: false
-    t.integer  "КодСтудента",        limit: 4,        default: 0,     null: false
-    t.integer  "КодГруппы",          limit: 4,                        null: false
-    t.integer  "ТипДокумента",       limit: 4,        default: 0,     null: false
-    t.string   "ДокОбр",             limit: 45,       default: "",    null: false
-    t.integer  "ГодДокОбр",          limit: 4,        default: 0,     null: false
-    t.string   "Поступил",           limit: 4,        default: "",    null: false
-    t.string   "Окончил",            limit: 4,        default: "",    null: false
-    t.integer  "КодСпециальности",   limit: 4,        default: 0,     null: false
+  create_table "импортdmdoc", id: false, force: :cascade do |t|
+    t.integer  "Код",                limit: 4,          default: 0,     null: false
+    t.integer  "КодСтудента",        limit: 4,          default: 0,     null: false
+    t.integer  "КодГруппы",          limit: 4,                          null: false
+    t.integer  "ТипДокумента",       limit: 4,          default: 0,     null: false
+    t.string   "ДокОбр",             limit: 45,         default: "",    null: false
+    t.integer  "ГодДокОбр",          limit: 4,          default: 0,     null: false
+    t.string   "Поступил",           limit: 4,          default: "",    null: false
+    t.string   "Окончил",            limit: 4,          default: "",    null: false
+    t.integer  "КодСпециальности",   limit: 4,          default: 0,     null: false
     t.string   "ТемаДиплома",        limit: 63
     t.string   "НомерДиплома",       limit: 0
-    t.datetime "ДатаРешения",                                         null: false
-    t.integer  "ПДатаРешения",       limit: 4,        default: 0,     null: false
-    t.datetime "ДатаВыдачи",                                          null: false
-    t.integer  "ПДатаВыдачи",        limit: 4,        default: 0,     null: false
+    t.datetime "ДатаРешения",                                           null: false
+    t.integer  "ПДатаРешения",       limit: 4,          default: 0,     null: false
+    t.datetime "ДатаВыдачи",                                            null: false
+    t.integer  "ПДатаВыдачи",        limit: 4,          default: 0,     null: false
     t.string   "РегНомер",           limit: 0
-    t.integer  "ПРегНомер",          limit: 4,        default: 0,     null: false
-    t.text     "Специальность",      limit: 16777215
-    t.string   "Квалификация",       limit: 9,        default: "",    null: false
+    t.integer  "ПРегНомер",          limit: 4,          default: 0,     null: false
+    t.text     "Специальность",      limit: 4294967295
+    t.string   "Квалификация",       limit: 9,          default: "",    null: false
     t.string   "Срок",               limit: 6
     t.string   "Специализация",      limit: 0
     t.text     "ФИО",                limit: 16777215
     t.text     "ФИО_Дат",            limit: 16777215
     t.date     "Дата_Рождения"
     t.string   "Место_Рождения",     limit: 0
-    t.boolean  "Пол",                limit: 1,        default: false, null: false
-    t.text     "Примечание",         limit: 65535,                    null: false
+    t.boolean  "Пол",                limit: 1,          default: false, null: false
+    t.text     "Примечание",         limit: 65535,                      null: false
     t.string   "ОценкаДиплом",       limit: 0
     t.binary   "НедельДиплом",       limit: 0
-    t.integer  "ZEДиплом",           limit: 4,        default: 0,     null: false
+    t.integer  "ZEДиплом",           limit: 4,          default: 0,     null: false
     t.binary   "СОтличием",          limit: 0
-    t.string   "Непроверено",        limit: 50,       default: "",    null: false
-    t.integer  "АудЧасов",           limit: 4,        default: 0,     null: false
+    t.string   "Непроверено",        limit: 50,         default: "",    null: false
+    t.integer  "АудЧасов",           limit: 4,          default: 0,     null: false
     t.string   "SДокОбр",            limit: 0
     t.string   "NДокОбр",            limit: 0
     t.string   "Уровень",            limit: 0
     t.string   "СпецЗвание",         limit: 0
     t.string   "Протокол",           limit: 0
     t.string   "ID",                 limit: 0
-    t.string   "ProfessionalStatus", limit: 5,        default: "",    null: false
-    t.datetime "ДатаНачала",                                          null: false
-    t.datetime "ДатаОкончания",                                       null: false
+    t.string   "ProfessionalStatus", limit: 5,          default: "",    null: false
+    t.datetime "ДатаНачала",                                            null: false
+    t.datetime "ДатаОкончания",                                         null: false
   end
 
-  create_table "ИмпортВсе_Группы", id: false, force: :cascade do |t|
+  create_table "импортвсе_группы", id: false, force: :cascade do |t|
     t.integer "Код",               limit: 4,                default: 0,  null: false
     t.string  "Название",          limit: 62
     t.integer "Код_Факультета",    limit: 4,                             null: false
@@ -2768,24 +2867,24 @@ ActiveRecord::Schema.define(version: 20161010070116) do
     t.string  "ПредседательГАК",   limit: 0,                default: "", null: false
   end
 
-  create_table "ИмпортСпециальности", id: false, force: :cascade do |t|
-    t.integer "Код",           limit: 4,        default: 0,  null: false
-    t.text    "Специальность", limit: 16777215
-    t.string  "Специализация", limit: 0,        default: "", null: false
+  create_table "импортспециальности", id: false, force: :cascade do |t|
+    t.integer "Код",           limit: 4,          default: 0,  null: false
+    t.text    "Специальность", limit: 4294967295
+    t.string  "Специализация", limit: 0,          default: "", null: false
     t.string  "Квалификация",  limit: 9
-    t.string  "Срок_Обучения", limit: 0,        default: "", null: false
-    t.string  "Название",      limit: 0,        default: "", null: false
-    t.string  "Название_Спец", limit: 0,        default: "", null: false
+    t.string  "Срок_Обучения", limit: 0,          default: "", null: false
+    t.string  "Название",      limit: 0,          default: "", null: false
+    t.string  "Название_Спец", limit: 0,          default: "", null: false
   end
 
-  create_table "ИмпортСтудентыОсновныеПоля", id: false, force: :cascade do |t|
-    t.integer "Код",                limit: 4,        default: 0, null: false
-    t.text    "Фамилия",            limit: 16777215
-    t.text    "Имя",                limit: 16777215
-    t.text    "Отчество",           limit: 16777215
+  create_table "импортстудентыосновныеполя", id: false, force: :cascade do |t|
+    t.integer "Код",                limit: 4,          default: 0, null: false
+    t.text    "Фамилия",            limit: 4294967295
+    t.text    "Имя",                limit: 4294967295
+    t.text    "Отчество",           limit: 4294967295
     t.text    "ФИО_Дат",            limit: 16777215
-    t.integer "Статус",             limit: 4,        default: 0, null: false
-    t.integer "Код_Группы",         limit: 4,                    null: false
+    t.integer "Статус",             limit: 4,          default: 0, null: false
+    t.integer "Код_Группы",         limit: 4,                      null: false
     t.string  "Пол",                limit: 0
     t.date    "Дата_Рождения"
     t.text    "Кем_Выдан",          limit: 16777215
@@ -2794,14 +2893,14 @@ ActiveRecord::Schema.define(version: 20161010070116) do
     t.integer "Год_Поступления",    limit: 4
     t.string  "Документ",           limit: 0
     t.string  "ГодВыдачи",          limit: 0
-    t.integer "КодСтудентаДеканат", limit: 4,        default: 0, null: false
-    t.integer "ГодОкончания",       limit: 4,        default: 0, null: false
+    t.integer "КодСтудентаДеканат", limit: 4,          default: 0, null: false
+    t.integer "ГодОкончания",       limit: 4,          default: 0, null: false
     t.string  "Гражданство",        limit: 0
     t.string  "Основания",          limit: 0
     t.string  "ФормаОбучения",      limit: 0
   end
 
-  create_table "ИмпортФакультеты", id: false, force: :cascade do |t|
+  create_table "импортфакультеты", id: false, force: :cascade do |t|
     t.integer "Код",          limit: 4,   default: 0,  null: false
     t.string  "Факультет",    limit: 200,              null: false
     t.string  "Сокращение",   limit: 200,              null: false
@@ -2810,24 +2909,24 @@ ActiveRecord::Schema.define(version: 20161010070116) do
     t.string  "Секретарь",    limit: 0,   default: "", null: false
   end
 
-  create_table "Специальности", id: false, force: :cascade do |t|
-    t.integer "Код",           limit: 4,        default: 0,  null: false
-    t.text    "Специальность", limit: 16777215
-    t.string  "Специализация", limit: 0,        default: "", null: false
+  create_table "специальности", id: false, force: :cascade do |t|
+    t.integer "Код",           limit: 4,          default: 0,  null: false
+    t.text    "Специальность", limit: 4294967295
+    t.string  "Специализация", limit: 0,          default: "", null: false
     t.string  "Квалификация",  limit: 9
-    t.string  "Срок_Обучения", limit: 0,        default: "", null: false
-    t.string  "Название",      limit: 0,        default: "", null: false
-    t.string  "Название_Спец", limit: 0,        default: "", null: false
+    t.string  "Срок_Обучения", limit: 0,          default: "", null: false
+    t.string  "Название",      limit: 0,          default: "", null: false
+    t.string  "Название_Спец", limit: 0,          default: "", null: false
   end
 
-  create_table "СтудентыОсновныеПоля", id: false, force: :cascade do |t|
-    t.integer "Код",                limit: 4,        default: 0, null: false
-    t.text    "Фамилия",            limit: 16777215
-    t.text    "Имя",                limit: 16777215
-    t.text    "Отчество",           limit: 16777215
+  create_table "студентыосновныеполя", id: false, force: :cascade do |t|
+    t.integer "Код",                limit: 4,          default: 0, null: false
+    t.text    "Фамилия",            limit: 4294967295
+    t.text    "Имя",                limit: 4294967295
+    t.text    "Отчество",           limit: 4294967295
     t.text    "ФИО_Дат",            limit: 16777215
-    t.integer "Статус",             limit: 4,        default: 0, null: false
-    t.integer "Код_Группы",         limit: 4,                    null: false
+    t.integer "Статус",             limit: 4,          default: 0, null: false
+    t.integer "Код_Группы",         limit: 4,                      null: false
     t.string  "Пол",                limit: 0
     t.date    "Дата_Рождения"
     t.text    "Кем_Выдан",          limit: 16777215
@@ -2836,14 +2935,14 @@ ActiveRecord::Schema.define(version: 20161010070116) do
     t.integer "Год_Поступления",    limit: 4
     t.string  "Документ",           limit: 0
     t.string  "ГодВыдачи",          limit: 0
-    t.integer "КодСтудентаДеканат", limit: 4,        default: 0, null: false
-    t.integer "ГодОкончания",       limit: 4,        default: 0, null: false
+    t.integer "КодСтудентаДеканат", limit: 4,          default: 0, null: false
+    t.integer "ГодОкончания",       limit: 4,          default: 0, null: false
     t.string  "Гражданство",        limit: 0
     t.string  "Основания",          limit: 0
     t.string  "ФормаОбучения",      limit: 0
   end
 
-  create_table "Факультеты", id: false, force: :cascade do |t|
+  create_table "факультеты", id: false, force: :cascade do |t|
     t.integer "Код",          limit: 4,   default: 0,  null: false
     t.string  "Факультет",    limit: 200,              null: false
     t.string  "Сокращение",   limit: 200,              null: false

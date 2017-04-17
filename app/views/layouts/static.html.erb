@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Информационные системы Московского политеха</title>
+    <%= csrf_meta_tags %>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css">
+    <style>
+      .heading { margin-bottom: 3em; }
+    </style>
+  </head>
+
+  <body>
+    <section class="section">
+      <div class="container">
+        <div class="heading">
+          <h1 class="title">Московский политех</h1>
+          <h2 class="subtitle">
+            <%= @project_title %>
+          </h2>
+        </div>
+
+        <%= yield %>
+      </div>
+    </section>
+  </body>
+</html>

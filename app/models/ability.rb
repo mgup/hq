@@ -8,6 +8,10 @@ class Ability
     cannot :manage, Achievement
     cannot :manage, Rating
 
+    cannot :manage, Interview201704
+    can :create, Interview201704
+    can :thank_you, Interview201704
+
     #can :manage, Student
     #can :manage, :student
     if user.is_a?(Student)

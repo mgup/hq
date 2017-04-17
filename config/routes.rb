@@ -459,6 +459,13 @@ HQ::Application.routes.draw do
   get 'fractals-radial', to: 'fractals#radial'
   get 'test-exception', to: 'dashboard#test_exception'
 
+  resources :interview201704s, path: '2017-04-IT-interviews', 
+            only: [:index, :new, :create] do
+    collection do
+      get :thank_you
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

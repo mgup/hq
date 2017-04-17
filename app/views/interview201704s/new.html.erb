@@ -1,0 +1,118 @@
+<%= form_for @interview201704 do |f| %>
+  <%= f.hidden_field :ip_address %>
+
+  <div class="field">
+    <%= f.label :department, 'Подразделение', 
+                class: 'label' %>
+    <p class="control">
+      <%= f.text_field :department, class: 'input' %>
+    </p>
+  </div>
+
+  <div class="field">
+    <%= f.label :employee, 'Фамилия, имя, отчество', 
+                class: 'label' %>
+    <p class="control">
+      <%= f.text_field :employee, class: 'input' %>
+    </p>
+  </div>
+
+  <div class="field">
+    <%= f.label :question1, 
+                'Используете ли вы в своей работе информационные системы?', 
+                class: 'label' %>
+    <p class="control">
+      <label class="radio">
+        <%= f.radio_button :question1, '1' %>
+        Да
+      </label>
+      <label class="radio">
+        <%= f.radio_button :question1, '0' %>
+        Нет
+      </label>
+    </p>
+  </div>
+
+  <div class="field question2-field">
+    <%= f.label :question2, 
+                'Перечислите наименования используемых в работе информационных систем, включая программы из офисных пакетов.', 
+                class: 'label' %>
+    <p class="control">
+      <%= f.text_area :question2, class: 'textarea', rows: 5 %>
+    </p>
+  </div>
+
+  <div class="field">
+    <%= f.label :question3, 
+                'Что бы вы хотели использовать из информационных систем в своей работе для увеличения её эффективности?', 
+                class: 'label' %>
+    <p class="control">
+      <%= f.text_area :question3, class: 'textarea', rows: 5 %>
+    </p>
+  </div>
+
+  <div class="field">
+    <%= f.label :question4, 
+                'Есть ли в вашем подразделении данные, требующие учёта и контроля?', 
+                class: 'label' %>
+    <p class="control">
+      <label class="radio">
+        <%= f.radio_button :question4, '1' %>
+        Да
+      </label>
+      <label class="radio">
+        <%= f.radio_button :question4, '0' %>
+        Нет
+      </label>
+    </p>
+  </div>
+
+  <div class="field question5-field">
+    <%= f.label :question5, 
+                'Перечислите эти данные.', 
+                class: 'label' %>
+    <p class="control">
+      <%= f.text_area :question5, class: 'textarea', rows: 5 %>
+    </p>
+  </div>
+
+  <div class="field">
+    <%= f.label :question6, 
+                'Необходимы ли в вашей работе данные из других подразделений университета?', 
+                class: 'label' %>
+    <p class="control">
+      <label class="radio">
+        <%= f.radio_button :question6, '1' %>
+        Да
+      </label>
+      <label class="radio">
+        <%= f.radio_button :question6, '0' %>
+        Нет
+      </label>
+    </p>
+  </div>
+
+  <div class="field question7-field">
+    <%= f.label :question7, 
+                'Перечислите необходимые данные.', 
+                class: 'label' %>
+    <p class="control">
+      <%= f.text_area :question7, class: 'textarea', rows: 5 %>
+    </p>
+  </div>
+
+  <div class="field question8-field">
+    <%= f.label :question8, 
+                'В каком виде вы их получаете или хотели бы получать?', 
+                class: 'label' %>
+    <p class="control">
+      <%= f.text_area :question8, class: 'textarea', rows: 5 %>
+    </p>
+  </div>
+
+  <div class="field is-grouped">
+    <p class="control">
+      <button class="button is-primary">Сохранить ответы</button>
+    </p>
+  </div>
+<% end %>
