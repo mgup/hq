@@ -33,7 +33,7 @@
     </p>
   </div>
 
-  <div class="field question2-field">
+  <div class="field question2-field" style="display: none;">
     <%= f.label :question2, 
                 'Перечислите наименования используемых в работе информационных систем, включая программы из офисных пакетов.', 
                 class: 'label' %>
@@ -67,7 +67,7 @@
     </p>
   </div>
 
-  <div class="field question5-field">
+  <div class="field question5-field" style="display: none;">
     <%= f.label :question5, 
                 'Перечислите эти данные.', 
                 class: 'label' %>
@@ -92,7 +92,7 @@
     </p>
   </div>
 
-  <div class="field question7-field">
+  <div class="field question7-field" style="display: none;">
     <%= f.label :question7, 
                 'Перечислите необходимые данные.', 
                 class: 'label' %>
@@ -101,7 +101,7 @@
     </p>
   </div>
 
-  <div class="field question8-field">
+  <div class="field question8-field" style="display: none;">
     <%= f.label :question8, 
                 'В каком виде вы их получаете или хотели бы получать?', 
                 class: 'label' %>
@@ -116,3 +116,33 @@
     </p>
   </div>
 <% end %>
+
+<script>
+  $(function() {
+    $('input[name="interview201704[question1]"]').change(function() {
+      if ('1' == this.value) {
+        $('.question2-field').show();
+      } else {
+        $('.question2-field').hide();
+      }
+    });
+
+    $('input[name="interview201704[question4]"]').change(function() {
+      if ('1' == this.value) {
+        $('.question5-field').show();
+      } else {
+        $('.question5-field').hide();
+      }
+    });
+
+    $('input[name="interview201704[question6]"]').change(function() {
+      if ('1' == this.value) {
+        $('.question7-field').show();
+        $('.question8-field').show();
+      } else {
+        $('.question7-field').hide();
+        $('.question8-field').hide();
+      }
+    });
+  });
+</script>
