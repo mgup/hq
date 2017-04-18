@@ -453,9 +453,10 @@ LIMIT 1 ")
     if discipline
       mark_progress(ball(discipline), progress(discipline), discipline.final_exam.type)
     else
-      score = ball(nil, y, t)
-      progress = (disciplines_by_term(y,t).size != 0 ? (score/disciplines_by_term(y,t).size) : 0)
-      mark_progress(score, progress)
+      # score = ball(nil, y, t)
+      # progress = (disciplines_by_term(y,t).size != 0 ? (score/disciplines_by_term(y,t).size) : 0)
+      # mark_progress(score, progress)
+      { ball: 0 }
     end
   end
 

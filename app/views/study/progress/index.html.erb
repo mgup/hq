@@ -23,7 +23,7 @@
 <% if @disciplines != [] %>
 <%= hidden_field_tag :progress_group, @group.id %>
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name),
-               prompt: 'суммарно по всем дисциплинам', class: 'form-control navigation_trip',
+               prompt: 'ВЫБЕРИТЕ ДИСЦИПЛИНУ', class: 'form-control navigation_trip',
                data: { input: '#disciplines_for_group', content: 'Вы можете выбрать другую дисциплину или посмотреть суммарную успеваемость по всем дисциплинам.'}%>
 
 <br>
