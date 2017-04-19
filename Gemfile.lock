@@ -273,8 +273,6 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-rails (0.3.4)
-      pry (>= 0.9.10)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.0)
@@ -320,6 +318,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
     rake (10.4.2)
+    rb-readline (0.5.3)
     redis (3.2.1)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
@@ -512,12 +511,12 @@ DEPENDENCIES
   paperclip
   prawn
   prawn-table
-  pry-rails
   quiet_assets
   rack-mini-profiler
   rails
   rails-erd
   rails-i18n
+  rb-readline
   remotipart
   roo
   rspec-rails

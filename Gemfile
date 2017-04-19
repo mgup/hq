@@ -79,7 +79,7 @@ group :development do
   #gem 'debugger'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'pry-rails'
+  # gem 'pry-rails'
   gem 'brakeman', require: false
   gem 'rails-erd'
 
@@ -93,6 +93,7 @@ group :development do
   gem 'bullet'
   gem 'meta_request'
   gem 'inch', require: false
+  gem 'rb-readline'
 end
 
 group :test do

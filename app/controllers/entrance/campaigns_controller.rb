@@ -275,7 +275,7 @@ class Entrance::CampaignsController < ApplicationController
         @data[direction.description][group][:originals] = apps.find_all { |a| [4,8].include?(a.status_id) && a.original? }.size
         @data[direction.description][group][:enrolled] = apps.find_all { |a| 8 == a.status_id }.size
         @data[direction.description][group][:contest] =
-          @data[direction.description][group][:total] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
+          (1.0 * @data[direction.description][group][:total] / @data[direction.description][group][:places]).round(2) if @data[direction.description][group][:places] > 0
         @data[direction.description][group][:contest_by_original] =
           @data[direction.description][group][:originals] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
       end
@@ -287,7 +287,7 @@ class Entrance::CampaignsController < ApplicationController
         @data[direction.description][group][:contracts] = apps.find_all { |a| a.contract.present? }.size
         @data[direction.description][group][:enrolled] = apps.find_all { |a| 8 == a.status_id }.size
         @data[direction.description][group][:contest] =
-          @data[direction.description][group][:total] / @data[direction.description][group][:places] if @data[direction.description][group][:places] > 0
+          (1.0 * @data[direction.description][group][:total] / @data[direction.description][group][:places]).round(2) if @data[direction.description][group][:places] > 0
       end
     end
   end
