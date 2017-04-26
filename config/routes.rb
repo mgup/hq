@@ -463,6 +463,7 @@ HQ::Application.routes.draw do
             only: [:index, :new, :create] do
     collection do
       get :thank_you
+      get :results
     end
   end
 

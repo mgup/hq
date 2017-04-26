@@ -27,6 +27,10 @@ class Interview201704sController < ApplicationController
   def thank_you
   end
 
+  def results
+    @interview201704s = @interview201704s.order(created_at: :desc)
+  end
+
   private
 
   def resource_params

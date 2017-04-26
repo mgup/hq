@@ -55,6 +55,7 @@ class Ability
         can :index, :groups
         can :read, Group
         can :work, :all_faculties
+        can :results, Interview201704
       end
 
       if user.is?(:library)
