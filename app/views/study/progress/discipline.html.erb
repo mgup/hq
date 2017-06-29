@@ -23,7 +23,7 @@
   </div>
 <% end %>
 <%= select_tag :disciplines_for_group, options_from_collection_for_select(@disciplines, :id, :name, @discipline.id),
-               prompt: 'ВЫБЕРИТЕ ДИСЦИПЛИНУ', class: 'form-control navigation_trip',
+               prompt: 'суммарно по всем дисциплинам', class: 'form-control navigation_trip',
     data: { input: '#disciplines_for_group', content: 'Вы можете выбрать другую дисциплину или посмотреть суммарную успеваемость по всем дисциплинам.'}%>
 
 <br>
