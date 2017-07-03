@@ -1,6 +1,8 @@
 
-prawn_document margin: [56.6929, 56.6929,
-                        28.3465, 56.6929],
+# prawn_document margin: [56.6929, 56.6929,
+#                         28.3465, 56.6929],
+prawn_document margin: [28.34645669291339, 28.34645669291339,
+                        14.34645669291339, 28.692913386],
                filename: "Справка для #{@student.person.full_name(:rp)}.pdf",
                page_size: 'A4', page_layout: :portrait do |pdf|
   render 'pdf/font', pdf: pdf
