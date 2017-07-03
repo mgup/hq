@@ -98,7 +98,7 @@ prawn_document margin: [56.6929, 56.6929,
         pdf.move_down 2
         pdf.text params[:place], align: :center
         pdf.move_up 10
-        pdf.text '_'*106, align: :center
+        pdf.text '_' * 90, align: :center
 
         pdf.move_down 12
         finish = @reference.date + 1.month
