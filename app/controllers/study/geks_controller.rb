@@ -2,6 +2,7 @@ class Study::GeksController < ApplicationController
   load_and_authorize_resource
 
   def index
+    @geks = @geks.where(study_year: Study::Discipline::CURRENT_STUDY_YEAR)
   end
 
   def create
