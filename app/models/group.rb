@@ -58,7 +58,7 @@ class Group < ActiveRecord::Base
   scope :oz_distance, -> { where(group_form: 106) }
 
   scope :geks, -> {
-    joins(:speciality).with_students.where(course: [2, 4,5,6]).where('speciality_ntype != 3')
+    joins(:speciality).with_students.where(course: [2,4,5,6]).where('speciality_ntype != 3')
   }
 
   def study_length
