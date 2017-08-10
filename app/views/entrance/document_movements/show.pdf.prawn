@@ -8,7 +8,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
     app = @document_movement.from_application
     pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
     pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
-    pdf.text 'Антипову К. В.', indent_paragraphs: 300
+    pdf.text 'Антипову К.В.', indent_paragraphs: 300
     pdf.move_down 10
     pdf.text "поступаю#{@document_movement.entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
     pdf.text "личное дело № #{app.number}", indent_paragraphs: 300
@@ -100,7 +100,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       app = @document_movement.to_application
       pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
       pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
-      pdf.text 'Антипову К. В.', indent_paragraphs: 300
+      pdf.text 'Антипову К.В.', indent_paragraphs: 300
       pdf.move_down 10
       pdf.text "поступаю#{@document_movement.entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
       pdf.text "личное дело № #{app.number}", indent_paragraphs: 300
@@ -179,7 +179,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       app = @document_movement.from_application
       pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
       pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
-      pdf.text 'Антипову К. В.', indent_paragraphs: 300
+      pdf.text 'Антипову К.В.', indent_paragraphs: 300
       pdf.move_down 10
       pdf.text "поступаю#{@document_movement.entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
       pdf.text "личное дело № #{app.number}", indent_paragraphs: 300
@@ -202,7 +202,7 @@ prawn_document margin: [28.34645669291339, 28.34645669291339,
       app = @document_movement.from_application
       pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
       pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
-      pdf.text 'Антипову К. В.', indent_paragraphs: 300
+      pdf.text 'Антипову К.В.', indent_paragraphs: 300
       pdf.move_down 10
       pdf.text "поступаю#{@document_movement.entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
       pdf.text "личное дело № #{app.number}", indent_paragraphs: 300

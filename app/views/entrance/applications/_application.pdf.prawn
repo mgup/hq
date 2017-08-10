@@ -1,7 +1,7 @@
 pdf.font_size 10.5 do
       pdf.text "#{application.number}", align: :center, style: :bold
       pdf.move_down 5
-      pdf.text 'Ректору федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» профессору К. В. Антипову', inline_format: true
+      pdf.text 'Ректору федерального государственного бюджетного образовательного учреждения высшего профессионального образования «Московский государственный университет печати имени Ивана Федорова» профессору К.В. Антипову', inline_format: true
       pdf.text "от гр. <u>#{entrant.full_name}</u> <br>паспорт № #{entrant.pseries} #{entrant.pnumber}, выдан #{entrant.pdepartment} #{l entrant.pdate},", inline_format: true
       pdf.text "пол: #{entrant.female? ? 'женский' : 'мужской'}, дата рождения: #{l entrant.birthday}, место рождения: #{entrant.birth_place},"
       pdf.text "проживающ#{entrant.female? ? 'ей' : 'его'} по адресу #{entrant.azip} #{entrant.aaddress}.", inline_format: true

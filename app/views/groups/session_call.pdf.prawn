@@ -207,7 +207,7 @@ pdf.text 'Работодателю _____________________________________________
           pdf.text 'М. П.'
         end
       end
-      pdf.text_box 'К. В. Антипов', at: [386, 196], width: 100, height: 20, align: :center
+      pdf.text_box 'К.В. Антипов', at: [386, 196], width: 100, height: 20, align: :center
 
       pdf.move_down 15
 
@@ -238,8 +238,8 @@ pdf.text 'Работодателю _____________________________________________
         pdf.text_box  '                             федеральном государственном бюджетном образовательном учреждении высшего образования «Московский политехнический университет» (Московский Политех)', at:[0, 110], width: 500, height: 60, align: :center, inline_format: true, leading: 12
         pdf.text_box "#{l @from, format: '%d %B %Y'}", at: [69, 62], width: 100, height: 20, align: :center, style: :bold
         pdf.text_box "#{l @to, format: '%d %B %Y'}", at: [336, 62], width: 100, height: 20, align: :center, style: :bold
-        # pdf.text_box 'К. В. Антипов', at: [366, 35], width: 100, height: 20, align: :center
-        pdf.text_box 'К. В. Антипов', at: [385, 35], width: 100, height: 20, align: :center
+        # pdf.text_box 'К.В. Антипов', at: [366, 35], width: 100, height: 20, align: :center
+        pdf.text_box 'К.В. Антипов', at: [385, 35], width: 100, height: 20, align: :center
       end
       pdf.text 'находился в __________________________________________________________________________________________________'
       pdf.font_size 7 do

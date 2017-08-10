@@ -51,7 +51,7 @@ prawn_document margin: [56.692913386, 28.34645669291339,
 
   pdf.text 'Председателю приемной комиссии', indent_paragraphs: 300
   pdf.text 'МГУП имени Ивана Федорова', indent_paragraphs: 300
-  pdf.text 'Антипову К. В.', indent_paragraphs: 300
+  pdf.text 'Антипову К.В.', indent_paragraphs: 300
   pdf.move_down 10
   pdf.text "поступаю#{@entrant.male? ? 'щего' : 'щей'}", indent_paragraphs: 300
   pdf.text "личное дело № #{@application.number}", indent_paragraphs: 300
