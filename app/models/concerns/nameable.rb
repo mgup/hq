@@ -48,8 +48,9 @@ module Nameable
   # (ip, rp, dp, vp, tp, pp). Употребляется при алфавитном перечислении имён
   # либо в «менее официальных» документах.
   def short_name(form = :ip)
-    result = last_name(form) + ' ' + first_name(form)[0, 1] + '.'
-    result += ' ' + patronym(form)[0, 1] + '.' unless patronym(form).nil?
+    result = first_name(form)[0, 1] + '.'
+    result += patronym(form)[0, 1] + '.' unless patronym(form).nil?
+    result += ' ' + last_name(form)
     result
   end
 
