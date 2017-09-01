@@ -1,6 +1,6 @@
 class Study::Discipline < ActiveRecord::Base
-  CURRENT_STUDY_YEAR  = 2016
-  CURRENT_STUDY_TERM  = 2
+  CURRENT_STUDY_YEAR  = 2017
+  CURRENT_STUDY_TERM  = 1
 
   self.table_name = 'subject'
 
