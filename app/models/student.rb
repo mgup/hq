@@ -759,6 +759,9 @@ LIMIT 1 ")
               xml.КатеорияНаселения ''
               xml.ПризнакЗарплатный ''
               xml.КонтрольнаяИнформация ''
+              xml.Институт student.faculty.name
+              xml.Курс student.group.course
+              xml.Основа (student.budget? ? 'Бюджет' : 'Внебюджет')
             end
           end
         end
