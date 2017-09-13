@@ -759,9 +759,6 @@ LIMIT 1 ")
               xml.КатеорияНаселения ''
               xml.ПризнакЗарплатный ''
               xml.КонтрольнаяИнформация ''
-              if student.faculty.nil?
-                fail student.id.to_s
-              end
               xml.Институт student.faculty.name
               xml.Курс student.group.course
               xml.Основа (student.budget? ? 'Бюджет' : 'Внебюджет')

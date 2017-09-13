@@ -133,7 +133,7 @@ class StudentsController < ApplicationController
   def sberbank
     respond_to do |format|
       format.xml do
-        render xml: @students.valid_for_today.my_filter(course: [2, 3, 4, 5, 6]).to_sberbank
+        render xml: @students.valid_for_today.my_filter(course: [2, 3, 4, 5, 6]).find_all { |s| s.faculty.present? }.to_sberbank
       end
     end
   end
