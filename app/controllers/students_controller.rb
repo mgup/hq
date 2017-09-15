@@ -131,9 +131,10 @@ class StudentsController < ApplicationController
   end
 
   def sberbank
+    course = params[:course] || [2,3,4,5,6]
     respond_to do |format|
       format.xml do
-        render xml: @students.valid_for_today.my_filter(course: [2, 3, 4, 5, 6], faculty: [3,5,6,7]).to_sberbank
+        render xml: @students.valid_for_today.my_filter(course: course, faculty: [3,5,6,7]).to_sberbank
       end
     end
   end

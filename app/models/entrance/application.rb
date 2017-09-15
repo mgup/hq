@@ -148,7 +148,7 @@ class Entrance::Application < ActiveRecord::Base
   end
 
   def abitpoints
-    abitexams.map(&:score).sum + abitachievements
+    abitexams.map(&:score).reject { |i| i.nil? }.sum + abitachievements
   end
 
   def actual?
@@ -973,7 +973,7 @@ class Entrance::Application < ActiveRecord::Base
       fail 'Неизвестная форма обучения'
     end
   end
-  
+
   def education_form_name
     case education_form_id
     when 11
@@ -986,7 +986,7 @@ class Entrance::Application < ActiveRecord::Base
       fail 'Неизвестная форма обучения'
     end
   end
-  
+
   def budget_name
     is_payed ? 'по договорам' : 'бюджетная основа'
   end
