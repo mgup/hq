@@ -678,6 +678,7 @@ LIMIT 1 ")
               xml.Фамилия student.last_name
               xml.Имя student.first_name
               xml.Отчество student.patronym
+              xml.Должность student.faculty.name
               xml.ОтделениеБанка ''
               xml.ФилиалОтделенияБанка ''
               xml.ВидВклада(КодВидаВклада: '', КодПодвидаВклада: '',
