@@ -129,7 +129,7 @@ class Student < ActiveRecord::Base
   scope :valid_for_today, -> { where(student_group_status: [self::STATUS_STUDENT, self::STATUS_TRANSFERRED_DEBTOR, self::STATUS_DEBTOR]) }
 
   scope :for_vkr, -> {
-    where(student_group_status: [self::STATUS_COMPLETE, self:STATUS_GRADUATE]).
+    where(student_group_status: [self::STATUS_COMPLETE, self::STATUS_GRADUATE]).
       joins(:orders).where('order_template = 21').
       where('order_signing >= ?', Date.new(2017, 1, 1))
   }
