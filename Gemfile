@@ -14,7 +14,6 @@ gem 'sass-rails'
 gem 'bootstrap-sass'
 gem 'coffee-rails'
 
-gem 'therubyracer', platforms: :ruby
 gem 'uglifier'
 
 gem 'jquery-rails'
@@ -34,7 +33,7 @@ gem 'bootstrap-datepicker-rails'
 gem 'kaminari'
 gem 'prawn'
 gem 'prawn-table'
-          gem 'gruff'
+          # gem 'gruff'
 # gem 'rqrcode'
 # gem 'squeel'
 gem 'chunky_png'
@@ -99,7 +98,7 @@ end
 group :test do
   gem 'faker'
   gem 'capybara'
-  gem 'capybara-webkit'
+  # gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'codeclimate-test-reporter', require: false
@@ -114,3 +113,7 @@ end
 gem 'dalli'
 gem 'rack-mini-profiler'
 # gem 'flamegraph'
+
+group :production do
+  gem 'therubyracer', platforms: :ruby
+end
