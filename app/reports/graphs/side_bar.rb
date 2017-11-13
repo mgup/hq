@@ -1,6 +1,6 @@
 module Graphs
   # Заготовка графика с «горизонтальными» колонками.
-  class SideBar < Gruff::SideBar
+  class SideBar #< Gruff::SideBar
     def initialize(target_width)
       super(target_width)
 
